@@ -4,6 +4,7 @@
 #include "managers/animation/ThighCrush.hpp"
 #include "managers/animation/FootGrind.hpp"
 #include "managers/animation/ActorVore.hpp"
+#include "managers/animation/CrawlVore.hpp"
 #include "managers/animation/HugShrink.hpp"
 #include "managers/animation/Crawling.hpp"
 #include "managers/animation/Compat.hpp"
@@ -70,6 +71,8 @@ namespace Gts {
 
 		AnimationActorVore::RegisterEvents();
 		AnimationActorVore::RegisterTriggers();
+
+		AnimationCrawlVore::RegisterEvents();
 
 		AnimationFootGrind::RegisterEvents();
 		AnimationFootGrind::RegisterTriggers();

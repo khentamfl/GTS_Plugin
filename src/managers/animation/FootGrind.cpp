@@ -46,7 +46,7 @@ namespace {
 			}
 			auto giantref = gianthandle.get().get();
             Rumble::Once("FootGrindL", giantref, 1.0, 0.025, LNode);
-			DoDamageEffect(giantref, 0.010, 1.4, 10000, 0.05, FootEvent::Left, 1.0);
+			DoDamageEffect(giantref, 0.002, 1.4, 10000, 0.05, FootEvent::Left, 1.0);
 			return true;
 		});
 	}
@@ -60,7 +60,7 @@ namespace {
 			}
 			auto giantref = gianthandle.get().get();
             Rumble::Once("FootGrindR", giantref, 1.0, 0.025, RNode);
-			DoDamageEffect(giantref, 0.010, 1.5, 10000, 0.05, FootEvent::Right, 1.0);
+			DoDamageEffect(giantref, 0.002, 1.5, 10000, 0.05, FootEvent::Right, 1.0);
 			return true;
 		});
 	}
@@ -109,7 +109,7 @@ namespace {
         ApplyDustRing(&data.giant, FootEvent::Right, RNode, 1.05);
         DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
         DoLaunch(&data.giant, 0.75 * perk, 1.8, 1.4, FootEvent::Right, 0.80);  // To-do: disallow Launching when actor is being grinded through Transient
-        DoDamageEffect(&data.giant, 1.0, 1.70, 20, 0.15, FootEvent::Right, 1.0);
+        DoDamageEffect(&data.giant, 2.0, 1.70, 20, 0.15, FootEvent::Right, 1.0);
         Rumble::Once("GrindStompR", &data.giant, 1.25, 0.05, RNode);
     }
 
@@ -118,7 +118,7 @@ namespace {
         ApplyDustRing(&data.giant, FootEvent::Left, LNode, 1.05);
         DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
         DoLaunch(&data.giant, 0.75 * perk, 1.8, 1.4, FootEvent::Left, 0.80);  // To-do: disallow Launching when actor is being grinded through Transient
-        DoDamageEffect(&data.giant, 1.0, 1.70, 20, 0.15, FootEvent::Left, 1.0);
+        DoDamageEffect(&data.giant, 2.0, 1.70, 20, 0.15, FootEvent::Left, 1.0);
         Rumble::Once("GrindStompL", &data.giant, 1.25, 0.05, LNode);
     }
 

@@ -202,7 +202,7 @@ namespace Gts {
 		});
 	}
 
-	void FootGrindCheck_Left(Actor* actor, float radius) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+	void FootGrindCheck_Left(Actor* actor, float radius) {  // Check if we hit someone with stomp. Yes = Start foot grind. Left Foot.
 		if (!actor) {
 			return;
 		}
@@ -309,7 +309,7 @@ namespace Gts {
 		}
 	}
 
-	void FootGrindCheck_Right(Actor* actor, float radius) { 
+	void FootGrindCheck_Right(Actor* actor, float radius) {  // Check if we hit someone with stomp. Yes = Start foot grind. Right Foot.
 		if (!actor) {
 			return;
 		}

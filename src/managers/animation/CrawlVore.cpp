@@ -1,0 +1,170 @@
+#include "managers/animation/Utils/AnimationUtils.hpp"
+#include "managers/animation/AnimationManager.hpp"
+#include "managers/emotions/EmotionManager.hpp"
+#include "managers/animation/CrawlVore.hpp"
+#include "managers/GtsSizeManager.hpp"
+#include "managers/ai/aifunctions.hpp"
+#include "managers/CrushManager.hpp"
+#include "utils/papyrusUtils.hpp"
+#include "utils/actorUtils.hpp"
+#include "data/persistent.hpp"
+#include "managers/explosion.hpp"
+#include "managers/footstep.hpp"
+#include "managers/Rumble.hpp"
+#include "managers/tremor.hpp"
+#include "data/transient.hpp"
+#include "managers/vore.hpp"
+#include "data/runtime.hpp"
+#include "scale/scale.hpp"
+#include "node.hpp"
+
+using namespace std;
+using namespace SKSE;
+using namespace RE;
+using namespace Gts;
+
+namespace {
+	const std::string_view RNode = "NPC R Foot [Rft ]";
+	const std::string_view LNode = "NPC L Foot [Lft ]";
+	const std::string_view RSound = "lFootstepR";
+	const std::string_view LSound = "lFootstepL";
+
+	const std::vector<std::string_view> RHAND_RUMBLE_NODES = { // used for hand rumble
+		"NPC R UpperarmTwist1 [RUt1]",
+		"NPC R UpperarmTwist2 [RUt2]",
+		"NPC R Forearm [RLar]",
+		"NPC R ForearmTwist2 [RLt2]",
+		"NPC R ForearmTwist1 [RLt1]",
+		"NPC R Hand [RHnd]",
+	};
+
+	const std::vector<std::string_view> LHAND_RUMBLE_NODES = { // used for hand rumble
+		"NPC L UpperarmTwist1 [LUt1]",
+		"NPC L UpperarmTwist2 [LUt2]",
+		"NPC L Forearm [LLar]",
+		"NPC L ForearmTwist2 [LLt2]",
+		"NPC L ForearmTwist1 [LLt1]",
+		"NPC L Hand [LHnd]",
+	};
+
+	const std::vector<std::string_view> BODY_RUMBLE_NODES = { // used for body rumble
+		"NPC COM [COM ]",
+		"NPC L Foot [Lft ]",
+		"NPC R Foot [Rft ]",
+		"NPC L Toe0 [LToe]",
+		"NPC R Toe0 [RToe]",
+		"NPC L Calf [LClf]",
+		"NPC R Calf [RClf]",
+		"NPC L PreRearCalf",
+		"NPC R PreRearCalf",
+		"NPC L FrontThigh",
+		"NPC R FrontThigh",
+		"NPC R RearCalf [RrClf]",
+		"NPC L RearCalf [RrClf]",
+	};
+
+    void GTSCrawlVore_Start(AnimationEventData& data) {
+        auto giant = &data.giant;
+        auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
+        VoreData.AllowToBeVored(false);
+    }
+
+    void GTSCrawlVore_SmileOn(AnimationEventData& data) {
+        AdjustFacialExpression(&data.giant, 2, 1.0, "expression");
+        AdjustFacialExpression(&data.giant, 3, 0.8, "phenome");
+    }
+
+    void GTSCrawlVore_Grab(AnimationEventData& data) {
+        auto giant = &data.giant;
+        auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
+		VoreData.GrabAll();
+        for (auto& tiny: VoreData.GetVories()) {
+			tiny->NotifyAnimationGraph("JumpFall");
+			ReportCrime(&data.giant, tiny, 1000.0, true);
+			//StartCombat(giant, tiny, true);
+		}
+		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
+			ManageCamera(giant, false, 4.0);
+			ManageCamera(giant, true, 2.0);
+		}
+    }
+
+    void GTSCrawl_ButtImpact(AnimationEventData& data) {
+        auto giant = &data.giant;
+        auto ThighL = find_node(giant, "NPC L Thigh [LThg]");
+		auto ThighR = find_node(giant, "NPC R Thigh [RThg]");
+        auto ButtR = find_node(giant, "NPC R Butt");
+        auto ButtL = find_node(giant, "NPC L Butt");
+        if (ButtR && ButtL) {
+            if (ThighL && ThighR) {
+                DoDamageAtPoint(giant, 18, 90.0, ThighL, 100, 0.20, 2.5);
+                DoDamageAtPoint(giant, 18, 90.0, ThighR, 100, 0.20, 2.5);
+                DoDustExplosion(giant, 1.8, FootEvent::Right, ButtR);
+                DoDustExplosion(giant, 1.8, FootEvent::Left, ButtL);
+                DoFootstepSound(giant, 1.2, FootEvent::Right, RNode);
+                DoFootstepSound(giant, 1.2, FootEvent::Left, LNode);
+            }
+        }
+    }
+
+    void GTSCrawlVore_OpenMouth(AnimationEventData& data) {
+        auto giant = &data.giant;
+        AdjustFacialExpression(giant, 0, 1.0, "phenome"); // Start opening mouth
+		AdjustFacialExpression(giant, 1, 0.5, "phenome"); // Open it wider
+        AdjustFacialExpression(giant, 0, 0.80, "modifier"); // blink L
+		AdjustFacialExpression(giant, 1, 0.80, "modifier"); // blink R
+    }
+
+    void GTSCrawlVore_CloseMouth(AnimationEventData& data) {
+        auto giant = &data.giant;
+        AdjustFacialExpression(giant, 0, 0.0, "phenome"); // Start opening mouth
+		AdjustFacialExpression(giant, 1, 0.0, "phenome"); // Open it wider
+        AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
+		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
+    }
+    void GTSCrawlVore_Swallow(AnimationEventData& data) {
+        auto giant = &data.giant;
+        auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
+		for (auto& tiny: VoreData.GetVories()) {
+			AllowToBeCrushed(tiny, true);
+            if (tiny->formID == 0x14) {
+				PlayerCamera::GetSingleton()->cameraTarget = giant->CreateRefHandle();
+			}
+            if (AllowDevourment()) {
+                CallDevourment(&data.giant, tiny);
+            } else {
+                VoreData.Swallow();
+                Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
+            }
+		}
+    }
+
+    void GTSCrawlVore_KillAll(AnimationEventData& data) {
+        auto giant = &data.giant;
+        auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
+        VoreData.AllowToBeVored(true);
+        VoreData.KillAll();
+        ManageCamera(giant, false, 2.0);
+    }
+
+    void GTSCrawlVore_SmileOff(AnimationEventData& data) {
+        AdjustFacialExpression(&data.giant, 2, 0.0, "expression"); 
+        AdjustFacialExpression(&data.giant, 3, 0.0, "phenome");
+    }
+ }
+
+
+namespace Gts
+{
+	void AnimationCrawlVore::RegisterEvents() {
+        AnimationManager::RegisterEvent("GTSCrawlVore_Start", "CrawlVore", GTSCrawlVore_Start);
+		AnimationManager::RegisterEvent("GTSCrawlVore_SmileOn", "CrawlVore", GTSCrawlVore_SmileOn);
+        AnimationManager::RegisterEvent("GTSCrawlVore_Grab", "CrawlVore", GTSCrawlVore_Grab);
+        AnimationManager::RegisterEvent("GTSCrawl_ButtImpact", "CrawlVore", GTSCrawl_ButtImpact);
+        AnimationManager::RegisterEvent("GTSCrawlVore_OpenMouth", "CrawlVore", GTSCrawlVore_OpenMouth);
+        AnimationManager::RegisterEvent("GTSCrawlVore_CloseMouth", "CrawlVore", GTSCrawlVore_CloseMouth);
+        AnimationManager::RegisterEvent("GTSCrawlVore_Swallow", "CrawlVore", GTSCrawlVore_Swallow);
+        AnimationManager::RegisterEvent("GTSCrawlVore_KillAll", "CrawlVore", GTSCrawlVore_KillAll);
+        AnimationManager::RegisterEvent("GTSCrawlVore_SmileOff", "CrawlVore", GTSCrawlVore_SmileOff);
+	}
+}
