@@ -1,5 +1,6 @@
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/animation/Utils/CrawlUtils.hpp"
 #include "managers/emotions/EmotionManager.hpp"
 #include "managers/animation/CrawlVore.hpp"
 #include "managers/GtsSizeManager.hpp"
@@ -99,8 +100,8 @@ namespace {
             if (ThighL && ThighR) {
                 DoDamageAtPoint(giant, 18, 90.0, ThighL, 100, 0.20, 2.5);
                 DoDamageAtPoint(giant, 18, 90.0, ThighR, 100, 0.20, 2.5);
-                DoDustExplosion(giant, 1.8, FootEvent::Right, ButtR);
-                DoDustExplosion(giant, 1.8, FootEvent::Left, ButtL);
+                DoDustExplosion(giant, 1.8, FootEvent::Right, "NPC R Butt");
+                DoDustExplosion(giant, 1.8, FootEvent::Left, "NPC L Butt");
                 DoFootstepSound(giant, 1.2, FootEvent::Right, RNode);
                 DoFootstepSound(giant, 1.2, FootEvent::Left, LNode);
             }
