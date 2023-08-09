@@ -85,6 +85,7 @@ namespace {
 			//StartCombat(giant, tiny, true);
 		}
 		if (AllowFeetTracking() && giant->formID == 0x14) {
+            giant->SetGraphVariableBool("GTS_Busy", false);
             ManageCamera(giant, false, 4.0);
             ManageCamera(giant, true, 2.0);
 		}
@@ -108,8 +109,8 @@ namespace {
         auto ButtL = find_node(giant, "NPC L Butt");
         if (ButtR && ButtL) {
             if (ThighL && ThighR) {
-                DoDamageAtPoint(giant, 19, 180.0, ThighL, 10, 0.70, 2.5);
-                DoDamageAtPoint(giant, 19, 180.0, ThighR, 10, 0.70, 2.5);
+                DoDamageAtPoint(giant, 19, 200.0, ThighL, 10, 0.70, 0.95);
+                DoDamageAtPoint(giant, 19, 200.0, ThighR, 10, 0.70, 0.95);
                 DoDustExplosion(giant, 1.8 * dust, FootEvent::Right, "NPC R Butt");
                 DoDustExplosion(giant, 1.8 * dust, FootEvent::Left, "NPC L Butt");
                 DoFootstepSound(giant, 1.2, FootEvent::Right, RNode);
@@ -146,6 +147,7 @@ namespace {
                 CallDevourment(&data.giant, tiny);
             } else {
                 VoreData.Swallow();
+                tiny->SetAlpha(0.0);
                 Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
             }
 		}
@@ -162,6 +164,7 @@ namespace {
     void GTSCrawlVore_SmileOff(AnimationEventData& data) {
         AdjustFacialExpression(&data.giant, 2, 0.0, "expression"); 
         AdjustFacialExpression(&data.giant, 3, 0.0, "phenome");
+        &data.giant->SetGraphVariableBool("GTS_Busy", true);
     }
  }
 
