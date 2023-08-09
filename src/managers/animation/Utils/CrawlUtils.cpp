@@ -98,7 +98,7 @@ namespace Gts {
 		}
 
         std::string rumbleName = std::format("{}{}", tag, actor->formID);
-        Rumble::Once(rumbleName, actor, 0.90 * multiplier * SMT, 0.10, name); // Do Rumble
+        Rumble::Once(rumbleName, actor, 0.90 * multiplier * SMT, 0.02, name); // Do Rumble
 
 		DoDamageAtPoint(actor, damage_dist, 70 * multiplier, node, 20, 0.05, 1.0); // Do size-related damage
         DoCrawlingSounds(actor, scale, node, FootEvent::Left);                      // Do impact sounds

@@ -225,7 +225,7 @@ namespace Gts {
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, hh*0.08, -0.25 +(-hh * 0.25)), // The standard at the foot position
-			NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward
+			NiPoint3(1.6, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward
 			NiPoint3(0.0, (hh/50), -0.25 + (-hh * 1.15)), // Offset for HH
 		};
 		std::tuple<NiAVObject*, NiMatrix3> left(leftFoot, leftRotMat);

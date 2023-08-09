@@ -68,6 +68,10 @@ namespace {
         auto giant = &data.giant;
         auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
         VoreData.AllowToBeVored(false);
+        for (auto& tiny: VoreData.GetVories()) {
+			AllowToBeCrushed(tiny, false);
+			DisableCollisions(tiny, giant);
+		}
     }
 
     void GTSCrawlVore_SmileOn(AnimationEventData& data) {
@@ -116,6 +120,8 @@ namespace {
                 DoFootstepSound(giant, 1.2, FootEvent::Right, RNode);
                 DoFootstepSound(giant, 1.2, FootEvent::Left, LNode);
                 DoLaunch(&data.giant, 28.00 * launch * perk, 4.20, 1.4, FootEvent::Butt, 1.20);
+                Rumble::Once("Butt_L", &data.giant, 3.80, 0.02, "NPC R Butt");
+                Rumble::Once("Butt_R", &data.giant, 3.80, 0.02, "NPC L Butt");
             }
         }
     }
@@ -158,6 +164,12 @@ namespace {
     void GTSCrawlVore_KillAll(AnimationEventData& data) {
         auto giant = &data.giant;
         auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
+        for (auto& tiny: VoreData.GetVories()) {
+            if (tiny) {
+                AllowToBeCrushed(tiny, true);
+                EnableCollisions(tiny);
+            }
+        }
         VoreData.AllowToBeVored(true);
         VoreData.KillAll();
     }
