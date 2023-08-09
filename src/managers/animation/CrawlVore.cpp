@@ -84,26 +84,37 @@ namespace {
 			ReportCrime(&data.giant, tiny, 1000.0, true);
 			//StartCombat(giant, tiny, true);
 		}
-		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
-			ManageCamera(giant, false, 4.0);
-			ManageCamera(giant, true, 2.0);
+		if (AllowFeetTracking() && giant->formID == 0x14) {
+            ManageCamera(giant, false, 4.0);
+            ManageCamera(giant, true, 2.0);
 		}
     }
 
     void GTSCrawl_ButtImpact(AnimationEventData& data) {
         auto giant = &data.giant;
+
+        float perk = GetPerkBonus_Basics(&data.giant);
+        float launch = 1.0;
+        float dust = 1.0;
+        
+        if (HasSMT(giant)) {
+            launch = 1.25;
+            dust = 1.25;
+        }
+
         auto ThighL = find_node(giant, "NPC L Thigh [LThg]");
 		auto ThighR = find_node(giant, "NPC R Thigh [RThg]");
         auto ButtR = find_node(giant, "NPC R Butt");
         auto ButtL = find_node(giant, "NPC L Butt");
         if (ButtR && ButtL) {
             if (ThighL && ThighR) {
-                DoDamageAtPoint(giant, 18, 90.0, ThighL, 100, 0.20, 2.5);
-                DoDamageAtPoint(giant, 18, 90.0, ThighR, 100, 0.20, 2.5);
-                DoDustExplosion(giant, 1.8, FootEvent::Right, "NPC R Butt");
-                DoDustExplosion(giant, 1.8, FootEvent::Left, "NPC L Butt");
+                DoDamageAtPoint(giant, 19, 180.0, ThighL, 10, 0.70, 2.5);
+                DoDamageAtPoint(giant, 19, 180.0, ThighR, 10, 0.70, 2.5);
+                DoDustExplosion(giant, 1.8 * dust, FootEvent::Right, "NPC R Butt");
+                DoDustExplosion(giant, 1.8 * dust, FootEvent::Left, "NPC L Butt");
                 DoFootstepSound(giant, 1.2, FootEvent::Right, RNode);
                 DoFootstepSound(giant, 1.2, FootEvent::Left, LNode);
+                DoLaunch(&data.giant, 1.10 * launch * perk, 4.20, 1.4, FootEvent::Butt, 1.20);
             }
         }
     }

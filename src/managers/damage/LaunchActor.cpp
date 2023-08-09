@@ -239,10 +239,17 @@ namespace Gts {
 			LaunchActor::GetSingleton().LaunchLeft(giant, radius, damagebonus, power);
 		} if (kind == FootEvent::Right) {
 			LaunchActor::GetSingleton().LaunchRight(giant, radius, damagebonus, power);
+		} else if (kind == FootEvent::Butt) {
+			auto ThighL = find_node(giant, "NPC L Thigh [LThg]");
+			auto ThighR = find_node(giant, "NPC R Thigh [RThg]");
+			if (ThighL && ThighR) {
+				LaunchActor::LaunchAtNode(giant, radius, power, ThighL, power);
+				LaunchActor::LaunchAtNode(giant, radius, power, ThighR, power);
+			}
 		}
 	}
 	
-	void LaunchActor::LaunchCrawling(Actor* giant, float radius, float power, NiAVObject* node, float damagebonus) {
+	void LaunchActor::LaunchAtNode(Actor* giant, float radius, float power, NiAVObject* node, float damagebonus) {
         auto profiler = Profilers::Profile("Other: Launch Actor Crawl");
         if (!Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 			return;

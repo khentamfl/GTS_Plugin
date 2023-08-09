@@ -135,7 +135,6 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/8, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust + data.animSpeed/4, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.75 * bonus * perk, 1.8 + data.animSpeed/4, 1.4, FootEvent::Left, 0.80);
-
 	}
 
 	void GTSStompendR(AnimationEventData& data) {
