@@ -162,9 +162,10 @@ namespace {
     }
 
     void GTSCrawlVore_SmileOff(AnimationEventData& data) {
+        auto giant = &data.giant;
         AdjustFacialExpression(&data.giant, 2, 0.0, "expression"); 
         AdjustFacialExpression(&data.giant, 3, 0.0, "phenome");
-        &data.giant->SetGraphVariableBool("GTS_Busy", true);
+        giant->SetGraphVariableBool("GTS_Busy", true);
     }
  }
 
