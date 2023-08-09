@@ -35,6 +35,7 @@ namespace Gts {
 	bool IsStomping(Actor* actor);
 	bool IsBeingEaten(Actor* tiny);
 	bool IsGtsBusy(Actor* actor);
+	bool IsCrawlVoring(Actor* actor);
 	bool IsBeingGrinded(Actor* actor);
     // GTS State Bools End
 

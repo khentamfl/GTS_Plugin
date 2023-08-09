@@ -68,9 +68,6 @@ namespace {
         auto giant = &data.giant;
         auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
         VoreData.AllowToBeVored(false);
-        if (AllowFeetTracking() && giant->formID == 0x14) {
-            giant->SetGraphVariableBool("GTS_Busy", false);
-        }
     }
 
     void GTSCrawlVore_SmileOn(AnimationEventData& data) {
@@ -169,7 +166,6 @@ namespace {
         auto giant = &data.giant;
         AdjustFacialExpression(&data.giant, 2, 0.0, "expression"); 
         AdjustFacialExpression(&data.giant, 3, 0.0, "phenome");
-        giant->SetGraphVariableBool("GTS_Busy", true);
         ManageCamera(giant, false, 2.0);
     }
 }

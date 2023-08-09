@@ -226,6 +226,12 @@ namespace Gts {
 		return GTSBusy;
 	}
 
+	bool IsCrawlVoring(Actor* actor) {
+		bool Voring;
+		actor->GetGraphVariableBool("GTS_IsCrawlVoring", Voring);
+		return false;//Voring;
+	}
+
 	bool IsBeingGrinded(Actor* actor) {
 		auto transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
@@ -233,6 +239,7 @@ namespace Gts {
 		}
 		return false;
 	}
+
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
