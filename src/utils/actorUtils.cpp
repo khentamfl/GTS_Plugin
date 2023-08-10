@@ -226,6 +226,12 @@ namespace Gts {
 		return GTSBusy;
 	}
 
+	bool IsCameraEnabled(Actor* actor) {
+		bool Camera;
+		actor->GetGraphVariableBool("GTS_VoreCamera", Camera);
+		return Camera;
+	}
+
 	bool IsCrawlVoring(Actor* actor) {
 		bool Voring;
 		actor->GetGraphVariableBool("GTS_IsCrawlVoring", Voring);

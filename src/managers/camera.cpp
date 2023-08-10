@@ -114,7 +114,7 @@ namespace Gts {
 
 			auto player = PlayerCharacter::GetSingleton();
 			bool IsCurrentlyCrawling = IsCrawling(player);
-			if (IsGtsBusy(player) && !IsCrawlVoring(player)) {
+			if (IsGtsBusy(player) && IsCrawlVoring(player) && !IsCameraEnabled(player)) {
 				IsCurrentlyCrawling = false;
 			}
 			
