@@ -57,14 +57,10 @@ namespace {
     const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
-    void StartRumble(std::string_view tag, Actor& actor, float power, float halflife, bool once) {
+    void StartRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: ALL_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			if (!once) {
-				Rumble::Start(rumbleName, &actor, power, halflife, node_name);
-			} else {
-				Rumble::Once(rumbleName, &actor, power, halflife, node_name);
-			}
+		    Rumble::Start(rumbleName, &actor, power, halflife, node_name);
 		}
 	}
 
@@ -158,7 +154,7 @@ namespace {
         if (Runtime::HasPerkTeam(actor, "ButtCrush_GrowingDisaster")) {
             limit += 2.0;
         } if (Runtime::HasPerkTeam(actor, "ButtCrush_UnstableGrowth")) {
-            limit += 2.0;
+            limit += 3.0;
         } if (Runtime::HasPerkTeam(actor, "ButtCrush_LoomingDoom")) {
             limit += 4.0;
         }
@@ -259,7 +255,7 @@ namespace {
         Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
 		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 
-        StartRumble("BCRumble", data.giant, 1.8, 0.0, false);
+        StartRumble("BCRumble", data.giant, 1.8, 0.02);
     }
 
     void GTSBEH_ButtCrush_GrowthFinish(AnimationEventData& data) {
