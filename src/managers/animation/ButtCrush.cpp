@@ -42,6 +42,13 @@ namespace {
 		}
 	}
 
+    void TrackButt(Actor* giant, bool enable) {
+        if (AllowFeetTracking()) {
+            auto& sizemanager = SizeManager::GetSingleton();
+            sizemanager.SetActionBool(giant, enable, 8.0);
+        }
+    }
+
     void ModGrowthCount(Actor* giant, float value, bool reset) {
         auto transient = Transient::GetSingleton().GetData(giant);
 		if (transient) {
@@ -57,6 +64,7 @@ namespace {
         if (saved_data) {
             saved_data->bonus_max_size += value;
             if (reset) {
+                mod_target_scale(giant, -saved_data->bonus_max_size);
                 saved_data->bonus_max_size = 0;
             }
         } 
@@ -102,11 +110,16 @@ namespace {
         return damage;
     }
 
+    void GTSButtCrush_MoveBody_MixFrameToLoop(AnimationEventData& data) {
+        auto giant = &data.giant;
+        TrackButt(giant, true);
+    }
+
     void GTSButtCrush_GrowthStart(AnimationEventData& data) {
         auto giant = &data.giant;
         ModGrowthCount(giant, 1.0, false);
         float scale = get_visual_scale(giant);
-        float bonus = 0.15 * GetGrowthCount(giant) * scale;
+        float bonus = 0.24 * GetGrowthCount(giant) * (1.0 + (scale/10));
         SpringGrow_Free(giant, bonus, 0.3, "ButtCrushGrowth");
         SetBonusSize(giant, bonus, false);
         Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
@@ -188,6 +201,7 @@ namespace {
 
     void GTSButtCrush_Exit(AnimationEventData& data) {
         ModGrowthCount(&data.giant, 0, true); // Reset limit
+        TrackButt(giant, false);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -239,6 +253,9 @@ namespace Gts
         AnimationManager::RegisterEvent("GTSButtCrush_Exit", "ButtCrush", GTSButtCrush_Exit);
         AnimationManager::RegisterEvent("GTSButtCrush_GrowthStart", "ButtCrush", GTSButtCrush_GrowthStart);
         AnimationManager::RegisterEvent("GTSButtCrush_FallDownImpact", "ButtCrush", GTSButtCrush_FallDownImpact);
+        AnimationManager::RegisterEvent("GTSButtCrush_HandImpactR", "ButtCrush", GTSButtCrush_HandImpactR);
+        AnimationManager::RegisterEvent("GTSButtCrush_FootstepR", "ButtCrush", GTSButtCrush_FootstepR);
+        AnimationManager::RegisterEvent("GTSButtCrush_FootstepL", "ButtCrush", GTSButtCrush_FootstepL);
         
         InputManager::RegisterInputEvent("ButtCrushStart", ButtCrushStartEvent);
         InputManager::RegisterInputEvent("ButtCrushGrow", ButtCrushGrowEvent);

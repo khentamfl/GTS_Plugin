@@ -41,7 +41,9 @@ namespace Gts {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 		int altMode = Runtime::GetInt("AltCameraTarget");
-		if (sizemanager.GetActionBool(player, 3)) {
+		if (sizemanager.GetActionBool(player, 8)) {
+			altMode = 7; // Track booty
+		} else if (sizemanager.GetActionBool(player, 3)) {
 			altMode = 8; // Thigh Sandwich
 		} else if (sizemanager.GetActionBool(player, 2)) {
 			altMode = 9; // Vore
