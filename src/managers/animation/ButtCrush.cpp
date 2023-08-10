@@ -1,3 +1,4 @@
+#include "managers/animation/Controllers/ButtCrushController.hpp"
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/Utils/CrawlUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
@@ -41,6 +42,33 @@ namespace {
 			return Default.ShouldRunFrame();
 		}
 	}
+
+    void AttachToObjectBTask(Actor* giant, Actor* tiny) {
+        SetBeingEaten(tiny, true);
+        std::string name = std::format("ButtCrush_{}", tiny->formID);
+        TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			if (!tinyhandle) {
+				return false;
+			}
+			
+			auto giantref = gianthandle.get().get();
+			auto tinyref = tinyhandle.get().get();
+			if (!AttachToObjectB(giantref, tinyref)) {
+                SetBeingEaten(tiny, false);
+				return false;
+			} if (!IsButtCrushing(giantref)) {
+                SetBeingEaten(tiny, false);
+				return false;
+			} if (tinyref->IsDead()) {
+                SetBeingEaten(tiny, false);
+				return false;
+			}
+			return true;
+		});
+    }
 
     void TrackButt(Actor* giant, bool enable) {
         if (AllowFeetTracking()) {
@@ -197,6 +225,8 @@ namespace {
                 Rumble::Once("Butt_R", &data.giant, 3.60 * damage, 0.02, "NPC L Butt");
             }
         }
+        ModGrowthCount(giant, 0, true); // Reset limit
+        TrackButt(giant, false);
     }
 
     void GTSButtCrush_Exit(AnimationEventData& data) {
@@ -218,7 +248,12 @@ namespace {
             float WasteStamina = 200.0 * GetButtCrushCost(player);
             DamageAV(player, ActorValue::kStamina, WasteStamina);
             if (Runtime::HasPerk(player, "ButtCrush_KillerBooty")) {
-                AnimationManager::StartAnim("ButtCrush_Start", player);
+                auto& ButtCrush = ButtCrushController::GetSingleton();
+                std::vector<Actor*> preys = ButtCrush.GetButtCrushTargets(player, numberOfPrey);
+                for (auto prey: preys) {
+                    ButtCrushController::StartButtCrush(player, prey);
+                    AttachToObjectBTask(player, prey);
+                }
             } else {
                 AnimationManager::StartAnim("ButtCrush_StartFast", player);
             }
@@ -257,6 +292,7 @@ namespace Gts
         AnimationManager::RegisterEvent("GTSButtCrush_HandImpactR", "ButtCrush", GTSButtCrush_HandImpactR);
         AnimationManager::RegisterEvent("GTSButtCrush_FootstepR", "ButtCrush", GTSButtCrush_FootstepR);
         AnimationManager::RegisterEvent("GTSButtCrush_FootstepL", "ButtCrush", GTSButtCrush_FootstepL);
+        AnimationManager::RegisterEvent("GTSButtCrush_MoveBody_MixFrameToLoop", "ButtCrush", GTSButtCrush_MoveBody_MixFrameToLoop);
         
         InputManager::RegisterInputEvent("ButtCrushStart", ButtCrushStartEvent);
         InputManager::RegisterInputEvent("ButtCrushGrow", ButtCrushGrowEvent);

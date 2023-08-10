@@ -19,7 +19,7 @@
 namespace {
 
 	const float MINIMUM_BUTTCRUSH_DISTANCE = 95.0;
-	const float MINIMUM_BUTTCRUSH_SCALE_RATIO = 2.0;
+	const float MINIMUM_BUTTCRUSH_SCALE_RATIO = 2.5;
 	const float BUTTCRUSH_ANGLE = 70;
 	const float PI = 3.14159;
 
@@ -154,7 +154,7 @@ namespace Gts {
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 		if (HasSMT(pred)) {
-			pred_scale += 0.25;
+			pred_scale += 2.25;
 		}
 
 		float sizedifference = pred_scale/prey_scale;
@@ -165,7 +165,7 @@ namespace Gts {
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if (pred->formID == 0x14 && prey_distance <= MINIMUM_DISTANCE * pred_scale && pred_scale/prey_scale < MINIMUM_HUG_SCALE) {
 			std::string_view message = std::format("You can't butt crush {}", prey->GetDisplayFullName());
-			TiredSound(pred, message); // Just no. We don't have Creature Anims.
+			TiredSound(pred, message); //
 			return false;
 		}
 		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale >= MINIMUM_HUG_SCALE) {
@@ -178,11 +178,12 @@ namespace Gts {
 		}
 	}
 
-	void ButtCrushController::StartHug(Actor* pred, Actor* prey) {
+	void ButtCrushController::StartButtCrush(Actor* pred, Actor* prey) {
 		auto& buttcrush = ButtCrushController::GetSingleton();
 		if (!buttcrush.CanButtCrush(pred, prey)) {
 			return;
 		}
-		AnimationManager::StartAnim("Huggies_Try", pred);
+        ShrinkUntil(pred, prey, 3.0);
+		AnimationManager::StartAnim("ButtCrush_Start", pred);
 	}
 }
