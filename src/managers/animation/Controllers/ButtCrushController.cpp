@@ -189,8 +189,8 @@ namespace Gts {
             ShrinkUntil(pred, prey, 3.0);
             if (pred->formID == 0x14) {
                 camera->cameraTarget = prey->CreateRefHandle();
-                if (camera.IsInThirdPerson()) {
-                    camera.ForceFirstPerson();
+                if (camera->IsInThirdPerson()) {
+                    camera->ForceFirstPerson();
                 }
             }
             AnimationManager::StartAnim("ButtCrush_Start", pred);
