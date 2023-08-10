@@ -39,6 +39,8 @@ namespace Gts {
 	bool IsButtCrushing(Actor* actor);
 	bool ButtCrush_IsAbleToGrow(Actor* actor, float limit);
 	bool IsBeingGrinded(Actor* actor);
+	bool CanDoButtCrush(Actor* actor);
+	bool CanDoButtCrush_Normal(Actor* actor);
     // GTS State Bools End
 
     // Gts Bools

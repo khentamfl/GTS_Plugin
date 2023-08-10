@@ -254,6 +254,36 @@ namespace Gts {
 		return false;
 	}
 
+	bool CanDoButtCrush(Actor* actor) {
+		static Timer Default = Timer(30);
+		static Timer UnstableGrowth = Timer(25.5);
+        static Timer LoomingDoom = Timer(20.4);
+		bool lvl70 = Runtime::HasPerk(actor, "ButtCrush_UnstableGrowth");
+        bool lvl100 = Runtime::HasPerk(actor, "ButtCrush_LoomingDoom");
+        if (lvl100) {
+            return LoomingDoom.ShouldRunFrame();
+        } else if (lvl70) {
+			return UnstableGrowth.ShouldRunFrame();
+		} else {
+			return Default.ShouldRunFrame();
+		}
+	}
+
+	bool CanDoButtCrush_Normal(Actor* actor) {
+		static Timer Default = Timer(30);
+		static Timer UnstableGrowth = Timer(25.5);
+        static Timer LoomingDoom = Timer(20.4);
+		bool lvl70 = Runtime::HasPerk(actor, "ButtCrush_UnstableGrowth");
+        bool lvl100 = Runtime::HasPerk(actor, "ButtCrush_LoomingDoom");
+        if (lvl100) {
+            return LoomingDoom.ShouldRunFrame();
+        } else if (lvl70) {
+			return UnstableGrowth.ShouldRunFrame();
+		} else {
+			return Default.ShouldRunFrame();
+		}
+	}
+
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

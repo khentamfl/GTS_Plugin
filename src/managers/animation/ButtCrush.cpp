@@ -28,21 +28,6 @@ namespace {
     const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
-    bool CanDoButtCrush(Actor* actor) {
-		static Timer Default = Timer(30);
-		static Timer UnstableGrowth = Timer(25.5);
-        static Timer LoomingDoom = Timer(20.4);
-		bool lvl70 = Runtime::HasPerk(actor, "ButtCrush_UnstableGrowth");
-        bool lvl100 = Runtime::HasPerk(actor, "ButtCrush_LoomingDoom");
-        if (lvl100) {
-            return LoomingDoom.ShouldRunFrame();
-        } else if (lvl70) {
-			return UnstableGrowth.ShouldRunFrame();
-		} else {
-			return Default.ShouldRunFrame();
-		}
-	}
-
     void AttachToObjectBTask(Actor* giant, Actor* tiny) {
         SetBeingEaten(tiny, true);
         std::string name = std::format("ButtCrush_{}", tiny->formID);
@@ -58,7 +43,15 @@ namespace {
 			
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
-			if (!AttachToObjectB(giantref, tinyref)) {
+            auto node = find_node(giantref, "AnimObjectB"); 
+            if (!node) {
+                return false;
+            }
+            auto coords = node->world.translate;
+            float HH = HighHeelManager::GetHHOffset(giantref).Length();
+			coords.z -= HH;
+
+			if (!AttachTo(giantref, tinyref, coords)) {
                 SetBeingEaten(tiny, false);
 				return false;
 			} if (!IsButtCrushing(giantref)) {
@@ -142,7 +135,7 @@ namespace {
 
     void GTSButtCrush_MoveBody_MixFrameToLoop(AnimationEventData& data) {
         auto giant = &data.giant;
-        TrackButt(giant, true);
+        //TrackButt(giant, true);
     }
 
     void GTSButtCrush_GrowthStart(AnimationEventData& data) {
@@ -217,8 +210,8 @@ namespace {
         auto ButtL = find_node(giant, "NPC L Butt");
         if (ButtR && ButtL) {
             if (ThighL && ThighR) {
-                DoDamageAtPoint(giant, 26, 800.0 * damage, ThighL, 4, 0.70, 0.85);
-                DoDamageAtPoint(giant, 26, 800.0 * damage, ThighR, 4, 0.70, 0.85);
+                DoDamageAtPoint(giant, 26, 660.0 * damage, ThighL, 4, 0.70, 0.85);
+                DoDamageAtPoint(giant, 26, 660.0 * damage, ThighR, 4, 0.70, 0.85);
                 DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC R Butt");
                 DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC L Butt");
                 DoFootstepSound(giant, 1.25, FootEvent::Right, RNode);
@@ -228,13 +221,16 @@ namespace {
             }
         }
         ModGrowthCount(giant, 0, true); // Reset limit
-        TrackButt(giant, false);
+        if (giant->formID == 0x14) {
+            PlayerCamera::GetSingleton().CameraTarget = giant->CreateRefHandle();
+        }
+        //TrackButt(giant, false);
     }
 
     void GTSButtCrush_Exit(AnimationEventData& data) {
         auto giant = &data.giant;
         ModGrowthCount(giant, 0, true); // Reset limit
-        TrackButt(giant, false);
+        //TrackButt(giant, false);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -246,24 +242,23 @@ namespace {
 
     void ButtCrushStartEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-        if (CanDoButtCrush(player)) {
+        if (Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
+            auto& ButtCrush = ButtCrushController::GetSingleton();
+            std::size_t numberOfPrey = 1;
+            if (Runtime::HasPerk(player, "MassVorePerk")) {
+                numberOfPrey = 3 + (get_visual_scale(player)/3);
+            }
+            std::vector<Actor*> preys = ButtCrush.GetButtCrushTargets(player, numberOfPrey);
+            for (auto prey: preys) {
+                ButtCrush.StartButtCrush(player, prey);
+                AttachToObjectBTask(player, prey);
+            }
+        }
+        else if (CanDoButtCrush(player) && !Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
             float WasteStamina = 100.0 * GetButtCrushCost(player);
             DamageAV(player, ActorValue::kStamina, WasteStamina);
-            if (Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
-                auto& ButtCrush = ButtCrushController::GetSingleton();
-                std::size_t numberOfPrey = 1;
-                if (Runtime::HasPerk(player, "MassVorePerk")) {
-                    numberOfPrey = 3 + (get_visual_scale(player)/3);
-                }
-                std::vector<Actor*> preys = ButtCrush.GetButtCrushTargets(player, numberOfPrey);
-                for (auto prey: preys) {
-                    ButtCrush.StartButtCrush(player, prey);
-                    AttachToObjectBTask(player, prey);
-                }
-            } else {
-                AnimationManager::StartAnim("ButtCrush_StartFast", player);
-            }
-        } else {
+            AnimationManager::StartAnim("ButtCrush_StartFast", player);
+        } else if (!CanDoButtCrush(player) && !Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
 			TiredSound(player, "Butt Crush is on a cooldown");
 		}
 	}

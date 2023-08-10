@@ -183,7 +183,17 @@ namespace Gts {
 		if (!buttcrush.CanButtCrush(pred, prey)) {
 			return;
 		}
-        ShrinkUntil(pred, prey, 3.0);
-		AnimationManager::StartAnim("ButtCrush_Start", pred);
+        prey->NotifyAnimationGraph("GTS_EnterFear");
+        if (CanButtCrush_Normal(pred)) {
+            ShrinkUntil(pred, prey, 3.0);
+            if (pred->formID == 0x14) {
+                PlayerCamera::GetSingleton().CameraTarget = prey->CreateRefHandle();
+            }
+            AnimationManager::StartAnim("ButtCrush_Start", pred);
+        } else {
+            if (pred->formID == 0x14) {
+                TiredSound(pred, "Butt Crush is on a cooldown");
+            }
+        }
 	}
 }
