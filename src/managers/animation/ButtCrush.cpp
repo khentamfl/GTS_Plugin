@@ -124,7 +124,7 @@ namespace {
             cost -= 0.15;
         } if (Runtime::HasPerkTeam(actor, "ButtCrush_LoomingDoom")) {
             cost -= 0.25;
-        } if (Runtime::HasPerkTeam(giantref, "SkilledGTS")) {
+        } if (Runtime::HasPerkTeam(actor, "SkilledGTS")) {
 			float level = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
 			cost -= level;
 		}
@@ -173,13 +173,16 @@ namespace {
 			coords.z -= HH;
             if (!IsButtCrushing(giantref)) {
                 SetBeingEaten(tiny, false);
+                EnableCollisions(tiny);
 				return false;
 			}
 			if (!AttachTo(giantref, tinyref, coords)) {
                 SetBeingEaten(tiny, false);
+                EnableCollisions(tiny);
 				return false;
 			}  if (tinyref->IsDead()) {
                 SetBeingEaten(tiny, false);
+                EnableCollisions(tiny);
 				return false;
 			}
 			return true;
@@ -270,8 +273,8 @@ namespace {
         auto ButtL = find_node(giant, "NPC L Butt");
         if (ButtR && ButtL) {
             if (ThighL && ThighR) {
-                DoDamageAtPoint(giant, 26, 660.0 * damage, ThighL, 4, 0.70, 0.85);
-                DoDamageAtPoint(giant, 26, 660.0 * damage, ThighR, 4, 0.70, 0.85);
+                DoDamageAtPoint(giant, 28, 330.0 * damage, ThighL, 4, 0.70, 0.85);
+                DoDamageAtPoint(giant, 28, 330.0 * damage, ThighR, 4, 0.70, 0.85);
                 DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC R Butt");
                 DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC L Butt");
                 DoFootstepSound(giant, 1.25, FootEvent::Right, RNode);
@@ -281,7 +284,6 @@ namespace {
             }
         }
         ModGrowthCount(giant, 0, true); // Reset limit
-
         TrackButt(giant, false);
     }
 
