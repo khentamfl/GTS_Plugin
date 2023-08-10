@@ -57,7 +57,7 @@ namespace Gts {
 		auto saved_data = Persistent::GetSingleton().GetData(caster);
 		if (saved_data) {
 			if (saved_data->bonus_max_size < expected) {
-				saved_data->bonus_max_size + expected; // Just to be sure
+				saved_data->bonus_max_size += expected; // Just to be sure
 				return;
 			}
 		}
