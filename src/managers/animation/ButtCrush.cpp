@@ -252,8 +252,8 @@ namespace {
             if (Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
                 auto& ButtCrush = ButtCrushController::GetSingleton();
                 std::size_t numberOfPrey = 1;
-                if (Runtime::HasPerk(pred, "MassVorePerk")) {
-                    numberOfPrey = 3 + (get_visual_scale(pred)/3);
+                if (Runtime::HasPerk(player, "MassVorePerk")) {
+                    numberOfPrey = 3 + (get_visual_scale(player)/3);
                 }
                 std::vector<Actor*> preys = ButtCrush.GetButtCrushTargets(player, numberOfPrey);
                 for (auto prey: preys) {
