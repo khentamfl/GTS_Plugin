@@ -179,11 +179,11 @@ namespace {
         auto giant = &data.giant;
         AdjustFacialExpression(&data.giant, 2, 0.0, "expression"); 
         AdjustFacialExpression(&data.giant, 3, 0.0, "phenome");
+        ManageCamera(giant, false, 2.0);
     }
 
     void GTSBEH_CrawlVoreExit(AnimationEventData& data) {
         auto giant = &data.giant;
-        ManageCamera(giant, false, 2.0);
     }
 }
 
