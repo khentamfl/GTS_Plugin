@@ -58,7 +58,7 @@ namespace {
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
     void StartRumble(std::string_view tag, Actor& actor, float power, float halflife, bool once) {
-		for (auto& node_name: BODY_RUMBLE_NODES) {
+		for (auto& node_name: ALL_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
 			if (!once) {
 				Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
@@ -69,7 +69,7 @@ namespace {
 	}
 
     void StopRumble(std::string_view tag, Actor& actor) {
-		for (auto& node_name: BODY_RUMBLE_NODES) {
+		for (auto& node_name: ALL_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
 			Rumble::Stop(rumbleName, &actor);
 		}
