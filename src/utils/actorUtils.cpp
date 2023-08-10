@@ -241,7 +241,7 @@ namespace Gts {
 	bool ButtCrush_IsAbleToGrow(Actor* actor, float limit) {
 		auto transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
-			return transient->ButtCrushGrowthAmount > limit;
+			return transient->ButtCrushGrowthAmount < limit;
 		}
 		return false;
 	}

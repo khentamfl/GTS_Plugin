@@ -86,6 +86,8 @@ namespace {
     void GTSButtCrush_GrowthStart(AnimationEventData& data) {
         auto giant = &data.giant;
         ModGrowthCount(giant, 1.0, false);
+        Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
+		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
     }
 
     void GTSButtCrush_FallDownImpact(AnimationEventData& data) {
@@ -99,17 +101,17 @@ namespace {
             launch = 1.25;
             dust = 1.25;
         }
-
+        float damage = GetButtCrushDamage(giant);
         auto ThighL = find_node(giant, "NPC L Thigh [LThg]");
 		auto ThighR = find_node(giant, "NPC R Thigh [RThg]");
         auto ButtR = find_node(giant, "NPC R Butt");
         auto ButtL = find_node(giant, "NPC L Butt");
         if (ButtR && ButtL) {
             if (ThighL && ThighR) {
-                DoDamageAtPoint(giant, 22, 480.0 * GetButtCrushDamage(giant), ThighL, 1, 0.70, 0.85);
-                DoDamageAtPoint(giant, 22, 480.0 * GetButtCrushDamage(giant), ThighR, 1, 0.70, 0.85);
-                DoDustExplosion(giant, 1.85 * dust, FootEvent::Right, "NPC R Butt");
-                DoDustExplosion(giant, 1.85 * dust, FootEvent::Left, "NPC L Butt");
+                DoDamageAtPoint(giant, 24, 480.0 * damage, ThighL, 4, 0.70, 0.85);
+                DoDamageAtPoint(giant, 24, 480.0 * damage, ThighR, 4, 0.70, 0.85);
+                DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC R Butt");
+                DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC L Butt");
                 DoFootstepSound(giant, 1.25, FootEvent::Right, RNode);
                 DoFootstepSound(giant, 1.25, FootEvent::Left, LNode);
                 DoLaunch(&data.giant, 28.00 * launch * perk, 4.20, 1.4, FootEvent::Butt, 1.20);
@@ -147,18 +149,22 @@ namespace {
 
     void ButtCrushGrowEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-        float GrowthCount = GetGrowthLimit(player);
-        bool CanGrow = ButtCrush_IsAbleToGrow(player, GrowthCount);
-        if (CanGrow) {
-            AnimationManager::StartAnim("ButtCrush_Growth", player);
-        } else {
-            TiredSound(player, "Your body can't grow any further");
+        if (IsButtCrushing(player)) {
+            float GrowthCount = GetGrowthLimit(player);
+            bool CanGrow = ButtCrush_IsAbleToGrow(player, GrowthCount);
+            if (CanGrow) {
+                AnimationManager::StartAnim("ButtCrush_Growth", player);
+            } else {
+                TiredSound(player, "Your body can't grow any further");
+            }
         }
 	}
 
     void ButtCrushAttackEvent(const InputEventData& data) {
         auto player = PlayerCharacter::GetSingleton();
-        AnimationManager::StartAnim("ButtCrushAttack", player);
+        if (IsButtCrushing(player)) {
+            AnimationManager::StartAnim("ButtCrush_Attack", player);
+        }
     }
 }
 

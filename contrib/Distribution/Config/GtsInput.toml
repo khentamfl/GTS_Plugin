@@ -188,7 +188,7 @@ duration = 0.50
 [[InputEvent]]
 name = "ButtCrushStart"
 keys = ["LSHIFT", "B"]
-duration = 0.25 
+duration = 0.0 
 # Start Butt Crush. If you have perk, it will look for closest actors to capture them. else start normal butt crush.
 
 [[InputEvent]]
