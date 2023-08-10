@@ -178,7 +178,7 @@ namespace {
         
         float scale = get_visual_scale(giant);
         float bonus = 0.24 * GetGrowthCount(giant) * (1.0 + (scale/15));
-        float target = std::clamp(bonus/6, 0.02, 0.80);
+        float target = std::clamp(bonus/6, 0.02f, 0.80f);
         ModGrowthCount(giant, 1.0, false);
         SetBonusSize(giant, bonus, false);
         SpringGrow_Free(giant, bonus, 0.3, "ButtCrushGrowth");
@@ -260,7 +260,7 @@ namespace {
         }
         ModGrowthCount(giant, 0, true); // Reset limit
         if (giant->formID == 0x14) {
-            PlayerCamera::GetSingleton().cameraTarget = giant->CreateRefHandle();
+            PlayerCamera::GetSingleton()->cameraTarget = giant->CreateRefHandle();
         }
         //TrackButt(giant, false);
     }

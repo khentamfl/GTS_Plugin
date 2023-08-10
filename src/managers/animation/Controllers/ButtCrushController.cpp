@@ -188,7 +188,7 @@ namespace Gts {
             auto camera = PlayerCamera::GetSingleton();
             ShrinkUntil(pred, prey, 3.0);
             if (pred->formID == 0x14) {
-                camera.cameraTarget = prey->CreateRefHandle();
+                camera->cameraTarget = prey->CreateRefHandle();
                 if (camera.IsInThirdPerson()) {
                     camera.ForceFirstPerson();
                 }
