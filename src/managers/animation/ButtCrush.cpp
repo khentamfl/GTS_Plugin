@@ -61,7 +61,7 @@ namespace {
 		for (auto& node_name: ALL_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
 			if (!once) {
-				Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+				Rumble::Start(rumbleName, &actor, power, halflife, node_name);
 			} else {
 				Rumble::Once(rumbleName, &actor, power, halflife, node_name);
 			}
@@ -213,7 +213,7 @@ namespace {
             DamageAV(giant, ActorValue::kStamina, 0.18 * GetButtCrushCost(giant));
             
             if (stamina <= 2.0) {
-                AnimationManager::StartAnim("ButtCrush_Attack", giant); // Abort it
+                AnimationManager::StartAnim("ButtCrush_Attack", giant); // Try to Abort it
             }
 
             auto coords = node->world.translate;
@@ -259,10 +259,10 @@ namespace {
         Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
 		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 
-        StartRumble("BCRumble", data.giant, 1.2, 0.02, false);
+        StartRumble("BCRumble", data.giant, 1.8, 0.0, false);
     }
 
-    void GTSButtCrush_GrowthFinish(AnimationEventData& data) {
+    void GTSBEH_ButtCrush_GrowthFinish(AnimationEventData& data) {
         auto giant = &data.giant;
         StopRumble("BCRumble", data.giant);
     }
@@ -339,6 +339,7 @@ namespace {
             }
         }
         ModGrowthCount(giant, 0, true); // Reset limit
+        giant->SetGraphVariableBool("GTS_IsButtCrushing", false);
         TrackButt(giant, false);
     }
 
@@ -404,7 +405,7 @@ namespace Gts
 	void AnimationButtCrush::RegisterEvents() {
         AnimationManager::RegisterEvent("GTSButtCrush_Exit", "ButtCrush", GTSButtCrush_Exit);
         AnimationManager::RegisterEvent("GTSButtCrush_GrowthStart", "ButtCrush", GTSButtCrush_GrowthStart);
-        AnimationManager::RegisterEvent("GTSButtCrush_GrowthFinish", "ButtCrush", GTSButtCrush_GrowthFinish);
+        AnimationManager::RegisterEvent("GTSBEH_ButtCrush_GrowthFinish", "ButtCrush", GTSBEH_ButtCrush_GrowthFinish);
         AnimationManager::RegisterEvent("GTSButtCrush_FallDownImpact", "ButtCrush", GTSButtCrush_FallDownImpact);
         AnimationManager::RegisterEvent("GTSButtCrush_HandImpactR", "ButtCrush", GTSButtCrush_HandImpactR);
         AnimationManager::RegisterEvent("GTSButtCrush_FootstepR", "ButtCrush", GTSButtCrush_FootstepR);
