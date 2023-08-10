@@ -11,6 +11,7 @@
 #include "managers/footstep.hpp"
 #include "managers/highheel.hpp"
 #include "utils/actorUtils.hpp"
+#include "data/persistent.hpp"
 #include "managers/Rumble.hpp"
 #include "managers/tremor.hpp"
 #include "data/runtime.hpp"
@@ -104,7 +105,10 @@ namespace {
     void GTSButtCrush_GrowthStart(AnimationEventData& data) {
         auto giant = &data.giant;
         ModGrowthCount(giant, 1.0, false);
-        SpringGrow_Free(giant, 0.35 * GetGrowthCount(giant), 0.3, "ButtCrushGrowth");
+        float scale = get_visual_scale(giant);
+        float bonus = 0.15 * GetGrowthCount(giant) * scale;
+        SpringGrow_Free(giant, bonus, 0.3, "ButtCrushGrowth");
+        SetBonusSize(giant, bonus, false);
         Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
 		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
     }
@@ -145,6 +149,7 @@ namespace {
 
     void GTSButtCrush_HandImpactR(AnimationEventData& data) {
         auto giant = &data.giant;
+        float scale = get_visual_scale(giant);
         DoCrawlingFunctions(giant, scale, 1.0, CrawlEvent::RightHand, "RightHand", 18, 14);
     }
 
@@ -159,6 +164,9 @@ namespace {
             launch = 1.25;
             dust = 1.25;
         }
+
+        SetBonusSize(giant, 0.0, true);
+
         float damage = GetButtCrushDamage(giant);
         auto ThighL = find_node(giant, "NPC L Thigh [LThg]");
 		auto ThighR = find_node(giant, "NPC R Thigh [RThg]");
