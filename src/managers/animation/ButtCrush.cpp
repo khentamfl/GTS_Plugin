@@ -37,6 +37,7 @@ namespace {
 			auto tranData = Transient::GetSingleton().GetData(actor);
 			bool TP = camera->IsInThirdPerson();
 			bool FP = camera->IsInFirstPerson();
+            
 			if (tranData) {
 				tranData->WorldFov_Default = camera->worldFOV;
 				tranData->FpFov_Default = camera->firstPersonFOV;
@@ -51,6 +52,7 @@ namespace {
 							return false;
 						}
 						auto giantref = gianthandle.get().get();
+                        float scale = 1.0 + (get_visual_scale(giantref)/10);
 						camera->worldFOV += DefaultTP * speed;
 						if (camera->worldFOV >= DefaultTP) {
 							camera->worldFOV = DefaultTP;
@@ -63,42 +65,7 @@ namespace {
 		}
 	}
 
-    void AttachToObjectBTask(Actor* giant, Actor* tiny) {
-        SetBeingEaten(tiny, true);
-        std::string name = std::format("ButtCrush_{}", tiny->formID);
-        auto tinyhandle = tiny->CreateRefHandle();
-        auto gianthandle = giant->CreateRefHandle();
-        TaskManager::Run(name, [=](auto& progressData) {
-			if (!gianthandle) {
-				return false;
-			}
-			if (!tinyhandle) {
-				return false;
-			}
-			
-			auto giantref = gianthandle.get().get();
-			auto tinyref = tinyhandle.get().get();
-            auto node = find_node(giantref, "AnimObjectB"); 
-            if (!node) {
-                return false;
-            }
-            auto coords = node->world.translate;
-            float HH = HighHeelManager::GetHHOffset(giantref).Length();
-			coords.z -= HH;
-
-			if (!AttachTo(giantref, tinyref, coords)) {
-                SetBeingEaten(tiny, false);
-				return false;
-			} if (!IsButtCrushing(giantref)) {
-                SetBeingEaten(tiny, false);
-				return false;
-			} if (tinyref->IsDead()) {
-                SetBeingEaten(tiny, false);
-				return false;
-			}
-			return true;
-		});
-    }
+    
 
     void TrackButt(Actor* giant, bool enable) {
         if (AllowFeetTracking()) {
@@ -168,9 +135,54 @@ namespace {
         return damage;
     }
 
+    void AttachToObjectBTask(Actor* giant, Actor* tiny) {
+        SetBeingEaten(tiny, true);
+        std::string name = std::format("ButtCrush_{}", tiny->formID);
+        auto tinyhandle = tiny->CreateRefHandle();
+        auto gianthandle = giant->CreateRefHandle();
+        TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			if (!tinyhandle) {
+				return false;
+			}
+			
+			auto giantref = gianthandle.get().get();
+			auto tinyref = tinyhandle.get().get();
+            auto node = find_node(giantref, "AnimObjectB"); 
+            if (!node) {
+                return false;
+            }
+
+            float stamina = GetAV(giant, ActorValue::kStamina);
+            DamageAV(giant, ActorValue::kStamina, 0.06 * GetButtCrushCost(giant));
+            
+            if (stamina <= 2.0) {
+                AnimationManager::StartAnim("ButtCrush_Attack", player); // Abort it
+            }
+
+            auto coords = node->world.translate;
+            float HH = HighHeelManager::GetHHOffset(giantref).Length();
+			coords.z -= HH;
+            if (!IsButtCrushing(giantref)) {
+                SetBeingEaten(tiny, false);
+				return false;
+			}
+			if (!AttachTo(giantref, tinyref, coords)) {
+                SetBeingEaten(tiny, false);
+				return false;
+			}  if (tinyref->IsDead()) {
+                SetBeingEaten(tiny, false);
+				return false;
+			}
+			return true;
+		});
+    }
+
     void GTSButtCrush_MoveBody_MixFrameToLoop(AnimationEventData& data) {
         auto giant = &data.giant;
-        //TrackButt(giant, true);
+        TrackButt(giant, true);
     }
 
     void GTSButtCrush_GrowthStart(AnimationEventData& data) {
@@ -178,11 +190,15 @@ namespace {
         
         float scale = get_visual_scale(giant);
         float bonus = 0.24 * GetGrowthCount(giant) * (1.0 + (scale/15));
-        float target = std::clamp(bonus/6, 0.02f, 0.80f);
+        float target = std::clamp(bonus/2, 0.02f, 0.80f);
         ModGrowthCount(giant, 1.0, false);
         SetBonusSize(giant, bonus, false);
         SpringGrow_Free(giant, bonus, 0.3, "ButtCrushGrowth");
-        CameraFOVTask(giant, 1.0 - target, 0.006 * bonus);
+
+        float WasteStamina = 50.0 * GetButtCrushCost(player);
+        DamageAV(player, ActorValue::kStamina, WasteStamina);
+
+        //CameraFOVTask(giant, 1.0, 0.003);
         Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
 		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
     }
@@ -201,7 +217,7 @@ namespace {
 		DoDamageEffect(&data.giant, 1.4, 1.45 , 10, 0.25, FootEvent::Right, 1.0);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25 * data.animSpeed, 1.4, FootEvent::Right, 0.95);
+		DoLaunch(&data.giant, 0.40 * launch * perk, 2.25 * data.animSpeed, 1.4, FootEvent::Right, 0.95);
     }
 
     void GTSButtCrush_FootstepL(AnimationEventData& data) { 
@@ -218,7 +234,7 @@ namespace {
 		DoDamageEffect(&data.giant, 1.4, 1.45 , 10, 0.25, FootEvent::Left, 1.0);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25 * data.animSpeed, 1.4, FootEvent::Left, 0.95);
+		DoLaunch(&data.giant, 0.40 * launch * perk, 2.25 * data.animSpeed, 1.4, FootEvent::Left, 0.95);
     }
 
     void GTSButtCrush_HandImpactR(AnimationEventData& data) {
@@ -259,10 +275,8 @@ namespace {
             }
         }
         ModGrowthCount(giant, 0, true); // Reset limit
-        if (giant->formID == 0x14) {
-            PlayerCamera::GetSingleton()->cameraTarget = giant->CreateRefHandle();
-        }
-        //TrackButt(giant, false);
+
+        TrackButt(giant, false);
     }
 
     void GTSButtCrush_Exit(AnimationEventData& data) {
@@ -282,7 +296,7 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
         if (Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
             auto& ButtCrush = ButtCrushController::GetSingleton();
-            std::size_t numberOfPrey = 1;
+            std::size_t numberOfPrey = 3;
             if (Runtime::HasPerk(player, "MassVorePerk")) {
                 numberOfPrey = 3 + (get_visual_scale(player)/3);
             }
@@ -307,8 +321,6 @@ namespace {
             float GrowthCount = GetGrowthLimit(player);
             bool CanGrow = ButtCrush_IsAbleToGrow(player, GrowthCount);
             if (CanGrow) {
-                float WasteStamina = 35.0 * GetButtCrushCost(player);
-                DamageAV(player, ActorValue::kStamina, WasteStamina);
                 AnimationManager::StartAnim("ButtCrush_Growth", player);
             } else {
                 TiredSound(player, "Your body can't grow any further");

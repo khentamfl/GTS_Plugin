@@ -43,9 +43,7 @@ namespace Gts {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 		int altMode = Runtime::GetInt("NormalCameraTarget");
-		if (sizemanager.GetActionBool(player, 8)) {
-			altMode = 7; // Track booty
-		} else if (sizemanager.GetActionBool(player, 3)) {
+		if (sizemanager.GetActionBool(player, 3)) {
 			altMode = 8; // Thigh Sandwich
 		} else if (sizemanager.GetActionBool(player, 2)) {
 			altMode = 9; // Vore
@@ -59,7 +57,9 @@ namespace Gts {
 			altMode = 13; // Thigh Crushing
 		} else if (sizemanager.GetActionBool(player, 7)) {
 			altMode = 14; // Grab Attack
-		}
+		} else if (sizemanager.GetActionBool(player, 8)) {
+			altMode = 15; // Track booty
+		} 
 		switch (altMode) {
 			case 0: {
 				return BoneTarget();
@@ -183,6 +183,15 @@ namespace Gts {
 						"NPC L Finger02 [LF02]",
 					},
 				        .zoomScale = 0.60,
+				};
+			}
+			case 15: {
+				return BoneTarget {
+				        .boneNames = {
+						"NPC L Butt",
+						"NPC R Butt",
+					},
+				        .zoomScale = 1.25,
 				};
 			}
 		}
