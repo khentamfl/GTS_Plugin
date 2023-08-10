@@ -51,6 +51,24 @@ namespace {
 		}
     }
 
+    void SetBonusSize(Actor* giant, float value, bool reset) {
+        auto saved_data = Persistent::GetSingleton().GetData(giant);
+        if (saved_data) {
+            saved_data->bonus_max_size += value;
+            if (reset) {
+                saved_data->bonus_max_size = 0;
+            }
+        } 
+    }
+
+    float GetGrowthCount(Actor* giant) {
+        auto transient = Transient::GetSingleton().GetData(giant);
+		if (transient) {
+			return transient->ButtCrushGrowthAmount;
+		}
+        return 1.0;
+    }
+
     float GetGrowthLimit(Actor* actor) {
         float limit = 0;
         if (Runtime::HasPerkTeam(actor, "ButtCrush_GrowingDisaster")) {
@@ -86,8 +104,48 @@ namespace {
     void GTSButtCrush_GrowthStart(AnimationEventData& data) {
         auto giant = &data.giant;
         ModGrowthCount(giant, 1.0, false);
+        SpringGrow_Free(giant, 0.35 * GetGrowthCount(giant), 0.3, "ButtCrushGrowth");
         Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
 		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
+    }
+
+    void GTSButtCrush_FootstepR(AnimationEventData& data) { 
+        float shake = 1.0;
+		float launch = 1.0;
+		float dust = 1.25;
+		float perk = GetPerkBonus_Basics(&data.giant);
+		if (HasSMT(&data.giant)) {
+			shake = 4.0;
+			launch = 1.2;
+			dust = 1.45;
+		}
+        Rumble::Once("FS_R", &data.giant, 2.20, 0.0, RNode);
+		DoDamageEffect(&data.giant, 1.4, 1.45 , 10, 0.25, FootEvent::Right, 1.0);
+		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
+		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
+		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25 * data.animSpeed, 1.4, FootEvent::Right, 0.95);
+    }
+
+    void GTSButtCrush_FootstepL(AnimationEventData& data) { 
+        float shake = 1.0;
+		float launch = 1.0;
+		float dust = 1.25;
+		float perk = GetPerkBonus_Basics(&data.giant);
+		if (HasSMT(&data.giant)) {
+			shake = 4.0;
+			launch = 1.2;
+			dust = 1.45;
+		}
+        Rumble::Once("FS_L", &data.giant, 2.20, 0.0, LNode);
+		DoDamageEffect(&data.giant, 1.4, 1.45 , 10, 0.25, FootEvent::Left, 1.0);
+		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
+		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
+		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25 * data.animSpeed, 1.4, FootEvent::Left, 0.95);
+    }
+
+    void GTSButtCrush_HandImpactR(AnimationEventData& data) {
+        auto giant = &data.giant;
+        DoCrawlingFunctions(giant, scale, 1.0, CrawlEvent::RightHand, "RightHand", 18, 14);
     }
 
     void GTSButtCrush_FallDownImpact(AnimationEventData& data) {
@@ -108,12 +166,11 @@ namespace {
         auto ButtL = find_node(giant, "NPC L Butt");
         if (ButtR && ButtL) {
             if (ThighL && ThighR) {
-                DoDamageAtPoint(giant, 24, 480.0 * damage, ThighL, 4, 0.70, 0.85);
-                DoDamageAtPoint(giant, 24, 480.0 * damage, ThighR, 4, 0.70, 0.85);
+                DoDamageAtPoint(giant, 26, 1460.0 * damage, ThighL, 4, 0.70, 0.85);
+                DoDamageAtPoint(giant, 26, 1460.0 * damage, ThighR, 4, 0.70, 0.85);
                 DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC R Butt");
                 DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC L Butt");
                 DoFootstepSound(giant, 1.25, FootEvent::Right, RNode);
-                DoFootstepSound(giant, 1.25, FootEvent::Left, LNode);
                 DoLaunch(&data.giant, 28.00 * launch * perk, 4.20, 1.4, FootEvent::Butt, 1.20);
                 Rumble::Once("Butt_L", &data.giant, 4.40, 0.02, "NPC R Butt");
                 Rumble::Once("Butt_R", &data.giant, 4.40, 0.02, "NPC L Butt");
