@@ -200,7 +200,7 @@ namespace {
     }
 
     void GTSButtCrush_Exit(AnimationEventData& data) {
-        auto giant = &data.giant.
+        auto giant = &data.giant;
         ModGrowthCount(giant, 0, true); // Reset limit
         TrackButt(giant, false);
     }
