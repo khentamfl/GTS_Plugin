@@ -46,6 +46,8 @@ namespace {
     void AttachToObjectBTask(Actor* giant, Actor* tiny) {
         SetBeingEaten(tiny, true);
         std::string name = std::format("ButtCrush_{}", tiny->formID);
+        auto tinyhandle = tiny->CreateRefHandle();
+        auto gianthandle = giant->CreateRefHandle();
         TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
@@ -247,11 +249,11 @@ namespace {
         if (CanDoButtCrush(player)) {
             float WasteStamina = 200.0 * GetButtCrushCost(player);
             DamageAV(player, ActorValue::kStamina, WasteStamina);
-            if (Runtime::HasPerk(player, "ButtCrush_KillerBooty")) {
+            if (Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
                 auto& ButtCrush = ButtCrushController::GetSingleton();
                 std::vector<Actor*> preys = ButtCrush.GetButtCrushTargets(player, numberOfPrey);
                 for (auto prey: preys) {
-                    ButtCrushController::StartButtCrush(player, prey);
+                    ButtCrush.StartButtCrush(player, prey);
                     AttachToObjectBTask(player, prey);
                 }
             } else {
