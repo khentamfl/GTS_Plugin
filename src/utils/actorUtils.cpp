@@ -229,7 +229,21 @@ namespace Gts {
 	bool IsCrawlVoring(Actor* actor) {
 		bool Voring;
 		actor->GetGraphVariableBool("GTS_IsCrawlVoring", Voring);
-		return false;//Voring;
+		return Voring;//Voring;
+	}
+
+	bool IsButtCrushing(Actor* actor) {
+		bool ButtCrushing;
+		actor->GetGraphVariableBool("GTS_IsButtCrushing", ButtCrushing);
+		return ButtCrushing;//Voring;
+	}
+
+	bool ButtCrush_IsAbleToGrow(Actor* actor, float limit) {
+		auto transient = Transient::GetSingleton().GetData(actor);
+		if (transient) {
+			return transient->ButtCrushGrowthAmount > limit;
+		}
+		return false;
 	}
 
 	bool IsBeingGrinded(Actor* actor) {
@@ -1202,11 +1216,11 @@ namespace Gts {
 			} else if (random == 3) {
 				Cprint("Feet of {} crushed {} into nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random == 4) {
-				Cprint("{} stepped on {} too hard", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+				Cprint("{} step on {} too hard", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random == 5) {
 				Cprint("{} got crushed by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 6) {
-				Cprint("{} stepped on {} too hard", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+				Cprint("{} ended up being crushed by the {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random >= 7) {
 				Cprint("{} relentlessly crushed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}

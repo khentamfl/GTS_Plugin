@@ -1,4 +1,3 @@
-
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
@@ -46,7 +45,7 @@ namespace {
 			}
 			auto giantref = gianthandle.get().get();
             Rumble::Once("FootGrindL", giantref, 1.0, 0.025, LNode);
-			DoDamageEffect(giantref, 0.002, 1.4, 10000, 0.05, FootEvent::Left, 1.0);
+			DoDamageEffect(giantref, 0.005, 1.4, 10000, 0.05, FootEvent::Left, 1.0);
 			return true;
 		});
 	}
@@ -60,7 +59,7 @@ namespace {
 			}
 			auto giantref = gianthandle.get().get();
             Rumble::Once("FootGrindR", giantref, 1.0, 0.025, RNode);
-			DoDamageEffect(giantref, 0.002, 1.5, 10000, 0.05, FootEvent::Right, 1.0);
+			DoDamageEffect(giantref, 0.005, 1.5, 10000, 0.05, FootEvent::Right, 1.0);
 			return true;
 		});
 	}

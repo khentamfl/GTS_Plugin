@@ -73,6 +73,7 @@ namespace Gts {
 			float otherScales = 1.0;
 			float WorldFov_Default = 0;
 			float FpFov_Default = 0;
+			float ButtCrushGrowthAmount = 0;
 
 			// Volume scales cubically
 			float base_volume = bound->extents[0] * bound->extents[1] * bound->extents[2] * scale * scale * scale;
@@ -108,6 +109,7 @@ namespace Gts {
 			result.otherScales = otherScales;
 			result.WorldFov_Default = WorldFov_Default;
 			result.FpFov_Default = FpFov_Default;
+			result.ButtCrushGrowthAmount = ButtCrushGrowthAmount;
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 

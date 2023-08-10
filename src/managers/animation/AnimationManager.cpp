@@ -2,6 +2,7 @@
 #include "managers/animation/ThighSandwich.hpp"
 #include "managers/animation/StrongStomp.hpp"
 #include "managers/animation/ThighCrush.hpp"
+#include "managers/animation/ButtCrush.hpp"
 #include "managers/animation/FootGrind.hpp"
 #include "managers/animation/ActorVore.hpp"
 #include "managers/animation/CrawlVore.hpp"
@@ -71,6 +72,9 @@ namespace Gts {
 
 		AnimationActorVore::RegisterEvents();
 		AnimationActorVore::RegisterTriggers();
+
+		AnimationButtCrush::RegisterEvents();
+		AnimationButtCrush::RegisterTriggers();
 
 		AnimationCrawlVore::RegisterEvents();
 

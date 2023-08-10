@@ -182,10 +182,36 @@ duration = 0.50
 
 # Spare the one you're hugging.
 
+#========================================================
+#========================= Butt Crush
+#========================================================
+[[InputEvent]]
+name = "ButtCrushStart"
+keys = ["LSHIFT", "B"]
+duration = 0.25 
+# Start Butt Crush. If you have perk, it will look for closest actors to capture them. else start normal butt crush.
+
+[[InputEvent]]
+name = "ButtCrushGrow"
+keys = ["W"]
+duration = 0.0
+# Grow in size during butt crush. Requires perk.
+
+[[InputEvent]]
+name = "ButtCrushAttack"
+keys = ["LMB"]
+duration = 0.25 
+# Perform drop-down, dealing massive damage at butt zone.
+
+[[InputEvent]]
+name = "ButtCrushAttack"
+keys = ["RMB"]
+duration = 0.25 
+# Perform drop-down, dealing massive damage at butt zone.
 
 #========================================================
 #========================= G R A B
-#========================================================
+#======================================================== 
 
 [[InputEvent]]
 name = "GrabOther"
