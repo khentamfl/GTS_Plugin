@@ -113,8 +113,8 @@ namespace {
         auto ButtL = find_node(giant, "NPC L Butt");
         if (ButtR && ButtL) {
             if (ThighL && ThighR) {
-                DoDamageAtPoint(giant, 20, 660.0, ThighL, 10, 0.70, 0.95);
-                DoDamageAtPoint(giant, 20, 660.0, ThighR, 10, 0.70, 0.95);
+                DoDamageAtPoint(giant, 20, 560.0, ThighL, 10, 0.70, 0.95);
+                DoDamageAtPoint(giant, 20, 560.0, ThighR, 10, 0.70, 0.95);
                 DoDustExplosion(giant, 1.8 * dust, FootEvent::Right, "NPC R Butt");
                 DoDustExplosion(giant, 1.8 * dust, FootEvent::Left, "NPC L Butt");
                 DoFootstepSound(giant, 1.2, FootEvent::Right, RNode);

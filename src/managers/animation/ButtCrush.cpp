@@ -187,20 +187,21 @@ namespace {
         auto ButtL = find_node(giant, "NPC L Butt");
         if (ButtR && ButtL) {
             if (ThighL && ThighR) {
-                DoDamageAtPoint(giant, 26, 1460.0 * damage, ThighL, 4, 0.70, 0.85);
-                DoDamageAtPoint(giant, 26, 1460.0 * damage, ThighR, 4, 0.70, 0.85);
+                DoDamageAtPoint(giant, 26, 800.0 * damage, ThighL, 4, 0.70, 0.85);
+                DoDamageAtPoint(giant, 26, 800.0 * damage, ThighR, 4, 0.70, 0.85);
                 DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC R Butt");
                 DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC L Butt");
                 DoFootstepSound(giant, 1.25, FootEvent::Right, RNode);
                 DoLaunch(&data.giant, 28.00 * launch * perk, 4.20, 1.4, FootEvent::Butt, 1.20);
-                Rumble::Once("Butt_L", &data.giant, 4.40, 0.02, "NPC R Butt");
-                Rumble::Once("Butt_R", &data.giant, 4.40, 0.02, "NPC L Butt");
+                Rumble::Once("Butt_L", &data.giant, 3.60 * damage, 0.02, "NPC R Butt");
+                Rumble::Once("Butt_R", &data.giant, 3.60 * damage, 0.02, "NPC L Butt");
             }
         }
     }
 
     void GTSButtCrush_Exit(AnimationEventData& data) {
-        ModGrowthCount(&data.giant, 0, true); // Reset limit
+        auto giant = &data.giant.
+        ModGrowthCount(giant, 0, true); // Reset limit
         TrackButt(giant, false);
     }
 
