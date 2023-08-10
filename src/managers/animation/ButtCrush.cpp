@@ -90,6 +90,9 @@ namespace {
             saved_data->bonus_max_size += value;
             if (reset) {
                 mod_target_scale(giant, -saved_data->bonus_max_size);
+                if (get_target_scale(giant) < get_natural_scale(giant)) {
+                    set_target_scale(giant, get_natural_scale(giant)); // Protect against going into negatives
+                }
                 saved_data->bonus_max_size = 0;
             }
         } 
@@ -118,10 +121,13 @@ namespace {
     float GetButtCrushCost(Actor* actor) {
         float cost = 1.0;
         if (Runtime::HasPerkTeam(actor, "ButtCrush_KillerBooty")) {
-            cost -= 0.20;
+            cost -= 0.15;
         } if (Runtime::HasPerkTeam(actor, "ButtCrush_LoomingDoom")) {
             cost -= 0.25;
-        }
+        } if (Runtime::HasPerkTeam(giantref, "SkilledGTS")) {
+			float level = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
+			cost -= level;
+		}
         return cost;
     }
 
@@ -156,7 +162,7 @@ namespace {
             }
 
             float stamina = GetAV(giant, ActorValue::kStamina);
-            DamageAV(giant, ActorValue::kStamina, 0.06 * GetButtCrushCost(giant));
+            DamageAV(giant, ActorValue::kStamina, 0.18 * GetButtCrushCost(giant));
             
             if (stamina <= 2.0) {
                 AnimationManager::StartAnim("ButtCrush_Attack", giant); // Abort it
@@ -195,7 +201,7 @@ namespace {
         SetBonusSize(giant, bonus, false);
         SpringGrow_Free(giant, bonus, 0.3, "ButtCrushGrowth");
 
-        float WasteStamina = 50.0 * GetButtCrushCost(giant);
+        float WasteStamina = 60.0 * GetButtCrushCost(giant);
         DamageAV(giant, ActorValue::kStamina, WasteStamina);
 
         //CameraFOVTask(giant, 1.0, 0.003);
@@ -307,7 +313,7 @@ namespace {
             }
         }
         else if (CanDoButtCrush(player) && !Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
-            float WasteStamina = 100.0 * GetButtCrushCost(player);
+            float WasteStamina = 160.0 * GetButtCrushCost(player);
             DamageAV(player, ActorValue::kStamina, WasteStamina);
             AnimationManager::StartAnim("ButtCrush_StartFast", player);
         } else if (!CanDoButtCrush(player) && !Runtime::HasPerk(player, "ButtCrush_NoEscape")) {

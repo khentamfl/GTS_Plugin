@@ -90,6 +90,7 @@ namespace {
 			//StartCombat(giant, tiny, true);
 		}
 		if (AllowFeetTracking() && giant->formID == 0x14) {
+            giant->GetGraphVariableBool("GTS_IsCrawlVoring", false);
             ManageCamera(giant, false, 4.0);
             ManageCamera(giant, true, 2.0);
 		}
@@ -178,6 +179,7 @@ namespace {
         auto giant = &data.giant;
         AdjustFacialExpression(&data.giant, 2, 0.0, "expression"); 
         AdjustFacialExpression(&data.giant, 3, 0.0, "phenome");
+        giant->GetGraphVariableBool("GTS_IsCrawlVoring", true);
         ManageCamera(giant, false, 2.0);
     }
 }
