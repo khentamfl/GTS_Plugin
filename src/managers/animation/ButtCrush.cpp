@@ -159,7 +159,7 @@ namespace {
             DamageAV(giant, ActorValue::kStamina, 0.06 * GetButtCrushCost(giant));
             
             if (stamina <= 2.0) {
-                AnimationManager::StartAnim("ButtCrush_Attack", player); // Abort it
+                AnimationManager::StartAnim("ButtCrush_Attack", giant); // Abort it
             }
 
             auto coords = node->world.translate;
@@ -195,8 +195,8 @@ namespace {
         SetBonusSize(giant, bonus, false);
         SpringGrow_Free(giant, bonus, 0.3, "ButtCrushGrowth");
 
-        float WasteStamina = 50.0 * GetButtCrushCost(player);
-        DamageAV(player, ActorValue::kStamina, WasteStamina);
+        float WasteStamina = 50.0 * GetButtCrushCost(giant);
+        DamageAV(giant, ActorValue::kStamina, WasteStamina);
 
         //CameraFOVTask(giant, 1.0, 0.003);
         Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
