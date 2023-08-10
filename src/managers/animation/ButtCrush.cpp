@@ -247,10 +247,14 @@ namespace {
     void ButtCrushStartEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
         if (CanDoButtCrush(player)) {
-            float WasteStamina = 200.0 * GetButtCrushCost(player);
+            float WasteStamina = 100.0 * GetButtCrushCost(player);
             DamageAV(player, ActorValue::kStamina, WasteStamina);
             if (Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
                 auto& ButtCrush = ButtCrushController::GetSingleton();
+                std::size_t numberOfPrey = 1;
+                if (Runtime::HasPerk(pred, "MassVorePerk")) {
+                    numberOfPrey = 3 + (get_visual_scale(pred)/3);
+                }
                 std::vector<Actor*> preys = ButtCrush.GetButtCrushTargets(player, numberOfPrey);
                 for (auto prey: preys) {
                     ButtCrush.StartButtCrush(player, prey);
@@ -270,6 +274,8 @@ namespace {
             float GrowthCount = GetGrowthLimit(player);
             bool CanGrow = ButtCrush_IsAbleToGrow(player, GrowthCount);
             if (CanGrow) {
+                float WasteStamina = 35.0 * GetButtCrushCost(player);
+                DamageAV(player, ActorValue::kStamina, WasteStamina);
                 AnimationManager::StartAnim("ButtCrush_Growth", player);
             } else {
                 TiredSound(player, "Your body can't grow any further");
