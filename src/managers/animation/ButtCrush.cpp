@@ -28,6 +28,41 @@ namespace {
     const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
+    void CameraFOVTask(Actor* actor, float reduce, float speed) {
+		auto camera = PlayerCamera::GetSingleton();
+		if (!camera) {
+			return;
+		} 
+		if (actor->formID == 0x14) {
+			auto tranData = Transient::GetSingleton().GetData(actor);
+			bool TP = camera->IsInThirdPerson();
+			bool FP = camera->IsInFirstPerson();
+			if (tranData) {
+				tranData->WorldFov_Default = camera->worldFOV;
+				tranData->FpFov_Default = camera->firstPersonFOV;
+				float DefaultTP = tranData->WorldFov_Default;
+				float DefaultFP = tranData->FpFov_Default;
+				if (DefaultTP > 0) {
+					std::string name = std::format("Fov_Growth_{}", actor->formID);
+					ActorHandle gianthandle = actor->CreateRefHandle();
+					camera->worldFOV *= reduce;
+					TaskManager::Run(name, [=](auto& progressData) {
+						if (!gianthandle) {
+							return false;
+						}
+						auto giantref = gianthandle.get().get();
+						camera->worldFOV += DefaultTP * speed;
+						if (camera->worldFOV >= DefaultTP) {
+							camera->worldFOV = DefaultTP;
+							return false; // stop it
+						}
+						return true;
+					});
+				}
+			}
+		}
+	}
+
     void AttachToObjectBTask(Actor* giant, Actor* tiny) {
         SetBeingEaten(tiny, true);
         std::string name = std::format("ButtCrush_{}", tiny->formID);
@@ -140,11 +175,14 @@ namespace {
 
     void GTSButtCrush_GrowthStart(AnimationEventData& data) {
         auto giant = &data.giant;
-        ModGrowthCount(giant, 1.0, false);
+        
         float scale = get_visual_scale(giant);
-        float bonus = 0.24 * GetGrowthCount(giant) * (1.0 + (scale/10));
-        SpringGrow_Free(giant, bonus, 0.3, "ButtCrushGrowth");
+        float bonus = 0.24 * GetGrowthCount(giant) * (1.0 + (scale/15));
+        float target = std::clamp(bonus/6, 0.02, 0.80);
+        ModGrowthCount(giant, 1.0, false);
         SetBonusSize(giant, bonus, false);
+        SpringGrow_Free(giant, bonus, 0.3, "ButtCrushGrowth");
+        CameraFOVTask(giant, 1.0 - target, 0.006 * bonus);
         Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
 		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
     }
@@ -222,7 +260,7 @@ namespace {
         }
         ModGrowthCount(giant, 0, true); // Reset limit
         if (giant->formID == 0x14) {
-            PlayerCamera::GetSingleton().CameraTarget = giant->CreateRefHandle();
+            PlayerCamera::GetSingleton().cameraTarget = giant->CreateRefHandle();
         }
         //TrackButt(giant, false);
     }

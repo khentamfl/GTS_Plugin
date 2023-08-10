@@ -183,11 +183,15 @@ namespace Gts {
 		if (!buttcrush.CanButtCrush(pred, prey)) {
 			return;
 		}
-        prey->NotifyAnimationGraph("GTS_EnterFear");
-        if (CanButtCrush_Normal(pred)) {
+        if (CanDoButtCrush_Normal(pred)) {
+            prey->NotifyAnimationGraph("GTS_EnterFear");
+            auto camera = PlayerCamera::GetSingleton();
             ShrinkUntil(pred, prey, 3.0);
             if (pred->formID == 0x14) {
-                PlayerCamera::GetSingleton().CameraTarget = prey->CreateRefHandle();
+                camera.cameraTarget = prey->CreateRefHandle();
+                if (camera.IsInThirdPerson()) {
+                    camera.ForceFirstPerson();
+                }
             }
             AnimationManager::StartAnim("ButtCrush_Start", pred);
         } else {
