@@ -90,7 +90,6 @@ namespace {
 			//StartCombat(giant, tiny, true);
 		}
 		if (AllowFeetTracking() && giant->formID == 0x14) {
-            giant->SetGraphVariableBool("GTS_IsCrawlVoring", false);
             ManageCamera(giant, false, 4.0);
             ManageCamera(giant, true, 2.0);
 		}
@@ -180,7 +179,10 @@ namespace {
         auto giant = &data.giant;
         AdjustFacialExpression(&data.giant, 2, 0.0, "expression"); 
         AdjustFacialExpression(&data.giant, 3, 0.0, "phenome");
-        giant->SetGraphVariableBool("GTS_IsCrawlVoring", true);
+    }
+
+    void GTSBEH_CrawlVoreExit(AnimationEventData& data) {
+        auto giant = &data.giant;
         ManageCamera(giant, false, 2.0);
     }
 }
@@ -193,6 +195,7 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTSCrawlVore_SmileOn", "CrawlVore", GTSCrawlVore_SmileOn);
         AnimationManager::RegisterEvent("GTSCrawlVore_Grab", "CrawlVore", GTSCrawlVore_Grab);
         AnimationManager::RegisterEvent("GTSCrawl_ButtImpact", "CrawlVore", GTSCrawl_ButtImpact);
+        AnimationManager::RegisterEvent("GTSBEH_CrawlVoreExit", "CrawlVore", GTSBEH_CrawlVoreExit);
         AnimationManager::RegisterEvent("GTSCrawlVore_OpenMouth", "CrawlVore", GTSCrawlVore_OpenMouth);
         AnimationManager::RegisterEvent("GTSCrawlVore_CloseMouth", "CrawlVore", GTSCrawlVore_CloseMouth);
         AnimationManager::RegisterEvent("GTSCrawlVore_Swallow", "CrawlVore", GTSCrawlVore_Swallow);
