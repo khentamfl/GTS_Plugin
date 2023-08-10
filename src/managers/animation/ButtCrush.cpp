@@ -80,6 +80,7 @@ namespace {
         } if (Runtime::HasPerkTeam(actor, "ButtCrush_UnstableGrowth")) {
             damage += 0.70;
         }
+        return damage;
     }
 
     void GTSButtCrush_GrowthStart(AnimationEventData& data) {
