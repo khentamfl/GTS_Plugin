@@ -19,7 +19,7 @@
 namespace {
 
 	const float MINIMUM_BUTTCRUSH_DISTANCE = 95.0;
-	const float MINIMUM_BUTTCRUSH_SCALE_RATIO = 0.9;
+	const float MINIMUM_BUTTCRUSH_SCALE_RATIO = 2.0;
 	const float BUTTCRUSH_ANGLE = 70;
 	const float PI = 3.14159;
 
@@ -60,7 +60,7 @@ namespace Gts {
 		return "ButtCrushController";
 	}
 
-	std::vector<Actor*> ButtCrushController::GetHugTargetsInFront(Actor* pred, std::size_t numberOfPrey) {
+	std::vector<Actor*> ButtCrushController::GetButtCrushTargets(Actor* pred, std::size_t numberOfPrey) {
 		// Get vore target for actor
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (IsGtsBusy(pred)) {
@@ -90,7 +90,7 @@ namespace Gts {
 		// Filter out invalid targets
 		preys.erase(std::remove_if(preys.begin(), preys.end(),[pred, this](auto prey)
 		{
-			return !this->CanHug(pred, prey);
+			return !this->CanButtCrush(pred, prey);
 		}), preys.end());
 
 		// Filter out actors not in front
@@ -161,8 +161,6 @@ namespace Gts {
 
 		float MINIMUM_HUG_SCALE = MINIMUM_BUTTCRUSH_SCALE_RATIO;
 		float MINIMUM_DISTANCE = MINIMUM_BUTTCRUSH_DISTANCE;
-
-		float balancemode = SizeManager::GetSingleton().BalancedMode();
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if (pred->formID == 0x14 && prey_distance <= MINIMUM_DISTANCE * pred_scale && pred_scale/prey_scale < MINIMUM_HUG_SCALE) {

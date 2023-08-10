@@ -1,5 +1,5 @@
-
 #include "managers/animation/Utils/AnimationUtils.hpp"
+#include "managers/animation/Utils/CrawlUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/animation/ButtCrush.hpp"
@@ -56,7 +56,7 @@ namespace {
         if (Runtime::HasPerkTeam(actor, "ButtCrush_GrowingDisaster")) {
             limit += 2.0;
         } if (Runtime::HasPerkTeam(actor, "ButtCrush_UnstableGrowth")) {
-            Limit += 2.0;
+            limit += 2.0;
         } if (Runtime::HasPerkTeam(actor, "ButtCrush_LoomingDoom")) {
             limit += 4.0;
         }
@@ -75,7 +75,7 @@ namespace {
 
     float GetButtCrushDamage(Actor* actor) {
         float damage = 1.0;
-        if (Runtime::HasPerkOr(actor, "ButtCrush_KillerBooty")) {
+        if (Runtime::HasPerkTeam(actor, "ButtCrush_KillerBooty")) {
             damage += 0.30;
         } if (Runtime::HasPerkTeam(actor, "ButtCrush_UnstableGrowth")) {
             damage += 0.70;
@@ -119,7 +119,7 @@ namespace {
     }
 
     void GTSButtCrush_Exit(AnimationEventData& data) {
-        ModGrowthCount(Giant, 0, true); // Reset limit
+        ModGrowthCount(&data.giant, 0, true); // Reset limit
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
