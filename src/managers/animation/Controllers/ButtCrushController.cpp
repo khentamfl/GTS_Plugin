@@ -194,7 +194,7 @@ namespace Gts {
             ShrinkUntil(pred, prey, 3.0);
             DisableCollisions(prey, pred);
             AnimationManager::StartAnim("ButtCrush_Start", pred);
-			BlockFirstPerson(pred, true);
+			//BlockFirstPerson(pred, true);
         } else {
             if (pred->formID == 0x14) {
                 TiredSound(pred, "Butt Crush is on a cooldown");

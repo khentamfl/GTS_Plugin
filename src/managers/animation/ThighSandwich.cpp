@@ -301,7 +301,7 @@ namespace {
 	void GTSBEH_Exit(AnimationEventData& data) {
 		auto giant = &data.giant;
 		ManageCamera(giant, false, 3.0); // Un-Focus camera on AnimObjectA. Just to be Sure.
-		BlockFirstPerson(giant, false);
+		//BlockFirstPerson(giant, false);
 	}
 
 
@@ -360,7 +360,7 @@ namespace {
 
 	void ThighSandwichExitEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		BlockFirstPerson(player, false);
+		//BlockFirstPerson(player, false);
 		AnimationManager::StartAnim("ThighExit", player);
 	}
 }

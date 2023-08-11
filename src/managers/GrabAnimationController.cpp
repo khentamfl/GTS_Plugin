@@ -195,7 +195,7 @@ namespace Gts {
 		
 		ShrinkUntil(pred, prey, 8.0);
 		Grab::GetSingleton().GrabActor(pred, prey);
-		BlockFirstPerson(pred, true);
+		//BlockFirstPerson(pred, true);
 		AnimationManager::StartAnim("GrabSomeone", pred);
 	}
 }

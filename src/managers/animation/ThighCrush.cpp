@@ -106,7 +106,7 @@ namespace {
 			return false; 
 		}
 		auto FrameB = Time::FramesElapsed() - FrameA;
-		if (FrameB <= 10.0) {
+		if (FrameB <= 60.0) {
 			return true;
 		}
 		auto giantref = gianthandle.get().get();
@@ -129,7 +129,7 @@ namespace {
 		StartLegRumble("ThighCrush", data.giant, 0.10, 0.10);
 		TrackFeet(&data.giant, 0.0, true); // Track feet
 		RunButtCollisionTask(&data.giant);
-		BlockFirstPerson(&data.giant, true);
+		//BlockFirstPerson(&data.giant, true);
 		data.stage = 1;
 	}
 
@@ -246,7 +246,7 @@ namespace {
 		// Going to exit
 		StopLegRumble("BodyRumble", data.giant);
 		TrackFeet(&data.giant, 0.0, false); // Un-track feet
-		BlockFirstPerson(&data.giant, false);
+		//BlockFirstPerson(&data.giant, false);
 	}
 	void GTSBEH_Exit(AnimationEventData& data) {
 		// Final exit
@@ -255,7 +255,7 @@ namespace {
 
 	void ThighCrushEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		BlockFirstPerson(player, true);
+		//BlockFirstPerson(player, true);
 		AnimationManager::StartAnim("ThighLoopEnter", player);
 	}
 
@@ -276,7 +276,7 @@ namespace {
 
 	void ThighCrushSpareEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		BlockFirstPerson(player, false);
+		//BlockFirstPerson(player, false);
 		AnimationManager::StartAnim("ThighLoopExit", player);
 	}
 }

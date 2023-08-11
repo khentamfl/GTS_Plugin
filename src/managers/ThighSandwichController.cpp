@@ -346,7 +346,7 @@ namespace Gts {
 		}
 		auto& data = sandwiching.GetSandwichingData(pred);
 		data.AddTiny(prey);
-		BlockFirstPerson(pred, true);
+		//BlockFirstPerson(pred, true);
 		AnimationManager::StartAnim("ThighEnter", pred);
 	}
 

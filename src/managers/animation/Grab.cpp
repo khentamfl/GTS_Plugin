@@ -290,7 +290,7 @@ namespace {
 			giant->SetGraphVariableInt("GTS_Grab_State", 0);
 			AnimationManager::StartAnim("GrabAbort", giant);
 			AnimationManager::StartAnim("TinyDied", giant);
-			BlockFirstPerson(giant, false);
+			//BlockFirstPerson(giant, false);
 			Grab::DetachActorTask(giant);
 			Grab::Release(giant);
 			return;
@@ -370,7 +370,7 @@ namespace {
 			giant->SetGraphVariableInt("GTS_Grab_State", 0);
 			Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
 			AnimationManager::StartAnim("TinyDied", giant);
-			BlockFirstPerson(giant, false);
+			//BlockFirstPerson(giant, false);
 			ManageCamera(&data.giant, false, 7.0);
 			SetBeingHeld(otherActor, false);
 			Grab::DetachActorTask(giant);
@@ -492,7 +492,7 @@ namespace {
 		ManageCamera(giant, false, 7.0);
 		Rumble::Once("ThrowFoe", &data.giant, 2.50, 0.10, "NPC L Hand [LHnd]");
 		AnimationManager::StartAnim("TinyDied", giant);
-		BlockFirstPerson(giant, false);
+		//BlockFirstPerson(giant, false);
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
 	}
@@ -520,7 +520,7 @@ namespace {
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		ManageCamera(&data.giant, false, 7.0);
 		AnimationManager::StartAnim("TinyDied", giant);
-		BlockFirstPerson(giant, false);
+		//BlockFirstPerson(giant, false);
 		if (grabbedActor) {
 			PushActorAway(giant, grabbedActor, 1.0);
 			EnableCollisions(grabbedActor);
@@ -586,7 +586,7 @@ namespace {
 		auto otherActor = Grab::GetHeldActor(giant);
 		if (otherActor) {
 			otherActor->SetGraphVariableBool("GTSBEH_T_InStorage", true);
-			BlockFirstPerson(giant, false);
+			//BlockFirstPerson(giant, false);
 			if (IsHostile(giant, otherActor)) {
 				AnimationManager::StartAnim("Breasts_Idle_Unwilling", otherActor);
 			} else {
@@ -603,7 +603,7 @@ namespace {
 		auto otherActor = Grab::GetHeldActor(giant);
 		if (otherActor) {
 			otherActor->SetGraphVariableBool("GTSBEH_T_InStorage", false);
-			BlockFirstPerson(giant, true);
+			//BlockFirstPerson(giant, true);
 			AnimationManager::StartAnim("Breasts_FreeOther", otherActor);
 		}
 	}

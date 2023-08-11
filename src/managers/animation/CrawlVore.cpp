@@ -184,7 +184,7 @@ namespace {
 
     void GTSBEH_CrawlVoreExit(AnimationEventData& data) {
         auto giant = &data.giant;
-        BlockFirstPerson(&data.giant, false);
+        //BlockFirstPerson(&data.giant, false);
     }
 }
 

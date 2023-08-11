@@ -220,7 +220,7 @@ namespace {
 	void GTS_StrongStomp_End(AnimationEventData& data) {
 		StopLegRumble("StrongStompR", data.giant, "Right");
 		StopLegRumble("StrongStompL", data.giant, "Left");
-		BlockFirstPerson(&data.giant, false);
+		//BlockFirstPerson(&data.giant, false);
 	}
 
 
@@ -251,7 +251,7 @@ namespace {
 		}
 		float WasteStamina = 70.0 * WasteMult;
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-			BlockFirstPerson(player, true);
+			//BlockFirstPerson(player, true);
 			AnimationManager::StartAnim("StrongStompRight", player);
 		} else {
 			TiredSound(player, "You're too tired to perform heavy stomp");
@@ -268,7 +268,7 @@ namespace {
 		}
 		float WasteStamina = 70.0 * WasteMult;
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-			BlockFirstPerson(player, true);
+			//BlockFirstPerson(player, true);
 			AnimationManager::StartAnim("StrongStompLeft", player);
 		} else {
 			TiredSound(player, "You're too tired to perform heavy stomp");
