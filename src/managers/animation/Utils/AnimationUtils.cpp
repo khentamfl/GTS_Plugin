@@ -36,19 +36,16 @@ namespace Gts {
 	const std::string_view bodyLookup = "NPC Spine1 [Spn1]";
 
 	void BlockFirstPerson(Actor* actor, bool block) { // Credits to ArranzCNL for this function. Forces Third Person because we don't have FP working yet.
-		auto player = PlayerCharacter::GetSingleton();
-		if (actor->formID == 0x14 || actor == player) {
-			auto playerControls = RE::PlayerControls::GetSingleton();
-			auto camera = RE::PlayerCamera::GetSingleton();
-			auto controlMap = RE::ControlMap::GetSingleton();
-			if (block) {
-				controlMap->enabledControls.reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch); // Block POV Switching
-				camera->ForceThirdPerson();
-				return;
-			}
-			//playerControls->data.povScriptMode = block;
-			controlMap->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch); // Allow POV Switching
+		auto playerControls = RE::PlayerControls::GetSingleton();
+		auto camera = RE::PlayerCamera::GetSingleton();
+		auto controlMap = RE::ControlMap::GetSingleton();
+		if (block) {
+			controlMap->enabledControls.reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch); // Block POV Switching
+			camera->ForceThirdPerson();
+			return;
 		}
+		//playerControls->data.povScriptMode = block;
+		controlMap->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch); // Allow POV Switching
 	}
 
 	void AllowToDoVore(Actor* actor, bool toggle) {
