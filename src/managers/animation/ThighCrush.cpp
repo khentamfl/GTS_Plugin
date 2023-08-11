@@ -105,19 +105,22 @@ namespace {
 		if (!gianthandle) {
 			return false; 
 		}
-		auto FrameB = Time::FramesElapsed() - FrameA;
+		/*auto FrameB = Time::FramesElapsed() - FrameA;
 		if (FrameB <= 60.0) {
 			return true;
-		}
+		}*/
 		auto giantref = gianthandle.get().get();
 		auto ThighL = find_node(giantref, "NPC L Thigh [LThg]");
 		auto ThighR = find_node(giantref, "NPC R Thigh [RThg]");
+		
+		if (!IsThighCrushing(giantref)) {
+			log::info("IS not Thigh Crushing");
+			return false; //Disable it once we leave Thigh Crush state
+		}
 		if (ThighL && ThighR) {
 			DoDamageAtPoint(giantref, 16, 0.5, ThighL, 100, 0.20, 2.5);
 			DoDamageAtPoint(giantref, 16, 0.5, ThighR, 100, 0.20, 2.5);
-		}
-		if (!IsThighCrushing(giantref)) {
-			return false; //Disable it once we leave Thigh Crush state
+			return true;
 		}
 		return false; // Cancel it if we don't have these bones
 		});
