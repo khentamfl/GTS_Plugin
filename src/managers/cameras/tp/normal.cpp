@@ -190,6 +190,8 @@ namespace Gts {
 				        .boneNames = {
 						"NPC L Butt",
 						"NPC R Butt",
+						"NPC L RearThigh",
+						"NPC R RearThigh",
 					},
 				        .zoomScale = 1.25,
 				};

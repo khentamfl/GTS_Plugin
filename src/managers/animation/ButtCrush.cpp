@@ -216,6 +216,7 @@ namespace {
             float HH = HighHeelManager::GetHHOffset(giantref).Length();
 			coords.z -= HH;
             if (!IsButtCrushing(giantref)) {
+                log::info("Not Butt Crushing, resetting");
                 SetBeingEaten(tiny, false);
                 EnableCollisions(tiny);
 				return false;
@@ -335,7 +336,7 @@ namespace {
             }
         }
         ModGrowthCount(giant, 0, true); // Reset limit
-        giant->SetGraphVariableBool("GTS_IsButtCrushing", false);
+        //giant->SetGraphVariableBool("GTS_IsButtCrushing", false);
         TrackButt(giant, false);
     }
 
@@ -355,6 +356,9 @@ namespace {
     void ButtCrushStartEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
         if (Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
+            float WasteStamina = 160.0 * GetButtCrushCost(player);
+            DamageAV(player, ActorValue::kStamina, WasteStamina);
+
             auto& ButtCrush = ButtCrushController::GetSingleton();
             std::size_t numberOfPrey = 3;
             if (Runtime::HasPerk(player, "MassVorePerk")) {
