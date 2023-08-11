@@ -44,7 +44,7 @@ namespace Gts {
 			camera->ForceThirdPerson();
 			return;
 		}
-		playerControls->data.povScriptMode = block;
+		//playerControls->data.povScriptMode = block;
 		controlMap->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch); // Allow POV Switching
 	}
 
