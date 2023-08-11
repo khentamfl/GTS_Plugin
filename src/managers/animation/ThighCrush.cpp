@@ -100,9 +100,14 @@ namespace {
 	void RunButtCollisionTask(Actor* giant) {
 		std::string name = std::format("ButtCrush_{}", giant->formID);
 		auto gianthandle = giant->CreateRefHandle();
+		auto FrameA = Time::FramesElapsed();
 		TaskManager::Run(name, [=](auto& progressData) {
 		if (!gianthandle) {
 			return false; 
+		}
+		auto FrameB = Time::FramesElapsed() - FrameA;
+		if (FrameB <= 10.0) {
+			return true;
 		}
 		auto giantref = gianthandle.get().get();
 		auto ThighL = find_node(giantref, "NPC L Thigh [LThg]");
@@ -124,6 +129,7 @@ namespace {
 		StartLegRumble("ThighCrush", data.giant, 0.10, 0.10);
 		TrackFeet(&data.giant, 0.0, true); // Track feet
 		RunButtCollisionTask(&data.giant);
+		BlockFirstPerson(&data.giant, true);
 		data.stage = 1;
 	}
 
@@ -198,6 +204,7 @@ namespace {
 		DoFootstepSound(&data.giant, 1.05, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 1.1, FootEvent::Right, RNode);
 		DoDamageEffect(&data.giant, 1.6 * perk, 1.4, 25, 0.20, FootEvent::Right, 1.0);
+		DoLaunch(&data.giant, 0.30 * perk, 2.25 * data.animSpeed, 1.4, FootEvent::Right, 0.85);
 		data.stage = 9;
 		//Cprint("ThighCrush: GTSstandR");
 	}
@@ -212,7 +219,7 @@ namespace {
 		DoFootstepSound(&data.giant, 1.05, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, 1.1, FootEvent::Left, LNode);
 		DoDamageEffect(&data.giant, 1.6 * perk, 1.4, 25, 0.20, FootEvent::Left, 1.0);
-		DoLaunch(&data.giant, 0.75 * perk, 2.25 * data.animSpeed, 1.4, FootEvent::Left, 0.85);
+		DoLaunch(&data.giant, 0.30 * perk, 2.25 * data.animSpeed, 1.4, FootEvent::Left, 0.85);
 		data.stage = 9;
 		//Cprint("ThighCrush: GTSstandL");
 	}
@@ -227,7 +234,7 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 1.1, FootEvent::Right, RNode);
 		DoDamageEffect(&data.giant, 1.4 * perk, 1.3, 25, 0.20, FootEvent::Right, 1.0);
-		DoLaunch(&data.giant, 0.6 * perk, 2.25 * data.animSpeed, 1.4, FootEvent::Right, 0.85);
+		DoLaunch(&data.giant, 0.30 * perk, 2.25 * data.animSpeed, 1.4, FootEvent::Right, 0.85);
 		data.stage = 9;
 	}
 	void GTSBEH_Next(AnimationEventData& data) {
