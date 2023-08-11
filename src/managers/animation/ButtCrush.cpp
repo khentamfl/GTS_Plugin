@@ -255,7 +255,7 @@ namespace {
         Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
 		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 
-        StartRumble("BCRumble", data.giant, 1.8, 0.02);
+        StartRumble("BCRumble", data.giant, 1.8, 0.70);
     }
 
     void GTSBEH_ButtCrush_GrowthFinish(AnimationEventData& data) {

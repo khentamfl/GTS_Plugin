@@ -59,7 +59,7 @@ namespace {
 			return; // Don't allow actor to do self-damage
 		}
 		log::info("a_damage: {}", a_damage);
-		receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, a_damage * 0.5);
+		receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, a_damage * 0.25);
 		DamageAV(grabbedActor, ActorValue::kHealth, a_damage * 0.25);
 		if (grabbedActor->IsDead() || GetAV(grabbedActor, ActorValue::kHealth) < a_damage * 0.25) {
 			Grab::DetachActorTask(receiver);
