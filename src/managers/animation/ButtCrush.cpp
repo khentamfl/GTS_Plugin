@@ -189,6 +189,7 @@ namespace {
         std::string name = std::format("ButtCrush_{}", tiny->formID);
         auto tinyhandle = tiny->CreateRefHandle();
         auto gianthandle = giant->CreateRefHandle();
+        auto FrameA = Time::FramesElapsed();
         TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
@@ -196,7 +197,10 @@ namespace {
 			if (!tinyhandle) {
 				return false;
 			}
-			
+			auto FrameB = Time::FramesElapsed() - FrameA;
+			if (FrameB <= 8.0) {
+				return true;
+			}
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
             auto node = find_node(giantref, "AnimObjectB"); 
