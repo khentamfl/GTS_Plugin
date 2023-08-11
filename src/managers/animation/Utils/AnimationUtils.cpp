@@ -35,6 +35,18 @@ namespace Gts {
 	const std::string_view rightToeLookup = "NPC R Toe0 [RToe]";
 	const std::string_view bodyLookup = "NPC Spine1 [Spn1]";
 
+	static inline void BlockFirstPerson(bool block) {
+		auto playerControls = RE::PlayerControls::GetSingleton();
+		auto camera = RE::PlayerCamera::GetSingleton();
+		auto controlMap = RE::ControlMap::GetSingleton();
+		if (block) {
+			controlMap->enabledControls.reset(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch) // Block POV Switching
+			camera->ForceThirdPerson();
+			return;
+		}
+		playerControls->data.povScriptMode = block;
+		controlMap->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch) // Allow POV Switching
+	}
 
 	void AllowToDoVore(Actor* actor, bool toggle) {
 		auto transient = Transient::GetSingleton().GetData(actor);

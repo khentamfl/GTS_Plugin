@@ -10,6 +10,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace Gts {
+	static inline void BlockFirstPerson(bool block);
 	void AllowToDoVore(Actor* actor, bool toggle);
 	void AllowToBeCrushed(Actor* actor, bool toggle);
 	void ManageCamera(Actor* giant, bool enable, float type);

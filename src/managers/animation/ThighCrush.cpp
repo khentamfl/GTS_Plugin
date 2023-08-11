@@ -120,6 +120,7 @@ namespace {
 	}
 
 	void GTStosit(AnimationEventData& data) {
+		BlockFirstPerson(true);
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
 		StartLegRumble("ThighCrush", data.giant, 0.10, 0.10);
@@ -268,6 +269,7 @@ namespace {
 
 	void ThighCrushSpareEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		BlockFirstPerson(false);
 		AnimationManager::StartAnim("ThighLoopExit", player);
 	}
 }

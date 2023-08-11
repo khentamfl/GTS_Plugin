@@ -60,7 +60,6 @@ namespace Gts {
 	void SetBeingEaten(Actor* tiny, bool decide);
 	void SetBeingGrinded(Actor* tiny, bool decide);
 	void ShutUp(Actor* actor);
-	float GetButtCrushCost(Actor* actor);
 
 	// GTS State Controllers end
 	void PlayAnimation(Actor* actor, std::string_view animName);
@@ -110,6 +109,7 @@ namespace Gts {
 	void AddCalamityPerk();
 	void AddPerkPoints(float level);
 	float GetRandomBoost();
+	float GetButtCrushCost(Actor* actor);
 
 	void DoFootstepSound(Actor* giant, float modifier, FootEvent kind, std::string_view node);
 	void DoDustExplosion(Actor* giant, float modifier, FootEvent kind, std::string_view node);
