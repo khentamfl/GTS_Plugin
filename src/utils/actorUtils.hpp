@@ -60,7 +60,7 @@ namespace Gts {
 	void SetBeingEaten(Actor* tiny, bool decide);
 	void SetBeingGrinded(Actor* tiny, bool decide);
 	void ShutUp(Actor* actor);
-	float GetButtCrushCost(Actor* actor)
+	float GetButtCrushCost(Actor* actor);
 
 	// GTS State Controllers end
 	void PlayAnimation(Actor* actor, std::string_view animName);
