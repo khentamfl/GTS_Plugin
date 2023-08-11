@@ -110,7 +110,6 @@ namespace {
 		if (ThighL && ThighR) {
 			DoDamageAtPoint(giantref, 16, 0.5, ThighL, 100, 0.20, 2.5);
 			DoDamageAtPoint(giantref, 16, 0.5, ThighR, 100, 0.20, 2.5);
-			return true;
 		}
 		if (!IsThighCrushing(giantref)) {
 			return false; //Disable it once we leave Thigh Crush state
