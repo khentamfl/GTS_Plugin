@@ -1,6 +1,7 @@
+#include "managers/animation/Controllers/HugController.hpp"
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/ThighSandwich.hpp"
-#include "managers/animation/Controllers/HugController.hpp"
 #include "managers/animation/HugShrink.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
@@ -193,6 +194,7 @@ namespace Gts {
 			return;
 		}
 		HugShrink::GetSingleton().HugActor(pred, prey);
+		BlockFirstPerson(pred, true);
 		AnimationManager::StartAnim("Huggies_Try", pred);
 		AnimationManager::StartAnim("Huggies_Try_Victim", prey);
 	}

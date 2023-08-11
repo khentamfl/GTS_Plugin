@@ -824,6 +824,7 @@ namespace Gts {
 		voreData.AddTiny(prey);
 
 		AnimationManager::GetSingleton().StartAnim("StartVore", pred);
+		BlockFirstPerson(pred, true);
 	}
 
 	// Gets the current vore data of a giant

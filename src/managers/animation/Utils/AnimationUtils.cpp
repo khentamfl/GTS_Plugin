@@ -35,7 +35,10 @@ namespace Gts {
 	const std::string_view rightToeLookup = "NPC R Toe0 [RToe]";
 	const std::string_view bodyLookup = "NPC Spine1 [Spn1]";
 
-	void BlockFirstPerson(bool block) { // Credits to ArranzCNL for this function
+	void BlockFirstPerson(Actor* actor, bool block) { // Credits to ArranzCNL for this function. Forces Third Person because we don't have FP working yet.
+		if (actor->formID != 0x14) {
+			return;
+		}
 		auto playerControls = RE::PlayerControls::GetSingleton();
 		auto camera = RE::PlayerCamera::GetSingleton();
 		auto controlMap = RE::ControlMap::GetSingleton();

@@ -330,11 +330,13 @@ namespace {
         ModGrowthCount(giant, 0, true); // Reset limit
         //giant->SetGraphVariableBool("GTS_IsButtCrushing", false);
         TrackButt(giant, false);
+        BlockFirstPerson(giant, false);
     }
 
     void GTSButtCrush_Exit(AnimationEventData& data) {
         auto giant = &data.giant;
         ModGrowthCount(giant, 0, true); // Reset limit
+        BlockFirstPerson(giant, false);
         //TrackButt(giant, false);
     }
 

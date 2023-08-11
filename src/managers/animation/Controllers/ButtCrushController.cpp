@@ -1,6 +1,7 @@
+#include "managers/animation/Controllers/ButtCrushController.hpp"
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/ThighSandwich.hpp"
-#include "managers/animation/Controllers/ButtCrushController.hpp"
 #include "managers/animation/HugShrink.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
@@ -193,6 +194,7 @@ namespace Gts {
             ShrinkUntil(pred, prey, 3.0);
             DisableCollisions(prey, pred);
             AnimationManager::StartAnim("ButtCrush_Start", pred);
+			BlockFirstPerson(pred, true);
         } else {
             if (pred->formID == 0x14) {
                 TiredSound(pred, "Butt Crush is on a cooldown");

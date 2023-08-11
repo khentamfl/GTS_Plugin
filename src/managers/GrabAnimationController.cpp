@@ -1,3 +1,4 @@
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/ThighSandwich.hpp"
 #include "managers/GrabAnimationController.hpp"
@@ -194,6 +195,7 @@ namespace Gts {
 		
 		ShrinkUntil(pred, prey, 8.0);
 		Grab::GetSingleton().GrabActor(pred, prey);
+		BlockFirstPerson(pred, true);
 		AnimationManager::StartAnim("GrabSomeone", pred);
 	}
 }

@@ -120,7 +120,6 @@ namespace {
 	}
 
 	void GTStosit(AnimationEventData& data) {
-		BlockFirstPerson(true);
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
 		StartLegRumble("ThighCrush", data.giant, 0.10, 0.10);
@@ -241,6 +240,7 @@ namespace {
 		// Going to exit
 		StopLegRumble("BodyRumble", data.giant);
 		TrackFeet(&data.giant, 0.0, false); // Un-track feet
+		BlockFirstPerson(&data.giant, false);
 	}
 	void GTSBEH_Exit(AnimationEventData& data) {
 		// Final exit
@@ -249,6 +249,7 @@ namespace {
 
 	void ThighCrushEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		BlockFirstPerson(player, true);
 		AnimationManager::StartAnim("ThighLoopEnter", player);
 	}
 
@@ -269,7 +270,7 @@ namespace {
 
 	void ThighCrushSpareEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		BlockFirstPerson(false);
+		BlockFirstPerson(player, false);
 		AnimationManager::StartAnim("ThighLoopExit", player);
 	}
 }
