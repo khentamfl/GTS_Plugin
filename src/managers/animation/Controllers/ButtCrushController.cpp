@@ -184,6 +184,10 @@ namespace Gts {
 			return;
 		}
         if (CanDoButtCrush_Normal(pred)) {
+
+			float WasteStamina = 160.0 * GetButtCrushCost(pred);
+            DamageAV(pred, ActorValue::kStamina, WasteStamina);
+
             prey->NotifyAnimationGraph("GTS_EnterFear");
             auto camera = PlayerCamera::GetSingleton();
             ShrinkUntil(pred, prey, 3.0);

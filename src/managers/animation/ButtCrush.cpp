@@ -162,19 +162,6 @@ namespace {
         return limit;
     }
 
-    float GetButtCrushCost(Actor* actor) {
-        float cost = 1.0;
-        if (Runtime::HasPerkTeam(actor, "ButtCrush_KillerBooty")) {
-            cost -= 0.15;
-        } if (Runtime::HasPerkTeam(actor, "ButtCrush_LoomingDoom")) {
-            cost -= 0.25;
-        } if (Runtime::HasPerkTeam(actor, "SkilledGTS")) {
-			float level = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
-			cost -= level;
-		}
-        return cost;
-    }
-
     float GetButtCrushDamage(Actor* actor) {
         float damage = 1.0;
         if (Runtime::HasPerkTeam(actor, "ButtCrush_KillerBooty")) {
@@ -199,7 +186,7 @@ namespace {
 				return false;
 			}
 			auto FrameB = Time::FramesElapsed() - FrameA;
-			if (FrameB <= 8.0) {
+			if (FrameB <= 10.0) {
 				return true;
 			}
 			auto giantref = gianthandle.get().get();
@@ -361,8 +348,6 @@ namespace {
     void ButtCrushStartEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
         if (Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
-            float WasteStamina = 160.0 * GetButtCrushCost(player);
-            DamageAV(player, ActorValue::kStamina, WasteStamina);
 
             auto& ButtCrush = ButtCrushController::GetSingleton();
             std::size_t numberOfPrey = 3;

@@ -433,6 +433,19 @@ namespace Gts {
 		}
 	}
 
+	float GetButtCrushCost(Actor* actor) {
+        float cost = 1.0;
+        if (Runtime::HasPerkTeam(actor, "ButtCrush_KillerBooty")) {
+            cost -= 0.15;
+        } if (Runtime::HasPerkTeam(actor, "ButtCrush_LoomingDoom")) {
+            cost -= 0.25;
+        } if (Runtime::HasPerkTeam(actor, "SkilledGTS")) {
+			float level = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
+			cost -= level;
+		}
+        return cost;
+    }
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void PlayAnimation(Actor* actor, std::string_view animName) {
