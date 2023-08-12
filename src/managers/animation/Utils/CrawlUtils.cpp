@@ -94,6 +94,7 @@ namespace Gts {
 				multiplier *= 1.8;
 				minimal_scale = 1.0;
 				scale += 0.75;
+				damage *= 2.0;
 			}
 		}
 
