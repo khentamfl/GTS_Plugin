@@ -434,7 +434,7 @@ namespace Gts {
 
 	void SetCameraOverride(Actor* actor, bool decide) {
 		if (actor->formID == 0x14) {
-			auto transient = Transient::GetSingleton().GetData(tiny);
+			auto transient = Transient::GetSingleton().GetData(actor);
 			if (transient) {
 				transient->OverrideCamera = decide;
 			}
