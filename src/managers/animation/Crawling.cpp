@@ -56,12 +56,14 @@ namespace {
 	void GTSCrawl_Slam_Lower_Arm_L(AnimationEventData& data) {
 	}
 
-	void GTECrawl_Slam_Impact_R(AnimationEventData& data) {
-		DoCrawlingFunctions(giant, scale, 1.0, 2.0, CrawlEvent::RightHand, "RightHandRumble", 20, 17);
+	void GTSCrawl_Slam_Impact_R(AnimationEventData& data) {
+		auto giant = &data.giant;
+		DoCrawlingFunctions(giant, scale, 1.1, 2.6, CrawlEvent::RightHand, "RightHandRumble", 20, 17);
 	}
 
-	void GTECrawl_Slam_Impact_L(AnimationEventData& data) {
-		DoCrawlingFunctions(giant, scale, 1.0, 2.0, CrawlEvent::LeftHand, "LeftHandRumble", 20, 17);
+	void GTSCrawl_Slam_Impact_L(AnimationEventData& data) {
+		auto giant = &data.giant;
+		DoCrawlingFunctions(giant, scale, 1.1, 2.6, CrawlEvent::LeftHand, "LeftHandRumble", 20, 17);
 	}
 }
 
