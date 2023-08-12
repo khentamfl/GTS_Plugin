@@ -72,6 +72,25 @@ namespace {
 		}
 	}
 
+    void DisableButtTrackTask(Actor* giant) {
+        std::string name = std::format("DisableCamera_{}", giant->formID);
+        auto gianthandle = giant->CreateRefHandle();
+        auto FrameA = Time::FramesElapsed();
+        TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			auto FrameB = Time::FramesElapsed() - FrameA;
+			if (FrameB <= 120.0) {
+				return true;
+			}
+			auto giantref = gianthandle.get().get();
+            TrackButt(giantref, false);
+
+			return false;
+		});
+    }
+
     void CameraFOVTask(Actor* actor, float reduce, float speed) {
 		auto camera = PlayerCamera::GetSingleton();
 		if (!camera) {
@@ -329,7 +348,7 @@ namespace {
         }
         ModGrowthCount(giant, 0, true); // Reset limit
         //giant->SetGraphVariableBool("GTS_IsButtCrushing", false);
-        TrackButt(giant, false);
+        DisableButtTrackTask(giant);
         //BlockFirstPerson(giant, false);
     }
 
