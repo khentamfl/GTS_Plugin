@@ -73,14 +73,12 @@ namespace {
 		auto giant = &data.giant;
 		float scale = get_visual_scale(giant);
 		DoCrawlingFunctions(giant, scale, 1.1, 1.9, CrawlEvent::RightHand, "RightHandRumble", 22, 17);
-		EnableHandTracking(&data.giant, CrawlEvent::RightHand, false);
 	}
 
 	void GTSCrawl_Slam_Impact_L(AnimationEventData& data) {
 		auto giant = &data.giant;
 		float scale = get_visual_scale(giant);
 		DoCrawlingFunctions(giant, scale, 1.1, 1.9, CrawlEvent::LeftHand, "LeftHandRumble", 22, 17);
-		EnableHandTracking(&data.giant, CrawlEvent::LeftHand, false);
 	}
 
 	void GTSCrawl_Slam_Cam_Off_R(AnimationEventData& data) {
