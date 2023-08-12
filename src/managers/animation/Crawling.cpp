@@ -61,24 +61,42 @@ namespace {
 	void GTSCrawl_Slam_Raise_Arm_R(AnimationEventData& data) {	
 		EnableHandTracking(&data.giant, CrawlEvent::RightHand, true);
 	}
+	void GTSCrawl_SlamStrong_Raise_Arm_R(AnimationEventData& data) {
+		EnableHandTracking(&data.giant, CrawlEvent::RightHand, true);
+	}
 	void GTSCrawl_Slam_Raise_Arm_L(AnimationEventData& data) {	
 		EnableHandTracking(&data.giant, CrawlEvent::LeftHand, true);
 	}
-	void GTSCrawl_Slam_Lower_Arm_R(AnimationEventData& data) {
+	void GTSCrawl_SlamStrong_Raise_Arm_L(AnimationEventData& data) {
+		EnableHandTracking(&data.giant, CrawlEvent::LeftHand, true);
 	}
-	void GTSCrawl_Slam_Lower_Arm_L(AnimationEventData& data) {
-	}
+
+	void GTSCrawl_Slam_Lower_Arm_R(AnimationEventData& data) {}
+	void GTSCrawl_SlamStrong_Lower_Arm_R(AnimationEventData& data) {}
+	void GTSCrawl_Slam_Lower_Arm_L(AnimationEventData& data) {}
+	void GTSCrawl_SlamStrong_Lower_Arm_L(AnimationEventData& data) {}
 
 	void GTSCrawl_Slam_Impact_R(AnimationEventData& data) {
 		auto giant = &data.giant;
 		float scale = get_visual_scale(giant);
 		DoCrawlingFunctions(giant, scale, 1.1, 1.9, CrawlEvent::RightHand, "RightHandRumble", 22, 17);
 	}
-
 	void GTSCrawl_Slam_Impact_L(AnimationEventData& data) {
 		auto giant = &data.giant;
 		float scale = get_visual_scale(giant);
 		DoCrawlingFunctions(giant, scale, 1.1, 1.9, CrawlEvent::LeftHand, "LeftHandRumble", 22, 17);
+	}
+
+
+	void GTSCrawl_SlamStrong_Impact_R(AnimationEventData& data) {
+		auto giant = &data.giant;
+		float scale = get_visual_scale(giant);
+		DoCrawlingFunctions(giant, scale, 1.25, 4.1, CrawlEvent::RightHand, "RightHandRumble", 24, 18);
+	}
+	void GTSCrawl_SlamStrong_Impact_L(AnimationEventData& data) {
+		auto giant = &data.giant;
+		float scale = get_visual_scale(giant);
+		DoCrawlingFunctions(giant, scale, 1.25, 4.1, CrawlEvent::LeftHand, "RightHandRumble", 24, 18);
 	}
 
 	void GTSCrawl_Slam_Cam_Off_R(AnimationEventData& data) {
@@ -100,10 +118,17 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTSCrawl_HandImpact_R", "Crawl", GTSCrawl_HandImpact_R);
 		AnimationManager::RegisterEvent("GTSCrawl_Slam_Raise_Arm_R", "Crawl", GTSCrawl_Slam_Raise_Arm_R);
 		AnimationManager::RegisterEvent("GTSCrawl_Slam_Raise_Arm_L", "Crawl", GTSCrawl_Slam_Raise_Arm_L);
+		AnimationManager::RegisterEvent("GTSCrawl_SlamStrong_Raise_Arm_R", "Crawl", GTSCrawl_SlamStrong_Raise_Arm_R);
+		AnimationManager::RegisterEvent("GTSCrawl_SlamStrong_Raise_Arm_L", "Crawl", GTSCrawl_SlamStrong_Raise_Arm_L);
 		AnimationManager::RegisterEvent("GTSCrawl_Slam_Lower_Arm_R", "Crawl", GTSCrawl_Slam_Lower_Arm_R);
 		AnimationManager::RegisterEvent("GTSCrawl_Slam_Lower_Arm_L", "Crawl", GTSCrawl_Slam_Lower_Arm_L);
+		AnimationManager::RegisterEvent("GTSCrawl_SlamStrong_Lower_Arm_R", "Crawl", GTSCrawl_SlamStrong_Lower_Arm_R);
+		AnimationManager::RegisterEvent("GTSCrawl_SlamStrong_Lower_Arm_L", "Crawl", GTSCrawl_SlamStrong_Lower_Arm_L);
 		AnimationManager::RegisterEvent("GTSCrawl_Slam_Impact_R", "Crawl", GTSCrawl_Slam_Impact_R);
 		AnimationManager::RegisterEvent("GTSCrawl_Slam_Impact_L", "Crawl", GTSCrawl_Slam_Impact_L);
+		AnimationManager::RegisterEvent("GTSCrawl_SlamStrong_Impact_R", "Crawl", GTSCrawl_SlamStrong_Impact_R);
+		AnimationManager::RegisterEvent("GTSCrawl_SlamStrong_Impact_L", "Crawl", GTSCrawl_SlamStrong_Impact_L);
+
 		AnimationManager::RegisterEvent("GTSCrawl_Slam_Cam_Off_L", "Crawl", GTSCrawl_Slam_Cam_Off_L);
 		AnimationManager::RegisterEvent("GTSCrawl_Slam_Cam_Off_R", "Crawl", GTSCrawl_Slam_Cam_Off_R);
 	}

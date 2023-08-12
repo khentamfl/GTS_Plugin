@@ -145,7 +145,7 @@ namespace Gts {
 				        .boneNames = {
 						"NPC R Hand [RHnd]",
 					},
-				        .zoomScale = 0.75,
+				        .zoomScale = 0.50,
 				};
 			}
 			case 11: {
@@ -180,7 +180,7 @@ namespace Gts {
 				        .boneNames = {
 						"NPC L Finger02 [LF02]",
 					},
-				        .zoomScale = 0.60,
+				        .zoomScale = 0.50,
 				};
 			}
 			case 15: {
