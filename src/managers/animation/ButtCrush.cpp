@@ -72,25 +72,6 @@ namespace {
 		}
 	}
 
-    void DisableButtTrackTask(Actor* giant) {
-        std::string name = std::format("DisableCamera_{}", giant->formID);
-        auto gianthandle = giant->CreateRefHandle();
-        auto FrameA = Time::FramesElapsed();
-        TaskManager::Run(name, [=](auto& progressData) {
-			if (!gianthandle) {
-				return false;
-			}
-			auto FrameB = Time::FramesElapsed() - FrameA;
-			if (FrameB <= 120.0) {
-				return true;
-			}
-			auto giantref = gianthandle.get().get();
-            TrackButt(giantref, false);
-
-			return false;
-		});
-    }
-
     void CameraFOVTask(Actor* actor, float reduce, float speed) {
 		auto camera = PlayerCamera::GetSingleton();
 		if (!camera) {
@@ -135,6 +116,25 @@ namespace {
             auto& sizemanager = SizeManager::GetSingleton();
             sizemanager.SetActionBool(giant, enable, 8.0);
         }
+    }
+
+    void DisableButtTrackTask(Actor* giant) {
+        std::string name = std::format("DisableCamera_{}", giant->formID);
+        auto gianthandle = giant->CreateRefHandle();
+        auto FrameA = Time::FramesElapsed();
+        TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			auto FrameB = Time::FramesElapsed() - FrameA;
+			if (FrameB <= 120.0) {
+				return true;
+			}
+			auto giantref = gianthandle.get().get();
+            TrackButt(giantref, false);
+
+			return false;
+		});
     }
 
     void ModGrowthCount(Actor* giant, float value, bool reset) {
