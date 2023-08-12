@@ -20,6 +20,17 @@ using namespace Gts;
 
 namespace {
 
+	void EnableHandTracking(Actor* giant, CrawlEvent kind, bool decide) {
+		if (AllowFeetTracking() && giant->formID == 0x14) {
+			auto& sizemanager = SizeManager::GetSingleton();
+			if (kind == CrawlEvent::RightHand) {
+				sizemanager.SetActionBool(giant, 4.0, decide);
+			} else if (kind == CrawlEvent::LeftHand) {
+				sizemanager.SetActionBool(giant, 7.0, decide);
+			}
+		}
+	}
+
     void GTSCrawl_KneeImpact_L(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
@@ -42,14 +53,16 @@ namespace {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
         DoCrawlingFunctions(giant, scale, 1.0, 1.0, CrawlEvent::RightHand, "RightHand", 18, 14);
-		//                                                                         ^    ^ --- Size Damage Radius
-        //                                                                     Launch 
-		//                                                                     Radius
+		//                                                                               ^    ^ --- Size Damage Radius
+        //                                                                             Launch 
+		//                                                                             Radius
 	}
 
 	void GTSCrawl_Slam_Raise_Arm_R(AnimationEventData& data) {	
+		EnableHandTracking(&data.giant, CrawlEvent::RightHand, true);
 	}
 	void GTSCrawl_Slam_Raise_Arm_L(AnimationEventData& data) {	
+		EnableHandTracking(&data.giant, CrawlEvent::LeftHand, true);
 	}
 	void GTSCrawl_Slam_Lower_Arm_R(AnimationEventData& data) {
 	}
@@ -59,13 +72,15 @@ namespace {
 	void GTSCrawl_Slam_Impact_R(AnimationEventData& data) {
 		auto giant = &data.giant;
 		float scale = get_visual_scale(giant);
-		DoCrawlingFunctions(giant, scale, 1.1, 2.6, CrawlEvent::RightHand, "RightHandRumble", 20, 17);
+		DoCrawlingFunctions(giant, scale, 1.1, 2.6, CrawlEvent::RightHand, "RightHandRumble", 21, 17);
+		EnableHandTracking(&data.giant, CrawlEvent::RightHand, false);
 	}
 
 	void GTSCrawl_Slam_Impact_L(AnimationEventData& data) {
 		auto giant = &data.giant;
 		float scale = get_visual_scale(giant);
-		DoCrawlingFunctions(giant, scale, 1.1, 2.6, CrawlEvent::LeftHand, "LeftHandRumble", 20, 17);
+		DoCrawlingFunctions(giant, scale, 1.1, 2.6, CrawlEvent::LeftHand, "LeftHandRumble", 21, 17);
+		EnableHandTracking(&data.giant, CrawlEvent::LeftHand, false);
 	}
 }
 

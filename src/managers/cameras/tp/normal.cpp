@@ -48,7 +48,7 @@ namespace Gts {
 		} else if (sizemanager.GetActionBool(player, 2)) {
 			altMode = 9; // Vore
 		} else if (sizemanager.GetActionBool(player, 4)) {
-			altMode = 10; // Vore: Track Hand
+			altMode = 10; // Vore: Track Right Hand
 		} else if (sizemanager.GetActionBool(player, 5)) {
 			altMode = 11; // L feet
 		} else if (sizemanager.GetActionBool(player, 6)) {
@@ -56,10 +56,10 @@ namespace Gts {
 		} else if (sizemanager.GetActionBool(player, 0)) {
 			altMode = 13; // Thigh Crushing
 		} else if (sizemanager.GetActionBool(player, 7)) {
-			altMode = 14; // Grab Attack
+			altMode = 14; // Track Left Hand
 		} else if (sizemanager.GetActionBool(player, 8)) {
 			altMode = 15; // Track booty
-		} 
+		}  
 		switch (altMode) {
 			case 0: {
 				return BoneTarget();
@@ -190,8 +190,8 @@ namespace Gts {
 				        .boneNames = {
 						"NPC L Butt",
 						"NPC R Butt",
-						"NPC L RearThigh",
-						"NPC R RearThigh",
+						"NPC L Foot [Lft ]",
+						"NPC R Foot [Lft ]",
 					},
 				        .zoomScale = 1.25,
 				};
