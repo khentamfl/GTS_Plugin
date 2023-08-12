@@ -60,14 +60,14 @@ namespace {
 
     void StartRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: ALL_RUMBLE_NODES) {
-			std::string rumbleName = std::format("{}{}", tag, node_name);
+			std::string rumbleName = std::format("ButtCrush_{}{}", tag, node_name);
 		    Rumble::Start(rumbleName, &actor, power, halflife, node_name);
 		}
 	}
 
     void StopRumble(std::string_view tag, Actor& actor) {
 		for (auto& node_name: ALL_RUMBLE_NODES) {
-			std::string rumbleName = std::format("{}{}", tag, node_name);
+			std::string rumbleName = std::format("ButtCrush_{}{}", tag, node_name);
 			Rumble::Stop(rumbleName, &actor);
 		}
 	}

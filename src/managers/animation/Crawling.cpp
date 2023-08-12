@@ -58,11 +58,13 @@ namespace {
 
 	void GTSCrawl_Slam_Impact_R(AnimationEventData& data) {
 		auto giant = &data.giant;
+		float scale = get_visual_scale(giant);
 		DoCrawlingFunctions(giant, scale, 1.1, 2.6, CrawlEvent::RightHand, "RightHandRumble", 20, 17);
 	}
 
 	void GTSCrawl_Slam_Impact_L(AnimationEventData& data) {
 		auto giant = &data.giant;
+		float scale = get_visual_scale(giant);
 		DoCrawlingFunctions(giant, scale, 1.1, 2.6, CrawlEvent::LeftHand, "LeftHandRumble", 20, 17);
 	}
 }
