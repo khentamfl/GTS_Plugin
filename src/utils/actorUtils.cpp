@@ -290,6 +290,17 @@ namespace Gts {
 		}
 	}
 
+	bool GetCameraOverride(Actor* actor) {
+		if (actor->formID == 0x14) {
+			auto transient = Transient::GetSingleton().GetData(actor);
+			if (transient) {
+				return transient->OverrideCamera;
+			}
+			return false;
+		}
+		return false;
+	}
+
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -420,6 +431,16 @@ namespace Gts {
 			transient->being_foot_grinded = decide;
 		}
 	}
+
+	void SetCameraOverride(Actor* actor, bool decide) {
+		if (actor->formID == 0x14) {
+			auto transient = Transient::GetSingleton().GetData(tiny);
+			if (transient) {
+				transient->OverrideCamera = decide;
+			}
+		}
+	}
+
 	void ShutUp(Actor* actor) { // Disallow them to "So anyway i've been fishing today and my dog died" while we do something to them
 		if (!actor) {
 			return;

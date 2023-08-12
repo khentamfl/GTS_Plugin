@@ -67,6 +67,7 @@ namespace Gts {
 			bool between_breasts = false;
 			bool about_to_be_eaten = false;
 			bool being_foot_grinded = false;
+			bool OverrideCamera = false;
 
 
 			TESObjectREFR* disable_collision_with = nullptr;
@@ -110,6 +111,7 @@ namespace Gts {
 			result.WorldFov_Default = WorldFov_Default;
 			result.FpFov_Default = FpFov_Default;
 			result.ButtCrushGrowthAmount = ButtCrushGrowthAmount;
+			result.OverrideCamera = OverrideCamera;
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 

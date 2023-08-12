@@ -6,6 +6,7 @@
 #include "managers/InputManager.hpp"
 #include "managers/Rumble.hpp"
 #include "magic/effects/common.hpp"
+#include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
@@ -366,6 +367,7 @@ namespace Gts {
 
 	//===============Bools
 	void SizeManager::SetActionBool(Actor* actor, bool enable, float type) {
+		SetCameraOverride(actor, enable);
 		if (type == 0.0) {
 			this->GetData(actor).IsThighCrushing = enable;
 		} else if (type == 1.0) {

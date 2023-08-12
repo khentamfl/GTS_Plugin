@@ -1,6 +1,7 @@
 #include "managers/cameras/camutil.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/highheel.hpp"
+#include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "managers/camera.hpp"
 #include "data/runtime.hpp"
@@ -114,7 +115,7 @@ namespace Gts {
 
 			auto player = PlayerCharacter::GetSingleton();
 			bool IsCurrentlyCrawling = IsCrawling(player);
-			if (IsGtsBusy(player) && !IsCameraEnabled(player)) {
+			if (IsGtsBusy(player) && IsCrawling(player) && GetCameraOverride(player)) {
 				IsCurrentlyCrawling = false;
 			}
 			

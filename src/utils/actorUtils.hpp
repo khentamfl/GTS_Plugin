@@ -42,6 +42,7 @@ namespace Gts {
 	bool IsBeingGrinded(Actor* actor);
 	bool CanDoButtCrush(Actor* actor);
 	bool CanDoButtCrush_Normal(Actor* actor);
+	bool GetCameraOverride(Actor* actor);
     // GTS State Bools End
 
     // Gts Bools
@@ -59,6 +60,7 @@ namespace Gts {
 	void SetBetweenBreasts(Actor* actor, bool decide);
 	void SetBeingEaten(Actor* tiny, bool decide);
 	void SetBeingGrinded(Actor* tiny, bool decide);
+	void SetCameraOverride(Actor* actor, bool decide);
 	void ShutUp(Actor* actor);
 
 	// GTS State Controllers end
