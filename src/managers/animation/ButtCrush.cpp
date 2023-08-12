@@ -293,7 +293,7 @@ namespace {
     void GTSButtCrush_HandImpactR(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoCrawlingFunctions(giant, scale, 1.0, CrawlEvent::RightHand, "RightHand", 18, 14);
+        DoCrawlingFunctions(giant, scale, 1.0, 1.0, CrawlEvent::RightHand, "RightHand", 18, 14);
     }
 
     void GTSButtCrush_FallDownImpact(AnimationEventData& data) {

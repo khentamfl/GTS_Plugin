@@ -10,7 +10,7 @@ using namespace Gts;
 namespace Gts {
 
     void DoCrawlingSounds(Actor* actor, float scale, NiAVObject* node, FootEvent foot_kind);
-    void DoCrawlingFunctions(Actor* actor, float scale, float multiplier, CrawlEvent kind, std::string_view tag, float launch_dist, float damage_dist);
+    void DoCrawlingFunctions(Actor* actor, float scale, float multiplier, float damage, CrawlEvent kind, std::string_view tag, float launch_dist, float damage_dist);
     void DoDamageAtPoint(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult);
     void ApplyAllCrawlingDamage(Actor* giant, float damage, int random, float bonedamage);
 }

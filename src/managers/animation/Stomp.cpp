@@ -77,7 +77,7 @@ namespace {
 		DoDamageEffect(&data.giant, (1.8 + data.animSpeed/8) * launch * perk, (1.45 + data.animSpeed/4) * launch, 10, 0.25, FootEvent::Right, 1.0);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/8, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust + data.animSpeed/4, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25 * data.animSpeed, 1.4, FootEvent::Right, 0.95);
+		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25 * data.animSpeed, 1.0, FootEvent::Right, 0.95);
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);
 		FootGrindCheck_Right(&data.giant, 1.45);
 	}
@@ -96,7 +96,7 @@ namespace {
 		DoDamageEffect(&data.giant, (1.8 + data.animSpeed/8) * launch * perk, (1.45 + data.animSpeed/4) * launch, 10, 0.25, FootEvent::Left, 1.0);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust + data.animSpeed/4, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25 * data.animSpeed, 1.4, FootEvent::Left, 0.95);
+		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25 * data.animSpeed, 1.0, FootEvent::Left, 0.95);
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);
 		FootGrindCheck_Left(&data.giant, 1.45);
 	}
@@ -116,7 +116,7 @@ namespace {
 		DoDamageEffect(&data.giant, 1.6 * perk, 1.45, 25, 0.25, FootEvent::Right, 1.0);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust + data.animSpeed/4, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.75 * bonus * perk, 1.8 + data.animSpeed/4, 1.4, FootEvent::Right, 0.80);
+		DoLaunch(&data.giant, 0.75 * bonus * perk, 1.8 + data.animSpeed/4, 1.0, FootEvent::Right, 0.80);
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
@@ -134,7 +134,7 @@ namespace {
 		DoDamageEffect(&data.giant, 1.6 * perk, 1.45, 25, 0.25, FootEvent::Left, 1.0);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust + data.animSpeed/4, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.75 * bonus * perk, 1.8 + data.animSpeed/4, 1.4, FootEvent::Left, 0.80);
+		DoLaunch(&data.giant, 0.75 * bonus * perk, 1.8 + data.animSpeed/4, 1.0, FootEvent::Left, 0.80);
 	}
 
 	void GTSStompendR(AnimationEventData& data) {
