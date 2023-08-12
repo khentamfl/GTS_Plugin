@@ -24,9 +24,9 @@ namespace {
 		if (AllowFeetTracking() && giant->formID == 0x14) {
 			auto& sizemanager = SizeManager::GetSingleton();
 			if (kind == CrawlEvent::RightHand) {
-				sizemanager.SetActionBool(giant, 4.0, decide);
+				sizemanager.SetActionBool(giant, decide, 4.0);
 			} else if (kind == CrawlEvent::LeftHand) {
-				sizemanager.SetActionBool(giant, 7.0, decide);
+				sizemanager.SetActionBool(giant, decide, 7.0);
 			}
 		}
 	}

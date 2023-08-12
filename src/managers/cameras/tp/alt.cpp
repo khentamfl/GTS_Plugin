@@ -54,7 +54,7 @@ namespace Gts {
 		} else if (sizemanager.GetActionBool(player, 0)) {
 			altMode = 13; // Thigh Crushing
 		} else if (sizemanager.GetActionBool(player, 7)) {
-			altMode = 14; // Grab Attack
+			altMode = 14; // Track Left Hand
 		} else if (sizemanager.GetActionBool(player, 8)) {
 			altMode = 15; // Track booty
 		}
