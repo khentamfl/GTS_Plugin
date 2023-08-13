@@ -69,7 +69,7 @@ namespace Gts {
 
 		auto globalMaxSizeCalc = Runtime::GetFloat("GlobalMaxSizeCalc");
 		if (globalMaxSizeCalc < 10.0) {
-			Runtime::SetFloat("GlobalMaxSizeCalc", globalMaxSizeCalc + (value * 50 * progressionMultiplier * TimeScale())); // Always apply it
+			Runtime::SetFloat("GlobalMaxSizeCalc", globalMaxSizeCalc + (value * 1.45 * 50 * progressionMultiplier * TimeScale())); // Always apply it
 		}
 	}
 
