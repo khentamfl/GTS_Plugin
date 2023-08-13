@@ -61,6 +61,8 @@ namespace Gts {
 				}
 
 				if (Runtime::GetBool("EnableGiantSounds")) {
+					FootStepManager::PlayLegacySounds(node, foot_kind, scale, start_l, start_xl, start_xxl);
+					return; // New Sounds are disabled for now
 					if (!LegacySounds) {       // Play normal sounds
 						FootStepManager::PlayNormalSounds(node, foot_kind, scale, sprint_factor, sprinting);
 						return;

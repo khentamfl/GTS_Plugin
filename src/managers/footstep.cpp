@@ -329,6 +329,8 @@ namespace Gts {
 				}
 				if (Runtime::GetBool("EnableGiantSounds")) {
 					for (NiAVObject* foot: impact.nodes) {
+							FootStepManager::PlayLegacySounds(foot, foot_kind, scale, start_l, start_xl, start_xxl);
+							return; // New soundsa re disabled for now
 						if (!LegacySounds && WearingHighHeels) { // Play high heel sounds
 							log::info("Playing HH Sounds");
 							FootStepManager::PlayHighHeelSounds(foot, foot_kind, scale, sprint_factor, sprinting);
