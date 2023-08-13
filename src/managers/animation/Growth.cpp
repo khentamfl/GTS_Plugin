@@ -16,6 +16,7 @@
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "data/time.hpp"
+#include "timer.hpp"
 #include "node.hpp"
 
 using namespace std;
@@ -24,11 +25,6 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-    void CancelGrowth(Actor* actor) {
-        std::string name = std::format("ManualGrowth_{}", actor->formID);
-        TaskManager::Cancel(name);
-        SetHalfLife(actor, 1.0);
-    }
 
     void SetHalfLife(Actor* actor, float value) {
         auto& Persist = Persistent::GetSingleton();
@@ -36,6 +32,12 @@ namespace {
         if (actor_data) {
 			actor_data->half_life = value; 
 		}
+    }
+
+    void CancelGrowth(Actor* actor) {
+        std::string name = std::format("ManualGrowth_{}", actor->formID);
+        TaskManager::Cancel(name);
+        SetHalfLife(actor, 1.0);
     }
 
     void GrowthTask(Actor* actor) {
@@ -51,10 +53,10 @@ namespace {
 				return false;
 			}
 			auto caster = gianthandle.get().get();
-
-			float timeelapsed = std::clamp(Time::WorldTimeElapsed() - Start, 0.01f, 9999f);
-            timeelapsed /= AnimationManager::GetAnimSpeed(caster);
-			float multiply = bezier_curve(timeelapsed, 0, 0.9, 1, 1, 2);
+            float timepassed = Time::WorldTimeElapsed() - Start;
+			float elapsed = std::clamp(timepassed, 0.01f, 9999.0f);
+            elapsed /= AnimationManager::GetAnimSpeed(caster);
+			float multiply = bezier_curve(elapsed, 0, 0.9, 1, 1, 2);
 			
 			float caster_scale = get_visual_scale(caster);
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
