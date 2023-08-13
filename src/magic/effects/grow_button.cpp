@@ -22,7 +22,7 @@ namespace Gts {
 		float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 		float Volume = clamp(0.10, 2.0, stamina * get_visual_scale(caster)/8);
 		Runtime::PlaySoundAtNode("growthSound", caster, Volume, 1.0, "NPC Pelvis [Pelv]");
-		AnimationManager::StartAnim("TriggerGrowth", caster);
+		//AnimationManager::StartAnim("TriggerGrowth", caster);
 		
 
 		//log::info("Grow Button actor: {}", caster->GetDisplayFullName());
@@ -34,12 +34,12 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		/*
+		
 		float caster_scale = get_visual_scale(caster);
 		float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 		DamageAV(caster, ActorValue::kStamina, 0.45 * (caster_scale * 0.5 + 0.5) * stamina * TimeScale());
 		Grow(caster, 0.0030 * stamina, 0.0);
 		Rumble::Once("GrowButton", caster, 1.0, 0.05);
-		*/
+		
 	}
 }

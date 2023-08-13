@@ -435,8 +435,6 @@ namespace {
 		auto giant = &data.giant;
 		auto otherActor = Grab::GetHeldActor(&data.giant);
 
-
-
 		NiPoint3 startThrow = otherActor->GetPosition();
 		double startTime = Time::WorldTimeElapsed();
 		ActorHandle tinyHandle = otherActor->CreateRefHandle();
