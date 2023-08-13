@@ -59,6 +59,7 @@ namespace {
 		float scale = get_visual_scale(player);
 		Rumble::For("RapidGrowth", player, 8.0, 0.10, "NPC COM [COM ]", 0.40);
 		SpringGrow(player, 0.6 * scale * stamina, 0.35, "InputGrowth");
+		AnimationManager::StartAnim("TriggerGrowth", player);
 	}
 	void RapidShrinkEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();

@@ -59,15 +59,21 @@ namespace {
 	}
 
 	void GTSCrawl_Slam_Raise_Arm_R(AnimationEventData& data) {	
+		DrainStamina(&data.giant, "StaminaDrain_CrawlStomp", "DestructionBasics", true, 1.0, 1.4);
 		EnableHandTracking(&data.giant, CrawlEvent::RightHand, true);
 	}
-	void GTSCrawl_SlamStrong_Raise_Arm_R(AnimationEventData& data) {
-		EnableHandTracking(&data.giant, CrawlEvent::RightHand, true);
-	}
+
 	void GTSCrawl_Slam_Raise_Arm_L(AnimationEventData& data) {	
+		DrainStamina(&data.giant, "StaminaDrain_CrawlStomp", "DestructionBasics", true, 1.0, 1.4);
 		EnableHandTracking(&data.giant, CrawlEvent::LeftHand, true);
 	}
+	void GTSCrawl_SlamStrong_Raise_Arm_R(AnimationEventData& data) {
+		DrainStamina(&data.giant, "StaminaDrain_CrawlStompStrong", "DestructionBasics", true, 1.10, 2.3);
+		EnableHandTracking(&data.giant, CrawlEvent::RightHand, true);
+	}
+	
 	void GTSCrawl_SlamStrong_Raise_Arm_L(AnimationEventData& data) {
+		DrainStamina(&data.giant, "StaminaDrain_CrawlStompStrong", "DestructionBasics", true, 1.10, 2.3);
 		EnableHandTracking(&data.giant, CrawlEvent::LeftHand, true);
 	}
 
@@ -79,24 +85,32 @@ namespace {
 	void GTSCrawl_Slam_Impact_R(AnimationEventData& data) {
 		auto giant = &data.giant;
 		float scale = get_visual_scale(giant);
-		DoCrawlingFunctions(giant, scale, 1.1, 1.9, CrawlEvent::RightHand, "RightHandRumble", 22, 17);
+		DoCrawlingFunctions(giant, scale, 1.1, 2.1, CrawlEvent::RightHand, "RightHandRumble", 22, 17);
+		DrainStamina(&data.giant, "StaminaDrain_CrawlStomp", "DestructionBasics", false, 1.0, 1.4);
+		DrainStamina(&data.giant, "StaminaDrain_CrawlStompStrong", "DestructionBasics", false, 1.10, 2.3);
 	}
 	void GTSCrawl_Slam_Impact_L(AnimationEventData& data) {
 		auto giant = &data.giant;
 		float scale = get_visual_scale(giant);
-		DoCrawlingFunctions(giant, scale, 1.1, 1.9, CrawlEvent::LeftHand, "LeftHandRumble", 22, 17);
+		DoCrawlingFunctions(giant, scale, 1.1, 2.1, CrawlEvent::LeftHand, "LeftHandRumble", 22, 17);
+		DrainStamina(&data.giant, "StaminaDrain_CrawlStomp", "DestructionBasics", false, 1.0, 1.4);
+		DrainStamina(&data.giant, "StaminaDrain_CrawlStompStrong", "DestructionBasics", false, 1.20, 2.3);
 	}
 
 
 	void GTSCrawl_SlamStrong_Impact_R(AnimationEventData& data) {
 		auto giant = &data.giant;
 		float scale = get_visual_scale(giant);
-		DoCrawlingFunctions(giant, scale, 1.25, 4.1, CrawlEvent::RightHand, "RightHandRumble", 24, 18);
+		DoCrawlingFunctions(giant, scale, 1.25, 5.2, CrawlEvent::RightHand, "RightHandRumble", 24, 18);
+		DrainStamina(&data.giant, "StaminaDrain_CrawlStomp", "DestructionBasics", false, 1.0, 1.4);
+		DrainStamina(&data.giant, "StaminaDrain_CrawlStompStrong", "DestructionBasics", false, 1.20, 2.3);
 	}
 	void GTSCrawl_SlamStrong_Impact_L(AnimationEventData& data) {
 		auto giant = &data.giant;
 		float scale = get_visual_scale(giant);
-		DoCrawlingFunctions(giant, scale, 1.25, 4.1, CrawlEvent::LeftHand, "RightHandRumble", 24, 18);
+		DoCrawlingFunctions(giant, scale, 1.25, 5.2, CrawlEvent::LeftHand, "RightHandRumble", 24, 18);
+		DrainStamina(&data.giant, "StaminaDrain_CrawlStomp", "DestructionBasics", false, 1.0, 1.4);
+		DrainStamina(&data.giant, "StaminaDrain_CrawlStompStrong", "DestructionBasics", false, 1.20, 2.3);
 	}
 
 	void GTSCrawl_Slam_Cam_Off_R(AnimationEventData& data) {

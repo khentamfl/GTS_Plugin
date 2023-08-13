@@ -9,6 +9,7 @@
 #include "managers/animation/HugShrink.hpp"
 #include "managers/animation/Crawling.hpp"
 #include "managers/animation/Compat.hpp"
+#include "managers/animation/Growth.hpp"
 #include "managers/animation/Stomp.hpp"
 #include "managers/animation/Grab.hpp"
 #include "data/persistent.hpp"
@@ -83,6 +84,9 @@ namespace Gts {
 
 		AnimationCompat::RegisterEvents();
 		AnimationCompat::RegisterTriggers();
+
+		AnimationGrowth::RegisterEvents();
+		AnimationGrowth::RegisterTriggers();
 
 		HugShrink::RegisterEvents();
 		HugShrink::RegisterTriggers();
