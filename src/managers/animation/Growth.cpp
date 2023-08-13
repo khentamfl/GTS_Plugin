@@ -6,13 +6,16 @@
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
+#include "magic/effects/common.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
 #include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
+#include "data/persistent.hpp"
 #include "managers/tremor.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "data/time.hpp"
 #include "node.hpp"
 
 using namespace std;
@@ -36,9 +39,12 @@ namespace {
     }
 
     void GrowthTask(Actor* actor) {
+        if (!actor) {
+            return;
+        }
+        SetHalfLife(actor, 0.20);
 		float Start = Time::WorldTimeElapsed();
 		ActorHandle gianthandle = actor->CreateRefHandle();
-        SetHalfLife(actor, 0.20);
 		std::string name = std::format("ManualGrowth_{}", actor->formID);
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
@@ -46,7 +52,8 @@ namespace {
 			}
 			auto caster = gianthandle.get().get();
 
-			float timeelapsed = Time::WorldTimeElapsed() - Start;
+			float timeelapsed = std::clamp(Time::WorldTimeElapsed() - Start, 0.01f, 9999f);
+            timeelapsed /= AnimationManager::GetAnimSpeed(caster);
 			float multiply = bezier_curve(timeelapsed, 0, 0.9, 1, 1, 2);
 			
 			float caster_scale = get_visual_scale(caster);
