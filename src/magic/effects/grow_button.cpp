@@ -8,7 +8,7 @@
 
 namespace {
 	void GrowthTask(Actor* actor) {
-		float startime = Time::WorldTimeElapsed();
+		float Start = Time::WorldTimeElapsed();
 		ActorHandle gianthandle = actor->CreateRefHandle();
 		std::string name = std::format("ManualGrowth_{}", actor->formID);
 		TaskManager::RunFor(name, 2.0, [=](auto& progressData) {
@@ -17,7 +17,7 @@ namespace {
 			}
 			auto caster = gianthandle.get().get();
 
-			float timeelapsed = Time::WorldTimeElapsed() - starttime;
+			float timeelapsed = Time::WorldTimeElapsed() - Start;
 			float multiply = bezier_curve(timeelapsed, 0, 0.9, 1, 1, 2);
 			
 			float caster_scale = get_visual_scale(caster);
