@@ -21,13 +21,54 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
+    void CancelGrowth(Actor* actor) {
+        std::string name = std::format("ManualGrowth_{}", actor->formID);
+        TaskManager::Cancel(name);
+        SetHalfLife(actor, 1.0);
+    }
+
+    void SetHalfLife(Actor* actor, float value) {
+        auto& Persist = Persistent::GetSingleton();
+        auto actor_data = Persist.GetData(target);
+        if (actor_data) {
+			actor_data->half_life = value; 
+		}
+    }
+
+    void GrowthTask(Actor* actor) {
+		float Start = Time::WorldTimeElapsed();
+		ActorHandle gianthandle = actor->CreateRefHandle();
+        SetHalfLife(actor, 0.20);
+		std::string name = std::format("ManualGrowth_{}", actor->formID);
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			auto caster = gianthandle.get().get();
+
+			float timeelapsed = Time::WorldTimeElapsed() - Start;
+			float multiply = bezier_curve(timeelapsed, 0, 0.9, 1, 1, 2);
+			
+			float caster_scale = get_visual_scale(caster);
+			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
+
+			DamageAV(caster, ActorValue::kStamina, 0.45 * (caster_scale * 0.5 + 0.5) * stamina * TimeScale() * multiply);
+			Grow(caster, 0.0090 * stamina * multiply, 0.0);
+
+			Rumble::Once("GrowButton", caster, 1.0, 0.05);
+			return true;
+		});
+	}
+
 	void GTSGrowth_Enter(AnimationEventData& data) {
     }
     void GTSGrowth_SpurtStart(AnimationEventData& data) {
+        GrowthTask(&data.giant);
     }
     void GTSGrowth_SpurtSlowdownPoint(AnimationEventData& data) {
     }
     void GTSGrowth_SpurtStop(AnimationEventData& data) {
+        CancelGrowth(&data.giant);
     }
     void GTSGrowth_Exit(AnimationEventData& data) {
     }
