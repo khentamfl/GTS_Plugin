@@ -38,7 +38,13 @@ namespace Gts {
 		v = eydt*(v - j1*y*dt);
 	}
 
-
+	//https://www.desmos.com/calculator/hkal618gzo
+	float bezier_curve(const float x,const float x1, const float x2, const float x3, const float x4, const float i) {
+    	return pow((pow(1-x,3)*x1 + 3.0*pow(1-x,2)*x*x2 + 3.0*(1-x)*pow(x,2)*x3 + pow(x,3)*x4),i);
+		//i determines the steepness of the curve - how slow or fast it accelerates and decelerates. Should be between two and three (two might be the best one)
+		//x1 should always be 0, x3 and x4 should always be 1
+		//x2 determines if it accelerates fast but deceleares slow, or vice verca. Should be between 0.8 and 1.
+	}
 	// https://www.desmos.com/calculator/pqgliwxzi2
 	float soft_power(const float x, const float k,const float n,const float s,const float o,const float a) {
 		return pow(1.0+pow(k*(x),n*s),1.0/s)/pow(1.0+pow(k*o,n*s), 1.0/s) + a;

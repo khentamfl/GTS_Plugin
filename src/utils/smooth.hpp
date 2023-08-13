@@ -19,6 +19,9 @@ namespace Gts {
 		float o;
 		float a;
 	};
+
+	//https://www.desmos.com/calculator/hkal618gzo
+	float bezier_curve(const float x, const float x1, const float x2, const float x3, const float x4, const float i);
 	// https://www.desmos.com/calculator/pqgliwxzi2
 	float soft_power(const float x, const float k,const float n,const float s,const float o,const float a);
 	// https://www.desmos.com/calculator/vyofjrqmrn
