@@ -5,6 +5,7 @@
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
+#include "magic/effects/common.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
 #include "utils/actorUtils.hpp"
