@@ -55,10 +55,10 @@ namespace {
 		if (!Runtime::HasPerk(player, "TotalControl")) {
 			return;
 		}
-		float stamina = std::clamp(GetStaminaPercentage(player), 0.05f, 1.0f);
-		float scale = get_visual_scale(player);
-		Rumble::For("RapidGrowth", player, 8.0, 0.10, "NPC COM [COM ]", 0.40);
 		if (!IsCrawling(player) && !player->IsSneaking()) {
+			float stamina = std::clamp(GetStaminaPercentage(player), 0.05f, 1.0f);
+			float scale = get_visual_scale(player);
+			Rumble::For("RapidGrowth", player, 8.0, 0.10, "NPC COM [COM ]", 0.40);
 			AnimationManager::StartAnim("TriggerGrowth", player);
 		}
 	}

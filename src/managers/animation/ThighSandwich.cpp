@@ -248,7 +248,7 @@ namespace {
 		sandwichdata.EnableSuffocate(false);
 		//sandwichdata.DisableRuneTask(&data.giant, false); // Disable Rune Growing
 		sandwichdata.EnableRuneTask(&data.giant, true); // Launch Rune Shrinking
-		sandwichdata.OverideShrinkRune(0.0);
+		//sandwichdata.OverideShrinkRune(0.0);
 		for (auto tiny: sandwichdata.GetActors()) {
 			SetBeingHeld(tiny, false);
 			EnableCollisions(tiny);
