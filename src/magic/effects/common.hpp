@@ -271,7 +271,7 @@ namespace Gts {
 
 		auto GtsSkillLevel = GetGtsSkillLevel();
 
-		float alteration_level_bonus = 0.0290 + (GtsSkillLevel * 0.000290); // + 100% bonus at level 100
+		float alteration_level_bonus = 0.0380 + (GtsSkillLevel * 0.000360); // + 100% bonus at level 100
 		Steal(target, caster, power, power * alteration_level_bonus, transfer_effeciency);
 	}
 
@@ -354,5 +354,4 @@ namespace Gts {
 	inline void CastTrackSize(Actor* caster, Actor* target) {
 		Runtime::CastSpell(caster, target, "TrackSizeSpell");
 	}
-
 }

@@ -66,7 +66,7 @@ namespace Gts {
 		if (!GrowthTimer.ShouldRunFrame()) {
 			return; //Scan once per 1 sec
 		}
-		for (auto actor: FindSomeActors("FindRandomGrowth", 2)) {
+		for (auto actor: find_actors()) {
 			if (!actor) {
 				return;
 			} 
@@ -79,10 +79,8 @@ namespace Gts {
 					float ProgressionMultiplier = Persistent::GetSingleton().progression_multiplier;
 					int random = rand()% 79 + 1;
 					float TotalPower = (100 + random)/100;
-					float base_power = ((0.00185 * TotalPower * 60.0) * ProgressionMultiplier);  // The power of it
+					float base_power = ((0.00185 * TotalPower * 60) * ProgressionMultiplier);  // The power of it
 					ActorHandle gianthandle = actor->CreateRefHandle();
-					// Grow
-					SpringGrow_Free(actor, base_power * 2.5, 0.40 * TotalPower, "RandomGrowthFree");
 					std::string name = std::format("RandomGrowth_{}", actor->formID);
 					// Sounds
 					float Volume = clamp(0.15, 2.0, scale/4);
@@ -94,6 +92,9 @@ namespace Gts {
 						if (!gianthandle) {
 							return false;
 						}
+						// Grow
+						float delta_time = Time::WorldTimeDelta();
+						mod_target_scale(giantref, base_power * delta_time);
 						auto giantref = gianthandle.get().get();
 						// Play sound
 						Rumble::Once("RandomGrowth", giantref, 6.0, 0.05);

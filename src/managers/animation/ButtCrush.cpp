@@ -127,7 +127,7 @@ namespace {
 				return false;
 			}
 			auto FrameB = Time::FramesElapsed() - FrameA;
-			if (FrameB <= 120.0) {
+			if (FrameB <= 60.0) {
 				return true;
 			}
 			auto giantref = gianthandle.get().get();
@@ -368,8 +368,10 @@ namespace {
 
     void ButtCrushStartEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+        if (IsFirstPerson()) {
+            return;
+        }
         if (Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
-
             auto& ButtCrush = ButtCrushController::GetSingleton();
             std::size_t numberOfPrey = 3;
             if (Runtime::HasPerk(player, "MassVorePerk")) {
@@ -392,7 +394,10 @@ namespace {
 
     void ButtCrushGrowEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-        if (IsButtCrushing(player)) {
+        if (IsFirstPerson()) {
+            return;
+        }
+        if (IsButtCrushing(player) && Runtime::HasPerk(player, "ButtCrush_UnstableGrowth")) {
             float GrowthCount = GetGrowthLimit(player);
             bool CanGrow = ButtCrush_IsAbleToGrow(player, GrowthCount);
             if (CanGrow) {

@@ -736,6 +736,8 @@ namespace Gts {
 		std::string name = std::format("GrabAttach_{}", giant->formID);
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
+		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
+		SetBetweenBreasts(giant, false);
 		TaskManager::Cancel(name);
 	}
 

@@ -106,43 +106,43 @@ namespace Gts {
 	void SandwichingData::EnableRuneTask(Actor* giant, bool shrink) {
 		string node_name = "GiantessRune";
 		if (shrink == true) {
+			float Start = Time::WorldTimeElapsed();
 			std::string name = std::format("ShrinkRune_{}", giant->formID);
 			ActorHandle gianthandle = giant->CreateRefHandle();
 			TaskManager::Run(name, [=](auto& progressData) {
 				if (!gianthandle) {
 					return false;
 				}
+				float Finish = Time::WorldTimeElapsed();
 				auto giantref = gianthandle.get().get();
 				auto node = find_node(giantref, node_name, false);
 				if (node) {
-					this->ShrinkRune.halflife = 0.7/AnimationManager::GetAnimSpeed(giantref);
-					this->ShrinkRune.target = 1.0;
-					this->ScaleRune.value = 0.0;
-					this->ScaleRune.target = 0.0;
-					node->local.scale = 1.0 - this->ShrinkRune.value;
-					//log::info("Shrink Rune Value: {}", this->ShrinkRune.value);
+					float timepassed = std::clamp((Finish - Start)/AnimationManager::GetAnimSpeed(giantref), 0.01f, 9999.0f);
+					node->local.scale = std::clamp(1.0 - timepass, 0.01f, 1.0f);
 					update_node(node);
 				}
-				if (this->ShrinkRune.value >= this->ShrinkRune.target) {
+				if (timepassed >= 1.0) {
 					return false; // end it
 				}
 				return true;
 			});
 		} else if (shrink == false) {
+			float Start = Time::WorldTimeElapsed();
 			std::string name = std::format("ScaleRune_{}", giant->formID);
+			ActorHandle gianthandle = giant->CreateRefHandle();
 			TaskManager::Run(name, [=](auto& progressData) {
-				ActorHandle gianthandle = giant->CreateRefHandle();
+				if (!gianthandle) {
+					return false;
+				}
+				float Finish = Time::WorldTimeElapsed();
 				auto giantref = gianthandle.get().get();
 				auto node = find_node(giantref, node_name, false);
 				if (node) {
-					this->ScaleRune.halflife = 0.6/AnimationManager::GetAnimSpeed(giantref);
-					this->ScaleRune.target = 1.0;
-					this->ShrinkRune.value = 0.0;
-					node->local.scale = this->ScaleRune.value;
-					//log::info("Scale Rune Value: {}", this->ScaleRune.value);
+					float timepassed = std::clamp((Finish - Start)/AnimationManager::GetAnimSpeed(giantref), 0.01f, 9999.0f);
+					node->local.scale = std::clamp(timepass, 0.01f, 1.0f);
 					update_node(node);
 				}
-				if (this->ScaleRune.value >= this->ScaleRune.target) {
+				if (timepassed >= 1.0) {
 					return false; // end it
 				}
 				return true;
@@ -339,6 +339,9 @@ namespace Gts {
 	void ThighSandwichController::StartSandwiching(Actor* pred, Actor* prey) {
 		auto& sandwiching = ThighSandwichController::GetSingleton();
 		if (!sandwiching.CanSandwich(pred, prey)) {
+			return;
+		}
+		if (IsBeingHeld(prey)) {
 			return;
 		}
 		if (HasSMT(pred)) {

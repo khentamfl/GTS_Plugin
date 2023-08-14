@@ -12,15 +12,15 @@ namespace Gts {
 	}
 
 	ShrinkFoe::ShrinkFoe(ActiveEffect* effect) : Magic(effect) {
-		const float SHRINK_POWER = 1.20; // Power = Shrink Power
+		const float SHRINK_POWER = 1.75; // Power = Shrink Power
 		const float SHRINK_EFFIC = 0.28; // Efficiency = size steal efficiency.
-		const float SHRINK_AOE_POWER = 1.45;
+		const float SHRINK_AOE_POWER = 1.95;
 		const float SHRINK_AOE_EFFIC = 0.32;
-		const float SHRINK_AOE_MASTER_POWER = 1.75;
+		const float SHRINK_AOE_MASTER_POWER = 2.25;
 		const float SHRINK_AOE_MASTER_EFFIC = 0.36;
-		const float SHRINK_BOLT_POWER = 12.00;
+		const float SHRINK_BOLT_POWER = 16.00;
 		const float SHRINK_BOLT_EFFIC = 0.06;
-		const float SHRINK_STORM_POWER = 24.00;
+		const float SHRINK_STORM_POWER = 32.00;
 		const float SHRINK_STORM_EFFIC = 0.12;
 
 
@@ -68,12 +68,12 @@ namespace Gts {
 			if (actor_data) {
 				actor_data->half_life = 0.25; // Faster shrink, less smooth.
 			}
-			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2.0f, 1.0f, 3.0f);
+			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2.0f, 1.0f, 2.5f);
 		} else if (this->power >= 10.0) {
 			if (actor_data) {
 				actor_data->half_life = 0.50; // Faster shrink, less smooth.
 			}
-			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2.0f, 1.0f, 3.0f);
+			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2.0f, 1.0f, 2.5f);
 		} else {
 			if (actor_data) {
 				actor_data->half_life = 1.0;

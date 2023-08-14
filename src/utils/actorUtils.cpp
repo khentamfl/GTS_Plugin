@@ -1052,7 +1052,7 @@ namespace Gts {
 		float giantScale = get_visual_scale(giant);
 		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(giant)*0.01;
 		bool DarkArts1 =  Runtime::HasPerk(giant, "DarkArts_Aug");
-		bool DarkArts2 = Runtime::HasPerk(giant, "DarkArts_Aug2");
+		bool DarkArts2 = Runtime::HasPerk(giant, "DarkArts_Aug2"); 
 		bool DarkArts_Max = Runtime::HasPerk(giant, "DarkArts_Max");
 		float explosion = 0.7;
 
@@ -1121,6 +1121,10 @@ namespace Gts {
 							PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference));
 						}
 							
+						if (DarkArts1) {
+							giant->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 8.0);
+						}
+
 						mod_target_scale(otherActor, shrinkpower * gigantism);
 						StartCombat(giant, otherActor, true);
 
@@ -1162,6 +1166,9 @@ namespace Gts {
 	}
 
 	void TiredSound(Actor* player, std::string_view message) {
+		if (IsFirstPerson()) {
+            return;
+        }
 		static Timer Cooldown = Timer(1.2);
 		if (Cooldown.ShouldRun()) {
 			Runtime::PlaySound("VoreSound_Fail", player, 0.7, 0.0);

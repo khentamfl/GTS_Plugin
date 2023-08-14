@@ -177,7 +177,7 @@ namespace {
 			if (Shrink.ShouldRunFrame()) {
 				auto node = find_node(receiver, "NPC Pelvis [Pelv]");
 				if (node) {
-					ShrinkOutburstExplosion(receiver, 134.4, node, 0.52, true);
+					ShrinkOutburstExplosion(receiver, 136.8, node, 0.56, true);
 				}
 			}
 		}

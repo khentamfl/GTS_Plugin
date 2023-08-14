@@ -20,7 +20,7 @@
 namespace {
 
 	const float MINIMUM_BUTTCRUSH_DISTANCE = 95.0;
-	const float MINIMUM_BUTTCRUSH_SCALE_RATIO = 2.5;
+	const float MINIMUM_BUTTCRUSH_SCALE_RATIO = 2.0;
 	const float BUTTCRUSH_ANGLE = 70;
 	const float PI = 3.14159;
 
@@ -160,16 +160,16 @@ namespace Gts {
 
 		float sizedifference = pred_scale/prey_scale;
 
-		float MINIMUM_HUG_SCALE = MINIMUM_BUTTCRUSH_SCALE_RATIO;
+		float MINIMUM_BUTTCRUSH_SCALE = MINIMUM_BUTTCRUSH_SCALE_RATIO;
 		float MINIMUM_DISTANCE = MINIMUM_BUTTCRUSH_DISTANCE;
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
-		if (pred->formID == 0x14 && prey_distance <= MINIMUM_DISTANCE * pred_scale && pred_scale/prey_scale < MINIMUM_HUG_SCALE) {
+		if (pred->formID == 0x14 && prey_distance <= MINIMUM_DISTANCE * pred_scale && pred_scale/prey_scale < MINIMUM_BUTTCRUSH_SCALE) {
 			std::string_view message = std::format("You can't butt crush {}", prey->GetDisplayFullName());
 			TiredSound(pred, message); //
 			return false;
 		}
-		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale >= MINIMUM_HUG_SCALE) {
+		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale >= MINIMUM_BUTTCRUSH_SCALE) {
 			if ((prey->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
 				return false;
 			}

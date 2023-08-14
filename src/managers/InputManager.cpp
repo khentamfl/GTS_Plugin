@@ -1,5 +1,6 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "magic/effects/common.hpp"
@@ -146,22 +147,25 @@ namespace {
 		}
 		bool DarkArts2 = Runtime::HasPerk(player, "DarkArts_Aug2");
 		bool DarkArts3 = Runtime::HasPerk(player, "DarkArts_Aug3");
+
+		float gigantism = std::clamp(1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(player)*0.01, 1.0f, 20.0f);
 		
 		float multi = std::clamp(Runtime::GetFloat("bonusHPMultiplier"), 0.5f, 10000.0f);
 		
 		float healthMax = GetMaxAV(player, ActorValue::kHealth);
 		float healthCur = GetAV(player, ActorValue::kHealth);
-		float damagehp = 120.0;
+		float damagehp = 80.0;
 		
 		if (DarkArts2) {
-			damagehp -= 20; // less hp drain
+			damagehp -= 10; // less hp drain
 		} if (DarkArts3) {
-			damagehp -= 40; // even less hp drain
+			damagehp -= 10; // even less hp drain
 		}
 
 		damagehp *= multi;
+		damagehp /= gigantism;
 
-		if (healthCur - damagehp < damagehp * 1.05) {
+		if (healthCur < damagehp * 1.10) {
 			Notify("Your health is too low");
 			return; // don't allow us to die from own shrinking
 		}
@@ -179,7 +183,7 @@ namespace {
 		auto node = find_node(player, "NPC Pelvis [Pelv]");
 		if (node) {
 			DamageAV(player, ActorValue::kHealth, damagehp);
-			ShrinkOutburstExplosion(player, 76.2, node, 0.32, false);
+			ShrinkOutburstExplosion(player, 78.4, node, 0.38, false);
 		}
 	}
 
