@@ -44,7 +44,7 @@ namespace {
         if (!actor) {
             return;
         }
-        SetHalfLife(actor, 0.25);
+        SetHalfLife(actor, 0.10);
 		float Start = Time::WorldTimeElapsed();
 		ActorHandle gianthandle = actor->CreateRefHandle();
 		std::string name = std::format("ManualGrowth_{}", actor->formID);
