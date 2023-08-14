@@ -112,6 +112,7 @@ namespace Gts {
 	void AddPerkPoints(float level);
 	float GetRandomBoost();
 	float GetButtCrushCost(Actor* actor);
+	float GetAnimationSlowdown(Actor* giant);
 
 	void DoFootstepSound(Actor* giant, float modifier, FootEvent kind, std::string_view node);
 	void DoDustExplosion(Actor* giant, float modifier, FootEvent kind, std::string_view node);

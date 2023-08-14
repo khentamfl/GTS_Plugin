@@ -880,6 +880,22 @@ namespace Gts {
         return cost;
     }
 
+	float GetAnimationSlowdown(Actor* giant) {
+		if (!giant) {
+			return 1.0;
+		}
+		float scale = get_visual_scale(giant);
+		SoftPotential getspeed {
+			.k = 0.142, // 0.125
+			.n = 0.82, // 0.86
+			.s = 1.90, // 1.12
+			.o = 1.0,
+			.a = 0.0,  //Default is 0
+		};
+		float speedmultcalc = soft_core(scale, getspeed);
+		return speedmultcalc;
+	}
+
 	void DoFootstepSound(Actor* giant, float modifier, FootEvent kind, std::string_view node) {
 		auto& footstep = FootStepManager::GetSingleton();
 		Impact impact_data = Impact {

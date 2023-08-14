@@ -7,13 +7,16 @@
 #include "managers/CrushManager.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
+#include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "managers/tremor.hpp"
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "data/time.hpp"
 #include "spring.hpp"
 #include "node.hpp"
+
 
 namespace {
 
@@ -116,7 +119,7 @@ namespace Gts {
 				float Finish = Time::WorldTimeElapsed();
 				auto giantref = gianthandle.get().get();
 				auto node = find_node(giantref, node_name, false);
-				float timepassed = std::clamp(((Finish - Start)/AnimationManager::GetAnimSpeed(giantref)) * 0.20f, 0.01f, 0.98f);
+				float timepassed = std::clamp(((Finish - Start) * GetAnimationSlowdown(giantref)) * 0.20f, 0.01f, 0.98f);
 				log::info("Shrink Rune task is running, timepassed: {}", timepassed);
 				if (node) {
 					node->local.scale = std::clamp(1.0f - timepassed, 0.01f, 1.0f);
@@ -138,7 +141,7 @@ namespace Gts {
 				float Finish = Time::WorldTimeElapsed();
 				auto giantref = gianthandle.get().get();
 				auto node = find_node(giantref, node_name, false);
-				float timepassed = std::clamp(((Finish - Start)/AnimationManager::GetAnimSpeed(giantref)) * 0.20f, 0.01f, 9999.0f);
+				float timepassed = std::clamp(((Finish - Start) * GetAnimationSlowdown(giantref)) * 0.20f, 0.01f, 9999.0f);
 				log::info("Grow Rune task is running, timepassed: {}", timepassed);
 				if (node) {
 					node->local.scale = std::clamp(timepassed, 0.01f, 1.0f);
@@ -196,7 +199,7 @@ namespace Gts {
 
 			if (this->Suffocate) {
 				float sizedifference = giantScale/tinyScale;
-				float damage = 0.005 * sizedifference;
+				float damage = 0.005 * sizedifference * TimeScale();
 				float hp = GetAV(tiny, ActorValue::kHealth);
 				DamageAV(tiny, ActorValue::kHealth, damage);
 				if (damage > hp && !tiny->IsDead()) {
