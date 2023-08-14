@@ -120,8 +120,8 @@ namespace Gts {
 				float Finish = Time::WorldTimeElapsed();
 				auto giantref = gianthandle.get().get();
 				auto node = find_node(giantref, node_name, false);
-				float timepassed = std::clamp(((Finish - Start) * GetAnimationSlowdown(giantref)) * 0.20f, 0.01f, 0.98f);
-				log::info("Shrink Rune task is running, timepassed: {}", timepassed);
+				float timepassed = std::clamp(((Finish - Start) * GetAnimationSlowdown(giantref)), 0.01f, 0.98f);
+				log::info("Shrink Rune task is running, timepassed: {}, AnimationSlowdown: {} ", timepassed, GetAnimationSlowdown(giantref));
 				if (node) {
 					node->local.scale = std::clamp(1.0f - timepassed, 0.01f, 1.0f);
 					update_node(node);
@@ -142,8 +142,8 @@ namespace Gts {
 				float Finish = Time::WorldTimeElapsed();
 				auto giantref = gianthandle.get().get();
 				auto node = find_node(giantref, node_name, false);
-				float timepassed = std::clamp(((Finish - Start) * GetAnimationSlowdown(giantref)) * 0.20f, 0.01f, 9999.0f);
-				log::info("Grow Rune task is running, timepassed: {}", timepassed);
+				float timepassed = std::clamp(((Finish - Start) * GetAnimationSlowdown(giantref)), 0.01f, 9999.0f);
+				log::info("Grow Rune task is running, timepassed: {}, AnimationSlowdown: {} ", timepassed, GetAnimationSlowdown(giantref));
 				if (node) {
 					node->local.scale = std::clamp(timepassed, 0.01f, 1.0f);
 					update_node(node);
