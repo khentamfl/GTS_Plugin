@@ -92,10 +92,11 @@ namespace Gts {
 						if (!gianthandle) {
 							return false;
 						}
+						auto giantref = gianthandle.get().get();
 						// Grow
 						float delta_time = Time::WorldTimeDelta();
 						mod_target_scale(giantref, base_power * delta_time);
-						auto giantref = gianthandle.get().get();
+						
 						// Play sound
 						Rumble::Once("RandomGrowth", giantref, 6.0, 0.05);
 						RestoreStats(giantref); // Regens Attributes if PC has perk
