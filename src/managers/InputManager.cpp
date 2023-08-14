@@ -148,7 +148,7 @@ namespace {
 		bool DarkArts2 = Runtime::HasPerk(player, "DarkArts_Aug2");
 		bool DarkArts3 = Runtime::HasPerk(player, "DarkArts_Aug3");
 
-		float gigantism = std::clamp(1.0f + SizeManager::GetSingleton().GetEnchantmentBonus(player)*0.01, 1.0f, 20.0f);
+		float gigantism = std::clamp(1.0f + SizeManager::GetSingleton().GetEnchantmentBonus(player)*0.01f, 1.0f, 20.0f);
 		
 		float multi = std::clamp(Runtime::GetFloat("bonusHPMultiplier"), 0.5f, 10000.0f);
 		
