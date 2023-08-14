@@ -1,10 +1,36 @@
 #include "magic/effects/shrink_foe.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "magic/effects/common.hpp"
+#include "data/persistent.hpp"
+#include "data/transient.hpp"
+#include "data/runtime.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
-#include "data/runtime.hpp"
-#include "data/persistent.hpp"
+#include "data/time.hpp"
+
+namespace {
+	void ResetShrinkWeakness(Actor* tiny) {
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient) {
+			transient->ShrinkWeakness = 1.0;
+		}
+	}
+	void AddShrinkWeakness(Actor* tiny, float value) {
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient) {
+			transient->ShrinkWeakness += value;
+		}
+	}
+
+	float GetShrinkWeakness(Actor* tiny) {
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient) {
+			return transient->ShrinkWeakness;
+		}
+		return 1.0;
+	}
+}
+
 
 namespace Gts {
 	std::string ShrinkFoe::GetName() {
@@ -76,6 +102,7 @@ namespace Gts {
 			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2.0f, 1.0f, 2.5f);
 		} else {
 			if (actor_data) {
+				AddShrinkWeakness(target, 0.01 * TimeScale());
 				actor_data->half_life = 1.0;
 			}
 		}
@@ -89,11 +116,14 @@ namespace Gts {
 			balancemodebonus = 2.0;
 		}
 
+		float weakness = std::clamp(GetShrinkWeakness(target), 1.0f, 10.0f);
+		log::info("Weakness of {} is {}", target->GetDisplayFullName(), weakness);
+
 		bool has_smt = HasSMT(caster);
 		if (target->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
 			return; // Disallow shrinking Essentials
 		}
-		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus, gainpower * balancemodebonus, has_smt);
+		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus * weakness, gainpower * balancemodebonus, has_smt);
 		if (ShrinkToNothing(caster, target)) {
 			//Dispel();
 		}
@@ -102,6 +132,7 @@ namespace Gts {
 	void ShrinkFoe::OnFinish() {
 		auto Caster = GetCaster();
 		auto Target = GetTarget();
+		ResetShrinkWeakness(Target);
 		CastTrackSize(Caster, Target);
 	}
 }

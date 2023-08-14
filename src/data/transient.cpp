@@ -75,6 +75,7 @@ namespace Gts {
 			float WorldFov_Default = 0;
 			float FpFov_Default = 0;
 			float ButtCrushGrowthAmount = 0;
+			float ShrinkWeakness = 1.0;
 
 			// Volume scales cubically
 			float base_volume = bound->extents[0] * bound->extents[1] * bound->extents[2] * scale * scale * scale;
@@ -111,6 +112,7 @@ namespace Gts {
 			result.WorldFov_Default = WorldFov_Default;
 			result.FpFov_Default = FpFov_Default;
 			result.ButtCrushGrowthAmount = ButtCrushGrowthAmount;
+			result.ShrinkWeakness = ShrinkWeakness;
 			result.OverrideCamera = OverrideCamera;
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
