@@ -116,9 +116,9 @@ namespace Gts {
 				float Finish = Time::WorldTimeElapsed();
 				auto giantref = gianthandle.get().get();
 				auto node = find_node(giantref, node_name, false);
+				float timepassed = std::clamp((Finish - Start)/AnimationManager::GetAnimSpeed(giantref), 0.01f, 9999.0f);
 				if (node) {
-					float timepassed = std::clamp((Finish - Start)/AnimationManager::GetAnimSpeed(giantref), 0.01f, 9999.0f);
-					node->local.scale = std::clamp(1.0 - timepass, 0.01f, 1.0f);
+					node->local.scale = std::clamp(1.0 - timepassed, 0.01f, 1.0f);
 					update_node(node);
 				}
 				if (timepassed >= 1.0) {
@@ -137,9 +137,9 @@ namespace Gts {
 				float Finish = Time::WorldTimeElapsed();
 				auto giantref = gianthandle.get().get();
 				auto node = find_node(giantref, node_name, false);
+				float timepassed = std::clamp((Finish - Start)/AnimationManager::GetAnimSpeed(giantref), 0.01f, 9999.0f);
 				if (node) {
-					float timepassed = std::clamp((Finish - Start)/AnimationManager::GetAnimSpeed(giantref), 0.01f, 9999.0f);
-					node->local.scale = std::clamp(timepass, 0.01f, 1.0f);
+					node->local.scale = std::clamp(timepassed, 0.01f, 1.0f);
 					update_node(node);
 				}
 				if (timepassed >= 1.0) {
