@@ -162,7 +162,7 @@ namespace {
 		sizemanager.SetActionBool(&data.giant, true, 1.0); // Disallow sandwiching repeat
 		ManageCamera(&data.giant, true, 3.0); // Focus camera on AnimObjectA
 		sandwichdata.EnableRuneTask(&data.giant, false); // Start Growing the Rune
-		sandwichdata.DisableRuneTask(&data.giant, true); // Disable Rune Shrinking
+		//sandwichdata.DisableRuneTask(&data.giant, true); // Disable Rune Shrinking
 	}
 	void GTSSandwich_SitStart(AnimationEventData& data) {
 	}
@@ -246,7 +246,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		ManageCamera(&data.giant, false, 3.0);
 		sandwichdata.EnableSuffocate(false);
-		sandwichdata.DisableRuneTask(&data.giant, false); // Disable Rune Growing
+		//sandwichdata.DisableRuneTask(&data.giant, false); // Disable Rune Growing
 		sandwichdata.EnableRuneTask(&data.giant, true); // Launch Rune Shrinking
 		sandwichdata.OverideShrinkRune(0.0);
 		for (auto tiny: sandwichdata.GetActors()) {
@@ -281,8 +281,8 @@ namespace {
 			EnableCollisions(tiny);
 		}
 		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 0.225, 2.5);
-		sandwichdata.DisableRuneTask(&data.giant, false); // Disable Rune Growth
-		sandwichdata.DisableRuneTask(&data.giant, true); // Disable Rune Shrink
+		//sandwichdata.DisableRuneTask(&data.giant, false); // Disable Rune Growth
+		//sandwichdata.DisableRuneTask(&data.giant, true); // Disable Rune Shrink
 		sizemanager.SetActionBool(&data.giant, false, 1.0); // Allow sandwich repeat
 	}
 
