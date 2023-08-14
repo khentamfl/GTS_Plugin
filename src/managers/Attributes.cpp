@@ -2,6 +2,7 @@
 #include "managers/GtsManager.hpp"
 #include "managers/Attributes.hpp"
 #include "managers/highheel.hpp"
+#include "utils/actorUtils.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
 #include "data/persistent.hpp"
@@ -234,10 +235,10 @@ namespace Gts {
 					Bonus = actorData->smt_run_speed;
 				}
 				if (Runtime::HasPerk(actor, "BonusSpeedPerk")) {
-					PerkSpeed = clamp(0.80, 1.0, speed_mult_walk);
+					PerkSpeed = clamp(0.80, 1.0, GetAnimationSlowdown(actor));//speed_mult_walk);
 				}
 
-				float power = 1.0 * (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/bonusspeed/PerkSpeed;
+				float power = 1.0 / PerkSpeed / GetAnimationSlowdown(actor);//* (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/bonusspeed/PerkSpeed;
 				if (scale > 1.0) {
 					return power;
 				} else {

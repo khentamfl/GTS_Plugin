@@ -183,7 +183,7 @@ namespace {
 		auto node = find_node(player, "NPC Pelvis [Pelv]");
 		if (node) {
 			DamageAV(player, ActorValue::kHealth, damagehp);
-			ShrinkOutburstExplosion(player, 78.4, node, 0.38, false);
+			ShrinkOutburstExplosion(player, 84.0, node, 0.38, false);
 		}
 	}
 

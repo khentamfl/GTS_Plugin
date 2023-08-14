@@ -1070,12 +1070,12 @@ namespace Gts {
 		bool DarkArts1 =  Runtime::HasPerk(giant, "DarkArts_Aug");
 		bool DarkArts2 = Runtime::HasPerk(giant, "DarkArts_Aug2"); 
 		bool DarkArts_Max = Runtime::HasPerk(giant, "DarkArts_Max");
-		float explosion = 0.7;
+		float explosion = 0.75;
 
 		if (DarkArts1) {
 			radius *= 1.33;
 			shrink *= 1.33;
-			explosion = 1.0;
+			explosion = 1.05;
 		} if (WasHit) {
 			explosion = 2.0;
 		}
