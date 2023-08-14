@@ -238,7 +238,8 @@ namespace Gts {
 					PerkSpeed = clamp(0.80, 1.0, GetAnimationSlowdown(actor));//speed_mult_walk);
 				}
 
-				float power = 1.0 / PerkSpeed / GetAnimationSlowdown(actor);//* (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/bonusspeed/PerkSpeed;
+				float power = 1.0 / PerkSpeed / GetAnimationSlowdown(actor)/GetAnimationSlowdown(actor)/GetAnimationSlowdown(actor);//* (Bonus/2.2 + 1.0)/MS_mult/MS_mult_limit/Multy/bonusspeed/PerkSpeed;
+				log::info("Power = {}, GetAnimSlowdown: {}", power, GetAnimationSlowdown(actor));
 				if (scale > 1.0) {
 					return power;
 				} else {
