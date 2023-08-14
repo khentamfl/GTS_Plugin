@@ -46,6 +46,8 @@ namespace Gts {
 			power *= DUAL_CAST_BONUS;
 		}
 
-		ShrinkActor(target, power*0.5, 0);
+		if (target_scale > 0.36) {
+			ShrinkActor(target, power*0.10, 0);
+		}
 	}
 }

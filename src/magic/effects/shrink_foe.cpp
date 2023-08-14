@@ -38,15 +38,15 @@ namespace Gts {
 	}
 
 	ShrinkFoe::ShrinkFoe(ActiveEffect* effect) : Magic(effect) {
-		const float SHRINK_POWER = 1.75; // Power = Shrink Power
-		const float SHRINK_EFFIC = 0.28; // Efficiency = size steal efficiency.
-		const float SHRINK_AOE_POWER = 1.95;
-		const float SHRINK_AOE_EFFIC = 0.32;
-		const float SHRINK_AOE_MASTER_POWER = 2.25;
-		const float SHRINK_AOE_MASTER_EFFIC = 0.36;
-		const float SHRINK_BOLT_POWER = 16.00;
+		const float SHRINK_POWER = 1.85; // Power = Shrink Power
+		const float SHRINK_EFFIC = 0.16; // Efficiency = size steal efficiency.
+		const float SHRINK_AOE_POWER = 2.05;
+		const float SHRINK_AOE_EFFIC = 0.18;
+		const float SHRINK_AOE_MASTER_POWER = 2.30;
+		const float SHRINK_AOE_MASTER_EFFIC = 0.20;
+		const float SHRINK_BOLT_POWER = 17.50;
 		const float SHRINK_BOLT_EFFIC = 0.06;
-		const float SHRINK_STORM_POWER = 32.00;
+		const float SHRINK_STORM_POWER = 34.50;
 		const float SHRINK_STORM_EFFIC = 0.12;
 
 
@@ -102,7 +102,7 @@ namespace Gts {
 			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2.0f, 1.0f, 2.5f);
 		} else {
 			if (actor_data) {
-				AddShrinkWeakness(target, 0.01 * TimeScale());
+				AddShrinkWeakness(target, 0.006 * TimeScale());
 				actor_data->half_life = 1.0;
 			}
 		}
