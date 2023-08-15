@@ -44,7 +44,7 @@ namespace {
         if (!actor) {
             return;
         }
-        SetHalfLife(actor, 0.0);
+        SetHalfLife(actor, 0.02);
 		float Start = Time::WorldTimeElapsed();
 		ActorHandle gianthandle = actor->CreateRefHandle();
 		std::string name = std::format("ManualGrowth_{}", actor->formID);
@@ -55,7 +55,7 @@ namespace {
 			auto caster = gianthandle.get().get();
             float timepassed = Time::WorldTimeElapsed() - Start;
 			float elapsed = std::clamp(timepassed * AnimationManager::GetAnimSpeed(caster), 0.01f, 1.2f);
-			float multiply = bezier_curve(elapsed, 0, 1, 1, 1, 1.7);
+			float multiply = bezier_curve(elapsed, 0, 1, 1, 1, 1.8);
             log::info("Elapsed {}, Multiply: {}", elapsed, multiply);
 			
 			float caster_scale = get_visual_scale(caster);
