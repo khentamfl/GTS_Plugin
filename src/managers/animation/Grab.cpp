@@ -486,9 +486,12 @@ namespace {
 
         // Angles in degrees
         // Sermit: Please just adjust these
-        float angle_x = 0.0; // 60
-        float angle_y = 10.0;
-        float angle_z = get_visual_scale(giant);
+		
+		
+		
+        float angle_x = Runtime::GetFloat("cameraAlternateX"); // 60
+        float angle_y = Runtime::GetFloat("cameraAlternateY");//10.0;
+        float angle_z = Runtime::GetFloat("combatCameraAlternateX");
 
         // Conversion to radians
         const float PI = 3.141592653589793;
