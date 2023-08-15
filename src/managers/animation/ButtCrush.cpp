@@ -5,6 +5,7 @@
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/animation/ButtCrush.hpp"
 #include "managers/damage/LaunchActor.hpp"
+#include "managers/animation/Grab.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"

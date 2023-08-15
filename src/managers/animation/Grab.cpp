@@ -489,9 +489,9 @@ namespace {
 		
 		
 		
-        float angle_x = Runtime::GetFloat("cameraAlternateX"); // 60
-        float angle_y = Runtime::GetFloat("cameraAlternateY");//10.0;
-        float angle_z = Runtime::GetFloat("combatCameraAlternateX"); // 0
+        float angle_x = 60;//Runtime::GetFloat("cameraAlternateX"); // 60
+        float angle_y = 10;//Runtime::GetFloat("cameraAlternateY");//10.0;
+        float angle_z = 0;//::GetFloat("combatCameraAlternateX"); // 0
 
         // Conversion to radians
         const float PI = 3.141592653589793;
