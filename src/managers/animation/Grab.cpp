@@ -448,36 +448,74 @@ namespace {
 
 		// Do this next frame (or rather until some world time has elapsed)
 		TaskManager::Run([=](auto& update){
-		Actor* giant = gianthandle.get().get();
-		Actor* tiny = tinyHandle.get().get();
-		if (!giant) {
-			return false;
-		}
-		if (!tiny) {
-			return false;
-		}
+  		Actor* giant = gianthandle.get().get();
+  		Actor* tiny = tinyHandle.get().get();
+  		if (!giant) {
+  			return false;
+  		}
+  		if (!tiny) {
+  			return false;
+  		}
+      // Wait for 3D to be ready
+      if (!giant->Is3DLoaded()) {
+        if (!giant->GetCurrent3D()) {
+          return true;
+        }
+      }
+      if (!tiny->Is3DLoaded()) {
+        if (!tiny->GetCurrent3D()) {
+          return true;
+        }
+      }
 
-		NiPoint3 endThrow = tiny->GetPosition();
-		double endTime = Time::WorldTimeElapsed();
+  		NiPoint3 endThrow = tiny->GetPosition();
+  		double endTime = Time::WorldTimeElapsed();
 
-		if ((endTime - startTime) > 1e-4) {
-			// Time has elapsed
-			SetBeingHeld(tiny, false);
-			EnableCollisions(tiny);
+  		if ((endTime - startTime) > 1e-4) {
+  			// Time has elapsed
+  			SetBeingHeld(tiny, false);
+  			EnableCollisions(tiny);
 
-			NiPoint3 vector = endThrow - startThrow;
-			float distanceTravelled = vector.Length();
-			float timeTaken = endTime - startTime;
-			float speed = distanceTravelled / timeTaken;
-			NiPoint3 direction = vector / vector.Length();
+  			NiPoint3 vector = endThrow - startThrow;
+  			float distanceTravelled = vector.Length();
+  			float timeTaken = endTime - startTime;
+  			float speed = distanceTravelled / timeTaken;
+  			// NiPoint3 direction = vector / vector.Length();
 
-			//PushActorAway(giant, tiny, direction, speed * 100);
-			PushActorAway(giant, tiny, direction, speed * 100);
-			//ApplyHavokImpulse(tiny, direction.x, direction.y, 0, speed * 1000);
-			return false;
-		} else {
-			return true;
-		}
+        // Angles in degrees
+        // Sermit: Please just adjust these
+        float angle_x = 60.0;
+        float angle_y = 10.0;
+        float angle_z = 0.0;
+
+        // Conversion to radians
+        const float PI = 3.141592653589793;
+        float angle_x_rad = angle_x * 180.0 / PI;
+        float angle_y_rad = angle_y * 180.0 / PI;
+        float angle_z_rad = angle_z * 180.0 / PI;
+
+        // Work out direction from angles and an initial (forward) vector;
+        //
+        // If all angles are zero then it goes forward
+        // angle_x is pitch
+        // angle_y is yaw
+        // angle_z is roll
+        //
+        // The order of operation is pitch > yaw > roll
+        NiPoint3 customDirection = NiMatrix3(angle_x_rad, angle_y_rad, angle_z_rad) * NiPoint3(0.0, 0.0, 1.0);
+
+        // Convert to giant local space
+        // Only use rotation not translaion or scale since those will mess everything up
+        NiPoint3 direction = giant->GetCurrent3D()->world.rotate * (customDirection / customDirection.Length());
+
+
+  			//PushActorAway(giant, tiny, direction, speed * 100);
+  			PushActorAway(giant, tiny, direction, speed * 100);
+  			//ApplyHavokImpulse(tiny, direction.x, direction.y, 0, speed * 1000);
+  			return false;
+  		} else {
+  			return true;
+  		}
 		});
 	}
 
