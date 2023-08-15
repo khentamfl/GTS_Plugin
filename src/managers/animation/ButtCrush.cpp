@@ -345,6 +345,14 @@ namespace {
                 Rumble::Once("Butt_L", &data.giant, 3.60 * damage, 0.02, "NPC R Butt");
                 Rumble::Once("Butt_R", &data.giant, 3.60 * damage, 0.02, "NPC L Butt");
             }
+        } else {
+            if (!ButtR) {
+                Notify("Error: Missing Butt Nodes"); // Will help people to troubleshoot it. Not everyone has 3BB body.
+                Notify("Error: effects not inflicted");
+            } if (!ThighL) {
+                Notify("Error: Missing Thigh Nodes");
+                Notify("Error: effects not inflicted");
+            }
         }
         ModGrowthCount(giant, 0, true); // Reset limit
         //giant->SetGraphVariableBool("GTS_IsButtCrushing", false);
