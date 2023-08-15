@@ -54,15 +54,15 @@ namespace {
 			}
 			auto caster = gianthandle.get().get();
             float timepassed = Time::WorldTimeElapsed() - Start;
-			float elapsed = std::clamp(timepassed, 0.01f, 1.2f);
-            elapsed /= AnimationManager::GetAnimSpeed(caster);
+			float elapsed = std::clamp(timepassed/AnimationManager::GetAnimSpeed(caster), 0.01f, 1.2f);
 			float multiply = bezier_curve(elapsed, 0, 1, 1, 1, 2);
+            log::info("Elapsed {}, Multiply: {}", elapsed, multiply);
 			
 			float caster_scale = get_visual_scale(caster);
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 
 			DamageAV(caster, ActorValue::kStamina, 0.45 * (caster_scale * 0.5 + 0.5) * stamina * TimeScale() * multiply);
-			Grow(caster, 0.0070 * stamina * multiply, 0.0);
+			Grow(caster, 0.0060 * stamina * multiply, 0.0);
 
 			Rumble::Once("GrowButton", caster, 3.0 * stamina, 0.05);
 			return true;
