@@ -458,14 +458,16 @@ namespace {
   		}
       // Wait for 3D to be ready
       if (!giant->Is3DLoaded()) {
-        if (!giant->GetCurrent3D()) {
-          return true;
-        }
+        return true;
+      }
+      if (!giant->GetCurrent3D()) {
+        return true;
       }
       if (!tiny->Is3DLoaded()) {
-        if (!tiny->GetCurrent3D()) {
-          return true;
-        }
+        return true;
+      }
+      if (!tiny->GetCurrent3D()) {
+        return true;
       }
 
   		NiPoint3 endThrow = tiny->GetPosition();
