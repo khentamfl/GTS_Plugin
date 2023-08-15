@@ -54,7 +54,7 @@ namespace {
 			}
 			auto caster = gianthandle.get().get();
             float timepassed = Time::WorldTimeElapsed() - Start;
-			float elapsed = std::clamp(timepassed, 0.01f, 9999.0f);
+			float elapsed = std::clamp(timepassed, 0.01f, 1.2f);
             elapsed /= AnimationManager::GetAnimSpeed(caster);
 			float multiply = bezier_curve(elapsed, 0, 1, 1, 1, 2);
 			

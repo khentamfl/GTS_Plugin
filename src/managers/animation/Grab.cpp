@@ -486,9 +486,9 @@ namespace {
 
         // Angles in degrees
         // Sermit: Please just adjust these
-        float angle_x = 60.0;
+        float angle_x = 0.0; // 60
         float angle_y = 10.0;
-        float angle_z = 0.0;
+        float angle_z = get_visual_scale(giant);
 
         // Conversion to radians
         const float PI = 3.141592653589793;
