@@ -491,7 +491,7 @@ namespace {
 		
         float angle_x = Runtime::GetFloat("cameraAlternateX"); // 60
         float angle_y = Runtime::GetFloat("cameraAlternateY");//10.0;
-        float angle_z = Runtime::GetFloat("combatCameraAlternateX");
+        float angle_z = Runtime::GetFloat("combatCameraAlternateX"); // 0
 
         // Conversion to radians
         const float PI = 3.141592653589793;
@@ -512,7 +512,7 @@ namespace {
         // Convert to giant local space
         // Only use rotation not translaion or scale since those will mess everything up
         NiPoint3 direction = giant->GetCurrent3D()->world.rotate * (customDirection / customDirection.Length());
-
+		log::info("Direction : {}", Vector2Str(direction));
 
   			//PushActorAway(giant, tiny, direction, speed * 100);
   			PushActorAway(giant, tiny, 1);
