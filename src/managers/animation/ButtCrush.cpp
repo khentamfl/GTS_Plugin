@@ -379,6 +379,9 @@ namespace {
         if (IsFirstPerson()) {
             return;
         }
+        if (IsCrawling(player)) {
+            return;
+        }
         auto grabbedActor = Grab::GetHeldActor(player);
 		if (grabbedActor) {
             return;
