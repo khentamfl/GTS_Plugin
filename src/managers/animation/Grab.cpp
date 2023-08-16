@@ -508,7 +508,7 @@ namespace {
         //
         // The order of operation is pitch > yaw > roll
         NiMatrix3 customRot = NiMatrix3(angle_x_rad, angle_y_rad, angle_z_rad);
-        NiPoint3 forward = NiPoint3(0.0, 0.0, 1.0);
+        NiPoint3 forward = NiPoint3(0.0, 0.0, 0.0);
         NiPoint3 customDirection = customRot * forward;
 
         // Convert to giant local space
