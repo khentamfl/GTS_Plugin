@@ -524,7 +524,7 @@ namespace {
 		log::info("Speed: {}", Runtime::GetFloat("cameraAlternateX") * 100);
 
   			//PushActorAway(giant, tiny, direction, speed * 100);
-  			PushActorAway(giant, tiny, 1);
+  			PushActorAway(giant, tiny, NiPoint3(0, 0, 0), 1);
   			//ApplyHavokImpulse(tiny, direction.x, direction.y, direction.z, Runtime::GetFloat("cameraAlternateX") * 100);//speed * 100);
   			return false;
   		} else {
