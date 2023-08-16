@@ -515,7 +515,7 @@ namespace {
         // Only use rotation not translaion or scale since those will mess everything up
         NiMatrix3 giantRot = giant->GetCurrent3D()->world.rotate;
         NiPoint3 direction = giantRot * (customDirection / customDirection.Length());
-		log::info("AngleX, AngleY, AngleZ:", angle_x, angle_y, angle_z);
+		log::info("AngleX: {}, AngleY: {}, AngleZ: {}", angle_x, angle_y, angle_z);
         log::info("forward : {}", Vector2Str(forward));
         log::info("customDirection : {}", Vector2Str(customDirection));
         log::info("Direction : {}", Vector2Str(direction));
