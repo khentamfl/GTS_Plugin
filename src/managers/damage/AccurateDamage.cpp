@@ -410,14 +410,7 @@ namespace Gts {
 			if (giant->AsActorState()->IsSprinting()) {
 				movementFactor *= 1.5;
 			}
-			if (!isdamaging && force >= 0.33 && !giant->AsActorState()->IsSprinting() && !giant->AsActorState()->IsWalking() && !giant->IsRunning()) {
-				StaggerOr(giant, tiny, 1 * force, 0, 0, 0, 0);
-				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
-				accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true, crushmult);
-			} else if (!isdamaging && (force >= 0.55 || giant->AsActorState()->IsSprinting() || giant->AsActorState()->IsWalking() || giant->IsRunning() || giant->IsSneaking())) {
-				StaggerOr(giant, tiny, 1 * force, 0, 0, 0, 0);
-				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
-			} else if (!isdamaging && (force >= 0.65)) {
+			if (!isdamaging && force >= 0.33) {
 				StaggerOr(giant, tiny, 1 * force, 0, 0, 0, 0);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 			}

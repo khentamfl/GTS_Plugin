@@ -457,7 +457,6 @@ namespace Gts {
 
 	bool SizeManager::GetPreciseDamage() {
 		auto result = Runtime::GetBool("PreciseDamage");
-		//log::info("Value: {}", result);
 		return result;
 	}
 }

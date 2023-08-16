@@ -121,6 +121,78 @@ namespace {
 		auto giant = &data.giant;
 		EnableHandTracking(&data.giant, CrawlEvent::LeftHand, false);
 	}
+
+	/////////////////////////////////////////////////////////Swipe Attacks//////////////////////////////////////////
+
+	void TriggerHandCollision_Right(Actor* actor, float power) {
+		std::string name = std::format("HandCollide_R_{}", actor->formID);
+		auto gianthandle = actor->CreateRefHandle();
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			auto giant = gianthandle.get().get();
+			auto Uarm = find_node(giant, "NPC L Forearm [LLar]");
+			auto Arm = find_node(giant, "NPC L Hand [LHnd]");
+			if (Uarm && Arm) {
+				DoDamageAtPoint(giant, 24, 60.0 * power, Uarm1, 10, 0.70, 0.12 * power);
+				DoDamageAtPoint(giant, 28, 60.0 * power, Arm, 10, 0.70, 0.12 * power);
+				return true;
+			}
+			return false;
+		});
+	}
+
+	void TriggerHandCollision_Left(Actor* actor, float power) {
+		std::string name = std::format("HandCollide_L_{}", actor->formID);
+		auto gianthandle = actor->CreateRefHandle();
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			auto giant = gianthandle.get().get();
+			auto Uarm = find_node(giant, "NPC L Forearm [LLar]");
+			auto Arm = find_node(giant, "NPC L Hand [LHnd]");
+			if (Uarm && Arm) {
+				DoDamageAtPoint(giant, 24, 60.0 * power, Uarm1, 10, 0.70, 0.12 * power);
+				DoDamageAtPoint(giant, 28, 60.0 * power, Arm, 10, 0.70, 0.12 * power);
+				return true;
+			}
+			return false;
+		});
+	}
+	void DisableHandCollisions(Actor* actor) {
+		std::string name = std::format("HandCollide_L_{}", actor->formID);
+		std::string name2 = std::format("HandCollide_R_{}", actor->formID);
+		TaskManager::Cancel(name);
+		TaskManager::Cancel(name2);
+	}
+
+	void GTS_Claw_Swipe_On_R(AnimationEventData& data) {
+		TriggerHandCollision_Right(&data.giant, 1.0);
+	}
+	void GTS_Claw_Swipe_On_L(AnimationEventData& data) {
+		TriggerHandCollision_Left(&data.giant, 1.0);
+	}
+	void GTS_Claw_Swipe_Off_R(AnimationEventData& data) {
+		DisableHandCollisions(&data.giant);
+	}
+	void GTS_Claw_Swipe_Off_L(AnimationEventData& data) {
+		DisableHandCollisions(&data.giant);
+	}
+
+	void GTS_Claw_Swipe_Power_On_R(AnimationEventData& data) {
+		TriggerHandCollision_Right(&data.giant, 2.0);
+	}
+	void GTS_Claw_Swipe_Power_On_L(AnimationEventData& data) {
+		TriggerHandCollision_Left(&data.giant, 2.0);
+	}
+	void GTS_Claw_Swipe_Power_Off_R(AnimationEventData& data) {
+		DisableHandCollisions(&data.giant);
+	}
+	void GTS_Claw_Swipe_Power_Off_L(AnimationEventData& data) {
+		DisableHandCollisions(&data.giant);
+	}
 }
 
 namespace Gts
@@ -145,6 +217,15 @@ namespace Gts
 
 		AnimationManager::RegisterEvent("GTSCrawl_Slam_Cam_Off_L", "Crawl", GTSCrawl_Slam_Cam_Off_L);
 		AnimationManager::RegisterEvent("GTSCrawl_Slam_Cam_Off_R", "Crawl", GTSCrawl_Slam_Cam_Off_R);
+
+		AnimationManager::RegisterEvent("GTS_Claw_Swipe_On_R", "Crawl", GTS_Claw_Swipe_On_R);
+		AnimationManager::RegisterEvent("GTS_Claw_Swipe_On_L", "Crawl", GTS_Claw_Swipe_On_L);
+		AnimationManager::RegisterEvent("GTS_Claw_Swipe_Off_R", "Crawl", GTS_Claw_Swipe_Off_R);
+		AnimationManager::RegisterEvent("GTS_Claw_Swipe_Off_L", "Crawl", GTS_Claw_Swipe_Off_L);
+		AnimationManager::RegisterEvent("GTS_Claw_Swipe_Power_On_R", "Crawl", GTS_Claw_Swipe_Power_On_R);
+		AnimationManager::RegisterEvent("GTS_Claw_Swipe_Power_On_L", "Crawl", GTS_Claw_Swipe_Power_On_L);
+		AnimationManager::RegisterEvent("GTS_Claw_Swipe_Power_Off_R", "Crawl", GTS_Claw_Swipe_Power_Off_R);
+		AnimationManager::RegisterEvent("GTS_Claw_Swipe_Power_Off_L", "Crawl", GTS_Claw_Swipe_Power_Off_L);
 	}
 
 	void AnimationCrawling::RegisterTriggers() {

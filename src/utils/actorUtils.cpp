@@ -974,7 +974,7 @@ namespace Gts {
 			//ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
 			return;
 		}
-		if (power >= 0.50 || ragdollchance >= 7.0 * sizedifference && (sizedifference >= 1.25 && sizedifference < 3.0)) {
+		if (power >= 0.33 || ragdollchance >= 7.0 * sizedifference && (sizedifference >= 1.25 && sizedifference < 3.0)) {
 			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 			tiny->NotifyAnimationGraph("staggerStart");
 			return;
