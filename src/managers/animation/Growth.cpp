@@ -47,6 +47,7 @@ namespace {
 		float Start = Time::WorldTimeElapsed();
 		ActorHandle gianthandle = actor->CreateRefHandle();
 		std::string name = std::format("ManualGrowth_{}", actor->formID);
+        SetHalfLife(caster, 0.0);
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
@@ -62,10 +63,11 @@ namespace {
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 
 			DamageAV(caster, ActorValue::kStamina, 0.45 * (caster_scale * 0.5 + 0.5) * stamina * TimeScale() * multiply);
-			Grow(caster, 0.0090 * stamina * multiply, 0.0);
+			Grow(caster, 0.0060 * stamina * multiply, 0.0);
 
 			Rumble::Once("GrowButton", caster, 3.0 * stamina, 0.05);
             if (elapsed >= 0.99) {
+                SetHalfLife(caster, 1.0);
                 return false;
             }
 			return true;
