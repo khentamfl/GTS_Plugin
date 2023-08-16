@@ -174,29 +174,29 @@ namespace {
 		TaskManager::Cancel(name2);
 	}
 
-	void GTS_Claw_Swipe_On_R(AnimationEventData& data) {
+	void GTS_Crawl_Swipe_On_R(AnimationEventData& data) {
 		TriggerHandCollision_Right(&data.giant, 1.0);
 	}
-	void GTS_Claw_Swipe_On_L(AnimationEventData& data) {
+	void GTS_Crawl_Swipe_On_L(AnimationEventData& data) {
 		TriggerHandCollision_Left(&data.giant, 1.0);
 	}
-	void GTS_Claw_Swipe_Off_R(AnimationEventData& data) {
+	void GTS_Crawl_Swipe_Off_R(AnimationEventData& data) {
 		DisableHandCollisions(&data.giant);
 	}
-	void GTS_Claw_Swipe_Off_L(AnimationEventData& data) {
+	void GTS_Crawl_Swipe_Off_L(AnimationEventData& data) {
 		DisableHandCollisions(&data.giant);
 	}
 
-	void GTS_Claw_Swipe_Power_On_R(AnimationEventData& data) {
+	void GTS_Crawl_Swipe_Power_On_R(AnimationEventData& data) {
 		TriggerHandCollision_Right(&data.giant, 2.0);
 	}
-	void GTS_Claw_Swipe_Power_On_L(AnimationEventData& data) {
+	void GTS_Crawl_Swipe_Power_On_L(AnimationEventData& data) {
 		TriggerHandCollision_Left(&data.giant, 2.0);
 	}
-	void GTS_Claw_Swipe_Power_Off_R(AnimationEventData& data) {
+	void GTS_Crawl_Swipe_Power_Off_R(AnimationEventData& data) {
 		DisableHandCollisions(&data.giant);
 	}
-	void GTS_Claw_Swipe_Power_Off_L(AnimationEventData& data) {
+	void GTS_Crawl_Swipe_Power_Off_L(AnimationEventData& data) {
 		DisableHandCollisions(&data.giant);
 	}
 }
@@ -224,14 +224,14 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTSCrawl_Slam_Cam_Off_L", "Crawl", GTSCrawl_Slam_Cam_Off_L);
 		AnimationManager::RegisterEvent("GTSCrawl_Slam_Cam_Off_R", "Crawl", GTSCrawl_Slam_Cam_Off_R);
 
-		AnimationManager::RegisterEvent("GTS_Claw_Swipe_On_R", "Crawl", GTS_Claw_Swipe_On_R);
-		AnimationManager::RegisterEvent("GTS_Claw_Swipe_On_L", "Crawl", GTS_Claw_Swipe_On_L);
-		AnimationManager::RegisterEvent("GTS_Claw_Swipe_Off_R", "Crawl", GTS_Claw_Swipe_Off_R);
-		AnimationManager::RegisterEvent("GTS_Claw_Swipe_Off_L", "Crawl", GTS_Claw_Swipe_Off_L);
-		AnimationManager::RegisterEvent("GTS_Claw_Swipe_Power_On_R", "Crawl", GTS_Claw_Swipe_Power_On_R);
-		AnimationManager::RegisterEvent("GTS_Claw_Swipe_Power_On_L", "Crawl", GTS_Claw_Swipe_Power_On_L);
-		AnimationManager::RegisterEvent("GTS_Claw_Swipe_Power_Off_R", "Crawl", GTS_Claw_Swipe_Power_Off_R);
-		AnimationManager::RegisterEvent("GTS_Claw_Swipe_Power_Off_L", "Crawl", GTS_Claw_Swipe_Power_Off_L);
+		AnimationManager::RegisterEvent("GTS_Crawl_Swipe_On_R", "Crawl", GTS_Crawl_Swipe_On_R);
+		AnimationManager::RegisterEvent("GTS_Crawl_Swipe_On_L", "Crawl", GTS_Crawl_Swipe_On_L);
+		AnimationManager::RegisterEvent("GTS_Crawl_Swipe_Off_R", "Crawl", GTS_Crawl_Swipe_Off_R);
+		AnimationManager::RegisterEvent("GTS_Crawl_Swipe_Off_L", "Crawl", GTS_Crawl_Swipe_Off_L);
+		AnimationManager::RegisterEvent("GTS_Crawl_Swipe_Power_On_R", "Crawl", GTS_Crawl_Swipe_Power_On_R);
+		AnimationManager::RegisterEvent("GTS_Crawl_Swipe_Power_On_L", "Crawl", GTS_Crawl_Swipe_Power_On_L);
+		AnimationManager::RegisterEvent("GTS_Crawl_Swipe_Power_Off_R", "Crawl", GTS_Crawl_Swipe_Power_Off_R);
+		AnimationManager::RegisterEvent("GTS_Crawl_Swipe_Power_Off_L", "Crawl", GTS_Crawl_Swipe_Power_Off_L);
 	}
 
 	void AnimationCrawling::RegisterTriggers() {
