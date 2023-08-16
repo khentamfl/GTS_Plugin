@@ -521,6 +521,9 @@ namespace {
 
   			//PushActorAway(giant, tiny, direction, speed * 100);
   			PushActorAway(giant, tiny, 1);
+			if (!IsCrawling(giant)) {
+				speed *= 10.0;
+			}
   			ApplyHavokImpulse(tiny, direction.x, direction.y, direction.z, speed * 100);
   			return false;
   		} else {
