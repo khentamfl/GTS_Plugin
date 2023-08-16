@@ -482,6 +482,10 @@ namespace {
   			float distanceTravelled = vector.Length();
   			float timeTaken = endTime - startTime;
   			float speed = distanceTravelled / timeTaken;
+			if (!IsCrawling(giant)) {
+				log::info("Not Crawling");
+				speed *= 100.0;
+			}
   			// NiPoint3 direction = vector / vector.Length();
 
         // Angles in degrees
@@ -518,12 +522,10 @@ namespace {
         log::info("forward : {}", Vector2Str(forward));
         log::info("customDirection : {}", Vector2Str(customDirection));
         log::info("Direction : {}", Vector2Str(direction));
+		log::info("Speed: {}", speed);
 
   			//PushActorAway(giant, tiny, direction, speed * 100);
   			PushActorAway(giant, tiny, 1);
-			if (!IsCrawling(giant)) {
-				speed *= 10.0;
-			}
   			ApplyHavokImpulse(tiny, direction.x, direction.y, direction.z, speed * 100);
   			return false;
   		} else {
