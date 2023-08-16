@@ -135,8 +135,8 @@ namespace {
 			auto Uarm = find_node(giant, "NPC L Forearm [LLar]");
 			auto Arm = find_node(giant, "NPC L Hand [LHnd]");
 			if (Uarm && Arm) {
-				DoDamageAtPoint(giant, 24, 60.0 * power, Uarm1, 10, 0.70, 0.12 * power);
-				DoDamageAtPoint(giant, 28, 60.0 * power, Arm, 10, 0.70, 0.12 * power);
+				DoDamageAtPoint(giant, 24, 60.0 * power, Uarm, 100, 0.30, 1.0);
+				DoDamageAtPoint(giant, 28, 60.0 * power, Arm, 100, 0.30, 1.0);
 				return true;
 			}
 			return false;
@@ -154,8 +154,8 @@ namespace {
 			auto Uarm = find_node(giant, "NPC L Forearm [LLar]");
 			auto Arm = find_node(giant, "NPC L Hand [LHnd]");
 			if (Uarm && Arm) {
-				DoDamageAtPoint(giant, 24, 60.0 * power, Uarm1, 10, 0.70, 0.12 * power);
-				DoDamageAtPoint(giant, 28, 60.0 * power, Arm, 10, 0.70, 0.12 * power);
+				DoDamageAtPoint(giant, 24, 60.0 * power, Uarm, 10, 0.70, 1.0);
+				DoDamageAtPoint(giant, 28, 60.0 * power, Arm, 10, 0.70, 1.0);
 				return true;
 			}
 			return false;
