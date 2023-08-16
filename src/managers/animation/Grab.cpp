@@ -486,9 +486,9 @@ namespace {
 
         // Angles in degrees
         // Sermit: Please just adjust these
-		
-		
-		
+
+
+
         float angle_x = 60;//Runtime::GetFloat("cameraAlternateX"); // 60
         float angle_y = 10;//Runtime::GetFloat("cameraAlternateY");//10.0;
         float angle_z = 0;//::GetFloat("combatCameraAlternateX"); // 0
@@ -507,12 +507,17 @@ namespace {
         // angle_z is roll
         //
         // The order of operation is pitch > yaw > roll
-        NiPoint3 customDirection = NiMatrix3(angle_x_rad, angle_y_rad, angle_z_rad) * NiPoint3(0.0, 0.0, 1.0);
+        NiMatrix3 customRot = NiMatrix3(angle_x_rad, angle_y_rad, angle_z_rad);
+        NiPoint3 forward = NiPoint3(0.0, 0.0, 1.0);
+        NiPoint3 customDirection = customRot * forward;
 
         // Convert to giant local space
         // Only use rotation not translaion or scale since those will mess everything up
-        NiPoint3 direction = giant->GetCurrent3D()->world.rotate * (customDirection / customDirection.Length());
-		log::info("Direction : {}", Vector2Str(direction));
+        NiMatrix3 giantRot = giant->GetCurrent3D()->world.rotate;
+        NiPoint3 direction = giantRot * (customDirection / customDirection.Length());
+        log::info("forward : {}", Vector2Str(forward));
+        log::info("customDirection : {}", Vector2Str(customDirection));
+        log::info("Direction : {}", Vector2Str(direction));
 
   			//PushActorAway(giant, tiny, direction, speed * 100);
   			PushActorAway(giant, tiny, 1);
