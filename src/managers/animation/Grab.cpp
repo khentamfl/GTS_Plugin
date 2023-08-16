@@ -489,9 +489,9 @@ namespace {
 
 
 
-        float angle_x = Runtime::GetFloat("cameraAlternateX"); // 60
-        float angle_y = Runtime::GetFloat("cameraAlternateY");//10.0;
-        float angle_z = Runtime::GetFloat("combatCameraAlternateX"); // 0
+        float angle_x = 60;//Runtime::GetFloat("cameraAlternateX"); // 60
+        float angle_y = 10; //Runtime::GetFloat("cameraAlternateY");//10.0;
+        float angle_z = 0;//::GetFloat("combatCameraAlternateX"); // 0
 
         // Conversion to radians
         const float PI = 3.141592653589793;
@@ -508,14 +508,13 @@ namespace {
         //
         // The order of operation is pitch > yaw > roll
         NiMatrix3 customRot = NiMatrix3(angle_x_rad, angle_y_rad, angle_z_rad);
-        NiPoint3 forward = NiPoint3(0.0, 0.0, 0.0);
+        NiPoint3 forward = NiPoint3(0.0, 0.0, 1.0);
         NiPoint3 customDirection = customRot * forward;
 
         // Convert to giant local space
         // Only use rotation not translaion or scale since those will mess everything up
         NiMatrix3 giantRot = giant->GetCurrent3D()->world.rotate;
         NiPoint3 direction = giantRot * (customDirection / customDirection.Length());
-		log::info("AngleX: {}, AngleY: {}, AngleZ: {}", angle_x, angle_y, angle_z);
         log::info("forward : {}", Vector2Str(forward));
         log::info("customDirection : {}", Vector2Str(customDirection));
         log::info("Direction : {}", Vector2Str(direction));
