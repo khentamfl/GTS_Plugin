@@ -189,7 +189,7 @@ namespace Gts {
 						"NPC L Butt",
 						"NPC R Butt",
 						"NPC L Foot [Lft ]",
-						"NPC R Foot [Lft ]",
+						"NPC R Foot [Rft ]",
 					},
 				        .zoomScale = 1.25,
 				};
