@@ -337,7 +337,6 @@ namespace Gts {
 			//log::info("Allow_Stagger FALSE: {}, IsTeammate: {} {}", Persistent::GetSingleton().allow_stagger, tiny->GetDisplayFullName(), IsTeammate(tiny));
 			return false; // Protect
 		}
-		log::info("Stagger false");
 		return true;
 	}
     
