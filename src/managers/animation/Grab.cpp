@@ -534,7 +534,7 @@ namespace {
 	}
 
 	void GTSGrab_Throw_ThrowActor(AnimationEventData& data) { // Throw frame 1
-		auto giant = &data.giant;
+		/*auto giant = &data.giant;
 		auto otherActor = Grab::GetHeldActor(&data.giant);
 
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
@@ -544,7 +544,7 @@ namespace {
 		AnimationManager::StartAnim("TinyDied", giant);
 		//BlockFirstPerson(giant, false);
 		Grab::DetachActorTask(giant);
-		Grab::Release(giant);
+		Grab::Release(giant);*/
 	}
 
 	void GTSGrab_Throw_Throw_Post(AnimationEventData& data) { // Throw frame 2
