@@ -65,6 +65,10 @@ namespace {
 			Grow(caster, 0.0060 * stamina * multiply, 0.0);
 
 			Rumble::Once("GrowButton", caster, 3.0 * stamina, 0.05);
+            if (elapsed >= 0.99) {
+                //SetHalfLife(actor, 1.0);
+                return false;
+            }
 			return true;
 		});
 	}

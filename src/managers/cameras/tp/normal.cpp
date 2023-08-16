@@ -22,7 +22,6 @@ namespace Gts {
 	}
 
 	NiPoint3 Normal::GetOffsetProne(const NiPoint3& cameraPos) {
-		log::info("Prone");
 		return NiPoint3(
 			Runtime::GetFloat("proneCameraX"),
 			0.0,
@@ -31,7 +30,6 @@ namespace Gts {
 	}
 
 	NiPoint3 Normal::GetCombatOffsetProne(const NiPoint3& cameraPos)  {
-		log::info("Prone Combat");
 		return NiPoint3(
 			Runtime::GetFloat("proneCombatCameraX"),
 			0.0,
