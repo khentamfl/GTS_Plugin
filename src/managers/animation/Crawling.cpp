@@ -132,14 +132,17 @@ namespace {
 				return false;
 			}
 			auto giant = gianthandle.get().get();
-			auto Uarm = find_node(giant, "NPC L Forearm [LLar]");
-			auto Arm = find_node(giant, "NPC L Hand [LHnd]");
-			if (Uarm && Arm) {
-				DoDamageAtPoint(giant, 24, 60.0 * power, Uarm, 100, 0.30, 1.0);
-				DoDamageAtPoint(giant, 28, 60.0 * power, Arm, 100, 0.30, 1.0);
-				return true;
+			auto Uarm = find_node(giant, "NPC R Forearm [RLar]");
+			auto Arm = find_node(giant, "NPC R Hand [RHnd]");
+			if (Uarm) {
+				DoDamageAtPoint(giant, 30, 600.0 * power, Uarm, 100, 0.30, 1.0);
+				log::info("Uarm True");
 			}
-			return false;
+			if (Arm) {
+				DoDamageAtPoint(giant, 36, 600.0 * power, Arm, 100, 0.30, 1.0);
+				log::info("Arm True");
+			}
+			return true;
 		});
 	}
 
@@ -153,12 +156,15 @@ namespace {
 			auto giant = gianthandle.get().get();
 			auto Uarm = find_node(giant, "NPC L Forearm [LLar]");
 			auto Arm = find_node(giant, "NPC L Hand [LHnd]");
-			if (Uarm && Arm) {
-				DoDamageAtPoint(giant, 24, 60.0 * power, Uarm, 10, 0.70, 1.0);
-				DoDamageAtPoint(giant, 28, 60.0 * power, Arm, 10, 0.70, 1.0);
-				return true;
+			if (Uarm) {
+				DoDamageAtPoint(giant, 30, 600.0 * power, Uarm, 100, 0.30, 1.0);
+				log::info("Uarm True");
 			}
-			return false;
+			if (Arm) {
+				DoDamageAtPoint(giant, 36, 600.0 * power, Arm, 100, 0.30, 1.0);
+				log::info("Arm True");
+			}
+			return true;
 		});
 	}
 	void DisableHandCollisions(Actor* actor) {
