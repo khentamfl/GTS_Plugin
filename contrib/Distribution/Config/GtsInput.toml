@@ -149,13 +149,13 @@ exclusive = true
 #========================================================
 
 [[InputEvent]]
-name = "HeavySwipeLeft
+name = "HeavySwipeLeft"
 keys = ["LSHIFT", "LMB"]
 exclusive = false
 # Heavy Left swipe when crawling
 
 [[InputEvent]]
-name = "HeavySwipeLeft
+name = "HeavySwipeLeft"
 keys = ["LSHIFT", "RMB"]
 exclusive = false
 # Heavy Right swipe when crawling

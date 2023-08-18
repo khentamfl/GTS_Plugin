@@ -43,6 +43,65 @@ namespace {
 		}
 	}
 
+	void DoDamageAtPoint_Cooldown(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult) { // Apply crawl damage to each bone individually
+        auto profiler = Profilers::Profile("Other: CrawlDamage");
+		if (!node) {
+			return;
+		} if (!giant) {
+			return;
+		}
+
+		auto& sizemanager = SizeManager::GetSingleton();
+		float giantScale = get_visual_scale(giant);
+
+		float SCALE_RATIO = 1.25;
+		if (HasSMT(giant)) {
+			SCALE_RATIO = 1.10;
+			giantScale *= 2.0;
+		}
+
+		NiPoint3 NodePosition = node->world.translate;
+
+		float maxDistance = radius * giantScale;
+		// Make a list of points to check
+		std::vector<NiPoint3> points = {
+			NiPoint3(0.0, 0.0, 0.0), // The standard position
+		};
+		std::vector<NiPoint3> CrawlPoints = {};
+
+		for (NiPoint3 point: points) {
+			CrawlPoints.push_back(NodePosition);
+		}
+		if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
+			for (auto point: CrawlPoints) {
+				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance);
+			}
+		}
+
+		NiPoint3 giantLocation = giant->GetPosition();
+
+		for (auto otherActor: find_actors()) {
+			if (otherActor != giant) { 
+				float tinyScale = get_visual_scale(otherActor);
+				if (giantScale / tinyScale > SCALE_RATIO) {
+					NiPoint3 actorLocation = otherActor->GetPosition();
+					for (auto point: CrawlPoints) {
+						float distance = (point - actorLocation).Length();
+						if (distance <= maxDistance) {
+							bool allow = sizemanager.IsHandDamaging(otherActor);
+							if (allow) {
+								float force = 1.0 - distance / maxDistance;
+								float aveForce = std::clamp(force, 0.00f, 0.70f);
+								AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult);
+								sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
+							}
+                        }
+					}
+				}
+			}
+		}
+	}
+
     void GTSCrawl_KneeImpact_L(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
@@ -147,12 +206,10 @@ namespace {
 			auto Uarm = find_node(giant, "NPC R Forearm [RLar]");
 			auto Arm = find_node(giant, "NPC R Hand [RHnd]");
 			if (Uarm) {
-				DoDamageAtPoint(giant, 16, 600.0 * power, Uarm, 100, 0.30, 1.0);
-				log::info("Uarm True");
+				DoDamageAtPoint_Cooldown(giant, 16, 90.0 * power, Uarm, 10, 0.30, 1.0);
 			}
 			if (Arm) {
-				DoDamageAtPoint(giant, 18, 600.0 * power, Arm, 100, 0.30, 1.0);
-				log::info("Arm True");
+				DoDamageAtPoint_Cooldown(giant, 18, 90.0 * power, Arm, 10, 0.30, 1.0);
 			}
 			return true;
 		});
@@ -169,12 +226,10 @@ namespace {
 			auto Uarm = find_node(giant, "NPC L Forearm [LLar]");
 			auto Arm = find_node(giant, "NPC L Hand [LHnd]");
 			if (Uarm) {
-				DoDamageAtPoint(giant, 16, 600.0 * power, Uarm, 100, 0.30, 1.0);
-				log::info("Uarm True");
+				DoDamageAtPoint_Cooldown(giant, 16, 90.0 * power, Uarm, 10, 0.30, 1.0);
 			}
 			if (Arm) {
-				DoDamageAtPoint(giant, 18, 600.0 * power, Arm, 100, 0.30, 1.0);
-				log::info("Arm True");
+				DoDamageAtPoint_Cooldown(giant, 18, 90.0 * power, Arm, 10, 0.30, 1.0);
 			}
 			return true;
 		});
@@ -239,7 +294,7 @@ namespace {
 
 	void HeavySwipeLeftEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!IsGtsBusy(player) && IsCrawling(player)) {
+		if (IsCrawling(player)) {
 			float WasteStamina = 70.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 				player->SetGraphVariableBool("GTS_Busy", true);
@@ -251,7 +306,7 @@ namespace {
 	}
 	void HeavySwipeRightEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!IsGtsBusy(player) && IsCrawling(player)) {
+		if (IsCrawling(player)) {
 			float WasteStamina = 70.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 				player->SetGraphVariableBool("GTS_Busy", true);
