@@ -71,15 +71,14 @@ namespace Gts {
 				return;
 			} 
 			if (actor->formID == 0x14 || IsTeammate(actor)) {
-				if (!ShouldGrow(actor)) {
-					return;
-				} else {
+				if (ShouldGrow(actor)) {
 					// Calculations
 					float scale = get_visual_scale(actor);
 					float ProgressionMultiplier = Persistent::GetSingleton().progression_multiplier;
 					int random = rand()% 79 + 1;
 					float TotalPower = (100 + random)/100;
-					float base_power = ((0.00185 * TotalPower * 60) * ProgressionMultiplier);  // The power of it
+					float base_power = ((0.00500 * TotalPower * 60) * ProgressionMultiplier);  // The power of it
+					float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
 					ActorHandle gianthandle = actor->CreateRefHandle();
 					std::string name = std::format("RandomGrowth_{}", actor->formID);
 					// Sounds
@@ -95,7 +94,7 @@ namespace Gts {
 						auto giantref = gianthandle.get().get();
 						// Grow
 						float delta_time = Time::WorldTimeDelta();
-						mod_target_scale(giantref, base_power * delta_time);
+						mod_target_scale(giantref, base_power * delta_time * Gigantism);
 						
 						// Play sound
 						Rumble::Once("RandomGrowth", giantref, 6.0, 0.05);
@@ -107,3 +106,4 @@ namespace Gts {
 		}
 	}
 }
+

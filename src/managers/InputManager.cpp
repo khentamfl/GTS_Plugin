@@ -55,7 +55,7 @@ namespace {
 		if (!Runtime::HasPerk(player, "TotalControl")) {
 			return;
 		}
-		if (!IsCrawling(player) && !player->IsSneaking()) {
+		if (IsCrawling(player) || !player->IsSneaking()) {
 			AnimationManager::StartAnim("TriggerGrowth", player);
 		}
 	}
@@ -64,10 +64,12 @@ namespace {
 		if (!Runtime::HasPerk(player, "TotalControl")) {
 			return;
 		}
-		float stamina = std::clamp(GetStaminaPercentage(player), 0.05f, 1.0f);
-		float scale = get_visual_scale(player);
-		Rumble::For("RapidShrink", player, 8.0, 0.10, "NPC COM [COM ]", 0.40);
-		SpringShrink(player, -0.3 * scale * stamina, 0.35, "InputShrink");
+		if (IsCrawling(player) || !player->IsSneaking()) {
+			float stamina = std::clamp(GetStaminaPercentage(player), 0.05f, 1.0f);
+			float scale = get_visual_scale(player);
+			Rumble::For("RapidShrink", player, 8.0, 0.10, "NPC COM [COM ]", 0.40);
+			SpringShrink(player, -0.3 * scale * stamina, 0.35, "InputShrink");
+		}
 	}
 
 	void SizeReserveEvent(const InputEventData& data) {
