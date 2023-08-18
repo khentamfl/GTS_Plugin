@@ -6,6 +6,7 @@
 #include "managers/animation/Crawling.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/CrushManager.hpp"
+#include "managers/InputManager.hpp"
 #include "managers/footstep.hpp"
 #include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
@@ -22,10 +23,10 @@ namespace {
 
 	float GetWasteMult(Actor* giant) {
 		float WasteMult = 1.0;
-		if (Runtime::HasPerk(player, "DestructionBasics")) {
+		if (Runtime::HasPerk(giant, "DestructionBasics")) {
 			WasteMult *= 0.65;
 		}
-		if (Runtime::HasPerkTeam(player, "SkilledGTS")) {
+		if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
 			WasteMult -= GetGtsSkillLevel() * 0.0035;
 		}
 		return WasteMult;
