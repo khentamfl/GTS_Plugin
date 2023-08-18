@@ -45,6 +45,10 @@ trigger = "once"
 #========================================================
 #================ S T O M P S
 #========================================================
+
+# If crawling, all Stomp input will be replaced with hand attacks instead.
+# ^ So use same stomp keys to perform hand attacks when crawling
+
 [[InputEvent]]
 name = "RightStomp_Strong"
 keys = ["LALT", "E"]
@@ -139,6 +143,35 @@ keys = ["LSHIFT", "W"]
 exclusive = true
 
 # ^ Ways to exit Thigh Sandwich. 
+
+#========================================================
+#============ C R A W L I N G
+#========================================================
+
+[[InputEvent]]
+name = "HeavySwipeLeft
+keys = ["LSHIFT", "LMB"]
+exclusive = false
+# Heavy Left swipe when crawling
+
+[[InputEvent]]
+name = "HeavySwipeLeft
+keys = ["LSHIFT", "RMB"]
+exclusive = false
+# Heavy Right swipe when crawling
+
+[[InputEvent]]
+name = "LightSwipeLeft"
+keys = ["RMB"]
+exclusive = false
+# Left swipe when crawling
+
+[[InputEvent]]
+name = "LightSwipeRight"
+keys = ["LMB"]
+exclusive = false
+# Right swipe when crawling
+
 
 #========================================================
 #============ H U G S

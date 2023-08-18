@@ -20,6 +20,17 @@ using namespace Gts;
 
 namespace {
 
+	float GetWasteMult(Actor* giant) {
+		float WasteMult = 1.0;
+		if (Runtime::HasPerk(player, "DestructionBasics")) {
+			WasteMult *= 0.65;
+		}
+		if (Runtime::HasPerkTeam(player, "SkilledGTS")) {
+			WasteMult -= GetGtsSkillLevel() * 0.0035;
+		}
+		return WasteMult;
+	}
+
 	void EnableHandTracking(Actor* giant, CrawlEvent kind, bool decide) {
 		if (AllowFeetTracking() && giant->formID == 0x14) {
 			auto& sizemanager = SizeManager::GetSingleton();
@@ -199,11 +210,67 @@ namespace {
 	void GTS_Crawl_Swipe_Power_Off_L(AnimationEventData& data) {
 		DisableHandCollisions(&data.giant);
 	}
+
+	void LightSwipeLeftEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (!IsGtsBusy(player) && IsCrawling(player)) {
+			float WasteStamina = 25.0 * GetWasteMult(player);
+			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+				player->SetGraphVariableBool("GTS_Busy", true);
+				AnimationManager::StartAnim("SwipeLight_Left", player);
+			} else {
+				TiredSound(player, "You're too tired for hand swipe");
+			}
+		}
+	}
+	void LightSwipeRightEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (!IsGtsBusy(player) && IsCrawling(player)) {
+			float WasteStamina = 25.0 * GetWasteMult(player);
+			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+				player->SetGraphVariableBool("GTS_Busy", true);
+				AnimationManager::StartAnim("SwipeLight_Right", player);
+			} else {
+				TiredSound(player, "You're too tired for hand swipe");
+			}
+		}
+	}
+
+	void HeavySwipeLeftEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (!IsGtsBusy(player) && IsCrawling(player)) {
+			float WasteStamina = 70.0 * GetWasteMult(player);
+			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+				player->SetGraphVariableBool("GTS_Busy", true);
+				AnimationManager::StartAnim("SwipeHeavy_Left", player);
+			} else {
+				TiredSound(player, "You're too tired for hand swipe");
+			}
+		}
+	}
+	void HeavySwipeRightEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (!IsGtsBusy(player) && IsCrawling(player)) {
+			float WasteStamina = 70.0 * GetWasteMult(player);
+			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+				player->SetGraphVariableBool("GTS_Busy", true);
+				AnimationManager::StartAnim("SwipeHeavy_Right", player);
+			} else {
+				TiredSound(player, "You're too tired for hand swipe");
+			}
+		}
+	}
 }
 
 namespace Gts
 {
 	void AnimationCrawling::RegisterEvents() {
+
+		InputManager::RegisterInputEvent("LightSwipeLeft", LightSwipeLeftEvent);
+		InputManager::RegisterInputEvent("LightSwipeRight", LightSwipeRightEvent);
+		InputManager::RegisterInputEvent("HeavySwipeLeft", HeavySwipeLeftEvent);
+		InputManager::RegisterInputEvent("HeavySwipeRight", HeavySwipeRightEvent);
+
 		AnimationManager::RegisterEvent("GTSCrawl_KneeImpact_L", "Crawl", GTSCrawl_KneeImpact_L);
 		AnimationManager::RegisterEvent("GTSCrawl_KneeImpact_R", "Crawl", GTSCrawl_KneeImpact_R);
 		AnimationManager::RegisterEvent("GTSCrawl_HandImpact_L", "Crawl", GTSCrawl_HandImpact_L);
@@ -235,5 +302,9 @@ namespace Gts
 	}
 
 	void AnimationCrawling::RegisterTriggers() {
+		AnimationManager::RegisterTrigger("SwipeLight_Left", "Crawl", "GTSBeh_SwipeLight_L");
+		AnimationManager::RegisterTrigger("SwipeLight_Right", "Crawl", "GTSBeh_SwipeLight_R");
+		AnimationManager::RegisterTrigger("SwipeHeavy_Right", "Crawl", "GTSBeh_SwipeHeavy_R");
+		AnimationManager::RegisterTrigger("SwipeHeavy_Left", "Crawl", "GTSBeh_SwipeHeavy_L");
 	}
 }

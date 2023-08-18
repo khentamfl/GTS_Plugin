@@ -225,6 +225,9 @@ namespace {
 		if (IsGtsBusy(player)) {
 			return;
 		}
+		if (IsCrawling(player)) {
+			return;
+		}
 		auto& Hugging = HugAnimationController::GetSingleton();
 		std::size_t numberOfPrey = 1;
 		if (Runtime::HasPerkTeam(player, "MassVorePerk")) {

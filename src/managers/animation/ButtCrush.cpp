@@ -348,11 +348,13 @@ namespace {
             }
         } else {
             if (!ButtR) {
-                Notify("Error: Missing Butt Nodes"); // Will help people to troubleshoot it. Not everyone has 3BB body.
+                Notify("Error: Missing Butt Nodes"); // Will help people to troubleshoot it. Not everyone has 3BB/XPMS32 body.
                 Notify("Error: effects not inflicted");
+                Notify("Suggestion: install XP32 Skeleton");
             } if (!ThighL) {
                 Notify("Error: Missing Thigh Nodes");
                 Notify("Error: effects not inflicted");
+                Notify("Suggestion: install XP32 Skeleton");
             }
         }
         ModGrowthCount(giant, 0, true); // Reset limit
