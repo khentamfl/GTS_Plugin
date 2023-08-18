@@ -269,7 +269,7 @@ namespace {
 
 	void LightSwipeLeftEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!IsGtsBusy(player) && IsCrawling(player)) {
+		if (IsCrawling(player)) {
 			float WasteStamina = 25.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 				player->SetGraphVariableBool("GTS_Busy", true);
@@ -281,7 +281,7 @@ namespace {
 	}
 	void LightSwipeRightEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!IsGtsBusy(player) && IsCrawling(player)) {
+		if (IsCrawling(player)) {
 			float WasteStamina = 25.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 				player->SetGraphVariableBool("GTS_Busy", true);
