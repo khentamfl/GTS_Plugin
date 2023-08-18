@@ -226,10 +226,10 @@ namespace {
 			auto Uarm = find_node(giant, "NPC L Forearm [LLar]");
 			auto Arm = find_node(giant, "NPC L Hand [LHnd]");
 			if (Uarm) {
-				DoDamageAtPoint_Cooldown(giant, 17, 440.0 * power, Uarm, 10, 0.30, 1.0);
+				DoDamageAtPoint_Cooldown(giant, 17, 340.0 * power, Uarm, 10, 0.30, 1.0);
 			}
 			if (Arm) {
-				DoDamageAtPoint_Cooldown(giant, 19, 440.0 * power, Arm, 10, 0.30, 1.0);
+				DoDamageAtPoint_Cooldown(giant, 19, 340.0 * power, Arm, 10, 0.30, 1.0);
 			}
 			return true;
 		});
@@ -241,30 +241,59 @@ namespace {
 		TaskManager::Cancel(name2);
 	}
 
+	void DisableHandTrackingTask(Actor* giant) { // Used to disable camera with some delay
+		std::string name = std::format("CameraOff_{}", giant->formID);
+        auto gianthandle = giant->CreateRefHandle();
+        auto FrameA = Time::FramesElapsed();
+        TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			auto giantref = gianthandle.get().get();
+			auto FrameB = Time::FramesElapsed() - FrameA;
+			if (FrameB <= 60.0/GetAnimationSlowdown(giantref)) {
+				return true;
+			}
+	
+            EnableHandTracking(giantref, CrawlEvent::RightHand, false);
+			EnableHandTracking(giantref, CrawlEvent::LeftHand, false);
+
+			return false;
+		});
+	}
+
 	void GTS_Crawl_Swipe_On_R(AnimationEventData& data) {
 		TriggerHandCollision_Right(&data.giant, 1.0);
+		EnableHandTracking(&data.giant, CrawlEvent::RightHand, true);
 	}
 	void GTS_Crawl_Swipe_On_L(AnimationEventData& data) {
 		TriggerHandCollision_Left(&data.giant, 1.0);
+		EnableHandTracking(&data.giant, CrawlEvent::LeftHand, true);
 	}
 	void GTS_Crawl_Swipe_Off_R(AnimationEventData& data) {
 		DisableHandCollisions(&data.giant);
+		DisableHandTrackingTask(&data.giant);
 	}
 	void GTS_Crawl_Swipe_Off_L(AnimationEventData& data) {
 		DisableHandCollisions(&data.giant);
+		DisableHandTrackingTask(&data.giant);
 	}
 
 	void GTS_Crawl_Swipe_Power_On_R(AnimationEventData& data) {
 		TriggerHandCollision_Right(&data.giant, 2.0);
+		EnableHandTracking(&data.giant, CrawlEvent::RightHand, true);
 	}
 	void GTS_Crawl_Swipe_Power_On_L(AnimationEventData& data) {
 		TriggerHandCollision_Left(&data.giant, 2.0);
+		EnableHandTracking(&data.giant, CrawlEvent::LeftHand, true);
 	}
 	void GTS_Crawl_Swipe_Power_Off_R(AnimationEventData& data) {
 		DisableHandCollisions(&data.giant);
+		DisableHandTrackingTask(&data.giant);
 	}
 	void GTS_Crawl_Swipe_Power_Off_L(AnimationEventData& data) {
 		DisableHandCollisions(&data.giant);
+		DisableHandTrackingTask(&data.giant);
 	}
 
 	void LightSwipeLeftEvent(const InputEventData& data) {

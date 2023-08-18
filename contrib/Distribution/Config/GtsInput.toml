@@ -150,25 +150,25 @@ exclusive = true
 
 [[InputEvent]]
 name = "HeavySwipeRight"
-keys = ["LSHIFT", "D"]
+keys = ["LALT", "D"]
 exclusive = false
 # Heavy Left swipe when crawling
 
 [[InputEvent]]
 name = "HeavySwipeLeft"
-keys = ["LSHIFT", "A"]
+keys = ["LALT", "A"]
 exclusive = false
 # Heavy Right swipe when crawling
 
 [[InputEvent]]
 name = "LightSwipeLeft"
-keys = ["LSHIFT", "1"]
+keys = ["LSHIFT", "A"]
 exclusive = false
 # Left swipe when crawling
 
 [[InputEvent]]
 name = "LightSwipeRight"
-keys = ["LSHIFT", "2"]
+keys = ["LSHIFT", "D"]
 exclusive = false
 # Right swipe when crawling
 
