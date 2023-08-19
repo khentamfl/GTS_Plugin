@@ -106,9 +106,7 @@ namespace Gts {
 		float hh = hhOffsetbase[2];
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
-			NiPoint3(0.0, hh*0.08, -0.25 +(-hh * 0.25)), // The standard at the foot position
 			NiPoint3(1.6, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward
-			NiPoint3(0.0, (hh/50), -0.25 + (-hh * 1.15)), // Offset for HH
 		};
 		std::tuple<NiAVObject*, NiMatrix3> left(leftFoot, leftRotMat);
 
@@ -116,7 +114,7 @@ namespace Gts {
 			std::vector<NiPoint3> footPoints = {};
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
-				NiPoint3 coords = footPoints[1];
+				NiPoint3 coords = point;
 				log::info("FootLeft Coords: {}", Vector2Str(coords));
 				//coords.z -= hh * 0.65;
 				return AttachTo(anyGiant, anyTiny, coords);
@@ -171,9 +169,7 @@ namespace Gts {
 		float hh = hhOffsetbase[2];
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
-			NiPoint3(0.0, hh*0.08, -0.25 +(-hh * 0.25)), // The standard at the foot position
 			NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward
-			NiPoint3(0.0, (hh/50), -0.25 + (-hh * 1.15)), // Offset for HH
 		};
 		std::tuple<NiAVObject*, NiMatrix3> right(rightFoot, rightRotMat);
 
@@ -181,7 +177,7 @@ namespace Gts {
 			std::vector<NiPoint3> footPoints = {};
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
-				NiPoint3 coords = footPoints[1];
+				NiPoint3 coords = point;
 				log::info("FootRight Coords: {}", Vector2Str(coords));
 				//coords.z -= hh * 0.65;
 				return AttachTo(anyGiant, anyTiny, coords);
