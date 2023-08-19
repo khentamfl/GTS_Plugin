@@ -106,7 +106,7 @@ namespace Gts {
 		float hh = hhOffsetbase[2];
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
-			NiPoint3(0, 7.0 - hh/70, -1.75 + (hh * 0.65)),
+			NiPoint3(0, 14.0 - hh/70, -(1.75 + hh * 0.65)),
 		};
 		std::tuple<NiAVObject*, NiMatrix3> left(leftFoot, leftRotMat);
 
@@ -169,7 +169,7 @@ namespace Gts {
 		float hh = hhOffsetbase[2];
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
-			NiPoint3(0, 7.0 - hh/70, -1.75 + (hh * 0.65)), // Offset it forward
+			NiPoint3(0, 14.0 - hh/70, -(1.75 + hh * 0.65)),
 		};
 		std::tuple<NiAVObject*, NiMatrix3> right(rightFoot, rightRotMat);
 
