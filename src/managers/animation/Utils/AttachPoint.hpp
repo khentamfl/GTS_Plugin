@@ -114,7 +114,7 @@ namespace Gts {
 			std::vector<NiPoint3> footPoints = {};
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
-				NiPoint3 coords = point;
+				NiPoint3 coords = foot->world*(rotMat*point);
 				log::info("FootLeft Coords: {}", Vector2Str(coords));
 				//coords.z -= hh * 0.65;
 				return AttachTo(anyGiant, anyTiny, coords);
@@ -177,7 +177,7 @@ namespace Gts {
 			std::vector<NiPoint3> footPoints = {};
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
-				NiPoint3 coords = point;
+				NiPoint3 coords = foot->world*(rotMat*point);
 				log::info("FootRight Coords: {}", Vector2Str(coords));
 				//coords.z -= hh * 0.65;
 				return AttachTo(anyGiant, anyTiny, coords);
