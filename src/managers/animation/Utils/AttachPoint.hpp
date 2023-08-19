@@ -103,7 +103,6 @@ namespace Gts {
 			leftRotMat = NiMatrix3(right, forward, up);
 		}
 
-		float maxFootDistance = BASE_DISTANCE * radius * giantScale;
 		float hh = hhOffsetbase[2];
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
@@ -121,7 +120,7 @@ namespace Gts {
 		}
 		NiPoint3 coords = footPoints[1];
 		if (footPoints[1]) {
-			coords.z -= HH * 0.65;
+			coords.z -= hh * 0.65;
 			return AttachTo(anyGiant, anyTiny, coords);
 		} else {
 			return false;
@@ -188,7 +187,7 @@ namespace Gts {
 
 		NiPoint3 coords = footPoints[1];
 		if (footPoints[1]) {
-			coords.z -= HH * 0.65;
+			coords.z -= hh * 0.65;
 			return AttachTo(anyGiant, anyTiny, coords);
 		} else {
 			return false;
