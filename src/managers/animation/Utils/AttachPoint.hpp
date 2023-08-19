@@ -13,8 +13,8 @@ namespace {
 	const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
 	const std::string_view leftCalfLookup = "NPC L Calf [LClf]";
 	const std::string_view rightCalfLookup = "NPC R Calf [RClf]";
-	const std::string_view leftToeLookup = "NPC L Toe0 [LToe]";
-	const std::string_view rightToeLookup = "NPC R Toe0 [RToe]";
+	const std::string_view leftToeLookup = "AnimObjectA";
+	const std::string_view rightToeLookup = "AnimObjectA";
 	const std::string_view bodyLookup = "NPC Spine1 [Spn1]";
 }
 
@@ -116,7 +116,7 @@ namespace Gts {
 				footPoints.push_back(foot->world*(rotMat*point));
 				NiPoint3 coords = foot->world*(rotMat*point);
 				log::info("FootLeft Coords: {}", Vector2Str(coords));
-				//coords.z -= hh * 0.65;
+				coords.z -= hh * 0.65;
 				return AttachTo(anyGiant, anyTiny, coords);
 			}
 		}
@@ -179,7 +179,7 @@ namespace Gts {
 				footPoints.push_back(foot->world*(rotMat*point));
 				NiPoint3 coords = foot->world*(rotMat*point);
 				log::info("FootRight Coords: {}", Vector2Str(coords));
-				//coords.z -= hh * 0.65;
+				coords.z -= hh * 0.65;
 				return AttachTo(anyGiant, anyTiny, coords);
 			}
 		}
