@@ -105,8 +105,12 @@ namespace Gts {
 
 		float hh = hhOffsetbase[2];
 		// Make a list of points to check
+
+		float Forward = Runtime::GetFloat("cameraAlternateX");
+		float UpDown = Runtime::GetFloat("cameraAlternateY");
+
 		std::vector<NiPoint3> points = {
-			NiPoint3(0, 14.0 - hh/70, -(1.75 + hh * 0.65)),
+			NiPoint3(0, Forward - hh/70, -(UpDown + hh * 0.65)),
 		};
 		std::tuple<NiAVObject*, NiMatrix3> left(leftFoot, leftRotMat);
 
@@ -168,8 +172,11 @@ namespace Gts {
 
 		float hh = hhOffsetbase[2];
 		// Make a list of points to check
+		float Forward = Runtime::GetFloat("cameraAlternateX");
+		float UpDown = Runtime::GetFloat("cameraAlternateY");
+
 		std::vector<NiPoint3> points = {
-			NiPoint3(0, 14.0 - hh/70, -(1.75 + hh * 0.65)),
+			NiPoint3(0, Forward - hh/70, -(UpDown + hh * 0.65)),
 		};
 		std::tuple<NiAVObject*, NiMatrix3> right(rightFoot, rightRotMat);
 
