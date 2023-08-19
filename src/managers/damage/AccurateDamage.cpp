@@ -192,7 +192,7 @@ namespace Gts {
 		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
 		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(actor);
 
-		auto leftFoot = find_node(actor, leftFootLookup);
+		auto leftFoot = find_node(actor, leftFootLookup); 
 		auto leftCalf = find_node(actor, leftCalfLookup);
 		auto leftToe = find_node(actor, leftToeLookup);
 		if (!leftFoot) {

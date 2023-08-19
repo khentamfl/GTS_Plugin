@@ -58,23 +58,134 @@ namespace Gts {
 	}
 
 	template<typename T, typename U>
-	bool AttachToUnderFoot(T& anyGiant, U& anyTiny) {
-		Actor* giant = GetActorPtr(anyGiant);
+	bool AttachToUnderFoot_Left(T& anyGiant, U& anyTiny) {
+		Actor* giant = GetActorPtr(anyGiant); 
 		if (!giant) {
 			return false;
 		}
-		auto bone = find_node(giant, "AnimObjectB");
-		if (bone) {
-			auto coords = bone->world.translate;
-			log::info("Coords Z Before: {}", coords.z);
-			float HH = HighHeelManager::GetHHOffset(giant).Length() * 0.65;
-			coords.z -= HH;
-			log::info("Coords Z After: {}, HH {}", coords.z, HH);
+
+		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(giant);
+
+		auto leftFoot = find_node(giant, leftFootLookup);
+		auto leftCalf = find_node(giant, leftCalfLookup);
+		auto leftToe = find_node(giant, leftToeLookup);
+		if (!leftFoot) {
+			return false;
+		} if (!leftCalf) {
+			return false;
+		} if (!leftToe) {
+			return false;
+		}
+		NiMatrix3 leftRotMat;
+		{
+			NiAVObject* foot = leftFoot;
+			NiAVObject* calf = leftCalf;
+			NiAVObject* toe = leftToe;
+			NiTransform inverseFoot = foot->world.Invert();
+			NiPoint3 forward = inverseFoot*toe->world.translate;
+			forward = forward / forward.Length();
+
+			NiPoint3 up = inverseFoot*calf->world.translate; 
+			up = up / up.Length();
+
+			NiPoint3 right = forward.UnitCross(up);
+			forward = up.UnitCross(right); // Reorthonalize
+
+			leftRotMat = NiMatrix3(right, forward, up);
+		}
+
+		float maxFootDistance = BASE_DISTANCE * radius * giantScale;
+		float hh = hhOffsetbase[2];
+		// Make a list of points to check
+		std::vector<NiPoint3> points = {
+			NiPoint3(0.0, hh*0.08, -0.25 +(-hh * 0.25)), // The standard at the foot position
+			NiPoint3(1.6, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward
+			NiPoint3(0.0, (hh/50), -0.25 + (-hh * 1.15)), // Offset for HH
+		};
+		std::tuple<NiAVObject*, NiMatrix3> left(leftFoot, leftRotMat);
+
+		for (const auto& [foot, rotMat]: {left}) {
+			std::vector<NiPoint3> footPoints = {};
+			for (NiPoint3 point: points) {
+				footPoints.push_back(foot->world*(rotMat*point));
+			}
+		}
+		NiPoint3 coords = footPoints[1];
+		if (footPoints[1]) {
+			coords.z -= HH * 0.65;
 			return AttachTo(anyGiant, anyTiny, coords);
 		} else {
 			return false;
 		}
 	}
+
+	template<typename T, typename U>
+	bool AttachToUnderFoot_Right(T& anyGiant, U& anyTiny) {
+		Actor* giant = GetActorPtr(anyGiant); 
+		if (!giant) {
+			return false;
+		}
+
+		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(giant);
+
+		auto rightFoot = find_node(giant, rightFootLookup);
+		auto rightCalf = find_node(giant, rightCalfLookup);
+		auto rightToe = find_node(giant, rightToeLookup);
+
+
+		if (!rightFoot) {
+			return false;
+		}
+		if (!rightCalf) {
+			return false;
+		}
+		if (!rightToe) {
+			return false;
+		}
+		NiMatrix3 rightRotMat;
+		{
+			NiAVObject* foot = rightFoot;
+			NiAVObject* calf = rightCalf;
+			NiAVObject* toe = rightToe;
+
+			NiTransform inverseFoot = foot->world.Invert();
+			NiPoint3 forward = inverseFoot*toe->world.translate;
+			forward = forward / forward.Length();
+
+			NiPoint3 up = inverseFoot*calf->world.translate;
+			up = up / up.Length();
+
+			NiPoint3 right = up.UnitCross(forward);
+			forward = right.UnitCross(up); // Reorthonalize
+
+			rightRotMat = NiMatrix3(right, forward, up);
+		}
+
+		float hh = hhOffsetbase[2];
+		// Make a list of points to check
+		std::vector<NiPoint3> points = {
+			NiPoint3(0.0, hh*0.08, -0.25 +(-hh * 0.25)), // The standard at the foot position
+			NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward
+			NiPoint3(0.0, (hh/50), -0.25 + (-hh * 1.15)), // Offset for HH
+		};
+		std::tuple<NiAVObject*, NiMatrix3> right(rightFoot, rightRotMat);
+
+		for (const auto& [foot, rotMat]: {right}) {
+			std::vector<NiPoint3> footPoints = {};
+			for (NiPoint3 point: points) {
+				footPoints.push_back(foot->world*(rotMat*point));
+			}
+		}
+
+		NiPoint3 coords = footPoints[1];
+		if (footPoints[1]) {
+			coords.z -= HH * 0.65;
+			return AttachTo(anyGiant, anyTiny, coords);
+		} else {
+			return false;
+		}
+	}
+	
 
 	template<typename T, typename U>
 	bool AttachToHand(T& anyGiant, U& anyTiny) {

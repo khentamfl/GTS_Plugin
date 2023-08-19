@@ -178,7 +178,7 @@ namespace Gts {
 		return tiny->IsHostileToActor(giant);
 	}
 
-	void DoFootGrind(Actor* giant, Actor* tiny) {
+	void DoFootGrind_Left(Actor* giant, Actor* tiny) {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
 		std::string name = std::format("FootGrind_{}", tiny->formID);
@@ -197,7 +197,43 @@ namespace Gts {
 			if (FrameB <= 4.0) {
 				return true;
 			}
-			if (!AttachToUnderFoot(giantref, tinyref)) {
+			if (!AttachToUnderFoot_Left(giantref, tinyref)) {
+				log::info("Attach is false");
+				SetBeingGrinded(tinyref, false);
+				return false;
+			} if (!IsFootGrinding(giantref)) {
+				SetBeingGrinded(tinyref, false);
+				log::info("IsGrinding = false");
+				return false;
+			} if (tinyref->IsDead()) {
+				SetBeingGrinded(tinyref, false);
+				log::info("Tiny is dead");
+				return false;
+			}
+			return true;
+		});
+	}
+
+	void DoFootGrind_Right(Actor* giant, Actor* tiny) {
+		auto gianthandle = giant->CreateRefHandle();
+		auto tinyhandle = tiny->CreateRefHandle();
+		std::string name = std::format("FootGrind_{}", tiny->formID);
+		auto FrameA = Time::FramesElapsed();
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			if (!tinyhandle) {
+				return false;
+			}
+			
+			auto giantref = gianthandle.get().get();
+			auto tinyref = tinyhandle.get().get();
+			auto FrameB = Time::FramesElapsed() - FrameA;
+			if (FrameB <= 4.0) {
+				return true;
+			}
+			if (!AttachToUnderFoot_Right(giantref, tinyref)) {
 				log::info("Attach is false");
 				SetBeingGrinded(tinyref, false);
 				return false;
@@ -309,7 +345,7 @@ namespace Gts {
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
 								if (aveForce >= 0.00 && !otherActor->IsDead()) {
-									DoFootGrind(actor, otherActor);
+									DoFootGrind_Left(actor, otherActor);
 									SetBeingGrinded(otherActor, true);
 									AnimationManager::StartAnim("GrindLeft", actor);
                                 }
@@ -420,7 +456,7 @@ namespace Gts {
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
 								if (aveForce >= 0.00 && !otherActor->IsDead()) {
-									DoFootGrind(actor, otherActor);
+									DoFootGrind_Right(actor, otherActor);
 									SetBeingGrinded(otherActor, true);
 									AnimationManager::StartAnim("GrindRight", actor);
                                 }

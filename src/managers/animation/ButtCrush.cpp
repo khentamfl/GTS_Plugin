@@ -259,7 +259,7 @@ namespace {
         float target = std::clamp(bonus/2, 0.02f, 0.80f);
         ModGrowthCount(giant, 1.0, false);
         SetBonusSize(giant, bonus, false);
-        SpringGrow_Free(giant, bonus, 0.3, "ButtCrushGrowth");
+        SpringGrow_Free(giant, bonus, 0.3 / GetAnimationSlowdown(giant), "ButtCrushGrowth");
 
         float WasteStamina = 60.0 * GetButtCrushCost(giant);
         DamageAV(giant, ActorValue::kStamina, WasteStamina);
