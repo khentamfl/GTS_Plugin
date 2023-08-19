@@ -106,7 +106,7 @@ namespace Gts {
 		float hh = hhOffsetbase[2];
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
-			NiPoint3(1.6, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward
+			NiPoint3(0, hh/70, -0.75 + (-hh * 0.65)), // Offset it forward
 		};
 		std::tuple<NiAVObject*, NiMatrix3> left(leftFoot, leftRotMat);
 
@@ -169,7 +169,7 @@ namespace Gts {
 		float hh = hhOffsetbase[2];
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
-			NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward
+			NiPoint3(0, hh/70, -0.75 + (-hh * 0.65)), // Offset it forward
 		};
 		std::tuple<NiAVObject*, NiMatrix3> right(rightFoot, rightRotMat);
 
@@ -179,7 +179,6 @@ namespace Gts {
 				footPoints.push_back(foot->world*(rotMat*point));
 				NiPoint3 coords = foot->world*(rotMat*point);
 				log::info("FootRight Coords: {}", Vector2Str(coords));
-				coords.z -= hh * 0.65;
 				return AttachTo(anyGiant, anyTiny, coords);
 			}
 		}
