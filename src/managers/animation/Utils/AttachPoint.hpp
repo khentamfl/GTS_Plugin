@@ -117,10 +117,8 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 				NiPoint3 coords = footPoints[1];
-				if (footPoints[1]) {
-					coords.z -= hh * 0.65;
-					return AttachTo(anyGiant, anyTiny, coords);
-				}
+				coords.z -= hh * 0.65;
+				return AttachTo(anyGiant, anyTiny, coords);
 			}
 		}
 		return false;
@@ -183,10 +181,8 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 				NiPoint3 coords = footPoints[1];
-				if (footPoints[1]) {
-					coords.z -= hh * 0.65;
-					return AttachTo(anyGiant, anyTiny, coords);
-				}
+				coords.z -= hh * 0.65;
+				return AttachTo(anyGiant, anyTiny, coords);
 			}
 		}
 
