@@ -116,15 +116,15 @@ namespace Gts {
 			std::vector<NiPoint3> footPoints = {};
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
+				NiPoint3 coords = footPoints[1];
+				if (footPoints[1]) {
+					coords.z -= hh * 0.65;
+					return AttachTo(anyGiant, anyTiny, coords);
+				}
 			}
 		}
-		NiPoint3 coords = footPoints[1];
-		if (footPoints[1]) {
-			coords.z -= hh * 0.65;
-			return AttachTo(anyGiant, anyTiny, coords);
-		} else {
-			return false;
-		}
+		return false;
+		
 	}
 
 	template<typename T, typename U>
@@ -182,16 +182,15 @@ namespace Gts {
 			std::vector<NiPoint3> footPoints = {};
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
+				NiPoint3 coords = footPoints[1];
+				if (footPoints[1]) {
+					coords.z -= hh * 0.65;
+					return AttachTo(anyGiant, anyTiny, coords);
+				}
 			}
 		}
 
-		NiPoint3 coords = footPoints[1];
-		if (footPoints[1]) {
-			coords.z -= hh * 0.65;
-			return AttachTo(anyGiant, anyTiny, coords);
-		} else {
-			return false;
-		}
+		return false;
 	}
 	
 
