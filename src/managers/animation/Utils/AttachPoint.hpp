@@ -110,7 +110,7 @@ namespace Gts {
 		float UpDown = 9; //Runtime::GetFloat("cameraAlternateY"); // 8 too 
 
 		std::vector<NiPoint3> points = {
-			NiPoint3(0, Forward - hh/60, -(UpDown + hh * 0.65)),
+			NiPoint3(0, Forward - hh/45, -(UpDown + hh * 0.65)),
 		};
 		std::tuple<NiAVObject*, NiMatrix3> left(leftFoot, leftRotMat);
 
@@ -174,7 +174,7 @@ namespace Gts {
 		float UpDown = 9; //Runtime::GetFloat("cameraAlternateY"); // 8 too 
 
 		std::vector<NiPoint3> points = {
-			NiPoint3(0, Forward - hh/60, -(UpDown + hh * 0.65)),
+			NiPoint3(0, Forward - hh/45, -(UpDown + hh * 0.65)),
 		};
 		std::tuple<NiAVObject*, NiMatrix3> right(rightFoot, rightRotMat);
 
