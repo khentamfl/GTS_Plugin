@@ -141,7 +141,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 				NiPoint3 coords = foot->world*(rotMat*point);
-				return AttachTo_NoForceRagdoll(anyGiant, anyTiny, coords);
+				return AttachTo(anyGiant, anyTiny, coords);
 			}
 		}
 		return false;
@@ -205,7 +205,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 				NiPoint3 coords = foot->world*(rotMat*point);
-				return AttachTo_NoForceRagdoll(anyGiant, anyTiny, coords);
+				return AttachTo(anyGiant, anyTiny, coords);
 			}
 		}
 
