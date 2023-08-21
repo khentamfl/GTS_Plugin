@@ -446,7 +446,7 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
 
-		auto charcont = tiny->GetCharController();
+		auto charcont = otherActor->GetCharController();
 		if (charcont) {
 			charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
 		}
