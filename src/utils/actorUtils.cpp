@@ -1029,8 +1029,10 @@ namespace Gts {
 				NiPoint3 direction = vector / vector.Length();
 
 				log::info("Applying Havok: Direction: {}, force: {}", Vector2Str(direction), power);
-				
-				ApplyHavokImpulse_Manual(tiny, direction.x, direction.y, direction.z, speed * 1000 * power);
+				ESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyHandle.get().get());
+				if (tiny_is_object) {
+					ApplyHavokImpulse(tiny_is_object, direction.x, direction.y, direction.z, speed * 1000 * power);
+				}
 				return false;
 			} else {
 				return true;
