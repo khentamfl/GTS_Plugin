@@ -1153,9 +1153,9 @@ namespace Gts {
 						ActorHandle giantHandle = giant->CreateRefHandle();
 						
 						TaskManager::RunFor(taskname, DURATION, [=](auto& progressData){ // Make sure to disallow shrinking below threshold
-							if (!gianthandle) {
+							if (!giantHandle) {
 								return false;
-							} if (!tinyhandle) {
+							} if (!tinyHandle) {
 								return false;
 							}
 							auto GTS = giantHandle.get().get();
