@@ -122,7 +122,7 @@ namespace Gts {
 	void StaggerOr(Actor* giant, Actor* tiny, float power, float afX, float afY, float afZ, float afMagnitude);
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind, float crushmult);
 
-	void PushTowards(Actor* giantref, Actor* tinyref, NiAVObject* bone, float power);
+	void PushTowards(Actor* giantref, Actor* tinyref, NiAVObject* bone, float power, bool sizecheck);
 	void TinyCalamityExplosion(Actor* giant, float radius, NiAVObject* node);
 	void ShrinkOutburstExplosion(Actor* giant, float radius, NiAVObject* node, float shrink, bool WasHit);
 	

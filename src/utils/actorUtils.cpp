@@ -999,7 +999,7 @@ namespace Gts {
 		}
 	}
 
-	void PushTowards(Actor* giantref, Actor* tinyref, NiAVObject* bone, float power) {
+	void PushTowards(Actor* giantref, Actor* tinyref, NiAVObject* bone, float power, bool sizecheck) {
 		NiPoint3 startCoords = bone->world.translate;
 		double startTime = Time::WorldTimeElapsed();
 		ActorHandle tinyHandle = tinyref->CreateRefHandle();
@@ -1027,11 +1027,22 @@ namespace Gts {
 				float timeTaken = endTime - startTime;
 				float speed = distanceTravelled / timeTaken;
 				NiPoint3 direction = vector / vector.Length();
-
-				log::info("Applying Havok: Direction: {}, force: {}", Vector2Str(direction), power);
+				if (sizecheck) { 
+					float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
+					if (sizedifference < 1.2) {
+						return false; // terminate task
+					}
+					else if (sizedifference > 1.2 && sizedifference < 3.0) {
+						tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
+						tiny->NotifyAnimationGraph("staggerStart");
+						return false; //Only Stagger
+					} 
+				}
+				// If we pass checks, launch actor instead
+				log::info("Applying Havok: Direction: {}, force: {}, speed: {}", Vector2Str(direction), power, speed);
 				TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tiny);
 				if (tiny_is_object) {
-					ApplyHavokImpulse(tiny_is_object, direction.x, direction.y, direction.z, speed * 5 * power);
+					ApplyHavokImpulse(tiny_is_object, direction.x, direction.y, direction.z, speed * power);
 				}
 				return false;
 			} else {

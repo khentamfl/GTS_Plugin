@@ -92,8 +92,9 @@ namespace {
 							if (!allow) {
 								float force = 1.0 - distance / maxDistance;
 								float aveForce = std::clamp(force, 0.00f, 0.70f);
+								float pushForce = std::clamp(force, 0.01f, 0.10f);
 								AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult);
-								PushTowards(giant, otherActor, node, force);
+								PushTowards(giant, otherActor, node, pushForce, true);
 								sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
 							}
                         }
