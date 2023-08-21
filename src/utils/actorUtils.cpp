@@ -1031,7 +1031,7 @@ namespace Gts {
 				log::info("Applying Havok: Direction: {}, force: {}", Vector2Str(direction), power);
 				ESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyHandle.get().get());
 				if (tiny_is_object) {
-					ApplyHavokImpulse(tiny_is_object, direction.x, direction.y, direction.z, speed * 1000 * power);
+					ApplyHavokImpulse(tiny_is_object, direction.x, direction.y, direction.z, speed * 100000 * power);
 				}
 				return false;
 			} else {
