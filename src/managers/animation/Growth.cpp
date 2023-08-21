@@ -1,5 +1,6 @@
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/emotions/EmotionManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/damage/LaunchActor.hpp"
 #include "managers/animation/Growth.hpp"
@@ -83,6 +84,7 @@ namespace {
 		AdjustFacialExpression(giant, 0, 0.75, "phenome");
     }
     void GtsGrowth_Mouth_Close(AnimationEventData& data) {
+        auto giant = &data.giant;
         AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
 		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
 		AdjustFacialExpression(giant, 0, 0.0, "phenome");
@@ -104,6 +106,10 @@ namespace {
 namespace Gts
 {
 	void AnimationGrowth::RegisterEvents() {
+        AAnimationManager::RegisterEvent("GtsGrowth_Moan", "Growth", GtsGrowth_Moan);
+        AnimationManager::RegisterEvent("GtsGrowth_Mouth_Open", "Growth", GtsGrowth_Mouth_Open);
+        AnimationManager::RegisterEvent("GtsGrowth_Mouth_Close", "Growth", GtsGrowth_Mouth_Close);
+
 		AnimationManager::RegisterEvent("GTSGrowth_Enter", "Growth", GTSGrowth_Enter);
         AnimationManager::RegisterEvent("GTSGrowth_SpurtStart", "Growth", GTSGrowth_SpurtStart);
         AnimationManager::RegisterEvent("GTSGrowth_SpurtSlowdownPoint", "Growth", GTSGrowth_SpurtSlowdownPoint);
