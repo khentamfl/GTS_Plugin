@@ -75,7 +75,7 @@ namespace Gts {
 		}
 	}
 
-    void DoCrawlingFunctions(Actor* actor, float scale, float multiplier, float damage, CrawlEvent kind, std::string_view tag, float launch_dist, float damage_dist) { // Call everything
+    void DoCrawlingFunctions(Actor* actor, float scale, float multiplier, float damage, CrawlEvent kind, std::string_view tag, float launch_dist, float damage_dist, float crushmult) { // Call everything
         std::string_view name = GetImpactNode(kind);
         
         auto node = find_node(actor, name);
@@ -103,7 +103,7 @@ namespace Gts {
         std::string rumbleName = std::format("{}{}", tag, actor->formID);
         Rumble::Once(rumbleName, actor, 0.90 * multiplier * SMT, 0.02, name); // Do Rumble
 
-		DoDamageAtPoint(actor, damage_dist, 70 * damage, node, 20, 0.05, 1.0); // Do size-related damage
+		DoDamageAtPoint(actor, damage_dist, 70 * damage, node, 20, 0.05, crushmult); // Do size-related damage
         DoCrawlingSounds(actor, scale, node, FootEvent::Left);                      // Do impact sounds
 
         if (scale >= minimal_scale && !actor->AsActorState()->IsSwimming()) {

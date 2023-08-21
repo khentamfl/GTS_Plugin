@@ -1003,11 +1003,10 @@ namespace Gts {
 	}
 
 	void PushTowards(Actor* giantref, Actor* tinyref, NiAVObject* bone, float power) {
-		auto giant = &data.giant;
 		NiPoint3 startCoords = bone->world.translate;
 		double startTime = Time::WorldTimeElapsed();
-		ActorHandle tinyHandle = tiny->CreateRefHandle();
-		ActorHandle gianthandle = giant->CreateRefHandle();
+		ActorHandle tinyHandle = tinyref->CreateRefHandle();
+		ActorHandle gianthandle = giantref->CreateRefHandle();
 		// Do this next frame (or rather until some world time has elapsed)
 		TaskManager::Run([=](auto& update){
 			Actor* giant = gianthandle.get().get();
