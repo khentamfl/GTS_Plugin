@@ -106,7 +106,7 @@ namespace {
 namespace Gts
 {
 	void AnimationGrowth::RegisterEvents() {
-        AAnimationManager::RegisterEvent("GtsGrowth_Moan", "Growth", GtsGrowth_Moan);
+        AnimationManager::RegisterEvent("GtsGrowth_Moan", "Growth", GtsGrowth_Moan);
         AnimationManager::RegisterEvent("GtsGrowth_Mouth_Open", "Growth", GtsGrowth_Mouth_Open);
         AnimationManager::RegisterEvent("GtsGrowth_Mouth_Close", "Growth", GtsGrowth_Mouth_Close);
 
