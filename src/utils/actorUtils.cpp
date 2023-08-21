@@ -981,7 +981,7 @@ namespace Gts {
 		} else if (ragdollchance < 7.0 * sizedifference) {
 			// ForceRagdoll(tiny, true);
 			PushActorAway(giant, tiny, power/50); // Push instead
-			ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
+			//ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
 			return;
 		}
 	}

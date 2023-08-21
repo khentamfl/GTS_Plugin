@@ -45,7 +45,7 @@ namespace {
 			}
 			auto giantref = gianthandle.get().get();
             Rumble::Once("FootGrindL", giantref, 1.0, 0.025, LNode);
-			DoDamageEffect(giantref, 0.005, 1.4, 10000, 0.05, FootEvent::Left, 2.5);
+			DoDamageEffect(giantref, 0.008, 1.5, 10000, 0.05, FootEvent::Left, 2.5);
 			return true;
 		});
 	}
@@ -59,7 +59,7 @@ namespace {
 			}
 			auto giantref = gianthandle.get().get();
             Rumble::Once("FootGrindR", giantref, 1.0, 0.025, RNode);
-			DoDamageEffect(giantref, 0.005, 1.5, 10000, 0.05, FootEvent::Right, 2.5);
+			DoDamageEffect(giantref, 0.008, 1.5, 10000, 0.05, FootEvent::Right, 2.5);
 			return true;
 		});
 	}

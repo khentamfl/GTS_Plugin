@@ -68,22 +68,6 @@ namespace {
 		sizemanager.ModSizeVulnerability(tiny, damage * 0.0015);
 	}
 
-	void MiniStagger(Actor* giant, Actor* tiny) {
-		if (IsBeingHeld(tiny)) {
-			return;
-		}
-		if (!AllowStagger(giant, tiny)) {
-			return;
-		}
-		float giantSize = get_visual_scale(giant);
-		float tinySize = get_visual_scale(tiny);
-		float sizedifference = giantSize/tinySize;
-		if (sizedifference >= 1.33) {
-			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
-			tiny->NotifyAnimationGraph("staggerStart");
-		}
-	}
-
 	void SMTCrushCheck(Actor* Caster, Actor* Target) {
 		auto profiler = Profilers::Profile("AccurateDamage: SMTCrushCheck");
 		if (Caster == Target) {
@@ -399,19 +383,12 @@ namespace Gts {
 		if (model) {
 			bool isdamaging = sizemanager.IsDamaging(tiny);
 			float movementFactor = 1.0;
-			if (!CanDoDamage(giant, tiny)) {
-				if (!isdamaging && force >= 0.33) {
-					MiniStagger(giant, tiny);
-					sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
-					return;
-				}
-				return;
-			}
 			if (giant->AsActorState()->IsSprinting()) {
 				movementFactor *= 1.5;
 			}
 			if (!isdamaging && force >= 0.33) {
-				StaggerOr(giant, tiny, 1 * force, 0, 0, 0, 0);
+				StaggerOr(giant, tiny, force, 0, 0, 0, 0);
+				log::info("Force Is > 0.33, staggering");
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 			}
 			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true, crushmult);

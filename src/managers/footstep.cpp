@@ -366,7 +366,7 @@ namespace Gts {
 		if (lFootstep.soundID != BSSoundHandle::kInvalidID && scale <= 14.0) {
 			lFootstep.Play();
 		}
-		if (lJumpLand.soundID != BSSoundHandle::kInvalidID && scale <= 14.0) {
+		if (lJumpLand.soundID != BSSoundHandle::kInvalidID) {
 			lJumpLand.Play();
 		}
 		if (xlFootstep.soundID != BSSoundHandle::kInvalidID && scale <= 14.0) {
