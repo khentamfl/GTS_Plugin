@@ -204,7 +204,6 @@ namespace {
 		} else if (scale == 8.0) {
 			return Runtime::GetSound("HighHeel_x8");
 		} else if (scale == 12.0) {
-			log::info("Case: Scale 12");
 			return Runtime::GetSound("HighHeel_x12");
 		} else if (scale == 24.0) {
 			return Runtime::GetSound("HighHeel_x24");

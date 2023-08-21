@@ -386,6 +386,7 @@ namespace Gts {
 			if (giant->AsActorState()->IsSprinting()) {
 				movementFactor *= 1.5;
 			}
+			log::info("Force: {}", force);
 			if (!isdamaging && force >= 0.33) {
 				StaggerOr(giant, tiny, force, 0, 0, 0, 0);
 				log::info("Force Is > 0.33, staggering");

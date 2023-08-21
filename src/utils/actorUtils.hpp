@@ -53,6 +53,7 @@ namespace Gts {
 	bool IsFemale(Actor* actor);
 	bool IsDragon(Actor* actor);
 	bool IsLiving(Actor* actor);
+	bool IsMoving(Actor* giant);
 	// Gts Bools end
 
 	// GTS State Controllers
