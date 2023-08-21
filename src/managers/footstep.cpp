@@ -360,6 +360,8 @@ namespace Gts {
 		BSSoundHandle xlRumble     = get_sound(foot, scale, get_xlRumble_sounddesc(foot_kind),    VolumeParams { .a = start_xl,            .k = 0.50, .n = 0.5, .s = 1.0}, "XL Rumble", 1.0);
 		BSSoundHandle xlSprint     = get_sound(foot, scale, get_xlSprint_sounddesc(foot_kind),    VolumeParams { .a = start_xl,            .k = 0.50, .n = 0.5, .s = 1.0}, "XL Sprint", 1.0);
 
+		BSSoundHandle Footstep_12 = get_sound(foot, scale, get_footstep_highheel(foot_kind, 12),  VolumeParams { .a = 12.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "x12 Footstep", 1.6);
+
 		BSSoundHandle xxlFootstepL = get_sound(foot, scale, get_xxlFootstep_sounddesc(foot_kind), VolumeParams { .a = start_xxl,           .k = 0.5,  .n = 0.5, .s = 1.0}, "XXL Footstep", 1.0);
 		if (lFootstep.soundID != BSSoundHandle::kInvalidID) {
 			lFootstep.Play();
@@ -378,6 +380,9 @@ namespace Gts {
 		}
 		if (xxlFootstepL.soundID != BSSoundHandle::kInvalidID) {
 			xxlFootstepL.Play();
+		}
+		if (Footstep_12.soundID != BSSoundHandle::kInvalidID) {
+			Footstep_12.Play();
 		}
 	}
 
