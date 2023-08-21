@@ -73,7 +73,20 @@ namespace {
 			return true;
 		});
 	}
-
+    void GtsGrowth_Moan(AnimationEventData& data) {
+        Runtime::PlaySoundAtNode("MoanSound", &data.giant, 1.0, 1.0, "NPC Head [Head]");
+    }
+    void GtsGrowth_Mouth_Open(AnimationEventData& data) {
+        auto giant = &data.giant;
+        AdjustFacialExpression(giant, 0, 1.0, "modifier"); // blink L
+		AdjustFacialExpression(giant, 1, 1.0, "modifier"); // blink R
+		AdjustFacialExpression(giant, 0, 0.75, "phenome");
+    }
+    void GtsGrowth_Mouth_Close(AnimationEventData& data) {
+        AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
+		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
+		AdjustFacialExpression(giant, 0, 0.0, "phenome");
+    }
 	void GTSGrowth_Enter(AnimationEventData& data) {
     }
     void GTSGrowth_SpurtStart(AnimationEventData& data) {

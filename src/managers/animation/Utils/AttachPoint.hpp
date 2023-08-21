@@ -13,8 +13,8 @@ namespace {
 	const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
 	const std::string_view leftCalfLookup = "NPC L Calf [LClf]";
 	const std::string_view rightCalfLookup = "NPC R Calf [RClf]";
-	const std::string_view leftToeLookup = "AnimObjectA";
-	const std::string_view rightToeLookup = "AnimObjectA";
+	const std::string_view leftToeLookup = "AnimObjectB";
+	const std::string_view rightToeLookup = "AnimObjectB";
 	const std::string_view bodyLookup = "NPC Spine1 [Spn1]";
 }
 
