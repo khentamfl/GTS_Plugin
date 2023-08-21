@@ -446,6 +446,11 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
 
+		auto charcont = tiny->GetCharController();
+		if (charcont) {
+			charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
+		}
+
 		// Do this next frame (or rather until some world time has elapsed)
 		TaskManager::Run([=](auto& update){
   		Actor* giant = gianthandle.get().get();
