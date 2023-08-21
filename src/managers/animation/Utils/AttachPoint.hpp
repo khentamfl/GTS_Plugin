@@ -145,7 +145,6 @@ namespace Gts {
 			}
 		}
 		return false;
-		
 	}
 
 	template<typename T, typename U>

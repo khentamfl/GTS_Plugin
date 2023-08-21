@@ -1002,6 +1002,45 @@ namespace Gts {
 		}
 	}
 
+	void PushTowards(Actor* giantref, Actor* tinyref, NiAVObject* bone, float power) {
+		auto giant = &data.giant;
+		NiPoint3 startCoords = bone->world.translate;
+		double startTime = Time::WorldTimeElapsed();
+		ActorHandle tinyHandle = tiny->CreateRefHandle();
+		ActorHandle gianthandle = giant->CreateRefHandle();
+		// Do this next frame (or rather until some world time has elapsed)
+		TaskManager::Run([=](auto& update){
+			Actor* giant = gianthandle.get().get();
+			Actor* tiny = tinyHandle.get().get();
+			if (!giant) {
+				return false;
+			}
+			if (!tiny) {
+				return false;
+			}
+
+			NiPoint3 endCoords = bone->world.translate;
+			double endTime = Time::WorldTimeElapsed();
+
+			if ((endTime - startTime) > 1e-4) {
+				// Time has elapsed
+
+				NiPoint3 vector = endCoords- startCoords;
+				float distanceTravelled = vector.Length();
+				float timeTaken = endTime - startTime;
+				float speed = distanceTravelled / timeTaken;
+				NiPoint3 direction = vector / vector.Length();
+
+				//PushActorAway(giant, tiny, direction, speed * 100);
+				PushActorAway(giant, tiny, direction, 1);
+				ApplyHavokImpulse(tiny, direction.x, direction.y, direction.z, speed * 100 * power);
+				return false;
+			} else {
+				return true;
+			}
+		});
+	}
+
 	void TinyCalamityExplosion(Actor* giant, float radius, NiAVObject* node) { // Meant to just stagger actors
 		if (!node) {
 			return;
@@ -1060,7 +1099,6 @@ namespace Gts {
 			}
 		}
 	}
-	
 
 	void ShrinkOutburstExplosion(Actor* giant, float radius, NiAVObject* node, float shrink, bool WasHit) {
 		if (!node) {
