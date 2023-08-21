@@ -635,8 +635,6 @@ namespace Gts {
 				if (ai->InHighProcess()) {
 				if (receiver->Is3DLoaded()) {
 					if (source->Is3DLoaded()) {
-					log::info("Direction: {}, force {}", Vector2Str(direction), force);
-
 					typedef void(*DefPushActorAway)(AIProcess *ai, Actor* actor, NiPoint3& direction, float force);
 					REL::Relocation<DefPushActorAway> RealPushActorAway{ RELOCATION_ID(38858, 39895) };
 					RealPushActorAway(ai, receiver, direction, force);
@@ -1007,6 +1005,7 @@ namespace Gts {
 		double startTime = Time::WorldTimeElapsed();
 		ActorHandle tinyHandle = tinyref->CreateRefHandle();
 		ActorHandle gianthandle = giantref->CreateRefHandle();
+		PushActorAway(giantref, tinyref, 1);
 		// Do this next frame (or rather until some world time has elapsed)
 		TaskManager::Run([=](auto& update){
 			Actor* giant = gianthandle.get().get();
@@ -1030,9 +1029,9 @@ namespace Gts {
 				float speed = distanceTravelled / timeTaken;
 				NiPoint3 direction = vector / vector.Length();
 
-				//PushActorAway(giant, tiny, direction, speed * 100);
-				PushActorAway(giant, tiny, direction, 1);
-				ApplyHavokImpulse(tiny, direction.x, direction.y, direction.z, speed * 100 * power);
+				log::info("Applying Havok: Direction: {}, force: {}", Vector2Str(direction), power);
+				
+				ApplyHavokImpulse(tiny, direction.x, direction.y, direction.z, speed * 1000 * power);
 				return false;
 			} else {
 				return true;
