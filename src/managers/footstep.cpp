@@ -363,22 +363,22 @@ namespace Gts {
 		BSSoundHandle Footstep_12 = get_sound(foot, scale, get_footstep_highheel(foot_kind, 12),  VolumeParams { .a = 12.0,          .k = 0.40, .n = 0.55, .s = 1.0}, "x12 Footstep", 1.6);
 
 		BSSoundHandle xxlFootstepL = get_sound(foot, scale, get_xxlFootstep_sounddesc(foot_kind), VolumeParams { .a = start_xxl,           .k = 0.5,  .n = 0.5, .s = 1.0}, "XXL Footstep", 1.0);
-		if (lFootstep.soundID != BSSoundHandle::kInvalidID) {
+		if (lFootstep.soundID != BSSoundHandle::kInvalidID && scale <= 14.0) {
 			lFootstep.Play();
 		}
-		if (lJumpLand.soundID != BSSoundHandle::kInvalidID) {
+		if (lJumpLand.soundID != BSSoundHandle::kInvalidID && scale <= 14.0) {
 			lJumpLand.Play();
 		}
-		if (xlFootstep.soundID != BSSoundHandle::kInvalidID) {
+		if (xlFootstep.soundID != BSSoundHandle::kInvalidID && scale <= 14.0) {
 			xlFootstep.Play();
 		}
 		if (xlRumble.soundID != BSSoundHandle::kInvalidID) {
 			xlRumble.Play();
 		}
-		if (xlSprint.soundID != BSSoundHandle::kInvalidID) {
+		if (xlSprint.soundID != BSSoundHandle::kInvalidID && scale <= 14.0) {
 			xlSprint.Play();
 		}
-		if (xxlFootstepL.soundID != BSSoundHandle::kInvalidID) {
+		if (xxlFootstepL.soundID != BSSoundHandle::kInvalidID && scale <= 14.0) {
 			xxlFootstepL.Play();
 		}
 		if (Footstep_12.soundID != BSSoundHandle::kInvalidID) {
