@@ -648,13 +648,12 @@ namespace Gts {
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius) {
 		CallFunctionOn(source, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
 	}
-	void ApplyHavokImpulse(Actor* target, float afX, float afY, float afZ, float afMagnitude) {
-		if (afZ <= 0) {
-			return;
-		}
+	void ApplyHavokImpulse_Manual(Actor* target, float afX, float afY, float afZ, float afMagnitude) {
+		log::info("Applying RB One");
 		NiPoint3 direction = NiPoint3(afX, afY, afZ);
-		NiPoint3 niImpulse = direction * afMagnitude/direction.Length();
-		hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);
+		//NiPoint3 niImpulse = direction * afMagnitude/direction.Length();
+		//hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);
+		hkVector4 impulse = hkVector4(afX, afY, afZ, afMagnitude);
 		auto rbs = GetActorRB(target);
 		for (auto rb: rbs) {
 			if (rb) {
@@ -1031,7 +1030,7 @@ namespace Gts {
 
 				log::info("Applying Havok: Direction: {}, force: {}", Vector2Str(direction), power);
 				
-				ApplyHavokImpulse(tiny, direction.x, direction.y, direction.z, speed * 1000 * power);
+				ApplyHavokImpulse_Manual(tiny, direction.x, direction.y, direction.z, speed * 1000 * power);
 				return false;
 			} else {
 				return true;

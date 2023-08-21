@@ -84,7 +84,7 @@ namespace Gts {
 	void PushActorAway(TESObjectREFR* source, Actor* receiver, float afKnockbackForce);
 	void PushActorAway(TESObjectREFR* source, Actor* receiver, NiPoint3 direction, float force);
 	void KnockAreaEffect(TESObjectREFR* source, float afMagnitude, float afRadius);
-	void ApplyHavokImpulse(Actor* target, float afX, float afY, float afZ, float afMagnitude);
+	void ApplyHavokImpulse_Manual(Actor* target, float afX, float afY, float afZ, float afMagnitude);
 	void ApplyHavokImpulse(TESObjectREFR* target, float afX, float afY, float afZ, float afMagnitude);
 
 	void CompleteDragonQuest();
