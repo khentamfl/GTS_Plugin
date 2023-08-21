@@ -969,22 +969,14 @@ namespace Gts {
 		}
 		float sizedifference = giantSize/tinySize;
 		int ragdollchance = rand() % 30 + 1.0;
-		if (sizedifference >= 3.0) {
-			//ForceRagdoll(tiny, true);
-			PushActorAway(giant, tiny, power/50); // Always push
-			//ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
+		if (sizedifference > 2.8 && ragdollchance < 4.0 * sizedifference) { // Chance for ragdoll. Becomes 100% at high scales
+			PushActorAway(giant, tiny, 1.0); // Ragdoll
 			return;
-		}
-		if (power >= 0.12 || ragdollchance >= 7.0 * sizedifference && (sizedifference >= 1.25 && sizedifference < 3.0)) {
+		} else if (sizedifference > 1.25) { // Always Stagger
 			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 			tiny->NotifyAnimationGraph("staggerStart");
 			return;
-		} else if (ragdollchance < 7.0 * sizedifference) {
-			// ForceRagdoll(tiny, true);
-			PushActorAway(giant, tiny, power/50); // Push instead
-			//ApplyHavokImpulse(tiny, afX, afY, afZ, afMagnitude);
-			return;
-		}
+		} 
 	}
 
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind, float crushmult) {
@@ -1042,7 +1034,7 @@ namespace Gts {
 				log::info("Applying Havok: Direction: {}, force: {}, speed: {}", Vector2Str(direction), power, speed);
 				TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tiny);
 				if (tiny_is_object) {
-					ApplyHavokImpulse(tiny_is_object, direction.x, direction.y, direction.z, speed * power);
+					ApplyHavokImpulse(tiny_is_object, direction.x, direction.y, direction.z, speed * 2.5 * power);
 				}
 				return false;
 			} else {

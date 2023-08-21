@@ -43,7 +43,7 @@ namespace {
 		}
 	}
 
-	void DoDamageAtPoint_Cooldown(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult) { // Apply crawl damage to each bone individually
+	void DoDamageAtPoint_Cooldown(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, float pushpower) { // Apply crawl damage to each bone individually
         auto profiler = Profilers::Profile("Other: CrawlDamage");
 		if (!node) {
 			return;
@@ -94,7 +94,7 @@ namespace {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);
 								float pushForce = std::clamp(force, 0.01f, 0.10f);
 								AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult);
-								PushTowards(giant, otherActor, node, pushForce, true);
+								PushTowards(giant, otherActor, node, pushForce * pushpower, true);
 								sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
 							}
                         }
@@ -197,7 +197,7 @@ namespace {
 
 	/////////////////////////////////////////////////////////Swipe Attacks//////////////////////////////////////////
 
-	void TriggerHandCollision_Right(Actor* actor, float power, float crush) {
+	void TriggerHandCollision_Right(Actor* actor, float power, float crush, float pushpower) {
 		std::string name = std::format("HandCollide_R_{}", actor->formID);
 		auto gianthandle = actor->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
@@ -208,16 +208,16 @@ namespace {
 			auto Uarm = find_node(giant, "NPC R Forearm [RLar]");
 			auto Arm = find_node(giant, "NPC R Hand [RHnd]");
 			if (Uarm) {
-				DoDamageAtPoint_Cooldown(giant, 17, 80.0 * power, Uarm, 10, 0.30, crush);
+				DoDamageAtPoint_Cooldown(giant, 17, 80.0 * power, Uarm, 10, 0.30, crush, pushpower);
 			}
 			if (Arm) {
-				DoDamageAtPoint_Cooldown(giant, 19, 80.0 * power, Arm, 10, 0.30, crush);
+				DoDamageAtPoint_Cooldown(giant, 19, 80.0 * power, Arm, 10, 0.30, crush, pushpower);
 			}
 			return true;
 		});
 	}
 
-	void TriggerHandCollision_Left(Actor* actor, float power, float crush) {
+	void TriggerHandCollision_Left(Actor* actor, float power, float crush, float pushpower) {
 		std::string name = std::format("HandCollide_L_{}", actor->formID);
 		auto gianthandle = actor->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
@@ -228,10 +228,10 @@ namespace {
 			auto Uarm = find_node(giant, "NPC L Forearm [LLar]");
 			auto Arm = find_node(giant, "NPC L Hand [LHnd]");
 			if (Uarm) {
-				DoDamageAtPoint_Cooldown(giant, 17, 80.0 * power, Uarm, 10, 0.30, crush);
+				DoDamageAtPoint_Cooldown(giant, 17, 80.0 * power, Uarm, 10, 0.30, crush, pushpower);
 			}
 			if (Arm) {
-				DoDamageAtPoint_Cooldown(giant, 19, 80.0 * power, Arm, 10, 0.30, crush);
+				DoDamageAtPoint_Cooldown(giant, 19, 80.0 * power, Arm, 10, 0.30, crush, pushpower);
 			}
 			return true;
 		});
@@ -265,10 +265,10 @@ namespace {
 	}
 
 	void GTS_Crawl_Swipe_On_R(AnimationEventData& data) {
-		TriggerHandCollision_Right(&data.giant, 1.0, 1.6);
+		TriggerHandCollision_Right(&data.giant, 1.0, 1.6, 0.75);
 	}
 	void GTS_Crawl_Swipe_On_L(AnimationEventData& data) {
-		TriggerHandCollision_Left(&data.giant, 1.0, 1.6);
+		TriggerHandCollision_Left(&data.giant, 1.0, 1.6, 0.75);
 	}
 	void GTS_Crawl_Swipe_Off_R(AnimationEventData& data) {
 		DisableHandCollisions(&data.giant);
@@ -278,10 +278,10 @@ namespace {
 	}
 
 	void GTS_Crawl_Swipe_Power_On_R(AnimationEventData& data) {
-		TriggerHandCollision_Right(&data.giant, 2.0, 1.3);
+		TriggerHandCollision_Right(&data.giant, 2.3, 1.3, 2.2);
 	}
 	void GTS_Crawl_Swipe_Power_On_L(AnimationEventData& data) {
-		TriggerHandCollision_Left(&data.giant, 2.0, 1.3);
+		TriggerHandCollision_Left(&data.giant, 2.3, 1.3, 2.2);
 	}
 	void GTS_Crawl_Swipe_Power_Off_R(AnimationEventData& data) {
 		DisableHandCollisions(&data.giant);
