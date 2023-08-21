@@ -1082,7 +1082,7 @@ namespace Gts {
 		Runtime::PlaySoundAtNode("ShrinkOutburstSound", giant, 2.0, 1.0, "NPC Head [Head]"); 
 		Rumble::For("ShrinkOutburst", giant, 24.0, 0.15, "NPC COM [COM ]", 0.80);
 
-		NiPoint3 NodePosition = node->world.translate;
+		NiPoint3 NodePosition = node->world.translate; 
 
 		float maxDistance = radius * giantScale * gigantism;
 		// Make a list of points to check
