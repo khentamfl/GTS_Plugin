@@ -136,7 +136,11 @@ namespace {
 			float RPosY = 0.0f;
 			float RPosZ = 0.0f;
 
-			auto NPC = tiny->GetCurrent3D();
+			float TinyX = 0.0f;
+			float TinyY = 0.0f;
+			float TinyZ = 0.0f;
+
+			auto NPC = find_node(tiny, "NPC COM [COM ]");
 			auto BreastL = find_node(giant, "L Breast02");
 			auto BreastR = find_node(giant, "R Breast02");
 			if (!NPC) {
@@ -155,19 +159,27 @@ namespace {
 
 			NiMatrix3 NPCROT = NPC->world.rotate;
 
-			TinyRef->data.angle = NiPoint3((LPosX + RPosX) / 2, 0, giantref->data.angle.z);
-			log::info("TinyRef Angle: {}", Vector2Str(TinyRef->data.angle));
+			//NPCROT.SetEulerAnglesXYZ(NewRot); = NiPoint3((LPosX + RPosX) / 2, 0, giantref->data.angle.z);
+			
 
 
-			auto NewRot = NiPoint3(((LPosX + RPosX) * 70) / 2, 0, 0);
-			//NPCROT.SetEulerAnglesXYZ(NewRot);
-			//update_node(NPC);
+			auto NewRot = NiPoint3(((LPosX + RPosX) * 70) / 2, 0, giantref->data.angle.z);
+			auto Reset = NiPoint3(0, 0, 0);
+			
+			NPCROT.SetEulerAnglesXYZ(NewRot);
+			update_node(NPC);
 
-			log::info("Angle of L breast: x: {}, y: {}, z: {}", LPosX, LPosY, LPosZ);
-			log::info("Angle of R breast: x: {}, y: {}, z: {}", RPosX, RPosY, RPosZ);
+			auto RotationResult = NPCROT.ToEulerAnglesXYZ(TinyX, TinyY, TinyZ);
+
+			log::info("Tiny Rot Angle Current: {}, Original: {}", Vector2Str(NewRot), Vector2Str(RotationResult));
+
+			//log::info("Angle of L breast: x: {}, y: {}, z: {}", LPosX, LPosY, LPosZ);
+			//log::info("Angle of R breast: x: {}, y: {}, z: {}", RPosX, RPosY, RPosZ);
 
 			// All good try another frame
 			if (!IsBetweenBreasts(giantref)) {
+				NPCROT.SetEulerAnglesXYZ(Reset);
+				update_node(NPC);
 				return false; // Abort it
 			}
 			return true;
@@ -641,6 +653,7 @@ namespace {
 		auto otherActor = Grab::GetHeldActor(giant);
 		if (otherActor) {
 			otherActor->SetGraphVariableBool("GTSBEH_T_InStorage", true);
+			RotateActorTask(giant, otherActor);
 			//BlockFirstPerson(giant, false);
 			if (IsHostile(giant, otherActor)) {
 				AnimationManager::StartAnim("Breasts_Idle_Unwilling", otherActor);
