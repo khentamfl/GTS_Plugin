@@ -653,7 +653,7 @@ namespace {
 		auto otherActor = Grab::GetHeldActor(giant);
 		if (otherActor) {
 			otherActor->SetGraphVariableBool("GTSBEH_T_InStorage", true);
-			RotateActorTask(giant, otherActor);
+			//RotateActorTask(giant, otherActor);
 			//BlockFirstPerson(giant, false);
 			if (IsHostile(giant, otherActor)) {
 				AnimationManager::StartAnim("Breasts_Idle_Unwilling", otherActor);
