@@ -140,7 +140,7 @@ namespace {
 			float TinyY = 0.0f;
 			float TinyZ = 0.0f;
 
-			auto NPC = find_node(tiny, "skeleton_female.nif");
+			auto NPC = find_node(tiny, "CME Body [Body]");
 			auto BreastL = find_node(giant, "L Breast02");
 			auto BreastR = find_node(giant, "R Breast02");
 			if (!NPC) {
