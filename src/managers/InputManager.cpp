@@ -346,10 +346,13 @@ namespace Gts {
 			InputManager::GetSingleton().keyTriggers = LoadInputEvents();
 		} catch (toml::exception e) {
 			log::error("Error in parsing GtsInput.toml: {}", e.what());
+			MessageBox("Error in parsing GtsInput.toml: {}. GTS Input won't work, double-check GtsInput.toml for errors", e.what());
 		} catch (std::runtime_error e) {
 			log::error("Error in opening GtsInput.toml: {}", e.what());
+			MessageBox("Error in opening GtsInput.toml: {}. GTS Input won't work, double-check GtsInput.toml for errors", e.what());
 		} catch (std::exception e) {
 			log::error("Error in GtsInput.toml: {}", e.what());
+			MessageBox("Error in GtsInput.toml: {}. GTS Input won't work, double-check GtsInput.toml for errors", e.what());
 		}
 		log::info("Loaded {} key bindings", InputManager::GetSingleton().keyTriggers.size());
 		InputManager::RegisterInputEvent("SizeReserve", SizeReserveEvent);
