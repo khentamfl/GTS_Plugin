@@ -161,8 +161,6 @@ namespace {
 
 			//NPCROT.SetEulerAnglesXYZ(NewRot); = NiPoint3((LPosX + RPosX) / 2, 0, giantref->data.angle.z);
 			
-
-
 			auto NewRot = NiPoint3(((LPosX + RPosX) * 70) / 2, 0, giantref->data.angle.z);
 			auto Reset = NiPoint3(0, 0, 0);
 			

@@ -40,11 +40,14 @@ namespace {
 					results.push_back(newData);
 				} else {
 					log::error("No valid keys found for event {} at line {}", name, table.location().line());
+					Notify("GtsInput.toml error: No valid keys found for event {} at line {}. GTS Input won't work because of errors.", name, table.location().line());
 				}
 			} else if (keys.empty()) {
 				log::warn("Missing keys for {} at line {}", name, table.location().line());
+				Notify("GtsInput.toml error: Missing keys for {} at line {}.  GTS Input won't work because of errors.", name, table.location().line());
 			} else {
 				log::warn("Missing name for [[InputEvent]] at line {}", table.location().line());
+				Notify("GtsInput.toml error: Missing name for [[InputEvent]] at line {}. GTS Input won't work because of errors.", table.location().line());
 			}
 		}
 		return results;
