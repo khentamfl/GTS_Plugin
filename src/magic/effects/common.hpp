@@ -109,9 +109,9 @@ namespace Gts {
 		float casterlevel = clamp(1.0, 500.0, caster->GetLevel());
 		float targetlevel = clamp(1.0, 500.0, target->GetLevel());
 		float progression_multiplier = Persistent::GetSingleton().progression_multiplier;
-		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
-		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)/100;
-		float GigantismTarget = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)/100;  // May go negative needs fixing with a smooth clamp
+		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)*0.01;
+		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)*0.01;
+		float GigantismTarget = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)*0.01;  // May go negative needs fixing with a smooth clamp
 		float efficiency = clamp(0.25, 1.25, (casterlevel/targetlevel)) * progression_multiplier;
 		if (IsDragon(target)) {
 			efficiency *= DRAGON_PEANLTY;
@@ -129,9 +129,9 @@ namespace Gts {
 		const float DRAGON_PEANLTY = 0.20;
 		float casterlevel = clamp(1.0, 500.0, caster->GetLevel());
 		float targetlevel = clamp(1.0, 500.0, target->GetLevel());
-		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
-		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)/100;
-		float GigantismTarget = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)/100;  // May go negative needs fixing with a smooth clamp
+		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)*0.01;
+		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)*0.01;
+		float GigantismTarget = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)*0.01;  // May go negative needs fixing with a smooth clamp
 		float efficiency = clamp(0.25, 1.25, (casterlevel/targetlevel));
 		//log::info("LevelDifference: {}, caster level: {}, target level: {}", efficiency, casterlevel, targetlevel);
 		if (IsDragon(target)) {

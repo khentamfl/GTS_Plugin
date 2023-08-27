@@ -1175,19 +1175,19 @@ namespace Gts {
 							shrinkpower *= 1.40;
 						}
 						if (sizedifference <= 4.0) {
-							StaggerActor(otherActor);
+							//StaggerActor(otherActor);
 						} else {
-							PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference));
+							//PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference));
 						}
 							
 						if (DarkArts1) {
-							giant->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 8.0);
+							//giant->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 8.0);
 						}
 
 						mod_target_scale(otherActor, shrinkpower * gigantism);
-						StartCombat(giant, otherActor, true);
+						//StartCombat(giant, otherActor, true);
 
-						AdjustGtsSkill((-shrinkpower * gigantism) * 0.80, giant);
+						//AdjustGtsSkill((-shrinkpower * gigantism) * 0.80, giant);
 
 						if (get_target_scale(otherActor) <= 0.11) {
 							set_target_scale(otherActor, 0.11);
