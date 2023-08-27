@@ -1102,7 +1102,7 @@ namespace Gts {
 		}
 	}
 
-	void ShrinkOutburstExplosion(Actor* giant, float radius, NiAVObject* node, float shrink, bool WasHit) {
+	void ShrinkOutburstExplosion(Actor* giant, const float radius, NiAVObject* node, float shrink, bool WasHit) {
 		if (!node) {
 			return;
 		} if (!giant) {
@@ -1110,6 +1110,10 @@ namespace Gts {
 		}
 		float giantScale = get_visual_scale(giant);
 		float gigantism = 1.0; //+ SizeManager::GetSingleton().GetEnchantmentBonus(giant)*0.01;
+
+		const float maxDistance = radius * giantScale * gigantism;
+		const float CheckDistance = radius * 2 * giantScale * gigantism;
+
 		bool DarkArts1 =  Runtime::HasPerk(giant, "DarkArts_Aug");
 		bool DarkArts2 = Runtime::HasPerk(giant, "DarkArts_Aug2"); 
 		bool DarkArts_Max = Runtime::HasPerk(giant, "DarkArts_Max");
@@ -1128,7 +1132,7 @@ namespace Gts {
 
 		NiPoint3 NodePosition = node->world.translate; 
 
-		float maxDistance = radius * giantScale * gigantism;
+		
 		// Make a list of points to check
 		std::vector<NiPoint3> Points = {
 			NodePosition,
@@ -1148,15 +1152,20 @@ namespace Gts {
 			if (otherActor != giant) { 
 				float tinyScale = get_visual_scale(otherActor);
 				NiPoint3 actorLocation = otherActor->GetPosition();
-				if ((actorLocation-giantLocation).Length() <= maxDistance * 4.0) {
+				if ((actorLocation-giantLocation).Length() <= CheckDistance) {
+					log::info("Checkin Distance between {} and {}", giant->GetDisplayFullName(), otherActor->GetDisplayFullName());
 					int nodeCollisions = 0;
 					float force = 0.0;
 					auto model = otherActor->GetCurrent3D();
 					if (model) {
+						log::info("Found the model of {}", otherActor->GetDisplayFullName());
 						for (auto point: Points) {
+							log::info("Checking points of {}", otherActor->GetDisplayFullName());
 							VisitNodes(model, [&nodeCollisions, &force, point, maxDistance](NiAVObject& a_obj) {
 								float distance = (point - a_obj.world.translate).Length();
+								log::info("Checking distance of {}", otherActor->GetDisplayFullName());
 								if (distance < maxDistance) {
+									log::info("Distance of {} is < MaxDistance", otherActor->GetDisplayFullName());
 									nodeCollisions += 1;
 									force = 1.0 - distance / maxDistance;
 								}
@@ -1164,7 +1173,7 @@ namespace Gts {
 							});
 						}
 					}
-					if (nodeCollisions > 1) {
+					if (nodeCollisions > 0) {
 						float shrinkpower = -(shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, otherActor);
 						log::info("Size of {} is {}", giant->GetDisplayFullName(), giantScale);
 						log::info("Size of {} is {}", otherActor->GetDisplayFullName(), get_visual_scale(otherActor));

@@ -350,7 +350,7 @@ namespace Gts {
 
 							auto model = otherActor->GetCurrent3D();
 
-							if (model) {
+							if (model) { 
 								for (auto point: footPoints) {
 									VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
 										float distance = (point - a_obj.world.translate).Length();
