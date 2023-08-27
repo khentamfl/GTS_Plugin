@@ -172,7 +172,6 @@ namespace {
 
 	void LayingStaminaDrain_Launch(Actor* giant) {
         std::string name = std::format("LayingDrain_{}", giant->formID);
-        auto tinyhandle = tiny->CreateRefHandle();
         auto gianthandle = giant->CreateRefHandle();
         TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
