@@ -1172,7 +1172,7 @@ namespace Gts {
 							log::info("Size of {} is {}", giant->GetDisplayFullName(), giantScale);
 							log::info("Size of {} is {}", otherActor->GetDisplayFullName(), get_visual_scale(otherActor));
 							log::info("Shrink Power: {}", shrinkpower);
-							/*float sizedifference = giantScale/get_visual_scale(otherActor);
+							float sizedifference = giantScale/get_visual_scale(otherActor);
 							if (DarkArts2 && (IsGrowthSpurtActive(giant) || HasSMT(giant))) {
 								shrinkpower *= 1.40;
 							}
@@ -1184,12 +1184,12 @@ namespace Gts {
 								
 							if (DarkArts1) {
 								giant->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 8.0);
-							}*/
+							}
 
 							mod_target_scale(otherActor, shrinkpower * gigantism);
-							//StartCombat(giant, otherActor, true);
+							StartCombat(giant, otherActor, true);
 
-							//AdjustGtsSkill((-shrinkpower * gigantism) * 0.80, giant);
+							AdjustGtsSkill((-shrinkpower * gigantism) * 0.80, giant);
 
 							if (get_target_scale(otherActor) <= 0.11) {
 								set_target_scale(otherActor, 0.11);

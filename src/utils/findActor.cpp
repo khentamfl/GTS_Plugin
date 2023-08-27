@@ -50,7 +50,6 @@ namespace Gts {
 		result.insert(result.end(), high_actors.begin(), high_actors.end());
 
 		std::sort( result.begin(), result.end() );
-		result.erase( std::unique( result.begin(), result.end() ), result.end() );
 		return result;
 	}
 
