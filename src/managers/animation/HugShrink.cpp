@@ -178,7 +178,7 @@ namespace {
 			return;
 		}
 		ShrinkToNothingManager::Shrink(giant, huggedActor);
-		PrintDeathSource(giant, huggedActor, DeathCause::Hugs);
+		PrintDeathSource(giant, huggedActor, SizeDamageSource::Hugs);
 		Rumble::For("HugCrush", giant, 76.0, 0.10, "NPC COM [COM ]", 0.15);
 		HugShrink::DetachActorTask(giant);
 		

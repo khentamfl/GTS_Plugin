@@ -20,9 +20,9 @@ namespace Gts {
 
 			virtual std::string DebugName() override;
 
-			void DoAccurateCollisionLeft(Actor* actor, float damage, float radius, int random, float bbmult, float crushmult);
-			void DoAccurateCollisionRight(Actor* actor, float damage, float radius, int random, float bbmult, float crushmult);
-			void ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult, float crushmult);
-			void DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult, int random, float bbmult, bool DoDamage, float crushmult);
+			void DoAccurateCollisionLeft(Actor* actor, float damage, float radius, int random, float bbmult, float crushmult, SizeDamageSource Cause);
+			void DoAccurateCollisionRight(Actor* actor, float damage, float radius, int random, float bbmult, float crushmult, SizeDamageSource Cause);
+			void ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult, float crushmult, SizeDamageSource Cause);
+			void DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult, int random, float bbmult, bool DoDamage, float crushmult, SizeDamageSource Cause);
 	};
 }

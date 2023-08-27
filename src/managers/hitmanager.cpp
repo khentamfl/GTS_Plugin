@@ -150,7 +150,7 @@ namespace Gts {
 			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 		}
 
-		PrintDeathSource(attacker, receiver, DeathCause::Overkill);
+		PrintDeathSource(attacker, receiver, SizeDamageSource::Overkill);
 
 		if (receiver->formID != 0x14) {
 			Disintegrate(receiver); // Player can't be disintegrated: simply nothing happens.

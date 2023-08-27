@@ -979,7 +979,7 @@ namespace Gts {
 		} 
 	}
 
-	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind, float crushmult, DeathCause Cause) {
+	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind, float crushmult, SizeDamageSource Cause) {
 		radius *= 1.0 + (GetHighHeelsBonusDamage(giant) * 2.5);
 		if (kind == FootEvent::Left) {
 			AccurateDamage::GetSingleton().DoAccurateCollisionLeft(giant, (45.0 * damage), radius, random, bonedamage, crushmult, Cause);
@@ -1334,10 +1334,10 @@ namespace Gts {
 		}
 	}
 
-	void PrintDeathSource(Actor* giant, Actor* tiny, DeathCause cause) {
+	void PrintDeathSource(Actor* giant, Actor* tiny, SizeDamageSource cause) {
 		int random = rand()% 8;
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
-		if (cause == DeathCause::Crushed) { // Default crush by the feet
+		if (cause == SizeDamageSource::Crushed) { // Default crush by the feet
 			if (random < 2) {
 				Cprint("{} became a bloody stain under {} foot.", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 2) {
@@ -1354,7 +1354,7 @@ namespace Gts {
 				Cprint("{} relentlessly crushed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
 			return;
-		} else if (cause == DeathCause::HandCrushed) { // when Grab -> Crush happens
+		} else if (cause == SizeDamageSource::HandCrushed) { // when Grab -> Crush happens
 			if (random == 1) {
 				Cprint("{} life was squeezed out in {} grip", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 2) {
@@ -1369,7 +1369,7 @@ namespace Gts {
 				Cprint("{} was turned into pulp by the palm of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
 			return;
-		} else if (cause == DeathCause::Shrinked) { // Shrink to nothing
+		} else if (cause == SizeDamageSource::Shrinked) { // Shrink to nothing
 			if (random <= 2) {
 				Cprint("{} greedily absorbed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			} else if (random == 3) {
@@ -1384,7 +1384,7 @@ namespace Gts {
 				Cprint("{} stole all the size from {}, exploding {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
 			return;
-		} else if (cause == DeathCause::Vored) {
+		} else if (cause == SizeDamageSource::Vored) {
 			///nothing for now
 			return;
 		} else if (cause == "ThighCrushed") { // During thigh crush
@@ -1401,7 +1401,7 @@ namespace Gts {
 				Cprint("{} was shrinkned to nothing by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
 			return;
-		} else if (cause == DeathCause::ThighSandwiched) { // Self explanatory
+		} else if (cause == SizeDamageSource::ThighSandwiched) { // Self explanatory
 			if (random <= 3) {
 				Cprint("{} was crushed by the thighs of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 4) {
@@ -1414,7 +1414,7 @@ namespace Gts {
 				Cprint("Thighs of {} sandwiched {} to nothing", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
 			return;
-		} else if (cause == DeathCause::Overkill) {  // When we hit actor with too much weapon damage while being huge
+		} else if (cause == SizeDamageSource::Overkill) {  // When we hit actor with too much weapon damage while being huge
 			if (random == 1) {
 				Cprint("{} body exploded because of massive size difference with {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 2) {
@@ -1429,7 +1429,7 @@ namespace Gts {
 				Cprint("{} put so much force into attack that {} turned into red mist", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
 			return;
-		} else if (cause == DeathCause::HitSteal) { // Hit Growth perk
+		} else if (cause == SizeDamageSource::HitSteal) { // Hit Growth perk
 			if (random <= 2) {
 				Cprint("{} body exploded after trying to hit {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 3) {
@@ -1438,7 +1438,7 @@ namespace Gts {
 				Cprint("{} Tried to kill {}, but ended up being absorbed by the size magic of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
 			return;
-		} else if (cause == DeathCause::Explode) { // Poison Of Shrinking
+		} else if (cause == SizeDamageSource::Explode) { // Poison Of Shrinking
 			if (random <= 2) {
 				Cprint("{} exploded into bloody dust", tiny->GetDisplayFullName());
 			} else if (random == 3) {
@@ -1447,7 +1447,7 @@ namespace Gts {
 				Cprint("{} was turned into nothing", tiny->GetDisplayFullName());
 			}
 			return;
-		} else if (cause == DeathCause::BlockDamage) { // WHen tiny in hand receives too much damage
+		} else if (cause == SizeDamageSource::BlockDamage) { // WHen tiny in hand receives too much damage
 			if (random == 1) {
 				Cprint("{} received too much damage and was automatically crushed in the hands of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 2) {
@@ -1462,7 +1462,7 @@ namespace Gts {
 				Cprint("{} blocked too much damage and was squeezed into bloody stain by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
 			return;
-		} else if (cause == DeathCause::Breasts) { // Someone died between breasts
+		} else if (cause == SizeDamageSource::Breasts) { // Someone died between breasts
 			if (random == 1) {
 				Cprint("{} was weakened and got accidentally crushed by {} breasts", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 2) {
@@ -1477,7 +1477,7 @@ namespace Gts {
 				Cprint("{} got smothered by soft breasts of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			}
 			return;
-		} else if (cause == DeathCause::FootGrinded) { // Grinded by the foot. Currently doesn't exist. It is planned to add it.
+		} else if (cause == SizeDamageSource::FootGrinded) { // Grinded by the foot. Currently doesn't exist. It is planned to add it.
 			if (random < 2) {
 				Cprint("{} became a bloody stain under {} foot.", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 2) {
@@ -1490,7 +1490,7 @@ namespace Gts {
 				Cprint("{} relentlessly crushed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
 			return;
-		} else if (cause == DeathCause::Melted) { // Melted by tongue. Currently doesn't exist. Possible Vore variation with melting actors with tongue instead.
+		} else if (cause == SizeDamageSource::Melted) { // Melted by tongue. Currently doesn't exist. Possible Vore variation with melting actors with tongue instead.
 			if (random < 2) {
 				Cprint("{} was melted by the tongue of {}.", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 2) {
@@ -1503,7 +1503,7 @@ namespace Gts {
 				Cprint("Tongue of {} sucked all life out of {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
 			return;
-		} else if (cause == DeathCause::Butt) { // Butt Crushed. Currently doesn't exist. It is planned though.
+		} else if (cause == SizeDamageSource::Booty) { // Butt Crushed. Currently doesn't exist. It is planned though.
 			if (random < 2) {
 				Cprint("{} got crushed by the butt of {}.", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 2) {
@@ -1520,7 +1520,7 @@ namespace Gts {
 				Cprint("{} relentlessly crushed {} with butt attack", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
 			return;
-		} else if (cause == DeathCause::Hugs) { // For Hug Crush
+		} else if (cause == SizeDamageSource::Hugs) { // For Hug Crush
 			if (random < 2) {
 				Cprint("{} was hugged to death by {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 2) {
@@ -1537,7 +1537,7 @@ namespace Gts {
 				Cprint("{} gently hug crushed {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
 			}
 			return;
-		} else if (cause == DeathCause::Crawl) { // For being crushed while GTS crawls
+		} else if (cause == SizeDamageSource::Crawl) { // For being crushed while GTS crawls
 			if (random < 2) {
 				Cprint("{} was accidentally crushed by {} that was crawling around", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
 			} else if (random == 2) {

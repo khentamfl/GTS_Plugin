@@ -83,7 +83,8 @@ namespace {
 				float TargetHp = Target->AsActorValueOwner()->GetActorValue(ActorValue::kHealth);
 				if (CasterHp >= (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
 					CrushManager::Crush(Caster, Target);
-					CrushBonuses(Caster, Target, DeathCause::Collision);
+					CrushBonuses(Caster, Target);
+					PrintDeathSource(Caster, Target, SizeDamageSource::Collision); // Report Death
 					shake_camera(Caster, 0.75 * caster_scale, 0.45);
 					Cprint("{} was instantly turned into mush by the body of {}", Target->GetDisplayFullName(), Caster->GetDisplayFullName());
 					if (Runtime::HasPerk(Caster, "NoSpeedLoss")) {
@@ -157,7 +158,7 @@ namespace Gts {
 		return "AccurateDamage";
 	}
 
-	void AccurateDamage::DoAccurateCollisionLeft(Actor* actor, float damage, float radius, int random, float bbmult, float crushmult, DeathCause Cause) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+	void AccurateDamage::DoAccurateCollisionLeft(Actor* actor, float damage, float radius, int random, float bbmult, float crushmult, SizeDamageSource Cause) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		auto profiler = Profilers::Profile("AccurateDamageLeft: DoAccurateCollisionLeft");
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!actor) {
@@ -263,7 +264,7 @@ namespace Gts {
 		}
 	}
 
-	void AccurateDamage::DoAccurateCollisionRight(Actor* actor, float damage, float radius, int random, float bbmult, float crushmult, DeathCause Cause) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+	void AccurateDamage::DoAccurateCollisionRight(Actor* actor, float damage, float radius, int random, float bbmult, float crushmult, SizeDamageSource Cause) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		auto profiler = Profilers::Profile("AccurateDamageRight: DoAccurateCollisionRight");
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		if (!actor) {
@@ -374,7 +375,7 @@ namespace Gts {
 		}
 	}
 
-	void AccurateDamage::ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult, float crushmult, DeathCause Cause) {
+	void AccurateDamage::ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult, float crushmult, SizeDamageSource Cause) {
 		auto profiler = Profilers::Profile("AccurateDamage: ApplySizeEffect");
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& accuratedamage = AccurateDamage::GetSingleton();
@@ -395,7 +396,7 @@ namespace Gts {
 		}
 	}
 
-	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult, int random, float bbmult, bool DoDamage, float crushmult, DeathCause Cause) { // Applies damage and crushing
+	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult, int random, float bbmult, bool DoDamage, float crushmult, SizeDamageSource Cause) { // Applies damage and crushing
 		auto profiler = Profilers::Profile("AccurateDamage: DoSizeDamage");
 		if (!giant) {
 			return;
@@ -477,7 +478,8 @@ namespace Gts {
 			if (multiplier >= 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
 					crushmanager.Crush(giant, tiny);
-					CrushBonuses(giant, tiny, Cause);
+					CrushBonuses(giant, tiny);
+					PrintDeathSource(giant, tiny, Cause);
 				}
 			}
 		}

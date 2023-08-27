@@ -302,13 +302,13 @@ namespace Gts {
 
 			AdjustSizeReserve(caster, target_scale/25);
 
-			PrintDeathSource(caster, target, DeathCause::Shrinked);
+			PrintDeathSource(caster, target, SizeDamageSource::Shrinked);
 			return true;
 		}
 		return false;
 	}
 
-	inline void CrushBonuses(Actor* caster, Actor* target, DeathCause Cause) {
+	inline void CrushBonuses(Actor* caster, Actor* target) {
 		float target_scale = get_target_scale(target);
 		float caster_scale = get_target_scale(caster);
 		if (IsDragon(target)) {
@@ -325,8 +325,6 @@ namespace Gts {
 		if (Random >= 8 && Runtime::HasPerk(caster, "GrowthDesirePerk")) {
 			Runtime::PlaySoundAtNode("MoanSound", caster, 1.0, 1.0, "NPC Head [Head]");
 		}
-
-		PrintDeathSource(caster, target, Cause); // Report Death
 
 		bool GTSBusy;
 		caster->GetGraphVariableBool("GTS_Busy", GTSBusy);

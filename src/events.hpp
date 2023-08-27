@@ -18,13 +18,13 @@ namespace Gts {
 		Breasts,
 	};
 
-	enum DeathCause {
+	enum SizeDamageSource {
 		Hand,
 		HandSwipe,
 		Knee,
 		Breast,
 		Hugs,
-		Butt,
+		Booty,
 		Vore,
 		Foot,
 		Spell,
