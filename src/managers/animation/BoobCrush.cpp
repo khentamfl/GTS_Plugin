@@ -271,12 +271,10 @@ namespace {
 	}
 	void GTS_BoobCrush_Grow_Start(AnimationEventData& data) {
 		auto giant = &data.giant;
-		float scale = get_visual_scale(giant);
         float bonus = 0.24 * GetGrowthCount(giant);
-        float target = std::clamp(bonus/2, 0.02f, 0.80f);
         ModGrowthCount(giant, 1.0, false);
         SetBonusSize(giant, bonus, false);
-        SpringGrow_Free(giant, bonus, 0.3 / GetAnimationSlowdown(giant), "ButtCrushGrowth");
+        SpringGrow_Free(giant, bonus, 0.3 / GetAnimationSlowdown(giant), "BreastCrushGrowth");
 
         float WasteStamina = 60.0 * GetButtCrushCost(giant);
         DamageAV(giant, ActorValue::kStamina, WasteStamina);
@@ -289,6 +287,9 @@ namespace {
 	}
 	void GTS_BoobCrush_Grow_Stop(AnimationEventData& data) {
 		StopRumble("CleavageRumble", data.giant);
+	}
+
+	void GTS_BoobCrush_LoseSize(AnimationEventData& data) {
 	}
 }
 
@@ -305,5 +306,6 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTS_BoobCrush_DOT_End", "BoobCrush", GTS_BoobCrush_DOT_End);
 		AnimationManager::RegisterEvent("GTS_BoobCrush_Grow_Start", "BoobCrush", GTS_BoobCrush_Grow_Start);
 		AnimationManager::RegisterEvent("GTS_BoobCrush_Grow_Stop", "BoobCrush", GTS_BoobCrush_Grow_Stop);
+		AnimationManager::RegisterEvent("GTS_BoobCrush_LoseSize", "BoobCrush", GTS_BoobCrush_LoseSize);
 	}
 }

@@ -1053,9 +1053,10 @@ namespace Gts {
 		float giantScale = get_visual_scale(giant);
 		NiPoint3 NodePosition = node->world.translate;
 		const float maxDistance = radius;
+		float totaldistance = maxDistance * giantScale;
 		// Make a list of points to check
 		if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
-			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), maxDistance * giantScale, 600, {0.0, 1.0, 0.0, 1.0});
+			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), totaldistance, 600, {0.0, 1.0, 0.0, 1.0});
 		}
 
 		NiPoint3 giantLocation = giant->GetPosition();
@@ -1070,15 +1071,15 @@ namespace Gts {
 					if (model) {
 						VisitNodes(model, [&nodeCollisions, &force, NodePosition, maxDistance](NiAVObject& a_obj) {
 							float distance = (NodePosition - a_obj.world.translate).Length();
-							if (distance < maxDistance * giantScale) {
+							if (distance < totaldistance) {
 								nodeCollisions += 1;
-								force = 1.0 - distance / maxDistance*giantScale;
+								force = 1.0 - distance / totaldistance;
 								return false;
 							}
 							return true;
 						});
 					}
-					if (nodeCollisions > 1) {
+					if (nodeCollisions > 0) {
 						float sizedifference = giantScale/get_visual_scale(otherActor);
 						if (sizedifference <= 1.6) {
 							StaggerActor(otherActor);
