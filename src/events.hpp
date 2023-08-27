@@ -37,6 +37,7 @@ namespace Gts {
 		FootGrinded,
 		HandCrushed,
 		ThighSandwiched,
+		ThighCrushed,
 		BlockDamage,
 		HitSteal,
 	};
