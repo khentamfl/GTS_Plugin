@@ -173,7 +173,7 @@ namespace {
 	void InflictDamage(Actor* giant) {
 		float damage = GetBoobCrushDamage(giant);
 		
-		float perk = GetPerkBonus_Basics(&data.giant);
+		float perk = GetPerkBonus_Basics(giant);
 		float launch = 1.0;
         float dust = 1.0;
         
@@ -193,9 +193,9 @@ namespace {
 			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC R Breast");
 			DoFootstepSound(giant, 1.25, FootEvent::Right, BreastR);
 			DoFootstepSound(giant, 1.25, FootEvent::Left, BreastL);
-			DoLaunch(&data.giant, 28.00 * launch * perk, 4.20, 1.4, FootEvent::Breasts, 1.20);
-			Rumble::Once("Breast_L", &data.giant, 3.60 * damage, 0.02, "NPC L Breast");
-			Rumble::Once("Breast_R", &data.giant, 3.60 * damage, 0.02, "NPC R Breast");
+			DoLaunch(giant, 28.00 * launch * perk, 4.20, 1.4, FootEvent::Breasts, 1.20);
+			Rumble::Once("Breast_L", giant, 3.60 * damage, 0.02, "NPC L Breast");
+			Rumble::Once("Breast_R", giant, 3.60 * damage, 0.02, "NPC R Breast");
 			ModGrowthCount(giant, 0, true); // Reset limit
 			return;
 		} else if (BreastL && BreastR) {
@@ -205,9 +205,9 @@ namespace {
 			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC R Breast");
 			DoFootstepSound(giant, 1.25, FootEvent::Right, BreastR);
 			DoFootstepSound(giant, 1.25, FootEvent::Right, BreastL);
-			DoLaunch(&data.giant, 28.00 * launch * perk, 4.20, 1.4, FootEvent::Breasts, 1.20);
-			Rumble::Once("Breast_L", &data.giant, 3.60 * damage, 0.02, "NPC L Breast");
-			Rumble::Once("Breast_R", &data.giant, 3.60 * damage, 0.02, "NPC R Breast");
+			DoLaunch(giant, 28.00 * launch * perk, 4.20, 1.4, FootEvent::Breasts, 1.20);
+			Rumble::Once("Breast_L", giant, 3.60 * damage, 0.02, "NPC L Breast");
+			Rumble::Once("Breast_R", giant, 3.60 * damage, 0.02, "NPC R Breast");
 			ModGrowthCount(giant, 0, true); // Reset limit
 			return;
         } else {
