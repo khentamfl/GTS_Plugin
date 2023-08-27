@@ -386,7 +386,7 @@ namespace {
 		if (grabbedActor) {
             return;
         }
-        if (Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
+        if (CanDoButtCrush(player) && Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
             auto& ButtCrush = ButtCrushController::GetSingleton();
             std::size_t numberOfPrey = 3;
             if (Runtime::HasPerk(player, "MassVorePerk")) {

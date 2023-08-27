@@ -148,17 +148,17 @@ namespace {
 			auto BreastL03 = find_node(giantref, "L Breast03");
 			auto BreastR03 = find_node(giantref, "R Breast03");
 			if (BreastL03 && BreastR03) {
-				Rumble::Once("BreastDot_L", giantref, 1.0, 0.025, "L Breast03");
-				Rumble::Once("BreastDot_R", giantref, 1.0, 0.025, "R Breast03");
-				DoDamageAtPoint(giant, 12, 0.6 * damage, BreastL03, 400, 0.10, 2.5, DamageSource::Breast);
-                DoDamageAtPoint(giant, 12, 0.6 * damage, BreastR03, 400, 0.10, 2.5, DamageSource::Breast);
+				Rumble::Once("BreastDot_L", giantref, 0.4, 0.025, "L Breast03");
+				Rumble::Once("BreastDot_R", giantref, 0.4, 0.025, "R Breast03");
+				DoDamageAtPoint(giant, 14, 0.8 * damage, BreastL03, 400, 0.10, 2.5, DamageSource::Breast);
+                DoDamageAtPoint(giant, 14, 0.8 * damage, BreastR03, 400, 0.10, 2.5, DamageSource::Breast);
 				return true;
 			}
 			else if (BreastL && BreastR) {
-				Rumble::Once("BreastDot_L", giantref, 1.0, 0.025, "NPC L Breast");
-				Rumble::Once("BreastDot_R", giantref, 1.0, 0.025, "NPC R Breast");
-				DoDamageAtPoint(giant, 12, 0.6 * damage, BreastL, 400, 0.10, 2.5, DamageSource::Breast);
-                DoDamageAtPoint(giant, 12, 0.6 * damage, BreastR, 400, 0.10, 2.5, DamageSource::Breast);
+				Rumble::Once("BreastDot_L", giantref, 0.5, 0.025, "NPC L Breast");
+				Rumble::Once("BreastDot_R", giantref, 0.5, 0.025, "NPC R Breast");
+				DoDamageAtPoint(giant, 14, 0.8 * damage, BreastL, 400, 0.10, 2.5, DamageSource::Breast);
+                DoDamageAtPoint(giant, 14, 0.8 * damage, BreastR, 400, 0.10, 2.5, DamageSource::Breast);
 				return true;
 			}
 			return false;
