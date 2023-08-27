@@ -27,7 +27,6 @@ namespace Gts {
 		Hugs,
 		Booty,
 		Vored,
-		Foot,
 		Spell,
 		Melted,
 		Explode,
