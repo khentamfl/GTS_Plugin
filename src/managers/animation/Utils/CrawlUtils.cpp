@@ -129,7 +129,7 @@ namespace Gts {
     }
 
 
-    void DoDamageAtPoint(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult) { // Apply crawl damage to each bone individually
+    void DoDamageAtPoint(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, DamageSource Cause) { // Apply crawl damage to each bone individually
         auto profiler = Profilers::Profile("Other: CrawlDamage");
 		if (!node) {
 			return;
@@ -174,7 +174,7 @@ namespace Gts {
 						if (distance <= maxDistance) {
 							float force = 1.0 - distance / maxDistance;
                             float aveForce = std::clamp(force, 0.00f, 0.70f);
-							AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult);
+							AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
                         }
 					}
 				}
