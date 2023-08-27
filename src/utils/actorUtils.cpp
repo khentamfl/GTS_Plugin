@@ -1116,18 +1116,22 @@ namespace Gts {
 		} if (WasHit) {
 			explosion = 2.0;
 		}
-		log::info("Trying to spawn explosion");
+		
+		log::info("Playing Sound");
 		Runtime::PlaySoundAtNode("ShrinkOutburstSound", giant, 2.0, 1.0, "NPC Head [Head]"); 
 		Rumble::For("ShrinkOutburst", giant, 24.0, 0.15, "NPC COM [COM ]", 0.80);
 		log::info("Starting Rumble");
 
 		NiPoint3 NodePosition = node->world.translate; 
 
+		log::info("Trying to spawn explosion");
 		Runtime::CreateExplosionAtPos(giant, NodePosition, giantScale * explosion, "ShrinkOutburstExplosion");
 
 		if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
 			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), maxDistance, 600, {0.0, 1.0, 0.0, 1.0});
 		}
+
+		log::info("Explosion spawned properly");
 
 		NiPoint3 giantLocation = giant->GetPosition();
 		log::info("Entering For Actor loop");
