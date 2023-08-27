@@ -1189,8 +1189,8 @@ namespace Gts {
 
 						AdjustGtsSkill((-shrinkpower * gigantism) * 0.80, giant);
 
-						if (get_target_scale(TINY) <= 0.11) {
-							set_target_scale(TINY, 0.11);
+						if (get_target_scale(otherActor) <= 0.11) {
+							set_target_scale(otherActor, 0.11);
 						}
 					}
 				}
