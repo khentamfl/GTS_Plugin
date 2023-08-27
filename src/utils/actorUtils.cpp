@@ -1336,7 +1336,7 @@ namespace Gts {
 	}
 
 	void PrintDeathSource(Actor* giant, Actor* tiny, DamageSource cause) {
-		DeathReport(giant, tiny, cause);
+		ReportDeath(giant, tiny, cause);
 	}
 
 	void PrintSuffocate(Actor* pred, Actor* prey) {

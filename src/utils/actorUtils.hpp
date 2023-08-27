@@ -141,7 +141,7 @@ namespace Gts {
 	void AddSMTDuration(Actor* actor, float duration);
 	void AddSMTPenalty(Actor* actor, float penalty);
 
-	void PrintDeathSource(Actor* giant, Actor* tiny, std::string_view cause);
+	void PrintDeathSource(Actor* giant, Actor* tiny, DamageSource cause);
 	void PrintSuffocate(Actor* pred, Actor* prey);
 	void ShrinkUntil(Actor* giant, Actor* tiny, float expected);
 	void DisableCollisions(Actor* actor, TESObjectREFR* otherActor);

@@ -19,15 +19,17 @@ namespace Gts {
 	};
 
 	enum DamageSource {
-		Hand,
+		HandCrawl,
 		HandSwipe,
+		HandSlam,
 		Knee,
 		Breast,
 		Hugs,
 		Booty,
-		Vore,
+		Vored,
 		Foot,
 		Spell,
+		Melted,
 		Explode,
 		Crushed,
 		Overkill,
