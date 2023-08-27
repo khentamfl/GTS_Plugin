@@ -236,14 +236,16 @@ namespace {
 		auto giant = &data.giant;
 		AdjustFacialExpression(giant, 0, 1.0, "modifier"); // blink L
 		AdjustFacialExpression(giant, 1, 1.0, "modifier"); // blink R
-		AdjustFacialExpression(giant, 0, 0.75, "phenome");
+		AdjustFacialExpression(giant, 2, 1.0, "expression");
+		//AdjustFacialExpression(giant, 0, 0.75, "phenome");
 	}
 
 	void GTS_BoobCrush_Smile_Off(AnimationEventData& data) {
 		auto giant = &data.giant;
 		AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
 		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
-		AdjustFacialExpression(giant, 0, 0.0, "phenome");
+		AdjustFacialExpression(giant, 2, 0.0, "expression");
+		//AdjustFacialExpression(giant, 0, 0.0, "phenome");
 	}
 	void GTS_BoobCrush_TrackBody(AnimationEventData& data) {
 		TrackBreasts(&data.giant, true);

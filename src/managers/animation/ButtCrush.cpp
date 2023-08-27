@@ -219,17 +219,19 @@ namespace {
                 return false;
             }
 
-            float stamina = GetAV(giant, ActorValue::kStamina);
+            float stamina = GetAV(giantref, ActorValue::kStamina);
             ForceRagdoll(tinyref, false);
-            DamageAV(giant, ActorValue::kStamina, 0.18 * GetButtCrushCost(giant));
+            DamageAV(giantref, ActorValue::kStamina, 0.18 * GetButtCrushCost(giant));
             
             if (stamina <= 2.0) {
-                AnimationManager::StartAnim("ButtCrush_Attack", giant); // Try to Abort it
+                AnimationManager::StartAnim("ButtCrush_Attack", giantref); // Try to Abort it
             }
 
             auto coords = node->world.translate;
-            float HH = HighHeelManager::GetHHOffset(giantref).Length();
-			coords.z -= HH;
+            if (!IsCrawling(giantref)) {
+                float HH = HighHeelManager::GetHHOffset(giantref).Length();
+                coords.z -= HH;
+            }
             if (!IsButtCrushing(giantref)) {
                 log::info("Not Butt Crushing, resetting");
                 SetBeingEaten(tiny, false);
