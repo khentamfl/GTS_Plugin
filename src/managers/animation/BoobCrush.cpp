@@ -150,15 +150,15 @@ namespace {
 			if (BreastL03 && BreastR03) {
 				Rumble::Once("BreastDot_L", giantref, 1.0, 0.025, "L Breast03");
 				Rumble::Once("BreastDot_R", giantref, 1.0, 0.025, "R Breast03");
-				DoDamageAtPoint(giant, 16, 2.0 * damage, BreastL03, 400, 0.10, 2.5, DamageSource::Breast);
-                DoDamageAtPoint(giant, 16, 2.0 * damage, BreastR03, 400, 0.10, 2.5, DamageSource::Breast);
+				DoDamageAtPoint(giant, 12, 0.6 * damage, BreastL03, 400, 0.10, 2.5, DamageSource::Breast);
+                DoDamageAtPoint(giant, 12, 0.6 * damage, BreastR03, 400, 0.10, 2.5, DamageSource::Breast);
 				return true;
 			}
 			else if (BreastL && BreastR) {
 				Rumble::Once("BreastDot_L", giantref, 1.0, 0.025, "NPC L Breast");
 				Rumble::Once("BreastDot_R", giantref, 1.0, 0.025, "NPC R Breast");
-				DoDamageAtPoint(giant, 16, 2.0 * damage, BreastL, 400, 0.10, 2.5, DamageSource::Breast);
-                DoDamageAtPoint(giant, 16, 2.0 * damage, BreastR, 400, 0.10, 2.5, DamageSource::Breast);
+				DoDamageAtPoint(giant, 12, 0.6 * damage, BreastL, 400, 0.10, 2.5, DamageSource::Breast);
+                DoDamageAtPoint(giant, 12, 0.6 * damage, BreastR, 400, 0.10, 2.5, DamageSource::Breast);
 				return true;
 			}
 			return false;
@@ -167,6 +167,31 @@ namespace {
 
 	void StopDamageOverTime(Actor* giant) {
 		std::string name = std::format("BreastDOT_{}", giant->formID);
+		TaskManager::Cancel(name);
+	}
+
+	void LayingStaminaDrain_Launch(Actor* giant) {
+        std::string name = std::format("LayingDrain_{}", giant->formID);
+        auto tinyhandle = tiny->CreateRefHandle();
+        auto gianthandle = giant->CreateRefHandle();
+        TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			auto giantref = gianthandle.get().get();
+
+            float stamina = GetAV(giantref, ActorValue::kStamina);
+            DamageAV(giantref, ActorValue::kStamina, 0.12 * GetButtCrushCost(giant));
+            
+            if (!IsButtCrushing(giantref)) {
+				return false;
+			}
+			return true;
+		});
+    }
+
+	void LayingStaminaDrain_Cancel(Actor* giant) {
+		std::string name = std::format("LayingDrain_{}", giant->formID);
 		TaskManager::Cancel(name);
 	}
 
@@ -187,8 +212,8 @@ namespace {
 		auto BreastL03 = find_node(giant, "L Breast03");
 		auto BreastR03 = find_node(giant, "R Breast03");
 		if (BreastL03 && BreastR03) {
-			DoDamageAtPoint(giant, 28, 330.0 * damage, BreastL03, 4, 0.70, 0.85, DamageSource::Breast);
-			DoDamageAtPoint(giant, 28, 330.0 * damage, BreastR03, 4, 0.70, 0.85, DamageSource::Breast);
+			DoDamageAtPoint(giant, 24, 330.0 * damage, BreastL03, 4, 0.70, 0.85, DamageSource::Breast);
+			DoDamageAtPoint(giant, 24, 330.0 * damage, BreastR03, 4, 0.70, 0.85, DamageSource::Breast);
 			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "L Breast03");
 			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "R Breast03");
 			DoFootstepSound(giant, 1.25, FootEvent::Right, "R Breast03");
@@ -199,8 +224,8 @@ namespace {
 			ModGrowthCount(giant, 0, true); // Reset limit
 			return;
 		} else if (BreastL && BreastR) {
-			DoDamageAtPoint(giant, 28, 330.0 * damage, BreastL, 4, 0.70, 0.85, DamageSource::Breast);
-			DoDamageAtPoint(giant, 28, 330.0 * damage, BreastR, 4, 0.70, 0.85, DamageSource::Breast);
+			DoDamageAtPoint(giant, 24, 330.0 * damage, BreastL, 4, 0.70, 0.85, DamageSource::Breast);
+			DoDamageAtPoint(giant, 24, 330.0 * damage, BreastR, 4, 0.70, 0.85, DamageSource::Breast);
 			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC L Breast");
 			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC R Breast");
 			DoFootstepSound(giant, 1.25, FootEvent::Right, "NPC R Breast");
@@ -249,7 +274,7 @@ namespace {
 	}
 	
 	void GTS_BoobCrush_DOT_Start_Loop(AnimationEventData& data) {
-
+		StartDamageOverTime(&data.giant);
 	}
 
 	void GTS_BoobCrush_TrackBody(AnimationEventData& data) {
@@ -262,12 +287,12 @@ namespace {
 		InflictDamage(&data.giant);
 	}
 	void GTS_BoobCrush_DOT_Start(AnimationEventData& data) {
-		StartDamageOverTime(&data.giant);
+		LayingStaminaDrain_Launch(&data.giant);
 	}
 	void GTS_BoobCrush_DOT_End(AnimationEventData& data) {
 		StopDamageOverTime(&data.giant);
-		SetBonusSize(&data.giant, 0.0, true);
 		ModGrowthCount(&data.giant, 0, true);
+		LayingStaminaDrain_Cancel(&data.giant);
 	}
 	void GTS_BoobCrush_Grow_Start(AnimationEventData& data) {
 		auto giant = &data.giant;
@@ -290,6 +315,7 @@ namespace {
 	}
 
 	void GTS_BoobCrush_LoseSize(AnimationEventData& data) {
+		SetBonusSize(&data.giant, 0.0, true);
 	}
 }
 

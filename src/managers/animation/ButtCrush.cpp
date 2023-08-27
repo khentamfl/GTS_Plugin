@@ -212,9 +212,6 @@ namespace {
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
             auto node = find_node(giantref, "AnimObjectB"); 
-            if (IsCrawling(giantref)) {
-                node = find_node(giantref, "AnimObjectA"); 
-            }
             if (!node) {
                 return false;
             }
@@ -419,7 +416,7 @@ namespace {
         if (IsFirstPerson()) {
             return;
         }
-        if (IsButtCrushing(player) && Runtime::HasPerk(player, "ButtCrush_UnstableGrowth")) {
+        if (IsButtCrushing(player) && Runtime::HasPerk(player, "ButtCrush_GrowingDisaster")) {
             float GrowthCount = GetGrowthLimit(player);
             bool CanGrow = ButtCrush_IsAbleToGrow(player, GrowthCount);
             if (CanGrow) {

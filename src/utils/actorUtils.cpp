@@ -877,6 +877,8 @@ namespace Gts {
         } if (Runtime::HasPerkTeam(actor, "SkilledGTS")) {
 			float level = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
 			cost -= level;
+		} if (IsCrawling(actor)) {
+			cost *= 1.35;
 		}
         return cost;
     }
