@@ -263,7 +263,7 @@ namespace Gts {
 		}
 	}
 
-	void CrushManager::Crush(Actor* giant, Actor* tiny, SizeDamageSource source) {
+	void CrushManager::Crush(Actor* giant, Actor* tiny, DamageSource source) {
 		if (!giant) {
 			return;
 		}

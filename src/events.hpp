@@ -18,7 +18,7 @@ namespace Gts {
 		Breasts,
 	};
 
-	enum SizeDamageSource {
+	enum DamageSource {
 		Hand,
 		HandSwipe,
 		Knee,
@@ -31,6 +31,7 @@ namespace Gts {
 		Explode,
 		Crushed,
 		Overkill,
+		Shrinked,
 		Collision,
 		FootGrinded,
 		HandCrushed,

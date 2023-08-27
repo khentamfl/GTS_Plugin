@@ -302,7 +302,7 @@ namespace Gts {
 
 			AdjustSizeReserve(caster, target_scale/25);
 
-			PrintDeathSource(caster, target, SizeDamageSource::Shrinked);
+			PrintDeathSource(caster, target, DamageSource::Shrinked);
 			return true;
 		}
 		return false;

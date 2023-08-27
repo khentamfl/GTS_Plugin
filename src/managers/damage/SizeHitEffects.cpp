@@ -84,9 +84,9 @@ namespace {
 			Rumble::Once("GrabAttackKill", receiver, 8.0, 0.15, "NPC L Hand [LHnd]");
 			AnimationManager::StartAnim("GrabAbort", receiver); // Abort Grab animation
 			if (!IsBetweenBreasts(receiver)) {
-				PrintDeathSource(receiver, grabbedActor, SizeDamageSource::BlockDamage);
+				PrintDeathSource(receiver, grabbedActor, DamageSource::BlockDamage);
 			} else {
-				PrintDeathSource(receiver, grabbedActor, SizeDamageSource::Breast);
+				PrintDeathSource(receiver, grabbedActor, DamageSource::Breast);
 			}
 			Grab::Release(receiver);
 		}
@@ -304,7 +304,7 @@ namespace Gts {
 				if (get_visual_scale(attacker) <= 0.12/Dragon) {
 					if (ShrinkToNothingManager::CanShrink(receiver, attacker)) {
 						ShrinkToNothingManager::Shrink(receiver, attacker);
-						PrintDeathSource(receiver, attacker, SizeDamageSource::HitSteal);
+						PrintDeathSource(receiver, attacker, DamageSource::HitSteal);
 					}
 				}
 				log::info("Shrinking Actor: {}", attacker->GetDisplayFullName());

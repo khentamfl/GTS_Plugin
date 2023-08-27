@@ -136,7 +136,7 @@ namespace Gts {
 				}
 			} 
 			if (kind != FootEvent::JumpLand) { // We already do it for Jump Land inside Compat.cpp. We do NOT want to apply it for Jump Land because of it!
-				DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.25, kind, 1.0, SizeDamageSource::Crushed); 
+				DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.25, kind, 1.0, DamageSource::Crushed); 
 				//                     ^          ^
 				//                 Damage         Radius
 				DoLaunch(actor, 0.45 * launch * bonus, 2.0, 1.0, kind, 0.45 * bonus);
