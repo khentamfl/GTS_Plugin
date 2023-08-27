@@ -33,10 +33,8 @@ GTS_BoobCrush_UnTrackBody  (Disables it)
 GTS_BoobCrush_BreastImpact  (Damage everything under breasts, on impact)
 GTS_BoobCrush_DOT_Start       (When we want to deal damage over time when we do long idle with swaying legs)
 GTS_BoobCrush_DOT_End          
-
-
-
-GTSBeh_Shrink_trigger (For Shrink Anim)
+GTS_BoobCrush_Grow_Start
+GTS_BoobCrush_Grow_Stop
 
 
 */

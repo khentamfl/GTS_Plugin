@@ -3,7 +3,7 @@
 #include "managers/emotions/EmotionManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/damage/LaunchActor.hpp"
-#include "managers/animation/Growth.hpp"
+#include "managers/animation/Shrink.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
@@ -64,7 +64,7 @@ namespace {
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 
 			DamageAV(caster, ActorValue::kStamina, 0.65 * caster_scale * stamina * TimeScale() * multiply);
-			Shrink(caster, 0.0080 * stamina * multiply, 0.0);
+			Grow(caster, -(0.0080 * stamina * multiply), 0.0);
 
 			Rumble::Once("GrowButton", caster, 4.0 * stamina, 0.05, "NPC Pelvis [Pelv]");
             if (elapsed >= 0.99) {
