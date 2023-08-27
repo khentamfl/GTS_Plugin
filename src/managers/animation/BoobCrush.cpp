@@ -91,9 +91,9 @@ namespace {
 
 namespace Gts
 {
-	void AnimationButtCrush::RegisterEvents() {
+	void AnimationBoobCrush::RegisterEvents() {
 	}
 
-    void AnimationButtCrush::RegisterTriggers() {
+    void AnimationBoobCrush::RegisterTriggers() {
 	}
 }
