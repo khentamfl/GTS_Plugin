@@ -1152,15 +1152,13 @@ namespace Gts {
 						log::info("Found the model of {}", otherActor->GetDisplayFullName());
 						log::info("Checking points of {}", otherActor->GetDisplayFullName());
 						VisitNodes(model, [&nodeCollisions, &force, NodePosition, maxDistance](NiAVObject& a_obj) {
-							if (a_obj) {
-								float distance = (NodePosition - a_obj.world.translate).Length();
-								log::info("Checking distance");
-								if (distance < maxDistance) {
-									log::info("Distance is < MaxDistance");
-									nodeCollisions += 1;
-									force = 1.0 - distance / maxDistance;
-									return false;
-								}
+							float distance = (NodePosition - a_obj.world.translate).Length();
+							log::info("Checking distance");
+							if (distance < maxDistance) {
+								log::info("Distance is < MaxDistance");
+								nodeCollisions += 1;
+								force = 1.0 - distance / maxDistance;
+								return false;
 							}
 							return true;
 						});
