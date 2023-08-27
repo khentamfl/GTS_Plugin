@@ -18,6 +18,7 @@
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "data/time.hpp"
+#include "events.hpp"
 #include "node.hpp"
 
 using namespace std;
@@ -110,6 +111,14 @@ namespace {
 		}
     }
 
+	float GetGrowthCount(Actor* giant) {
+        auto transient = Transient::GetSingleton().GetData(giant);
+		if (transient) {
+			return transient->ButtCrushGrowthAmount;
+		}
+        return 1.0;
+    }
+
     void SetBonusSize(Actor* giant, float value, bool reset) {
         auto saved_data = Persistent::GetSingleton().GetData(giant);
         if (saved_data) {
@@ -159,15 +168,15 @@ namespace {
 			if (BreastL03 && BreastR03) {
 				Rumble::Once("BreastDot_L", giantref, 1.0, 0.025, BreastL03);
 				Rumble::Once("BreastDot_R", giantref, 1.0, 0.025, BreastR03);
-				DoDamageAtPoint(giant, 20, 2.0 * damage, BreastL03, 400, 0.10, 2.5);
-                DoDamageAtPoint(giant, 20, 2.0 * damage, BreastR03, 400, 0.10, 2.5);
+				DoDamageAtPoint(giant, 20, 2.0 * damage, BreastL03, 400, 0.10, 2.5, DeathCause::Breast);
+                DoDamageAtPoint(giant, 20, 2.0 * damage, BreastR03, 400, 0.10, 2.5, DeathCause::Breast);
 				return true;
 			}
 			else if (BreastL && BreastR) {
 				Rumble::Once("BreastDot_L", giantref, 1.0, 0.025, BreastL);
 				Rumble::Once("BreastDot_R", giantref, 1.0, 0.025, BreastR);
-				DoDamageAtPoint(giant, 20, 2.0 * damage, BreastL, 400, 0.10, 2.5);
-                DoDamageAtPoint(giant, 20, 2.0 * damage, BreastR, 400, 0.10, 2.5);
+				DoDamageAtPoint(giant, 20, 2.0 * damage, BreastL, 400, 0.10, 2.5, DeathCause::Breast);
+                DoDamageAtPoint(giant, 20, 2.0 * damage, BreastR, 400, 0.10, 2.5, DeathCause::Breast);
 				return true;
 			}
 			return false;
@@ -186,8 +195,8 @@ namespace {
 		auto BreastL03 = find_node(giant, "L Breast03");
 		auto BreastR03 = find_node(giant, "R Breast03");
 		if (BreastL03 && BreastR03) {
-			DoDamageAtPoint(giant, 28, 330.0 * damage, ThighL, 4, 0.70, 0.85);
-			DoDamageAtPoint(giant, 28, 330.0 * damage, ThighR, 4, 0.70, 0.85);
+			DoDamageAtPoint(giant, 28, 330.0 * damage, ThighL, 4, 0.70, 0.85, DeathCause::Breast);
+			DoDamageAtPoint(giant, 28, 330.0 * damage, ThighR, 4, 0.70, 0.85, DeathCause::Breast);
 			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC L Breast");
 			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC R Breast");
 			DoFootstepSound(giant, 1.25, FootEvent::Right, BreastR);
@@ -198,8 +207,8 @@ namespace {
 			ModGrowthCount(giant, 0, true); // Reset limit
 			return;
 		} else if (BreastL && BreastR) {
-			DoDamageAtPoint(giant, 28, 330.0 * damage, ThighL, 4, 0.70, 0.85);
-			DoDamageAtPoint(giant, 28, 330.0 * damage, ThighR, 4, 0.70, 0.85);
+			DoDamageAtPoint(giant, 28, 330.0 * damage, ThighL, 4, 0.70, 0.85, DeathCause::Breast);
+			DoDamageAtPoint(giant, 28, 330.0 * damage, ThighR, 4, 0.70, 0.85, DeathCause::Breast);
 			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC L Breast");
 			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC R Breast");
 			DoFootstepSound(giant, 1.25, FootEvent::Right, BreastR);

@@ -18,6 +18,27 @@ namespace Gts {
 		Breasts,
 	};
 
+	enum DeathCause {
+		Hand,
+		HandSwipe,
+		Knee,
+		Breast,
+		Hugs,
+		Butt,
+		Vore,
+		Foot,
+		Spell,
+		Explode,
+		Crushed,
+		Overkill,
+		Collision,
+		FootGrinded,
+		HandCrushed,
+		ThighSandwiched,
+		BlockDamage,
+		HitSteal,
+	};
+
 	enum CrawlEvent {
 		LeftKnee,
 		RightKnee,

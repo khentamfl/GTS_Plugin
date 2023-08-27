@@ -5,6 +5,7 @@
 #include "data/runtime.hpp"
 #include "data/time.hpp"
 #include "scale/scale.hpp"
+#include "events.hpp"
 // Module that handles various magic effects
 
 namespace {
@@ -301,13 +302,13 @@ namespace Gts {
 
 			AdjustSizeReserve(caster, target_scale/25);
 
-			PrintDeathSource(caster, target, "Shrinked");
+			PrintDeathSource(caster, target, DeathCause::Shrinked);
 			return true;
 		}
 		return false;
 	}
 
-	inline void CrushBonuses(Actor* caster, Actor* target) {
+	inline void CrushBonuses(Actor* caster, Actor* target, DeathCause Cause) {
 		float target_scale = get_target_scale(target);
 		float caster_scale = get_target_scale(caster);
 		if (IsDragon(target)) {
@@ -325,11 +326,7 @@ namespace Gts {
 			Runtime::PlaySoundAtNode("MoanSound", caster, 1.0, 1.0, "NPC Head [Head]");
 		}
 
-		if (!IsCrawling(caster)) {
-			PrintDeathSource(caster, target, "Crushed"); // Report crush death
-		} else if (IsCrawling(caster)) {
-			PrintDeathSource(caster, target, "Crawl"); // Report crawling death
-		}
+		PrintDeathSource(caster, target, Cause); // Report Death
 
 		bool GTSBusy;
 		caster->GetGraphVariableBool("GTS_Busy", GTSBusy);

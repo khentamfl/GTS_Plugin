@@ -44,6 +44,7 @@
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "events.hpp"
 #include "spring.hpp"
 #include "node.hpp"
 
@@ -109,7 +110,7 @@ namespace {
 		float hp = GetAV(tiny, ActorValue::kHealth);
 		if (damage > hp) {
 			CrushManager::GetSingleton().Crush(giant, tiny);
-			PrintDeathSource(giant, tiny, "ThighSandwiched");
+			PrintDeathSource(giant, tiny, DeathCause::ThighSandwiched);
 			sandwichdata.Remove(tiny);
 		}
 	}
@@ -292,8 +293,8 @@ namespace {
 		DoFootstepSound(&data.giant, 1.05, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, 2.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 2.0, FootEvent::Left, LNode);
-		DoDamageEffect(&data.giant, 4.0 * perk, 1.6, 10, 0.20, FootEvent::Right, 1.0);
-		DoDamageEffect(&data.giant, 4.0 * perk, 1.6, 10, 0.20, FootEvent::Left, 1.0);
+		DoDamageEffect(&data.giant, 4.0 * perk, 1.6, 10, 0.20, FootEvent::Right, 1.0, DeathCause::Crushed);
+		DoDamageEffect(&data.giant, 4.0 * perk, 1.6, 10, 0.20, FootEvent::Left, 1.0, DeathCause::Crushed);
 		DoLaunch(&data.giant, 0.85 * perk, 2.0, 1.0, FootEvent::Right, 1.15);
 		DoLaunch(&data.giant, 0.85 * perk, 2.0, 1.0, FootEvent::Left, 1.15);
 	}

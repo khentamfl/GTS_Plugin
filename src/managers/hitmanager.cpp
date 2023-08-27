@@ -10,6 +10,7 @@
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "data/time.hpp"
+#include "events.hpp"
 #include "timer.hpp"
 #include "node.hpp"
 #include "managers/Rumble.hpp"
@@ -149,7 +150,7 @@ namespace Gts {
 			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 		}
 
-		PrintDeathSource(attacker, receiver, "Overkill");
+		PrintDeathSource(attacker, receiver, DeathCause::Overkill);
 
 		if (receiver->formID != 0x14) {
 			Disintegrate(receiver); // Player can't be disintegrated: simply nothing happens.

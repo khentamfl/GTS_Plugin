@@ -6,6 +6,7 @@
 #include "data/runtime.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
+#include "events.hpp"
 #include "timer.hpp"
 
 
@@ -49,7 +50,7 @@ namespace Gts {
 
 		ShrinkActor(target, Power, 0.0);
 		if (get_visual_scale(target) < 0.25 && ShrinkToNothingManager::CanShrink(caster, target)) {
-			PrintDeathSource(caster, target, "Explode");
+			PrintDeathSource(caster, target, DeathCause::Explode);
 			ShrinkToNothingManager::Shrink(caster, target);
 		}
 	}

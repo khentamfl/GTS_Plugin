@@ -12,6 +12,7 @@
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "events.hpp"
 #include "Config.hpp"
 #include "timer.hpp"
 #include "node.hpp"
@@ -83,9 +84,9 @@ namespace {
 			Rumble::Once("GrabAttackKill", receiver, 8.0, 0.15, "NPC L Hand [LHnd]");
 			AnimationManager::StartAnim("GrabAbort", receiver); // Abort Grab animation
 			if (!IsBetweenBreasts(receiver)) {
-				PrintDeathSource(receiver, grabbedActor, "BlockDamage");
+				PrintDeathSource(receiver, grabbedActor, DeathCause::BlockDamage);
 			} else {
-				PrintDeathSource(receiver, grabbedActor, "Breasts");
+				PrintDeathSource(receiver, grabbedActor, DeathCause::Breast);
 			}
 			Grab::Release(receiver);
 		}
@@ -303,7 +304,7 @@ namespace Gts {
 				if (get_visual_scale(attacker) <= 0.12/Dragon) {
 					if (ShrinkToNothingManager::CanShrink(receiver, attacker)) {
 						ShrinkToNothingManager::Shrink(receiver, attacker);
-						PrintDeathSource(receiver, attacker, "HitSteal");
+						PrintDeathSource(receiver, attacker, DeathCause::HitSteal);
 					}
 				}
 				log::info("Shrinking Actor: {}", attacker->GetDisplayFullName());
