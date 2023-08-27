@@ -164,7 +164,7 @@ namespace {
 				if (Node) {
 					std::string rumbleName = std::format("Node: {}", Nodes);
 					DoDamageAtPoint(giant, 14, 0.6 * damage, Node, 400, 0.10, 2.0, DamageSource::BodyCrush);
-					Rumble::Once(rumbleName, &data.giant, 1.00 * damage, 0.02, nodes);
+					Rumble::Once(rumbleName, giant, 1.00 * damage, 0.02, nodes);
 				}
 			}
 
@@ -216,6 +216,7 @@ namespace {
 	}
 
 	void InflictBodyDamage(Actor* giant) {
+		float damage = GetBoobCrushDamage(giant);
 		float perk = GetPerkBonus_Basics(giant);
 		float launch = 1.0;
 		for (auto Nodes: BODY_NODES) {
@@ -224,7 +225,7 @@ namespace {
 				std::string rumbleName = std::format("Node: {}", Nodes);
 				DoDamageAtPoint(giant, 20, 100.0 * damage, ThighL, 400, 0.10, 0.85, DamageSource::BodyCrush);
 				DoLaunch(giant, 28.00 * launch * perk, 3.20, 1.4, Node, 1.20);
-				Rumble::Once(rumbleName, &data.giant, 1.00 * damage, 0.02, nodes);
+				Rumble::Once(rumbleName, &data.giant, 1.00 * damage, 0.02, Nodes);
 			}
 		}
 	}
