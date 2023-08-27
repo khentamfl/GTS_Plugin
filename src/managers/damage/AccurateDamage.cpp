@@ -407,7 +407,7 @@ namespace Gts {
 		if (giant == tiny) {
 			return;
 		}
-		if (!CanDoDamage(giant, tiny)) {
+		if (!CanDoDamage(giant, tiny) && !IsBetweenBreasts(giant)) {
 			return;
 		}
 		auto& sizemanager = SizeManager::GetSingleton();

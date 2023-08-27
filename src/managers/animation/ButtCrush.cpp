@@ -379,7 +379,7 @@ namespace {
             return;
         }
         auto grabbedActor = Grab::GetHeldActor(player);
-		if (grabbedActor) {
+		if (grabbedActor && !IsCrawling(player)) { // Allow only when we crawl
             return;
         }
         if (CanDoButtCrush(player) && Runtime::HasPerk(player, "ButtCrush_NoEscape")) {

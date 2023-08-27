@@ -288,6 +288,7 @@ exclusive = false
 [[InputEvent]]
 name = "BreastsPut"
 keys = ["LSHIFT", "B"]
+duration = 0.25
 # Put actor between breasts. Requires someone to be in hands.
 
 [[InputEvent]]

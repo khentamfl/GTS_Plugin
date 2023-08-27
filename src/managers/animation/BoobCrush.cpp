@@ -83,7 +83,7 @@ namespace {
 		"NPC Spine [Spn0]",
 		"NPC Spine1 [Spn1]",
 		"NPC Spine2 [Spn2]",
-	}
+	};
 
     const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
@@ -160,7 +160,7 @@ namespace {
 			auto BreastR03 = find_node(giantref, "R Breast03");
 
 			for (auto Nodes: BODY_NODES) {
-				auto Node = find_node(Nodes);
+				auto Node = find_node(giantref, Nodes);
 				if (Node) {
 					std::string rumbleName = std::format("Node: {}", Nodes);
 					DoDamageAtPoint(giant, 14, 0.6 * damage, Node, 400, 0.10, 2.0, DamageSource::BodyCrush);
@@ -188,9 +188,7 @@ namespace {
 
 	void StopDamageOverTime(Actor* giant) {
 		std::string name = std::format("BreastDOT_{}", giant->formID);
-		std::string name2 = std::format("ButtCrush_{}", tiny->formID);
 		TaskManager::Cancel(name);
-		TaskManager::Cancel(name2);
 	}
 
 	void LayingStaminaDrain_Launch(Actor* giant) {
@@ -221,7 +219,7 @@ namespace {
 		float perk = GetPerkBonus_Basics(giant);
 		float launch = 1.0;
 		for (auto Nodes: BODY_NODES) {
-			auto Node = find_node(Nodes);
+			auto Node = find_node(giant, Nodes);
 			if (Node) {
 				std::string rumbleName = std::format("Node: {}", Nodes);
 				DoDamageAtPoint(giant, 20, 100.0 * damage, ThighL, 400, 0.10, 0.85, DamageSource::BodyCrush);
