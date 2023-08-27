@@ -150,15 +150,15 @@ namespace {
 			if (BreastL03 && BreastR03) {
 				Rumble::Once("BreastDot_L", giantref, 1.0, 0.025, "L Breast03");
 				Rumble::Once("BreastDot_R", giantref, 1.0, 0.025, "R Breast03");
-				DoDamageAtPoint(giant, 20, 2.0 * damage, BreastL03, 400, 0.10, 2.5, DamageSource::Breast);
-                DoDamageAtPoint(giant, 20, 2.0 * damage, BreastR03, 400, 0.10, 2.5, DamageSource::Breast);
+				DoDamageAtPoint(giant, 16, 2.0 * damage, BreastL03, 400, 0.10, 2.5, DamageSource::Breast);
+                DoDamageAtPoint(giant, 16, 2.0 * damage, BreastR03, 400, 0.10, 2.5, DamageSource::Breast);
 				return true;
 			}
 			else if (BreastL && BreastR) {
 				Rumble::Once("BreastDot_L", giantref, 1.0, 0.025, "NPC L Breast");
 				Rumble::Once("BreastDot_R", giantref, 1.0, 0.025, "NPC R Breast");
-				DoDamageAtPoint(giant, 20, 2.0 * damage, BreastL, 400, 0.10, 2.5, DamageSource::Breast);
-                DoDamageAtPoint(giant, 20, 2.0 * damage, BreastR, 400, 0.10, 2.5, DamageSource::Breast);
+				DoDamageAtPoint(giant, 16, 2.0 * damage, BreastL, 400, 0.10, 2.5, DamageSource::Breast);
+                DoDamageAtPoint(giant, 16, 2.0 * damage, BreastR, 400, 0.10, 2.5, DamageSource::Breast);
 				return true;
 			}
 			return false;
@@ -247,6 +247,11 @@ namespace {
 		AdjustFacialExpression(giant, 2, 0.0, "expression");
 		//AdjustFacialExpression(giant, 0, 0.0, "phenome");
 	}
+	
+	void GTS_BoobCrush_DOT_Start_Loop(AnimationEventData& data) {
+
+	}
+
 	void GTS_BoobCrush_TrackBody(AnimationEventData& data) {
 		TrackBreasts(&data.giant, true);
 	}
@@ -290,6 +295,7 @@ namespace {
 namespace Gts
 {
 	void AnimationBoobCrush::RegisterEvents() {
+		AnimationManager::RegisterEvent("GTS_BoobCrush_DOT_Start_Loop", "BoobCrush", GTS_BoobCrush_DOT_Start_Loop);
 		AnimationManager::RegisterEvent("GTS_BoobCrush_Smile_On", "BoobCrush", GTS_BoobCrush_Smile_On);
 		AnimationManager::RegisterEvent("GTS_BoobCrush_Smile_Off", "BoobCrush", GTS_BoobCrush_Smile_Off);
 		AnimationManager::RegisterEvent("GTS_BoobCrush_TrackBody", "BoobCrush", GTS_BoobCrush_TrackBody);

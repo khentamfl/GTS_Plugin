@@ -1052,28 +1052,27 @@ namespace Gts {
 		}
 		float giantScale = get_visual_scale(giant);
 		NiPoint3 NodePosition = node->world.translate;
-		float maxDistance = radius * giantScale;
+		const float maxDistance = radius;
 		// Make a list of points to check
 		if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
-			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), maxDistance, 600, {0.0, 1.0, 0.0, 1.0});
+			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), maxDistance * giantScale, 600, {0.0, 1.0, 0.0, 1.0});
 		}
 
 		NiPoint3 giantLocation = giant->GetPosition();
 
 		for (auto otherActor: find_actors()) {
 			if (otherActor != giant) { 
-				float tinyScale = get_visual_scale(otherActor);
 				NiPoint3 actorLocation = otherActor->GetPosition();
-				if ((actorLocation-giantLocation).Length() <= maxDistance * 4.0) {
+				if ((actorLocation-giantLocation).Length() <= (maxDistance*giantScale * 4.0)) {
 					int nodeCollisions = 0;
 					float force = 0.0;
 					auto model = otherActor->GetCurrent3D();
 					if (model) {
 						VisitNodes(model, [&nodeCollisions, &force, NodePosition, maxDistance](NiAVObject& a_obj) {
 							float distance = (NodePosition - a_obj.world.translate).Length();
-							if (distance < maxDistance) {
+							if (distance < maxDistance * giantScale) {
 								nodeCollisions += 1;
-								force = 1.0 - distance / maxDistance;
+								force = 1.0 - distance / maxDistance*giantScale;
 								return false;
 							}
 							return true;
@@ -1101,8 +1100,9 @@ namespace Gts {
 		float giantScale = get_visual_scale(giant);
 		float gigantism = 1.0; //+ SizeManager::GetSingleton().GetEnchantmentBonus(giant)*0.01;
 
-		const float maxDistance = radius * giantScale * gigantism;
-		const float CheckDistance = radius * 2 * giantScale * gigantism;
+		const float maxDistance = radius;
+		const float CheckDistance = radius * 3.0;
+		float ActorCheckDistance = maxDistance*giantScale*gigantism;
 
 		bool DarkArts1 =  Runtime::HasPerk(giant, "DarkArts_Aug");
 		bool DarkArts2 = Runtime::HasPerk(giant, "DarkArts_Aug2"); 
@@ -1128,7 +1128,7 @@ namespace Gts {
 		Runtime::CreateExplosionAtPos(giant, NodePosition, giantScale * explosion, "ShrinkOutburstExplosion");
 
 		if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
-			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), maxDistance, 600, {0.0, 1.0, 0.0, 1.0});
+			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), ActorCheckDistance, 600, {0.0, 1.0, 0.0, 1.0});
 		}
 
 		log::info("Explosion spawned properly");
@@ -1136,57 +1136,61 @@ namespace Gts {
 		NiPoint3 giantLocation = giant->GetPosition();
 		log::info("Entering For Actor loop");
 		for (auto otherActor: find_actors()) {
-			if (otherActor != giant) { 
-				float tinyScale = get_visual_scale(otherActor);
-				NiPoint3 actorLocation = otherActor->GetPosition();
-				if ((actorLocation-giantLocation).Length() <= CheckDistance) {
-					log::info("Checkin Distance between {} and {}", giant->GetDisplayFullName(), otherActor->GetDisplayFullName());
-					int nodeCollisions = 0;
-					float force = 0.0;
+			if (otherActor) {
+				if (otherActor != giant) { 
+					log::info("Found Actor: {}", otherActor->GetDisplayFullName());
+					float tinyScale = get_visual_scale(otherActor);
+					log::info("Scale of {} is {}", otherActor->GetDisplayFullName(), tinyScale);
+					NiPoint3 actorLocation = otherActor->GetPosition();
+					if ((actorLocation - giantLocation).Length() <= CheckDistance*giantScale) {
+						log::info("Checking Distance between {} and {}", giant->GetDisplayFullName(), otherActor->GetDisplayFullName());
+						int nodeCollisions = 0;
+						float force = 0.0;
 
-					auto model = otherActor->GetCurrent3D();
+						auto model = otherActor->GetCurrent3D();
 
-					if (model) {
-						log::info("Found the model of {}", otherActor->GetDisplayFullName());
-						log::info("Checking points of {}", otherActor->GetDisplayFullName());
-						VisitNodes(model, [&nodeCollisions, &force, NodePosition, maxDistance](NiAVObject& a_obj) {
-							float distance = (NodePosition - a_obj.world.translate).Length();
-							log::info("Checking distance");
-							if (distance < maxDistance) {
-								log::info("Distance is < MaxDistance");
-								nodeCollisions += 1;
-								force = 1.0 - distance / maxDistance;
-								return false;
+						if (model) {
+							log::info("Found the model of {}", otherActor->GetDisplayFullName());
+							log::info("Checking points of {}", otherActor->GetDisplayFullName());
+							VisitNodes(model, [&nodeCollisions, &force, NodePosition, ActorCheckDistance](NiAVObject& a_obj) {
+								float distance = (NodePosition - a_obj.world.translate).Length();
+								log::info("Checking distance");
+								if (distance < ActorCheckDistance) {
+									log::info("Distance is < MaxDistance");
+									nodeCollisions += 1;
+									force = 1.0 - distance / ActorCheckDistance;
+									return false;
+								}
+								return true;
+							});
+						}
+						if (nodeCollisions > 0) {
+							float shrinkpower = -(shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, otherActor);
+							log::info("Size of {} is {}", giant->GetDisplayFullName(), giantScale);
+							log::info("Size of {} is {}", otherActor->GetDisplayFullName(), get_visual_scale(otherActor));
+							log::info("Shrink Power: {}", shrinkpower);
+							/*float sizedifference = giantScale/get_visual_scale(otherActor);
+							if (DarkArts2 && (IsGrowthSpurtActive(giant) || HasSMT(giant))) {
+								shrinkpower *= 1.40;
 							}
-							return true;
-						});
-					}
-					if (nodeCollisions > 0) {
-						float shrinkpower = -(shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, otherActor);
-						log::info("Size of {} is {}", giant->GetDisplayFullName(), giantScale);
-						log::info("Size of {} is {}", otherActor->GetDisplayFullName(), get_visual_scale(otherActor));
-						log::info("Shrink Power: {}", shrinkpower);
-						/*float sizedifference = giantScale/get_visual_scale(otherActor);
-						if (DarkArts2 && (IsGrowthSpurtActive(giant) || HasSMT(giant))) {
-							shrinkpower *= 1.40;
-						}
-						if (sizedifference <= 4.0) {
-							StaggerActor(otherActor);
-						} else {
-							PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference));
-						}
-							
-						if (DarkArts1) {
-							giant->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 8.0);
-						}*/
+							if (sizedifference <= 4.0) {
+								StaggerActor(otherActor);
+							} else {
+								PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference));
+							}
+								
+							if (DarkArts1) {
+								giant->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 8.0);
+							}*/
 
-						mod_target_scale(otherActor, shrinkpower * gigantism);
-						//StartCombat(giant, otherActor, true);
+							mod_target_scale(otherActor, shrinkpower * gigantism);
+							//StartCombat(giant, otherActor, true);
 
-						//AdjustGtsSkill((-shrinkpower * gigantism) * 0.80, giant);
+							//AdjustGtsSkill((-shrinkpower * gigantism) * 0.80, giant);
 
-						if (get_target_scale(otherActor) <= 0.11) {
-							set_target_scale(otherActor, 0.11);
+							if (get_target_scale(otherActor) <= 0.11) {
+								set_target_scale(otherActor, 0.11);
+							}
 						}
 					}
 				}
