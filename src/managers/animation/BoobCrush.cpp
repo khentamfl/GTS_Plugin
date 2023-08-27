@@ -172,6 +172,16 @@ namespace {
 
 	void InflictDamage(Actor* giant) {
 		float damage = GetBoobCrushDamage(giant);
+		
+		float perk = GetPerkBonus_Basics(&data.giant);
+		float launch = 1.0;
+        float dust = 1.0;
+        
+        if (HasSMT(giant)) {
+            launch = 1.25;
+            dust = 1.25;
+        }
+
         auto BreastL = find_node(giant, "NPC L Breast");
 		auto BreastR = find_node(giant, "NPC R Breast");
 		auto BreastL03 = find_node(giant, "L Breast03");
