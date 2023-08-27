@@ -1156,22 +1156,25 @@ namespace Gts {
 					log::info("Checkin Distance between {} and {}", giant->GetDisplayFullName(), otherActor->GetDisplayFullName());
 					int nodeCollisions = 0;
 					float force = 0.0;
+
 					auto model = otherActor->GetCurrent3D();
+
 					if (model) {
 						log::info("Found the model of {}", otherActor->GetDisplayFullName());
-						for (auto point: Points) {
-							log::info("Checking points of {}", otherActor->GetDisplayFullName());
-							VisitNodes(model, [&nodeCollisions, &force, point, maxDistance](NiAVObject& a_obj) {
-								float distance = (point - a_obj.world.translate).Length();
+						log::info("Checking points of {}", otherActor->GetDisplayFullName());
+						VisitNodes(model, [&nodeCollisions, &force, NodePosition, maxDistance](NiAVObject& a_obj) {
+							if (a_obj) {
+								float distance = (NodePosition - a_obj.world.translate).Length();
 								log::info("Checking distance");
 								if (distance < maxDistance) {
 									log::info("Distance is < MaxDistance");
 									nodeCollisions += 1;
 									force = 1.0 - distance / maxDistance;
+									return false;
 								}
-								return true;
-							});
-						}
+							}
+							return true;
+						});
 					}
 					if (nodeCollisions > 0) {
 						float shrinkpower = -(shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, otherActor);

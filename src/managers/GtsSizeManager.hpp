@@ -33,6 +33,7 @@ namespace Gts {
 		bool TrackLeftHand = false;
 
 		bool TrackButt = false;
+		bool TrackBreasts = false;
 
 
 	};

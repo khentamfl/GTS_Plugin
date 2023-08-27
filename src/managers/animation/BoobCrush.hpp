@@ -9,6 +9,5 @@ namespace Gts
 	class AnimationBoobCrush {
 		public:
 			static void RegisterEvents();
-			static void RegisterTriggers();
 	};
 }

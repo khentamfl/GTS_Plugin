@@ -3,6 +3,7 @@
 #include "managers/animation/StrongStomp.hpp"
 #include "managers/animation/ThighCrush.hpp"
 #include "managers/animation/ButtCrush.hpp"
+#include "managers/animation/BoobCrush.hpp"
 #include "managers/animation/FootGrind.hpp"
 #include "managers/animation/ActorVore.hpp"
 #include "managers/animation/CrawlVore.hpp"
@@ -10,6 +11,7 @@
 #include "managers/animation/Crawling.hpp"
 #include "managers/animation/Compat.hpp"
 #include "managers/animation/Growth.hpp"
+#include "managers/animation/Shrink.hpp"
 #include "managers/animation/Stomp.hpp"
 #include "managers/animation/Grab.hpp"
 #include "data/persistent.hpp"
@@ -77,6 +79,8 @@ namespace Gts {
 		AnimationButtCrush::RegisterEvents();
 		AnimationButtCrush::RegisterTriggers();
 
+		AnimationBoobCrush::RegisterEvents();
+
 		AnimationCrawlVore::RegisterEvents();
 
 		AnimationFootGrind::RegisterEvents();
@@ -87,6 +91,9 @@ namespace Gts {
 
 		AnimationGrowth::RegisterEvents();
 		AnimationGrowth::RegisterTriggers();
+
+		AnimationShrink::RegisterEvents();
+		AnimationShrink::RegisterTriggers();
 
 		HugShrink::RegisterEvents();
 		HugShrink::RegisterTriggers();

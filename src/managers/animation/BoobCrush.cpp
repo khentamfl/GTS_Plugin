@@ -67,31 +67,217 @@ namespace {
 		"NPC R ForearmTwist2 [RLt2]",
 		"NPC R ForearmTwist1 [RLt1]",
 		"NPC R Hand [RHnd]",
+		"NPC L Breast",
+		"NPC R Breast",
+		"L Breast03",
+		"R Breast03",
 	};
 
     const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
-    void StartRumble(std::string_view tag, Actor& actor, float power, float halflife) {
+	void StartRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: ALL_RUMBLE_NODES) {
-			std::string rumbleName = std::format("ButtCrush_{}{}", tag, node_name);
+			std::string rumbleName = std::format("BoobCrush_{}{}", tag, node_name);
 		    Rumble::Start(rumbleName, &actor, power, halflife, node_name);
 		}
 	}
 
     void StopRumble(std::string_view tag, Actor& actor) {
 		for (auto& node_name: ALL_RUMBLE_NODES) {
-			std::string rumbleName = std::format("ButtCrush_{}{}", tag, node_name);
+			std::string rumbleName = std::format("BoobCrush_{}{}", tag, node_name);
 			Rumble::Stop(rumbleName, &actor);
 		}
+	}
+
+	float GetBoobCrushDamage(Actor* actor) {
+        float damage = 1.0;
+        if (Runtime::HasPerkTeam(actor, "ButtCrush_KillerBooty")) {
+            damage += 0.30;
+        } if (Runtime::HasPerkTeam(actor, "ButtCrush_UnstableGrowth")) {
+            damage += 0.70;
+        }
+        return damage;
+    }
+
+	void ModGrowthCount(Actor* giant, float value, bool reset) {
+        auto transient = Transient::GetSingleton().GetData(giant);
+		if (transient) {
+			transient->ButtCrushGrowthAmount += value;
+            if (reset) {
+                transient->ButtCrushGrowthAmount = 0.0;
+            }
+		}
+    }
+
+    void SetBonusSize(Actor* giant, float value, bool reset) {
+        auto saved_data = Persistent::GetSingleton().GetData(giant);
+        if (saved_data) {
+            saved_data->bonus_max_size += value;
+            if (reset) {
+                mod_target_scale(giant, -saved_data->bonus_max_size);
+                if (get_target_scale(giant) < get_natural_scale(giant)) {
+                    set_target_scale(giant, get_natural_scale(giant)); // Protect against going into negatives
+                }
+                saved_data->bonus_max_size = 0;
+            }
+        } 
+    }
+
+	void GrowInSize(Actor* giant) {
+        float scale = get_visual_scale(giant);
+        float bonus = 0.24 * GetGrowthCount(giant) * (1.0 + (scale/15));
+        float target = std::clamp(bonus/2, 0.02f, 0.80f);
+        ModGrowthCount(giant, 1.0, false);
+        SetBonusSize(giant, bonus, false);
+        SpringGrow_Free(giant, bonus, 0.3 / GetAnimationSlowdown(giant), "ButtCrushGrowth");
+
+        float WasteStamina = 60.0 * GetButtCrushCost(giant);
+        DamageAV(giant, ActorValue::kStamina, WasteStamina);
+
+        //CameraFOVTask(giant, 1.0, 0.003);
+        Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
+		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
+
+        StartRumble("CleavageRumble", data.giant, 1.8, 0.70);
+	}
+
+	void StartDamageOverTime(Actor* giant) {
+		auto gianthandle = giant->CreateRefHandle();
+		std::string name = std::format("BreastDOT_{}", giant->formID);
+		float damage = GetButtCrushDamage(giant);
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			auto giantref = gianthandle.get().get();
+
+			auto BreastL = find_node(giantref, "NPC L Breast");
+			auto BreastR = find_node(giantref, "NPC R Breast");
+			auto BreastL03 = find_node(giantref, "L Breast03");
+			auto BreastR03 = find_node(giantref, "R Breast03");
+			if (BreastL03 && BreastR03) {
+				Rumble::Once("BreastDot_L", giantref, 1.0, 0.025, BreastL03);
+				Rumble::Once("BreastDot_R", giantref, 1.0, 0.025, BreastR03);
+				DoDamageAtPoint(giant, 20, 2.0 * damage, BreastL03, 400, 0.10, 2.5);
+                DoDamageAtPoint(giant, 20, 2.0 * damage, BreastR03, 400, 0.10, 2.5);
+				return true;
+			}
+			else if (BreastL && BreastR) {
+				Rumble::Once("BreastDot_L", giantref, 1.0, 0.025, BreastL);
+				Rumble::Once("BreastDot_R", giantref, 1.0, 0.025, BreastR);
+				DoDamageAtPoint(giant, 20, 2.0 * damage, BreastL, 400, 0.10, 2.5);
+                DoDamageAtPoint(giant, 20, 2.0 * damage, BreastR, 400, 0.10, 2.5);
+				return true;
+			}
+			return false;
+		});
+	}
+
+	void StopDamageOverTime(Actor* giant) {
+		std::string name = std::format("BreastDOT_{}", giant->formID);
+		TaskManager::Cancel(name);
+	}
+
+	void InflictDamage(Actor* giant) {
+		float damage = GetButtCrushDamage(giant);
+        auto BreastL = find_node(giant, "NPC L Breast");
+		auto BreastR = find_node(giant, "NPC R Breast");
+		auto BreastL03 = find_node(giant, "L Breast03");
+		auto BreastR03 = find_node(giant, "R Breast03");
+		if (BreastL03 && BreastR03) {
+			DoDamageAtPoint(giant, 28, 330.0 * damage, ThighL, 4, 0.70, 0.85);
+			DoDamageAtPoint(giant, 28, 330.0 * damage, ThighR, 4, 0.70, 0.85);
+			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC L Breast");
+			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC R Breast");
+			DoFootstepSound(giant, 1.25, FootEvent::Right, BreastR);
+			DoFootstepSound(giant, 1.25, FootEvent::Left, BreastL);
+			DoLaunch(&data.giant, 28.00 * launch * perk, 4.20, 1.4, FootEvent::Breasts, 1.20);
+			Rumble::Once("Breast_L", &data.giant, 3.60 * damage, 0.02, "NPC L Breast");
+			Rumble::Once("Breast_R", &data.giant, 3.60 * damage, 0.02, "NPC R Breast");
+			ModGrowthCount(giant, 0, true); // Reset limit
+			return;
+		} else if (BreastL && BreastR) {
+			DoDamageAtPoint(giant, 28, 330.0 * damage, ThighL, 4, 0.70, 0.85);
+			DoDamageAtPoint(giant, 28, 330.0 * damage, ThighR, 4, 0.70, 0.85);
+			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC L Breast");
+			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC R Breast");
+			DoFootstepSound(giant, 1.25, FootEvent::Right, BreastR);
+			DoFootstepSound(giant, 1.25, FootEvent::Right, BreastL);
+			DoLaunch(&data.giant, 28.00 * launch * perk, 4.20, 1.4, FootEvent::Breasts, 1.20);
+			Rumble::Once("Breast_L", &data.giant, 3.60 * damage, 0.02, "NPC L Breast");
+			Rumble::Once("Breast_R", &data.giant, 3.60 * damage, 0.02, "NPC R Breast");
+			ModGrowthCount(giant, 0, true); // Reset limit
+			return;
+        } else {
+            if (!BreastR) {
+                Notify("Error: Missing Breast Nodes"); // Will help people to troubleshoot it. Not everyone has 3BB/XPMS32 body.
+                Notify("Error: effects not inflicted");
+                Notify("Suggestion: install XP32 Skeleton");
+            } else if (!BreastR03) {
+				Notify("Error: Missing 3BB Breast Nodes"); // Will help people to troubleshoot it. Not everyone has 3BB/XPMS32 body.
+                Notify("Error: effects not inflicted");
+                Notify("Suggestion: install 3BB/SMP Body");
+			}
+        }
+	}
+
+	void TrackBreasts(Actor* giant, bool enable) {
+		if (giant->formID == 0x14) {
+			if (AllowFeetTracking()) {
+				auto& sizemanager = SizeManager::GetSingleton();
+				sizemanager.SetActionBool(giant, enable, 9.0);
+			}
+		}
+	}
+
+	void GTS_BoobCrush_Smile_On(AnimationEventData& data) {
+		auto giant = &data.giant;
+		AdjustFacialExpression(giant, 0, 1.0, "modifier"); // blink L
+		AdjustFacialExpression(giant, 1, 1.0, "modifier"); // blink R
+		AdjustFacialExpression(giant, 0, 0.75, "phenome");
+	}
+
+	void GTS_BoobCrush_Smile_Off(AnimationEventData& data) {
+		auto giant = &data.giant;
+		AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
+		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
+		AdjustFacialExpression(giant, 0, 0.0, "phenome");
+	}
+	void GTS_BoobCrush_TrackBody(AnimationEventData& data) {
+		TrackBreasts(&data.giant, true);
+	}
+	void GTS_BoobCrush_UnTrackBody(AnimationEventData& data) {
+		TrackBreasts(&data.giant, false);
+	}
+	void GTS_BoobCrush_BreastImpact(AnimationEventData& data) {
+		InflictDamage(&data.giant);
+	}
+	void GTS_BoobCrush_DOT_Start(AnimationEventData& data) {
+		StartDamageOverTime(&data.giant);
+	}
+	void GTS_BoobCrush_DOT_End(AnimationEventData& data) {
+		StopDamageOverTime(&data.giant);
+	}
+	void GTS_BoobCrush_Grow_Start(AnimationEventData& data) {
+		GrowInSize(&data.giant);
+	}
+	void GTS_BoobCrush_Grow_Stop(AnimationEventData& data) {
+		StopRumble("CleavageRumble", data.giant);
 	}
 }
 
 namespace Gts
 {
 	void AnimationBoobCrush::RegisterEvents() {
-	}
-
-    void AnimationBoobCrush::RegisterTriggers() {
+		AnimationManager::RegisterEvent("GTS_BoobCrush_Smile_On", "BoobCrush", GTS_BoobCrush_Smile_On);
+		AnimationManager::RegisterEvent("GTS_BoobCrush_Smile_Off", "BoobCrush", GTS_BoobCrush_Smile_Off);
+		AnimationManager::RegisterEvent("GTS_BoobCrush_TrackBody", "BoobCrush", GTS_BoobCrush_TrackBody);
+		AnimationManager::RegisterEvent("GTS_BoobCrush_UnTrackBody", "BoobCrush", GTS_BoobCrush_UnTrackBody);
+		AnimationManager::RegisterEvent("GTS_BoobCrush_BreastImpact", "BoobCrush", GTS_BoobCrush_BreastImpact);
+		AnimationManager::RegisterEvent("GTS_BoobCrush_DOT_Start", "BoobCrush", GTS_BoobCrush_DOT_Start);
+		AnimationManager::RegisterEvent("GTS_BoobCrush_DOT_End", "BoobCrush", GTS_BoobCrush_DOT_End);
+		AnimationManager::RegisterEvent("GTS_BoobCrush_Grow_Start", "BoobCrush", GTS_BoobCrush_Grow_Start);
+		AnimationManager::RegisterEvent("GTS_BoobCrush_Grow_Stop", "BoobCrush", GTS_BoobCrush_Grow_Stop);
 	}
 }

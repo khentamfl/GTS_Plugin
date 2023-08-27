@@ -387,6 +387,8 @@ namespace Gts {
 			this->GetData(actor).TrackLeftHand = enable;
 		} else if (type == 8.0) {
 			this->GetData(actor).TrackButt = enable;
+		} else if (type == 9.0) {
+			this->GetData(actor).TrackBreasts = enable;
 		}
 	}
 	bool SizeManager::GetActionBool(Actor* actor, float type) {
@@ -408,6 +410,8 @@ namespace Gts {
 			return this->GetData(actor).TrackLeftHand;
 		} else if (type == 8.0) {
 			return this->GetData(actor).TrackButt;
+		} else if (type == 9.0) {
+			return this->GetData(actor).TrackBreasts;
 		}
 		return false;
 	}

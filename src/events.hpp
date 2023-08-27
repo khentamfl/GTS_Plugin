@@ -15,6 +15,7 @@ namespace Gts {
 		JumpLand,
 		Unknown,
 		Butt,
+		Breasts,
 	};
 
 	enum CrawlEvent {

@@ -239,12 +239,24 @@ namespace Gts {
 			LaunchActor::GetSingleton().LaunchLeft(giant, radius, damagebonus, power);
 		} if (kind == FootEvent::Right) {
 			LaunchActor::GetSingleton().LaunchRight(giant, radius, damagebonus, power);
-		} else if (kind == FootEvent::Butt) {
+		} if (kind == FootEvent::Butt) {
 			auto ThighL = find_node(giant, "NPC L Thigh [LThg]");
 			auto ThighR = find_node(giant, "NPC R Thigh [RThg]");
 			if (ThighL && ThighR) {
 				LaunchActor::LaunchAtNode(giant, radius, power, ThighL, power);
 				LaunchActor::LaunchAtNode(giant, radius, power, ThighR, power);
+			}
+		} else if (kind == FootEvent::Breasts) {
+			auto BreastL = find_node(giant, "NPC L Breast");
+			auto BreastR = find_node(giant, "NPC R Breast");
+			auto BreastL03 = find_node(giant, "L Breast03");
+			auto BreastR03 = find_node(giant, "R Breast03");
+			if (BreastL03 && BreastR03) {
+				LaunchActor::LaunchAtNode(giant, radius, power, BreastL03, power);
+				LaunchActor::LaunchAtNode(giant, radius, power, BreastR03, power);
+			} else if (BreastL && BreastR) {
+				LaunchActor::LaunchAtNode(giant, radius, power, BreastL, power);
+				LaunchActor::LaunchAtNode(giant, radius, power, BreastR, power);
 			}
 		}
 	}

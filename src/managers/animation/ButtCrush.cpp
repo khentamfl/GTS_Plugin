@@ -272,7 +272,6 @@ namespace {
     }
 
     void GTSBEH_ButtCrush_GrowthFinish(AnimationEventData& data) {
-        auto giant = &data.giant;
         StopRumble("BCRumble", data.giant);
     }
 

@@ -30,7 +30,9 @@ namespace {
 			return 0.08;
 		} else if (sizemanager.GetActionBool(player, 8.0)) {
 			return 0.08;
-		}  else {
+		} else if (sizemanager.GetActionBool(player, 9.0)) {
+			return 0.10;
+		} else {
 			return 0.05;
 		}
 	}

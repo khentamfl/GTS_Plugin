@@ -57,6 +57,8 @@ namespace Gts {
 			altMode = 14; // Track Left Hand
 		} else if (sizemanager.GetActionBool(player, 8)) {
 			altMode = 15; // Track booty
+		} else if (sizemanager.GetActionBool(player, 9)) {
+			altMode = 5; // Track Breasts
 		}
 		switch (altMode) {
 			case 0: {
