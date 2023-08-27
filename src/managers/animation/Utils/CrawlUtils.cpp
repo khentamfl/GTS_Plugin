@@ -198,13 +198,13 @@ void ApplyAllCrawlingDamage(Actor* giant, float damage, int random, float boneda
 		} // CTD protection
 
 
-		DoDamageAtPoint(giant, 10, damage, LC, random, bonedamage, 2.5); 		// Call Left Calf
-		DoDamageAtPoint(giant, 10, damage, RC, random, bonedamage, 2.5);        // Call Right Calf
+		DoDamageAtPoint(giant, 10, damage, LC, random, bonedamage, 2.5, DamageSource::Knee); 		// Call Left Calf
+		DoDamageAtPoint(giant, 10, damage, RC, random, bonedamage, 2.5, DamageSource::Knee);        // Call Right Calf
 
 		if (!IsTransferingTiny(giant)) { // Only do if we don't have someone in our left hand
-			DoDamageAtPoint(giant, 8, damage, LH, random, bonedamage, 2.5);   // Call Left Hand
+			DoDamageAtPoint(giant, 8, damage, LH, random, bonedamage, 2.5, DamageSource::HandCrawl);   // Call Left Hand
 		}
 		
-		DoDamageAtPoint(giant, 8, damage, RH, random, bonedamage, 2.5);   // Call Right Calf
+		DoDamageAtPoint(giant, 8, damage, RH, random, bonedamage, 2.5, DamageSource::HandCrawl);   // Call Right Hand
 	}
 }
