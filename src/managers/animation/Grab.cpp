@@ -264,7 +264,7 @@ namespace {
 				}
 			}
 			if (damage >= Health) {
-				CrushManager::Crush(giant, grabbedActor, DamageSource::HandCrushed);
+				CrushManager::Crush(giant, grabbedActor);
 				AdjustGtsSkill(0.14, giant);
 				SetBeingHeld(grabbedActor, false);
 				Rumble::Once("GrabAttackKill", giant, 16.0 * bonus, 0.15, "NPC L Hand [LHnd]");
