@@ -1165,8 +1165,10 @@ namespace Gts {
 						}
 					}
 					if (nodeCollisions > 1) {
-						/*float sizedifference = giantScale/get_visual_scale(otherActor);
 						float shrinkpower = -(shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, otherActor);
+						log::info("Size of {} is {}", giant->GetDisplayFullName(), giantScale);
+						log::info("Size of {} is {}", otherActor->GetDisplayFullName(), giantScale, get_visual_scale(otherActor));
+						/*float sizedifference = giantScale/get_visual_scale(otherActor);
 						if (DarkArts2 && (IsGrowthSpurtActive(giant) || HasSMT(giant))) {
 							shrinkpower *= 1.40;
 						}
