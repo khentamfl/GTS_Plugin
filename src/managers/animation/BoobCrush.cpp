@@ -148,13 +148,13 @@ namespace {
         Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
 		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 
-        StartRumble("CleavageRumble", data.giant, 1.8, 0.70);
+        StartRumble("CleavageRumble", giant, 1.8, 0.70);
 	}
 
 	void StartDamageOverTime(Actor* giant) {
 		auto gianthandle = giant->CreateRefHandle();
 		std::string name = std::format("BreastDOT_{}", giant->formID);
-		float damage = GetButtCrushDamage(giant);
+		float damage = GetBoobCrushDamage(giant);
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
@@ -166,15 +166,15 @@ namespace {
 			auto BreastL03 = find_node(giantref, "L Breast03");
 			auto BreastR03 = find_node(giantref, "R Breast03");
 			if (BreastL03 && BreastR03) {
-				Rumble::Once("BreastDot_L", giantref, 1.0, 0.025, BreastL03);
-				Rumble::Once("BreastDot_R", giantref, 1.0, 0.025, BreastR03);
+				Rumble::Once("BreastDot_L", giantref, 1.0, 0.025, "L Breast03");
+				Rumble::Once("BreastDot_R", giantref, 1.0, 0.025, "R Breast03");
 				DoDamageAtPoint(giant, 20, 2.0 * damage, BreastL03, 400, 0.10, 2.5, DamageSource::Breast);
                 DoDamageAtPoint(giant, 20, 2.0 * damage, BreastR03, 400, 0.10, 2.5, DamageSource::Breast);
 				return true;
 			}
 			else if (BreastL && BreastR) {
-				Rumble::Once("BreastDot_L", giantref, 1.0, 0.025, BreastL);
-				Rumble::Once("BreastDot_R", giantref, 1.0, 0.025, BreastR);
+				Rumble::Once("BreastDot_L", giantref, 1.0, 0.025, "NPC L Breast");
+				Rumble::Once("BreastDot_R", giantref, 1.0, 0.025, "NPC R Breast");
 				DoDamageAtPoint(giant, 20, 2.0 * damage, BreastL, 400, 0.10, 2.5, DamageSource::Breast);
                 DoDamageAtPoint(giant, 20, 2.0 * damage, BreastR, 400, 0.10, 2.5, DamageSource::Breast);
 				return true;
@@ -189,7 +189,7 @@ namespace {
 	}
 
 	void InflictDamage(Actor* giant) {
-		float damage = GetButtCrushDamage(giant);
+		float damage = GetBoobCrushDamage(giant);
         auto BreastL = find_node(giant, "NPC L Breast");
 		auto BreastR = find_node(giant, "NPC R Breast");
 		auto BreastL03 = find_node(giant, "L Breast03");
