@@ -1109,7 +1109,7 @@ namespace Gts {
 			return;
 		}
 		float giantScale = get_visual_scale(giant);
-		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(giant)*0.01;
+		float gigantism = 1.0; //+ SizeManager::GetSingleton().GetEnchantmentBonus(giant)*0.01;
 		bool DarkArts1 =  Runtime::HasPerk(giant, "DarkArts_Aug");
 		bool DarkArts2 = Runtime::HasPerk(giant, "DarkArts_Aug2"); 
 		bool DarkArts_Max = Runtime::HasPerk(giant, "DarkArts_Max");
@@ -1130,16 +1130,12 @@ namespace Gts {
 
 		float maxDistance = radius * giantScale * gigantism;
 		// Make a list of points to check
-		std::vector<NiPoint3> points = {
-			NiPoint3(0.0, 0.0, 0.0), // The standard position
+		std::vector<NiPoint3> Points = {
+			NodePosition,
 		};
-		std::vector<NiPoint3> Points = {};
 
 		Runtime::CreateExplosionAtPos(giant, NodePosition, giantScale * explosion, "ShrinkOutburstExplosion");
 
-		for (NiPoint3 point: points) {
-			Points.push_back(NodePosition);
-		}
 		if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
 			for (auto point: Points) {
 				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance, 600, {0.0, 1.0, 0.0, 1.0});
@@ -1169,20 +1165,20 @@ namespace Gts {
 						}
 					}
 					if (nodeCollisions > 1) {
-						float sizedifference = giantScale/get_visual_scale(otherActor);
+						/*float sizedifference = giantScale/get_visual_scale(otherActor);
 						float shrinkpower = -(shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, otherActor);
 						if (DarkArts2 && (IsGrowthSpurtActive(giant) || HasSMT(giant))) {
 							shrinkpower *= 1.40;
 						}
 						if (sizedifference <= 4.0) {
-							//StaggerActor(otherActor);
+							StaggerActor(otherActor);
 						} else {
-							//PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference));
+							PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference));
 						}
 							
 						if (DarkArts1) {
-							//giant->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 8.0);
-						}
+							giant->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 8.0);
+						}*/
 
 						mod_target_scale(otherActor, shrinkpower * gigantism);
 						//StartCombat(giant, otherActor, true);
