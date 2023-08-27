@@ -124,7 +124,7 @@ namespace Gts {
 
 	void PushTowards(Actor* giantref, Actor* tinyref, NiAVObject* bone, float power, bool sizecheck);
 	void TinyCalamityExplosion(Actor* giant, float radius, NiAVObject* node);
-	void ShrinkOutburstExplosion(Actor* giant, const float radius, NiAVObject* node, float shrink, bool WasHit);
+	void ShrinkOutburstExplosion(Actor* giant, float radius, NiAVObject* node, float shrink, bool WasHit);
 	
 	bool HasSMT(Actor* giant);
 	void TiredSound(Actor* player, std::string_view message);

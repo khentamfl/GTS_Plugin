@@ -1102,7 +1102,7 @@ namespace Gts {
 		}
 	}
 
-	void ShrinkOutburstExplosion(Actor* giant, const float radius, NiAVObject* node, float shrink, bool WasHit) {
+	void ShrinkOutburstExplosion(Actor* giant, float radius, NiAVObject* node, float shrink, bool WasHit) {
 		if (!node) {
 			return;
 		} if (!giant) {
@@ -1163,9 +1163,9 @@ namespace Gts {
 							log::info("Checking points of {}", otherActor->GetDisplayFullName());
 							VisitNodes(model, [&nodeCollisions, &force, point, maxDistance](NiAVObject& a_obj) {
 								float distance = (point - a_obj.world.translate).Length();
-								log::info("Checking distance of {}", otherActor->GetDisplayFullName());
+								log::info("Checking distance");
 								if (distance < maxDistance) {
-									log::info("Distance of {} is < MaxDistance", otherActor->GetDisplayFullName());
+									log::info("Distance is < MaxDistance");
 									nodeCollisions += 1;
 									force = 1.0 - distance / maxDistance;
 								}
