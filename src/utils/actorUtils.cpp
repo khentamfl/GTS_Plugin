@@ -395,7 +395,7 @@ namespace Gts {
 			return true;
 		}
 		if (IsDraugr || IsDwemer) {
-			log::info("{} is not living", actor->GetDisplayFullName());
+			//log::info("{} is not living", actor->GetDisplayFullName());
 			return false;
 		} else {
 			return true;
@@ -787,7 +787,7 @@ namespace Gts {
 		return Persistent::GetSingleton().allow_feetracking;
 	}
 	bool LessGore() {
-		log::info("Less gore is {}", Persistent::GetSingleton().less_gore);
+		//log::info("Less gore is {}", Persistent::GetSingleton().less_gore);
 		return Persistent::GetSingleton().less_gore;
 	}
 
@@ -1167,7 +1167,7 @@ namespace Gts {
 					if (nodeCollisions > 1) {
 						float shrinkpower = -(shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, otherActor);
 						log::info("Size of {} is {}", giant->GetDisplayFullName(), giantScale);
-						log::info("Size of {} is {}", otherActor->GetDisplayFullName(), giantScale, get_visual_scale(otherActor));
+						log::info("Size of {} is {}", otherActor->GetDisplayFullName(), get_visual_scale(otherActor));
 						log::info("Shrink Power: {}", shrinkpower);
 						/*float sizedifference = giantScale/get_visual_scale(otherActor);
 						if (DarkArts2 && (IsGrowthSpurtActive(giant) || HasSMT(giant))) {

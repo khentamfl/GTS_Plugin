@@ -44,7 +44,7 @@ namespace Gts {
 	}
 
 	void HighHeelManager::OnAddPerk(const AddPerkEvent& evt) {
-		log::info("Add Perk fired");
+		//log::info("Add Perk fired");
 		if (evt.perk == Runtime::GetPerk("hhBonus")) {
 			for (auto actor: find_actors()) {
 				if (actor) {

@@ -388,7 +388,7 @@ namespace Gts {
 			}
 			if (!isdamaging && (force >= 0.12 || IsMoving(giant))) {
 				StaggerOr(giant, tiny, force, 0, 0, 0, 0);
-				log::info("Force Is > 0.12, staggering");
+				//log::info("Force Is > 0.12, staggering");
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 			}
 			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true, crushmult);
