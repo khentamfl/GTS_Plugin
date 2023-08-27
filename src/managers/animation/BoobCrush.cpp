@@ -259,11 +259,13 @@ namespace {
 	}
 	void GTS_BoobCrush_DOT_End(AnimationEventData& data) {
 		StopDamageOverTime(&data.giant);
+		SetBonusSize(&data.giant, 0.0, true);
+		ModGrowthCount(&data.giant, 0, true);
 	}
 	void GTS_BoobCrush_Grow_Start(AnimationEventData& data) {
 		auto giant = &data.giant;
 		float scale = get_visual_scale(giant);
-        float bonus = 0.24 * GetGrowthCount(giant) * (1.0 + (scale/15));
+        float bonus = 0.24 * GetGrowthCount(giant);
         float target = std::clamp(bonus/2, 0.02f, 0.80f);
         ModGrowthCount(giant, 1.0, false);
         SetBonusSize(giant, bonus, false);
@@ -276,7 +278,7 @@ namespace {
         Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
 		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 
-        StartRumble("CleavageRumble", data.giant, 1.8, 0.70);
+        StartRumble("CleavageRumble", data.giant, 0.8, 0.70);
 	}
 	void GTS_BoobCrush_Grow_Stop(AnimationEventData& data) {
 		StopRumble("CleavageRumble", data.giant);

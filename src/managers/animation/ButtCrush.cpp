@@ -212,6 +212,9 @@ namespace {
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
             auto node = find_node(giantref, "AnimObjectB"); 
+            if (IsCrawling(giantref)) {
+                node = find_node(giantref, "AnimObjectA"); 
+            }
             if (!node) {
                 return false;
             }
@@ -255,7 +258,7 @@ namespace {
         auto giant = &data.giant;
         
         float scale = get_visual_scale(giant);
-        float bonus = 0.24 * GetGrowthCount(giant) * (1.0 + (scale/15));
+        float bonus = 0.24 * GetGrowthCount(giant);
         float target = std::clamp(bonus/2, 0.02f, 0.80f);
         ModGrowthCount(giant, 1.0, false);
         SetBonusSize(giant, bonus, false);
@@ -264,11 +267,10 @@ namespace {
         float WasteStamina = 60.0 * GetButtCrushCost(giant);
         DamageAV(giant, ActorValue::kStamina, WasteStamina);
 
-        //CameraFOVTask(giant, 1.0, 0.003);
         Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
 		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 
-        StartRumble("BCRumble", data.giant, 1.8, 0.70);
+        StartRumble("BCRumble", data.giant, 0.8, 0.40);
     }
 
     void GTSBEH_ButtCrush_GrowthFinish(AnimationEventData& data) {

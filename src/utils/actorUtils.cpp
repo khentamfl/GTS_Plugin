@@ -1074,6 +1074,7 @@ namespace Gts {
 							if (distance < maxDistance) {
 								nodeCollisions += 1;
 								force = 1.0 - distance / maxDistance;
+								return false;
 							}
 							return true;
 						});
@@ -1115,28 +1116,21 @@ namespace Gts {
 		} if (WasHit) {
 			explosion = 2.0;
 		}
-
+		log::info("Trying to spawn explosion");
 		Runtime::PlaySoundAtNode("ShrinkOutburstSound", giant, 2.0, 1.0, "NPC Head [Head]"); 
 		Rumble::For("ShrinkOutburst", giant, 24.0, 0.15, "NPC COM [COM ]", 0.80);
+		log::info("Starting Rumble");
 
 		NiPoint3 NodePosition = node->world.translate; 
-
-		
-		// Make a list of points to check
-		std::vector<NiPoint3> Points = {
-			NodePosition,
-		};
 
 		Runtime::CreateExplosionAtPos(giant, NodePosition, giantScale * explosion, "ShrinkOutburstExplosion");
 
 		if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
-			for (auto point: Points) {
-				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance, 600, {0.0, 1.0, 0.0, 1.0});
-			}
+			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), maxDistance, 600, {0.0, 1.0, 0.0, 1.0});
 		}
 
 		NiPoint3 giantLocation = giant->GetPosition();
-
+		log::info("Entering For Actor loop");
 		for (auto otherActor: find_actors()) {
 			if (otherActor != giant) { 
 				float tinyScale = get_visual_scale(otherActor);
