@@ -1189,28 +1189,9 @@ namespace Gts {
 
 						AdjustGtsSkill((-shrinkpower * gigantism) * 0.80, giant);
 
-						
-						const float DURATION = 2.5;
-						std::string taskname = std::format("ShrinkOtherCheck_{}", otherActor->formID);
-
-						ActorHandle tinyHandle = otherActor->CreateRefHandle();
-						ActorHandle giantHandle = giant->CreateRefHandle();
-						
-						TaskManager::RunFor(taskname, DURATION, [=](auto& progressData){ // Make sure to disallow shrinking below threshold
-							if (!giantHandle) {
-								return false;
-							} if (!tinyHandle) {
-								return false;
-							}
-							auto GTS = giantHandle.get().get();
-							auto TINY = tinyHandle.get().get();
-							
-							if (get_visual_scale(TINY) <= 0.11) {
-								set_target_scale(TINY, 0.11);
-								return false;
-							}
-							return true; // Everything is fine, continue checking
-						});
+						if (get_target_scale(TINY) <= 0.11) {
+							set_target_scale(TINY, 0.11);
+						}
 					}
 				}
 			}
