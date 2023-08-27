@@ -189,13 +189,13 @@ namespace {
 		if (BreastL03 && BreastR03) {
 			DoDamageAtPoint(giant, 28, 330.0 * damage, BreastL03, 4, 0.70, 0.85, DamageSource::Breast);
 			DoDamageAtPoint(giant, 28, 330.0 * damage, BreastR03, 4, 0.70, 0.85, DamageSource::Breast);
-			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC L Breast");
-			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC R Breast");
-			DoFootstepSound(giant, 1.25, FootEvent::Right, BreastR);
-			DoFootstepSound(giant, 1.25, FootEvent::Left, BreastL);
+			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "L Breast03");
+			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "R Breast03");
+			DoFootstepSound(giant, 1.25, FootEvent::Right, "R Breast03");
+			DoFootstepSound(giant, 1.25, FootEvent::Left, "L Breast03");
 			DoLaunch(giant, 28.00 * launch * perk, 4.20, 1.4, FootEvent::Breasts, 1.20);
-			Rumble::Once("Breast_L", giant, 3.60 * damage, 0.02, "NPC L Breast");
-			Rumble::Once("Breast_R", giant, 3.60 * damage, 0.02, "NPC R Breast");
+			Rumble::Once("Breast_L", giant, 3.60 * damage, 0.02, "L Breast03");
+			Rumble::Once("Breast_R", giant, 3.60 * damage, 0.02, "R Breast03");
 			ModGrowthCount(giant, 0, true); // Reset limit
 			return;
 		} else if (BreastL && BreastR) {
@@ -203,8 +203,8 @@ namespace {
 			DoDamageAtPoint(giant, 28, 330.0 * damage, BreastR, 4, 0.70, 0.85, DamageSource::Breast);
 			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC L Breast");
 			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC R Breast");
-			DoFootstepSound(giant, 1.25, FootEvent::Right, BreastR);
-			DoFootstepSound(giant, 1.25, FootEvent::Right, BreastL);
+			DoFootstepSound(giant, 1.25, FootEvent::Right, "NPC R Breast");
+			DoFootstepSound(giant, 1.25, FootEvent::Right, "NPC L Breast");
 			DoLaunch(giant, 28.00 * launch * perk, 4.20, 1.4, FootEvent::Breasts, 1.20);
 			Rumble::Once("Breast_L", giant, 3.60 * damage, 0.02, "NPC L Breast");
 			Rumble::Once("Breast_R", giant, 3.60 * damage, 0.02, "NPC R Breast");
@@ -214,7 +214,7 @@ namespace {
             if (!BreastR) {
                 Notify("Error: Missing Breast Nodes"); // Will help people to troubleshoot it. Not everyone has 3BB/XPMS32 body.
                 Notify("Error: effects not inflicted");
-                Notify("Suggestion: install XP32 Skeleton");
+                Notify("Suggestion: install Female body replacer");
             } else if (!BreastR03) {
 				Notify("Error: Missing 3BB Breast Nodes"); // Will help people to troubleshoot it. Not everyone has 3BB/XPMS32 body.
                 Notify("Error: effects not inflicted");
