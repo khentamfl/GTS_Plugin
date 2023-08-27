@@ -76,7 +76,7 @@ namespace Gts {
 		} else if (cause == DamageSource::Vored) {
 			///nothing for now
 			return;
-		} else if (cause == "ThighCrushed") { // During thigh crush
+		} else if (cause == DamageSource::ThighCrushed) { // During thigh crush
 			if (random == 1) {
 				Cprint("{} was crushed to death between {} thighs.", TinyName, GiantName);
 			} else if (random <= 3) {
@@ -150,7 +150,7 @@ namespace Gts {
 				Cprint("{} blocked too much damage and was squeezed into bloody stain by {}", TinyName, GiantName);
 			}
 			return;
-		} else if (cause == DamageSource::Breasts) { // Someone died between breasts
+		} else if (cause == DamageSource::Breast) { // Someone died between breasts
 			if (random == 1) {
 				Cprint("{} was weakened and got accidentally crushed by {} breasts", TinyName, GiantName);
 			} else if (random == 2) {
