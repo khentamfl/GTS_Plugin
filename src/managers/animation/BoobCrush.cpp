@@ -133,24 +133,6 @@ namespace {
         } 
     }
 
-	void GrowInSize(Actor* giant) {
-        float scale = get_visual_scale(giant);
-        float bonus = 0.24 * GetGrowthCount(giant) * (1.0 + (scale/15));
-        float target = std::clamp(bonus/2, 0.02f, 0.80f);
-        ModGrowthCount(giant, 1.0, false);
-        SetBonusSize(giant, bonus, false);
-        SpringGrow_Free(giant, bonus, 0.3 / GetAnimationSlowdown(giant), "ButtCrushGrowth");
-
-        float WasteStamina = 60.0 * GetButtCrushCost(giant);
-        DamageAV(giant, ActorValue::kStamina, WasteStamina);
-
-        //CameraFOVTask(giant, 1.0, 0.003);
-        Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
-		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
-
-        StartRumble("CleavageRumble", giant, 1.8, 0.70);
-	}
-
 	void StartDamageOverTime(Actor* giant) {
 		auto gianthandle = giant->CreateRefHandle();
 		std::string name = std::format("BreastDOT_{}", giant->formID);
@@ -195,8 +177,8 @@ namespace {
 		auto BreastL03 = find_node(giant, "L Breast03");
 		auto BreastR03 = find_node(giant, "R Breast03");
 		if (BreastL03 && BreastR03) {
-			DoDamageAtPoint(giant, 28, 330.0 * damage, ThighL, 4, 0.70, 0.85, DamageSource::Breast);
-			DoDamageAtPoint(giant, 28, 330.0 * damage, ThighR, 4, 0.70, 0.85, DamageSource::Breast);
+			DoDamageAtPoint(giant, 28, 330.0 * damage, BreastL03, 4, 0.70, 0.85, DamageSource::Breast);
+			DoDamageAtPoint(giant, 28, 330.0 * damage, BreastR03, 4, 0.70, 0.85, DamageSource::Breast);
 			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC L Breast");
 			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC R Breast");
 			DoFootstepSound(giant, 1.25, FootEvent::Right, BreastR);
@@ -207,8 +189,8 @@ namespace {
 			ModGrowthCount(giant, 0, true); // Reset limit
 			return;
 		} else if (BreastL && BreastR) {
-			DoDamageAtPoint(giant, 28, 330.0 * damage, ThighL, 4, 0.70, 0.85, DamageSource::Breast);
-			DoDamageAtPoint(giant, 28, 330.0 * damage, ThighR, 4, 0.70, 0.85, DamageSource::Breast);
+			DoDamageAtPoint(giant, 28, 330.0 * damage, BreastL, 4, 0.70, 0.85, DamageSource::Breast);
+			DoDamageAtPoint(giant, 28, 330.0 * damage, BreastR, 4, 0.70, 0.85, DamageSource::Breast);
 			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC L Breast");
 			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC R Breast");
 			DoFootstepSound(giant, 1.25, FootEvent::Right, BreastR);
@@ -269,7 +251,22 @@ namespace {
 		StopDamageOverTime(&data.giant);
 	}
 	void GTS_BoobCrush_Grow_Start(AnimationEventData& data) {
-		GrowInSize(&data.giant);
+		auto giant = &data.giant;
+		float scale = get_visual_scale(giant);
+        float bonus = 0.24 * GetGrowthCount(giant) * (1.0 + (scale/15));
+        float target = std::clamp(bonus/2, 0.02f, 0.80f);
+        ModGrowthCount(giant, 1.0, false);
+        SetBonusSize(giant, bonus, false);
+        SpringGrow_Free(giant, bonus, 0.3 / GetAnimationSlowdown(giant), "ButtCrushGrowth");
+
+        float WasteStamina = 60.0 * GetButtCrushCost(giant);
+        DamageAV(giant, ActorValue::kStamina, WasteStamina);
+
+        //CameraFOVTask(giant, 1.0, 0.003);
+        Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
+		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
+
+        StartRumble("CleavageRumble", data.giant, 1.8, 0.70);
 	}
 	void GTS_BoobCrush_Grow_Stop(AnimationEventData& data) {
 		StopRumble("CleavageRumble", data.giant);
