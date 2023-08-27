@@ -22,6 +22,7 @@ namespace Gts {
 
 			void LaunchAtNode(Actor* giant, float radius, float power, NiAVObject* node, float damagebonus);
 			void ApplyLaunch(Actor* giant, float radius, float damagebonus, FootEvent kind, float power);
+			void ApplyLaunch(Actor* giant, float radius, float damagebonus, NiAVObject* node, float power) ;
 			void LaunchLeft(Actor* giant, float radius, float damagebonus, float power);
 			void LaunchRight(Actor* giant, float radius, float damagebonus, float power);
 	};

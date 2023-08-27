@@ -74,6 +74,17 @@ namespace {
 		"R Breast03",
 	};
 
+	const std::vector<std::string_view> BODY_NODES = {
+		"NPC R Thigh [RThg]",
+		"NPC L Thigh [LThg]",
+		"NPC R Thigh [RThg]",
+        "NPC R Butt",
+        "NPC L Butt",
+		"NPC Spine [Spn0]",
+		"NPC Spine1 [Spn1]",
+		"NPC Spine2 [Spn2]",
+	}
+
     const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
@@ -147,18 +158,28 @@ namespace {
 			auto BreastR = find_node(giantref, "NPC R Breast");
 			auto BreastL03 = find_node(giantref, "L Breast03");
 			auto BreastR03 = find_node(giantref, "R Breast03");
+
+			for (auto Nodes: BODY_NODES) {
+				auto Node = find_node(Nodes);
+				if (Node) {
+					std::string rumbleName = std::format("Node: {}", Nodes);
+					DoDamageAtPoint(giant, 14, 0.6 * damage, Node, 400, 0.10, 2.0, DamageSource::BodyCrush);
+					Rumble::Once(rumbleName, &data.giant, 1.00 * damage, 0.02, nodes);
+				}
+			}
+
 			if (BreastL03 && BreastR03) {
 				Rumble::Once("BreastDot_L", giantref, 0.4, 0.025, "L Breast03");
 				Rumble::Once("BreastDot_R", giantref, 0.4, 0.025, "R Breast03");
-				DoDamageAtPoint(giant, 14, 0.8 * damage, BreastL03, 400, 0.10, 2.5, DamageSource::Breast);
-                DoDamageAtPoint(giant, 14, 0.8 * damage, BreastR03, 400, 0.10, 2.5, DamageSource::Breast);
+				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastL03, 400, 0.10, 2.5, DamageSource::Breast);
+                DoDamageAtPoint(giant, 14, 0.6 * damage, BreastR03, 400, 0.10, 2.5, DamageSource::Breast);
 				return true;
 			}
 			else if (BreastL && BreastR) {
 				Rumble::Once("BreastDot_L", giantref, 0.5, 0.025, "NPC L Breast");
 				Rumble::Once("BreastDot_R", giantref, 0.5, 0.025, "NPC R Breast");
-				DoDamageAtPoint(giant, 14, 0.8 * damage, BreastL, 400, 0.10, 2.5, DamageSource::Breast);
-                DoDamageAtPoint(giant, 14, 0.8 * damage, BreastR, 400, 0.10, 2.5, DamageSource::Breast);
+				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastL, 400, 0.10, 2.5, DamageSource::Breast);
+                DoDamageAtPoint(giant, 14, 0.6 * damage, BreastR, 400, 0.10, 2.5, DamageSource::Breast);
 				return true;
 			}
 			return false;
@@ -167,7 +188,9 @@ namespace {
 
 	void StopDamageOverTime(Actor* giant) {
 		std::string name = std::format("BreastDOT_{}", giant->formID);
+		std::string name2 = std::format("ButtCrush_{}", tiny->formID);
 		TaskManager::Cancel(name);
+		TaskManager::Cancel(name2);
 	}
 
 	void LayingStaminaDrain_Launch(Actor* giant) {
@@ -194,13 +217,29 @@ namespace {
 		TaskManager::Cancel(name);
 	}
 
-	void InflictDamage(Actor* giant) {
+	void InflictBodyDamage(Actor* giant) {
+		float perk = GetPerkBonus_Basics(giant);
+		float launch = 1.0;
+		for (auto Nodes: BODY_NODES) {
+			auto Node = find_node(Nodes);
+			if (Node) {
+				std::string rumbleName = std::format("Node: {}", Nodes);
+				DoDamageAtPoint(giant, 20, 100.0 * damage, ThighL, 400, 0.10, 0.85, DamageSource::BodyCrush);
+				DoLaunch(giant, 28.00 * launch * perk, 3.20, 1.4, Node, 1.20);
+				Rumble::Once(rumbleName, &data.giant, 1.00 * damage, 0.02, nodes);
+			}
+		}
+	}
+
+	void InflictBreastDamage(Actor* giant) {
 		float damage = GetBoobCrushDamage(giant);
 		
 		float perk = GetPerkBonus_Basics(giant);
 		float launch = 1.0;
         float dust = 1.0;
         
+		InflictBodyDamage(giant);
+
         if (HasSMT(giant)) {
             launch = 1.25;
             dust = 1.25;
@@ -210,6 +249,7 @@ namespace {
 		auto BreastR = find_node(giant, "NPC R Breast");
 		auto BreastL03 = find_node(giant, "L Breast03");
 		auto BreastR03 = find_node(giant, "R Breast03");
+		
 		if (BreastL03 && BreastR03) {
 			DoDamageAtPoint(giant, 24, 330.0 * damage, BreastL03, 4, 0.70, 0.85, DamageSource::Breast);
 			DoDamageAtPoint(giant, 24, 330.0 * damage, BreastR03, 4, 0.70, 0.85, DamageSource::Breast);
@@ -283,15 +323,17 @@ namespace {
 		TrackBreasts(&data.giant, false);
 	}
 	void GTS_BoobCrush_BreastImpact(AnimationEventData& data) {
-		InflictDamage(&data.giant);
+		InflictBreastDamage(&data.giant);
 	}
 	void GTS_BoobCrush_DOT_Start(AnimationEventData& data) {
 		LayingStaminaDrain_Launch(&data.giant);
 	}
 	void GTS_BoobCrush_DOT_End(AnimationEventData& data) {
-		StopDamageOverTime(&data.giant);
-		ModGrowthCount(&data.giant, 0, true);
-		LayingStaminaDrain_Cancel(&data.giant);
+		auto giant = &data.giant;
+		StopDamageOverTime(giant);
+		ModGrowthCount(giant, 0, true);
+		LayingStaminaDrain_Cancel(giant);
+		giant->SetGraphVariableBool("GTS_IsButtCrushing", false); // Needed to cancel attachment task
 	}
 	void GTS_BoobCrush_Grow_Start(AnimationEventData& data) {
 		auto giant = &data.giant;
@@ -307,14 +349,16 @@ namespace {
         Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
 		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 
-        StartRumble("CleavageRumble", data.giant, 0.8, 0.70);
+        StartRumble("CleavageRumble", data.giant, 0.4, 0.60);
 	}
 	void GTS_BoobCrush_Grow_Stop(AnimationEventData& data) {
 		StopRumble("CleavageRumble", data.giant);
 	}
 
 	void GTS_BoobCrush_LoseSize(AnimationEventData& data) {
-		SetBonusSize(&data.giant, 0.0, true);
+		auto giant = &data.giant;
+		SetBonusSize(giant, 0.0, true);
+		giant->SetGraphVariableBool("GTS_IsButtCrushing", true);
 	}
 }
 

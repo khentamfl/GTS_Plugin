@@ -86,7 +86,20 @@ namespace Gts {
 			} else if (random == 5) {
 				Cprint("{} applied too much leg pressure to {}", GiantName, TinyName);
 			} else if (random >= 6) {
-				Cprint("{} was shrinkned to nothing by {}", TinyName, GiantName);
+				Cprint("{} was shrinked to nothing by {}", TinyName, GiantName);
+			}
+			return;
+		} else if (cause == DamageSource::BodyCrush) { // During Body Crush
+			if (random == 1) {
+				Cprint("{} was crushed by the body of {}", TinyName, GiantName);
+			} else if (random <= 3) {
+				Cprint("{} body obliterated {}", GiantName, TinyName);
+			} else if (random == 4) {
+				Cprint("{} let her body do the job", GiantName);
+			} else if (random == 5) {
+				Cprint("{} dropped her body onto {}", GiantName, TinyName);
+			} else if (random >= 6) {
+				Cprint("{} was turned into mush by the body of {}", TinyName, GiantName);
 			}
 			return;
 		} else if (cause == DamageSource::ThighSandwiched) { // Self explanatory

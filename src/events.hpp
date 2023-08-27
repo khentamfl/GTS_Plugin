@@ -26,6 +26,7 @@ namespace Gts {
 		Breast,
 		Hugs,
 		Booty,
+		BodyCrush,
 		Vored,
 		Spell,
 		Melted,

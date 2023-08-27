@@ -235,7 +235,7 @@ namespace {
                 EnableCollisions(tiny);
 				return false;
 			}
-			if (!AttachTo(giantref, tinyref, coords)) {
+			if (!AttachTo_NoForceRagdoll(giantref, tinyref, coords)) {
                 SetBeingEaten(tiny, false);
                 EnableCollisions(tiny);
 				return false;
@@ -358,16 +358,12 @@ namespace {
             }
         }
         ModGrowthCount(giant, 0, true); // Reset limit
-        //giant->SetGraphVariableBool("GTS_IsButtCrushing", false);
         DisableButtTrackTask(giant);
-        //BlockFirstPerson(giant, false);
     }
 
     void GTSButtCrush_Exit(AnimationEventData& data) {
         auto giant = &data.giant;
         ModGrowthCount(giant, 0, true); // Reset limit
-        //BlockFirstPerson(giant, false);
-        //TrackButt(giant, false);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////

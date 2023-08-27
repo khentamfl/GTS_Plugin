@@ -75,6 +75,14 @@ namespace Gts {
 		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, kind, power);
 	}
 
+	void DoLaunch(Actor* giant, float radius, float damage, float overr, NiAVObject* node, float power) {
+		float bonus = 1.0;
+		if (HasSMT(giant)) {
+			bonus = overr;
+		}
+		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, node, power);
+	}
+
 	void GrabStaminaDrain(Actor* giant, Actor* tiny, float sizedifference) {
 		float WasteMult = 1.0;
 		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {

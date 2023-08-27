@@ -260,6 +260,12 @@ namespace Gts {
 			}
 		}
 	}
+	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float damagebonus, NiAVObject* node, float power) {
+		if (!Runtime::HasPerkTeam(giant, "LaunchPerk")) {
+			return;
+		}
+		LaunchActor::LaunchAtNode(giant, radius, power, node, power);
+	}
 	
 	void LaunchActor::LaunchAtNode(Actor* giant, float radius, float power, NiAVObject* node, float damagebonus) {
         auto profiler = Profilers::Profile("Other: Launch Actor Crawl");
