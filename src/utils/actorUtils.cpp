@@ -1201,8 +1201,8 @@ namespace Gts {
 
 							if (get_target_scale(otherActor) <= 0.11) {
 								//set_target_scale(otherActor, 0.11);
-							}*/
-						}
+							}
+						}*/
 					}
 				}
 			}
