@@ -1141,13 +1141,15 @@ namespace Gts {
 		for (auto ReferenceActor: find_actors()) {
 			auto RefHandle = ReferenceActor->CreateRefHandle();
 			log::info("Creating RefHandle");
-			auto otherActor = RefHandle.Get().get();
+			auto otherActor = RefHandle.get().get();
 			if (otherActor) {
 				if (otherActor != giant) { 
 					log::info("Found Actor: {}", otherActor->GetDisplayFullName());
 					float tinyScale = get_visual_scale(otherActor);
 					log::info("Scale of {} is {}", otherActor->GetDisplayFullName(), tinyScale);
 					NiPoint3 actorLocation = otherActor->GetPosition();
+					log::info("GTS {} Pos: {}", giant->GetDisplayFullName(), Vector2Str(giantLocation));
+					log::info("Tiny {} Pos: {}", otherActor->GetDisplayFullName(), Vector2Str(actorLocation));
 					if ((actorLocation - giantLocation).Length() <= CheckDistance*giantScale) {
 						log::info("Checking Distance between {} and {}", giant->GetDisplayFullName(), otherActor->GetDisplayFullName());
 						int nodeCollisions = 0;
