@@ -1139,8 +1139,9 @@ namespace Gts {
 		NiPoint3 giantLocation = giant->GetPosition();
 		log::info("Entering For Actor loop");
 		for (auto ReferenceActor: find_actors()) {
-			auto RefHandle = ReferenceActor->CreateRefHandle();
-			log::info("Creating RefHandle");
+			log::info("Found Actor: {}", ReferenceActor->GetDisplayFullName());
+			/*auto RefHandle = ReferenceActor->CreateRefHandle();
+			
 			auto otherActor = RefHandle.get().get();
 			if (otherActor) {
 				if (otherActor != giant) { 
@@ -1160,7 +1161,7 @@ namespace Gts {
 
 						if (model) {
 							log::info("Found the model of {}", otherActor->GetDisplayFullName());
-							/*
+							
 							log::info("Checking points of {}", otherActor->GetDisplayFullName());
 							VisitNodes(model, [&nodeCollisions, &force, NodePosition, ActorCheckDistance](NiAVObject& a_obj) {
 								float distance = (NodePosition - a_obj.world.translate).Length();
@@ -1172,7 +1173,7 @@ namespace Gts {
 									return false;
 								}
 								return true;
-							});*/
+							});
 						}
 						/*if (nodeCollisions > 0) {
 							//float shrinkpower = -(shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, otherActor);
@@ -1202,10 +1203,10 @@ namespace Gts {
 							if (get_target_scale(otherActor) <= 0.11) {
 								//set_target_scale(otherActor, 0.11);
 							}
-						}*/
+						}
 					}
 				}
-			}
+			}*/
 		}
 	}
 	
