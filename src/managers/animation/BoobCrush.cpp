@@ -332,7 +332,6 @@ namespace {
 		StopDamageOverTime(giant);
 		ModGrowthCount(giant, 0, true);
 		LayingStaminaDrain_Cancel(giant);
-		giant->SetGraphVariableBool("GTS_IsButtCrushing", false); // Needed to cancel attachment task
 	}
 	void GTS_BoobCrush_Grow_Start(AnimationEventData& data) {
 		auto giant = &data.giant;
@@ -357,7 +356,6 @@ namespace {
 	void GTS_BoobCrush_LoseSize(AnimationEventData& data) {
 		auto giant = &data.giant;
 		SetBonusSize(giant, 0.0, true);
-		giant->SetGraphVariableBool("GTS_IsButtCrushing", true);
 	}
 }
 
