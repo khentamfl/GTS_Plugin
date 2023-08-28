@@ -56,8 +56,8 @@ namespace {
 			auto caster = gianthandle.get().get();
             float timepassed = Time::WorldTimeElapsed() - Start;
 			float elapsed = std::clamp(timepassed * AnimationManager::GetAnimSpeed(caster), 0.01f, 1.2f);
-			float multiply = bezier_curve(elapsed, 0, 1.045, -0.7, 0, 2.0, 8.5);
-            //                            ^value   x1  x2     x3  x4  i     k
+			float multiply = bezier_curve(elapsed, 0, 1.9, 0.6, 0, 2.0, 1.0);
+            //                            ^value   x1  x2  x3  x4  i     k
             log::info("Elapsed {}, Multiply: {}", elapsed, multiply);
 			
 			float caster_scale = get_visual_scale(caster);
@@ -82,7 +82,7 @@ namespace {
     void GTSShrink_SlowShrink(AnimationEventData& data) {
     }
     void GTSShrink_StopShrink(AnimationEventData& data) {
-        CancelShrink(&data.giant);
+        //CancelShrink(&data.giant);
     }
     void GTSShrink_Exit(AnimationEventData& data) {
     }
