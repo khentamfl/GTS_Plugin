@@ -1150,7 +1150,8 @@ namespace Gts {
 					NiPoint3 actorLocation = otherActor->GetPosition();
 					log::info("GTS {} Pos: {}", giant->GetDisplayFullName(), Vector2Str(giantLocation));
 					log::info("Tiny {} Pos: {}", otherActor->GetDisplayFullName(), Vector2Str(actorLocation));
-					if ((actorLocation - giantLocation).Length() <= CheckDistance*giantScale) {
+					log::info("Distance between {} and {} is {}", giant->GetDisplayFullName(), otherActor->GetDisplayFullName(), (actorLocation - giantLocation).Length);
+					if ((actorLocation - giantLocation).Length() < CheckDistance*giantScale) {
 						log::info("Checking Distance between {} and {}", giant->GetDisplayFullName(), otherActor->GetDisplayFullName());
 						int nodeCollisions = 0;
 						float force = 0.0;
