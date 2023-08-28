@@ -288,13 +288,13 @@ exclusive = false
 [[InputEvent]]
 name = "BreastsPut"
 keys = ["LSHIFT", "B"]
-duration = 0.25
+duration = 0.5
 # Put actor between breasts. Requires someone to be in hands.
 
 [[InputEvent]]
 name = "BreastsRemove"
 keys = ["LSHIFT", "B"]
-duration = 0.45 
+duration = 0.5
 # Put actor between breasts. Requires someone to be between breasts.
 
 
