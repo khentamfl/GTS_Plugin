@@ -39,6 +39,7 @@ namespace Gts {
 	}
 
 	//https://www.desmos.com/calculator/8lqgse3jkr
+	//https://www.desmos.com/calculator/peog2oomvo
 	float bezier_curve(const float x,const float x1, const float x2, const float x3, const float x4, const float i, const float k) {
     	return pow((((1-x)*(1-x)*(1-x)*x1) + (3.0*(1-x)*(1-x)*x*x2) + (3.0*(1-x)*x*x*x3) + (x*x*x*x4)),i)*k;
 		//i determines the steepness of the curve - how slow or fast it accelerates and decelerates. Should be between two and three (two might be the best one)
