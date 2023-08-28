@@ -1138,7 +1138,10 @@ namespace Gts {
 
 		NiPoint3 giantLocation = giant->GetPosition();
 		log::info("Entering For Actor loop");
-		for (auto otherActor: find_actors()) {
+		for (auto ReferenceActor: find_actors()) {
+			auto RefHandle = ReferenceActor->CreateRefHandle();
+			log::info("Creating RefHandle");
+			auto otherActor = RefHandle.Get().get();
 			if (otherActor) {
 				if (otherActor != giant) { 
 					log::info("Found Actor: {}", otherActor->GetDisplayFullName());
