@@ -1138,11 +1138,7 @@ namespace Gts {
 
 		NiPoint3 giantLocation = giant->GetPosition();
 		log::info("Entering For Actor loop");
-		for (auto ReferenceActor: find_actors()) {
-			log::info("Found Actor: {}", ReferenceActor->GetDisplayFullName());
-			/*auto RefHandle = ReferenceActor->CreateRefHandle();
-			
-			auto otherActor = RefHandle.get().get();
+		for (auto otherActor: find_actors()) {
 			if (otherActor) {
 				if (otherActor != giant) { 
 					log::info("Found Actor: {}", otherActor->GetDisplayFullName());
@@ -1175,12 +1171,12 @@ namespace Gts {
 								return true;
 							});
 						}
-						/*if (nodeCollisions > 0) {
-							//float shrinkpower = -(shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, otherActor);
+						if (nodeCollisions > 0) {
+							float shrinkpower = -(shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, otherActor);
 							log::info("Size of {} is {}", giant->GetDisplayFullName(), giantScale);
 							log::info("Size of {} is {}", otherActor->GetDisplayFullName(), get_visual_scale(otherActor));
-							//log::info("Shrink Power: {}", shrinkpower);
-							/*float sizedifference = giantScale/get_visual_scale(otherActor);
+							log::info("Shrink Power: {}", shrinkpower);
+							float sizedifference = giantScale/get_visual_scale(otherActor);
 							if (DarkArts2 && (IsGrowthSpurtActive(giant) || HasSMT(giant))) {
 								shrinkpower *= 1.40;
 							}
@@ -1194,19 +1190,19 @@ namespace Gts {
 								giant->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 8.0);
 							}
 
-							//mod_target_scale(otherActor, shrinkpower * gigantism);
+							mod_target_scale(otherActor, shrinkpower * gigantism);
 							log::info("Shrinking Foe");
-							//StartCombat(giant, otherActor, true);
+							StartCombat(giant, otherActor, true);
 
-							//AdjustGtsSkill((-shrinkpower * gigantism) * 0.80, giant);
+							AdjustGtsSkill((-shrinkpower * gigantism) * 0.80, giant);
 
 							if (get_target_scale(otherActor) <= 0.11) {
-								//set_target_scale(otherActor, 0.11);
+								set_target_scale(otherActor, 0.11);
 							}
 						}
 					}
 				}
-			}*/
+			}
 		}
 	}
 	
