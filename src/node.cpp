@@ -381,7 +381,9 @@ namespace Gts {
 				if (ninode) {
 					for (auto child: ninode->GetChildren()) {
 						// Bredth first search
-						queue.push_back(child.get());
+						if (child) {
+							queue.push_back(child.get());
+						}
 						// Depth first search
 						//queue.push_front(child.get());
 					}
