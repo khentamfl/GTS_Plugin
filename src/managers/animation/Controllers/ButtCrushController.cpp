@@ -184,8 +184,7 @@ namespace Gts {
 		if (!buttcrush.CanButtCrush(pred, prey)) {
 			return;
 		}
-        if (CanDoButtCrush_Normal(pred)) {
-
+        if (CanDoButtCrush_Normal(pred) && !IsBeingHeld(prey)) {
 			float WasteStamina = 160.0 * GetButtCrushCost(pred);
             DamageAV(pred, ActorValue::kStamina, WasteStamina);
 
