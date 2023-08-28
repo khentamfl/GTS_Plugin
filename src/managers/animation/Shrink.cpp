@@ -82,7 +82,7 @@ namespace {
     void GTSShrink_SlowShrink(AnimationEventData& data) {
     }
     void GTSShrink_StopShrink(AnimationEventData& data) {
-        CancelShrink(&data.giant);
+        //CancelShrink(&data.giant);
     }
     void GTSShrink_Exit(AnimationEventData& data) {
     }
