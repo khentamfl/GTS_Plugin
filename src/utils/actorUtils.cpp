@@ -1097,14 +1097,21 @@ namespace Gts {
 	}
 
 	void ShrinkOuburst_Shrink(Actor* giant, Actor* tiny, float shrink, float gigantism) {
+		bool DarkArts1 = Runtime::HasPerk(giant, "DarkArts_Aug");
+		bool DarkArts2 = Runtime::HasPerk(giant, "DarkArts_Aug2"); 
+
 		float shrinkpower = (shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, tiny);
-		float sizedifference = giantScale/get_visual_scale(tiny);
-		if (DarkArts2 && (IsGrowthSpurtActive(giant) || HasSMT(giant))) {
-			shrinkpower *= 1.40;
-		}	
+
+		float giantScale = get_visual_scale(giant);
+		float tinyScale = get_visual_scale(tiny);
+
+		float sizedifference = giantScale/tinyScale;
 		if (DarkArts1) {
 			giant->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 8.0);
 		}
+		if (DarkArts2 && (IsGrowthSpurtActive(giant) || HasSMT(giant))) {
+			shrinkpower *= 1.40;
+		}	
 
 		mod_target_scale(tiny, -(shrinkpower * gigantism));
 		StartCombat(giant, tiny, true);
@@ -1138,8 +1145,6 @@ namespace Gts {
 		float ActorCheckDistance = BASE_DISTANCE*giantScale*gigantism;
 
 		bool DarkArts1 = Runtime::HasPerk(giant, "DarkArts_Aug");
-		bool DarkArts2 = Runtime::HasPerk(giant, "DarkArts_Aug2"); 
-		bool DarkArts_Max = Runtime::HasPerk(giant, "DarkArts_Max");
 		float explosion = 0.75;
 
 		if (DarkArts1) {
