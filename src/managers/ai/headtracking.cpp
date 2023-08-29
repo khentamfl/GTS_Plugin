@@ -244,8 +244,6 @@ namespace Gts {
 			if (actor->formID == 0x14 || IsTeammate(actor)) {
 				ScareActors(actor);
 				SpineUpdate(actor);
-				// FixNPCHeadtracking(actor);
-				//RotateCaster(actor, this->data.at(actor->formID));
 			}
 		}
 	}
@@ -272,44 +270,4 @@ namespace Gts {
 		this->data.try_emplace(me->formID);
 		RotateSpine(me, tiny, this->data.at(me->formID));
 	}
-
-	// void Headtracking::FixNPCHeadtracking(Actor* me) {
-	// 	if (me->formID == 0x14) {
-	// 		return;
-	// 	}
-	// 	auto profiler = Profilers::Profile("Headtracking: Headtracking Fix");
-	// 	auto ai = me->GetActorRuntimeData().currentProcess;
-	// 	if (ai) {
-	// 		auto targetObjHandle = ai->GetHeadtrackTarget();
-	// 		if (targetObjHandle) {
-	// 			auto lookAt = HeadLocation(targetObjHandle);
-	// 			auto head = HeadLocation(me);
-	//
-	// 			NiPoint3 directionToLook = (lookAt - head);
-	//
-	// 			NiPoint3 myOneTimeHead = HeadLocation(me, 1.0);
-	//
-	// 			NiPoint3 fakeLookAt = myOneTimeHead + directionToLook;
-	//
-	// 			ai->SetHeadtrackTarget(me, fakeLookAt);
-	// 		}
-	// 	}
-	// }
-	//
-	// void Headtracking::FixPlayerHeadtracking(Actor* me) {
-	// 	log::info("Player HT true");
-	// 	float reduce = 0.0;
-	// 	auto ai = me->GetActorRuntimeData().currentProcess;
-	// 	me->AsActorState()->actorState2.headTracking = true;
-	// 	me->SetGraphVariableBool("bHeadTrackSpine", true);
-	// 	me->SetGraphVariableBool("bHeadTracking", true);
-	// 	auto charCont = me->GetCharController();
-	// 	if (charCont) {
-	// 		reduce = charCont->actorHeight * 70.0 * get_natural_scale(me);
-	// 	}
-	// 	NiPoint3 lookat = me->GetLookingAtLocation();
-	// 	log::info("Player look at: {}", Vector2Str(lookat));
-	// 	lookat.z -= reduce;
-	// 	ai->SetHeadtrackTarget(me, lookat);
-	// }
 }

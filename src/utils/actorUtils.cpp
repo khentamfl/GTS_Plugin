@@ -1116,7 +1116,7 @@ namespace Gts {
 		mod_target_scale(tiny, -(shrinkpower * gigantism));
 		StartCombat(giant, tiny, true);
 
-		AdjustGtsSkill((-shrinkpower * gigantism) * 0.80, giant);
+		AdjustGtsSkill((shrinkpower * gigantism) * 0.80, giant);
 
 		if (get_target_scale(tiny) <= 0.11) {
 			set_target_scale(tiny, 0.11);
@@ -1131,7 +1131,7 @@ namespace Gts {
 		if (!giant) {
 			return;
 		}
-		auto node = find_node(giant, "NPC Spine [Spn0]");
+		auto node = find_node(giant, "NPC Root [Root]");
 		if (!node) {
 			return;
 		}
