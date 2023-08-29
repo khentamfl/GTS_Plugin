@@ -181,7 +181,6 @@ namespace {
 		} 
 		DamageAV(player, ActorValue::kHealth, damagehp);
 		ShrinkOutburstExplosion(player, false);
-		
 	}
 
 	void AnimSpeedUpEvent(const InputEventData& data) {
