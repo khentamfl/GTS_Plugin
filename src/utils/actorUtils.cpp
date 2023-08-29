@@ -1171,7 +1171,7 @@ namespace Gts {
 			if (otherActor != giant) { 
 				float tinyScale = get_visual_scale(otherActor);
 				NiPoint3 actorLocation = otherActor->GetPosition();
-				if ((actorLocation - giantLocation).Length() < BASE_DISTANCE* *giantScale*radius) {
+				if ((actorLocation - giantLocation).Length() < BASE_DISTANCE*giantScale*radius*3) {
 					int nodeCollisions = 0;
 					float force = 0.0;
 
