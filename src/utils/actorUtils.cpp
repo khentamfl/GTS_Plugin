@@ -1131,7 +1131,7 @@ namespace Gts {
 		if (!giant) {
 			return;
 		}
-		auto node = find_node(giant, "NPC Root [Root]");
+		auto node = find_node(giant, "NPC Pelvis [Pelv]");
 		if (!node) {
 			return;
 		}
@@ -1158,7 +1158,7 @@ namespace Gts {
 		float CheckDistance = BASE_DISTANCE*giantScale*gigantism*radius;
 
 		Runtime::PlaySoundAtNode("ShrinkOutburstSound", giant, explosion, 1.0, "NPC Spine [Spn0]"); 
-		//Rumble::For("ShrinkOutburst", giant, 20.0, 0.15, "NPC COM [COM ]", 0.60);
+		Rumble::For("ShrinkOutburst", giant, 20.0, 0.15, "NPC COM [COM ]", 0.60);
 
 		//Runtime::CreateExplosionAtPos(giant, NodePosition, giantScale * explosion, "ShrinkOutburstExplosion");
 
