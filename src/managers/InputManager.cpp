@@ -180,7 +180,7 @@ namespace {
 			return;
 		} 
 		DamageAV(player, ActorValue::kHealth, damagehp);
-		ShrinkOutburstExplosion(player, 84.0, 0.38, false);
+		ShrinkOutburstExplosion(player, false);
 		
 	}
 

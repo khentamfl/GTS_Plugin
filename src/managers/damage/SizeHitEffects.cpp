@@ -176,7 +176,7 @@ namespace {
 		if (Runtime::HasPerk(receiver, "DarkArts_Max") && GetHealthPercentage(receiver) <= 0.40) {
 			static Timer Shrink = Timer(180.00);
 			if (Shrink.ShouldRunFrame()) {
-				ShrinkOutburstExplosion(receiver, 136.8, 0.56, true);
+				ShrinkOutburstExplosion(receiver, true);
 			}
 		}
 	}

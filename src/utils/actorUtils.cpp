@@ -1127,11 +1127,11 @@ namespace Gts {
 		}
 	}
 
-	void ShrinkOutburstExplosion(Actor* giant, float radius, float shrink, bool WasHit) {
+	void ShrinkOutburstExplosion(Actor* giant, bool WasHit) {
 		if (!giant) {
 			return;
 		}
-		auto node = find_node(giant, "NPC Pelvis [Pelv]");
+		auto node = find_node(giant, "NPC Spine [Spn0]");
 		if (!node) {
 			return;
 		}
@@ -1139,29 +1139,31 @@ namespace Gts {
 
 		float giantScale = get_visual_scale(giant);
 		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(giant)*0.01;
+		float shrink = 0.38;
+		float radius = 1.0;
 
-		const float BASE_CHECK_DISTANCE = radius*3*giantScale;
-		const float BASE_DISTANCE = radius;
-		float ActorCheckDistance = BASE_DISTANCE*giantScale*gigantism;
-
-		bool DarkArts1 = Runtime::HasPerk(giant, "DarkArts_Aug");
 		float explosion = 0.75;
-
+		bool DarkArts1 = Runtime::HasPerk(giant, "DarkArts_Aug");
 		if (DarkArts1) {
 			radius *= 1.33;
 			shrink *= 1.33;
 			explosion = 1.05;
 		} if (WasHit) {
+			radius *= 1.4;
+			shrink *= 1.4;
 			explosion = 2.0;
 		}
-		
-		Runtime::PlaySoundAtNode("ShrinkOutburstSound", giant, explosion, 1.0, "NPC Head [Head]"); 
+
+		const float BASE_DISTANCE = 84.0;
+		float CheckDistance = BASE_DISTANCE*giantScale*gigantism*radius;
+
+		Runtime::PlaySoundAtNode("ShrinkOutburstSound", giant, explosion, 1.0, "NPC Spine [Spn0]"); 
 		Rumble::For("ShrinkOutburst", giant, 20.0, 0.15, "NPC COM [COM ]", 0.60);
 
 		Runtime::CreateExplosionAtPos(giant, NodePosition, giantScale * explosion, "ShrinkOutburstExplosion");
 
 		if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
-			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), ActorCheckDistance, 600, {0.0, 1.0, 0.0, 1.0});
+			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), CheckDistance, 600, {0.0, 1.0, 0.0, 1.0});
 		}
 
 		NiPoint3 giantLocation = giant->GetPosition();
@@ -1169,18 +1171,18 @@ namespace Gts {
 			if (otherActor != giant) { 
 				float tinyScale = get_visual_scale(otherActor);
 				NiPoint3 actorLocation = otherActor->GetPosition();
-				if ((actorLocation - giantLocation).Length() < BASE_CHECK_DISTANCE) {
+				if ((actorLocation - giantLocation).Length() < BASE_DISTANCE* *giantScale*radius) {
 					int nodeCollisions = 0;
 					float force = 0.0;
 
 					auto model = otherActor->GetCurrent3D();
 
 					if (model) {
-						VisitNodes(model, [&nodeCollisions, &force, NodePosition, ActorCheckDistance](NiAVObject& a_obj) {
+						VisitNodes(model, [&nodeCollisions, &force, NodePosition, CheckDistance](NiAVObject& a_obj) {
 							float distance = (NodePosition - a_obj.world.translate).Length();
-							if (distance < ActorCheckDistance) {
+							if (distance < CheckDistance) {
 								nodeCollisions += 1;
-								force = 1.0 - distance / ActorCheckDistance;
+								force = 1.0 - distance / CheckDistance;
 								return false;
 							}
 							return true;
