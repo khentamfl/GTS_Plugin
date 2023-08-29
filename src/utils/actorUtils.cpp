@@ -1144,22 +1144,23 @@ namespace Gts {
 
 		float explosion = 0.75;
 		bool DarkArts1 = Runtime::HasPerk(giant, "DarkArts_Aug");
+		if (WasHit) {
+			radius *= 1.4;
+			shrink += 0.20;
+			explosion += 0.95;
+		}
 		if (DarkArts1) {
 			radius *= 1.33;
 			shrink *= 1.33;
-			explosion = 1.05;
-		} if (WasHit) {
-			radius *= 1.4;
-			shrink *= 1.4;
-			explosion = 2.0;
-		}
+			explosion += 0.30;
+		} 
 
-		const float BASE_DISTANCE = 74.0;
+		const float BASE_DISTANCE = 84.0;
 		float CheckDistance = BASE_DISTANCE*giantScale*gigantism*radius;
 
 		Runtime::PlaySoundAtNode("ShrinkOutburstSound", giant, explosion, 1.0, "NPC Spine [Spn0]"); 
 		Rumble::For("ShrinkOutburst", giant, 20.0, 0.15, "NPC COM [COM ]", 0.60);
-
+		
 		Runtime::CreateExplosionAtPos(giant, NodePosition, giantScale * explosion, "ShrinkOutburstExplosion");
 
 		if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {

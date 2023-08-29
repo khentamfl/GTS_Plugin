@@ -307,6 +307,9 @@ namespace Gts {
 			}
 			instance->SetPosition(pos);
 			Explosion* explosion = instance->AsExplosion();
+			if (!explosion) {
+				return;
+			}
 			explosion->GetExplosionRuntimeData().radius *= scale;
 			explosion->GetExplosionRuntimeData().imodRadius *= scale;
 		}
