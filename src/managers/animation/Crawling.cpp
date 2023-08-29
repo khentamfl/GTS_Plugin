@@ -264,6 +264,9 @@ namespace {
 		});
 	}
 
+	void GTS_Crawl_Swipe_ArmSfx_Start(AnimationEventData& data) {}
+	void GTS_Crawl_Swipe_ArmSfx_End(AnimationEventData& data) {}
+
 	void GTS_Crawl_Swipe_On_R(AnimationEventData& data) {
 		TriggerHandCollision_Right(&data.giant, 1.4, 1.6, 0.75);
 	}
