@@ -1154,13 +1154,13 @@ namespace Gts {
 			explosion = 2.0;
 		}
 
-		const float BASE_DISTANCE = 84.0;
+		const float BASE_DISTANCE = 74.0;
 		float CheckDistance = BASE_DISTANCE*giantScale*gigantism*radius;
 
 		Runtime::PlaySoundAtNode("ShrinkOutburstSound", giant, explosion, 1.0, "NPC Spine [Spn0]"); 
 		Rumble::For("ShrinkOutburst", giant, 20.0, 0.15, "NPC COM [COM ]", 0.60);
 
-		//Runtime::CreateExplosionAtPos(giant, NodePosition, giantScale * explosion, "ShrinkOutburstExplosion");
+		Runtime::CreateExplosionAtPos(giant, NodePosition, giantScale * explosion, "ShrinkOutburstExplosion");
 
 		if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
 			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), CheckDistance, 600, {0.0, 1.0, 0.0, 1.0});
