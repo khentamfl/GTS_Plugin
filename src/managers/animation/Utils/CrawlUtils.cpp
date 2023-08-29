@@ -182,7 +182,7 @@ namespace Gts {
 		}
 	}
 
-void ApplyAllCrawlingDamage(Actor* giant, float damage, int random, float bonedamage) { // Applies damage to all 4 crawl bones at once
+	void ApplyAllCrawlingDamage(Actor* giant, float damage, int random, float bonedamage) { // Applies damage to all 4 crawl bones at once
         auto LC = find_node(giant, "NPC L Calf [LClf]");
         auto RC = find_node(giant, "NPC R Calf [RClf]");
         auto LH = find_node(giant, "NPC L Finger20 [LF20]");

@@ -123,8 +123,9 @@ namespace Gts {
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind, float crushmult, DamageSource Cause);
 
 	void PushTowards(Actor* giantref, Actor* tinyref, NiAVObject* bone, float power, bool sizecheck);
-	void TinyCalamityExplosion(Actor* giant, float radius, NiAVObject* node);
-	void ShrinkOutburstExplosion(Actor* giant, float radius, NiAVObject* node, float shrink, bool WasHit);
+	void TinyCalamityExplosion(Actor* giant, float radius);
+	void ShrinkOuburst_Shrink(Actor* giant, Actor* tiny, float shrink, float gigantism);
+	void ShrinkOutburstExplosion(Actor* giant, float radius, float shrink, bool WasHit);
 	
 	bool HasSMT(Actor* giant);
 	void TiredSound(Actor* player, std::string_view message);

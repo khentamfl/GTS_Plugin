@@ -179,11 +179,9 @@ namespace {
 			}
 			return;
 		} 
-		auto node = find_node(player, "NPC Pelvis [Pelv]");
-		if (node) {
-			DamageAV(player, ActorValue::kHealth, damagehp);
-			ShrinkOutburstExplosion(player, 84.0, node, 0.38, false);
-		}
+		DamageAV(player, ActorValue::kHealth, damagehp);
+		ShrinkOutburstExplosion(player, 84.0, 0.38, false);
+		
 	}
 
 	void AnimSpeedUpEvent(const InputEventData& data) {

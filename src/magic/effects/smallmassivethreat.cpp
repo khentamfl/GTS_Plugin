@@ -48,12 +48,11 @@ namespace Gts {
 			return;
 		}
 		Runtime::PlaySoundAtNode("TinyCalamitySound", caster, 1.0, 1.0, "NPC COM [COM ]");
-		auto pelv = find_node(caster, "NPC Pelvis [Pelv]");
 		auto node = find_node(caster, "NPC Root [Root]");
 		if (node) {
 			float scale = get_visual_scale(caster);
 			NiPoint3 position = node->world.translate;
-			TinyCalamityExplosion(caster, 72, node);
+			TinyCalamityExplosion(caster, 72);
 			SpawnParticle(caster, 6.00, "GTS/Effects/TinyCalamity.nif", NiMatrix3(), position, scale * 3.0, 7, nullptr); // Spawn
 			Rumble::For("TinyCalamity", caster, 38.0, 0.14, "NPC COM [COM ]", 0.10);
 		}

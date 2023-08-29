@@ -176,10 +176,7 @@ namespace {
 		if (Runtime::HasPerk(receiver, "DarkArts_Max") && GetHealthPercentage(receiver) <= 0.40) {
 			static Timer Shrink = Timer(180.00);
 			if (Shrink.ShouldRunFrame()) {
-				auto node = find_node(receiver, "NPC Pelvis [Pelv]");
-				if (node) {
-					ShrinkOutburstExplosion(receiver, 136.8, node, 0.56, true);
-				}
+				ShrinkOutburstExplosion(receiver, 136.8, 0.56, true);
 			}
 		}
 	}
