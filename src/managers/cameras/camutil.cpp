@@ -166,7 +166,11 @@ namespace Gts {
 			auto cameraRoot = camera->cameraRoot;
 			if (cameraRoot) {
 				cameraRoot->local.translate = camLoc;
-				cameraRoot->world.translate = camLoc;
+				//cameraRoot->world.translate = camLoc;
+				auto state = reinterpret_cast<RE::ThirdPersonState*>(cameraRoot->currentState.get());
+				if (state == GameState::CameraState::ThirdPerson || state == GameState::CameraState::ThirdPersonCombat) {
+					state->translation = cameraNode->local.translate;
+				}
 				update_node(cameraRoot.get());
 			}
 		}
