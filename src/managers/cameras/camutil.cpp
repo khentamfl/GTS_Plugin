@@ -91,10 +91,10 @@ namespace Gts {
 
 
 	void UpdateSceneManager(NiPoint3 camLoc) {
-		//auto sceneManager = UI3DSceneManager::GetSingleton();
-		//if (sceneManager) {
+		auto sceneManager = UI3DSceneManager::GetSingleton();
+		if (sceneManager) {
 			// Cache
-			//sceneManager->cachedCameraPos = camLoc;
+			sceneManager->cachedCameraPos = camLoc;
 
 			/*#ifdef ENABLED_SHADOW
 			   // Shadow Map
@@ -105,12 +105,12 @@ namespace Gts {
 			 #endif*/
 
 			// Camera
-			/*auto niCamera = sceneManager->camera;
+			auto niCamera = sceneManager->camera;
 			if (niCamera) {
 				niCamera->world.translate = camLoc;
 				UpdateWorld2ScreetMat(niCamera.get());
 			}
-		}*/
+		}
 	}
 
 	void UpdateRenderManager(NiPoint3 camLoc) {
@@ -125,21 +125,21 @@ namespace Gts {
 			 #endif*/
 
 			// Camera
-			/*auto niCamera = renderManager->camera;
+			auto niCamera = renderManager->camera;
 			if (niCamera) {
 				niCamera->world.translate = camLoc;
 				UpdateWorld2ScreetMat(niCamera.get());
-			}*/
+			}
 		}
 	}
 
 	void UpdateNiCamera(NiPoint3 camLoc) {
-		/*auto niCamera = GetNiCamera();
+		auto niCamera = GetNiCamera();
 		if (niCamera) {
 			niCamera->world.translate = camLoc;
 			UpdateWorld2ScreetMat(niCamera);
 			update_node(niCamera);
-		}*/
+		}
 
 		/*#ifdef ENABLED_SHADOW
 		   auto shadowNode = GetShadowMap();
@@ -166,12 +166,7 @@ namespace Gts {
 			auto cameraRoot = camera->cameraRoot;
 			if (cameraRoot) {
 				cameraRoot->local.translate = camLoc;
-				//cameraRoot->world.translate = camLoc;
-				auto TP = camera->cameraStates[CameraState::kThirdPerson].get();
-				auto state = reinterpret_cast<RE::ThirdPersonState*>(camera->currentState.get());
-				if (TP) {
-					state->translation = camLoc;
-				}
+				cameraRoot->world.translate = camLoc;
 				update_node(cameraRoot.get());
 			}
 		}
