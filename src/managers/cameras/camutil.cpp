@@ -91,10 +91,10 @@ namespace Gts {
 
 
 	void UpdateSceneManager(NiPoint3 camLoc) {
-		auto sceneManager = UI3DSceneManager::GetSingleton();
-		if (sceneManager) {
+		//auto sceneManager = UI3DSceneManager::GetSingleton();
+		//if (sceneManager) {
 			// Cache
-			sceneManager->cachedCameraPos = camLoc;
+			//sceneManager->cachedCameraPos = camLoc;
 
 			/*#ifdef ENABLED_SHADOW
 			   // Shadow Map
@@ -105,12 +105,12 @@ namespace Gts {
 			 #endif*/
 
 			// Camera
-			auto niCamera = sceneManager->camera;
+			/*auto niCamera = sceneManager->camera;
 			if (niCamera) {
 				niCamera->world.translate = camLoc;
 				UpdateWorld2ScreetMat(niCamera.get());
 			}
-		}
+		}*/
 	}
 
 	void UpdateRenderManager(NiPoint3 camLoc) {
@@ -125,11 +125,11 @@ namespace Gts {
 			 #endif*/
 
 			// Camera
-			auto niCamera = renderManager->camera;
+			/*auto niCamera = renderManager->camera;
 			if (niCamera) {
 				niCamera->world.translate = camLoc;
 				UpdateWorld2ScreetMat(niCamera.get());
-			}
+			}*/
 		}
 	}
 
