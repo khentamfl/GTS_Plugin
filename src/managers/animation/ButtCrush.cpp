@@ -343,10 +343,10 @@ namespace {
             DamageAV(player, ActorValue::kStamina, WasteStamina);
             AnimationManager::StartAnim("ButtCrush_StartFast", player);
         } else if (!CanDoButtCrush(player) && !Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
-            if (!IsCrawling(pred)) {
-			    TiredSound(pred, "Butt Crush is on a cooldown");
+            if (!IsCrawling(player)) {
+			    TiredSound(player, "Butt Crush is on a cooldown");
             } else {
-                TiredSound(pred, "Breast Crush is on a cooldown");
+                TiredSound(player, "Breast Crush is on a cooldown");
             }
         }
 	}

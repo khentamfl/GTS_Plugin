@@ -457,7 +457,7 @@ namespace Gts {
 
 		result *= damagebonus;
 
-		if (Cause == DamageSource::Crushing && Runtime::HasPerkTeam(giant, "hhBonus")) {
+		if (Cause == DamageSource::Crushed && Runtime::HasPerkTeam(giant, "hhBonus")) {
 			result *= 1.15; // 15% bonus damage if we have High Heels perk
 		}
 
