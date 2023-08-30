@@ -13,7 +13,7 @@ namespace Gts {
 		std::string_view GiantName = giant->GetDisplayFullName();
 
 		if (cause == DamageSource::Crushed) { // Default crush by the feet
-			if (!IsWearingHH(giant)) {
+			if (!HighHeelManager::IsWearingHH(giant)) {
 				if (random < 2) {
 					Cprint("{} became a bloody stain under {} foot.", TinyName, GiantName);
 				} else if (random == 2) {
@@ -42,7 +42,7 @@ namespace Gts {
 				} else if (random == 5) {
 					Cprint("{} got crushed under the heels of {}", TinyName, GiantName);
 				} else if (random == 6) {
-					Cprint("{} ended up being crushed by high heels {}", TinyName, GiantName);
+					Cprint("{} ended up being crushed by high heels of {}", TinyName, GiantName);
 				} else if (random >= 7) {
 					Cprint("{} turned {} into bloody mist", GiantName, TinyName);
 				}
