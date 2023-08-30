@@ -1,4 +1,5 @@
 #include "utils/DeathReport.hpp"
+#include "managers/highheel.hpp"
 
 using namespace RE;
 using namespace Gts;
