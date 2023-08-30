@@ -216,13 +216,19 @@ duration = 0.50
 # Spare the one you're hugging.
 
 #========================================================
-#========================= Butt Crush
+#========================= Butt / Breast Crush
 #========================================================
+[[InputEvent]]
+name = "QuickButtCrushStart"
+keys = ["LSHIFT", "B"]
+duration = 1.0 
+# Start Quick Butt/Breast Crush. Always does a quick one without targets. Hold for 1 second to trigger.
+
 [[InputEvent]]
 name = "ButtCrushStart"
 keys = ["LSHIFT", "B"]
 duration = 0.0 
-# Start Butt Crush. If you have perk, it will look for closest actors to capture them. else start normal butt crush.
+# Start Butt/Breast Crush. If you have perk, it will look for closest actors to capture them. Else start normal butt crush.
 
 [[InputEvent]]
 name = "ButtCrushGrow"
@@ -234,13 +240,13 @@ duration = 0.0
 name = "ButtCrushAttack"
 keys = ["LMB"]
 duration = 0.25 
-# Perform drop-down, dealing massive damage at butt zone.
+# Perform drop-down, dealing massive damage at butt/breast zone.
 
 [[InputEvent]]
 name = "ButtCrushAttack"
 keys = ["RMB"]
 duration = 0.25 
-# Perform drop-down, dealing massive damage at butt zone.
+# Perform drop-down, dealing massive damage at butt/breast zone.
 
 #========================================================
 #========================= G R A B

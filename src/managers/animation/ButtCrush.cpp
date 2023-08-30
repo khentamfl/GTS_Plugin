@@ -351,6 +351,19 @@ namespace {
         }
 	}
 
+    void QuickButtCrushStartEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+        if (IsFirstPerson()) {
+            return;
+        }
+        auto grabbedActor = Grab::GetHeldActor(player);
+		if (grabbedActor && !IsCrawling(player)) { // IF we have someone in hands, allow only when we crawl
+            return;
+        } if (CanDoButtCrush(player)) {
+            AnimationManager::StartAnim("ButtCrush_StartFast", player);
+        }
+	}
+
     void ButtCrushGrowEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
         if (IsFirstPerson()) {
@@ -388,6 +401,7 @@ namespace Gts
         AnimationManager::RegisterEvent("GTSButtCrush_MoveBody_MixFrameToLoop", "ButtCrush", GTSButtCrush_MoveBody_MixFrameToLoop);
         
         InputManager::RegisterInputEvent("ButtCrushStart", ButtCrushStartEvent);
+        InputManager::RegisterInputEvent("QuickButtCrushStart", QuickButtCrushStartEvent);
         InputManager::RegisterInputEvent("ButtCrushGrow", ButtCrushGrowEvent);
 		InputManager::RegisterInputEvent("ButtCrushAttack", ButtCrushAttackEvent);
 	}
