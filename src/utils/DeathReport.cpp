@@ -12,22 +12,41 @@ namespace Gts {
 		std::string_view GiantName = giant->GetDisplayFullName();
 
 		if (cause == DamageSource::Crushed) { // Default crush by the feet
-			if (random < 2) {
-				Cprint("{} became a bloody stain under {} foot.", TinyName, GiantName);
-			} else if (random == 2) {
-				Cprint("{} was crushed by the feet of {}", TinyName, GiantName);
-			} else if (random == 3) {
-				Cprint("Feet of {} crushed {} into nothing", GiantName, TinyName);
-			} else if (random == 4) {
-				Cprint("{} step on {} too hard", GiantName, TinyName);
-			} else if (random == 5) {
-				Cprint("{} got crushed by {}", TinyName, GiantName);
-			} else if (random == 6) {
-				Cprint("{} ended up being crushed by the {}", TinyName, GiantName);
-			} else if (random >= 7) {
-				Cprint("{} relentlessly crushed {}", GiantName, TinyName);
+			if (!IsWearingHH(giant)) {
+				if (random < 2) {
+					Cprint("{} became a bloody stain under {} foot.", TinyName, GiantName);
+				} else if (random == 2) {
+					Cprint("{} was crushed by the feet of {}", TinyName, GiantName);
+				} else if (random == 3) {
+					Cprint("Feet of {} crushed {} into nothing", GiantName, TinyName);
+				} else if (random == 4) {
+					Cprint("{} step on {} too hard", GiantName, TinyName);
+				} else if (random == 5) {
+					Cprint("{} got crushed by {}", TinyName, GiantName);
+				} else if (random == 6) {
+					Cprint("{} ended up being crushed by the {}", TinyName, GiantName);
+				} else if (random >= 7) {
+					Cprint("{} relentlessly crushed {}", GiantName, TinyName);
+				}
+				return;
+			} else {
+				if (random < 2) {
+					Cprint("{} became a bloody stain under {} heel.", TinyName, GiantName);
+				} else if (random == 2) {
+					Cprint("{} was crushed under the heels of {}", TinyName, GiantName);
+				} else if (random == 3) {
+					Cprint("High Heels of {} obliterated {}", GiantName, TinyName);
+				} else if (random == 4) {
+					Cprint("{} step on {} too hard", GiantName, TinyName);
+				} else if (random == 5) {
+					Cprint("{} got crushed under the heels of {}", TinyName, GiantName);
+				} else if (random == 6) {
+					Cprint("{} ended up being crushed by high heels {}", TinyName, GiantName);
+				} else if (random >= 7) {
+					Cprint("{} turned {} into bloody mist", GiantName, TinyName);
+				}
+				return;
 			}
-			return;
 		} else if (cause == DamageSource::HandCrushed) { // when Grab -> Crush happens
 			if (random == 1) {
 				Cprint("{} life was squeezed out in {} grip", TinyName, GiantName);

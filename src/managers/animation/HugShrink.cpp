@@ -221,7 +221,12 @@ namespace {
 
 
 	void HugAttemptEvent(const InputEventData& data) {
+		static Timer HugTimer = Timer(12.00);
 		auto player = PlayerCharacter::GetSingleton();
+		if (!HugTimer.ShouldRunFrame()) {
+			TiredSound(player, "Hugs are on the cooldown");
+			return;
+		}
 		if (IsGtsBusy(player)) {
 			return;
 		}

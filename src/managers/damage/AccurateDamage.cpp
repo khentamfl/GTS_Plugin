@@ -453,8 +453,13 @@ namespace Gts {
 
 
 		StartCombat(giant, tiny, false);
+		
 
 		result *= damagebonus;
+
+		if (Cause == DamageSource::Crushing && Runtime::HasPerkTeam(giant, "hhBonus")) {
+			result *= 1.15; // 15% bonus damage if we have High Heels perk
+		}
 
 		float experience = std::clamp(result/500, 0.0f, 0.05f);
 		if (!tiny->IsDead()) {
