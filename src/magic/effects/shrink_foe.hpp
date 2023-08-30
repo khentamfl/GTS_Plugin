@@ -10,6 +10,8 @@ using namespace RE;
 namespace Gts {
 	class ShrinkFoe : public Magic {
 		public:
+			virtual void OnStart() override;
+
 			virtual void OnUpdate() override;
 
 			virtual void OnFinish() override;

@@ -21,13 +21,41 @@ namespace {
 			transient->ShrinkWeakness += value;
 		}
 	}
-
 	float GetShrinkWeakness(Actor* tiny) {
 		auto transient = Transient::GetSingleton().GetData(tiny);
 		if (transient) {
 			return transient->ShrinkWeakness;
 		}
 		return 1.0;
+	}
+
+	void DecreaseWeaknessTask(Actor* tiny) {
+		float Start = Time::WorldTimeElapsed();
+		std::string name = std::format("ShrinkDebuff_{}", tiny->formID);
+		ActorHandle tinyhandle = tiny->CreateRefHandle();
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!tinyhandle) {
+				return false;
+			}
+			float Finish = Time::WorldTimeElapsed();
+			auto tinyref = tinyhandle.get().get();
+			float timepassed = Finish - Start;
+			if (timepassed >= 2.00) {
+				AddShrinkWeakness(tinyref, -0.018 * TimeScale());
+				log::info("Task Weakness of {} is {}", tinyref->GetDisplayFullName(), GetShrinkWeakness(tinyref));
+				if (GetShrinkWeakness(tinyref) <= 1.0) {
+					ResetShrinkWeakness(tinyref);
+					return false; // Cancel task
+				}
+				return true; // end it
+			}
+			return true;
+		});
+	}
+
+	void CancelWeaknessTask(Actor* tiny) {
+		std::string name = std::format("ShrinkDebuff_{}", tiny->formID);
+		TaskManager::Cancel(name);
 	}
 }
 
@@ -71,6 +99,14 @@ namespace Gts {
 			this->power = SHRINK_STORM_POWER;
 			this->efficiency = SHRINK_STORM_EFFIC;
 		}
+	}
+
+	void ShrinkFoe::OnStart() {
+		auto target = GetTarget();
+		if (!target) {
+			return;
+		}
+		CancelWeaknessTask(target);
 	}
 
 	void ShrinkFoe::OnUpdate() {
@@ -132,7 +168,7 @@ namespace Gts {
 	void ShrinkFoe::OnFinish() {
 		auto Caster = GetCaster();
 		auto Target = GetTarget();
-		ResetShrinkWeakness(Target);
+		DecreaseWeaknessTask(Target);
 		CastTrackSize(Caster, Target);
 	}
 }
