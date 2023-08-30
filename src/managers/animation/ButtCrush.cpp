@@ -192,62 +192,6 @@ namespace {
         return damage;
     }
 
-    void AttachToObjectBTask(Actor* giant, Actor* tiny) {
-        SetBeingEaten(tiny, true);
-        std::string name = std::format("ButtCrush_{}", tiny->formID);
-        auto tinyhandle = tiny->CreateRefHandle();
-        auto gianthandle = giant->CreateRefHandle();
-        auto FrameA = Time::FramesElapsed();
-        TaskManager::Run(name, [=](auto& progressData) {
-			if (!gianthandle) {
-				return false;
-			}
-			if (!tinyhandle) {
-				return false;
-			}
-			auto FrameB = Time::FramesElapsed() - FrameA;
-			if (FrameB <= 10.0) {
-				return true;
-			}
-			auto giantref = gianthandle.get().get();
-			auto tinyref = tinyhandle.get().get();
-            auto node = find_node(giantref, "AnimObjectB"); 
-            if (!node) {
-                return false;
-            }
-
-            float stamina = GetAV(giantref, ActorValue::kStamina);
-            ForceRagdoll(tinyref, false);
-            DamageAV(giantref, ActorValue::kStamina, 0.18 * GetButtCrushCost(giant));
-            
-            if (stamina <= 2.0) {
-                AnimationManager::StartAnim("ButtCrush_Attack", giantref); // Try to Abort it
-            }
-
-            auto coords = node->world.translate;
-            if (!IsCrawling(giantref)) {
-                float HH = HighHeelManager::GetHHOffset(giantref).Length();
-                coords.z -= HH;
-            }
-            if (!IsButtCrushing(giantref)) {
-                log::info("Not Butt Crushing, resetting");
-                SetBeingEaten(tiny, false);
-                EnableCollisions(tiny);
-				return false;
-			}
-			if (!AttachTo_NoForceRagdoll(giantref, tinyref, coords)) {
-                SetBeingEaten(tiny, false);
-                EnableCollisions(tiny);
-				return false;
-			}  if (tinyref->IsDead()) {
-                SetBeingEaten(tiny, false);
-                EnableCollisions(tiny);
-				return false;
-			}
-			return true;
-		});
-    }
-
     void GTSButtCrush_MoveBody_MixFrameToLoop(AnimationEventData& data) {
         auto giant = &data.giant;
         TrackButt(giant, true);
@@ -379,10 +323,10 @@ namespace {
             return;
         }
         auto grabbedActor = Grab::GetHeldActor(player);
-		if (grabbedActor && !IsCrawling(player)) { // Allow only when we crawl
+		if (grabbedActor && !IsCrawling(player)) { // IF we have someone in hands, allow only when we crawl
             return;
         }
-        if (CanDoButtCrush(player) && Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
+        if (Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
             auto& ButtCrush = ButtCrushController::GetSingleton();
             std::size_t numberOfPrey = 3;
             if (Runtime::HasPerk(player, "MassVorePerk")) {
@@ -391,20 +335,20 @@ namespace {
             std::vector<Actor*> preys = ButtCrush.GetButtCrushTargets(player, numberOfPrey);
             for (auto prey: preys) {
                 ButtCrush.StartButtCrush(player, prey);
-                AttachToObjectBTask(player, prey);
             }
+            return;
         }
         else if (CanDoButtCrush(player) && !Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
-            float WasteStamina = 160.0 * GetButtCrushCost(player);
+            float WasteStamina = 100.0 * GetButtCrushCost(player);
             DamageAV(player, ActorValue::kStamina, WasteStamina);
             AnimationManager::StartAnim("ButtCrush_StartFast", player);
         } else if (!CanDoButtCrush(player) && !Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
-            if (!IsCrawling(player)) {
-			    TiredSound(player, "Butt Crush is on a cooldown");
+            if (!IsCrawling(pred)) {
+			    TiredSound(pred, "Butt Crush is on a cooldown");
             } else {
-                TiredSound(player, "Breast Crush is on a cooldown");
+                TiredSound(pred, "Breast Crush is on a cooldown");
             }
-		}
+        }
 	}
 
     void ButtCrushGrowEvent(const InputEventData& data) {

@@ -1206,6 +1206,9 @@ namespace Gts {
 	}
 
 	void TiredSound(Actor* player, std::string_view message) {
+		if (player->formID != 0x14) {
+			return;
+		}
 		if (IsFirstPerson()) {
             return;
         }

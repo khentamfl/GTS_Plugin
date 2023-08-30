@@ -193,6 +193,11 @@ namespace Gts {
 		if (!hugging.CanHug(pred, prey)) {
 			return;
 		}
+		static Timer HugTimer = Timer(12.0);
+		if (!HugTimer.ShouldRunFrame()) {
+			TiredSound(pred, "Hugs are on the cooldown");
+			return;
+		}
 		HugShrink::GetSingleton().HugActor(pred, prey);
 		//BlockFirstPerson(pred, true);
 		AnimationManager::StartAnim("Huggies_Try", pred);
