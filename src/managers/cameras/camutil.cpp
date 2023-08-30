@@ -167,7 +167,7 @@ namespace Gts {
 			if (cameraRoot) {
 				cameraRoot->local.translate = camLoc;
 				//cameraRoot->world.translate = camLoc;
-				auto state = reinterpret_cast<RE::ThirdPersonState*>(cameraRoot->currentState.get());
+				auto state = reinterpret_cast<RE::ThirdPersonState*>(camera->currentState.get());
 				if (state == GameState::CameraState::ThirdPerson || state == GameState::CameraState::ThirdPersonCombat) {
 					state->translation = cameraNode->local.translate;
 				}
