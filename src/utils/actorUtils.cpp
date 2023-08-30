@@ -955,6 +955,33 @@ namespace Gts {
 		}
 	}
 
+	void SpawnExplosion(Actor* giant, std::string_view node, float size) {
+		auto result = find_node(giant, node);
+		if (result) {
+			BGSExplosion* base_explosion = Runtime::GetExplosion("draugrexplosion");
+			if (base_explosion) {
+				NiPointer<TESObjectREFR> instance_ptr = giant->PlaceObjectAtMe(base_explosion, false);
+				if (!instance_ptr) {
+					return;
+				}
+				TESObjectREFR* instance = instance_ptr.get();
+				if (!instance) {
+					return;
+				}
+				Explosion* explosion = instance->AsExplosion();
+				if (!explosion) {
+					return;
+				}
+				explosion->SetPosition(result->world.translate);
+				explosion->GetExplosionRuntimeData().radius *= size;
+				explosion->GetExplosionRuntimeData().imodRadius *= size;
+				explosion->GetExplosionRuntimeData().unkB8 = nullptr;
+				explosion->GetExplosionRuntimeData().negativeVelocity *= 0.0;
+				explosion->GetExplosionRuntimeData().unk11C *= 0.0; 
+			}
+		}
+	}
+
 	void StaggerOr(Actor* giant, Actor* tiny, float power, float afX, float afY, float afZ, float afMagnitude) {
 		if (tiny->IsDead()) {
 			return;
@@ -1161,7 +1188,7 @@ namespace Gts {
 		Runtime::PlaySoundAtNode("ShrinkOutburstSound", giant, explosion, 1.0, "NPC Pelvis [Pelv]"); 
 		Rumble::For("ShrinkOutburst", giant, 20.0, 0.15, "NPC COM [COM ]", 0.60);
 
-		Runtime::CreateExplosionAtPos(giant, NodePosition, giantScale * explosion, "ShrinkOutburstExplosion");
+		SpawnExplosion(giant, "NPC Pelvis [Pelv]", giantScale * explosion);
 
 		if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
 			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), CheckDistance, 600, {0.0, 1.0, 0.0, 1.0});
