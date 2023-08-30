@@ -269,36 +269,36 @@ namespace {
 
 	void GTS_Crawl_Swipe_On_R(AnimationEventData& data) {
 		TriggerHandCollision_Right(&data.giant, 1.4, 1.6, 0.75);
-		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", true, 2.0, 2.0);
+		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", true, 2.0, 4.0);
 	}
 	void GTS_Crawl_Swipe_On_L(AnimationEventData& data) {
 		TriggerHandCollision_Left(&data.giant, 1.4, 1.6, 0.75);
-		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", true, 2.0, 2.0);
+		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", true, 2.0, 4.0);
 	}
 	void GTS_Crawl_Swipe_Off_R(AnimationEventData& data) {
 		DisableHandCollisions(&data.giant);
-		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", false, 2.0, 2.0);
+		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", false, 2.0, 4.0);
 	}
 	void GTS_Crawl_Swipe_Off_L(AnimationEventData& data) {
 		DisableHandCollisions(&data.giant);
-		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", false, 2.0, 2.0);
+		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", false, 2.0, 4.0);
 	}
 
 	void GTS_Crawl_Swipe_Power_On_R(AnimationEventData& data) {
 		TriggerHandCollision_Right(&data.giant, 3.6, 1.3, 1.4);
-		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", true, 3.0, 2.6);
+		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", true, 3.0, 10.0);
 	}
 	void GTS_Crawl_Swipe_Power_On_L(AnimationEventData& data) {
 		TriggerHandCollision_Left(&data.giant, 3.6, 1.3, 1.4);
-		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", true, 3.0, 2.6);
+		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", true, 3.0, 10.0);
 	}
 	void GTS_Crawl_Swipe_Power_Off_R(AnimationEventData& data) {
 		DisableHandCollisions(&data.giant);
-		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", false, 3.0, 2.6);
+		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", false, 3.0, 10.0);
 	}
 	void GTS_Crawl_Swipe_Power_Off_L(AnimationEventData& data) {
 		DisableHandCollisions(&data.giant);
-		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", false, 3.0, 2.6);
+		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", false, 3.0, 10.0);
 	}
 
 	void LightSwipeLeftEvent(const InputEventData& data) {
