@@ -958,7 +958,7 @@ namespace Gts {
 	void SpawnExplosion(Actor* giant, std::string_view node, float size) {
 		auto result = find_node(giant, node);
 		if (result) {
-			BGSExplosion* base_explosion = Runtime::GetExplosion("draugrexplosion");
+			BGSExplosion* base_explosion = Runtime::GetExplosion("ShrinkOutburstExplosion");
 			if (base_explosion) {
 				NiPointer<TESObjectREFR> instance_ptr = giant->PlaceObjectAtMe(base_explosion, false);
 				if (!instance_ptr) {
