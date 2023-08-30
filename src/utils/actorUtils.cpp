@@ -950,7 +950,7 @@ namespace Gts {
 				explosion->GetExplosionRuntimeData().imodRadius *= 3 * get_visual_scale(tiny) * size;
 				explosion->GetExplosionRuntimeData().unkB8 = nullptr;
 				explosion->GetExplosionRuntimeData().negativeVelocity *= 0.0;
-				explosion->GetExplosionRuntimeData().unk11C *= 0.0;
+				explosion->GetExplosionRuntimeData().unk11C *= 0.0; 
 			}
 		}
 	}
@@ -1161,7 +1161,7 @@ namespace Gts {
 		Runtime::PlaySoundAtNode("ShrinkOutburstSound", giant, explosion, 1.0, "NPC Pelvis [Pelv]"); 
 		Rumble::For("ShrinkOutburst", giant, 20.0, 0.15, "NPC COM [COM ]", 0.60);
 
-		//Runtime::CreateExplosionAtPos(giant, NodePosition, giantScale * explosion, "ShrinkOutburstExplosion");
+		Runtime::CreateExplosionAtPos(giant, NodePosition, giantScale * explosion, "ShrinkOutburstExplosion");
 
 		if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
 			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), CheckDistance, 600, {0.0, 1.0, 0.0, 1.0});
