@@ -134,12 +134,12 @@ namespace Gts {
 	}
 
 	void UpdateNiCamera(NiPoint3 camLoc) {
-		auto niCamera = GetNiCamera();
+		/*auto niCamera = GetNiCamera();
 		if (niCamera) {
 			niCamera->world.translate = camLoc;
 			UpdateWorld2ScreetMat(niCamera);
 			update_node(niCamera);
-		}
+		}*/
 
 		/*#ifdef ENABLED_SHADOW
 		   auto shadowNode = GetShadowMap();
@@ -170,7 +170,7 @@ namespace Gts {
 				auto TP = camera->cameraStates[CameraState::kThirdPerson].get();
 				auto state = reinterpret_cast<RE::ThirdPersonState*>(camera->currentState.get());
 				if (TP) {
-					state->translation = cameraNode->local.translate;
+					state->translation = camLoc;
 				}
 				update_node(cameraRoot.get());
 			}
