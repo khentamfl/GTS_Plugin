@@ -201,6 +201,7 @@ namespace Gts {
 			
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
+			
 			auto FrameB = Time::FramesElapsed() - FrameA;
 			if (FrameB <= 4.0) {
 				return true;
@@ -266,7 +267,7 @@ namespace Gts {
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 90.0;
 		const float BASE_DISTANCE = 6.0;
-		const float SCALE_RATIO = 1.15;
+		const float SCALE_RATIO = 4.0;
 		if (HasSMT(actor)) {
 			giantScale += 0.20;
 		}
@@ -373,7 +374,7 @@ namespace Gts {
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 90.0;
 		const float BASE_DISTANCE = 6.0;
-		const float SCALE_RATIO = 1.15;
+		const float SCALE_RATIO = 4.0;
 		if (HasSMT(actor)) {
 			giantScale += 0.20;
 		}

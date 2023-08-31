@@ -48,6 +48,7 @@ namespace Gts {
 
 		if (target_scale > 0.12) {
 			ShrinkActor(target, power*0.10, 0);
+			DistributeStolenAttributes(target, power*0.10);
 		}
 	}
 }

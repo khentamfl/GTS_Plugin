@@ -90,6 +90,7 @@ namespace Gts {
 			float size_related_damage_mult = 1.0;
 			float experience_mult = 1.0;
 			float progression_multiplier = 0.55;
+			float stolen_attributes = 0.0;
 			SoftPotential speed_adjustment {
 				.k = 0.125, // 0.125
 				.n = 0.86, // 0.86

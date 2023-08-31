@@ -110,6 +110,11 @@ namespace Gts {
 	void CallHelpMessage();
 	void AddCalamityPerk();
 	void AddPerkPoints(float level);
+
+	void AddStolenAttributes(Actor* giant, float value);
+	float GetStolenAttributes();
+	void DistributeStolenAttributes(Actor* giant, float value);
+
 	float GetRandomBoost();
 	float GetButtCrushCost(Actor* actor);
 	float GetAnimationSlowdown(Actor* giant);

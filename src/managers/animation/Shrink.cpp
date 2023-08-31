@@ -65,6 +65,7 @@ namespace {
 
 			DamageAV(caster, ActorValue::kStamina, 0.65 * caster_scale * stamina * TimeScale() * multiply);
 			Grow(caster, -(0.0080 * stamina * multiply), 0.0);
+            DistributeStolenAttributes(actor, (0.0080 * stamina * multiply));
 
 			Rumble::Once("ShrinkButton", caster, 4.0 * stamina, 0.05, "NPC Pelvis [Pelv]");
             if (elapsed >= 0.99) {

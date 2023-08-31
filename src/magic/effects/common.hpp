@@ -172,6 +172,7 @@ namespace Gts {
 		scale_factor /= modifier;
 		bonus /= modifier;
 		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
+		AddStolenAttributes(actor, CalcPower(actor, scale_factor, bonus));
 	}
 
 	inline void ShrinkActor(Actor* actor, float scale_factor, float bonus) {
@@ -190,6 +191,7 @@ namespace Gts {
 			return false;
 		} else if (target_scale < natural_scale) { // NOLINT
 			mod_target_scale(actor, amount);
+			DistributeStolenAttributes(actor, amount);
 		} else {
 			mod_target_scale(actor, -amount);
 		}
@@ -206,6 +208,8 @@ namespace Gts {
 		AdjustGtsSkill(0.52 * scale_factor * target_scale, to);
 		mod_target_scale(from, -amountnomult * 0.55 * effeciency_noscale);
 		mod_target_scale(to, amount*effeciency);
+
+		AddStolenAttributes(to, amount*effeciency);
 	}
 
 	inline void AbsorbSteal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency) {

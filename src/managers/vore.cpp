@@ -392,6 +392,7 @@ namespace Gts {
 				DamageAV(giant, ActorValue::kStamina, -healthToApply);
 
 				mod_target_scale(giant, sizeToApply);
+				AddStolenAttributes(giant, sizeToApply);
 				if (this->factor.value >= 0.99) {
 					this->state = VoreBuffState::Finishing;
 				}

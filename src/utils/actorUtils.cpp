@@ -850,6 +850,36 @@ namespace Gts {
 		}
 	}
 
+	void AddStolenAttributes(Actor* giant, float value) {
+		if (giant->formID == 0x14 && Runtime::HasPerk(giant, "SizeAbsorption")) {
+			Persistent::GetSingleton().stolen_attributes += value;
+			if (Persistent::GetSingleton().stolen_attributes < 0) {
+				Persistent::GetSingleton().stolen_attributes = 0; // Cap it just in case
+			}
+			log::info("Adding Stolen Attribute, value: {}", Persistent::GetSingleton().stolen_attributes);
+		}
+	}
+	float GetStolenAttributes() {
+		return Persistent::GetSingleton().stolen_attributes;
+	}
+
+	void DistributeStolenAttributes(Actor* giant, float value) {
+		if (giant->formID == 0x14 && Runtime::HasPerk(giant, "SizeAbsorption")) { // Permamently increases random AV after shrinking and stuff
+			float Storage = GetStolenAttributes();
+			if (Storage > 0) {
+				int Boost = rand() % 3;
+				if (Boost == 0) {
+					giant->AsActorValueOwner()->ModActorValue(ActorValue::kHealth, value);
+				} else if (Boost == 1) {
+					giant->AsActorValueOwner()->ModActorValue(ActorValue::kMagicka, value);
+				} else if (Boost >= 2) {
+					giant->AsActorValueOwner()->ModActorValue(ActorValue::kStamina, value);
+				}
+				AddStolenAttributes(giant, -value); // reduce it
+			}
+		}
+	}
+
 	float GetRandomBoost() {
 		float rng = (rand()% 150 + 1);
 		float random = rng/100;
