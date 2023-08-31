@@ -68,6 +68,7 @@ namespace Gts {
 			bool about_to_be_eaten = false;
 			bool being_foot_grinded = false;
 			bool OverrideCamera = false;
+			bool FPCrawling = false;
 
 
 			TESObjectREFR* disable_collision_with = nullptr;
@@ -114,6 +115,7 @@ namespace Gts {
 			result.ButtCrushGrowthAmount = ButtCrushGrowthAmount;
 			result.ShrinkWeakness = ShrinkWeakness;
 			result.OverrideCamera = OverrideCamera;
+			result.FPCrawling = FPCrawling;
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 

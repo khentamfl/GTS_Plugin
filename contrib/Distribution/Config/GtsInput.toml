@@ -234,6 +234,7 @@ duration = 0.0
 name = "ButtCrushGrow"
 keys = ["W"]
 duration = 0.0
+trigger = "continuous"
 # Grow in size during butt crush. Requires perk.
 
 [[InputEvent]]

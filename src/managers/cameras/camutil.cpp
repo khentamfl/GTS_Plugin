@@ -107,8 +107,8 @@ namespace Gts {
 			// Camera
 			auto niCamera = sceneManager->camera;
 			if (niCamera) {
-				//niCamera->world.translate = camLoc;
-				//UpdateWorld2ScreetMat(niCamera.get());
+				niCamera->world.translate = camLoc;
+				UpdateWorld2ScreetMat(niCamera.get());
 			}
 		}
 	}
@@ -127,8 +127,8 @@ namespace Gts {
 			// Camera
 			auto niCamera = renderManager->camera;
 			if (niCamera) {
-				//niCamera->world.translate = camLoc;
-				//UpdateWorld2ScreetMat(niCamera.get());
+				niCamera->world.translate = camLoc;
+				UpdateWorld2ScreetMat(niCamera.get());
 			}
 		}
 	}
@@ -136,9 +136,9 @@ namespace Gts {
 	void UpdateNiCamera(NiPoint3 camLoc) {
 		auto niCamera = GetNiCamera();
 		if (niCamera) {
-			//niCamera->world.translate = camLoc;
-			//UpdateWorld2ScreetMat(niCamera);
-			//update_node(niCamera);
+			niCamera->world.translate = camLoc;
+			UpdateWorld2ScreetMat(niCamera);
+			update_node(niCamera);
 		}
 
 		/*#ifdef ENABLED_SHADOW
@@ -166,7 +166,7 @@ namespace Gts {
 			auto cameraRoot = camera->cameraRoot;
 			if (cameraRoot) {
 				cameraRoot->local.translate = camLoc;
-				//cameraRoot->world.translate = camLoc;
+				cameraRoot->world.translate = camLoc;
 				update_node(cameraRoot.get());
 			}
 		}

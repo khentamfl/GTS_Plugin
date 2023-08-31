@@ -213,6 +213,10 @@ namespace {
 	void SetCrawlAnimation(StaticFunctionTag*, bool enabled, bool player) {
 		if (player) {
 			PlayerCharacter::GetSingleton()->SetGraphVariableBool("GTS_CrawlEnabled", enabled);
+			auto transient = Transient::GetSingleton().GetData(player);
+			if (transient) {
+				transient->FPCrawling = enabled;
+			}
 		} else if (!player) {
 			for (auto teammate: FindTeammates()) {
 				if (teammate) {

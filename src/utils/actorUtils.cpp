@@ -143,7 +143,11 @@ namespace Gts {
 	bool IsCrawling(Actor* actor) {
 		auto profiler = Profilers::Profile("ActorUtils: IsCrawling");
 		bool prone;
+		auto transient = Transient::GetSingleton().GetData(actor);
 		actor->GetGraphVariableBool("GTS_IsCrawling", prone);
+		if (actor->formID == 0x14 && transient && IsFirstPerson()) {
+			return transient->FPCrawling;
+		}
 		return actor!= nullptr && actor->formID == 0x14 && actor->IsSneaking() && prone;
 	}
 
