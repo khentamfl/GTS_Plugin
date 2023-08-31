@@ -74,7 +74,7 @@ namespace Gts {
 		if (actor_data) {
 			if (amt - EPS < 0.0) {
 				// If neative change always: allow
-				DistributeStolenAttributes(actor, -amt); // Adjust max attributes
+				DistributeStolenAttributes(&actor, -amt); // Adjust max attributes
 				actor_data->target_scale += amt;
 			} else if (actor_data->target_scale + amt < (actor_data->max_scale + EPS)) {
 				// If change results is below max: allow it
