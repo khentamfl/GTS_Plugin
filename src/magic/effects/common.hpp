@@ -191,9 +191,9 @@ namespace Gts {
 			return false;
 		} else if (target_scale < natural_scale) { // NOLINT
 			mod_target_scale(actor, amount);
-			DistributeStolenAttributes(actor, amount);
 		} else {
 			mod_target_scale(actor, -amount);
+			DistributeStolenAttributes(actor, amount);
 		}
 		return true;
 	}

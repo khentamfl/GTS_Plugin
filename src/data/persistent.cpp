@@ -375,7 +375,7 @@ namespace Gts {
 				GetSingleton().launch_objects = launch_objects;
 			} else if (type == StolenAttributes) {
 				float stolen_attributes;
-				serde->ReadRecordData(&stolen_attributes, sizeof(stolen_attributes)) 
+				serde->ReadRecordData(&stolen_attributes, sizeof(stolen_attributes));
 				GetSingleton().stolen_attributes = stolen_attributes;
 			} else if (type == HostileToggle) {
 				bool hostile_toggle;
