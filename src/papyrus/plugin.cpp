@@ -213,7 +213,7 @@ namespace {
 	void SetCrawlAnimation(StaticFunctionTag*, bool enabled, bool player) {
 		if (player) {
 			PlayerCharacter::GetSingleton()->SetGraphVariableBool("GTS_CrawlEnabled", enabled);
-			auto transient = Transient::GetSingleton().GetData(player);
+			auto transient = Transient::GetSingleton().GetData(PlayerCharacter::GetSingleton());
 			if (transient) {
 				transient->FPCrawling = enabled;
 			}
