@@ -165,7 +165,7 @@ namespace Gts {
 		if (camera) {
 			auto cameraRoot = camera->cameraRoot;
 			if (cameraRoot) {
-				camera->pos = camLoc;//cameraRoot->local.translate = camLoc;
+				cameraRoot->local.translate = camLoc;
 				//cameraRoot->world.translate = camLoc;
 				update_node(cameraRoot.get());
 			}
