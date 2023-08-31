@@ -869,11 +869,11 @@ namespace Gts {
 			if (Storage > 0) {
 				int Boost = rand() % 3;
 				if (Boost == 0) {
-					giant->AsActorValueOwner()->ModActorValue(ActorValue::kHealth, value);
+					giant->AsActorValueOwner()->ModActorValue(ActorValue::kHealth, value * 4);
 				} else if (Boost == 1) {
-					giant->AsActorValueOwner()->ModActorValue(ActorValue::kMagicka, value);
+					giant->AsActorValueOwner()->ModActorValue(ActorValue::kMagicka, value * 4);
 				} else if (Boost >= 2) {
-					giant->AsActorValueOwner()->ModActorValue(ActorValue::kStamina, value);
+					giant->AsActorValueOwner()->ModActorValue(ActorValue::kStamina, value * 4);
 				}
 				AddStolenAttributes(giant, -value); // reduce it
 			}

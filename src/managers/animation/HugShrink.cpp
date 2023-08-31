@@ -45,9 +45,9 @@ namespace {
 		return hp;
 	}
 	float GetStealRate(Actor* actor) {
-		float steal = 0.30;
+		float steal = 0.15;
 		if (Runtime::HasPerkTeam(actor, "HugCrush_ToughGrip")) {
-			steal += 0.42;
+			steal += 0.06;
 		} if (Runtime::HasPerkTeam(actor, "HugCrush")) {
 			steal *= 1.35;
 		}

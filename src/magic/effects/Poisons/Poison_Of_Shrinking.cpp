@@ -50,7 +50,6 @@ namespace Gts {
 		float Power = BASE_POWER * powercap * AlchemyLevel;
 
 		ShrinkActor(target, Power, 0.0);
-		DistributeStolenAttributes(target, Power);
 		if (get_visual_scale(target) < 0.25 && ShrinkToNothingManager::CanShrink(caster, target)) {
 			PrintDeathSource(caster, target, DamageSource::Explode);
 			ShrinkToNothingManager::Shrink(caster, target);

@@ -58,12 +58,11 @@ namespace {
 			float elapsed = std::clamp(timepassed * AnimationManager::GetAnimSpeed(caster), 0.01f, 1.2f);
 			float multiply = bezier_curve(elapsed, 0, 1.9, 0.6, 0, 2.0, 1.0);
             //                            ^value   x1  x2  x3  x4  i     k
-            log::info("Elapsed {}, Multiply: {}", elapsed, multiply);
 			
 			float caster_scale = get_visual_scale(caster);
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 
-			DamageAV(caster, ActorValue::kStamina, 0.65 * caster_scale * stamina * TimeScale() * multiply);
+			DamageAV(caster, ActorValue::kStamina, 0.60 * caster_scale * stamina * TimeScale() * multiply);
 			Grow(caster, 0.0080 * stamina * multiply, 0.0);
 
 			Rumble::Once("GrowButton", caster, 6.0 * stamina, 0.05, "NPC Pelvis [Pelv]");

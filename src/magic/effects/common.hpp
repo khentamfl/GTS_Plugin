@@ -193,7 +193,6 @@ namespace Gts {
 			mod_target_scale(actor, amount);
 		} else {
 			mod_target_scale(actor, -amount);
-			DistributeStolenAttributes(actor, amount);
 		}
 		return true;
 	}
