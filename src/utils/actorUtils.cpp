@@ -276,21 +276,6 @@ namespace Gts {
 		}
 	}
 
-	bool CanDoButtCrush_Normal(Actor* actor) {
-		static Timer Default = Timer(30);
-		static Timer UnstableGrowth = Timer(25.5);
-        static Timer LoomingDoom = Timer(19.1);
-		bool lvl70 = Runtime::HasPerk(actor, "ButtCrush_UnstableGrowth");
-        bool lvl100 = Runtime::HasPerk(actor, "ButtCrush_LoomingDoom");
-        if (lvl100) {
-            return LoomingDoom.ShouldRunFrame();
-        } else if (lvl70) {
-			return UnstableGrowth.ShouldRunFrame();
-		} else {
-			return Default.ShouldRunFrame();
-		}
-	}
-
 	bool GetCameraOverride(Actor* actor) {
 		if (actor->formID == 0x14) {
 			auto transient = Transient::GetSingleton().GetData(actor);

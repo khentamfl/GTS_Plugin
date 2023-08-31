@@ -361,6 +361,12 @@ namespace {
             return;
         } if (CanDoButtCrush(player)) {
             AnimationManager::StartAnim("ButtCrush_StartFast", player);
+        } else {
+            if (!IsCrawling(player)) {
+			    TiredSound(player, "Butt Crush is on a cooldown");
+            } else {
+                TiredSound(player, "Breast Crush is on a cooldown");
+            }
         }
 	}
 

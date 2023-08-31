@@ -129,7 +129,7 @@ namespace Gts {
 			}
 
 			// Get current camera position in player space
-			auto cameraPosLocal  = GetCameraPosLocal();
+			auto cameraPosLocal = GetCameraPosLocal();
 
 			// Get either normal or combat offset
 			NiPoint3 offset;
