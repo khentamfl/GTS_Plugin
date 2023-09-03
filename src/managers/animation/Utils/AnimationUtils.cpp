@@ -167,6 +167,17 @@ namespace Gts {
 		}
 	}
 
+	float GetWasteMult(Actor* giant) {
+		float WasteMult = 1.0;
+		if (Runtime::HasPerk(giant, "DestructionBasics")) {
+			WasteMult *= 0.65;
+		}
+		if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
+			WasteMult -= GetGtsSkillLevel() * 0.0035;
+		}
+		return WasteMult;
+	}
+
 	float GetPerkBonus_Basics(Actor* Giant) {
 		if (Runtime::HasPerkTeam(Giant, "DestructionBasics")) {
 			return 1.25;

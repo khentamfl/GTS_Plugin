@@ -104,11 +104,68 @@ namespace {
     void GTS_Kick_HitBox_Power_Off_L(AnimationEventData& data) {
         StopAllDamageAndStamina(&data.giant);
     }
+
+    
+
+    // ======================================================================================
+    //  Triggers
+    // ======================================================================================
+    void LightKickLeftEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (!player->IsSneaking()) {
+			float WasteStamina = 35.0 * GetWasteMult(player);
+			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+				AnimationManager::StartAnim("SwipeLight_Left", player);
+			} else {
+				TiredSound(player, "You're too tired for a kick");
+			}
+		}
+	}
+
+	void LightKickRightEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (!player->IsSneaking()) {
+			float WasteStamina = 35.0 * GetWasteMult(player);
+			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+				AnimationManager::StartAnim("SwipeLight_Right", player);
+			} else {
+				TiredSound(player, "You're too tired for a kick");
+			}
+		}
+	}
+
+	void HeavyKickLeftEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (!player->IsSneaking()) {
+			float WasteStamina = 80.0 * GetWasteMult(player);
+			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+				AnimationManager::StartAnim("SwipeHeavy_Left", player);
+			} else {
+				TiredSound(player, "You're too tired for a Kick");
+			}
+		}
+	}
+	void HeavyKickRightEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (!player->IsSneaking()) {
+			float WasteStamina = 80.0 * GetWasteMult(player);
+			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+				AnimationManager::StartAnim("SwipeHeavy_Right", player);
+			} else {
+				TiredSound(player, "You're too tired for a Kick");
+			}
+		}
+	}
 }
 
 namespace Gts
 {
 	void AnimationKicks::RegisterEvents() {
+        InputManager::RegisterInputEvent("LightKickLeft", LightKickLeftEvent);
+		InputManager::RegisterInputEvent("LightKickRight", LightKickRightEvent);
+		InputManager::RegisterInputEvent("HeavyKickLeft", HeavyKickLeftEvent);
+		InputManager::RegisterInputEvent("HeavyKickRight", HeavyKickRightEvent);
+
         AnimationManager::RegisterEvent("GTS_Kick_SwingLeg_R", "Kicks", GTS_Kick_SwingLeg_L);
         AnimationManager::RegisterEvent("GTS_Kick_SwingLeg_L", "Kicks", GTS_Kick_SwingLeg_R);
 
@@ -126,10 +183,4 @@ namespace Gts
         AnimationManager::RegisterEvent("GTS_Kick_HitBox_Power_Off_L", "Kicks", GTS_Kick_HitBox_Power_Off_L);
 	}
 
-	void AnimationKicks::RegisterTriggers() {
-		AnimationManager::RegisterTrigger("KickStrongLeft", "Kicks", "GTSBeh_KickStrong_StartL");
-        AnimationManager::RegisterTrigger("KickStrongRight", "Kicks", "GTSBeh_KickStrong_StartR");
-        AnimationManager::RegisterTrigger("KickLeft", "Kicks", "GTSBeh_Kick_StartL");
-        AnimationManager::RegisterTrigger("KickRight", "Kicks", "GTSBeh_Kick_StartR");
-	}
 }

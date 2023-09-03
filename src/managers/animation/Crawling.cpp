@@ -21,17 +21,6 @@ using namespace Gts;
 
 namespace {
 
-	float GetWasteMult(Actor* giant) {
-		float WasteMult = 1.0;
-		if (Runtime::HasPerk(giant, "DestructionBasics")) {
-			WasteMult *= 0.65;
-		}
-		if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
-			WasteMult -= GetGtsSkillLevel() * 0.0035;
-		}
-		return WasteMult;
-	}
-
 	void EnableHandTracking(Actor* giant, CrawlEvent kind, bool decide) {
 		if (AllowFeetTracking() && giant->formID == 0x14) {
 			auto& sizemanager = SizeManager::GetSingleton();
