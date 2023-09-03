@@ -1,7 +1,6 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/ThighSandwich.hpp"
 #include "managers/animation/StrongStomp.hpp"
-#include "managers/damage/AccurateDamage.hpp"
 #include "managers/animation/ThighCrush.hpp"
 #include "managers/animation/ButtCrush.hpp"
 #include "managers/animation/BoobCrush.hpp"
