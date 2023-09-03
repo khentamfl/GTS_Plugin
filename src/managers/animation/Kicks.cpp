@@ -52,14 +52,19 @@ namespace {
         TaskManager::Cancel(name);
     }
 
-    void GTS_Kick_SwingLeg_L(AnimationEventData& data) {}
-    void GTS_Kick_SwingLeg_R(AnimationEventData& data) {}
+    void GTS_Kick_SwingLeg_L(AnimationEventData& data) {
+        TrackFeet(giant, 5.0, true);
+    }
+    void GTS_Kick_SwingLeg_R(AnimationEventData& data) {
+        TrackFeet(giant, 6.0, true);
+    }
 
     void GTS_Kick_Stomp_R(AnimationEventData& data) {
         DoDamageEffect(&data.giant, 1.40, 1.6, 10, 0.20, FootEvent::Right, 1.0, DamageSource::Crushed);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.85, 1.75, 1.4, FootEvent::Right, 0.85);
+        TrackFeet(giant, 6.0, false);
 		
     }
     void GTS_Kick_Stomp_L(AnimationEventData& data) {
@@ -67,6 +72,7 @@ namespace {
         DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
         DoDustExplosion(&data.giant, 1.0, FootEvent::Left, LNode);
         DoLaunch(&data.giant, 0.85, 1.75, 1.4, FootEvent::Left, 0.85);
+        TrackFeet(giant, 5.0, false);
     }
 
     void GTS_Kick_HitBox_On_R(AnimationEventData& data) {
