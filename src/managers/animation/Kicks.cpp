@@ -39,7 +39,7 @@ namespace {
 			auto giant = gianthandle.get().get();
 			auto Leg = find_node(giant, node);
 			if (Leg) {
-				DoDamageAtPoint_Cooldown(giant, 17, 80.0 * power, Uarm, 10, 0.30, crush, pushpower);
+				DoDamageAtPoint_Cooldown(giant, 17, 80.0 * power, Leg, 10, 0.30, crush, pushpower);
 			}
 			return true;
 		});
@@ -49,7 +49,7 @@ namespace {
         std::string name = std::format("LegKick_{}", actor->formID);
         DrainStamina(actor, "StaminaDrain_StrongKick", "DestructionBasics", false, 2.0, 8.0);
         DrainStamina(actor, "StaminaDrain_Kick", "DestructionBasics", false, 2.0, 4.0);
-        TaskManager::CancelTask(name);
+        TaskManager::Cancel(name);
     }
 
     void GTS_Kick_SwingLeg_L(AnimationEventData& data) {}
