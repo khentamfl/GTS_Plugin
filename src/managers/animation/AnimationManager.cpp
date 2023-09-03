@@ -96,7 +96,7 @@ namespace Gts {
 		AnimationShrink::RegisterEvents();
 		AnimationShrink::RegisterTriggers();
 
-		AnimationKicks::RegsiterEvents();
+		AnimationKicks::RegisterEvents();
 		AnimationKicks::RegisterTriggers();
 
 		HugShrink::RegisterEvents();
