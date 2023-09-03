@@ -93,7 +93,7 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, 1.0, FootEvent::Right, RNode);
-		DoDustExplosion(&data.giant, 1.0, FootEvent::Right, RNode);
+		DoDustExplosion(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.75, 1.75, 1.4, FootEvent::Right, 0.85);
 		DoLaunch(&data.giant, 0.75, 1.75, 1.4, FootEvent::Left, 0.85);
 	}

@@ -458,7 +458,7 @@ namespace Gts {
 		result *= damagebonus;
 
 		if (Cause == DamageSource::Crushed && Runtime::HasPerkTeam(giant, "hhBonus")) {
-			result *= 1.25; // 25% bonus damage if we have High Heels perk
+			result *= 1.15; // 15% bonus damage if we have High Heels perk
 		}
 
 		float experience = std::clamp(result/500, 0.0f, 0.05f);
@@ -475,7 +475,7 @@ namespace Gts {
 			DamageAV(tiny, ActorValue::kHealth, result);
 		}
 
-		if (GetAV(tiny, ActorValue::kHealth) <= 0) {
+		if (GetAV(tiny, ActorValue::kHealth) <= 0 || tiny->IsDead()) {
 			KillActor(giant, tiny);
 			ReportCrime(giant, tiny, 1000, true);
 			//StartCombat(giant, tiny, false);

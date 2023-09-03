@@ -173,7 +173,7 @@ namespace Gts {
 					if (!LessGore()) {
 						Runtime::PlaySound("GtsCrushSound", tiny, 1.0, 1.0);
 					}
-					Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
+					//Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
 					float currentSize = get_visual_scale(tiny);
 					MoanOrLaugh(giant, tiny);
 					GrowAfterTheKill(giant, tiny);
