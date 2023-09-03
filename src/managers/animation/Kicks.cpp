@@ -112,7 +112,7 @@ namespace {
     // ======================================================================================
     void LightKickLeftEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!player->IsSneaking()) {
+		if (!player->IsSneaking() && !player->AsActorState()->IsSprinting()) {
 			float WasteStamina = 35.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 				AnimationManager::StartAnim("SwipeLight_Left", player);
@@ -124,7 +124,7 @@ namespace {
 
 	void LightKickRightEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!player->IsSneaking()) {
+		if (!player->IsSneaking() && !player->AsActorState()->IsSprinting()) {
 			float WasteStamina = 35.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 				AnimationManager::StartAnim("SwipeLight_Right", player);
@@ -136,7 +136,7 @@ namespace {
 
 	void HeavyKickLeftEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!player->IsSneaking()) {
+		if (!player->IsSneaking() && !player->AsActorState()->IsSprinting()) {
 			float WasteStamina = 80.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 				AnimationManager::StartAnim("SwipeHeavy_Left", player);
@@ -147,7 +147,7 @@ namespace {
 	}
 	void HeavyKickRightEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!player->IsSneaking()) {
+		if (!player->IsSneaking() && !player->AsActorState()->IsSprinting()) {
 			float WasteStamina = 80.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 				AnimationManager::StartAnim("SwipeHeavy_Right", player);
@@ -166,8 +166,8 @@ namespace Gts
 		InputManager::RegisterInputEvent("HeavyKickLeft", HeavyKickLeftEvent);
 		InputManager::RegisterInputEvent("HeavyKickRight", HeavyKickRightEvent);
 
-        AnimationManager::RegisterEvent("GTS_Kick_SwingLeg_R", "Kicks", GTS_Kick_SwingLeg_L);
-        AnimationManager::RegisterEvent("GTS_Kick_SwingLeg_L", "Kicks", GTS_Kick_SwingLeg_R);
+        AnimationManager::RegisterEvent("GTS_Kick_SwingLeg_R", "Kicks", GTS_Kick_SwingLeg_R);
+        AnimationManager::RegisterEvent("GTS_Kick_SwingLeg_L", "Kicks", GTS_Kick_SwingLeg_L);
 
         AnimationManager::RegisterEvent("GTS_Kick_Stomp_R", "Kicks", GTS_Kick_Stomp_R);
         AnimationManager::RegisterEvent("GTS_Kick_Stomp_L", "Kicks", GTS_Kick_Stomp_L);

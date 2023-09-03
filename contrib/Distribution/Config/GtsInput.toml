@@ -161,13 +161,13 @@ exclusive = false
 
 [[InputEvent]]
 name = "LightKickLeft"
-keys = ["LSHIFT", "Z"]
+keys = ["LSHIFT", "A"]
 exclusive = false
 # Left Kick when not sneaking
 
 [[InputEvent]]
 name = "LightKickRight"
-keys = ["LSHIFT", "X"]
+keys = ["LSHIFT", "D"]
 exclusive = false
 # Right Kick when not sneaking
 
