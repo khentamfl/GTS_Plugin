@@ -219,7 +219,7 @@ namespace {
 			}
 		} else if (!player) {
 			for (auto teammate: FindTeammates()) {
-				if (teammate && teammate != player) {
+				if (teammate && teammate != PlayerCharacter::GetSingleton()) {
 					teammate->SetGraphVariableBool("GTS_CrawlEnabled", enabled);
 				}
 			}
