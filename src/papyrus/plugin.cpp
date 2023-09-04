@@ -48,7 +48,7 @@ namespace {
 		} else if (value == 2) {
 			return Persistent::GetSingleton().stolen_magick;
 		} else if (value == 3) {
-			return Persistent::GetSingleton().stolen_attributes;
+			return Persistent::GetSingleton().stolen_attributes * 4;
 		} else {
 			return 0.0;
 		}
