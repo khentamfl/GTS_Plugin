@@ -509,19 +509,9 @@ namespace Gts {
 		NiPoint3 NodePosition = node->world.translate;
 
 		float maxDistance = radius * giantScale;
-		// Make a list of points to check
-		std::vector<NiPoint3> points = {
-			NiPoint3(0.0, 0.0, 0.0), // The standard position
-		};
-		std::vector<NiPoint3> CrawlPoints = {};
 
-		for (NiPoint3 point: points) {
-			CrawlPoints.push_back(NodePosition);
-		}
 		if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
-			for (auto point: CrawlPoints) {
-				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance);
-			}
+			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), maxDistance);
 		}
 
 		NiPoint3 giantLocation = giant->GetPosition();
@@ -529,23 +519,36 @@ namespace Gts {
 		for (auto otherActor: find_actors()) {
 			if (otherActor != giant) { 
 				float tinyScale = get_visual_scale(otherActor);
-				if (giantScale / tinyScale > SCALE_RATIO) {
-					NiPoint3 actorLocation = otherActor->GetPosition();
-					for (auto point: CrawlPoints) {
-						float distance = (point - actorLocation).Length();
-						if (distance <= maxDistance) {
-							bool allow = sizemanager.IsHandDamaging(otherActor);
-							if (!allow) {
-								float force = 1.0 - distance / maxDistance;
-								float aveForce = std::clamp(force, 0.15f, 0.70f);
-								float pushForce = std::clamp(force, 0.01f, 0.10f);
-								AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, DamageSource::HandSwipe);
-								if (giantScale / tinyScale > 2.8) {
-									PushTowards(giant, otherActor, node, pushForce * pushpower, true);
-									sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
-								}
+				NiPoint3 actorLocation = otherActor->GetPosition();
+				if ((actorLocation - giantLocation).Length() < maxDistance * 1.6) {
+					int nodeCollisions = 0;
+					float force = 0.0;
+
+					auto model = otherActor->GetCurrent3D();
+
+					if (model) {
+						VisitNodes(model, [&nodeCollisions, &force, NodePosition, maxDistance](NiAVObject& a_obj) {
+							float distance = (NodePosition - a_obj.world.translate).Length();
+							if (distance < maxDistance) {
+								nodeCollisions += 1;
+								force = 1.0 - distance / maxDistance;
+								return false;
 							}
-                        }
+							return true;
+						});
+					} 
+					if (nodeCollisions > 0) {
+						bool allow = sizemanager.IsHandDamaging(otherActor);
+						if (!allow) {
+							float force = 1.0 - distance / maxDistance;
+							float aveForce = std::clamp(force, 0.15f, 0.70f);
+							float pushForce = std::clamp(force, 0.01f, 0.10f);
+							AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, DamageSource::HandSwipe);
+							if (giantScale / tinyScale > 2.6) {
+								PushTowards(giant, otherActor, node, pushForce * pushpower, true);
+								sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
+							}
+						}
 					}
 				}
 			}

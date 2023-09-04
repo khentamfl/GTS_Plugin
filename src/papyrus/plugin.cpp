@@ -219,7 +219,7 @@ namespace {
 			}
 		} else if (!player) {
 			for (auto teammate: FindTeammates()) {
-				if (teammate) {
+				if (teammate && teammate != player) {
 					teammate->SetGraphVariableBool("GTS_CrawlEnabled", enabled);
 				}
 			}

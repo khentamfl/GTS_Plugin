@@ -76,11 +76,11 @@ namespace {
     }
 
     void GTS_Kick_HitBox_On_R(AnimationEventData& data) {
-        StartDamageAt(&data.giant, 1.4, 1.8, 1.4, "NPC R Toe0 [RToe]");
+        StartDamageAt(&data.giant, 1.4, 1.8, 1.2, "NPC R Toe0 [RToe]");
 		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 2.0, 4.0);
     }
     void GTS_Kick_HitBox_On_L(AnimationEventData& data) {
-        StartDamageAt(&data.giant, 1.4, 1.8, 1.4, "NPC L Toe0 [LToe]");
+        StartDamageAt(&data.giant, 1.4, 1.8, 1.2, "NPC L Toe0 [LToe]");
 		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 2.0, 4.0);
     }
     void GTS_Kick_HitBox_Off_R(AnimationEventData& data) {
@@ -91,11 +91,11 @@ namespace {
     }
 
     void GTS_Kick_HitBox_Power_On_R(AnimationEventData& data) {
-        StartDamageAt(&data.giant, 3.0, 1.8, 2.6, "NPC R Toe0 [RToe]");
+        StartDamageAt(&data.giant, 3.0, 1.8, 2.0, "NPC R Toe0 [RToe]");
 		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 2.0, 8.0);
     }
     void GTS_Kick_HitBox_Power_On_L(AnimationEventData& data) {
-        StartDamageAt(&data.giant, 3.0, 1.8, 2.6, "NPC L Toe0 [LToe]");
+        StartDamageAt(&data.giant, 3.0, 1.8, 2.0, "NPC L Toe0 [LToe]");
 		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 2.0, 8.0);
     }
     void GTS_Kick_HitBox_Power_Off_R(AnimationEventData& data) {
