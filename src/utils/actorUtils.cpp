@@ -865,19 +865,19 @@ namespace Gts {
 
 	void DistributeStolenAttributes(Actor* giant, float value) {
 		if (giant->formID == 0x14 && Runtime::HasPerk(giant, "SizeAbsorption")) { // Permamently increases random AV after shrinking and stuff
-			float scale = std::clamp(get_visual_scale(giant), 0.01f, 999999f);
+			float scale = std::clamp(get_visual_scale(giant), 0.01f, 999999.0f);
 			float Storage = GetStolenAttributes();
 			if (Storage > 0) {
 				int Boost = rand() % 3;
 				if (Boost == 0) {
-					giant->AsActorValueOwner()->ModActorValue(ActorValue::kHealth, (value * 2)/scale);
-					Persistent::GetSingleton().stolen_health += value * 2;
+					giant->AsActorValueOwner()->ModActorValue(ActorValue::kHealth, (value * 4)/scale);
+					Persistent::GetSingleton().stolen_health += value * 4;
 				} else if (Boost == 1) {
-					giant->AsActorValueOwner()->ModActorValue(ActorValue::kMagicka, (value * 2)/scale);
+					giant->AsActorValueOwner()->ModActorValue(ActorValue::kMagicka, (value * 4)/scale);
 					Persistent::GetSingleton().stolen_magick += value * 2;
 				} else if (Boost >= 2) {
-					giant->AsActorValueOwner()->ModActorValue(ActorValue::kStamina, (value * 2)/scale);
-					Persistent::GetSingleton().stolen_stamin += value * 2;
+					giant->AsActorValueOwner()->ModActorValue(ActorValue::kStamina, (value * 4)/scale);
+					Persistent::GetSingleton().stolen_stamin += value * 4;
 				}
 				AddStolenAttributes(giant, -value/scale); // reduce it
 			}
