@@ -186,6 +186,7 @@ perks:
   MassVorePerk: "GTS.esp|462228"
   GrowthOnHitPerk: "GTS.esp|30EE52"
   AdditionalGrowth: "GTS.esp|151518"
+  AdditionalGrowth_p2: "GTS.esp|67FDAC"
   StaggerImmunity: "GTS.esp|0AA3B2"
   FastShrink: "GTS.esp|16081F"
   LethalShrink: "GTS.esp|160820"

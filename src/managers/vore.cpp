@@ -345,6 +345,8 @@ namespace Gts {
 		}
 		if (Runtime::HasPerkTeam(giant, "AdditionalGrowth")) {
 			perkbonus = 1.25;
+		} if (Runtime::HasPerkTeam(giant, "AdditionalGrowth_p2")) {
+			perkbonus += 0.30;
 		}
 		if (IsDragon(tiny)) {
 			mealEffiency *= 6.0;

@@ -262,7 +262,7 @@ namespace Gts {
 			if (random < 2) {
 				Cprint("{} got crushed under the knee of {}", TinyName, GiantName);
 			} else if (random == 2) {
-				Cprint("{} knee of turned {} into nothing", GiantName, TinyName);
+				Cprint("Knee of {} turned {} into nothing", GiantName, TinyName);
 			} else if (random == 3) {
 				Cprint("{} was unlucky to be under {} knee", TinyName, GiantName);
 			} else if (random == 4) {

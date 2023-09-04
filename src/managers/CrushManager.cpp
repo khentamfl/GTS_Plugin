@@ -70,6 +70,9 @@ namespace {
 			float Rate = (0.00016 * get_visual_scale(target)) * 120;
 			if (Runtime::HasPerkTeam(caster, "AdditionalGrowth")) {
 				Rate *= 2.0;
+			} if (Runtime::HasPerkTeam(caster, "AdditionalGrowth_p2")) {
+				Rate *= 1.6;
+				caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 25.0);
 			}
 			CrushGrow(caster, 0, Rate);
 		}
