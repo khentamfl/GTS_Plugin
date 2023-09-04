@@ -61,6 +61,13 @@ Function SetPlayerStagger(Bool enabled) global native ; Allows/disallows player 
 ;==========================================
 ;===================A T T R I B U T E S   |
 ;==========================================
+
+; Gets stolen attributes for Player ONLY
+; 0 = Health
+; 1 = Stamina
+; 2 = magicka
+Float function GetStolenAttribute(float value) global native
+
 ;Reports bonus attributes in %
 ; 1 = health
 ; 2 = carry weight

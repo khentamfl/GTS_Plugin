@@ -33,6 +33,11 @@ namespace {
 	inline const auto LaunchObjects = _byteswap_ulong('LOBj');
 	inline const auto StolenAttributes = _byteswap_ulong('STAT');
 
+	inline const auto Att_HealthStorage = _byteswap_ulong('HTSG');
+	inline const auto Att_StaminStorage = _byteswap_ulong('STSG');
+	inline const auto Att_MagickStorage = _byteswap_ulong('MTSG');
+
+
 	const float DEFAULT_MAX_SCALE = 65535.0;
 	const float DEFAULT_HALF_LIFE = 1.0;
 }
@@ -377,7 +382,24 @@ namespace Gts {
 				float stolen_attributes;
 				serde->ReadRecordData(&stolen_attributes, sizeof(stolen_attributes));
 				GetSingleton().stolen_attributes = stolen_attributes;
-			} else if (type == HostileToggle) {
+			} 
+			
+			else if (type == Att_HealthStorage) {
+				float stolen_health;
+				serde->ReadRecordData(&stolen_health, sizeof(stolen_health));
+				GetSingleton().stolen_health = stolen_health;
+			} else if (type == Att_MagickStorage) {
+				float stolen_magick;
+				serde->ReadRecordData(&stolen_magick, sizeof(stolen_magick));
+				GetSingleton().stolen_magick = stolen_magick;
+			} else if (type == Att_StaminStorage) {
+				float stolen_stamin;
+				serde->ReadRecordData(&stolen_stamin, sizeof(stolen_stamin));
+				GetSingleton().stolen_stamin = stolen_stamin;
+			} 
+			
+			
+			else if (type == HostileToggle) {
 				bool hostile_toggle;
 				serde->ReadRecordData(&hostile_toggle, sizeof(hostile_toggle));
 				GetSingleton().hostile_toggle = hostile_toggle;
@@ -604,6 +626,28 @@ namespace Gts {
 		}
 		float stolen_attributes = GetSingleton().stolen_attributes;
 		serde->WriteRecordData(&stolen_attributes, sizeof(stolen_attributes));
+
+
+		if (!serde->OpenRecord(Att_HealthStorage, 1)) {
+			log::error("Unable to open Stolen Health Attributes record to write cosave data");
+			return;
+		}
+		float stolen_health = GetSingleton().stolen_health;
+		serde->WriteRecordData(&stolen_health, sizeof(stolen_health));
+
+		if (!serde->OpenRecord(Att_StaminStorage, 1)) {
+			log::error("Unable to open Stolen Stamina Attributes record to write cosave data");
+			return;
+		}
+		float stolen_stamin = GetSingleton().stolen_stamin;
+		serde->WriteRecordData(&stolen_stamin, sizeof(stolen_stamin));
+
+		if (!serde->OpenRecord(Att_MagickStorage, 1)) {
+			log::error("Unable to open Stolen Stamina Attributes record to write cosave data");
+			return;
+		}
+		float stolen_magick = GetSingleton().stolen_magick;
+		serde->WriteRecordData(&stolen_magick, sizeof(stolen_magick));
 
 		if (!serde->OpenRecord(ActorsPanic, 1)) {
 			log::error("Unable to open Actors Panic record to write cosave data");

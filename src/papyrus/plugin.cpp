@@ -40,6 +40,18 @@ namespace {
 		return SizeManager::GetSingleton().GetSizeVulnerability(actor);
 	}
 
+	float GetStolenAttribute(StaticFunctionTag*, float value) {
+		if (value == 0) {
+			return Persistent::GetSingleton().stolen_health;
+		} else if (value == 1) {
+			return Persistent::GetSingleton().stolen_stamin;
+		} else if (value == 2) {
+			return Persistent::GetSingleton().stolen_magick;
+		} else {
+			return 0.0;
+		}
+	}
+
 	float GetAttributeBonus(StaticFunctionTag*, Actor* actor, float value) {
 		auto transient = Transient::GetSingleton().GetData(actor);
 		if (!actor) {
@@ -362,6 +374,7 @@ namespace Gts {
 		vm->RegisterFunction("GetSizeRelatedDamage", PapyrusClass, GetSizeRelatedDamage);
 		vm->RegisterFunction("ModSizeVulnerability", PapyrusClass, ModSizeVulnerability);
 		vm->RegisterFunction("GetSizeVulnerability", PapyrusClass, GetSizeVulnerability);
+		vm->RegisterFunction("GetStolenAttribute", PapyrusClass, GetStolenAttribute);
 		vm->RegisterFunction("GetAttributeBonus", PapyrusClass, GetAttributeBonus);
 		vm->RegisterFunction("GetFlatAttributeBonus", PapyrusClass, GetFlatAttributeBonus);
 		vm->RegisterFunction("GetHitGrowth", PapyrusClass, GetHitGrowth);
