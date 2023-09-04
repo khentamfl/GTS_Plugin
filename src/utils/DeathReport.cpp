@@ -323,7 +323,24 @@ namespace Gts {
 			} else if (random == 6) {
 				Cprint("{} hit {} with her hand so hard that {} exploded", GiantName, TinyName, TinyName);
 			} else if (random >= 7) {
-				Cprint("{} wanted to push {} away, but ended up crushing {} instead", GiantName, TinyName);
+				Cprint("{} wanted to push {} away, but ended up crushing {} instead", GiantName, TinyName, TinyName);
+			}
+			return;
+		} else if (cause == DamageSource::Kicked) { // By being kicked
+			if (random < 2) {
+				Cprint("{} was sent flying by the {}", TinyName, GiantName);
+			} else if (random == 2) {
+				Cprint("{} attempted to launch {} into the sky", GiantName, TinyName);
+			} else if (random == 3) {
+				Cprint("{} tried to learn to fly from {}", TinyName, GiantName);
+			} else if (random == 4) {
+				Cprint("{} met the mighty kick {}", TinyName, GiantName);
+			} else if (random == 5) {
+				Cprint("{} kicked {} to death", GiantName, TinyName);
+			} else if (random == 6) {
+				Cprint("{} kick was too strong for {} to handle", GiantName, TinyName);
+			} else if (random >= 7) {
+				Cprint("{} obliterated {} with a kick", GiantName, TinyName);
 			}
 			return;
 		}

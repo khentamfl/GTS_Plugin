@@ -22,6 +22,7 @@ namespace Gts {
 		HandCrawl,
 		HandSwipe,
 		HandSlam,
+		Kicked,
 		Knee,
 		Breast,
 		Hugs,

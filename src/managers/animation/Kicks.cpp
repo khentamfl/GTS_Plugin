@@ -39,7 +39,7 @@ namespace {
 			auto giant = gianthandle.get().get();
 			auto Leg = find_node(giant, node);
 			if (Leg) {
-				DoDamageAtPoint_Cooldown(giant, 28, 80.0 * power, Leg, 10, 0.30, crush, pushpower);
+				DoDamageAtPoint_Cooldown(giant, 28, 80.0 * power, Leg, 10, 0.30, crush, pushpower, DamageSource::Kicked);
 			}
 			return true;
 		});

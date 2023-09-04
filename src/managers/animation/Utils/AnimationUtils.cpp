@@ -489,7 +489,7 @@ namespace Gts {
 		}
 	}
 
-	void DoDamageAtPoint_Cooldown(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, float pushpower) { // Apply crawl damage to each bone individually
+	void DoDamageAtPoint_Cooldown(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, float pushpower, DamageSource Cause) { // Apply crawl damage to each bone individually
         auto profiler = Profilers::Profile("Other: CrawlDamage");
 		if (!node) {
 			return;
@@ -542,7 +542,7 @@ namespace Gts {
 						if (!allow) {
 							float aveForce = std::clamp(force, 0.15f, 0.70f);
 							float pushForce = std::clamp(force, 0.02f, 0.10f);
-							AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, DamageSource::HandSwipe);
+							AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
 							if (giantScale / tinyScale > 2.5) {
 								PushTowards(giant, otherActor, node, pushForce * pushpower, true);
 								sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
