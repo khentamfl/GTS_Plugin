@@ -500,9 +500,9 @@ namespace Gts {
 		auto& sizemanager = SizeManager::GetSingleton();
 		float giantScale = get_visual_scale(giant);
 
-		float SCALE_RATIO = 1.25;
+		float SCALE_RATIO = 1.0;
 		if (HasSMT(giant)) {
-			SCALE_RATIO = 1.10;
+			SCALE_RATIO = 1.0;
 			giantScale *= 2.0;
 		}
 
@@ -540,8 +540,10 @@ namespace Gts {
 								float aveForce = std::clamp(force, 0.15f, 0.70f);
 								float pushForce = std::clamp(force, 0.01f, 0.10f);
 								AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, DamageSource::HandSwipe);
-								PushTowards(giant, otherActor, node, pushForce * pushpower, true);
-								sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
+								if (SCALE_RATIO > 2.8) {
+									PushTowards(giant, otherActor, node, pushForce * pushpower, true);
+									sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
+								}
 							}
                         }
 					}
