@@ -81,29 +81,6 @@ namespace {
 		return power;
 	}
 
-	void RunSTNCheckTask(Actor* giant, Actor* tiny) {
-		std::string taskname = std::format("ShrinkOther_{}", tiny->formID);
-		const float DURATION = 2.5;
-
-		ActorHandle tinyHandle = tiny->CreateRefHandle();
-		ActorHandle giantHandle = giant->CreateRefHandle();
-		
-		TaskManager::RunFor(taskname, DURATION, [=](auto& progressData){
-			auto GTS = giantHandle.get().get();
-			auto TINY = tinyHandle.get().get();
-			if (!GTS) {
-				return false;
-			} if (!TINY) {
-				return false;
-			}
-			if (ShrinkToNothing(GTS, TINY)) { //Shrink to nothing if size difference is too big
-				return false; // Shrink to nothing casted, cancel Task
-			}
-
-			return true; // Everything is fine, continue checking
-		});
-	}
-
 	void LaunchDecide(Actor* giant, Actor* tiny, float force, float damagebonus, float bonus) {
 		auto profiler = Profilers::Profile("Other: Launch Actors Decide");
 		if (IsBeingHeld(tiny)) {
@@ -151,8 +128,14 @@ namespace {
 					DamageAV(tiny, ActorValue::kHealth, damage * DamageSetting);
 					if (power >= 1.5) { // Apply only when we have DisastrousTremor perk
 						mod_target_scale(tiny, -(damage * DamageSetting) / 500);
+						float modifier = 1.0;
+						if (IsDragon(tiny)) {
+							modifier = 3.0;
+						}
 
-						RunSTNCheckTask(giant, tiny); // Enable Shrink To Nothing check so Actor won't go into negative scale: absorb actor instead.
+						if (get_target_scale(tiny) < 0.12/modifier) {
+							set_target_scale(tiny, 0.12/modifier);
+						}
 					}
 				}
 				PushActorAway(giant, tiny, 1.0);
