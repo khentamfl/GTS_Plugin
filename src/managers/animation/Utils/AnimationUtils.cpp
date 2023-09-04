@@ -541,7 +541,7 @@ namespace Gts {
 						bool allow = sizemanager.IsHandDamaging(otherActor);
 						if (!allow) {
 							float aveForce = std::clamp(force, 0.15f, 0.70f);
-							float pushForce = std::clamp(force, 0.01f, 0.10f);
+							float pushForce = std::clamp(force, 0.02f, 0.10f);
 							AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, DamageSource::HandSwipe);
 							if (giantScale / tinyScale > 2.5) {
 								PushTowards(giant, otherActor, node, pushForce * pushpower, true);
