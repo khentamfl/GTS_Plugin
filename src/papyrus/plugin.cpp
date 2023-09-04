@@ -47,6 +47,8 @@ namespace {
 			return Persistent::GetSingleton().stolen_stamin;
 		} else if (value == 2) {
 			return Persistent::GetSingleton().stolen_magick;
+		} else if (value == 3) {
+			return Persistent::GetSingleton().stolen_attributes;
 		} else {
 			return 0.0;
 		}

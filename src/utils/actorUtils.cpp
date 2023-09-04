@@ -874,7 +874,7 @@ namespace Gts {
 					Persistent::GetSingleton().stolen_health += value * 4;
 				} else if (Boost == 1) {
 					giant->AsActorValueOwner()->ModActorValue(ActorValue::kMagicka, (value * 4)/scale);
-					Persistent::GetSingleton().stolen_magick += value * 2;
+					Persistent::GetSingleton().stolen_magick += value * 4;
 				} else if (Boost >= 2) {
 					giant->AsActorValueOwner()->ModActorValue(ActorValue::kStamina, (value * 4)/scale);
 					Persistent::GetSingleton().stolen_stamin += value * 4;
