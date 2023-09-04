@@ -52,11 +52,22 @@ namespace {
         TaskManager::Cancel(name);
     }
 
-    void GTS_Kick_SwingLeg_L(AnimationEventData& data) {
-        TrackFeet(&data.giant, 5.0, true);
+	void GTS_Kick_Camera_On_R(AnimationEventData& data) {
+		TrackFeet(&data.giant, 6.0, true);
+	}
+	void GTS_Kick_Camera_On_L(AnimationEventData& data) {
+		TrackFeet(&data.giant, 5.0, true);
+	}
+	void GTS_Kick_Camera_Off_R(AnimationEventData& data) {
+		TrackFeet(&data.giant, 6.0, false);
+	}
+	void GTS_Kick_Camera_Off_L(AnimationEventData& data) {
+		TrackFeet(&data.giant, 5.0, false);
+	}
+
+    void GTS_Kick_SwingLeg_L(AnimationEventData& data) { 
     }
     void GTS_Kick_SwingLeg_R(AnimationEventData& data) {
-        TrackFeet(&data.giant, 6.0, true);
     }
 
     void GTS_Kick_Stomp_R(AnimationEventData& data) {
@@ -64,15 +75,12 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.85, 1.75, 1.4, FootEvent::Right, 0.85);
-        TrackFeet(&data.giant, 6.0, false);
-		
     }
     void GTS_Kick_Stomp_L(AnimationEventData& data) {
         DoDamageEffect(&data.giant, 1.40, 1.6, 10, 0.20, FootEvent::Left, 1.0, DamageSource::Crushed);
         DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
         DoDustExplosion(&data.giant, 1.0, FootEvent::Left, LNode);
         DoLaunch(&data.giant, 0.85, 1.75, 1.4, FootEvent::Left, 0.85);
-        TrackFeet(&data.giant, 5.0, false);
     }
 
     void GTS_Kick_HitBox_On_R(AnimationEventData& data) {
@@ -165,6 +173,11 @@ namespace Gts
 		InputManager::RegisterInputEvent("LightKickRight", LightKickRightEvent);
 		InputManager::RegisterInputEvent("HeavyKickLeft", HeavyKickLeftEvent);
 		InputManager::RegisterInputEvent("HeavyKickRight", HeavyKickRightEvent);
+
+		AnimationManager::RegisterEvent("GTS_Kick_Camera_On_R", "Kicks", GTS_Kick_Camera_On_R);
+		AnimationManager::RegisterEvent("GTS_Kick_Camera_On_L", "Kicks", GTS_Kick_Camera_On_L);
+		AnimationManager::RegisterEvent("GTS_Kick_Camera_Off_R", "Kicks", GTS_Kick_Camera_On_R);
+		AnimationManager::RegisterEvent("GTS_Kick_Camera_Off_L", "Kicks", GTS_Kick_Camera_On_L);
 
         AnimationManager::RegisterEvent("GTS_Kick_SwingLeg_R", "Kicks", GTS_Kick_SwingLeg_R);
         AnimationManager::RegisterEvent("GTS_Kick_SwingLeg_L", "Kicks", GTS_Kick_SwingLeg_L);
