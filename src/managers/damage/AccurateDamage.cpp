@@ -455,7 +455,7 @@ namespace Gts {
 		StartCombat(giant, tiny, false);
 		
 
-		result *= damagebonus;
+		result *= damagebonus * TimeScale();
 
 		if (Cause == DamageSource::Crushed && Runtime::HasPerkTeam(giant, "hhBonus")) {
 			result *= 1.15; // 15% bonus damage if we have High Heels perk
