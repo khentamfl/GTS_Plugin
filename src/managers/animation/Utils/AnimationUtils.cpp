@@ -541,12 +541,12 @@ namespace Gts {
 						bool allow = sizemanager.IsHandDamaging(otherActor);
 						if (!allow) {
 							float aveForce = std::clamp(force, 0.15f, 0.70f);
-							float pushForce = std::clamp(force, 0.02f, 0.10f);
+							float pushForce = std::clamp(force, 0.04f, 0.15f);
 							AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
 							if (giantScale / tinyScale > 2.5) {
 								PushTowards(giant, otherActor, node, pushForce * pushpower, true);
-								sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
 							}
+							sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
 						}
 					}
 				}
