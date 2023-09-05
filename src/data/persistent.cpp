@@ -625,7 +625,7 @@ namespace Gts {
 		bool launch_objects = GetSingleton().launch_objects;
 		serde->WriteRecordData(&launch_objects, sizeof(launch_objects));
 		
-		if (!serde->OpenRecord(Camera_PermitFovEdits, 1)) {
+		if (!serde->OpenRecord(CameraFovEdits, 1)) {
 			log::error("Unable to open Camera For Permission record to write cosave data");
 			return;
 		}
