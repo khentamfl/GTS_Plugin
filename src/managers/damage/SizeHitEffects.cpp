@@ -8,6 +8,7 @@
 #include "managers/hitmanager.hpp"
 #include "managers/Attributes.hpp"
 #include "utils/actorUtils.hpp"
+#include "data/persistent.hpp"
 #include "managers/Rumble.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
