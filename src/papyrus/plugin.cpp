@@ -169,6 +169,10 @@ namespace {
 		Persistent::GetSingleton().allow_feetracking = enabled;
 	}
 
+	void AllowCameraFOVEdits(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().Camera_PermitFovEdits = enabled;
+	}
+
 	void SetLessGore(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().less_gore = enabled;
 	}
@@ -388,6 +392,7 @@ namespace Gts {
 		vm->RegisterFunction("SigFig", PapyrusClass, SigFig);
 		vm->RegisterFunction("GetIsHighHeelEnabled", PapyrusClass, GetIsHighHeelEnabled);
 		vm->RegisterFunction("SetFeetTracking", PapyrusClass, SetFeetTracking);
+		vm->RegisterFunction("AllowCameraFOVEdits", PapyrusClass, AllowCameraFOVEdits);
 		vm->RegisterFunction("SetLessGore", PapyrusClass, SetLessGore);
 		vm->RegisterFunction("SetPlayerStagger", PapyrusClass, SetPlayerStagger);
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);

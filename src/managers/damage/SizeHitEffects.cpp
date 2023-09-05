@@ -97,6 +97,10 @@ namespace {
 		if (!camera) {
 			return;
 		} 
+		auto AllowEdits = Persistent::GetSingleton().Camera_PermitFovEdits;
+		if (!AllowEdits) {
+			return;
+		}
 		if (actor->formID == 0x14) {
 			auto tranData = Transient::GetSingleton().GetData(actor);
 			bool TP = camera->IsInThirdPerson();
