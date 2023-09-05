@@ -319,7 +319,7 @@ namespace Gts {
 	}
 
 	bool InBleedout(Actor* actor) {
-		return actor->AsActorState.IsBleedingOut();
+		return actor->AsActorState()->IsBleedingOut();
 	}
 
 	bool AllowStagger(Actor* giant, Actor* tiny) {
