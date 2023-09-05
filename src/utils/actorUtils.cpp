@@ -318,6 +318,10 @@ namespace Gts {
 		}
 	}
 
+	bool InBleedout(Actor* actor) {
+		return actor->AsActorState->IsBleedingOut();
+	}
+
 	bool AllowStagger(Actor* giant, Actor* tiny) {
 		if (Persistent::GetSingleton().allow_stagger == true) {
 			//log::info("Allow_Stagger TRUE: {}, IsTeammate: {} {}", Persistent::GetSingleton().allow_stagger, tiny->GetDisplayFullName(), IsTeammate(tiny));
@@ -997,7 +1001,7 @@ namespace Gts {
 		if (sizedifference > 2.8 && ragdollchance < 4.0 * sizedifference) { // Chance for ragdoll. Becomes 100% at high scales
 			PushActorAway(giant, tiny, 1.0); // Ragdoll
 			return;
-		} else if (sizedifference > 1.25) { // Always Stagger
+		} else if (sizedifference > 1.25 && !InBleedout(tiny)) { // Always Stagger
 			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 			tiny->NotifyAnimationGraph("staggerStart");
 			return;
