@@ -985,6 +985,9 @@ namespace Gts {
 		if (tiny->IsDead()) {
 			return;
 		}
+		if (InBleedout(tiny)) {
+			return;
+		}
 		if (IsBeingHeld(tiny)) {
 			return;
 		}
@@ -1001,7 +1004,7 @@ namespace Gts {
 		if (sizedifference > 2.8 && ragdollchance < 4.0 * sizedifference) { // Chance for ragdoll. Becomes 100% at high scales
 			PushActorAway(giant, tiny, 1.0); // Ragdoll
 			return;
-		} else if (sizedifference > 1.25 && !InBleedout(tiny)) { // Always Stagger
+		} else if (sizedifference > 1.25) { // Always Stagger
 			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 			tiny->NotifyAnimationGraph("staggerStart");
 			return;
@@ -1021,6 +1024,9 @@ namespace Gts {
 	}
 
 	void PushTowards(Actor* giantref, Actor* tinyref, NiAVObject* bone, float power, bool sizecheck) {
+		if (InBleedout(tinyref)) {
+			return;
+		}
 		NiPoint3 startCoords = bone->world.translate;
 		double startTime = Time::WorldTimeElapsed();
 		ActorHandle tinyHandle = tinyref->CreateRefHandle();
