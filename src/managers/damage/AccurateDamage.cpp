@@ -497,7 +497,7 @@ namespace Gts {
 			}
 		}
 
-		if (GetAV(tiny, ActorValue::kHealth) > 0 && GetAV(tiny, ActorValue::kHealth) > result && ) {
+		if (GetAV(tiny, ActorValue::kHealth) > 0 && GetAV(tiny, ActorValue::kHealth) > result) {
 			PushCheck(giant, tiny, mult);
 		}
 	}
