@@ -406,7 +406,7 @@ namespace Gts {
 				// If face towards fails then actor is invalid
 				return false;
 			}
-			if (giantref->FormID == 0x14) {
+			if (giantref->formID == 0x14) {
 				GrabStaminaDrain(giantref, tinyref, sizedifference * 2.6);
 			}
 			AdjustGtsSkill(0.00005, giantref);
