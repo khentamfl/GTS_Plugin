@@ -96,7 +96,7 @@ namespace {
 			}
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
-			if (ActionTimer.ShouldRunFrame()) {
+			if (ActionTimer.ShouldRunFrame()) { 
 				int rng = rand() % 10;
 				if (rng < 6) {
 					float health = GetHealthPercentage(tinyref);	
