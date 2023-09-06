@@ -115,7 +115,7 @@ namespace {
 				return false;
 			}
 			return true;
-		});	
+		});	 
 	}
 
 	void DoHugs(Actor* pred) {
