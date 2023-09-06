@@ -60,6 +60,24 @@ namespace {
 		return true;
 	}
 
+	void PushCheck(Actor* giant, Actor* tiny, float force) {
+		auto& sizemanager = SizeManager::GetSingleton();
+		auto& accuratedamage = AccurateDamage::GetSingleton();
+		auto model = tiny->GetCurrent3D();
+
+		if (model) {
+			bool isdamaging = sizemanager.IsDamaging(tiny);
+			float movementFactor = 1.0;
+			if (giant->AsActorState()->IsSprinting()) {
+				movementFactor *= 1.5;
+			}
+			if (!isdamaging && (force >= 0.12 || IsMoving(giant))) {
+				StaggerOr(giant, tiny, force, 0, 0, 0, 0);
+				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
+			}
+		}
+	}
+
 	void ModVulnerability(Actor* giant, Actor* tiny, float damage) {
 		if (!Runtime::HasPerkTeam(giant, "GrowingPressure")) {
 			return;
@@ -376,23 +394,8 @@ namespace Gts {
 
 	void AccurateDamage::ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult, float crushmult, DamageSource Cause) {
 		auto profiler = Profilers::Profile("AccurateDamage: ApplySizeEffect");
-		auto& sizemanager = SizeManager::GetSingleton();
 		auto& accuratedamage = AccurateDamage::GetSingleton();
-		auto model = tiny->GetCurrent3D();
-
-		if (model) {
-			bool isdamaging = sizemanager.IsDamaging(tiny);
-			float movementFactor = 1.0;
-			if (giant->AsActorState()->IsSprinting()) {
-				movementFactor *= 1.5;
-			}
-			if (!isdamaging && (force >= 0.12 || IsMoving(giant))) {
-				StaggerOr(giant, tiny, force, 0, 0, 0, 0);
-				//log::info("Force Is > 0.12, staggering");
-				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
-			}
-			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true, crushmult, Cause);
-		}
+		accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true, crushmult, Cause);
 	}
 
 	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult, int random, float bbmult, bool DoDamage, float crushmult, DamageSource Cause) { // Applies damage and crushing
@@ -468,6 +471,9 @@ namespace Gts {
 		
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, result * 0.50);
+			if (GetAV(tiny, ActorValue::kHealth) > result) {
+				PushCheck(giant, tiny, mult);
+			}
 			return; // Stamina protection, emulates Size Damage resistance
 		}
 		if (DoDamage) {
@@ -478,6 +484,9 @@ namespace Gts {
 		if (GetAV(tiny, ActorValue::kHealth) <= 0 || tiny->IsDead()) {
 			KillActor(giant, tiny);
 			ReportCrime(giant, tiny, 1000, true);
+			if (GetAV(tiny, ActorValue::kHealth) > result) {
+				PushCheck(giant, tiny, mult);
+			}
 			//StartCombat(giant, tiny, false);
 			if (multiplier >= 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
@@ -486,6 +495,7 @@ namespace Gts {
 					PrintDeathSource(giant, tiny, Cause);
 				}
 			}
+
 		}
 	}
 }
