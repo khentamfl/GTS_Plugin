@@ -121,15 +121,15 @@ namespace {
 	void DoHugs(Actor* pred) {
 		log::info("Starting Hugs for {}", pred->GetDisplayFullName());
 		if (!Persistent::GetSingleton().Sandwich_Ai) {
-			log::info("Sandwich AI is false");
+			log::info("Hugs AI is false");
 			return;
 		}
 		if (IsGtsBusy(pred)) {
 			return;
 		} 
-		auto& Sandwiching = ThighSandwichController::GetSingleton();
+		auto& hugs = HugAnimationController::GetSingleton();
 		std::size_t numberOfPrey = 1;
-		std::vector<Actor*> preys = Sandwiching.GetSandwichTargetsInFront(pred, numberOfPrey);
+		std::vector<Actor*> preys = hugs.GetHugTargetsInFront(pred, numberOfPrey);
 		for (auto prey: preys) {
 			float sizedifference = get_visual_scale(pred)/get_visual_scale(prey);
 			if (sizedifference > 0.9 && sizedifference < 3.0) {
@@ -196,9 +196,9 @@ namespace {
 		int rng = rand() % 40;
 		if (rng > 4 && rng < 7 * scale) {
 			DoStomp(actor);
-		} else if (rng == 3 || rng == 4) {
+		} else if (rng >= 2 && rng <= 4) {
 			DoSandwich(actor);
-		} else if (rng < 3) {
+		} else if (rng < 2) {
 			DoHugs(actor);
 		}
 	}

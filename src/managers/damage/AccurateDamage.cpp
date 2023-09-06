@@ -397,6 +397,8 @@ namespace Gts {
 			movementFactor *= 1.5;
 		}
 
+		PushCheck(giant, tiny, mult);
+
 		accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true, crushmult, Cause);
 	}
 
@@ -470,8 +472,6 @@ namespace Gts {
 		if (!tiny->IsDead()) {
 			AdjustGtsSkill(experience, giant);
 		}
-
-		PushCheck(giant, tiny, mult);
 		
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, result * 0.50);
