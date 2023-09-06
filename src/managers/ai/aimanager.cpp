@@ -157,13 +157,13 @@ namespace {
 	void Kicks(Actor* pred, int rng) {
 		log::info("Starting Kicks for {}", pred->GetDisplayFullName());
 		if (rng <= 2) {
-			AnimationManager::StartAnim("HeavyKickRight", pred);
+			AnimationManager::StartAnim("SwipeHeavy_Right", pred);
 		} else if (rng <= 3) {
-			AnimationManager::StartAnim("HeavyKickLeft", pred);
+			AnimationManager::StartAnim("SwipeHeavy_Left", pred);
 		} else if (rng <= 6) {
-			AnimationManager::StartAnim("LightKickLeft", pred);
+			AnimationManager::StartAnim("SwipeLight_Left", pred);
 		} else {
-			AnimationManager::StartAnim("LightKickRight", pred);
+			AnimationManager::StartAnim("SwipeLight_Right", pred);
 		}
 	}
 
