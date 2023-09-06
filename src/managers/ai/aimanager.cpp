@@ -82,28 +82,11 @@ namespace {
 		}
 	}
 
-	void DoHugs(Actor* pred) {
-		if (IsGtsBusy(pred)) {
-			return;
-		}
-		auto& Sandwiching = ThighSandwichController::GetSingleton();
-		std::size_t numberOfPrey = 1;
-		std::vector<Actor*> preys = Sandwiching.GetSandwichTargetsInFront(pred, numberOfPrey);
-		for (auto prey: preys) {
-			float sizedifference = get_visual_scale(pred)/get_visual_scale(prey);
-			if (sizedifference > 0.9 && sizedifference < 3.0) {
-				HugAnimationController::StartHug(pred, prey);
-				HugShrink::AttachActorTask(pred, prey);
-				StartHugsTask(pred, prey);
-			}
-		}
-	}
-
 	void StartHugsTask(Actor* giant, Actor* tiny) {
 		std::string name = std::format("Huggies_Forced_{}", giant->formID);
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		ActorHandle tinyhandle = tiny->CreateRefHandle();
-		static timer ActionTimer = Timer(1.5);
+		static Timer ActionTimer = Timer(1.5);
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
@@ -120,7 +103,7 @@ namespace {
 					float HpThreshold = GetCrushThreshold(giantref);
 					if (health <= HpThreshold) {
 						AnimationManager::StartAnim("Huggies_HugCrush", player);
-						AnimationManager::StartAnim("Huggies_HugCrush_Victim", huggedActor);
+						AnimationManager::StartAnim("Huggies_HugCrush_Victim", tinyref);
 					} else {
 						AnimationManager::StartAnim("Huggies_Shrink", giantref);
 						AnimationManager::StartAnim("Huggies_Shrink_Victim", tinyref);
@@ -133,6 +116,23 @@ namespace {
 			}
 			return true;
 		});	
+	}
+
+	void DoHugs(Actor* pred) {
+		if (IsGtsBusy(pred)) {
+			return;
+		}
+		auto& Sandwiching = ThighSandwichController::GetSingleton();
+		std::size_t numberOfPrey = 1;
+		std::vector<Actor*> preys = Sandwiching.GetSandwichTargetsInFront(pred, numberOfPrey);
+		for (auto prey: preys) {
+			float sizedifference = get_visual_scale(pred)/get_visual_scale(prey);
+			if (sizedifference > 0.9 && sizedifference < 3.0) {
+				HugAnimationController::StartHug(pred, prey);
+				HugShrink::AttachActorTask(pred, prey);
+				StartHugsTask(pred, prey);
+			}
+		}
 	}
 
 	void StrongStomp(Actor* pred, int rng) {
