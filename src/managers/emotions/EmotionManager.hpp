@@ -33,8 +33,11 @@ namespace Gts {
 
 			virtual std::string DebugName() override;
 			virtual void Update() override;
+			virtual void Reset() override;
+			virtual void ResetActor(Actor* actor) override;
 
 			EmotionData& GetGiant(Actor* giant);
+			
 
 		private:
 			std::map<Actor*, EmotionData> data;

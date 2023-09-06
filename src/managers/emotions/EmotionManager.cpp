@@ -100,6 +100,14 @@ namespace Gts { // To-do: rework it into Task manager. Not sure how to do it.
 		}
 	}
 
+	void EmotionManager::Reset() {
+		this->data.clear();
+	}
+
+	void EmotionManager::ResetActor(Actor* actor) {
+		this->data.erase(actor);
+	}
+
 	EmotionData& EmotionManager::GetGiant(Actor* giant) {
 		// Create it now if not there yet
 		this->data.try_emplace(giant, giant);
