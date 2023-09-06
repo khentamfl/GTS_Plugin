@@ -1,3 +1,4 @@
+#include "managers/animation/Controllers/HugController.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/ThighSandwich.hpp"
 #include "managers/ThighSandwichController.hpp"
@@ -22,6 +23,16 @@ namespace {
 	const float MINIMUM_STOMP_SCALE_RATIO = 1.75;
 	const float STOMP_ANGLE = 50;
 	const float PI = 3.14159;
+
+	float GetCrushThreshold(Actor* actor) {
+		float hp = 0.20;
+		if (Runtime::HasPerkTeam(actor, "HugCrush_MightyCuddles")) {
+			hp += 0.10; // 0.30
+		} if (Runtime::HasPerkTeam(actor, "HugCrush_HugsOfDeath")) {
+			hp += 0.20; // 0.50
+		}
+		return hp;
+	}
 
 	[[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
 	{
@@ -48,6 +59,7 @@ namespace {
 			(OMC * ZX - YS) * vec.x + (OMC * YZ + XS) * vec.y + (OMC * ZZ + C) * vec.z
 			);
 	}
+
 	void DoSandwich(Actor* pred) {
 		if (!Persistent::GetSingleton().Sandwich_Ai) {
 			log::info("Sandwich AI is false");
@@ -69,29 +81,105 @@ namespace {
 		}
 	}
 
+	void DoHugs(Actor* pred) {
+		if (IsGtsBusy(pred)) {
+			return;
+		}
+		auto& Sandwiching = ThighSandwichController::GetSingleton();
+		std::size_t numberOfPrey = 1;
+		std::vector<Actor*> preys = Sandwiching.GetSandwichTargetsInFront(pred, numberOfPrey);
+		for (auto prey: preys) {
+			float sizedifference = get_visual_scale(pred)/get_visual_scale(prey);
+			if (sizedifference > 0.9 && sizedifference < 3.0) {
+				HugAnimationController::StartHug(pred, prey);
+				HugShrink::AttachActorTask(pred, prey);
+				StartHugsTask(pred, prey);
+			}
+		}
+	}
+
+	void StartHugsTask(Actor* giant) {
+		std::string name = std::format("Huggies_Forced_{}", giant->formID);
+		ActorHandle gianthandle = giant->CreateRefHandle();
+		ActorHandle tinyhandle = tiny->CreateRefHandle();
+		static timer ActionTimer = Timer(1.5);
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			if (!tinyhandle) {
+				return false;
+			}
+			auto giantref = gianthandle.get().get();
+			auto tinyref = tinyhandle.get().get();
+			if (ActionTimer.ShouldRunFrame()) {
+				int rng = rand() % 10;
+				if (rng < 6) {
+					float health = GetHealthPercentage(tinyref);	
+					float HpThreshold = GetCrushThreshold(giantref);
+					if (health <= HpThreshold) {
+						AnimationManager::StartAnim("Huggies_HugCrush", player);
+						AnimationManager::StartAnim("Huggies_HugCrush_Victim", huggedActor);
+					} else {
+						AnimationManager::StartAnim("Huggies_Shrink", giantref);
+						AnimationManager::StartAnim("Huggies_Shrink_Victim", tinyref);
+					}
+				}
+			}
+			log::info("Hugs Task is running");
+			if (!HugShrink::GetHuggiesActor(gianthandle)) {
+				return false;
+			}
+			return true;
+		});	
+	}
+
+	void StrongStomp(Actor* pred, int rng) {
+		if (rng <= 5) {
+			AnimationManager::StartAnim("StrongStompRight", pred);
+		} else {
+			AnimationManager::StartAnim("StrongStompLeft", pred);
+		}
+	}
+	void LightStomp(Actor* pred, int rng) {
+		if (rng <= 5) {
+			AnimationManager::StartAnim("StompRight", pred);
+		} else {
+			AnimationManager::StartAnim("StompLeft", pred);
+		}
+	}
+	void Kicks(Actor* pred, int rng) {
+		if (rng <= 2) {
+			AnimationManager::StartAnim("HeavyKickRight", pred);
+		} else if (rng <= 3) {
+			AnimationManager::StartAnim("HeavyKickLeft", pred);
+		} else if (rng <= 6) {
+			AnimationManager::StartAnim("LightKickLeft", pred);
+		} else {
+			AnimationManager::StartAnim("LightKickRight", pred);
+		}
+	}
+
 	void DoStomp(Actor* pred) {
 		if (!Persistent::GetSingleton().Stomp_Ai) {
 			return;
 		}
-		int random = rand() % 4;
-		int actionrng = rand() % 4;
+		int random = rand() % 10;
+		int actionrng = rand() % 10;
 		std::size_t amount = 6;
 		std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, amount);
 		for (auto prey: preys) {
 			if (AiManager::GetSingleton().CanStomp(pred, prey)) {
-				if (random <= 2) {
-					if (actionrng <= 2) {
-						AnimationManager::StartAnim("StompRight", pred);
-					} else {
-						AnimationManager::StartAnim("StompLeft", pred);
-					}
-				} else if (random > 2) {
-					if (actionrng <= 2) {
-						AnimationManager::StartAnim("StrongStompRight", pred);
-					} else {
-						AnimationManager::StartAnim("StrongStompLeft", pred);
-					}
-				}
+				if (random <= 3) {
+					StrongStomp(pred, actionrng);
+					return;
+				} else if (random <= 7) {
+					LightStomp(pred, actionrng);
+					return;
+				} else if (random <= 9) {
+					Kicks(pred, actionrng);
+					return;
+				} 
 			}
 		}
 	}
@@ -103,6 +191,8 @@ namespace {
 			DoStomp(actor);
 		} else if (rng < 2) {
 			DoSandwich(actor);
+		} else if (rng < 1) {
+			DoHugs(actor);
 		}
 	}
 }
