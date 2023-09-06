@@ -119,6 +119,10 @@ namespace {
 	}
 
 	void DoHugs(Actor* pred) {
+		if (!Persistent::GetSingleton().Sandwich_Ai) {
+			log::info("Sandwich AI is false");
+			return;
+		}
 		if (IsGtsBusy(pred)) {
 			return;
 		}
