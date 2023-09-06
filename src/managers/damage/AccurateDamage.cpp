@@ -397,7 +397,7 @@ namespace Gts {
 			movementFactor *= 1.5;
 		}
 
-		PushCheck(giant, tiny, mult);
+		PushCheck(giant, tiny, force);
 
 		accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true, crushmult, Cause);
 	}
