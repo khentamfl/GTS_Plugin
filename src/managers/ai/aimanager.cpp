@@ -102,7 +102,7 @@ namespace {
 					float health = GetHealthPercentage(tinyref);	
 					float HpThreshold = GetCrushThreshold(giantref);
 					if (health <= HpThreshold) {
-						AnimationManager::StartAnim("Huggies_HugCrush", player);
+						AnimationManager::StartAnim("Huggies_HugCrush", giantref);
 						AnimationManager::StartAnim("Huggies_HugCrush_Victim", tinyref);
 					} else {
 						AnimationManager::StartAnim("Huggies_Shrink", giantref);
@@ -111,7 +111,7 @@ namespace {
 				}
 			}
 			log::info("Hugs Task is running");
-			if (!HugShrink::GetHuggiesActor(gianthandle)) {
+			if (!HugShrink::GetHuggiesActor(giantref)) {
 				return false;
 			}
 			return true;
