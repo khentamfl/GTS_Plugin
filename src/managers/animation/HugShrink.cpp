@@ -460,7 +460,7 @@ namespace Gts {
 		if (!huggedActor) {
 			return;
 		}
-		std::string_view message = std::format("{} was saved from your hugs", huggedActor->GetDisplayFullName());
+		std::string_view message = std::format("{} was saved from hugs of {}", huggedActor->GetDisplayFullName(), giant->GetDisplayFullName());
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(huggedActor);
 		if (giant->formID == 0x14) {
 			shake_camera(giant, 0.25 * sizedifference, 0.35);

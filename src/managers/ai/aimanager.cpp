@@ -241,11 +241,9 @@ namespace Gts {
 		// Get vore target for actor
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (IsGtsBusy(pred)) {
-			//log::info("{} is Busy", pred->GetDisplayFullName());
 			return {};
 		}
 		if (!pred) {
-			//log::info("Pred is none");
 			return {};
 		}
 		auto charController = pred->GetCharController();
