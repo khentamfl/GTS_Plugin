@@ -156,9 +156,9 @@ namespace {
 	}
 	void Kicks(Actor* pred, int rng) {
 		log::info("Starting Kicks for {}", pred->GetDisplayFullName());
-		if (rng <= 2) {
+		if (rng <= 3) {
 			AnimationManager::StartAnim("SwipeHeavy_Right", pred);
-		} else if (rng <= 3) {
+		} else if (rng <= 4) {
 			AnimationManager::StartAnim("SwipeHeavy_Left", pred);
 		} else if (rng <= 6) {
 			AnimationManager::StartAnim("SwipeLight_Left", pred);
@@ -194,11 +194,11 @@ namespace {
 	void AnimationAttempt(Actor* actor) {
 		float scale = std::clamp(get_visual_scale(actor), 1.0f, 6.0f);
 		int rng = rand() % 40;
-		if (rng > 2 && rng < 6 * scale) {
+		if (rng > 4 && rng < 7 * scale) {
 			DoStomp(actor);
-		} else if (rng < 3) {
+		} else if (rng == 3 || rng == 4) {
 			DoSandwich(actor);
-		} else if (rng < 2) {
+		} else if (rng < 3) {
 			DoHugs(actor);
 		}
 	}
@@ -329,6 +329,12 @@ namespace Gts {
 		}
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
+
+		float bonus = 1.0;
+		if (IsCrawling(pred)) {
+			bonus = 2.0; // +100% stomp distance 
+		}
+
 		if (IsDragon(prey)) {
 			prey_scale *= 3.0;
 		}
@@ -339,10 +345,10 @@ namespace Gts {
 		float sizedifference = pred_scale/prey_scale;
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
-		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_STOMP_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_STOMP_SCALE_RATIO) {
+		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_STOMP_DISTANCE * pred_scale * bonus) && pred_scale/prey_scale < MINIMUM_STOMP_SCALE_RATIO) {
 			return false;
 		}
-		if (prey_distance <= (MINIMUM_STOMP_DISTANCE * pred_scale)
+		if (prey_distance <= (MINIMUM_STOMP_DISTANCE * pred_scale * bonus)
 		    && pred_scale/prey_scale > MINIMUM_STOMP_SCALE_RATIO
 		    && prey_distance > 25.0) { // We don't want the Stomp to be too close
 			return true;
