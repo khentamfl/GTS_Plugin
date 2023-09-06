@@ -1024,9 +1024,6 @@ namespace Gts {
 	}
 
 	void PushTowards(Actor* giantref, Actor* tinyref, NiAVObject* bone, float power, bool sizecheck) {
-		if (InBleedout(tinyref)) {
-			return;
-		}
 		NiPoint3 startCoords = bone->world.translate;
 		double startTime = Time::WorldTimeElapsed();
 		ActorHandle tinyHandle = tinyref->CreateRefHandle();

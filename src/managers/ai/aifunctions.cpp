@@ -18,11 +18,13 @@ using namespace Gts;
 
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
-		ForceRagdoll(tiny, true);
+		//ForceRagdoll(tiny, true);
 		if (!Persistent::GetSingleton().hostile_toggle) {
 			tiny->KillImmediate();
+			tiny->NotifyAnimationGraph("Ragdoll");
 		} else {
 			tiny->KillImpl(giant, 0, true, true);
+			tiny->NotifyAnimationGraph("Ragdoll");
 		}
 	}
 

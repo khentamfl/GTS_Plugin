@@ -470,12 +470,11 @@ namespace Gts {
 		if (!tiny->IsDead()) {
 			AdjustGtsSkill(experience, giant);
 		}
+
+		PushCheck(giant, tiny, mult);
 		
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, result * 0.50);
-			if (GetAV(tiny, ActorValue::kHealth) > 0 && GetAV(tiny, ActorValue::kHealth) > result) {
-				PushCheck(giant, tiny, mult);
-			}
 			return; // Stamina protection, emulates Size Damage resistance
 		}
 		if (DoDamage) {
@@ -495,10 +494,6 @@ namespace Gts {
 					PrintDeathSource(giant, tiny, Cause);
 				}
 			}
-		}
-
-		if (GetAV(tiny, ActorValue::kHealth) > 0 && GetAV(tiny, ActorValue::kHealth) > result) {
-			PushCheck(giant, tiny, mult);
 		}
 	}
 }
