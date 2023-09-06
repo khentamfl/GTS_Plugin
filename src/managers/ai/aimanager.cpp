@@ -111,6 +111,9 @@ namespace {
 				}
 			}
 			log::info("Hugs Task is running");
+			if (tinyref->IsDead() || giantref->IsDead()) {
+				return false;
+			}
 			if (!HugShrink::GetHuggiesActor(giantref)) {
 				return false;
 			}
@@ -134,7 +137,6 @@ namespace {
 			float sizedifference = get_visual_scale(pred)/get_visual_scale(prey);
 			if (sizedifference > 0.9 && sizedifference < 3.0) {
 				HugAnimationController::StartHug(pred, prey);
-				HugShrink::AttachActorTask(pred, prey);
 				StartHugsTask(pred, prey);
 			}
 		}
@@ -194,11 +196,11 @@ namespace {
 	void AnimationAttempt(Actor* actor) {
 		float scale = std::clamp(get_visual_scale(actor), 1.0f, 6.0f);
 		int rng = rand() % 40;
-		if (rng > 4 && rng < 7 * scale) {
+		if (rng >= 4 && rng < 7 * scale) {
 			DoStomp(actor);
-		} else if (rng >= 2 && rng <= 4) {
+		} else if (rng > 1 && rng < 4) {
 			DoSandwich(actor);
-		} else if (rng < 2) {
+		} else if (rng <= 1) {
 			DoHugs(actor);
 		}
 	}
