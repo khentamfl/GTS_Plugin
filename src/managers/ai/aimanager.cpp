@@ -2,6 +2,7 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/ThighSandwich.hpp"
 #include "managers/ThighSandwichController.hpp"
+#include "managers/animation/HugShrink.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
@@ -98,7 +99,7 @@ namespace {
 		}
 	}
 
-	void StartHugsTask(Actor* giant) {
+	void StartHugsTask(Actor* giant, Actor* tiny) {
 		std::string name = std::format("Huggies_Forced_{}", giant->formID);
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		ActorHandle tinyhandle = tiny->CreateRefHandle();
