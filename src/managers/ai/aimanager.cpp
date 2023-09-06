@@ -119,13 +119,14 @@ namespace {
 	}
 
 	void DoHugs(Actor* pred) {
+		log::info("Starting Hugs for {}", pred->GetDisplayFullName());
 		if (!Persistent::GetSingleton().Sandwich_Ai) {
 			log::info("Sandwich AI is false");
 			return;
 		}
 		if (IsGtsBusy(pred)) {
 			return;
-		}
+		} 
 		auto& Sandwiching = ThighSandwichController::GetSingleton();
 		std::size_t numberOfPrey = 1;
 		std::vector<Actor*> preys = Sandwiching.GetSandwichTargetsInFront(pred, numberOfPrey);
@@ -154,6 +155,7 @@ namespace {
 		}
 	}
 	void Kicks(Actor* pred, int rng) {
+		log::info("Starting Kicks for {}", pred->GetDisplayFullName());
 		if (rng <= 2) {
 			AnimationManager::StartAnim("HeavyKickRight", pred);
 		} else if (rng <= 3) {
@@ -194,9 +196,9 @@ namespace {
 		int rng = rand() % 40;
 		if (rng > 2 && rng < 6 * scale) {
 			DoStomp(actor);
-		} else if (rng < 2) {
+		} else if (rng < 3) {
 			DoSandwich(actor);
-		} else if (rng < 1) {
+		} else if (rng < 2) {
 			DoHugs(actor);
 		}
 	}
