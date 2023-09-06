@@ -473,7 +473,7 @@ namespace Gts {
 		
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, result * 0.50);
-			if (GetAV(tiny, ActorValue::kHealth) > result) {
+			if (GetAV(tiny, ActorValue::kHealth) > 0 && GetAV(tiny, ActorValue::kHealth) > result) {
 				PushCheck(giant, tiny, mult);
 			}
 			return; // Stamina protection, emulates Size Damage resistance
@@ -486,9 +486,7 @@ namespace Gts {
 		if (GetAV(tiny, ActorValue::kHealth) <= 0 || tiny->IsDead()) {
 			KillActor(giant, tiny);
 			ReportCrime(giant, tiny, 1000, true);
-			if (GetAV(tiny, ActorValue::kHealth) > result) {
-				PushCheck(giant, tiny, mult);
-			}
+
 			//StartCombat(giant, tiny, false);
 			if (multiplier >= 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
@@ -497,7 +495,10 @@ namespace Gts {
 					PrintDeathSource(giant, tiny, Cause);
 				}
 			}
+		}
 
+		if (GetAV(tiny, ActorValue::kHealth) > 0 && GetAV(tiny, ActorValue::kHealth) > result && ) {
+			PushCheck(giant, tiny, mult);
 		}
 	}
 }
