@@ -67,10 +67,6 @@ namespace {
 
 		if (model) {
 			bool isdamaging = sizemanager.IsDamaging(tiny);
-			float movementFactor = 1.0;
-			if (giant->AsActorState()->IsSprinting()) {
-				movementFactor *= 1.5;
-			}
 			if (!isdamaging && (force >= 0.12 || IsMoving(giant))) {
 				StaggerOr(giant, tiny, force, 0, 0, 0, 0);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
@@ -395,6 +391,12 @@ namespace Gts {
 	void AccurateDamage::ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult, float crushmult, DamageSource Cause) {
 		auto profiler = Profilers::Profile("AccurateDamage: ApplySizeEffect");
 		auto& accuratedamage = AccurateDamage::GetSingleton();
+
+		float movementFactor = 1.0;
+		if (giant->AsActorState()->IsSprinting()) {
+			movementFactor *= 1.5;
+		}
+
 		accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true, crushmult, Cause);
 	}
 
