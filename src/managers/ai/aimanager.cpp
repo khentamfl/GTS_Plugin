@@ -195,12 +195,12 @@ namespace {
 
 	void AnimationAttempt(Actor* actor) {
 		float scale = std::clamp(get_visual_scale(actor), 1.0f, 6.0f);
-		int rng = rand() % 40;
-		if (rng >= 4 && rng < 7 * scale) {
+		int rng = rand() % 60;
+		if (rng >= 4 && rng < 9 * scale) {
 			DoStomp(actor);
-		} else if (rng > 1 && rng < 4) {
+		} else if (rng > 2 && rng < 6) {
 			DoSandwich(actor);
-		} else if (rng <= 1) {
+		} else if (rng <= 2) {
 			DoHugs(actor);
 		}
 	}

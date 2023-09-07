@@ -9,6 +9,7 @@ using namespace Gts;
 
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny);
+	void RagdollTask(Actor* tiny);
 	void StartCombat(Actor* giant, Actor* tiny, bool Forced);
 	void ScareActors(Actor* giant);
 	void ReportCrime(Actor* giant, Actor* tiny, float value, bool combat);
