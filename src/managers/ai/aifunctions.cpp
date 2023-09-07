@@ -28,7 +28,8 @@ namespace Gts {
 
 	void RagdollTask(Actor* tiny) {
 		auto tinyHandle = tiny->CreateRefHandle();
-		TaskManager::RunOnce([=](auto& update){
+		std::string name = std::format("Ragdoll_{}", tiny->formID);
+		TaskManager::RunOnce(name, [=](auto& update){
 			if (!tinyHandle) {
 				return;
 			}
