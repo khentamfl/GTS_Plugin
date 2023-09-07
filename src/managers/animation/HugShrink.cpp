@@ -359,7 +359,7 @@ namespace Gts {
 
 			if (sizedifference >= threshold) {
 				SetBeingHeld(tinyref, false);
-				std::string_view message = std::format("You can't shrink {} any further", tinyref->GetDisplayFullName());
+				std::string_view message = std::format("{} can't shrink {} any further", giantref->GetDisplayFullName(), tinyref->GetDisplayFullName());
 				Notify(message);
 				AbortAnimation(giantref, tinyref);
 				return false;
