@@ -127,13 +127,9 @@ namespace {
 		auto& hugging = HugAnimationController::GetSingleton();
 		if (!hugging.CanHug(pred, prey)) {
 			return;
-		} if (!IsAttackAllowed(pred)) {
-			return;
-		}
+		} 
 		HugShrink::GetSingleton().HugActor(pred, prey);
-		log::info("Pred {} is Attacking: {}", IsAttackAllowed(pred));
 		AnimationManager::StartAnim("Huggies_Try", pred);
-		AnimationManager::StartAnim("Huggies_Try_Victim", prey);
 		StartHugsTask(pred, prey);
 	}
 
@@ -210,8 +206,8 @@ namespace {
 
 	void AnimationAttempt(Actor* actor) {
 		float scale = std::clamp(get_visual_scale(actor), 1.0f, 6.0f);
-		int rng = rand() % 60;
-		if (rng >= 4 && rng < 9 * scale) {
+		int rng = rand() % 100;
+		if (rng >= 5 && rng < 12 * scale) {
 			DoStomp(actor);
 		} else if (rng > 2 && rng < 6) {
 			DoSandwich(actor);
@@ -262,7 +258,7 @@ namespace Gts {
 
 
 	std::vector<Actor*> AiManager::RandomStomp(Actor* pred, std::size_t numberOfPrey) {
-		// Get vore target for actor
+		// Get targets in front
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (IsGtsBusy(pred)) {
 			return {};

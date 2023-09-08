@@ -24,6 +24,20 @@ using namespace RE;
 using namespace SKSE;
 using namespace std;
 
+namespace {
+	float GetShrinkPenalty(float size) {
+		// https://www.desmos.com/calculator/wh0vwgljfl
+		SoftPotential launch {
+				.k = 0.98, 
+				.n = 0.82, 
+				.s = 0.70, 
+				.a = 0.0, 
+			};
+		float power = soft_power(size, launch);
+		return power;
+	}
+}
+
 namespace Gts {
 
 	GameModeManager& GameModeManager::GetSingleton() noexcept {
@@ -186,18 +200,18 @@ namespace Gts {
 		float BonusShrink = 7.0;
 		float bonus = 1.0;
 		if (BalanceMode >= 2.0) {
-			BonusShrink = (3.5 * (scale * 1.35));
+			BonusShrink *= (1.25 * GetShrinkPenalty(scale));
 		}
 
 		if (QuestStage < 100.0 || BalanceMode >= 2.0) {
 			if ((actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 				game_mode_int = 6; // QuestMode
 				if (QuestStage >= 40 && QuestStage < 60) {
-					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 2.0);
+					shrinkRate = 0.00086 * BonusShrink * 2.0;
 				} else if (QuestStage >= 60 && QuestStage < 80) {
-					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.6);
+					shrinkRate = 0.00086 * BonusShrink * 1.6;
 				} else if (BalanceMode >= 2.0 && QuestStage > 80) {
-					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.40);
+					shrinkRate = 0.00086 * BonusShrink * 1.40;
 				}
 
 				if (Runtime::HasMagicEffect(actor, "EffectGrowthPotion")) {
