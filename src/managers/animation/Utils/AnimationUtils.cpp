@@ -540,6 +540,7 @@ namespace Gts {
 							float pushForce = std::clamp(force, 0.04f, 0.10f);
 							if (HasSMT(giant)) {
 								giantScale *= 6.0;
+								pushForce *= 6.0;
 								pushpower *= 4.0;
 							}
 							AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
@@ -548,7 +549,7 @@ namespace Gts {
 							}
 							float Volume = clamp(0.10, 1.0, (giantScale/tinyScale)*pushForce);
 							Runtime::PlaySound("SwingImpact", otherActor, Volume, 0.0);
-							shake_camera_at_node(node->world.translate, 0.25 * pushpower, 0.25 * pushpower);
+							ApplyShakeAtPoint(giant, 0.25 * pushpower, node->world.translate, 1.0);
 							sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
 						}
 					}
