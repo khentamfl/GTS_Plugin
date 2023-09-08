@@ -125,7 +125,7 @@ namespace {
 		auto& hugging = HugAnimationController::GetSingleton();
 		if (!hugging.CanHug(pred, prey)) {
 			return;
-		} if (!IsAttackAllowed(giant)) {
+		} if (!IsAttackAllowed(pred)) {
 			return;
 		}
 		HugShrink::GetSingleton().HugActor(pred, prey);
