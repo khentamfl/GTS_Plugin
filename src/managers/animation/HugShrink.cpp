@@ -399,6 +399,7 @@ namespace Gts {
 			auto tinyref = tinyhandle.get().get();
 			
 			ShutUp(tinyref);
+			float threshold = GetShrinkThreshold(giantref);
 
 			// Exit on death
 			float sizedifference = get_visual_scale(giantref)/get_visual_scale(tinyref);
