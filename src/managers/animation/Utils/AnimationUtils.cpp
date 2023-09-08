@@ -501,11 +501,7 @@ namespace Gts {
 		float giantScale = get_visual_scale(giant);
 
 		float SCALE_RATIO = 1.0;
-		if (HasSMT(giant)) {
-			SCALE_RATIO = 1.0;
-			giantScale *= 2.0;
-		}
-
+		
 		NiPoint3 NodePosition = node->world.translate;
 
 		float maxDistance = radius * giantScale;
@@ -542,12 +538,17 @@ namespace Gts {
 						if (!allow) {
 							float aveForce = std::clamp(force, 0.15f, 0.70f);
 							float pushForce = std::clamp(force, 0.04f, 0.10f);
+							if (HasSMT(giant)) {
+								giantScale *= 6.0;
+								pushpower *= 4.0;
+							}
 							AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
 							if (giantScale / tinyScale > 2.5) {
 								PushTowards(giant, otherActor, node, pushForce * pushpower, true);
 							}
 							float Volume = clamp(0.10, 1.0, (giantScale/tinyScale)*pushForce);
 							Runtime::PlaySound("SwingImpact", otherActor, Volume, 0.0);
+							shake_camera_at_node(node->world.translate, 0.25 * pushpower, 0.25 * pushpower);
 							sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
 						}
 					}

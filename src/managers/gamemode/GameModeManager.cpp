@@ -201,11 +201,11 @@ namespace Gts {
 		float BonusShrink = 7.0;
 		float bonus = 1.0;
 		if (BalanceMode >= 2.0) {
-			BonusShrink *= (1.25 * GetShrinkPenalty(scale));
+			BonusShrink *= GetShrinkPenalty(scale);
 		}
 
 		if (QuestStage < 100.0 || BalanceMode >= 2.0) {
-			if ((actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+			if (actor->formID == 0x14 || IsTeammate(actor)) {
 				game_mode_int = 6; // QuestMode
 				if (QuestStage >= 40 && QuestStage < 60) {
 					shrinkRate = 0.00086 * BonusShrink * 2.0;
@@ -244,7 +244,7 @@ namespace Gts {
 				growthRate = Runtime::GetFloat("GrowthModeRate");
 				shrinkRate = Runtime::GetFloat("ShrinkModeRate");
 
-			} else if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+			} else if (actor->formID != 0x14 && IsTeammate(actor)) {
 				if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
 					bonus = scale * 0.25 + 0.75;
 				}

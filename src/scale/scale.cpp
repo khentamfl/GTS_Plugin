@@ -11,6 +11,19 @@ using namespace Gts;
 
 namespace {
 	const float EPS = 1e-4;
+
+	float GetShrinkPenalty(float size) {
+		// https://www.desmos.com/calculator/wh0vwgljfl
+		SoftPotential cut {
+				.k = 0.98, 
+				.n = 0.90, 
+				.s = 0.70, 
+				.a = 0.0, 
+			};
+		float power = soft_power(size, cut);
+		log::info("Shrink Power: Scale: {}", power);
+		return power;
+	}
 }
 
 namespace Gts {
@@ -59,7 +72,7 @@ namespace Gts {
 		if (SizeManager::GetSingleton().BalancedMode() >= 2.0 && amt > 0 && (actor.formID == 0x14 || actor.IsPlayerTeammate() || Runtime::InFaction(&actor, "FollowerFaction"))) {
 			float scale = actor_data->visual_scale; // Enabled if BalanceMode is True. Decreases Grow Efficiency.
 			if (scale >= 1.0) {
-				amt /= (1.5 + (scale/1.5));
+				amt /= GetShrinkPenalty(scale);
 			}
 		}
 		if (Runtime::HasPerkTeam(&actor, "OnTheEdge")) {
