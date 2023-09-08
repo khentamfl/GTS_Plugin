@@ -33,6 +33,7 @@ sounds:
   CrunchKillSound: "GTS.esp|5D8C5D"
   BreastImpact: "GTS.esp|5E2E5F"
   SoftHandAttack: "GTS.esp|5E2E60"
+  SwingImpact: "GTS.esp|68F0AD"
 
   ShrinkOutburstSound: "GTS.esp|6524A3"
   TinyCalamitySound: "GTS.esp|65C6AA"

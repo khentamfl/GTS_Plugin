@@ -96,6 +96,12 @@ namespace {
 			}
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
+
+			if (!HugShrink::GetHuggiesActor(giantref)) {
+				PushActorAway(giantref, tinyref, 1.0);
+				return false;
+			}
+
 			if (ActionTimer.ShouldRunFrame()) { 
 				int rng = rand() % 10;
 				if (rng < 6) {
@@ -110,11 +116,7 @@ namespace {
 					}
 				}
 			}
-			//log::info("Hugs Task is running");
 			if (tinyref->IsDead() || giantref->IsDead()) {
-				return false;
-			}
-			if (!HugShrink::GetHuggiesActor(giantref)) {
 				return false;
 			}
 			return true;
@@ -129,7 +131,7 @@ namespace {
 			return;
 		}
 		HugShrink::GetSingleton().HugActor(pred, prey);
-		log::info("Pred {} is Attacking: {}", pred->IsAttacking());
+		log::info("Pred {} is Attacking: {}", IsAttackAllowed(pred));
 		AnimationManager::StartAnim("Huggies_Try", pred);
 		AnimationManager::StartAnim("Huggies_Try_Victim", prey);
 		StartHugsTask(pred, prey);

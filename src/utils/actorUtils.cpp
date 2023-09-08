@@ -881,7 +881,7 @@ namespace Gts {
 				int Boost = rand() % 3;
 				if (Boost == 0) {
 					giant->AsActorValueOwner()->ModActorValue(ActorValue::kHealth, (value * 4));
-					Persistent::GetSingleton().stolen_health += value * 4;
+					Persistent::GetSingleton().stolen_health += (value * 4);
 				} else if (Boost == 1) {
 					giant->AsActorValueOwner()->ModActorValue(ActorValue::kMagicka, (value * 4));
 					Persistent::GetSingleton().stolen_magick += (value * 4);

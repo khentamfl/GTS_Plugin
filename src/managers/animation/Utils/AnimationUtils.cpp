@@ -546,6 +546,8 @@ namespace Gts {
 							if (giantScale / tinyScale > 2.5) {
 								PushTowards(giant, otherActor, node, pushForce * pushpower, true);
 							}
+							float Volume = clamp(0.10, 1.0, (giantScale/tinyScale)*pushForce);
+							Runtime::PlaySound("SwingImpact", otherActor, Volume, 0.0);
 							sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
 						}
 					}

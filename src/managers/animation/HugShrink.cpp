@@ -66,32 +66,13 @@ namespace {
 		return threshold * bonus;
 	}
 
-	void HugTutorial(Actor* huggedActor, Actor* hugger) {
-		/*if (hugger->formID != 0x14) {
-			return;
-		}
-		std::string message = std::format("You're able to hug crush your current target. Press S to perform hug crush. Hug Crush is possible if target health is below 25% (40% with the perk) or if you're under Tiny Calamity effect.");
-	
-		float health = GetHealthPercentage(huggedActor);	
-		float HpThreshold = GetHPThreshold(hugger);
-		if (HasSMT(hugger)) {
-			TutorialMessage(message, "HugCrush");
-		} else if (health <= HpThreshold) {
-			TutorialMessage(message, "HugCrush");
-		} else {
-			message = std::format("While hugging other, your stamina is constantly drained over time. Stamina of your target is also drained over time. You can steal size by pressing LMB or you can release other by pressing RMB. Target is automatically released when your stamina reaches zero or if you've received too much damage from others during hugs.");
-			TutorialMessage(message, "Hugs");
-		} */
-
-	}
-
 	void GTS_Hug_Grab(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto huggedActor = HugShrink::GetHuggiesActor(giant);
 		if (!huggedActor) {
 			return;
 		}
-		//HugTutorial(huggedActor, giant);
+
 		ToggleEmotionEdit(giant, true);
 		SetBeingHeld(huggedActor, true);
 		HugShrink::AttachActorTask(giant, huggedActor);

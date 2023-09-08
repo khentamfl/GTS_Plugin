@@ -67,7 +67,7 @@ namespace {
 		if (!Runtime::HasPerk(player, "TotalControl")) {
 			return;
 		}
-		if (!player->AsActorState()->IsSwimming() && (!player->IsSneaking())) {
+		if (!player->AsActorState()->IsSwimming() && (IsCrawling(player) || !player->IsSneaking())) {
 			AnimationManager::StartAnim("TriggerShrink", player);
 		}
 	}
