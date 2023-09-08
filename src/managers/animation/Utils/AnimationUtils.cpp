@@ -549,7 +549,7 @@ namespace Gts {
 							}
 							float Volume = clamp(0.10, 1.0, (giantScale/tinyScale)*pushForce);
 							Runtime::PlaySound("SwingImpact", otherActor, Volume, 0.0);
-							ApplyShakeAtPoint(giant, 0.25 * pushpower, node->world.translate, 1.0);
+							ApplyShakeAtPoint(giant, 1.0 * pushpower, node->world.translate, 1.5);
 							sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
 						}
 					}

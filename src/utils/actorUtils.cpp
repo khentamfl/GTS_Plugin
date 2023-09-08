@@ -1043,6 +1043,7 @@ namespace Gts {
 			NiPoint3 endCoords = bone->world.translate;
 			double endTime = Time::WorldTimeElapsed();
 
+
 			if ((endTime - startTime) > 1e-4) {
 				// Time has elapsed
 
@@ -1052,7 +1053,13 @@ namespace Gts {
 				float speed = distanceTravelled / timeTaken;
 				NiPoint3 direction = vector / vector.Length();
 				if (sizecheck) { 
-					float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
+					float giantscale = get_visual_scale(giant);
+					float tinyscale = get_visual_scale(tiny);
+					if (HasSMT(giant)) {
+						giantscale *= 6.0;
+					}
+					float sizedifference = giantscale/tinyscale;
+					
 					if (sizedifference < 1.2) {
 						return false; // terminate task
 					}
@@ -1066,7 +1073,7 @@ namespace Gts {
 				log::info("Applying Havok: Direction: {}, force: {}, speed: {}", Vector2Str(direction), power, speed);
 				TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tiny);
 				if (tiny_is_object) {
-					ApplyHavokImpulse(tiny_is_object, direction.x, direction.y, direction.z, speed * 2.5 * power);
+					ApplyHavokImpulse(tiny_is_object, direction.x, direction.y, direction.z, speed * 2.0 * power);
 				}
 				return false;
 			} else {
