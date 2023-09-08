@@ -102,7 +102,7 @@ namespace {
 					break;
 				case MessagingInterface::kDataLoaded: // All ESM/ESL/ESP plugins have loaded, main menu is now active.
 					// It is now safe to access form data.
-					Cprint("[GTSPlugin.dll]: [ Giantess Mod v 2.00_Test was succesfully initialized. Waiting for New Game/Save Load. ]");
+					Cprint("[GTSPlugin.dll]: [ Giantess Mod v 2.00 Beta was succesfully initialized. Waiting for New Game/Save Load. ]");
 					EventDispatcher::DoDataReady();
 					break;
 				// Skyrim game events.

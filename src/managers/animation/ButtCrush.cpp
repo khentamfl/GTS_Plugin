@@ -201,7 +201,7 @@ namespace {
         auto giant = &data.giant;
         
         float scale = get_visual_scale(giant);
-        float bonus = 0.24 * GetGrowthCount(giant);
+        float bonus = 0.24 * (GetGrowthCount(giant) + 1.0);
         float target = std::clamp(bonus/2, 0.02f, 0.80f);
         ModGrowthCount(giant, 1.0, false);
         SetBonusSize(giant, bonus, false);

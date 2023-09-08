@@ -338,7 +338,7 @@ namespace {
 	}
 	void GTS_BoobCrush_Grow_Start(AnimationEventData& data) {
 		auto giant = &data.giant;
-        float bonus = 0.24 * GetGrowthCount(giant);
+        float bonus = 0.24 * (GetGrowthCount(giant) + 1.0);
         ModGrowthCount(giant, 1.0, false);
         SetBonusSize(giant, bonus, false);
         SpringGrow_Free(giant, bonus, 0.3 / GetAnimationSlowdown(giant), "BreastCrushGrowth");
