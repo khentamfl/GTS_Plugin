@@ -86,7 +86,7 @@ namespace {
 		std::string name = std::format("Huggies_Forced_{}", giant->formID);
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		ActorHandle tinyhandle = tiny->CreateRefHandle();
-		static Timer ActionTimer = Timer(1.5);
+		static Timer ActionTimer = Timer(2.0);
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
@@ -110,7 +110,7 @@ namespace {
 					}
 				}
 			}
-			log::info("Hugs Task is running");
+			//log::info("Hugs Task is running");
 			if (tinyref->IsDead() || giantref->IsDead()) {
 				return false;
 			}
@@ -119,6 +119,18 @@ namespace {
 			}
 			return true;
 		});	 
+	}
+
+	void StartHugs(Actor* giant, Actor* tiny) {
+		auto& hugging = HugAnimationController::GetSingleton();
+		if (!hugging.CanHug(pred, prey)) {
+			return;
+		}
+		HugShrink::GetSingleton().HugActor(pred, prey);
+		log::info("Pred {} is Attacking: {}", pred->IsAttacking());
+		AnimationManager::StartAnim("Huggies_Try", pred);
+		AnimationManager::StartAnim("Huggies_Try_Victim", prey);
+		StartHugsTask(pred, prey);
 	}
 
 	void DoHugs(Actor* pred) {
@@ -136,8 +148,7 @@ namespace {
 		for (auto prey: preys) {
 			float sizedifference = get_visual_scale(pred)/get_visual_scale(prey);
 			if (sizedifference > 0.9 && sizedifference < 3.0) {
-				HugAnimationController::StartHug(pred, prey);
-				StartHugsTask(pred, prey);
+				StartHugs(pred, prey);
 			}
 		}
 	}

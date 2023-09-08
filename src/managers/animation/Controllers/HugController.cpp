@@ -199,7 +199,6 @@ namespace Gts {
 			return;
 		}
 		HugShrink::GetSingleton().HugActor(pred, prey);
-		//BlockFirstPerson(pred, true);
 		log::info("Pred {} is Attacking: {}", pred->IsAttacking());
 		AnimationManager::StartAnim("Huggies_Try", pred);
 		AnimationManager::StartAnim("Huggies_Try_Victim", prey);
