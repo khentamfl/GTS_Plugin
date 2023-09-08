@@ -193,11 +193,15 @@ namespace Gts {
 		if (!hugging.CanHug(pred, prey)) {
 			return;
 		}
+		if (!IsAttackAllowed(pred)) { // Disallow when we attack
+			return;
+		}
 		static Timer HugTimer = Timer(12.0);
 		if (!HugTimer.ShouldRunFrame()) {
 			TiredSound(pred, "Hugs are on the cooldown");
 			return;
-		}
+		} 
+		
 		HugShrink::GetSingleton().HugActor(pred, prey);
 		log::info("Pred {} is Attacking: {}", pred->IsAttacking());
 		AnimationManager::StartAnim("Huggies_Try", pred);

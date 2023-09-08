@@ -215,6 +215,12 @@ namespace Gts {
 		return Stomping > 0;
 	}
 
+	bool IsAttackAllowed(Actor* actor) {
+		bool Attacking;
+		actor->GetGraphVariableBool("isAttackready", Attacking);
+		return Attacking;
+	}
+
 	bool IsBeingEaten(Actor* tiny) {
 		auto transient = Transient::GetSingleton().GetData(tiny);
 		if (transient) {

@@ -121,9 +121,11 @@ namespace {
 		});	 
 	}
 
-	void StartHugs(Actor* giant, Actor* tiny) {
+	void StartHugs(Actor* pred, Actor* prey) {
 		auto& hugging = HugAnimationController::GetSingleton();
 		if (!hugging.CanHug(pred, prey)) {
+			return;
+		} if (!IsAttackAllowed(giant)) {
 			return;
 		}
 		HugShrink::GetSingleton().HugActor(pred, prey);
