@@ -34,6 +34,7 @@ namespace {
 				.a = 0.0, 
 			};
 		float power = soft_power(size, launch);
+		log::info("Shrink Power: {}", power);
 		return power;
 	}
 }

@@ -489,6 +489,7 @@ namespace Gts {
 		InputManager::RegisterInputEvent("HugCrush", HugCrushEvent);
 		InputManager::RegisterInputEvent("ForceHugCrush", ForceHugCrushEvent);
 
+		AnimationManager::RegisterEvent("GTS_Hug_Catch", "Hugs", GTS_Hug_Catch);
 		AnimationManager::RegisterEvent("GTS_Hug_Grab", "Hugs", GTS_Hug_Grab);
 		AnimationManager::RegisterEvent("GTS_Hug_Grow", "Hugs", GTS_Hug_Grow);
 		AnimationManager::RegisterEvent("GTS_Hug_Moan", "Hugs", GTS_Hug_Moan);
