@@ -873,7 +873,6 @@ namespace Gts {
 			if (Persistent::GetSingleton().stolen_attributes < 0) {
 				Persistent::GetSingleton().stolen_attributes = 0; // Cap it just in case
 			}
-			log::info("Adding Stolen Attribute, value: {}", Persistent::GetSingleton().stolen_attributes);
 		}
 	}
 	
