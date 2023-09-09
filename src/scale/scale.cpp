@@ -16,7 +16,7 @@ namespace {
 		// https://www.desmos.com/calculator/pqgliwxzi2
 		SoftPotential cut {
 				.k = 1.18, 
-				.n = 0.76, 
+				.n = 0.70, 
 				.s = 3.00, 
 				.a = 0.0, 
 			};

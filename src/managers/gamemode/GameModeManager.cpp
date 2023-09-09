@@ -26,7 +26,7 @@ using namespace std;
 
 namespace {
 	float GetShrinkPenalty(float size) {
-		// https://www.desmos.com/calculator/wh0vwgljfl
+		// https://www.desmos.com/calculator/pqgliwxzi2
 		SoftPotential launch {
 				.k = 0.98, 
 				.n = 0.82, 
@@ -197,7 +197,7 @@ namespace Gts {
 		float QuestStage = Runtime::GetStage("MainQuest");
 		float BalanceMode = SizeManager::GetSingleton().BalancedMode();
 		float scale = get_visual_scale(actor);
-		float BonusShrink = 7.0;
+		float BonusShrink = 7.4;
 		float bonus = 1.0;
 		if (BalanceMode >= 2.0) {
 			BonusShrink *= GetShrinkPenalty(scale);
