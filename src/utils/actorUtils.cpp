@@ -878,12 +878,12 @@ namespace Gts {
 	}
 	
 	float GetStolenAttributes_Values(Actor* giant, ActorValue type) {
-		if (giant->formId == 0x14) {
+		if (giant->formID == 0x14) {
 			if (type == ActorValue::kHealth) {
 				return Persistent::GetSingleton().stolen_health;
-			} else if (ActorValue::kMagicka) {
+			} else if (type == ActorValue::kMagicka) {
 				return Persistent::GetSingleton().stolen_magick;
-			} else if (ActorValue::kStamina) {
+			} else if (type == ActorValue::kStamina) {
 				return Persistent::GetSingleton().stolen_stamin;
 			}
 		} else {
