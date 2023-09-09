@@ -115,6 +115,7 @@ namespace Gts {
 	void AddPerkPoints(float level);
 
 	void AddStolenAttributes(Actor* giant, float value);
+	float GetStolenAttributes_Values(Actor* giant, ActorValue type);
 	float GetStolenAttributes();
 	void DistributeStolenAttributes(Actor* giant, float value);
 
