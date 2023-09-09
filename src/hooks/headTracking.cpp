@@ -10,7 +10,7 @@ namespace {
 		if (!actor) {
 			return;
 		} 
-		if (IsHeadtracking(actor)) {
+		if (IsHeadtracking(actor)) { // Needed to fix TDM bugs with deforming Meshes of Actors when we lock onto someone
 			return;
 		}
 		// log::info("Actor: {}", actor->GetDisplayFullName());

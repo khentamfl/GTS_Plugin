@@ -415,15 +415,16 @@ namespace Gts {
 
 	bool IsHeadtracking(Actor* giant) {
 		bool tracking = false;
+		auto profiler = Profilers::Profile("ActorUtils: HeadTracking");
 		if (giant->formID == 0x14) {
 			auto currentProcess = giant->GetActorRuntimeData().currentProcess;	
-			if (currentProcess->GetHeadtrackTarget()) {
-				tracking = true;
-				return true;
+			if (currentProcess) {
+				if (currentProcess->GetHeadtrackTarget()) {
+					tracking = true;
+				}
 			}
-			return false;
 		}
-		return false;
+		return tracking;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
