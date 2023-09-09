@@ -53,7 +53,7 @@ namespace Gts {
 					}
 					// Fully shrunk
 					ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
-					Runtime::PlaySoundAtNode("ShrinkToNothingSound", tiny, 1.0, 0.5, tiny->GetPosition());
+					Runtime::PlaySoundAtLocation("ShrinkToNothingSound", tiny, 1.0, 0.5, tiny->GetPosition());
 
 					if (!IsLiving(tiny)) {
 						SpawnDustParticle(tiny, tiny, "NPC Root [Root]", 3.6);
