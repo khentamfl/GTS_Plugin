@@ -1,4 +1,5 @@
 #include "hooks/headTracking.hpp"
+#include "utils/actorUtils.hpp"
 #include "scale/scale.hpp"
 
 using namespace RE;
@@ -7,6 +8,9 @@ using namespace SKSE;
 namespace {
 	void SetHeadtrackTargetImpl(Actor* actor, NiPoint3& target) {
 		if (!actor) {
+			return;
+		} 
+		if (IsHeadtracking(actor)) {
 			return;
 		}
 		// log::info("Actor: {}", actor->GetDisplayFullName());

@@ -413,6 +413,12 @@ namespace Gts {
 		return giant->AsActorState()->IsSprinting() || giant->AsActorState()->IsWalking() || giant->IsRunning() || giant->IsSneaking();
 	}
 
+	bool IsHeadtracking(Actor* giant) {
+		bool tracking;
+		giant->GetGraphVariableBool("TDM_TargetLock", tracking);
+		return tracking;
+	}
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                 G T S   ST A T E S  S E T S                                                                        //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

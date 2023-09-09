@@ -336,16 +336,15 @@ namespace Gts {
 				}
 				return finalValue;
 			} 
-			case ActorValue::kMagicka {
+			case ActorValue::kMagicka: {
 				finalValue = originalValue + perkbonus;
 				return finalValue;
 			} 
-			case ActorValue::kStamina {
+			case ActorValue::kStamina: {
 				finalValue = originalValue + perkbonus;
 				return finalValue;
 			}
 		}
-
 		return finalValue;
 	}
 
