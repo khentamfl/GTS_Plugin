@@ -127,12 +127,11 @@ namespace {
 		auto& hugging = HugAnimationController::GetSingleton();
 		if (!hugging.CanHug(pred, prey)) {
 			return;
-		} if (!IsAttacking(pred) && !IsBlocking(pred) && !IsBashing(pred)) {
-			HugShrink::GetSingleton().HugActor(pred, prey);
-			AnimationManager::StartAnim("Huggies_Try", pred);
-			AnimationManager::StartAnim("Huggies_Try_Victim", prey);
-			StartHugsTask(pred, prey);
-		}
+		}  
+		HugShrink::GetSingleton().HugActor(pred, prey);
+		AnimationManager::StartAnim("Huggies_Try", pred);
+		AnimationManager::StartAnim("Huggies_Try_Victim", prey);
+		StartHugsTask(pred, prey);
 	}
 
 	void DoHugs(Actor* pred) {
@@ -144,13 +143,16 @@ namespace {
 		if (IsGtsBusy(pred)) {
 			return;
 		} 
-		auto& hugs = HugAnimationController::GetSingleton();
-		std::size_t numberOfPrey = 1;
-		std::vector<Actor*> preys = hugs.GetHugTargetsInFront(pred, numberOfPrey);
-		for (auto prey: preys) {
-			float sizedifference = get_visual_scale(pred)/get_visual_scale(prey);
-			if (sizedifference > 0.9 && sizedifference < 3.0) {
-				StartHugs(pred, prey);
+		if (!IsAttacking(pred) && !IsBlocking(pred) && !IsBashing(pred)) {
+			log::info("Check passed");
+			auto& hugs = HugAnimationController::GetSingleton();
+			std::size_t numberOfPrey = 1;
+			std::vector<Actor*> preys = hugs.GetHugTargetsInFront(pred, numberOfPrey);
+			for (auto prey: preys) {
+				float sizedifference = get_visual_scale(pred)/get_visual_scale(prey);
+				if (sizedifference > 0.9 && sizedifference < 3.0) {
+					StartHugs(pred, prey);
+				}
 			}
 		}
 	}
@@ -170,7 +172,6 @@ namespace {
 		}
 	}
 	void Kicks(Actor* pred, int rng) {
-		log::info("Starting Kicks for {}", pred->GetDisplayFullName());
 		if (rng <= 3) {
 			AnimationManager::StartAnim("SwipeHeavy_Right", pred);
 		} else if (rng <= 4) {
@@ -195,10 +196,10 @@ namespace {
 				if (random <= 3) {
 					StrongStomp(pred, actionrng);
 					return;
-				} else if (random <= 7) {
+				} else if (random <= 6) {
 					LightStomp(pred, actionrng);
 					return;
-				} else if (random <= 9) {
+				} else if (random <= 8) {
 					Kicks(pred, actionrng);
 					return;
 				} 
@@ -209,9 +210,9 @@ namespace {
 	void AnimationAttempt(Actor* actor) {
 		float scale = std::clamp(get_visual_scale(actor), 1.0f, 6.0f);
 		int rng = rand() % 100;
-		if (rng >= 5 && rng < 12 * scale) {
+		if (rng >= 5 && rng < 18 * scale) {
 			DoStomp(actor);
-		} else if (rng > 2 && rng < 6) {
+		} else if (rng > 2 && rng < 7) {
 			DoSandwich(actor);
 		} else if (rng <= 2) {
 			DoHugs(actor);
