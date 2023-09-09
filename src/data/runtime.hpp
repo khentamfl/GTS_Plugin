@@ -63,7 +63,6 @@ namespace Gts {
 			static void PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, const std::string_view& node);
 			static void PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, NiAVObject* node);
 			static void PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, NiAVObject& node);
-			static void PlaySoundAtLocation(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, const NiPoint3& pos);
 			// Spell Effects
 			static EffectSetting* GetMagicEffect(const std::string_view& tag);
 			static bool HasMagicEffect(Actor* actor, const std::string_view& tag);

@@ -53,7 +53,7 @@ namespace Gts {
 					}
 					// Fully shrunk
 					ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
-					Runtime::PlaySoundAtLocation("ShrinkToNothingSound", tiny, 1.0, 0.5, tiny->GetPosition());
+					Runtime::PlaySound("ShrinkToNothingSound", tiny, 1.0, 0.5);
 
 					if (!IsLiving(tiny)) {
 						SpawnDustParticle(tiny, tiny, "NPC Root [Root]", 3.6);
@@ -76,7 +76,7 @@ namespace Gts {
 							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 						} else {
-							Runtime::PlaySoundAtLocation("BloodGushSound", tiny, 1.0, 0.5, tiny->GetPosition());
+							Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
 						}
 					}
 
