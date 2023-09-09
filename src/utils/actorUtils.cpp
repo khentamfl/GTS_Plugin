@@ -414,9 +414,16 @@ namespace Gts {
 	}
 
 	bool IsHeadtracking(Actor* giant) {
-		bool tracking;
-		giant->GetGraphVariableBool("TDM_TargetLock", tracking);
-		return tracking;
+		bool tracking = false;
+		if (giant->formID == 0x14) {
+			auto currentProcess = giant->GetActorRuntimeData().currentProcess;	
+			if (currentProcess->GetHeadtrackTarget()) {
+				tracking = true;
+				return true;
+			}
+			return false;
+		}
+		return false;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
