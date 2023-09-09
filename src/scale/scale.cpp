@@ -15,10 +15,10 @@ namespace {
 	float GetShrinkPenalty(float size) {
 		// https://www.desmos.com/calculator/wh0vwgljfl
 		SoftPotential cut {
-				.k = 0.90, 
-				.n = 0.70, 
-				.s = 0.70, 
-				.a = 0.0, 
+				.k = 0.0015, 
+				.n = 3.0, 
+				.s = 0.1, 
+				.a = 1.0, 
 			};
 		float power = soft_power(size, cut);
 		log::info("Power: {}, size {}", power, size);

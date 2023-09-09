@@ -885,6 +885,8 @@ namespace Gts {
 				return Persistent::GetSingleton().stolen_magick;
 			} else if (type == ActorValue::kStamina) {
 				return Persistent::GetSingleton().stolen_stamin;
+			} else {
+				return 0.0;
 			}
 		} 
 		return 0.0;
