@@ -194,12 +194,14 @@ namespace Gts {
 			return;
 		}
 		static Timer HugTimer = Timer(12.0);
-		if (!HugTimer.ShouldRunFrame()) {
-			TiredSound(pred, "Hugs are on the cooldown");
-			return;
-		} 
-		
-		HugShrink::GetSingleton().HugActor(pred, prey);
-		AnimationManager::StartAnim("Huggies_Try", pred);
+		if (!IsAttacking(pred) && !IsBlocking(pred) && !IsBashing(pred)) {
+			if (!HugTimer.ShouldRunFrame()) {
+				TiredSound(pred, "Hugs are on the cooldown");
+				return;
+			} 
+			HugShrink::GetSingleton().HugActor(pred, prey);
+			AnimationManager::StartAnim("Huggies_Try", pred);
+			AnimationManager::StartAnim("Huggies_Try_Victim", prey);
+		}
 	}
 }

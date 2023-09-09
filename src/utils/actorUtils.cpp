@@ -197,6 +197,23 @@ namespace Gts {
 		return sitting > 0;
 	}
 
+	bool IsAttacking(Actor* actor) {
+		int allow;
+		actor->GetGraphVariableBool("IsAttacking", allow);
+		return allow;
+	}
+	bool IsBashing(Actor* actor) {
+		int bash;
+		actor->GetGraphVariableBool("IsBashing", bash);
+		return bash;
+	}
+	bool IsBlocking(Actor* actor) {
+		int block;
+		actor->GetGraphVariableBool("IsBlocking", block);
+		return block;
+	}
+
+
 	bool IsThighCrushing(Actor* actor) { // Are we currently doing Thigh Crush?
 		int crushing;
 		actor->GetGraphVariableInt("GTS_IsThighCrushing", crushing);

@@ -127,10 +127,12 @@ namespace {
 		auto& hugging = HugAnimationController::GetSingleton();
 		if (!hugging.CanHug(pred, prey)) {
 			return;
-		} 
-		HugShrink::GetSingleton().HugActor(pred, prey);
-		AnimationManager::StartAnim("Huggies_Try", pred);
-		StartHugsTask(pred, prey);
+		} if (!IsAttacking(pred) && !IsBlocking(pred) && !IsBashing(pred)) {
+			HugShrink::GetSingleton().HugActor(pred, prey);
+			AnimationManager::StartAnim("Huggies_Try", pred);
+			AnimationManager::StartAnim("Huggies_Try_Victim", prey);
+			StartHugsTask(pred, prey);
+		}
 	}
 
 	void DoHugs(Actor* pred) {

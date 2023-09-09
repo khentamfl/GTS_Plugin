@@ -66,14 +66,7 @@ namespace {
 		return threshold * bonus;
 	}
 
-	void GTS_Hug_Catch(AnimationEventData& data) {
-		auto giant = &data.giant;
-		auto prey = HugShrink::GetHuggiesActor(giant);
-		if (!prey) {
-			return;
-		}
-		AnimationManager::StartAnim("Huggies_Try_Victim", prey);
-	}
+	void GTS_Hug_Catch(AnimationEventData& data) {} // Unused
 
 	void GTS_Hug_Grab(AnimationEventData& data) {
 		auto giant = &data.giant;
