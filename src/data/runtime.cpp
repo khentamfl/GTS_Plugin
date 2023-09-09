@@ -92,7 +92,6 @@ namespace Gts {
 		BSSoundHandle soundHandle;
 		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
 		if (success) {
-			//soundHandle.SetFrequency(frequency);
 			auto actorref = actor->CreateRefHandle();
 			auto actorget = actorref.get().get();
 			if (actorget) {

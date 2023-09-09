@@ -181,24 +181,22 @@ namespace {
 	}
 
 	void FastButtCrush(Actor* pred) {
-		int rng = rand() % 10;
-		if (rng <= 2) {
-			AnimationManager::StartAnim("ButtCrush_StartFast", pred);
-		}
+		AnimationManager::StartAnim("ButtCrush_StartFast", pred);
 	}
 
 	void DoStomp(Actor* pred) {
 		if (!Persistent::GetSingleton().Stomp_Ai) {
 			return;
 		}
+		int butt_rng = rand() % 10;
 		int random = rand() % 10;
 		int actionrng = rand() % 10;
 		std::size_t amount = 6;
 		std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, amount);
 		for (auto prey: preys) {
 			if (AiManager::GetSingleton().CanStomp(pred, prey)) {
-				if (random <= 2) {
-					FastButtCrush(actor);
+				if (random <= 2 && butt_rng <= 2) {
+					FastButtCrush(pred);
 					return;
 				} else if (random <= 3) {
 					StrongStomp(pred, actionrng);
