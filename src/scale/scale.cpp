@@ -15,12 +15,13 @@ namespace {
 	float GetShrinkPenalty(float size) {
 		// https://www.desmos.com/calculator/wh0vwgljfl
 		SoftPotential cut {
-				.k = 0.98, 
-				.n = 0.90, 
+				.k = 0.90, 
+				.n = 0.70, 
 				.s = 0.70, 
 				.a = 0.0, 
 			};
 		float power = soft_power(size, cut);
+		log::info("Power: {}, size {}", power, size);
 		return power;
 	}
 }
@@ -66,6 +67,7 @@ namespace Gts {
 	}
 
 	void mod_target_scale(Actor& actor, float amt) {
+		auto profiler = Profilers::Profile("Scale: ModTargetScale");
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
 		// TODO: Fix this
 		if (SizeManager::GetSingleton().BalancedMode() >= 2.0 && amt > 0 && (actor.formID == 0x14 || actor.IsPlayerTeammate() || Runtime::InFaction(&actor, "FollowerFaction"))) {

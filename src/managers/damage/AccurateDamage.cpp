@@ -474,7 +474,7 @@ namespace Gts {
 		}
 		
 		if (tiny->formID == 0x14 || SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
-			DamageAV(tiny, ActorValue::kStamina, result * 0.75);
+			DamageAV(tiny, ActorValue::kStamina, result * 2.0);
 			result -= GetAV(tiny, ActorValue::kStamina); // Reduce damage by stamina amount
 			if (result < 0) {
 				result = 0; // just to be safe
