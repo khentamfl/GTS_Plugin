@@ -401,10 +401,18 @@ namespace Gts {
 
 			bool IsHugCrushing;
 			giantref->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
+			
+			bool TinyAbsorbed;
+			giantref->GetGraphVariableBool("GTS_TinyAbsorbed", TinyAbsorbed);
 
 			float stamina = GetAV(giantref, ActorValue::kStamina);
 			if (!IsHugCrushing) {
 				if (sizedifference < 0.9 || giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || !HugShrink::GetHuggiesActor(giantref)) {
+					AbortAnimation(giantref, tinyref);
+					return false;
+				}
+			} else if (IsHugCrushing && !TinyAbsorbed) {
+				if (giantref->IsDead() || tinyref->IsDead() || !HugShrink::GetHuggiesActor(giantref)) {
 					AbortAnimation(giantref, tinyref);
 					return false;
 				}
