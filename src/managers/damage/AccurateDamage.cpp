@@ -473,8 +473,8 @@ namespace Gts {
 			AdjustGtsSkill(experience, giant);
 		}
 		
-		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
-			DamageAV(tiny, ActorValue::kStamina, result * 0.50);
+		if (tiny->formID == 0x14 || SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
+			DamageAV(tiny, ActorValue::kStamina, result * 0.75);
 			return; // Stamina protection, emulates Size Damage resistance
 		}
 		if (DoDamage) {

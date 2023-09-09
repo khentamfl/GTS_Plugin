@@ -541,8 +541,10 @@ namespace Gts {
 							float audio = 1.0;
 							if (HasSMT(giant)) {
 								giantScale *= 6.0;
-								damage *= 6.0;
+								pushForce *= 1.5;
+								damage *= 2.25;
 								audio = 3.0;
+								
 							}
 							AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
 							if (giantScale / tinyScale > 2.5) {
@@ -550,7 +552,7 @@ namespace Gts {
 							}
 							float Volume = clamp(0.10, 1.0, (giantScale/tinyScale)*pushForce);
 							Runtime::PlaySound("SwingImpact", otherActor, Volume, 0.0);
-							ApplyShakeAtPoint(giant, 1.0 * pushpower * audio, node->world.translate, 1.5);
+							ApplyShakeAtPoint(giant, 3.0 * pushpower * audio, node->world.translate, 1.5);
 							sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
 						}
 					}
