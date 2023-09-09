@@ -211,7 +211,7 @@ namespace {
 		if (IsCrawling(player)) {
 			return;
 		}
-		if (!IsAttacking(player) && !IsBlocking(player) && !IsBashing(player)) {
+		if (CanDoPaired(player) && !IsSynced(player) && !IsTransferingTiny(player)) {
 			auto& Hugging = HugAnimationController::GetSingleton();
 			std::size_t numberOfPrey = 1;
 			if (Runtime::HasPerkTeam(player, "MassVorePerk")) {

@@ -197,23 +197,16 @@ namespace Gts {
 		return sitting > 0;
 	}
 
-	bool IsAttacking(Actor* actor) {
-		bool allow;
-		actor->GetGraphVariableBool("IsAttacking", allow);
-		log::info("{} is Attacking: {}", actor->GetDisplayFullName(), allow);
-		return allow;
+	bool IsSynced(Actor* actor) {
+		bool sync;
+		actor->GetGraphVariableBool("bIsSynced", sync);
+		return sync;
 	}
-	bool IsBashing(Actor* actor) {
-		bool bash;
-		actor->GetGraphVariableBool("IsBashing", bash);
-		log::info("{} is Bashing: {}", actor->GetDisplayFullName(), bash);
-		return bash;
-	}
-	bool IsBlocking(Actor* actor) {
-		bool block;
-		actor->GetGraphVariableBool("IsBlocking", block);
-		log::info("{} is Blocking: {}", actor->GetDisplayFullName(), block);
-		return block;
+
+	bool CanDoPaired(Actor* actor) {
+		bool paired;
+		actor->GetGraphVariableBool("GTS_CanDoPaired", paired);
+		return paired;
 	}
 
 

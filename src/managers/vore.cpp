@@ -154,7 +154,7 @@ namespace {
 		if (!pred) {
 			return;
 		}
-		int random = rand() % 2;
+		int random = rand() % 3;
 		if (!AllowDevourment() && pred->formID == 0x14 && WasDragon) {
 			log::info("{} was dragon", prey);
 			CompleteDragonQuest();
@@ -163,7 +163,7 @@ namespace {
 			Cprint("{} was absorbed by {}", prey, pred->GetDisplayFullName());
 		} else if (Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
 			Cprint("{} became one with {}", prey, pred->GetDisplayFullName());
-		} else if (Runtime::HasPerk(pred, "SoulVorePerk") && random == 2) {
+		} else if (Runtime::HasPerk(pred, "SoulVorePerk") && random >= 2) {
 			Cprint("{} both body and soul were greedily devoured by {}", prey, pred->GetDisplayFullName());
 		} else {
 			Cprint("{} was absorbed by {}", prey, pred->GetDisplayFullName());
@@ -810,7 +810,9 @@ namespace Gts {
 			if (staminacheck < wastestamina) {
 				Notify("{} is too tired for vore.", pred->GetDisplayFullName());
 				DamageAV(prey, ActorValue::kHealth, 3 * sizedifference);
-				Runtime::PlaySound("VoreSound_Fail", pred, 1.8, 0.0);
+				if (pred->formID == 0x14) {
+					Runtime::PlaySound("VoreSound_Fail", pred, 1.8, 0.0);
+				}
 				StaggerActor(prey);
 				return;
 			}
@@ -821,8 +823,9 @@ namespace Gts {
 			ShrinkUntil(pred, prey, 8.0);
 		}
 
-		
-		Runtime::PlaySound("VoreSound_Success", pred, 0.6, 0.0);
+		if (pred->formID == 0x14) {
+			Runtime::PlaySound("VoreSound_Success", pred, 0.6, 0.0);
+		}
 		auto& voreData = this->GetVoreData(pred);
 		voreData.AddTiny(prey);
 

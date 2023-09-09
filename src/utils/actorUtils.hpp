@@ -30,9 +30,8 @@ namespace Gts {
 	bool IsBetweenBreasts(Actor* actor);
 	bool IsTransferingTiny(Actor* actor);
 	bool IsUsingThighAnimations(Actor* actor);
-	bool IsAttacking(Actor* actor);
-	bool IsBashing(Actor* actor);
-	bool IsBlocking(Actor* actor);
+	bool IsSynced(Actor* actor);
+	bool CanDoPaired(Actor* actor);
 	bool IsThighCrushing(Actor* actor);
 	bool IsThighSandwiching(Actor* actor);
 	bool IsStomping(Actor* actor);

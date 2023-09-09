@@ -141,7 +141,7 @@ namespace {
 		if (IsGtsBusy(pred)) {
 			return;
 		} 
-		if (!IsAttacking(pred) && !IsBlocking(pred) && !IsBashing(pred)) {
+		if (CanDoPaired(pred) && !IsSynced(pred) && !IsTransferingTiny(pred)) {
 			auto& hugs = HugAnimationController::GetSingleton();
 			std::size_t numberOfPrey = 1;
 			std::vector<Actor*> preys = hugs.GetHugTargetsInFront(pred, numberOfPrey);

@@ -138,6 +138,28 @@ namespace Gts {
 		}
 	}
 
+	void Runtime::PlaySoundAtLocation(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, const NiPoint3& pos) {
+		auto soundDescriptor = Runtime::GetSound(tag);
+		if (!soundDescriptor) {
+			log::error("Sound invalid: {}", tag);
+			return;
+		}
+		auto audioManager = BSAudioManager::GetSingleton();
+		if (!audioManager) {
+			log::error("Audio Manager invalid");
+			return;
+		}
+		BSSoundHandle soundHandle;
+		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
+		if (success) {
+			soundHandle.SetVolume(volume);
+			soundHandle.SetPosition(pos);
+			soundHandle.Play();
+		} else {
+			log::error("Could not build sound");
+		}
+	}
+
 	// Spell Effects
 	EffectSetting* Runtime::GetMagicEffect(const std::string_view& tag) {
 		EffectSetting* data = nullptr;
