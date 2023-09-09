@@ -21,7 +21,6 @@ namespace {
 				.a = 0.0, 
 			};
 		float power = soft_power(size, cut);
-		log::info("Shrink Power: Scale: {}", power);
 		return power;
 	}
 }
