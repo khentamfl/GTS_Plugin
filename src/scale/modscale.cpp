@@ -69,7 +69,6 @@ namespace Gts {
 		if (model) {
 			result = true;
 			model->local.scale = target_scale;
-			model->world.scale = target_scale;
 			update_node(model);
 		}
 
@@ -77,7 +76,6 @@ namespace Gts {
 		if (first_model) {
 			result = true;
 			first_model->local.scale = target_scale;
-			first_model->world.scale = target_scale;
 			update_node(first_model);
 		}
 		return result;
@@ -92,7 +90,6 @@ namespace Gts {
 		if (node) {
 			result = true;
 			node->local.scale = target_scale;
-			node->world.scale = target_scale;
 			update_node(node);
 		}
 
@@ -100,7 +97,6 @@ namespace Gts {
 		if (first_node) {
 			result = true;
 			first_node->local.scale = target_scale;
-			first_node->world.scale = target_scale;
 			update_node(first_node);
 		}
 		return result;
