@@ -211,14 +211,16 @@ namespace {
 		if (IsCrawling(player)) {
 			return;
 		}
-		auto& Hugging = HugAnimationController::GetSingleton();
-		std::size_t numberOfPrey = 1;
-		if (Runtime::HasPerkTeam(player, "MassVorePerk")) {
-			numberOfPrey = 1 + (get_visual_scale(player)/3);
-		}
-		std::vector<Actor*> preys = Hugging.GetHugTargetsInFront(player, numberOfPrey);
-		for (auto prey: preys) {
-			Hugging.StartHug(player, prey);
+		if (!IsAttacking(player) && !IsBlocking(player) && !IsBashing(player)) {
+			auto& Hugging = HugAnimationController::GetSingleton();
+			std::size_t numberOfPrey = 1;
+			if (Runtime::HasPerkTeam(player, "MassVorePerk")) {
+				numberOfPrey = 1 + (get_visual_scale(player)/3);
+			}
+			std::vector<Actor*> preys = Hugging.GetHugTargetsInFront(player, numberOfPrey);
+			for (auto prey: preys) {
+				Hugging.StartHug(player, prey);
+			}
 		}
 	}
 
