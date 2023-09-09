@@ -68,14 +68,14 @@ namespace Gts {
 		auto model = actor->Get3D(false);
 		if (model) {
 			result = true;
-			model->local.scale = target_scale;
+			model->world.scale = target_scale;
 			update_node(model);
 		}
 
 		auto first_model = actor->Get3D(true);
 		if (first_model) {
 			result = true;
-			first_model->local.scale = target_scale;
+			first_model->world.scale = target_scale;
 			update_node(first_model);
 		}
 		return result;
@@ -89,14 +89,14 @@ namespace Gts {
 		auto node = find_node(actor, node_name, false);
 		if (node) {
 			result = true;
-			node->local.scale = target_scale;
+			node->world.scale = target_scale;
 			update_node(node);
 		}
 
 		auto first_node = find_node(actor, node_name, true);
 		if (first_node) {
 			result = true;
-			first_node->local.scale = target_scale;
+			first_node->world.scale = target_scale;
 			update_node(first_node);
 		}
 		return result;
@@ -108,11 +108,11 @@ namespace Gts {
 		string node_name = "NPC Root [Root]";
 		auto node = find_node(actor, node_name, false);
 		if (node) {
-			return node->local.scale;
+			return node->world.scale;
 		}
 		auto first_node = find_node(actor, node_name, true);
 		if (first_node) {
-			return first_node->local.scale;
+			return first_node->world.scale;
 		}
 		return -1.0;
 	}
@@ -129,7 +129,7 @@ namespace Gts {
 		}
 		auto parent = childNode->parent;
 		if (parent) {
-			return parent->local.scale;
+			return parent->world.scale;
 		}
 		return -1.0; //
 	}
@@ -141,11 +141,11 @@ namespace Gts {
 		}
 		auto model = actor->Get3D(false);
 		if (model) {
-			return model->local.scale;
+			return model->world.scale;
 		}
 		auto first_model = actor->Get3D(true);
 		if (first_model) {
-			return first_model->local.scale;
+			return first_model->world.scale;
 		}
 		return -1.0;
 	}
