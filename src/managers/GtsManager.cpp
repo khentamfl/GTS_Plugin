@@ -262,7 +262,7 @@ void GtsManager::Update() {
 			accuratedamage.DoAccurateCollisionLeft(actor, 0.4, 1.0, 2000, 0.05, 2.5, DamageSource::Crushed);
 			accuratedamage.DoAccurateCollisionRight(actor, 0.4, 1.0, 2000, 0.05, 2.5, DamageSource::Crushed);
 			ClothManager::GetSingleton().CheckRip();
-			actor->AsActorState()->actorState1 = ActorState1::walking;
+			actor->AsActorState()->actorState1.set(ActorState1::walking);
 
 			if (IsCrawling(actor)) {
 				ApplyAllCrawlingDamage(actor, 1.0, 1000, 0.25);
