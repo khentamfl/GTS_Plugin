@@ -15,10 +15,10 @@ namespace {
 	float GetShrinkPenalty(float size) {
 		// https://www.desmos.com/calculator/wh0vwgljfl
 		SoftPotential cut {
-				.k = 0.015, 
-				.n = 3.0, 
-				.s = 0.1, 
-				.a = 1.0, 
+				.k = 1.26, 
+				.n = 0.82, 
+				.s = 0.74, 
+				.a = 0.0, 
 			};
 		float power = soft_power(size, cut);
 		log::info("Power: {}, size {}", power, size);
@@ -92,6 +92,7 @@ namespace Gts {
 		if (actor_data) {
 			if (amt - EPS < 0.0) {
 				// If neative change always: allow
+				float scale = actor_data->visual_scale;
 				DistributeStolenAttributes(&actor, -amt * GetShrinkPenalty(scale)); // Adjust max attributes
 				actor_data->target_scale += amt;
 			} else if (actor_data->target_scale + amt < (actor_data->max_scale + EPS)) {
