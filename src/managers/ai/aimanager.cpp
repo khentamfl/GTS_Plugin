@@ -135,16 +135,13 @@ namespace {
 	}
 
 	void DoHugs(Actor* pred) {
-		log::info("Starting Hugs for {}", pred->GetDisplayFullName());
 		if (!Persistent::GetSingleton().Sandwich_Ai) {
-			log::info("Hugs AI is false");
 			return;
 		}
 		if (IsGtsBusy(pred)) {
 			return;
 		} 
 		if (!IsAttacking(pred) && !IsBlocking(pred) && !IsBashing(pred)) {
-			log::info("Check passed");
 			auto& hugs = HugAnimationController::GetSingleton();
 			std::size_t numberOfPrey = 1;
 			std::vector<Actor*> preys = hugs.GetHugTargetsInFront(pred, numberOfPrey);
@@ -199,7 +196,7 @@ namespace {
 				} else if (random <= 6) {
 					LightStomp(pred, actionrng);
 					return;
-				} else if (random <= 8) {
+				} else if (random <= 7) {
 					Kicks(pred, actionrng);
 					return;
 				} 
@@ -210,12 +207,15 @@ namespace {
 	void AnimationAttempt(Actor* actor) {
 		float scale = std::clamp(get_visual_scale(actor), 1.0f, 6.0f);
 		int rng = rand() % 100;
-		if (rng >= 5 && rng < 18 * scale) {
+		if (rng > 7 && rng < 33 * scale) {
 			DoStomp(actor);
+			return;
 		} else if (rng > 2 && rng < 7) {
 			DoSandwich(actor);
-		} else if (rng <= 2) {
+			return;
+		} else if (rng <= 1) {
 			DoHugs(actor);
+			return;
 		}
 	}
 }
