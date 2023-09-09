@@ -475,7 +475,12 @@ namespace Gts {
 		
 		if (tiny->formID == 0x14 || SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, result * 0.75);
-			return; // Stamina protection, emulates Size Damage resistance
+			result -= GetAV(tiny, ActorValue::kStamina); // Reduce damage by stamina amount
+			if (result < 0) {
+				result = 0; // just to be safe
+			} if (result < GetAV(tiny, ActorValue::kStamina)) {
+				return; // Fully protect against size-related damage
+			}
 		}
 		if (DoDamage) {
 			ModVulnerability(giant, tiny, result); 
