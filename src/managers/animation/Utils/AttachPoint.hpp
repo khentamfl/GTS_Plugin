@@ -32,11 +32,6 @@ namespace Gts {
 		}
 
 		tiny->SetPosition(point, true);
-		auto charcont = tiny->GetCharController();
-		if (charcont) {
-			charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
-		}
-
 		return true;
 	}
 	template<typename T, typename U>
@@ -138,7 +133,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 				NiPoint3 coords = foot->world*(rotMat*point);
-				return AttachTo(anyGiant, anyTiny, coords);
+				return AttachTo_NoForceRagdoll(anyGiant, anyTiny, coords);
 			}
 		}
 		return false;
@@ -201,7 +196,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 				NiPoint3 coords = foot->world*(rotMat*point);
-				return AttachTo(anyGiant, anyTiny, coords);
+				return AttachTo_NoForceRagdoll(anyGiant, anyTiny, coords);
 			}
 		}
 

@@ -196,7 +196,7 @@ namespace {
 				} else if (random <= 6) {
 					LightStomp(pred, actionrng);
 					return;
-				} else if (random <= 7) {
+				} else if (random <= 9) {
 					Kicks(pred, actionrng);
 					return;
 				} 
