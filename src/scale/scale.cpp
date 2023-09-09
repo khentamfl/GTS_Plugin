@@ -15,7 +15,7 @@ namespace {
 	float GetShrinkPenalty(float size) {
 		// https://www.desmos.com/calculator/wh0vwgljfl
 		SoftPotential cut {
-				.k = 1.26, 
+				.k = 1.18, 
 				.n = 0.82, 
 				.s = 0.74, 
 				.a = 0.0, 
@@ -74,7 +74,7 @@ namespace Gts {
 		auto profiler = Profilers::Profile("Scale: ModTargetScale");
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
 		// TODO: Fix this
-		if (amt > 0 && (actor.formID == 0x14 && IsTeammate(&actor))) {
+		if (amt > 0 && (actor.formID == 0x14 || IsTeammate(&actor))) {
 			float scale = actor_data->visual_scale; // Enabled if BalanceMode is True. Decreases Grow Efficiency.
 			if (scale >= 1.0) {
 				amt /= GetShrinkPenalty(scale);
