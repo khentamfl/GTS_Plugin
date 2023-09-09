@@ -13,14 +13,14 @@ namespace {
 	const float EPS = 1e-4;
 
 	float GetShrinkPenalty(float size) {
-		// https://www.desmos.com/calculator/wh0vwgljfl
+		// https://www.desmos.com/calculator/pqgliwxzi2
 		SoftPotential cut {
-				.k = 1.30, 
-				.n = 0.74, 
-				.s = 0.74, 
+				.k = 1.18, 
+				.n = 0.76, 
+				.s = 3.00, 
 				.a = 0.0, 
 			};
-		float power = soft_core(size, cut);
+		float power = soft_power(size, cut);
 		log::info("Power: {}, size {}", power, size);
 		if (SizeManager::GetSingleton().BalancedMode() >= 2.0) {
 			return power;
