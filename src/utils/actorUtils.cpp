@@ -198,18 +198,21 @@ namespace Gts {
 	}
 
 	bool IsAttacking(Actor* actor) {
-		int allow;
+		bool allow;
 		actor->GetGraphVariableBool("IsAttacking", allow);
+		log::info("{} is Attacking: {}", actor->GetDisplayFullName(), allow);
 		return allow;
 	}
 	bool IsBashing(Actor* actor) {
-		int bash;
+		bool bash;
 		actor->GetGraphVariableBool("IsBashing", bash);
+		log::info("{} is Bashing: {}", actor->GetDisplayFullName(), bash);
 		return bash;
 	}
 	bool IsBlocking(Actor* actor) {
-		int block;
+		bool block;
 		actor->GetGraphVariableBool("IsBlocking", block);
+		log::info("{} is Blocking: {}", actor->GetDisplayFullName(), block);
 		return block;
 	}
 
