@@ -300,6 +300,7 @@ namespace Gts {
 
 	float AttributeManager::AlterGetBaseAv(Actor* actor, ActorValue av, float originalValue) {
 		float finalValue = originalValue;
+		float perkbonus = GetStolenAttributes_Values(actor, av);
 
 		switch (av) {
 			case ActorValue::kHealth: {
@@ -317,7 +318,7 @@ namespace Gts {
 					//at zero scale health=0.0
 					bonus = scale;
 				}
-				float perkbonus = GetStolenAttributes_Values(actor, av);
+				
 				float tempav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av); // Do temp boosts here too
 				float permav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av);  //Do perm boosts here too
 				finalValue = originalValue * bonus + (bonus - 1.0)*(tempav + permav);
@@ -336,12 +337,10 @@ namespace Gts {
 				return finalValue;
 			} 
 			case ActorValue::kMagicka {
-				float perkbonus = GetStolenAttributes_Values(actor, av);
 				finalValue = originalValue + perkbonus;
 				return finalValue;
 			} 
 			case ActorValue::kStamina {
-				float perkbonus = GetStolenAttributes_Values(actor, av);
 				finalValue = originalValue + perkbonus;
 				return finalValue;
 			}
