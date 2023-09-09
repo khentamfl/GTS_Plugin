@@ -22,7 +22,11 @@ namespace {
 			};
 		float power = soft_power(size, cut);
 		log::info("Power: {}, size {}", power, size);
-		return power;
+		if (SizeManager::GetSingleton().BalancedMode() >= 2.0) {
+			return power;
+		} else {
+			return 1.0;
+		}
 	}
 }
 
@@ -70,7 +74,7 @@ namespace Gts {
 		auto profiler = Profilers::Profile("Scale: ModTargetScale");
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
 		// TODO: Fix this
-		if (SizeManager::GetSingleton().BalancedMode() >= 2.0 && amt > 0 && (actor.formID == 0x14 || actor.IsPlayerTeammate() || Runtime::InFaction(&actor, "FollowerFaction"))) {
+		if (amt > 0 && (actor.formID == 0x14 && IsTeammate(&actor))) {
 			float scale = actor_data->visual_scale; // Enabled if BalanceMode is True. Decreases Grow Efficiency.
 			if (scale >= 1.0) {
 				amt /= GetShrinkPenalty(scale);
@@ -88,7 +92,7 @@ namespace Gts {
 		if (actor_data) {
 			if (amt - EPS < 0.0) {
 				// If neative change always: allow
-				DistributeStolenAttributes(&actor, -amt); // Adjust max attributes
+				DistributeStolenAttributes(&actor, -amt * GetShrinkPenalty(scale)); // Adjust max attributes
 				actor_data->target_scale += amt;
 			} else if (actor_data->target_scale + amt < (actor_data->max_scale + EPS)) {
 				// If change results is below max: allow it
