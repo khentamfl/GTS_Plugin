@@ -101,9 +101,9 @@ namespace Gts {
 				NiAVObject* current_3d = actorget->GetCurrent3D();
 				if (current_3d) {
 					follow = current_3d;
+					soundHandle.SetObjectToFollow(follow);
+					soundHandle.Play();
 				}
-				soundHandle.SetObjectToFollow(follow);
-				soundHandle.Play();
 			}
 		} else {
 			log::error("Could not build sound");
