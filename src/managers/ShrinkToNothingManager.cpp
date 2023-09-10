@@ -53,7 +53,7 @@ namespace Gts {
 					}
 					// Fully shrunk
 					ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
-					Runtime::PlaySound("ShrinkToNothingSound", tiny, 1.0, 0.5);
+					
 
 					if (!IsLiving(tiny)) {
 						SpawnDustParticle(tiny, tiny, "NPC Root [Root]", 3.6);
@@ -107,10 +107,14 @@ namespace Gts {
 						EventDispatcher::DoResetActor(tiny);
 					});
 					if (tiny->formID != 0x14) {
-						Disintegrate_Delay(tiny); // Player can't be disintegrated: simply nothing happens.
+						Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
 					} else if (tiny->formID == 0x14) {
 						TriggerScreenBlood(50);
 						tiny->SetAlpha(0.0); // Just make player Invisible
+					}
+
+					if (tinyHandle) {
+						Runtime::PlaySound("ShrinkToNothingSound", tinyHandle.get().get(), 1.0, 0.5);
 					}
 
 					data.state = ShrinkState::Shrinked;

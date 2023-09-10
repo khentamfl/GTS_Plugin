@@ -173,9 +173,6 @@ namespace Gts {
 					if (!tiny->IsDead()) {
 						KillActor(giant, tiny);
 					}
-					if (!LessGore()) {
-						Runtime::PlaySound("GtsCrushSound", tiny, 1.0, 1.0);
-					}
 					//Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
 					float currentSize = get_visual_scale(tiny);
 					MoanOrLaugh(giant, tiny);
@@ -236,7 +233,7 @@ namespace Gts {
 					});
 
 					if (tiny->formID != 0x14) {
-						Disintegrate_Delay(tiny); // Player can't be disintegrated: simply nothing happens.
+						Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
 					} else if (tiny->formID == 0x14) {
 						if (IsLiving(tiny)) {
 							TriggerScreenBlood(50);
@@ -246,6 +243,9 @@ namespace Gts {
 
 					AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
 					FearChance(giant);
+					if (!LessGore() && tinyHandle) {
+						Runtime::PlaySound("GtsCrushSound", tinyHandle.get().get(), 1.0, 1.0);
+					}
 				}
 			}
 		}

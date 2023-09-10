@@ -516,28 +516,6 @@ namespace Gts {
 		
 	}
 
-	void Disintegrate_Delay(Actor* actor) {
-		float Start = Time::WorldTimeElapsed();
-		std::string name = std::format("DeleteActor_{}", actor->formID);
-		auto tinyhandle = actor->CreateRefHandle();
-		actor->SetAlpha(0.0); // make transparent
-		TaskManager::Run(name, [=](auto& progressData) {
-			if (!tinyhandle) {
-				return false;
-			}
-			float Finish = Time::WorldTimeElapsed();
-			auto tinyref = tinyhandle.get().get();
-			float timepassed = Finish - Start;
-			if (timepassed >= 2.50) {
-				tinyref->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
-				tinyref->Disable();
-				return false; // Cancel task
-			}
-			return true;
-		});
-		
-	}
-
 	void Disintegrate(Actor* actor) {
 		actor->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
 		actor->Disable();
