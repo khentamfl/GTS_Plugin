@@ -15,8 +15,8 @@ namespace {
 	float GetShrinkPenalty(float size) {
 		// https://www.desmos.com/calculator/pqgliwxzi2
 		SoftPotential cut {
-				.k = 1.18, 
-				.n = 0.70, 
+				.k = 1.10, 
+				.n = 0.62, 
 				.s = 3.00, 
 				.a = 0.0, 
 			};
