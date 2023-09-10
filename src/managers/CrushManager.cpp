@@ -236,7 +236,7 @@ namespace Gts {
 					});
 
 					if (tiny->formID != 0x14) {
-						Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
+						Disintegrate_Delay(tiny); // Player can't be disintegrated: simply nothing happens.
 					} else if (tiny->formID == 0x14) {
 						if (IsLiving(tiny)) {
 							TriggerScreenBlood(50);

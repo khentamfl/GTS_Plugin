@@ -107,7 +107,7 @@ namespace Gts {
 						EventDispatcher::DoResetActor(tiny);
 					});
 					if (tiny->formID != 0x14) {
-						Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
+						Disintegrate_Delay(tiny); // Player can't be disintegrated: simply nothing happens.
 					} else if (tiny->formID == 0x14) {
 						TriggerScreenBlood(50);
 						tiny->SetAlpha(0.0); // Just make player Invisible
