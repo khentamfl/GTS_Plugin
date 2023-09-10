@@ -243,9 +243,6 @@ namespace Gts {
 
 					AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
 					FearChance(giant);
-					if (!LessGore() && tinyHandle) {
-						Runtime::PlaySound("GtsCrushSound", tinyHandle.get().get(), 1.0, 1.0);
-					}
 				}
 			}
 		}

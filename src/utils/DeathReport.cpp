@@ -4,8 +4,53 @@
 using namespace RE;
 using namespace Gts;
 
+namespace {
+	const std::string_view lFoot = "NPC L Foot [Lft ]";
+	const std::string_view rFoot = "NPC R Foot [Rft ]";
+	const std::string_view rCalf = "NPC R Calf [RClf]";
+	const std::string_view lCalf = "NPC L Calf [LClf]";
+	const std::string_view rHand = "NPC R Finger20 [RF20]";
+	const std::string_view lHand = "NPC L Finger20 [LF20]";
+	const std::string_view rThigh = "NPC R FrontThigh";
+	const std::string_view breast = "NPC Spine2 [Spn2]";
+	const std::string_view booty = "NPC Spine [Spn0]";
+}
+
 
 namespace Gts {
+	
+	std::string_view GetDeathNodeName(DamageSource cause) {
+		std::string_view node;
+		if (cause == DamageSource::HandCrawlRight ||cause == DamageSource::HandSwipeRight||cause == DamageSource::HandSlamRight) {
+			return rHand;
+		} else if (cause == DamageSource::HandCrawlLeft||cause == DamageSource::HandSwipeLeft||cause == DamageSource::HandSlamLeft||DamageSource::HandCrushed) {
+			return lHand;
+		} else if (cause == DamageSource::KickedRight||cause == DamageSource::CrushedRight||cause == DamageSource::FootGrindedRight) {
+			return rFoot;
+		} else if (cause == DamageSource::KickedLeft||cause == DamageSource::CrushedLeft||cause == DamageSource::FootGrindedLeft) {
+			return lFoot;
+		} else if (cause == DamageSource::KneeRight) {
+			return rCalf;
+		} else if (cause == DamageSource::KneeLeft) {
+			return lCalf;
+		} else if (cause == DamageSource::BodyCrush || cause == DamageSource::Hugs) {
+			return breast;
+		} else if (cause == DamageSource::Booty) {
+			return booty;
+		} else if (cause == DamageSource::ThighSandwiched || cause == DamageSource::ThighCrushed) {
+			return rThigh;
+		}
+	}
+
+	NiAVObject* GetDeathNode(DamageSource cause) {
+		auto node = GetDeathNodeName(cause);
+		if (node) {
+			return node;
+		} else {
+			return nullptr;
+		}
+	}
+
 	void ReportDeath(Actor* giant, Actor* tiny, DamageSource cause) {
         int random = rand()% 8;
 

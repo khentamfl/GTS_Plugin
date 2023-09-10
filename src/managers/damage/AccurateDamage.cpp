@@ -11,6 +11,7 @@
 #include "managers/Attributes.hpp"
 #include "managers/hitmanager.hpp"
 #include "managers/highheel.hpp"
+#include "utils/DeathReport.hpp"
 #include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
@@ -97,7 +98,7 @@ namespace {
 				float TargetHp = Target->AsActorValueOwner()->GetActorValue(ActorValue::kHealth);
 				if (CasterHp >= (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
 					CrushManager::Crush(Caster, Target);
-					CrushBonuses(Caster, Target);
+					CrushBonuses(Caster, Target);   
 					PrintDeathSource(Caster, Target, DamageSource::Collision); // Report Death
 					shake_camera(Caster, 0.75 * caster_scale, 0.45);
 					Cprint("{} was instantly turned into mush by the body of {}", Target->GetDisplayFullName(), Caster->GetDisplayFullName());
@@ -464,7 +465,7 @@ namespace Gts {
 
 		result *= damagebonus * TimeScale();
 
-		if (Cause == DamageSource::Crushed && Runtime::HasPerkTeam(giant, "hhBonus")) {
+		if ((Cause == DamageSource::Crushed || Cause == DamageSource::CrushedLeft || Cause == DamageSource::CrushedRight) && Runtime::HasPerkTeam(giant, "hhBonus")) {
 			result *= 1.15; // 15% bonus damage if we have High Heels perk
 		}
 
@@ -490,13 +491,14 @@ namespace Gts {
 		if (GetAV(tiny, ActorValue::kHealth) <= 0 || tiny->IsDead()) {
 			KillActor(giant, tiny);
 			ReportCrime(giant, tiny, 1000, true);
-
-			//StartCombat(giant, tiny, false);
 			if (multiplier >= 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
 					crushmanager.Crush(giant, tiny);
 					CrushBonuses(giant, tiny);
 					PrintDeathSource(giant, tiny, Cause);
+					if (!LessGore()) {
+						Runtime::PlaySoundAtNode("GtsCrushSound", giant, 1.0, 1.0, GetDeathNode(Cause));
+					}
 				}
 			}
 		}
