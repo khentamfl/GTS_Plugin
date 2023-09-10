@@ -8,7 +8,6 @@ using namespace RE;
 using namespace Gts;
 
 namespace Gts {
-    static std::string_view GetDeathNodeName(DamageSource cause);
-    static NiAVObject* GetDeathNode(DamageSource cause);
+    std::string_view GetDeathNodeName(DamageSource cause);
     void ReportDeath(Actor* giant, Actor* tiny, DamageSource cause);
 }

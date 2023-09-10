@@ -33,21 +33,12 @@ namespace Gts {
 			return rCalf;
 		} else if (cause == DamageSource::KneeLeft) {
 			return lCalf;
-		} else if (cause == DamageSource::BodyCrush || cause == DamageSource::Hugs) {
+		} else if (cause == DamageSource::BodyCrush || cause == DamageSource::Hugs || cause == DamageSource::Breast) {
 			return breast;
 		} else if (cause == DamageSource::Booty) {
 			return booty;
 		} else if (cause == DamageSource::ThighSandwiched || cause == DamageSource::ThighCrushed) {
 			return rThigh;
-		}
-	}
-
-	NiAVObject* GetDeathNode(DamageSource cause) {
-		auto node = GetDeathNodeName(cause);
-		if (node) {
-			return node;
-		} else {
-			return nullptr;
 		}
 	}
 

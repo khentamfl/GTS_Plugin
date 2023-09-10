@@ -497,7 +497,12 @@ namespace Gts {
 					CrushBonuses(giant, tiny);
 					PrintDeathSource(giant, tiny, Cause);
 					if (!LessGore()) {
-						Runtime::PlaySoundAtNode("GtsCrushSound", giant, 1.0, 1.0, GetDeathNode(Cause));
+						auto node = GetDeathNodeName(Cause);
+						if (!node) {
+							Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
+							log::info("Error, node not found. Cause: {}", Cause);
+						}
+						Runtime::PlaySoundAtNode("GtsCrushSound", giant, 1.0, 1.0, node);
 					}
 				}
 			}
