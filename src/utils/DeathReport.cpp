@@ -266,7 +266,7 @@ namespace Gts {
 			} else if (random == 2) {
 				Cprint("{} ended up being crushed under the cleavage of {}", TinyName, GiantName);
 			} else if (random == 3) {
-				Cprint("{} was deleted by the breasts of {}", TinyName, GiantName);
+				Cprint("{} was murdered beneath the breasts of {}", TinyName, GiantName);
 			} else if (random == 4) {
 				Cprint("Breasts of {} squeezed all life out of {}", GiantName, TinyName);
 			} else if (random >= 6) {
@@ -309,7 +309,7 @@ namespace Gts {
 				Cprint("{} gently hug crushed {}", GiantName, TinyName);
 			}
 			return;
-		} else if (cause == DamageSource::KneeLeft || casue == DamageSource::KneeRight) { // Crushed by knee
+		} else if (cause == DamageSource::KneeLeft || cause == DamageSource::KneeRight) { // Crushed by knee
 			if (random < 2) {
 				Cprint("{} got crushed under the knee of {}", TinyName, GiantName);
 			} else if (random == 2) {
