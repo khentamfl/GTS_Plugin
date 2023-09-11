@@ -66,7 +66,7 @@ namespace {
 			float sizedifference = giantscale/tinyscale;
 			if (sizedifference >= 0.0) {
 				CrushManager::Crush(player, &data.giant);
-				PrintDeathSource(player, &data.giant, DamageSource::Crushed);
+				PrintDeathSource(player, &data.giant, DamageSource::CrushedLeft);
 			}
 		}
 	}

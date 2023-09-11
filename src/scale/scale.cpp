@@ -21,9 +21,8 @@ namespace {
 				.a = 0.0, 
 			};
 		float power = soft_power(size, cut);
-		log::info("Power: {}, size {}", power, size);
 		if (SizeManager::GetSingleton().BalancedMode() >= 2.0) {
-			return power;
+			return std::clamp(power, 1.0f, 99999.0f); // So it never reports values below 1.0. Just to make sure.
 		} else {
 			return 1.0;
 		}

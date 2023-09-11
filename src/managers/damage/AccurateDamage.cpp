@@ -99,6 +99,11 @@ namespace {
 				if (CasterHp >= (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
 					CrushManager::Crush(Caster, Target);
 					CrushBonuses(Caster, Target);   
+
+					Runtime::PlaySound("GtsCrushSound", Caster, 1.0, 1.0);
+					Runtime::PlaySound("GtsCrushSound", Caster, 1.0, 1.0);
+					Runtime::PlaySound("GtsCrushSound", Caster, 1.0, 1.0);
+					
 					PrintDeathSource(Caster, Target, DamageSource::Collision); // Report Death
 					shake_camera(Caster, 0.75 * caster_scale, 0.45);
 					Cprint("{} was instantly turned into mush by the body of {}", Target->GetDisplayFullName(), Caster->GetDisplayFullName());
@@ -465,7 +470,7 @@ namespace Gts {
 
 		result *= damagebonus * TimeScale();
 
-		if ((Cause == DamageSource::Crushed || Cause == DamageSource::CrushedLeft || Cause == DamageSource::CrushedRight) && Runtime::HasPerkTeam(giant, "hhBonus")) {
+		if ((Cause == DamageSource::CrushedLeft || Cause == DamageSource::CrushedRight) && Runtime::HasPerkTeam(giant, "hhBonus")) {
 			result *= 1.15; // 15% bonus damage if we have High Heels perk
 		}
 
@@ -498,12 +503,12 @@ namespace Gts {
 					PrintDeathSource(giant, tiny, Cause);
 					if (!LessGore()) {
 						auto node = find_node(giant, GetDeathNodeName(Cause));
-						if (!node) {
+						if (node) {
+							Runtime::PlaySoundAtNode("GtsCrushSound", giant, 1.0, 1.0, node);
+						} else {
 							Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
 							log::info("Error, node not found. Cause: {}", Cause);
-							return;
 						}
-						Runtime::PlaySoundAtNode("GtsCrushSound", giant, 1.0, 1.0, node);
 					}
 				}
 			}
