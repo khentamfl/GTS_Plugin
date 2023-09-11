@@ -152,13 +152,13 @@ namespace Gts {
 		float progression_multiplier = Persistent::GetSingleton().progression_multiplier;
 		// y = mx +c
 		// power = scale_factor * scale + bonus
-		return (get_giantess_scale(actor) * scale_factor + bonus) * progression_multiplier * MASTER_POWER * TimeScale();
+		return (get_visual_scale(actor) * scale_factor + bonus) * progression_multiplier * MASTER_POWER * TimeScale();
 	}
 
 	inline float CalcPower_NoMult(Actor* actor, float scale_factor, float bonus) {
 		// y = mx +c
 		// power = scale_factor * scale + bonus
-		return (get_giantess_scale(actor) * scale_factor + bonus) * MASTER_POWER * TimeScale();
+		return (get_visual_scale(actor) * scale_factor + bonus) * MASTER_POWER * TimeScale();
 	}
 
 	inline void Grow(Actor* actor, float scale_factor, float bonus) {
