@@ -184,14 +184,14 @@ namespace Gts {
 		// amount = scale * a + b
 		float amount = CalcPower(actor, scale_factor, bonus);
 		float target_scale = get_target_scale(actor);
-		float natural_scale = get_natural_scale(actor);
+		float natural_scale = get_natural_scale(actor)/get_natural_scale(actor);
 
 		if (fabs(target_scale - natural_scale) < amount) {
 			set_target_scale(actor, natural_scale);
 			return false;
 		} else if (target_scale < natural_scale) { // NOLINT
 			mod_target_scale(actor, amount);
-		} else if (target_scale > natural_scale){
+		} else {
 			mod_target_scale(actor, -amount);
 		}
 		return true;
