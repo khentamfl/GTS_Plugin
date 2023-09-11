@@ -34,8 +34,9 @@ namespace Gts {
 				return;
 			}
 			auto tiny = tinyHandle.get().get();
-			tiny->NotifyAnimationGraph("Ragdoll");
-			ForceRagdoll(tiny, true);
+			//tiny->NotifyAnimationGraph("Ragdoll");
+			//ForceRagdoll(tiny, true);
+			tiny->SetLifeState(ACTOR_LIFE_STATE::kDead);
 			return;
 		});
 	}
