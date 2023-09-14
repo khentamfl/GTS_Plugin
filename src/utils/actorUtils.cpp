@@ -364,6 +364,25 @@ namespace Gts {
 		return false;
 	}
 
+	bool IsInsect(Actor* actor) {
+		bool Spider = Runtime::IsRace(actor, "FrostbiteSpiderRace");
+		bool SpiderGiant = Runtime::IsRace(actor, "FrostbiteSpiderRaceGiant");
+		bool SpiderLarge = Runtime::IsRace(actor, "FrostbiteSpiderRaceLarge");
+		bool ChaurusReaper = Runtime::IsRace(actor, "ChaurusReaperRace");
+		bool Chaurus = Runtime::IsRace(actor, "ChaurusRace");
+		bool ChaurusHunterDLC = Runtime::IsRace(actor, "DLC1ChaurusHunterRace");
+		bool ChaurusDLC = Runtime::IsRace(actor, "DLC1_BF_ChaurusRace");
+		bool ExplSpider = Runtime::IsRace(actor, "DLC2ExpSpiderBaseRace");
+		bool ExplSpiderPackMule = Runtime::IsRace(actor, "DLC2ExpSpiderPackmuleRace");
+		bool AshHopper = Runtime::IsRace(actor, "DLC2AshHopperRace");
+		if (Spider||SpiderGiant||SpiderLarge||ChaurusReaper||Chaurus||ChaurusHunterDLC||ChaurusDLC||ExplSpider||ExplSpiderPackMule||AshHopper) {
+			return true;
+		} else {
+			return false;
+		}
+		return false;
+	}
+
 	bool IsFemale(Actor* actor) {
 		bool FemaleCheck = false;
 		if (!FemaleCheck) {
@@ -384,8 +403,7 @@ namespace Gts {
 		if (Runtime::HasKeyword(actor, "DragonKeyword")) {
 			return true;
 		}
-		if ( std::string(actor->GetDisplayFullName()).find("ragon") != std::string::npos
-		     || Runtime::IsRace(actor, "dragonRace")) {
+		if (Runtime::IsRace(actor, "dragonRace")) {
 			return true;
 		} else {
 			return false;
@@ -413,7 +431,7 @@ namespace Gts {
 		return giant->AsActorState()->IsSprinting() || giant->AsActorState()->IsWalking() || giant->IsRunning() || giant->IsSneaking();
 	}
 
-	bool IsHeadtracking(Actor* giant) {
+	bool IsHeadtracking(Actor* giant) { // Used to report True when we lock onto something, should be Player Exclusive. Used to fix TDM mesh issues.
 		bool tracking = false;
 		auto profiler = Profilers::Profile("ActorUtils: HeadTracking");
 		if (giant->formID == 0x14) {
@@ -513,7 +531,6 @@ namespace Gts {
 			}
 			return true;
 		});
-		
 	}
 
 	void Disintegrate(Actor* actor) {
@@ -810,8 +827,6 @@ namespace Gts {
 		//log::info("Less gore is {}", Persistent::GetSingleton().less_gore);
 		return Persistent::GetSingleton().less_gore;
 	}
-
-	
 
 	bool IsTeammate(Actor* actor) {
 		if (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {

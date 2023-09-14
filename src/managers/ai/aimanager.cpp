@@ -125,9 +125,14 @@ namespace {
 
 	void StartHugs(Actor* pred, Actor* prey) {
 		auto& hugging = HugAnimationController::GetSingleton();
+		auto& persist = Persistent::GetSingleton();
 		if (!hugging.CanHug(pred, prey)) {
 			return;
-		}  
+		} if (!IsHostile(pred, prey) && persist.vore_combatonly) {
+			return;
+		} if (prey->formID == 0x14 && !persist.vore_allowplayervore) {
+			return; 
+		}
 		HugShrink::GetSingleton().HugActor(pred, prey);
 		AnimationManager::StartAnim("Huggies_Try", pred);
 		AnimationManager::StartAnim("Huggies_Try_Victim", prey);
@@ -349,7 +354,7 @@ namespace Gts {
 			return false;
 		}
 		if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
-			return false;
+			return false; 
 		}
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);

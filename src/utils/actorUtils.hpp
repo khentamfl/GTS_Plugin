@@ -52,6 +52,7 @@ namespace Gts {
 	bool InBleedout(Actor* actor);
 	bool AllowStagger(Actor* giant, Actor* tiny);
 	bool IsHuman(Actor* actor);
+	bool IsInsect(Actor* actor);
 	bool IsFemale(Actor* actor);
 	bool IsDragon(Actor* actor);
 	bool IsLiving(Actor* actor);
