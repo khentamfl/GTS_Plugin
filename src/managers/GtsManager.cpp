@@ -82,7 +82,6 @@ namespace {
 		
 		float target_scale = persi_actor_data->target_scale;
 
-		//log::info("Setting {} Other scale to {}, target scale: {}", actor->GetDisplayFullName(), currentOtherScale, target_scale);
 		// Smooth target_scale towards max_scale if target_scale > max_scale
 		float max_scale = persi_actor_data->max_scale;
 		if (target_scale > max_scale) {
