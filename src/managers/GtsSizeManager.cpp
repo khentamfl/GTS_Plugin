@@ -131,7 +131,7 @@ namespace Gts {
 			if (actor->formID == 0x14 && Runtime::HasPerk(actor, "TrueGiantess")) {
 				Endless = 999999.0;
 			}
-			float NaturalScale = get_natural_scale_divide(actor);
+			float NaturalScale = get_natural_scale(actor);
 			float QuestStage = Runtime::GetStage("MainQuest");
 			float Gigantism = this->GetEnchantmentBonus(actor)/100;
 			float GetLimit = clamp(NaturalScale, 99999999.0, NaturalScale + ((Runtime::GetFloat("sizeLimit") - 1.0) * NaturalScale)); // Default size limit
