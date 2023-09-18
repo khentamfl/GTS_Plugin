@@ -819,9 +819,7 @@ namespace Gts {
 			DamageAV(pred, ActorValue::kStamina, wastestamina);
 		}
 
-		if (HasSMT(pred)) {
-			ShrinkUntil(pred, prey, 8.0);
-		}
+		ShrinkUntil(pred, prey, 8.0); // Shrink if we have SMT to allow 'same-size' vore
 
 		if (pred->formID == 0x14) {
 			Runtime::PlaySound("VoreSound_Success", pred, 0.6, 0.0);
@@ -830,7 +828,6 @@ namespace Gts {
 		voreData.AddTiny(prey);
 
 		AnimationManager::GetSingleton().StartAnim("StartVore", pred);
-		//BlockFirstPerson(pred, true);
 	}
 
 	// Gets the current vore data of a giant

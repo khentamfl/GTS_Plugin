@@ -32,6 +32,20 @@ namespace {
 		}
 	}
 
+	void GTS_Crawl_Knee_Trans_Impact(AnimationEventData& data) {
+		auto giant = &data.giant;
+        float scale = get_visual_scale(giant);
+        DoCrawlingFunctions(giant, scale, 1.60, 1.60, CrawlEvent::LeftKnee, "LeftKnee", 24, 22, 1.15, DamageSource::KneeLeft);
+		DoCrawlingFunctions(giant, scale, 1.60, 1.60, CrawlEvent::RightKnee, "RightKnee", 24, 22, 1.15, DamageSource::KneeRight);
+	}
+
+	void GTS_Crawl_Hand_Trans_Impact(AnimationEventData& data) {
+		auto giant = &data.giant;
+        float scale = get_visual_scale(giant);
+        DoCrawlingFunctions(giant, scale, 1.45, 1.45, CrawlEvent::LeftHand, "LeftHand", 20, 18, 1.15, DamageSource::HandCrawlLeft);
+		DoCrawlingFunctions(giant, scale, 1.45, 1.45, CrawlEvent::RightHand, "RightHand", 20, 18, 1.15, DamageSource::HandCrawlRight);
+	}
+
     void GTSCrawl_KneeImpact_L(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
@@ -48,12 +62,12 @@ namespace {
 		if (IsTransferingTiny(giant)) {
 			return; // Prevent effects from left hand
 		}
-        DoCrawlingFunctions(giant, scale, 1.0, 1.0, CrawlEvent::LeftHand, "LeftHand", 18, 14, 1.25, DamageSource::HandCrawlLeft);
+        DoCrawlingFunctions(giant, scale, 1.10, 1.0, CrawlEvent::LeftHand, "LeftHand", 18, 14, 1.25, DamageSource::HandCrawlLeft);
 	}
 	void GTSCrawl_HandImpact_R(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoCrawlingFunctions(giant, scale, 1.0, 1.0, CrawlEvent::RightHand, "RightHand", 18, 14, 1.25, DamageSource::HandCrawlRight);
+        DoCrawlingFunctions(giant, scale, 1.10, 1.0, CrawlEvent::RightHand, "RightHand", 18, 14, 1.25, DamageSource::HandCrawlRight);
 		//                                                                               ^    ^ --- Size Damage Radius
         //                                                                             Launch 
 		//                                                                             Radius
@@ -288,6 +302,9 @@ namespace Gts
 		InputManager::RegisterInputEvent("LightSwipeRight", LightSwipeRightEvent);
 		InputManager::RegisterInputEvent("HeavySwipeLeft", HeavySwipeLeftEvent);
 		InputManager::RegisterInputEvent("HeavySwipeRight", HeavySwipeRightEvent);
+
+		AnimationManager::RegisterEvent("GTS_Crawl_Knee_Trans_Impact", "Crawl", GTS_Crawl_Knee_Trans_Impact);
+		AnimationManager::RegisterEvent("GTS_Crawl_Hand_Trans_Impact", "Crawl", GTS_Crawl_Hand_Trans_Impact);
 
 		AnimationManager::RegisterEvent("GTSCrawl_KneeImpact_L", "Crawl", GTSCrawl_KneeImpact_L);
 		AnimationManager::RegisterEvent("GTSCrawl_KneeImpact_R", "Crawl", GTSCrawl_KneeImpact_R);

@@ -178,10 +178,7 @@ namespace Gts {
 		return 1.0;
 	}
 
-	float get_natural_scale_divide(Actor* actor) {
-		if (actor) {
-			return get_natural_scale(*actor)/get_natural_scale(*actor);
-		}
+	float get_neutral_scale(Actor* actor) {
 		return 1.0;
 	}
 
