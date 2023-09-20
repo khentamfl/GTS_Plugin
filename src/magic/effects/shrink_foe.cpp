@@ -42,7 +42,6 @@ namespace {
 			float timepassed = Finish - Start;
 			if (timepassed >= 2.00) {
 				AddShrinkWeakness(tinyref, -0.018 * TimeScale());
-				log::info("Task Weakness of {} is {}", tinyref->GetDisplayFullName(), GetShrinkWeakness(tinyref));
 				if (GetShrinkWeakness(tinyref) <= 1.0) {
 					ResetShrinkWeakness(tinyref);
 					return false; // Cancel task
