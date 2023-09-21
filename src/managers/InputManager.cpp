@@ -50,7 +50,7 @@ namespace {
 
     // Sort longest duration first
     std::sort(results.begin(), results.end(),
-          [] (InputEventData& const a, InputEventData& const b) { return a.MinDuration() > b.MinDuration(); });
+          [] (InputEventData const& a, InputEventData const& b) { return a.MinDuration() > b.MinDuration(); });
 		return results;
 	}
 
@@ -281,7 +281,7 @@ namespace Gts {
   }
 
   bool InputEventData::SameGroup(const InputEventData& other) {
-    if (this->IsOnUp() && &other.IsOnUp()) {
+    if (&this->IsOnUp() && other.IsOnUp()) {
       return this->keys == other.keys;
     }
     return false;
