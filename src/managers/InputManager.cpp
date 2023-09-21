@@ -140,7 +140,7 @@ namespace Gts {
   }
 
   bool InputEventData::SameGroup(const InputEventData& other) {
-    if (&this->IsOnUp() && other.IsOnUp()) {
+    if (this->IsOnUp() && other.IsOnUp()) {
       return this->keys == other.keys;
     }
     return false;
@@ -266,15 +266,6 @@ namespace Gts {
 			log::error("Error in GtsInput.toml: {}", e.what());
 		}
 		log::info("Loaded {} key bindings", InputManager::GetSingleton().keyTriggers.size());
-		InputManager::RegisterInputEvent("SizeReserve", SizeReserveEvent);
-		InputManager::RegisterInputEvent("DisplaySizeReserve", DisplaySizeReserveEvent);
-		InputManager::RegisterInputEvent("PartyReport", PartyReportEvent);
-		InputManager::RegisterInputEvent("AnimSpeedUp", AnimSpeedUpEvent);
-		InputManager::RegisterInputEvent("AnimSpeedDown", AnimSpeedDownEvent);
-		InputManager::RegisterInputEvent("AnimMaxSpeed", AnimMaxSpeedEvent);
-		InputManager::RegisterInputEvent("RapidGrowth", RapidGrowthEvent);
-		InputManager::RegisterInputEvent("RapidShrink", RapidShrinkEvent);
-		InputManager::RegisterInputEvent("ShrinkOutburst", ShrinkOutburstEvent);
 	}
 
 	BSEventNotifyControl InputManager::ProcessEvent(InputEvent* const* a_event, BSTEventSource<InputEvent*>* a_eventSource) {
