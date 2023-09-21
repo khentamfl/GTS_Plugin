@@ -48,18 +48,14 @@ namespace Gts
 
       // Returns if the event is a onup event
       bool IsOnUp();
-
-
-
-
-			std::string GetName();
+	  std::string GetName();
+	}
 
       // Check if this is an On key up event
       bool IsOnUp() {
-
 			// Checks if this key is the same as another in terms
 			// of mutaally exclusive triggers
-			bool SameGroup(const InputEventData& other);
+	  bool SameGroup(const InputEventData& other);
 		private:
 			std::string name = "";
 			unordered_set<std::uint32_t> keys = {};
