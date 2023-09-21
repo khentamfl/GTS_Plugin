@@ -50,7 +50,7 @@ namespace {
 
     // Sort longest duration first
     std::sort(results.begin(), results.end(),
-          [] (InputEventData const& a, InputEventData const& b) { return a.MinDuration() > b.MinDuration(); });
+          [] (InputEventData const& a, InputEventData const& b) { return &a.MinDuration() > &b.MinDuration(); });
 		return results;
 	}
 
@@ -140,7 +140,7 @@ namespace {
 	}
 
 	void ShrinkOutburstEvent(const InputEventData& data) {
-
+		
 		auto player = PlayerCharacter::GetSingleton();
 		bool DarkArts = Runtime::HasPerk(player, "DarkArts");
 		if (!DarkArts) {
@@ -150,13 +150,13 @@ namespace {
 		bool DarkArts3 = Runtime::HasPerk(player, "DarkArts_Aug3");
 
 		float gigantism = std::clamp(1.0f + SizeManager::GetSingleton().GetEnchantmentBonus(player)*0.01f, 1.0f, 20.0f);
-
+		
 		float multi = std::clamp(Runtime::GetFloat("bonusHPMultiplier"), 0.5f, 10000.0f);
-
+		
 		float healthMax = GetMaxAV(player, ActorValue::kHealth);
 		float healthCur = GetAV(player, ActorValue::kHealth);
 		float damagehp = 80.0;
-
+		
 		if (DarkArts2) {
 			damagehp -= 10; // less hp drain
 		} if (DarkArts3) {
@@ -170,8 +170,8 @@ namespace {
 			Notify("Your health is too low");
 			return; // don't allow us to die from own shrinking
 		}
-
-
+		
+		
 		static Timer NotifyTimer = Timer(2.0);
 
 		if (!ShouldTimerRun(player)) {
@@ -180,12 +180,9 @@ namespace {
 				Notify("Shrink Outburst is on a cooldown");
 			}
 			return;
-		}
-		auto node = find_node(player, "NPC Pelvis [Pelv]");
-		if (node) {
-			DamageAV(player, ActorValue::kHealth, damagehp);
-			ShrinkOutburstExplosion(player, 84.0, node, 0.38, false);
-		}
+		} 
+		DamageAV(player, ActorValue::kHealth, damagehp);
+		ShrinkOutburstExplosion(player, false);
 	}
 
 	void AnimSpeedUpEvent(const InputEventData& data) {

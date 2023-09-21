@@ -52,6 +52,8 @@ namespace Gts
 
 			// Check if this is an On key up event
 			//bool IsOnUp();
+			bool HasKeys();
+
 					// Checks if this key is the same as another in terms
 					// of mutaally exclusive triggers
 			bool SameGroup(const InputEventData& other);
