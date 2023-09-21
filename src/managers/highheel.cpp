@@ -73,7 +73,7 @@ namespace Gts {
 		auto& hhData = this->data[actor];
 		float speedup = 1.0;
 		if (IsCrawling(actor)) {
-			speedup = 0.33; // To shift down a lot faster
+			speedup = 3.00; // To shift down a lot faster
 		}
 		// Should disable HH?
 		bool disableHH = (
@@ -88,7 +88,7 @@ namespace Gts {
 			//log::info("HH is false");
 		} else {
 			hhData.multiplier.target = 1.0;
-			hhData.multiplier.halflife = 1 / AnimationManager::GetAnimSpeed(actor);
+			hhData.multiplier.halflife = 1 / (AnimationManager::GetAnimSpeed(actor) * speedup);
 		}
 
 		NiPoint3 new_hh;
