@@ -40,16 +40,17 @@ namespace {
 					results.push_back(newData);
 				} else {
 					log::error("No valid keys found for event {} at line {}", name, table.location().line());
-					MessageBox("GtsInput.toml error: No valid keys found for event {} at line {}. GTS Input won't work because of errors.", name, table.location().line());
 				}
 			} else if (keys.empty()) {
 				log::warn("Missing keys for {} at line {}", name, table.location().line());
-				MessageBox("GtsInput.toml error: Missing keys for {} at line {}.  GTS Input won't work because of errors.", name, table.location().line());
 			} else {
 				log::warn("Missing name for [[InputEvent]] at line {}", table.location().line());
-				MessageBox("GtsInput.toml error: Missing name for [[InputEvent]] at line {}. GTS Input won't work because of errors.", table.location().line());
 			}
 		}
+
+    // Sort longest duration first
+    std::sort(results.begin(), results.end(),
+          [] (InputEventData const& a, InputEventData const& b) { return a.MinDuration() > b.MinDuration(); });
 		return results;
 	}
 }
@@ -63,6 +64,8 @@ namespace Gts {
 		std::string lower_trigger = str_tolower(trigger);
 		if (lower_trigger == "once") {
 			this->trigger = TriggerMode::Once;
+    } else if (lower_trigger == "release") {
+  			this->trigger = TriggerMode::Release;
 		} else if (
 			lower_trigger ==  "continuous"
 			|| lower_trigger ==  "cont"
@@ -122,6 +125,27 @@ namespace Gts {
 		return keys.size() == 0;
 	}
 
+  void InputEventData::Reset() {
+    this->startTime = Time::WorldTimeElapsed();
+    this->state = InputEventState::Idle;
+    this->primed = false;
+  }
+
+  float InputEventData::MinDuration() {
+    return this->minDuration;
+  }
+
+  bool InputEventData::IsOnUp() {
+    return this->trigger == TriggerMode::Release;
+  }
+
+  bool InputEventData::SameGroup(const InputEventData& other) {
+    if (&this->IsOnUp() && other.IsOnUp()) {
+      return this->keys == other.keys;
+    }
+    return false;
+  }
+
 	bool InputEventData::ShouldFire(const std::unordered_set<std::uint32_t>& keys) {
 		bool shouldFire = false;
 		// Check based on keys and duration
@@ -132,6 +156,7 @@ namespace Gts {
 			this->startTime = Time::WorldTimeElapsed();
 			// and reset the state to idle
 			this->state = InputEventState::Idle;
+      this->primed = false;
 		}
 		// Check based on duration
 		if (shouldFire) {
@@ -142,18 +167,40 @@ namespace Gts {
 		}
 		// Check based on held and trigger state
 		if (shouldFire) {
+      this->primed = true;
 			switch (this->state) {
 				case InputEventState::Idle: {
 					this->state = InputEventState::Held;
-					return true;
+          switch (this->trigger) {
+            // If once or continius start firing now
+						case TriggerMode::Once: {
+							return true;
+						}
+						case TriggerMode::Continuous: {
+							return true;
+						}
+            case TriggerMode::Release: {
+							return false;
+						}
+						default: {
+							log::error("Unexpected TriggerMode.");
+							return false; // Catch if something goes weird
+						}
+					}
 				}
 				case InputEventState::Held: {
 					switch (this->trigger) {
+            // If once stop firing
 						case TriggerMode::Once: {
 							return false;
 						}
 						case TriggerMode::Continuous: {
+              // if continous keep firing
 							return true;
+						}
+            case TriggerMode::Release: {
+              // For release still do nothing
+							return false;
 						}
 						default: {
 							log::error("Unexpected TriggerMode.");
@@ -167,7 +214,20 @@ namespace Gts {
 				}
 			}
 		} else {
-			return false;
+      if (this->primed) {
+        this->primed = false;
+        switch (this->trigger) {
+          case TriggerMode::Release: {
+            // For release fire now that we have stopped pressing
+            return true;
+          }
+          default: {
+            return false;
+          }
+        }
+      } else {
+			     return false;
+      }
 		}
 	}
 
@@ -200,15 +260,21 @@ namespace Gts {
 			InputManager::GetSingleton().keyTriggers = LoadInputEvents();
 		} catch (toml::exception e) {
 			log::error("Error in parsing GtsInput.toml: {}", e.what());
-			MessageBox("Error in parsing GtsInput.toml: {}. GTS Input won't work, double-check GtsInput.toml for errors", e.what());
 		} catch (std::runtime_error e) {
 			log::error("Error in opening GtsInput.toml: {}", e.what());
-			MessageBox("Error in opening GtsInput.toml: {}. GTS Input won't work, double-check GtsInput.toml for errors", e.what());
 		} catch (std::exception e) {
 			log::error("Error in GtsInput.toml: {}", e.what());
-			MessageBox("Error in GtsInput.toml: {}. GTS Input won't work, double-check GtsInput.toml for errors", e.what());
 		}
 		log::info("Loaded {} key bindings", InputManager::GetSingleton().keyTriggers.size());
+		InputManager::RegisterInputEvent("SizeReserve", SizeReserveEvent);
+		InputManager::RegisterInputEvent("DisplaySizeReserve", DisplaySizeReserveEvent);
+		InputManager::RegisterInputEvent("PartyReport", PartyReportEvent);
+		InputManager::RegisterInputEvent("AnimSpeedUp", AnimSpeedUpEvent);
+		InputManager::RegisterInputEvent("AnimSpeedDown", AnimSpeedDownEvent);
+		InputManager::RegisterInputEvent("AnimMaxSpeed", AnimMaxSpeedEvent);
+		InputManager::RegisterInputEvent("RapidGrowth", RapidGrowthEvent);
+		InputManager::RegisterInputEvent("RapidShrink", RapidShrinkEvent);
+		InputManager::RegisterInputEvent("ShrinkOutburst", ShrinkOutburstEvent);
 	}
 
 	BSEventNotifyControl InputManager::ProcessEvent(InputEvent* const* a_event, BSTEventSource<InputEvent*>* a_eventSource) {
@@ -246,15 +312,28 @@ namespace Gts {
 		// log::trace("Currently {} keys are pressed", keys.size());
 		for (auto& trigger: this->keyTriggers) {
 			// log::trace("Checking the {} event", trigger.GetName());
+			std::vector<InputEventData*> firedTriggers; // Store triggers in here that have been fired this frame
 			if (trigger.ShouldFire(keys)) {
-				log::debug(" - Running event {}", trigger.GetName());
-				try {
-					auto& eventData = this->registedInputEvents.at(trigger.GetName());
-					eventData.callback(trigger);
-				} catch (std::out_of_range e) {
-					log::warn("Event {} was triggered but there is no event of that name", trigger.GetName());
-					continue;
-				}
+        bool groupAlreadyFired = false;
+        for (auto firedTrigger: firedTriggers) {
+          if (trigger.SameGroup(*firedTrigger)) {
+            groupAlreadyFired = true;
+            break;
+          }
+        }
+        if (groupAlreadyFired) {
+          trigger.Reset();
+        } else {
+          log::debug(" - Running event {}", trigger.GetName());
+          firedTriggers.push_back(&trigger);
+  				try {
+  					auto& eventData = this->registedInputEvents.at(trigger.GetName());
+  					eventData.callback(trigger);
+  				} catch (std::out_of_range e) {
+  					log::warn("Event {} was triggered but there is no event of that name", trigger.GetName());
+  					continue;
+  				}
+        }
 			}
 		}
 		return BSEventNotifyControl::kContinue;
