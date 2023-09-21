@@ -82,7 +82,6 @@ namespace {
 		
 		float target_scale = persi_actor_data->target_scale;
 
-		//log::info("Setting {} Other scale to {}, target scale: {}", actor->GetDisplayFullName(), currentOtherScale, target_scale);
 		// Smooth target_scale towards max_scale if target_scale > max_scale
 		float max_scale = persi_actor_data->max_scale;
 		if (target_scale > max_scale) {
@@ -259,8 +258,8 @@ void GtsManager::Update() {
 		auto& sizemanager = SizeManager::GetSingleton();
 
 		if (actor->formID == 0x14 || IsTeammate(actor)) {
-			accuratedamage.DoAccurateCollisionLeft(actor, 0.4, 1.0, 2000, 0.05, 2.5, DamageSource::Crushed);
-			accuratedamage.DoAccurateCollisionRight(actor, 0.4, 1.0, 2000, 0.05, 2.5, DamageSource::Crushed);
+			accuratedamage.DoAccurateCollisionLeft(actor, 0.4, 1.0, 2000, 0.05, 3.0, DamageSource::CrushedLeft);
+			accuratedamage.DoAccurateCollisionRight(actor, 0.4, 1.0, 2000, 0.05, 3.0, DamageSource::CrushedRight);
 			ClothManager::GetSingleton().CheckRip();
 
 			if (IsCrawling(actor)) {
@@ -271,8 +270,8 @@ void GtsManager::Update() {
 		}
 		if (Runtime::GetBool("PreciseDamageOthers")) {
 			if (actor->formID != 0x14 && !actor->IsPlayerTeammate() && !Runtime::InFaction(actor, "FollowerFaction")) {
-				accuratedamage.DoAccurateCollisionLeft(actor, 0.4, 1.0, 1000, 0.25, 2.5, DamageSource::Crushed);
-				accuratedamage.DoAccurateCollisionRight(actor, 0.4, 1.0, 1000, 0.25, 2.5, DamageSource::Crushed);
+				accuratedamage.DoAccurateCollisionLeft(actor, 0.4, 1.0, 1000, 0.25, 3.0, DamageSource::CrushedLeft);
+				accuratedamage.DoAccurateCollisionRight(actor, 0.4, 1.0, 1000, 0.25, 3.0, DamageSource::CrushedRight);
 			}
 		}
 

@@ -141,7 +141,7 @@ namespace Gts {
 		std::mt19937 gen(rd());
 		std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
-		Runtime::PlaySound("GtsCrushSound", receiver, 4.0, 2.0);
+		Runtime::PlaySound("GtsCrushSound", receiver, 4.0, 1.0);
 		if (!IsLiving(receiver)) {
 			SpawnDustParticle(receiver, attacker, "NPC Root [Root]", 3.0);
 		} else {

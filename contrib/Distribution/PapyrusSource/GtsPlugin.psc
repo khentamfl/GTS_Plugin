@@ -10,6 +10,9 @@ scriptName GtsPlugin hidden
 
 Float function GetDistanceToCamera(Actor target) global native
 Function SetFeetTracking(Bool enabled) global native
+    
+; Allow/Disallows Camera FOV play
+Function AllowCameraFOVEdits(Bool enabled) global native
 ;==================================================================================
 ;==================================================================================
 ;==================================================================================

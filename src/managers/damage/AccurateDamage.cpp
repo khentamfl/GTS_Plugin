@@ -11,6 +11,7 @@
 #include "managers/Attributes.hpp"
 #include "managers/hitmanager.hpp"
 #include "managers/highheel.hpp"
+#include "utils/DeathReport.hpp"
 #include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
@@ -60,6 +61,20 @@ namespace {
 		return true;
 	}
 
+	void PushCheck(Actor* giant, Actor* tiny, float force) {
+		auto& sizemanager = SizeManager::GetSingleton();
+		auto& accuratedamage = AccurateDamage::GetSingleton();
+		auto model = tiny->GetCurrent3D();
+
+		if (model) {
+			bool isdamaging = sizemanager.IsDamaging(tiny);
+			if (!isdamaging && (force >= 0.12 || IsMoving(giant))) {
+				StaggerOr(giant, tiny, force, 0, 0, 0, 0);
+				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
+			}
+		}
+	}
+
 	void ModVulnerability(Actor* giant, Actor* tiny, float damage) {
 		if (!Runtime::HasPerkTeam(giant, "GrowingPressure")) {
 			return;
@@ -83,7 +98,12 @@ namespace {
 				float TargetHp = Target->AsActorValueOwner()->GetActorValue(ActorValue::kHealth);
 				if (CasterHp >= (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
 					CrushManager::Crush(Caster, Target);
-					CrushBonuses(Caster, Target);
+					CrushBonuses(Caster, Target);   
+
+					Runtime::PlaySound("GtsCrushSound", Caster, 1.0, 1.0);
+					Runtime::PlaySound("GtsCrushSound", Caster, 1.0, 1.0);
+					Runtime::PlaySound("GtsCrushSound", Caster, 1.0, 1.0);
+					
 					PrintDeathSource(Caster, Target, DamageSource::Collision); // Report Death
 					shake_camera(Caster, 0.75 * caster_scale, 0.45);
 					Cprint("{} was instantly turned into mush by the body of {}", Target->GetDisplayFullName(), Caster->GetDisplayFullName());
@@ -376,23 +396,16 @@ namespace Gts {
 
 	void AccurateDamage::ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult, float crushmult, DamageSource Cause) {
 		auto profiler = Profilers::Profile("AccurateDamage: ApplySizeEffect");
-		auto& sizemanager = SizeManager::GetSingleton();
 		auto& accuratedamage = AccurateDamage::GetSingleton();
-		auto model = tiny->GetCurrent3D();
 
-		if (model) {
-			bool isdamaging = sizemanager.IsDamaging(tiny);
-			float movementFactor = 1.0;
-			if (giant->AsActorState()->IsSprinting()) {
-				movementFactor *= 1.5;
-			}
-			if (!isdamaging && (force >= 0.12 || IsMoving(giant))) {
-				StaggerOr(giant, tiny, force, 0, 0, 0, 0);
-				//log::info("Force Is > 0.12, staggering");
-				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
-			}
-			accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true, crushmult, Cause);
+		float movementFactor = 1.0;
+		if (giant->AsActorState()->IsSprinting()) {
+			movementFactor *= 1.5;
 		}
+
+		PushCheck(giant, tiny, force);
+
+		accuratedamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true, crushmult, Cause);
 	}
 
 	void AccurateDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult, int random, float bbmult, bool DoDamage, float crushmult, DamageSource Cause) { // Applies damage and crushing
@@ -455,9 +468,9 @@ namespace Gts {
 		StartCombat(giant, tiny, false);
 		
 
-		result *= damagebonus;
+		result *= damagebonus * TimeScale();
 
-		if (Cause == DamageSource::Crushed && Runtime::HasPerkTeam(giant, "hhBonus")) {
+		if ((Cause == DamageSource::CrushedLeft || Cause == DamageSource::CrushedRight) && Runtime::HasPerkTeam(giant, "hhBonus")) {
 			result *= 1.15; // 15% bonus damage if we have High Heels perk
 		}
 
@@ -466,9 +479,14 @@ namespace Gts {
 			AdjustGtsSkill(experience, giant);
 		}
 		
-		if (SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
-			DamageAV(tiny, ActorValue::kStamina, result * 0.50);
-			return; // Stamina protection, emulates Size Damage resistance
+		if (tiny->formID == 0x14 || SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
+			DamageAV(tiny, ActorValue::kStamina, result * 2.0);
+			result -= GetAV(tiny, ActorValue::kStamina); // Reduce damage by stamina amount
+			if (result < 0) {
+				result = 0; // just to be safe
+			} if (result < GetAV(tiny, ActorValue::kStamina)) {
+				return; // Fully protect against size-related damage
+			}
 		}
 		if (DoDamage) {
 			ModVulnerability(giant, tiny, result); 
@@ -478,12 +496,20 @@ namespace Gts {
 		if (GetAV(tiny, ActorValue::kHealth) <= 0 || tiny->IsDead()) {
 			KillActor(giant, tiny);
 			ReportCrime(giant, tiny, 1000, true);
-			//StartCombat(giant, tiny, false);
 			if (multiplier >= 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
 					crushmanager.Crush(giant, tiny);
 					CrushBonuses(giant, tiny);
 					PrintDeathSource(giant, tiny, Cause);
+					if (!LessGore()) {
+						auto node = find_node(giant, GetDeathNodeName(Cause));
+						if (node) {
+							Runtime::PlaySoundAtNode("GtsCrushSound", giant, 1.0, 1.0, node);
+						} else {
+							Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
+							log::info("Error, node not found. Cause: {}", Cause);
+						}
+					}
 				}
 			}
 		}

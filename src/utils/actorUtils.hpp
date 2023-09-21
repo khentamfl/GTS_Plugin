@@ -30,6 +30,8 @@ namespace Gts {
 	bool IsBetweenBreasts(Actor* actor);
 	bool IsTransferingTiny(Actor* actor);
 	bool IsUsingThighAnimations(Actor* actor);
+	bool IsSynced(Actor* actor);
+	bool CanDoPaired(Actor* actor);
 	bool IsThighCrushing(Actor* actor);
 	bool IsThighSandwiching(Actor* actor);
 	bool IsStomping(Actor* actor);
@@ -47,12 +49,15 @@ namespace Gts {
     // Gts Bools
 	bool IsGrowthSpurtActive(Actor* actor);
 	bool HasGrowthSpurt(Actor* actor);
+	bool InBleedout(Actor* actor);
 	bool AllowStagger(Actor* giant, Actor* tiny);
 	bool IsHuman(Actor* actor);
+	bool IsInsect(Actor* actor);
 	bool IsFemale(Actor* actor);
 	bool IsDragon(Actor* actor);
 	bool IsLiving(Actor* actor);
 	bool IsMoving(Actor* giant);
+	bool IsHeadtracking(Actor* giant);
 	// Gts Bools end
 
 	// GTS State Controllers
@@ -112,6 +117,7 @@ namespace Gts {
 	void AddPerkPoints(float level);
 
 	void AddStolenAttributes(Actor* giant, float value);
+	float GetStolenAttributes_Values(Actor* giant, ActorValue type);
 	float GetStolenAttributes();
 	void DistributeStolenAttributes(Actor* giant, float value);
 

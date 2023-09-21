@@ -11,6 +11,22 @@ using namespace Gts;
 
 namespace {
 	const float EPS = 1e-4;
+
+	float GetShrinkPenalty(float size) {
+		// https://www.desmos.com/calculator/pqgliwxzi2
+		SoftPotential cut {
+				.k = 1.08, 
+				.n = 0.90, 
+				.s = 3.00, 
+				.a = 0.0, 
+			};
+		float power = soft_power(size, cut);
+		if (SizeManager::GetSingleton().BalancedMode() >= 2.0) {
+			return std::clamp(power, 1.0f, 99999.0f); // So it never reports values below 1.0. Just to make sure.
+		} else {
+			return 1.0;
+		}
+	}
 }
 
 namespace Gts {
@@ -54,12 +70,13 @@ namespace Gts {
 	}
 
 	void mod_target_scale(Actor& actor, float amt) {
+		auto profiler = Profilers::Profile("Scale: ModTargetScale");
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
 		// TODO: Fix this
-		if (SizeManager::GetSingleton().BalancedMode() >= 2.0 && amt > 0 && (actor.formID == 0x14 || actor.IsPlayerTeammate() || Runtime::InFaction(&actor, "FollowerFaction"))) {
+		if (amt > 0 && (actor.formID == 0x14 || IsTeammate(&actor))) {
 			float scale = actor_data->visual_scale; // Enabled if BalanceMode is True. Decreases Grow Efficiency.
 			if (scale >= 1.0) {
-				amt /= (1.5 + (scale/1.5));
+				amt /= GetShrinkPenalty(scale);
 			}
 		}
 		if (Runtime::HasPerkTeam(&actor, "OnTheEdge")) {
@@ -74,7 +91,8 @@ namespace Gts {
 		if (actor_data) {
 			if (amt - EPS < 0.0) {
 				// If neative change always: allow
-				DistributeStolenAttributes(&actor, -amt); // Adjust max attributes
+				float scale = actor_data->visual_scale;
+				DistributeStolenAttributes(&actor, -amt * GetShrinkPenalty(scale)); // Adjust max attributes
 				actor_data->target_scale += amt;
 			} else if (actor_data->target_scale + amt < (actor_data->max_scale + EPS)) {
 				// If change results is below max: allow it
@@ -152,6 +170,7 @@ namespace Gts {
 		}
 		return 1.0;
 	}
+
 	float get_natural_scale(Actor* actor) {
 		if (actor) {
 			return get_natural_scale(*actor);
@@ -159,7 +178,11 @@ namespace Gts {
 		return 1.0;
 	}
 
-  float get_giantess_scale(Actor& actor) {
+	float get_neutral_scale(Actor* actor) {
+		return 1.0;
+	}
+
+  	float get_giantess_scale(Actor& actor) {
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
 		if (actor_data) {
 			return actor_data->visual_scale;

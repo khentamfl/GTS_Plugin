@@ -197,6 +197,19 @@ namespace Gts {
 		return sitting > 0;
 	}
 
+	bool IsSynced(Actor* actor) {
+		bool sync;
+		actor->GetGraphVariableBool("bIsSynced", sync);
+		return sync;
+	}
+
+	bool CanDoPaired(Actor* actor) {
+		bool paired;
+		actor->GetGraphVariableBool("GTS_CanDoPaired", paired);
+		return paired;
+	}
+
+
 	bool IsThighCrushing(Actor* actor) { // Are we currently doing Thigh Crush?
 		int crushing;
 		actor->GetGraphVariableInt("GTS_IsThighCrushing", crushing);
@@ -318,6 +331,10 @@ namespace Gts {
 		}
 	}
 
+	bool InBleedout(Actor* actor) {
+		return actor->AsActorState()->IsBleedingOut();
+	}
+
 	bool AllowStagger(Actor* giant, Actor* tiny) {
 		if (Persistent::GetSingleton().allow_stagger == true) {
 			//log::info("Allow_Stagger TRUE: {}, IsTeammate: {} {}", Persistent::GetSingleton().allow_stagger, tiny->GetDisplayFullName(), IsTeammate(tiny));
@@ -347,6 +364,25 @@ namespace Gts {
 		return false;
 	}
 
+	bool IsInsect(Actor* actor) {
+		bool Spider = Runtime::IsRace(actor, "FrostbiteSpiderRace");
+		bool SpiderGiant = Runtime::IsRace(actor, "FrostbiteSpiderRaceGiant");
+		bool SpiderLarge = Runtime::IsRace(actor, "FrostbiteSpiderRaceLarge");
+		bool ChaurusReaper = Runtime::IsRace(actor, "ChaurusReaperRace");
+		bool Chaurus = Runtime::IsRace(actor, "ChaurusRace");
+		bool ChaurusHunterDLC = Runtime::IsRace(actor, "DLC1ChaurusHunterRace");
+		bool ChaurusDLC = Runtime::IsRace(actor, "DLC1_BF_ChaurusRace");
+		bool ExplSpider = Runtime::IsRace(actor, "DLC2ExpSpiderBaseRace");
+		bool ExplSpiderPackMule = Runtime::IsRace(actor, "DLC2ExpSpiderPackmuleRace");
+		bool AshHopper = Runtime::IsRace(actor, "DLC2AshHopperRace");
+		if (Spider||SpiderGiant||SpiderLarge||ChaurusReaper||Chaurus||ChaurusHunterDLC||ChaurusDLC||ExplSpider||ExplSpiderPackMule||AshHopper) {
+			return true;
+		} else {
+			return false;
+		}
+		return false;
+	}
+
 	bool IsFemale(Actor* actor) {
 		bool FemaleCheck = false;
 		if (!FemaleCheck) {
@@ -367,8 +403,7 @@ namespace Gts {
 		if (Runtime::HasKeyword(actor, "DragonKeyword")) {
 			return true;
 		}
-		if ( std::string(actor->GetDisplayFullName()).find("ragon") != std::string::npos
-		     || Runtime::IsRace(actor, "dragonRace")) {
+		if (Runtime::IsRace(actor, "dragonRace")) {
 			return true;
 		} else {
 			return false;
@@ -394,6 +429,20 @@ namespace Gts {
 
 	bool IsMoving(Actor* giant) {
 		return giant->AsActorState()->IsSprinting() || giant->AsActorState()->IsWalking() || giant->IsRunning() || giant->IsSneaking();
+	}
+
+	bool IsHeadtracking(Actor* giant) { // Used to report True when we lock onto something, should be Player Exclusive. Used to fix TDM mesh issues.
+		bool tracking = false;
+		auto profiler = Profilers::Profile("ActorUtils: HeadTracking");
+		if (giant->formID == 0x14) {
+			auto currentProcess = giant->GetActorRuntimeData().currentProcess;	
+			if (currentProcess) {
+				if (currentProcess->GetHeadtrackTarget()) {
+					tracking = true;
+				}
+			}
+		}
+		return tracking;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -482,7 +531,6 @@ namespace Gts {
 			}
 			return true;
 		});
-		
 	}
 
 	void Disintegrate(Actor* actor) {
@@ -780,8 +828,6 @@ namespace Gts {
 		return Persistent::GetSingleton().less_gore;
 	}
 
-	
-
 	bool IsTeammate(Actor* actor) {
 		if (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
 			return true;
@@ -856,9 +902,24 @@ namespace Gts {
 			if (Persistent::GetSingleton().stolen_attributes < 0) {
 				Persistent::GetSingleton().stolen_attributes = 0; // Cap it just in case
 			}
-			log::info("Adding Stolen Attribute, value: {}", Persistent::GetSingleton().stolen_attributes);
 		}
 	}
+	
+	float GetStolenAttributes_Values(Actor* giant, ActorValue type) {
+		if (giant->formID == 0x14) {
+			if (type == ActorValue::kHealth) {
+				return Persistent::GetSingleton().stolen_health;
+			} else if (type == ActorValue::kMagicka) {
+				return Persistent::GetSingleton().stolen_magick;
+			} else if (type == ActorValue::kStamina) {
+				return Persistent::GetSingleton().stolen_stamin;
+			} else {
+				return 0.0;
+			}
+		} 
+		return 0.0;
+	}
+
 	float GetStolenAttributes() {
 		return Persistent::GetSingleton().stolen_attributes;
 	}
@@ -870,13 +931,10 @@ namespace Gts {
 			if (Storage > 0) {
 				int Boost = rand() % 3;
 				if (Boost == 0) {
-					giant->AsActorValueOwner()->ModActorValue(ActorValue::kHealth, (value * 4));
-					Persistent::GetSingleton().stolen_health += value * 4;
+					Persistent::GetSingleton().stolen_health += (value * 4);
 				} else if (Boost == 1) {
-					giant->AsActorValueOwner()->ModActorValue(ActorValue::kMagicka, (value * 4));
 					Persistent::GetSingleton().stolen_magick += (value * 4);
 				} else if (Boost >= 2) {
-					giant->AsActorValueOwner()->ModActorValue(ActorValue::kStamina, (value * 4));
 					Persistent::GetSingleton().stolen_stamin += (value * 4);
 				}
 				AddStolenAttributes(giant, -value); // reduce it
@@ -981,6 +1039,9 @@ namespace Gts {
 		if (tiny->IsDead()) {
 			return;
 		}
+		if (InBleedout(tiny)) {
+			return;
+		}
 		if (IsBeingHeld(tiny)) {
 			return;
 		}
@@ -1036,6 +1097,7 @@ namespace Gts {
 			NiPoint3 endCoords = bone->world.translate;
 			double endTime = Time::WorldTimeElapsed();
 
+
 			if ((endTime - startTime) > 1e-4) {
 				// Time has elapsed
 
@@ -1045,7 +1107,13 @@ namespace Gts {
 				float speed = distanceTravelled / timeTaken;
 				NiPoint3 direction = vector / vector.Length();
 				if (sizecheck) { 
-					float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
+					float giantscale = get_visual_scale(giant);
+					float tinyscale = get_visual_scale(tiny);
+					if (HasSMT(giant)) {
+						giantscale *= 6.0;
+					}
+					float sizedifference = giantscale/tinyscale;
+					
 					if (sizedifference < 1.2) {
 						return false; // terminate task
 					}
@@ -1059,7 +1127,7 @@ namespace Gts {
 				log::info("Applying Havok: Direction: {}, force: {}, speed: {}", Vector2Str(direction), power, speed);
 				TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tiny);
 				if (tiny_is_object) {
-					ApplyHavokImpulse(tiny_is_object, direction.x, direction.y, direction.z, speed * 2.5 * power);
+					ApplyHavokImpulse(tiny_is_object, direction.x, direction.y, direction.z, speed * 2.0 * power);
 				}
 				return false;
 			} else {

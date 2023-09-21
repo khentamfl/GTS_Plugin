@@ -201,7 +201,7 @@ namespace {
         auto giant = &data.giant;
         
         float scale = get_visual_scale(giant);
-        float bonus = 0.24 * GetGrowthCount(giant);
+        float bonus = 0.24 * (GetGrowthCount(giant) + 1.0);
         float target = std::clamp(bonus/2, 0.02f, 0.80f);
         ModGrowthCount(giant, 1.0, false);
         SetBonusSize(giant, bonus, false);
@@ -213,7 +213,7 @@ namespace {
         Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
 		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 
-        StartRumble("BCRumble", data.giant, 0.8, 0.40);
+        StartRumble("BCRumble", data.giant, 0.4, 0.40);
     }
 
     void GTSBEH_ButtCrush_GrowthFinish(AnimationEventData& data) {
@@ -223,12 +223,12 @@ namespace {
     void GTSButtCrush_FootstepR(AnimationEventData& data) { 
         float shake = 1.0;
 		float launch = 1.0;
-		float dust = 1.25;
+		float dust = 1.00;
 		float perk = GetPerkBonus_Basics(&data.giant);
 		if (HasSMT(&data.giant)) {
 			shake = 4.0;
 			launch = 1.2;
-			dust = 1.45;
+			dust = 1.25;
 		}
         Rumble::Once("FS_R", &data.giant, 2.20, 0.0, RNode);
 		DoDamageEffect(&data.giant, 1.4, 1.45 , 10, 0.25, FootEvent::Right, 1.0, DamageSource::Booty);
@@ -240,12 +240,12 @@ namespace {
     void GTSButtCrush_FootstepL(AnimationEventData& data) { 
         float shake = 1.0;
 		float launch = 1.0;
-		float dust = 1.25;
+		float dust = 1.00;
 		float perk = GetPerkBonus_Basics(&data.giant);
 		if (HasSMT(&data.giant)) {
 			shake = 4.0;
 			launch = 1.2;
-			dust = 1.45;
+			dust = 1.25;
 		}
         Rumble::Once("FS_L", &data.giant, 2.20, 0.0, LNode);
 		DoDamageEffect(&data.giant, 1.4, 1.45 , 10, 0.25, FootEvent::Left, 1.0, DamageSource::Booty);
@@ -257,7 +257,7 @@ namespace {
     void GTSButtCrush_HandImpactR(AnimationEventData& data) {
         auto giant = &data.giant;
         float scale = get_visual_scale(giant);
-        DoCrawlingFunctions(giant, scale, 1.0, 1.8, CrawlEvent::RightHand, "RightHand", 18, 14, 1.0, DamageSource::HandCrawl);
+        DoCrawlingFunctions(giant, scale, 1.0, 1.8, CrawlEvent::RightHand, "RightHand", 18, 14, 1.0, DamageSource::HandCrawlRight);
     }
 
     void GTSButtCrush_FallDownImpact(AnimationEventData& data) {

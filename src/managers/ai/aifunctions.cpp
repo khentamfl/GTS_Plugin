@@ -18,12 +18,26 @@ using namespace Gts;
 
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
-		ForceRagdoll(tiny, true);
 		if (!Persistent::GetSingleton().hostile_toggle) {
 			tiny->KillImmediate();
 		} else {
 			tiny->KillImpl(giant, 0, true, true);
 		}
+		RagdollTask(tiny);
+	}
+
+	void RagdollTask(Actor* tiny) {
+		auto tinyHandle = tiny->CreateRefHandle();
+		std::string name = std::format("Ragdoll_{}", tiny->formID);
+		TaskManager::RunOnce(name, [=](auto& update){
+			if (!tinyHandle) {
+				return;
+			}
+			auto tiny = tinyHandle.get().get();
+			tiny->NotifyAnimationGraph("Ragdoll");
+			ForceRagdoll(tiny, true);
+			return;
+		});
 	}
 
 	void StartCombat(Actor* giant, Actor* tiny, bool Forced) {

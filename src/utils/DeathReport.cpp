@@ -4,15 +4,51 @@
 using namespace RE;
 using namespace Gts;
 
+namespace {
+	const std::string_view lFoot = "NPC L Foot [Lft ]";
+	const std::string_view rFoot = "NPC R Foot [Rft ]";
+	const std::string_view rCalf = "NPC R Calf [RClf]";
+	const std::string_view lCalf = "NPC L Calf [LClf]";
+	const std::string_view rHand = "NPC R Finger20 [RF20]";
+	const std::string_view lHand = "NPC L Finger20 [LF20]";
+	const std::string_view rThigh = "NPC R FrontThigh";
+	const std::string_view breast = "NPC Spine2 [Spn2]";
+	const std::string_view booty = "NPC Spine [Spn0]";
+}
+
 
 namespace Gts {
+	
+	std::string_view GetDeathNodeName(DamageSource cause) {
+		std::string_view node;
+		if (cause == DamageSource::HandCrawlRight||cause == DamageSource::HandSwipeRight||cause == DamageSource::HandSlamRight) {
+			return rHand;
+		} else if (cause == DamageSource::HandCrawlLeft||cause == DamageSource::HandSwipeLeft||cause == DamageSource::HandSlamLeft||DamageSource::HandCrushed) {
+			return lHand;
+		} else if (cause == DamageSource::KickedRight||cause == DamageSource::CrushedRight||cause == DamageSource::FootGrindedRight) {
+			return rFoot;
+		} else if (cause == DamageSource::KickedLeft||cause == DamageSource::CrushedLeft||cause == DamageSource::FootGrindedLeft) {
+			return lFoot;
+		} else if (cause == DamageSource::KneeRight) {
+			return rCalf;
+		} else if (cause == DamageSource::KneeLeft) {
+			return lCalf;
+		} else if (cause == DamageSource::BodyCrush||cause == DamageSource::Hugs||cause == DamageSource::Breast||cause == DamageSource::BreastImpact) {
+			return breast;
+		} else if (cause == DamageSource::Booty) {
+			return booty;
+		} else if (cause == DamageSource::ThighSandwiched||cause == DamageSource::ThighCrushed) {
+			return rThigh;
+		}
+	}
+
 	void ReportDeath(Actor* giant, Actor* tiny, DamageSource cause) {
         int random = rand()% 8;
 
 		std::string_view TinyName = tiny->GetDisplayFullName();
 		std::string_view GiantName = giant->GetDisplayFullName();
 
-		if (cause == DamageSource::Crushed) { // Default crush by the feet
+		if (cause == DamageSource::CrushedLeft||cause == DamageSource::CrushedRight) { // Default crush by the feet
 			if (!HighHeelManager::IsWearingHH(giant)) {
 				if (random < 2) {
 					Cprint("{} became a bloody stain under {} foot.", TinyName, GiantName);
@@ -183,22 +219,7 @@ namespace Gts {
 				Cprint("{} blocked too much damage and was squeezed into bloody stain by {}", TinyName, GiantName);
 			}
 			return;
-		} else if (cause == DamageSource::Breast) { // Someone died between breasts
-			if (random == 1) {
-				Cprint("{} was weakened and got accidentally crushed by {} breasts", TinyName, GiantName);
-			} else if (random == 2) {
-				Cprint("{} got unintentionally crushed by the breasts of {}", TinyName, GiantName);
-			} else if (random == 3) {
-				Cprint("{} left this world by being crushed between the cleavage of {}", TinyName, GiantName);
-			} else if (random == 4) {
-				Cprint("Breasts of {} squeezed all life out of {}", GiantName, TinyName);
-			} else if (random >= 6) {
-				Cprint("{} took some damage and ended up crushing {} between her breasts", GiantName, TinyName);
-			} else if (random >= 7) {
-				Cprint("{} got smothered by soft breasts of {}", TinyName, GiantName);
-			}
-			return;
-		} else if (cause == DamageSource::FootGrinded) { // Grinded by the foot. Currently doesn't exist. It is planned to add it.
+		} else if (cause == DamageSource::FootGrindedLeft || cause == DamageSource::FootGrindedRight) { // Grinded by the foot. Currently doesn't exist. It is planned to add it.
 			if (random < 2) {
 				Cprint("{} became a bloody stain under {} foot.", TinyName, GiantName);
 			} else if (random == 2) {
@@ -222,6 +243,36 @@ namespace Gts {
 				Cprint("{} was (un)forunate enough to be melted by the tongue of {} ", TinyName, GiantName);
 			} else if (random >= 7) {
 				Cprint("Tongue of {} sucked all life out of {}", GiantName, TinyName);
+			}
+			return;
+		} else if (cause == DamageSource::Breast) { // Someone died between breasts during Grabbing
+			if (random == 1) {
+				Cprint("{} was weakened and got accidentally crushed by {} breasts", TinyName, GiantName);
+			} else if (random == 2) {
+				Cprint("{} got unintentionally crushed by the breasts of {}", TinyName, GiantName);
+			} else if (random == 3) {
+				Cprint("{} left this world by being crushed between the cleavage of {}", TinyName, GiantName);
+			} else if (random == 4) {
+				Cprint("Breasts of {} squeezed all life out of {}", GiantName, TinyName);
+			} else if (random >= 6) {
+				Cprint("{} took some damage and ended up crushing {} between her breasts", GiantName, TinyName);
+			} else if (random >= 7) {
+				Cprint("{} got smothered by soft breasts of {}", TinyName, GiantName);
+			}
+			return;
+		} else if (cause == DamageSource::BreastImpact) { // Someone died under cleavage
+			if (random == 1) {
+				Cprint("{} was crushed under the soft breasts of {}", TinyName, GiantName);
+			} else if (random == 2) {
+				Cprint("{} ended up being crushed under the cleavage of {}", TinyName, GiantName);
+			} else if (random == 3) {
+				Cprint("{} was murdered beneath the breasts of {}", TinyName, GiantName);
+			} else if (random == 4) {
+				Cprint("Breasts of {} squeezed all life out of {}", GiantName, TinyName);
+			} else if (random >= 6) {
+				Cprint("Cleavage of {} annihilated {}", GiantName, TinyName);
+			} else if (random >= 7) {
+				Cprint("{} got smothered under the soft breasts of {}", TinyName, GiantName);
 			}
 			return;
 		} else if (cause == DamageSource::Booty) { // Butt Crushed. Currently doesn't exist. It is planned though.
@@ -258,7 +309,7 @@ namespace Gts {
 				Cprint("{} gently hug crushed {}", GiantName, TinyName);
 			}
 			return;
-		} else if (cause == DamageSource::Knee) { // Crushed by knee
+		} else if (cause == DamageSource::KneeLeft || cause == DamageSource::KneeRight) { // Crushed by knee
 			if (random < 2) {
 				Cprint("{} got crushed under the knee of {}", TinyName, GiantName);
 			} else if (random == 2) {
@@ -275,7 +326,7 @@ namespace Gts {
 				Cprint("{} didn't realize that it's extremely dangerous to be under {} knees", TinyName, GiantName);
 			}
 			return;
-		} else if (cause == DamageSource::HandCrawl) { // By hand
+		} else if (cause == DamageSource::HandCrawlLeft || cause == DamageSource::HandCrawlRight) { // By hand
 			if (random < 2) {
 				Cprint("{} was accidentally crushed by the hand of {}", TinyName, GiantName);
 			} else if (random == 2) {
@@ -292,7 +343,7 @@ namespace Gts {
 				Cprint("{} heard some crunching around her hands", GiantName, TinyName);
 			}
 			return;
-		} else if (cause == DamageSource::HandSlam) { // By hand
+		} else if (cause == DamageSource::HandSlamLeft || cause == DamageSource::HandSlamRight) { // By hand
 			if (random < 2) {
 				Cprint("Hand of {} aggressively crushed {}", GiantName, TinyName);
 			} else if (random == 2) {
@@ -309,7 +360,7 @@ namespace Gts {
 				Cprint("{} smalled {} with too much force", GiantName, TinyName);
 			}
 			return;
-		} else if (cause == DamageSource::HandSwipe) { // By hand
+		} else if (cause == DamageSource::HandSwipeLeft || cause == DamageSource::HandSwipeRight) { // By hand
 			if (random < 2) {
 				Cprint("{} was sent flying by the {}", TinyName, GiantName);
 			} else if (random == 2) {
@@ -326,7 +377,7 @@ namespace Gts {
 				Cprint("{} wanted to push {} away, but ended up crushing {} instead", GiantName, TinyName, TinyName);
 			}
 			return;
-		} else if (cause == DamageSource::Kicked) { // By being kicked
+		} else if (cause == DamageSource::KickedLeft || cause == DamageSource::KickedRight) { // By being kicked
 			if (random < 2) {
 				Cprint("{} was sent flying by the {}", TinyName, GiantName);
 			} else if (random == 2) {

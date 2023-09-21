@@ -66,24 +66,7 @@ namespace {
 		return threshold * bonus;
 	}
 
-	void HugTutorial(Actor* huggedActor, Actor* hugger) {
-		/*if (hugger->formID != 0x14) {
-			return;
-		}
-		std::string message = std::format("You're able to hug crush your current target. Press S to perform hug crush. Hug Crush is possible if target health is below 25% (40% with the perk) or if you're under Tiny Calamity effect.");
-	
-		float health = GetHealthPercentage(huggedActor);	
-		float HpThreshold = GetHPThreshold(hugger);
-		if (HasSMT(hugger)) {
-			TutorialMessage(message, "HugCrush");
-		} else if (health <= HpThreshold) {
-			TutorialMessage(message, "HugCrush");
-		} else {
-			message = std::format("While hugging other, your stamina is constantly drained over time. Stamina of your target is also drained over time. You can steal size by pressing LMB or you can release other by pressing RMB. Target is automatically released when your stamina reaches zero or if you've received too much damage from others during hugs.");
-			TutorialMessage(message, "Hugs");
-		} */
-
-	}
+	void GTS_Hug_Catch(AnimationEventData& data) {} // Unused
 
 	void GTS_Hug_Grab(AnimationEventData& data) {
 		auto giant = &data.giant;
@@ -91,7 +74,7 @@ namespace {
 		if (!huggedActor) {
 			return;
 		}
-		//HugTutorial(huggedActor, giant);
+
 		ToggleEmotionEdit(giant, true);
 		SetBeingHeld(huggedActor, true);
 		HugShrink::AttachActorTask(giant, huggedActor);
@@ -228,14 +211,16 @@ namespace {
 		if (IsCrawling(player)) {
 			return;
 		}
-		auto& Hugging = HugAnimationController::GetSingleton();
-		std::size_t numberOfPrey = 1;
-		if (Runtime::HasPerkTeam(player, "MassVorePerk")) {
-			numberOfPrey = 1 + (get_visual_scale(player)/3);
-		}
-		std::vector<Actor*> preys = Hugging.GetHugTargetsInFront(player, numberOfPrey);
-		for (auto prey: preys) {
-			Hugging.StartHug(player, prey);
+		if (CanDoPaired(player) && !IsSynced(player) && !IsTransferingTiny(player)) {
+			auto& Hugging = HugAnimationController::GetSingleton();
+			std::size_t numberOfPrey = 1;
+			if (Runtime::HasPerkTeam(player, "MassVorePerk")) {
+				numberOfPrey = 1 + (get_visual_scale(player)/3);
+			}
+			std::vector<Actor*> preys = Hugging.GetHugTargetsInFront(player, numberOfPrey);
+			for (auto prey: preys) {
+				Hugging.StartHug(player, prey);
+			}
 		}
 	}
 
@@ -359,7 +344,7 @@ namespace Gts {
 
 			if (sizedifference >= threshold) {
 				SetBeingHeld(tinyref, false);
-				std::string_view message = std::format("You can't shrink {} any further", tinyref->GetDisplayFullName());
+				std::string_view message = std::format("{} can't shrink {} any further", giantref->GetDisplayFullName(), tinyref->GetDisplayFullName());
 				Notify(message);
 				AbortAnimation(giantref, tinyref);
 				return false;
@@ -399,6 +384,7 @@ namespace Gts {
 			auto tinyref = tinyhandle.get().get();
 			
 			ShutUp(tinyref);
+			float threshold = GetShrinkThreshold(giantref);
 
 			// Exit on death
 			float sizedifference = get_visual_scale(giantref)/get_visual_scale(tinyref);
@@ -406,18 +392,27 @@ namespace Gts {
 				// If face towards fails then actor is invalid
 				return false;
 			}
-
-			GrabStaminaDrain(giantref, tinyref, sizedifference * 2.6);
+			if (giantref->formID == 0x14) {
+				GrabStaminaDrain(giantref, tinyref, sizedifference * 2.6);
+			}
 			AdjustGtsSkill(0.00005, giantref);
 
 			DamageAV(tinyref, ActorValue::kStamina, 0.125 * TimeScale()); // Drain Tiny Stamina
 
 			bool IsHugCrushing;
 			giantref->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
+			
+			bool TinyAbsorbed;
+			giantref->GetGraphVariableBool("GTS_TinyAbsorbed", TinyAbsorbed);
 
 			float stamina = GetAV(giantref, ActorValue::kStamina);
 			if (!IsHugCrushing) {
 				if (sizedifference < 0.9 || giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || !HugShrink::GetHuggiesActor(giantref)) {
+					AbortAnimation(giantref, tinyref);
+					return false;
+				}
+			} else if (IsHugCrushing && !TinyAbsorbed) {
+				if (giantref->IsDead() || tinyref->IsDead() || !HugShrink::GetHuggiesActor(giantref)) {
 					AbortAnimation(giantref, tinyref);
 					return false;
 				}
@@ -460,7 +455,7 @@ namespace Gts {
 		if (!huggedActor) {
 			return;
 		}
-		std::string_view message = std::format("{} was saved from your hugs", huggedActor->GetDisplayFullName());
+		std::string_view message = std::format("{} was saved from hugs of {}", huggedActor->GetDisplayFullName(), giant->GetDisplayFullName());
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(huggedActor);
 		if (giant->formID == 0x14) {
 			shake_camera(giant, 0.25 * sizedifference, 0.35);
@@ -497,6 +492,7 @@ namespace Gts {
 		InputManager::RegisterInputEvent("HugCrush", HugCrushEvent);
 		InputManager::RegisterInputEvent("ForceHugCrush", ForceHugCrushEvent);
 
+		AnimationManager::RegisterEvent("GTS_Hug_Catch", "Hugs", GTS_Hug_Catch);
 		AnimationManager::RegisterEvent("GTS_Hug_Grab", "Hugs", GTS_Hug_Grab);
 		AnimationManager::RegisterEvent("GTS_Hug_Grow", "Hugs", GTS_Hug_Grow);
 		AnimationManager::RegisterEvent("GTS_Hug_Moan", "Hugs", GTS_Hug_Moan);

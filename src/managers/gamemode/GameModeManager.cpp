@@ -24,6 +24,20 @@ using namespace RE;
 using namespace SKSE;
 using namespace std;
 
+namespace {
+	float GetShrinkPenalty(float size) {
+		// https://www.desmos.com/calculator/pqgliwxzi2
+		SoftPotential launch {
+				.k = 0.98, 
+				.n = 0.82, 
+				.s = 0.70, 
+				.a = 0.0, 
+			};
+		float power = soft_power(size, launch);
+		return power;
+	}
+}
+
 namespace Gts {
 
 	GameModeManager& GameModeManager::GetSingleton() noexcept {
@@ -40,7 +54,7 @@ namespace Gts {
 		const float EPS = 1e-7;
 		if (game_mode != ChosenGameMode::None) {
 			auto player = PlayerCharacter::GetSingleton();
-			float natural_scale = get_natural_scale(actor);
+			float natural_scale = get_neutral_scale(actor);
 			float Scale = std::clamp(get_visual_scale(actor) * 0.25f, 1.0f, 10.0f);
 			float maxScale = get_max_scale(actor);
 			float targetScale = get_target_scale(actor);
@@ -183,21 +197,21 @@ namespace Gts {
 		float QuestStage = Runtime::GetStage("MainQuest");
 		float BalanceMode = SizeManager::GetSingleton().BalancedMode();
 		float scale = get_visual_scale(actor);
-		float BonusShrink = 7.0;
+		float BonusShrink = 7.4;
 		float bonus = 1.0;
 		if (BalanceMode >= 2.0) {
-			BonusShrink = (3.5 * (scale * 1.35));
+			BonusShrink *= GetShrinkPenalty(scale);
 		}
 
 		if (QuestStage < 100.0 || BalanceMode >= 2.0) {
-			if ((actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+			if (actor->formID == 0x14 || IsTeammate(actor)) {
 				game_mode_int = 6; // QuestMode
 				if (QuestStage >= 40 && QuestStage < 60) {
-					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 2.0);
+					shrinkRate = 0.00086 * BonusShrink * 2.0;
 				} else if (QuestStage >= 60 && QuestStage < 80) {
-					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.6);
+					shrinkRate = 0.00086 * BonusShrink * 1.6;
 				} else if (BalanceMode >= 2.0 && QuestStage > 80) {
-					shrinkRate = 0.00086 * (((BalanceMode) * BonusShrink) * 1.40);
+					shrinkRate = 0.00086 * BonusShrink * 1.40;
 				}
 
 				if (Runtime::HasMagicEffect(actor, "EffectGrowthPotion")) {
@@ -229,7 +243,7 @@ namespace Gts {
 				growthRate = Runtime::GetFloat("GrowthModeRate");
 				shrinkRate = Runtime::GetFloat("ShrinkModeRate");
 
-			} else if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+			} else if (actor->formID != 0x14 && IsTeammate(actor)) {
 				if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
 					bonus = scale * 0.25 + 0.75;
 				}

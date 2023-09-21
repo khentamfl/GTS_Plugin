@@ -92,17 +92,18 @@ namespace Gts {
 		BSSoundHandle soundHandle;
 		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
 		if (success) {
-			//soundHandle.SetFrequency(frequency);
-			soundHandle.SetVolume(volume);
-			NiAVObject* follow = nullptr;
-			if (actor) {
-				NiAVObject* current_3d = actor->GetCurrent3D();
+			auto actorref = actor->CreateRefHandle();
+			auto actorget = actorref.get().get();
+			if (actorget) {
+				soundHandle.SetVolume(volume);
+				NiAVObject* follow = nullptr;
+				NiAVObject* current_3d = actorget->GetCurrent3D();
 				if (current_3d) {
 					follow = current_3d;
+					soundHandle.SetObjectToFollow(follow);
+					soundHandle.Play();
 				}
 			}
-			soundHandle.SetObjectToFollow(follow);
-			soundHandle.Play();
 		} else {
 			log::error("Could not build sound");
 		}

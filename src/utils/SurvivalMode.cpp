@@ -91,7 +91,7 @@ namespace Gts {
             restore *= 6.0; // Stronger gain on Vore Finish
         }
 
-        float power = (get_visual_scale(giant)/tinyscale); // Get size differenceand * it by natural size
+        float power = (get_visual_scale(giant)/tinyscale); // Get size difference and * it by natural size
 
         log::info("Adjusting HungerNeed, restore: {}, power: {}, type: {}", restore, power, type);
 		HungerNeed->value -= (restore / power) * naturalsize;

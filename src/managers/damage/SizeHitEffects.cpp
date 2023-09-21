@@ -8,6 +8,7 @@
 #include "managers/hitmanager.hpp"
 #include "managers/Attributes.hpp"
 #include "utils/actorUtils.hpp"
+#include "data/persistent.hpp"
 #include "managers/Rumble.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
@@ -16,7 +17,7 @@
 #include "Config.hpp"
 #include "timer.hpp"
 #include "node.hpp"
-#include <vector>
+#include <vector> 
 #include <string>
 
 using namespace Gts;
@@ -63,6 +64,12 @@ namespace {
 		receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, a_damage * 0.25);
 		DamageAV(grabbedActor, ActorValue::kHealth, a_damage * 0.25);
 		if (grabbedActor->IsDead() || GetAV(grabbedActor, ActorValue::kHealth) < a_damage * 0.25) {
+			if (!IsBetweenBreasts(receiver)) {
+				PrintDeathSource(receiver, grabbedActor, DamageSource::BlockDamage);
+			} else {
+				PrintDeathSource(receiver, grabbedActor, DamageSource::Breast);
+			}
+
 			Grab::DetachActorTask(receiver);
 			auto hand = find_node(receiver, "NPC L Hand [LHnd]");
 			if (hand) {
@@ -78,16 +85,11 @@ namespace {
 				Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
 				Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
 				Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
-			} else {
+			} else {   
 				Runtime::PlaySoundAtNode("SoftHandAttack", receiver, 1.0, 1.0, "NPC L Hand [LHnd]");
 			}
 			Rumble::Once("GrabAttackKill", receiver, 8.0, 0.15, "NPC L Hand [LHnd]");
 			AnimationManager::StartAnim("GrabAbort", receiver); // Abort Grab animation
-			if (!IsBetweenBreasts(receiver)) {
-				PrintDeathSource(receiver, grabbedActor, DamageSource::BlockDamage);
-			} else {
-				PrintDeathSource(receiver, grabbedActor, DamageSource::Breast);
-			}
 			Grab::Release(receiver);
 		}
 	}
@@ -97,6 +99,10 @@ namespace {
 		if (!camera) {
 			return;
 		} 
+		auto AllowEdits = Persistent::GetSingleton().Camera_PermitFovEdits;
+		if (!AllowEdits) {
+			return;
+		}
 		if (actor->formID == 0x14) {
 			auto tranData = Transient::GetSingleton().GetData(actor);
 			bool TP = camera->IsInThirdPerson();

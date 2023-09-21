@@ -31,6 +31,7 @@ namespace {
 	inline const auto LegacySounds = _byteswap_ulong('LGSD');
 	inline const auto ActorsPanic = _byteswap_ulong('ACTP');
 	inline const auto LaunchObjects = _byteswap_ulong('LOBj');
+	inline const auto CameraFovEdits = _byteswap_ulong('CFET');
 	inline const auto StolenAttributes = _byteswap_ulong('STAT');
 
 	inline const auto Att_HealthStorage = _byteswap_ulong('HTSG');
@@ -378,6 +379,10 @@ namespace Gts {
 				bool launch_objects;
 				serde->ReadRecordData(&launch_objects, sizeof(launch_objects));
 				GetSingleton().launch_objects = launch_objects;
+			} else if (type == CameraFovEdits) {
+				bool Camera_PermitFovEdits;
+				serde->ReadRecordData(&Camera_PermitFovEdits, sizeof(Camera_PermitFovEdits));
+				GetSingleton().Camera_PermitFovEdits = Camera_PermitFovEdits;
 			} else if (type == StolenAttributes) {
 				float stolen_attributes;
 				serde->ReadRecordData(&stolen_attributes, sizeof(stolen_attributes));
@@ -620,6 +625,13 @@ namespace Gts {
 		bool launch_objects = GetSingleton().launch_objects;
 		serde->WriteRecordData(&launch_objects, sizeof(launch_objects));
 		
+		if (!serde->OpenRecord(CameraFovEdits, 1)) {
+			log::error("Unable to open Camera For Permission record to write cosave data");
+			return;
+		}
+		bool Camera_PermitFovEdits = GetSingleton().Camera_PermitFovEdits;
+		serde->WriteRecordData(&Camera_PermitFovEdits, sizeof(Camera_PermitFovEdits));
+
 		if (!serde->OpenRecord(StolenAttributes, 1)) {
 			log::error("Unable to open Stolen Attributes record to write cosave data");
 			return;

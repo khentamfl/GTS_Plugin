@@ -56,7 +56,7 @@ namespace {
 
 	void RapidGrowthEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!Runtime::HasPerk(player, "TotalControl")) {
+		if (!Runtime::HasPerk(player, "TotalControl")) { 
 			return;
 		}
 		if (!IsCrawling(player) && !player->IsSneaking()) {

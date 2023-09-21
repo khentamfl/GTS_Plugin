@@ -33,6 +33,7 @@ sounds:
   CrunchKillSound: "GTS.esp|5D8C5D"
   BreastImpact: "GTS.esp|5E2E5F"
   SoftHandAttack: "GTS.esp|5E2E60"
+  SwingImpact: "GTS.esp|68F0AD"
 
   ShrinkOutburstSound: "GTS.esp|6524A3"
   TinyCalamitySound: "GTS.esp|65C6AA"
@@ -386,6 +387,16 @@ impacts:
 
 races:
   dragonRace: "Skyrim.esm|012E82"
+  FrostbiteSpiderRace: "Skyrim.esm|0131F8"
+  FrostbiteSpiderRaceGiant: "Skyrim.esm|04E507"
+  FrostbiteSpiderRaceLarge: "Skyrim.esm|053477"
+  ChaurusReaperRace: "Skyrim.esm|0A5601"
+  ChaurusRace: "Skyrim.esm|0131EB"
+  DLC1ChaurusHunterRace: "Dawnguard.esm|0051FB"
+  DLC1_BF_ChaurusRace: "Dawnguard.esm|015136"
+  DLC2ExpSpiderBaseRace: "Dragonborn.esm|014449"
+  DLC2ExpSpiderPackmuleRace: "Dragonborn.esm|027483"
+  DLC2AshHopperRace: "Dragonborn.esm|01B658"
 
 keywords:
   UndeadKeyword: "Skyrim.esm|013796"

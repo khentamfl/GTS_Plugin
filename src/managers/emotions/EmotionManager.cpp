@@ -29,6 +29,9 @@ namespace Gts { // To-do: rework it into Task manager. Not sure how to do it.
 
 	void EmotionData::UpdateEmotions(Actor* giant) {
 		auto profiler = Profilers::Profile("Emotions: UpdateEmotions");
+		if (!giant->Is3DLoaded()) {
+			return;
+		}
 		auto fgen = giant->GetFaceGenAnimationData();
 		std::uint32_t Zero = 0;
 		std::uint32_t One = 1;
@@ -95,6 +98,14 @@ namespace Gts { // To-do: rework it into Task manager. Not sure how to do it.
 		for (auto& [key, Emotions]: this->data) {
 			Emotions.Update();
 		}
+	}
+
+	void EmotionManager::Reset() {
+		this->data.clear();
+	}
+
+	void EmotionManager::ResetActor(Actor* actor) {
+		this->data.erase(actor);
 	}
 
 	EmotionData& EmotionManager::GetGiant(Actor* giant) {

@@ -85,6 +85,7 @@ namespace Gts {
 			bool legacy_sounds = false;
 			bool actors_panic = true;
 			bool launch_objects = true;
+			bool Camera_PermitFovEdits = true;
 			float tremor_scale = 1.0;
 			float npc_tremor_scale = 1.0;
 			float size_related_damage_mult = 1.0;

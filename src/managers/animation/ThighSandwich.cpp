@@ -293,8 +293,8 @@ namespace {
 		DoFootstepSound(&data.giant, 1.05, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, 2.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 2.0, FootEvent::Left, LNode);
-		DoDamageEffect(&data.giant, 4.0 * perk, 1.6, 10, 0.20, FootEvent::Right, 1.0, DamageSource::Crushed);
-		DoDamageEffect(&data.giant, 4.0 * perk, 1.6, 10, 0.20, FootEvent::Left, 1.0, DamageSource::Crushed);
+		DoDamageEffect(&data.giant, 4.0 * perk, 1.6, 10, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+		DoDamageEffect(&data.giant, 4.0 * perk, 1.6, 10, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoLaunch(&data.giant, 0.85 * perk, 2.0, 1.0, FootEvent::Right, 1.15);
 		DoLaunch(&data.giant, 0.85 * perk, 2.0, 1.0, FootEvent::Left, 1.15);
 	}
@@ -338,7 +338,7 @@ namespace {
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("ThighAttack", player);
 		} else {
-			if (IsGtsBusy(player)) {
+			if (IsGtsBusy(player) && IsThighSandwiching(player)) {
 				TiredSound(player, "You're too tired to perform thigh sandwich");
 			}
 		}
@@ -353,7 +353,7 @@ namespace {
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("ThighAttack_Heavy", player);
 		} else {
-			if (IsGtsBusy(player)) {
+			if (IsGtsBusy(player) && IsThighSandwiching(player)) {
 				TiredSound(player, "You're too tired to perform strong thigh sandwich");
 			}
 		}
