@@ -73,7 +73,7 @@ namespace Gts {
 		auto& hhData = this->data[actor];
 		float speedup = 1.0;
 		if (IsCrawling(actor)) {
-			speedup = 3.00; // To shift down a lot faster
+			speedup = 4.00; // To shift down a lot faster
 		}
 		// Should disable HH?
 		bool disableHH = (
