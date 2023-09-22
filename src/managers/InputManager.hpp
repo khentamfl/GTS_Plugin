@@ -44,19 +44,20 @@ namespace Gts
 			void Reset();
 
 			// Returns the duration required for the event to fire
-			float MinDuration();
+			float MinDuration() const;
 
 			// Returns if the event is a onup event
-			bool IsOnUp();
-			std::string GetName();
+			bool IsOnUp() const;
+			std::string GetName() const;
 
 			// Check if this is an On key up event
 			//bool IsOnUp();
-			bool HasKeys();
+			bool HasKeys() const;
 
 					// Checks if this key is the same as another in terms
 					// of mutaally exclusive triggers
-			bool SameGroup(const InputEventData& other);
+			bool SameGroup(const InputEventData& other) const;
+
 				private:
 					std::string name = "";
 					unordered_set<std::uint32_t> keys = {};

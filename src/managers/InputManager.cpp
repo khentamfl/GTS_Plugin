@@ -131,15 +131,15 @@ namespace Gts {
     this->primed = false;
   }
 
-  float InputEventData::MinDuration() {
+  float InputEventData::MinDuration() const {
     return this->minDuration;
   }
 
-  bool InputEventData::IsOnUp() {
+  bool InputEventData::IsOnUp() const {
     return this->trigger == TriggerMode::Release;
   }
 
-  bool InputEventData::SameGroup(const InputEventData& other) {
+  bool InputEventData::SameGroup(const InputEventData& other) const {
     if (this->IsOnUp() && other.IsOnUp()) {
       return this->keys == other.keys;
     }
@@ -231,11 +231,11 @@ namespace Gts {
 		}
 	}
 
-	std::string InputEventData::GetName() {
+	std::string InputEventData::GetName() const {
 		return this->name;
 	}
 
-	bool InputEventData::HasKeys() {
+	bool InputEventData::HasKeys() const {
 		return !this->keys.empty();
 	}
 
