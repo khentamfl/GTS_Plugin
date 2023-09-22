@@ -51,11 +51,15 @@ trigger = "once"
 
 [[InputEvent]]
 name = "RightStomp_Strong"
-keys = ["LALT", "E"]
+keys = ["LSHIFT", "E"]
+trigger = "release"
+duration = 1.0
 
 [[InputEvent]]
 name = "LeftStomp_Strong"
-keys = ["LALT", "Q"]
+keys = ["LSHIFT", "Q"]
+trigger = "release"
+duration = 1.0
 
 # ^ Trigger powerful stomps. 
 
@@ -63,12 +67,16 @@ keys = ["LALT", "Q"]
 [[InputEvent]]
 name = "RightStomp"
 keys = ["LSHIFT", "E"]
+trigger = "release"
+duration = 0.0
 
 # Trigger Stomp Right animation.
 
 [[InputEvent]]
 name = "LeftStomp"
 keys = ["LSHIFT", "Q"]
+trigger = "release"
+duration = 0.0
 
 # Trigger Stomp Left animation.
 
@@ -150,25 +158,33 @@ exclusive = true
 [[InputEvent]]
 name = "HeavyKickRight"
 keys = ["LALT", "D"]
+trigger = "release"
 exclusive = false
+duration = 1.0
 # Heavy Left Kick when not sneaking
 
 [[InputEvent]]
 name = "HeavyKickLeft"
 keys = ["LALT", "A"]
+trigger = "release"
 exclusive = false
+duration = 1.0
 # Heavy Right Kick when not sneaking
 
 [[InputEvent]]
 name = "LightKickLeft"
-keys = ["LSHIFT", "A"]
+keys = ["LALT", "A"]
+trigger = "release"
 exclusive = false
+duration = 0.0
 # Left Kick when not sneaking
 
 [[InputEvent]]
 name = "LightKickRight"
-keys = ["LSHIFT", "D"]
+keys = ["LALT", "D"]
+trigger = "release"
 exclusive = false
+duration = 0.0
 # Right Kick when not sneaking
 
 
@@ -179,25 +195,33 @@ exclusive = false
 [[InputEvent]]
 name = "HeavySwipeRight"
 keys = ["LALT", "D"]
+trigger = "release"
 exclusive = false
+duration = 1.0
 # Heavy Left swipe when crawling
 
 [[InputEvent]]
 name = "HeavySwipeLeft"
 keys = ["LALT", "A"]
+trigger = "release"
 exclusive = false
+duration = 1.0
 # Heavy Right swipe when crawling
 
 [[InputEvent]]
 name = "LightSwipeLeft"
-keys = ["LSHIFT", "A"]
+keys = ["LALT", "A"]
+trigger = "release"
 exclusive = false
+duration = 0.0
 # Left swipe when crawling
 
 [[InputEvent]]
 name = "LightSwipeRight"
-keys = ["LSHIFT", "D"]
+keys = ["LALT", "D"]
+trigger = "release"
 exclusive = false
+duration = 0.0
 # Right swipe when crawling
 
 
