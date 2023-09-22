@@ -150,13 +150,15 @@ namespace Gts {
 		}
 		if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
 			return false;
+		} if (IsCrawling(pred) || IsTransitioning(pred)) {
+			return false;
 		}
 
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 		if (HasSMT(pred)) {
 			pred_scale += 0.25;
-		}
+		} 
 
 		float sizedifference = pred_scale/prey_scale;
 
