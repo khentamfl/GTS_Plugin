@@ -15,6 +15,7 @@
 #include "managers/animation/Kicks.hpp"
 #include "managers/animation/Stomp.hpp"
 #include "managers/animation/Grab.hpp"
+#include "utils/InputFunctions.hpp"
 #include "data/persistent.hpp"
 #include "scale/scale.hpp"
 
@@ -79,6 +80,8 @@ namespace Gts {
 
 		AnimationShrink::RegisterEvents();
 		AnimationShrink::RegisterTriggers();
+
+		InputFunctions::RegisterEvents();
 
 		AnimationKicks::RegisterEvents();
 

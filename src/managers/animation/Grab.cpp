@@ -687,7 +687,7 @@ namespace {
 		if (grabbedActor) { //If we have actor, don't pick anyone up.
 			return;
 		}
-		if (IsEquipBusy(player)) {
+		if (IsEquipBusy(player) || IsTransitioning(player)) {
 			return; // Disallow Grabbing if Behavior is busy doing other stuff.
 		}
 		auto& Grabbing = GrabAnimationController::GetSingleton();
@@ -703,7 +703,7 @@ namespace {
 
 	void GrabAttackEvent(const InputEventData& data) { // Attack everyone in your hand
 		auto player = PlayerCharacter::GetSingleton();
-		if (!IsStomping(player)) {
+		if (!IsStomping(player) && !IsTransitioning(player)) {
 			auto grabbedActor = Grab::GetHeldActor(player);
 			if (!grabbedActor) {
 				return;
@@ -722,7 +722,7 @@ namespace {
 
 	void GrabVoreEvent(const InputEventData& data) { // Eat everyone in hand
 		auto player = PlayerCharacter::GetSingleton();
-		if (!IsStomping(player)) {
+		if (!IsStomping(player) && !IsTransitioning(player)) {
 			auto grabbedActor = Grab::GetHeldActor(player);
 			if (!grabbedActor) {
 				return;
@@ -733,7 +733,7 @@ namespace {
 
 	void GrabThrowEvent(const InputEventData& data) { // Throw everyone away
 		auto player = PlayerCharacter::GetSingleton();
-		if (!IsStomping(player)) { // Only allow outside of stomps
+		if (!IsStomping(player) && !IsTransitioning(player)) { // Only allow outside of stomps and when not transitioning
 			auto grabbedActor = Grab::GetHeldActor(player);
 			if (!grabbedActor) {
 				return;
@@ -756,16 +756,16 @@ namespace {
 		if (!grabbedActor) {
 			return;
 		}
-		if (IsGtsBusy(player)) {
+		if (IsGtsBusy(player) || IsTransitioning(player)) {
 			return;
-		}
+		} 
 		AnimationManager::StartAnim("GrabReleasePunies", player);
 	}
 
 	void BreastsPutEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(player);
-		if (!grabbedActor) {
+		if (!grabbedActor || IsTransitioning(player)) {
 			return;
 		}
 		AnimationManager::StartAnim("Breasts_Put", player);
@@ -773,7 +773,7 @@ namespace {
 	void BreastsRemoveEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(player);
-		if (!grabbedActor) {
+		if (!grabbedActor || IsTransitioning(player)) {
 			return;
 		}
 		AnimationManager::StartAnim("Breasts_Pull", player);

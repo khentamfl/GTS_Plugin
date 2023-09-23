@@ -150,6 +150,12 @@ namespace Gts {
 		return actor!= nullptr && actor->formID == 0x14 && actor->IsSneaking() && prone;
 	}
 
+	bool IsTransitioning(Actor* actor) { // reports sneak transition to crawl
+		bool transition;
+		actor->GetGraphVariableBool("GTS_Transitioning", transition);
+		return transition;
+	}
+
 	bool IsFootGrinding(Actor* actor) {
 		bool grind;
 		actor->GetGraphVariableBool("GTS_IsFootGrinding", grind); 
