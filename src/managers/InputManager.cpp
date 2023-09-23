@@ -156,7 +156,6 @@ namespace Gts {
 			this->startTime = Time::WorldTimeElapsed();
 			// and reset the state to idle
 			this->state = InputEventState::Idle;
-      this->primed = false;
 		}
 		// Check based on duration
 		if (shouldFire) {
