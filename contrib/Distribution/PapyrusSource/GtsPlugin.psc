@@ -152,6 +152,9 @@ Function SetIsHHFurnitureEnabled(Bool enabled) global native
 ; If player = true = enable it for player. Else enable it for teammates.
 Function SetCrawlAnimation(bool enabled, bool player) global native
 
+; sends animation event that transitions actor to/out of crawl to sneak and vice-versa     
+Function UpdateCrawlAnimations(bool enabled, bool player) global native    
+    
 ;======================================================================================
 ;======================================================================================
 ;======================================================================================

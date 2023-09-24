@@ -244,6 +244,27 @@ namespace {
 		}
 	}
 
+	void UpdateCrawlAnimations(StaticFunctionTag*, bool enabled, bool player) {
+		auto pc = PlayerCharacter::GetSingleton();
+		if (player) {
+			if (enabled) {
+				AnimationManager::StartAnim("CrawlON", pc);
+			} else {
+				AnimationManager::StartAnim("CrawlOFF", pc);
+			}
+		} else if (!player) {
+			for (auto teammate: FindTeammates()) {
+				if (teammate && teammate != pc) {
+					if (enabled) {
+						AnimationManager::StartAnim("CrawlON", teammate);
+					} else {
+						AnimationManager::StartAnim("CrawlOFF", teammate);
+					}
+				}
+			}
+		}
+	}
+
 	void SetProgressionMultiplier(StaticFunctionTag*, float value) {
 		Persistent::GetSingleton().progression_multiplier = value;
 		log::info("Setting Progression Multiplier to {}", value);
@@ -398,6 +419,7 @@ namespace Gts {
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
 		vm->RegisterFunction("SetIsHHFurnitureEnabled", PapyrusClass, SetIsHHFurnitureEnabled);
 		vm->RegisterFunction("SetCrawlAnimation", PapyrusClass, SetCrawlAnimation);
+		vm->RegisterFunction("UpdateCrawlAnimations", PapyrusClass, UpdateCrawlAnimations);
 		vm->RegisterFunction("SetProgressionMultiplier", PapyrusClass, SetProgressionMultiplier);
 		vm->RegisterFunction("SetStompAi", PapyrusClass, SetStompAi);
 		vm->RegisterFunction("SetSandwichAi", PapyrusClass, SetSandwichAi);
