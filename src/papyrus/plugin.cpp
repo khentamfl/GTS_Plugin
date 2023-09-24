@@ -4,6 +4,7 @@
 #include "utils/actorUtils.hpp"
 #include "managers/Attributes.hpp"
 #include "managers/GtsManager.hpp"
+#include "managers/animation/AnimationManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "magic/effects/common.hpp"
 #include <math.h>
