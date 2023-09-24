@@ -111,6 +111,12 @@ namespace {
 		if (damage > hp) {
 			CrushManager::GetSingleton().Crush(giant, tiny);
 			PrintDeathSource(giant, tiny, DamageSource::ThighSandwiched);
+			auto node = find_node(giant, "NPC R FrontThigh");
+			if (node) {
+				Runtime::PlaySoundAtNode("GtsCrushSound", giant, 1.0, 1.0, node);
+			} else {
+				Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
+			}
 			sandwichdata.Remove(tiny);
 		}
 	}
@@ -163,7 +169,6 @@ namespace {
 		sizemanager.SetActionBool(&data.giant, true, 1.0); // Disallow sandwiching repeat
 		ManageCamera(&data.giant, true, 3.0); // Focus camera on AnimObjectA
 		sandwichdata.EnableRuneTask(&data.giant, false); // Start Growing the Rune
-		//sandwichdata.DisableRuneTask(&data.giant, true); // Disable Rune Shrinking
 	}
 	void GTSSandwich_SitStart(AnimationEventData& data) {
 	}
@@ -302,7 +307,6 @@ namespace {
 	void GTSBEH_Exit(AnimationEventData& data) {
 		auto giant = &data.giant;
 		ManageCamera(giant, false, 3.0); // Un-Focus camera on AnimObjectA. Just to be Sure.
-		//BlockFirstPerson(giant, false);
 	}
 
 
@@ -313,6 +317,9 @@ namespace {
 	void ThighSandwichEnterEvent(const InputEventData& data) {
 		auto& Sandwiching = ThighSandwichController::GetSingleton();
 		auto pred = PlayerCharacter::GetSingleton();
+		if (IsCrawling(pred)) {
+			return;
+		}
 		std::size_t numberOfPrey = 1;
 		if (Runtime::HasPerk(pred, "MassVorePerk")) {
 			numberOfPrey = 1 + (get_visual_scale(pred)/3);

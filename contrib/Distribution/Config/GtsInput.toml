@@ -24,9 +24,10 @@
 # - exclusive: When true means ONLY these keys must be pressed for the entire duration
 #             when false other keys may be pressed and the event will still fire
 # - duration: The length of time the keys must be pressed for before they fire
-# - trigger: Either "once or "continuous". If "once" the keys must be released
+# - trigger: Either "once", "continuous" or "release". If "once" the keys must be released
 #            before the event will fire again. If "continuous" the event will
 #            fire every frame until the keys are released
+#            if "release" = event will be sent once you release the keys
 
 # !!! If you will forget to put , between "key" "key" - controls will break and input won't work:             !!!
 # !!! Correct: keys = ["Key","Key"]. INCORRECT: keys = ["Key""Key"]                                           !!!
@@ -52,14 +53,14 @@ trigger = "once"
 [[InputEvent]]
 name = "RightStomp_Strong"
 keys = ["LSHIFT", "E"]
-trigger = "release"
-duration = 1.0
+trigger = "continuous"
+duration = 0.33
 
 [[InputEvent]]
 name = "LeftStomp_Strong"
 keys = ["LSHIFT", "Q"]
-trigger = "release"
-duration = 1.0
+trigger = "continuous"
+duration = 0.33
 
 # ^ Trigger powerful stomps. 
 
@@ -157,23 +158,23 @@ exclusive = true
 #========================================================
 [[InputEvent]]
 name = "HeavyKickRight"
-keys = ["LALT", "D"]
-trigger = "release"
+keys = ["LALT", "E"]
+trigger = "continuous"
 exclusive = false
-duration = 1.0
+duration = 0.33
 # Heavy Left Kick when not sneaking
 
 [[InputEvent]]
 name = "HeavyKickLeft"
-keys = ["LALT", "A"]
-trigger = "release"
+keys = ["LALT", "Q"]
+trigger = "continuous"
 exclusive = false
-duration = 1.0
+duration = 0.33
 # Heavy Right Kick when not sneaking
 
 [[InputEvent]]
 name = "LightKickLeft"
-keys = ["LALT", "A"]
+keys = ["LALT", "Q"]
 trigger = "release"
 exclusive = false
 duration = 0.0
@@ -181,7 +182,7 @@ duration = 0.0
 
 [[InputEvent]]
 name = "LightKickRight"
-keys = ["LALT", "D"]
+keys = ["LALT", "E"]
 trigger = "release"
 exclusive = false
 duration = 0.0
@@ -194,23 +195,23 @@ duration = 0.0
 
 [[InputEvent]]
 name = "HeavySwipeRight"
-keys = ["LALT", "D"]
-trigger = "release"
+keys = ["LALT", "E"]
+trigger = "continuous"
 exclusive = false
-duration = 1.0
+duration = 0.33
 # Heavy Left swipe when crawling
 
 [[InputEvent]]
 name = "HeavySwipeLeft"
-keys = ["LALT", "A"]
-trigger = "release"
+keys = ["LALT", "Q"]
+trigger = "continuous"
 exclusive = false
-duration = 1.0
+duration = 0.33
 # Heavy Right swipe when crawling
 
 [[InputEvent]]
 name = "LightSwipeLeft"
-keys = ["LALT", "A"]
+keys = ["LALT", "Q"]
 trigger = "release"
 exclusive = false
 duration = 0.0
@@ -218,7 +219,7 @@ duration = 0.0
 
 [[InputEvent]]
 name = "LightSwipeRight"
-keys = ["LALT", "D"]
+keys = ["LALT", "E"]
 trigger = "release"
 exclusive = false
 duration = 0.0
@@ -273,12 +274,14 @@ duration = 0.50
 [[InputEvent]]
 name = "QuickButtCrushStart"
 keys = ["LSHIFT", "B"]
+trigger = "continuous"
 duration = 1.0 
 # Start Quick Butt/Breast Crush. Always does a quick one without targets. Hold for 1 second to trigger.
 
 [[InputEvent]]
 name = "ButtCrushStart"
 keys = ["LSHIFT", "B"]
+trigger = "release"
 duration = 0.0 
 # Start Butt/Breast Crush. If you have perk, it will look for closest actors to capture them. Else start normal butt crush.
 

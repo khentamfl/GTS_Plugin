@@ -64,8 +64,7 @@ namespace {
 	}
 
 	void DoSandwich(Actor* pred) {
-		if (!Persistent::GetSingleton().Sandwich_Ai) {
-			log::info("Sandwich AI is false");
+		if (!Persistent::GetSingleton().Sandwich_Ai || IsCrawling(pred)) {
 			return;
 		}
 		auto& Sandwiching = ThighSandwichController::GetSingleton();
