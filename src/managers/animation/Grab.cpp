@@ -818,6 +818,7 @@ namespace Gts {
 		std::string name = std::format("GrabAttach_{}", giant->formID);
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		ActorHandle tinyhandle = tiny->CreateRefHandle();
+		auto grabbedActor = Grab::GetHeldActor(giantref);
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
@@ -827,7 +828,7 @@ namespace Gts {
 			}
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
-			auto grabbedActor = Grab::GetHeldActor(giantref);
+			
 
 			// Exit on death
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
@@ -836,7 +837,7 @@ namespace Gts {
 
 			ShutUp(tinyref);
 
-			if (!grabbedActor || giantref->IsDead() || tinyref->IsDead() || GetAV(tinyref, ActorValue::kHealth) <= 0.0 || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
+			if (giantref->IsDead() || tinyref->IsDead() || GetAV(tinyref, ActorValue::kHealth) <= 0.0 || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
 				log::info("{} is small/dead", tinyref->GetDisplayFullName());
 				PushActorAway(giantref, tinyref, 1.0);
 				tinyref->SetGraphVariableBool("GTSBEH_T_InStorage", false);

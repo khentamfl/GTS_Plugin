@@ -47,6 +47,13 @@ namespace {
 		}
 	}
 
+	void ResetGrab(Actor* giant) {
+		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
+		giant->SetGraphVariableInt("GTS_Grab_State", 0);
+		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
+		SetBetweenBreasts(giant, false);
+	}
+
 	void FixActorFade(Actor* actor) {
 		auto profiler = Profilers::Profile("Manager: Fade Fix");
 		if (get_visual_scale(actor) < 1.5) {
@@ -215,6 +222,7 @@ namespace {
 		auto saved_data = Persistent::GetSingleton().GetData(actor);
 		apply_height(actor, saved_data, temp_data, force);
 		apply_speed(actor, saved_data, temp_data, force);
+		ResetGrab(actor);
 	}
 }
 
