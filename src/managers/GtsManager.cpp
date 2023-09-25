@@ -51,6 +51,8 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
 		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
+		AnimationManager::StartAnim("GrabAbort", giant); // Abort Grab animation
+		AnimationManager::StartAnim("TinyDied", giant);
 		SetBetweenBreasts(giant, false);
 	}
 
