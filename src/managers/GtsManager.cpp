@@ -224,7 +224,6 @@ namespace {
 		auto saved_data = Persistent::GetSingleton().GetData(actor);
 		apply_height(actor, saved_data, temp_data, force);
 		apply_speed(actor, saved_data, temp_data, force);
-		ResetGrab(actor);
 	}
 }
 
@@ -324,6 +323,7 @@ void GtsManager::reapply(bool force) {
 			continue;
 		}
 		reapply_actor(actor, force);
+		ResetGrab(actor);
 	}
 }
 void GtsManager::reapply_actor(Actor* actor, bool force) {
