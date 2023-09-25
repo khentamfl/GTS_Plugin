@@ -48,7 +48,7 @@ namespace {
 	}
 
 	void ResetGrab(Actor* actor) {
-		if (giant->formID == 0x14 || IsTeammate(giant)) {
+		if (actor->formID == 0x14 || IsTeammate(actor)) {
 			double startTime = Time::WorldTimeElapsed();
 			ActorHandle gianthandle = actor->CreateRefHandle();
 			TaskManager::Run([=](auto& update) {
