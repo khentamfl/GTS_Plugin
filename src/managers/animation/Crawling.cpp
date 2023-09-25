@@ -345,6 +345,7 @@ namespace Gts
 		AnimationManager::RegisterTrigger("SwipeLight_Left", "Crawl", "GTSBeh_SwipeLight_L");
 		AnimationManager::RegisterTrigger("SwipeLight_Right", "Crawl", "GTSBeh_SwipeLight_R");
 		AnimationManager::RegisterTrigger("SwipeHeavy_Right", "Crawl", "GTSBeh_SwipeHeavy_R");
+		AnimationManager::RegisterTrigger("SwipeHeavy_Left", "Crawl", "GTSBeh_SwipeHeavy_L");
 		AnimationManager::RegisterTrigger("CrawlON", "Crawl", "GTSBeh_Crawl_On");
 		AnimationManager::RegisterTrigger("CrawlOFF", "Crawl", "GTSBeh_Crawl_Off");
 	}
