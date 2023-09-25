@@ -47,15 +47,29 @@ namespace {
 		}
 	}
 
-	void ResetGrab(Actor* giant) {
+	void ResetGrab(Actor* actor) {
 		if (giant->formID == 0x14 || IsTeammate(giant)) {
-			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
-			giant->SetGraphVariableInt("GTS_Grab_State", 0);
-			giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
-			AnimationManager::StartAnim("GrabAbort", giant); // Abort Grab animation
-			AnimationManager::StartAnim("TinyDied", giant);
-			SetBetweenBreasts(giant, false);
-			log::info("Resetting grab for {}", giant->GetDisplayFullName());
+			double startTime = Time::WorldTimeElapsed();
+			ActorHandle gianthandle = actor->CreateRefHandle();
+			TaskManager::Run([=](auto& update) {
+			Actor* giant = gianthandle.get().get();
+			if (!giant) {
+				return false;
+			}
+			double endTime = Time::WorldTimeElapsed();
+
+			if ((endTime - startTime) > 4.0) {
+				giant->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
+				giant->SetGraphVariableInt("GTS_Grab_State", 0);
+				giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
+				AnimationManager::StartAnim("GrabAbort", giant); // Abort Grab animation
+				AnimationManager::StartAnim("TinyDied", giant);
+				SetBetweenBreasts(giant, false);
+				log::info("Resetting grab for {}", giant->GetDisplayFullName());
+				return false; // end task
+			}
+			return true;
+			});
 		}
 	}
 
