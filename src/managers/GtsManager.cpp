@@ -48,12 +48,15 @@ namespace {
 	}
 
 	void ResetGrab(Actor* giant) {
-		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
-		giant->SetGraphVariableInt("GTS_Grab_State", 0);
-		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
-		AnimationManager::StartAnim("GrabAbort", giant); // Abort Grab animation
-		AnimationManager::StartAnim("TinyDied", giant);
-		SetBetweenBreasts(giant, false);
+		if (giant->formID == 0x14 || IsTeammate(giant)) {
+			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
+			giant->SetGraphVariableInt("GTS_Grab_State", 0);
+			giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
+			AnimationManager::StartAnim("GrabAbort", giant); // Abort Grab animation
+			AnimationManager::StartAnim("TinyDied", giant);
+			SetBetweenBreasts(giant, false);
+			log::info("Resetting grab for {}", giant->GetDisplayFullName());
+		}
 	}
 
 	void FixActorFade(Actor* actor) {
@@ -250,6 +253,7 @@ void GtsManager::Start() {
 			continue;
 		}
 		FixActorState(actor);
+		ResetGrab(actor);
 	}
 }
 
@@ -323,7 +327,6 @@ void GtsManager::reapply(bool force) {
 			continue;
 		}
 		reapply_actor(actor, force);
-		ResetGrab(actor);
 	}
 }
 void GtsManager::reapply_actor(Actor* actor, bool force) {
