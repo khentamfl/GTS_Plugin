@@ -1,6 +1,7 @@
 #include "managers/GtsSizeManager.hpp"
 #include "data/persistent.hpp"
 #include "scale/modscale.hpp"
+#include "data/plugin.hpp"
 
 
 using namespace SKSE;
@@ -54,6 +55,7 @@ namespace Gts {
 	}
 
 	void Persistent::Reset() {
+		Plugin::SetInGame(false);
 		std::unique_lock lock(this->_lock);
 		this->_actor_data.clear();
 	}
