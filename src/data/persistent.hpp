@@ -80,6 +80,9 @@ namespace Gts {
 			bool Vore_Ai = true;
 			bool Stomp_Ai = true;
 			bool Sandwich_Ai = true;
+			bool Kick_Ai = true;
+			bool Hugs_Ai = true;
+			bool Butt_Ai = true;
 			bool delete_actors = true;
 			bool hostile_toggle = true;
 			bool legacy_sounds = false;

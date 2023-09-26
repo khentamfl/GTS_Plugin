@@ -26,6 +26,9 @@ namespace {
 	inline const auto XpMult = _byteswap_ulong('XPMT');
 	inline const auto StompAiRecord = _byteswap_ulong('STAI');
 	inline const auto SandwichAiRecord = _byteswap_ulong('SWAI');
+	inline const auto KickAiRecord = _byteswap_ulong('KKAI');
+	inline const auto HugsAiRecord = _byteswap_ulong('HSAI');
+	inline const auto ButtAiRecord = _byteswap_ulong('BTAI');
 	inline const auto VoreAiRecord = _byteswap_ulong('VRAI');
 	inline const auto ProgressionMult = _byteswap_ulong('PRMT');
 	inline const auto DeleteActors = _byteswap_ulong('DTAS');
@@ -406,10 +409,7 @@ namespace Gts {
 				float stolen_stamin;
 				serde->ReadRecordData(&stolen_stamin, sizeof(stolen_stamin));
 				GetSingleton().stolen_stamin = stolen_stamin;
-			} 
-			
-			
-			else if (type == HostileToggle) {
+			} else if (type == HostileToggle) {
 				bool hostile_toggle;
 				serde->ReadRecordData(&hostile_toggle, sizeof(hostile_toggle));
 				GetSingleton().hostile_toggle = hostile_toggle;
@@ -417,6 +417,18 @@ namespace Gts {
 				bool Sandwich_Ai;
 				serde->ReadRecordData(&Sandwich_Ai, sizeof(Sandwich_Ai));
 				GetSingleton().Sandwich_Ai = Sandwich_Ai;
+			} else if (type == KickAiRecord) {
+				bool Kick_Ai;
+				serde->ReadRecordData(&Kick_Ai, sizeof(Kick_Ai));
+				GetSingleton().Kick_Ai = Kick_Ai;
+			} else if (type == ButtAiRecord) {
+				bool Butt_Ai;
+				serde->ReadRecordData(&Butt_Ai, sizeof(Butt_Ai));
+				GetSingleton().Butt_Ai = Butt_Ai;
+			} else if (type == HugsAiRecord) {
+				bool Hugs_Ai;
+				serde->ReadRecordData(&Hugs_Ai, sizeof(Hugs_Ai));
+				GetSingleton().Hugs_Ai = Hugs_Ai;
 			} else if (type == VoreAiRecord) {
 				bool Vore_Ai;
 				serde->ReadRecordData(&Vore_Ai, sizeof(Vore_Ai));
@@ -694,12 +706,32 @@ namespace Gts {
 		bool delete_actors = GetSingleton().delete_actors;
 		serde->WriteRecordData(&delete_actors, sizeof(delete_actors));
 
+		if (!serde->OpenRecord(HugsAiRecord, 1)) {
+			log::error("Unable to open Hugs Ai record to write cosave data");
+			return;
+		}
+		bool Hugs_Ai = GetSingleton().Hugs_Ai;
+		serde->WriteRecordData(&Hugs_Ai, sizeof(Hugs_Ai));
+
 		if (!serde->OpenRecord(SandwichAiRecord, 1)) {
 			log::error("Unable to open Sandwich Ai record to write cosave data.");
 			return;
 		}
 		bool Sandwich_Ai = GetSingleton().Sandwich_Ai;
 		serde->WriteRecordData(&Sandwich_Ai, sizeof(Sandwich_Ai));
+
+		if (!serde->OpenRecord(ButtAiRecord, 1)) {
+			log::error("Unable to open Butt Ai record to write cosave data.");
+		}
+		bool Butt_Ai = GetSingleton().Butt_Ai;
+		serde->WriteRecordData(&Butt_Ai, sizeof(Butt_Ai));
+
+		if (!serde->OpenRecord(KickAiRecord, 1)) {
+			log::error("Unable to open Kick Ai record to write cosave data.");
+			return;
+		}
+		bool Kick_Ai = GetSingleton().Kick_Ai;
+		serde->WriteRecordData(&Kick_Ai, sizeof(Kick_Ai));
 
 		if (!serde->OpenRecord(VoreAiRecord, 1)) {
 			log::error("Unable to open Vore ai record to write cosave data.");

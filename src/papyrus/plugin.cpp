@@ -278,9 +278,17 @@ namespace {
 	void SetSandwichAi(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().Sandwich_Ai = enabled;
 	}
-
 	void SetVoreAi(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().Vore_Ai = enabled;
+	}
+	void SetHugsAi(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().Hugs_Ai = enabled;
+	}
+	void SetKickAi(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().Kick_Ai = enabled;
+	}
+	void SetButtCrushAi(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().Butt_Ai = enabled;
 	}
 
 	void SetActorPanic(StaticFunctionTag*, bool enabled) {

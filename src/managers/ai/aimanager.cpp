@@ -37,6 +37,19 @@ namespace {
 		return hp;
 	}
 
+	float GetShrinkThreshold(Actor* actor) {
+		float threshold = 2.5;
+		float bonus = 1.0;
+		if (Runtime::HasPerk(actor, "HugCrush")) {
+			bonus += 0.25;
+		} if (Runtime::HasPerk(actor, "HugCrush_Greed")) {
+			bonus += 0.35;
+		} if (HasGrowthSpurt(actor)) {
+			bonus *= 2.0;
+		}
+		return threshold * bonus;
+	}
+
 	[[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
 	{
 		float S = sin(angle);
@@ -141,7 +154,7 @@ namespace {
 	}
 
 	void DoHugs(Actor* pred) {
-		if (!Persistent::GetSingleton().Sandwich_Ai) {
+		if (!Persistent::GetSingleton().Hugs_Ai || IsCrawling(pred)) {
 			return;
 		}
 		if (IsGtsBusy(pred)) {
@@ -153,7 +166,7 @@ namespace {
 			std::vector<Actor*> preys = hugs.GetHugTargetsInFront(pred, numberOfPrey);
 			for (auto prey: preys) {
 				float sizedifference = get_visual_scale(pred)/get_visual_scale(prey);
-				if (sizedifference > 0.9 && sizedifference < 3.0) {
+				if (sizedifference > 0.9 && sizedifference < GetShrinkThreshold(pred)) {
 					StartHugs(pred, prey);
 				}
 			}
@@ -187,6 +200,9 @@ namespace {
 	}
 
 	void FastButtCrush(Actor* pred) {
+		if (!Persistent::GetSingleton().Butt_Ai) {
+			return;
+		}
 		AnimationManager::StartAnim("ButtCrush_StartFast", pred);
 	}
 
