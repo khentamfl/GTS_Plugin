@@ -1577,4 +1577,38 @@ namespace Gts {
       }
     );
   }
+
+  	void ResetGrab(Actor* giant) {
+		if (giant->formID == 0x14 || IsTeammate(giant)) {
+			AnimationManager::StartAnim("GrabAbort", giant); // Abort Grab animation
+			AnimationManager::StartAnim("TinyDied", giant);
+			
+			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
+			giant->SetGraphVariableInt("GTS_Grab_State", 0);
+			giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
+			SetBetweenBreasts(giant, false);
+			log::info("Resetting grab for {}", giant->GetDisplayFullName());
+		}
+	}
+
+	void FixAnimations() { // Fixes Animations for GTS Grab Actions
+		auto profiler = Profilers::Profile("Manager: Actor State Fix");
+		for (auto giant: find_actors()) {
+			if (!giant) {
+				continue;
+			}
+		}
+		int StateID;
+		int GTSStateID;
+
+		giant->GetGraphVariableInt("currentDefaultState", StateID);
+		giant->GetGraphVariableInt("GTS_Def_State", GTSStateID);
+
+		ResetGrab(giant);
+		//log::info("StateID: {}, GTSStateID:{}", StateID, GTSStateID);
+		if (GTSStateID != StateID) {
+			log::info("Setting Grab Int to {}", StateID);
+			giant->SetGraphVariableInt("GTS_Def_State", StateID);
+		}
+	}
 }

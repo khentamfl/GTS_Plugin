@@ -1,4 +1,5 @@
 #include "managers/GtsSizeManager.hpp"
+#include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "scale/modscale.hpp"
 #include "data/plugin.hpp"
@@ -70,6 +71,8 @@ namespace Gts {
 		std::uint32_t version;
 
 		SizeManager::GetSingleton().Reset();
+
+		FixAnimations(); // Call it from ActorUtils, needed to fix Grab anim on save-reload
 
 		while (serde->GetNextRecordInfo(type, version, size)) {
 			if (type == ActorDataRecord) {
