@@ -1592,23 +1592,23 @@ namespace Gts {
 	}
 
 	void FixAnimations() { // Fixes Animations for GTS Grab Actions
-		auto profiler = Profilers::Profile("Manager: Actor State Fix");
+		auto profiler = Profilers::Profile("Utils: Actor State Fix");
 		for (auto giant: find_actors()) {
 			if (!giant) {
 				continue;
 			}
-		}
-		int StateID;
-		int GTSStateID;
+			int StateID;
+			int GTSStateID;
 
-		giant->GetGraphVariableInt("currentDefaultState", StateID);
-		giant->GetGraphVariableInt("GTS_Def_State", GTSStateID);
+			giant->GetGraphVariableInt("currentDefaultState", StateID);
+			giant->GetGraphVariableInt("GTS_Def_State", GTSStateID);
 
-		ResetGrab(giant);
-		//log::info("StateID: {}, GTSStateID:{}", StateID, GTSStateID);
-		if (GTSStateID != StateID) {
-			log::info("Setting Grab Int to {}", StateID);
-			giant->SetGraphVariableInt("GTS_Def_State", StateID);
+			ResetGrab(giant);
+			//log::info("StateID: {}, GTSStateID:{}", StateID, GTSStateID);
+			if (GTSStateID != StateID) {
+				log::info("Setting Grab Int to {}", StateID);
+				giant->SetGraphVariableInt("GTS_Def_State", StateID);
+			}
 		}
 	}
 }
