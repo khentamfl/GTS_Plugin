@@ -188,7 +188,9 @@ namespace {
 		}
 	}
 	void Kicks(Actor* pred, int rng) {
-		if (rng <= 3) {
+		if (!Persistent::GetSingleton().Kick_Ai) {
+			return;
+		} if (rng <= 3) {
 			AnimationManager::StartAnim("SwipeHeavy_Right", pred);
 		} else if (rng <= 4) {
 			AnimationManager::StartAnim("SwipeHeavy_Left", pred);
@@ -206,10 +208,7 @@ namespace {
 		AnimationManager::StartAnim("ButtCrush_StartFast", pred);
 	}
 
-	void DoStomp(Actor* pred) {
-		if (!Persistent::GetSingleton().Stomp_Ai) {
-			return;
-		}
+	void DoStompAndButtCrush(Actor* pred) {
 		int butt_rng = rand() % 10;
 		int random = rand() % 10;
 		int actionrng = rand() % 10;
@@ -217,9 +216,11 @@ namespace {
 		std::vector<Actor*> preys = AiManager::GetSingleton().RandomStomp(pred, amount);
 		for (auto prey: preys) {
 			if (AiManager::GetSingleton().CanStomp(pred, prey)) {
-				if (random <= 2 && butt_rng <= 2) {
+				if (random <= 2 && butt_rng <= 2 && Persistent::GetSingleton().Butt_Ai) {
 					FastButtCrush(pred);
 					return;
+				} if (!Persistent::GetSingleton().Stomp_Ai) {
+					return; // don't check any further if it is disabled
 				} else if (random <= 3) {
 					StrongStomp(pred, actionrng);
 					return;
@@ -238,7 +239,7 @@ namespace {
 		float scale = std::clamp(get_visual_scale(actor), 1.0f, 6.0f);
 		int rng = rand() % 100;
 		if (rng > 7 && rng < 33 * scale) {
-			DoStomp(actor);
+			DoStompAndButtCrush(actor);
 			return;
 		} else if (rng > 2 && rng < 7) {
 			DoSandwich(actor);
