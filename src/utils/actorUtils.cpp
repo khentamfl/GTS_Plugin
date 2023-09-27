@@ -489,7 +489,9 @@ namespace Gts {
 		bool allow = Persistent::GetSingleton().FollowerInteractions;
 		bool hostile = IsHostile(player, tiny);
 		bool Teammate = IsTeammate(tiny);
-		if (!Teammate || hostile) {
+		if (giant->formID == 0x14) { // always disallow for Player
+			return false;
+		} else if (!Teammate || hostile) {
 			return true;
 		} else if (Teammate && !allow) {
 			return false;
