@@ -433,6 +433,9 @@ namespace Gts {
 		vm->RegisterFunction("SetStompAi", PapyrusClass, SetStompAi);
 		vm->RegisterFunction("SetSandwichAi", PapyrusClass, SetSandwichAi);
 		vm->RegisterFunction("SetVoreAi", PapyrusClass, SetVoreAi);
+		vm->RegisterFunction("SetHugsAi", PapyrusClass, SetHugsAi);
+		vm->RegisterFunction("SetKickAi", PapyrusClass, SetKickAi);
+		vm->RegisterFunction("SetButtCrushAi", PapyrusClass, SetButtCrushAi);
 		vm->RegisterFunction("SetActorPanic", PapyrusClass, SetActorPanic);
 		vm->RegisterFunction("ToggleHostileDamage", PapyrusClass, ToggleHostileDamage);
 		vm->RegisterFunction("SetAllowPlayerVore", PapyrusClass, SetAllowPlayerVore);
