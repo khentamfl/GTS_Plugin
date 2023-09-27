@@ -457,7 +457,7 @@ namespace Gts {
 				if (actor->formID == 0x14) {
 					return; // Don't do attempts if actor is Player
 				}
-				if ((Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) && (actor->IsInCombat() || !persist.vore_combatonly)) {
+				if (IsTeammate(actor) && (actor->IsInCombat() || !persist.vore_combatonly)) {
 					AbleToVore.push_back(actor);
 				}
 			}
@@ -483,8 +483,10 @@ namespace Gts {
 
 	void Vore::RandomVoreAttempt(Actor* pred) {
 		if (!Persistent::GetSingleton().Vore_Ai) {
+			log::info("Vore Ai is False");
 			return;
 		}
+		log::info("Trying Random Vore for {}", pred->GetDisplayFullName());
 		Actor* player = PlayerCharacter::GetSingleton();
 		auto& VoreManager = Vore::GetSingleton();
 		if (IsGtsBusy(pred)) {
@@ -508,6 +510,8 @@ namespace Gts {
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
 					if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore || !AllowActionsWithFollowers(pred, prey)) {
+						log::info("Condition 1: {}", prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore);
+						log::info("condition 2: {}", AllowActionsWithFollowers(pred, prey));
 						return;
 					}
 					VoreManager.StartVore(pred, prey);
@@ -764,7 +768,7 @@ namespace Gts {
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 
 		if (IsInsect(prey) || IsBlacklisted(prey) || IsUndead(prey)) {
-			std::string_view message = std::format("{} has no desire to eat {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			std::string_view message = std::format("{} has no desire to eat {}", pred->GetDisplayFullName(), prey->GetDisplayFullName());
 			TiredSound(pred, message);
 			return false;
 		} 
@@ -812,6 +816,7 @@ namespace Gts {
 		}
 
 		if (!CanVore(pred, prey)) {
+			log::info("{} can't do Vore", pred->GetDisplayFullName());
 			return;
 		}
 		if (!Runtime::HasPerkTeam(pred, "VorePerk")) { // Damage stamina if we don't have perk
@@ -834,6 +839,7 @@ namespace Gts {
 		}
 		auto& voreData = this->GetVoreData(pred);
 		voreData.AddTiny(prey);
+		log::info("{} is starting Vore", pred->GetDisplayFullName());
 
 		AnimationManager::GetSingleton().StartAnim("StartVore", pred);
 	}

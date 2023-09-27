@@ -43,7 +43,6 @@ namespace {
 			std::string name = std::format("GrowFollower_{}", targetRef->formID);
 
 			TaskManager::RunFor(name, DURATION, [=](auto& progressData){
-				log::info("Task GrowTeammate");
 				if (!casterHandle) {
 					return false;
 				}
