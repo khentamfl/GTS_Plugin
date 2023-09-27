@@ -800,7 +800,7 @@ namespace Gts {
 	}
 
 	void Vore::StartVore(Actor* pred, Actor* prey) { 
-		if (pred->formID != 0x14) {
+		if (pred->formID != 0x14) { 
 			if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
 				log::info("{} vore immunity is on", prey->GetDisplayFullName());
 				return;
