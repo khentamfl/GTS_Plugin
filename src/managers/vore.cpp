@@ -509,7 +509,7 @@ namespace Gts {
 			if (random <= decide_chance) {
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
-					if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore || !AllowActionsWithFollowers(pred, prey)) {
+					if ((prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) || !AllowActionsWithFollowers(pred, prey)) {
 						log::info("Condition 1: {}", prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore);
 						log::info("condition 2: {}", AllowActionsWithFollowers(pred, prey));
 						return;
@@ -776,8 +776,10 @@ namespace Gts {
 		if (balancemode == 2.0) { // This is checked only if Balance Mode is enabled. Size requirement is bigger with it.
 			MINIMUM_VORE_SCALE *= 1.15;
 		}
-		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
-			Notify("{} is too big to be eaten.", prey->GetDisplayFullName());
+		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
+			if (pred->formID == 0x14) {
+				Notify("{} is too big to be eaten.", prey->GetDisplayFullName());
+			}
 			return false;
 		}
 		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_VORE_SCALE) {

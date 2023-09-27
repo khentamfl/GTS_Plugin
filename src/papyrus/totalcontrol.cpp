@@ -53,7 +53,6 @@ namespace {
 
 				auto target = targetHandle.get().get();
 				auto caster = casterHandle.get().get();
-				log::info("  - Giant: {}, Tiny: {}", caster->GetDisplayFullName(), target->GetDisplayFullName());
 
 				float target_scale = get_target_scale(target);
 				float magicka = clamp(0.05, 1.0, GetMagikaPercentage(caster));

@@ -62,7 +62,7 @@ namespace Gts {
 	}
 
 	void Persistent::Reset() {
-		Plugin::SetInGame(false);
+		//Plugin::SetInGame(false);
 		std::unique_lock lock(this->_lock);
 		this->_actor_data.clear();
 	}
