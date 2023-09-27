@@ -456,8 +456,12 @@ namespace Gts {
 		log::info("{} teammate: {}, essential: {}, protectfollowers: {}", actor->GetDisplayFullName(), teammate, essential, protectfollowers);
 		if (!teammate && essential) {
 			return true;
-		} else if ((teammate && protectfollowers)) {
-			return true;
+		} else if (teammate && protectfollowers) {
+			if (IsHostile(PlayerCharacter::GetSingleton(), actor)) {
+				return false;
+			} else {
+				return true;
+			}
 		} else {
 			return false;
 		}
