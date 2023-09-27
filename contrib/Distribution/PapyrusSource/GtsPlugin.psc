@@ -163,6 +163,7 @@ Function UpdateCrawlAnimations(bool enabled, bool player) global native
 ;===================A I                   |
 ;==========================================
 
+Function SetFollowerProtection(bool enabled) global native
 Function SetFollowerInteractions(bool enabled) global native
 
 Function SetVoreAi(bool enabled) global native

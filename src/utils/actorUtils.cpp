@@ -453,6 +453,7 @@ namespace Gts {
 		bool essential = actor->IsEssential() && Runtime::GetBool("ProtectEssentials");
 		bool teammate = IsTeammate(actor);
 		bool protectfollowers = Persistent::GetSingleton().FollowerProtection;
+		log::info("{} teammate: {}, essential: {}, protectfollowers: {}", actor->GetDisplayFullName(), teammate, essential, protectfollowers);
 		if (!teammate && essential) {
 			return true;
 		} else if ((teammate && protectfollowers)) {
@@ -489,9 +490,11 @@ namespace Gts {
 		bool allow = Persistent::GetSingleton().FollowerInteractions;
 		bool hostile = IsHostile(player, tiny);
 		bool Teammate = IsTeammate(tiny);
-		if (giant->formID == 0x14) { // always disallow for Player
+		if (hostile) {
+			return true;
+		} else if (giant->formID == 0x14) { // always disallow for Player
 			return false;
-		} else if (!Teammate || hostile) {
+		} else if (!Teammate) {
 			return true;
 		} else if (Teammate && !allow) {
 			return false;
