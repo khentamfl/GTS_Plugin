@@ -236,6 +236,7 @@ namespace {
 	}
 
 	void AnimationAttempt(Actor* actor) {
+		log::info("Hugs: {}, ButtCrush: {}, Kick: {}", Persistent::GetSingleton().Hugs_Ai, Persistent::GetSingleton().Butt_Ai, Persistent::GetSingleton().Kick_Ai);
 		float scale = std::clamp(get_visual_scale(actor), 1.0f, 6.0f);
 		int rng = rand() % 100;
 		if (rng > 7 && rng < 33 * scale) {
