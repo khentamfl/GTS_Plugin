@@ -194,6 +194,14 @@ namespace {
 		Persistent::GetSingleton().vore_allowplayervore = enabled;
 	}
 
+	void SetInsectVore(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().AllowInsectVore = enabled;
+	}
+
+	void SetUndeadVore(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().AllowUndeadVore = enabled;
+	}
+
 	void SetOnlyCombatVore(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().vore_combatonly = enabled;
 	}
@@ -277,6 +285,9 @@ namespace {
 
 	void SetSandwichAi(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().Sandwich_Ai = enabled;
+	}
+	void SetFollowerInteractions(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().FollowerInteractions = enabled;
 	}
 	void SetVoreAi(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().Vore_Ai = enabled;
@@ -432,6 +443,7 @@ namespace Gts {
 		vm->RegisterFunction("SetProgressionMultiplier", PapyrusClass, SetProgressionMultiplier);
 		vm->RegisterFunction("SetStompAi", PapyrusClass, SetStompAi);
 		vm->RegisterFunction("SetSandwichAi", PapyrusClass, SetSandwichAi);
+		vm->RegisterFunction("SetFollowerInteractions", PapyrusClass, SetFollowerInteractions);
 		vm->RegisterFunction("SetVoreAi", PapyrusClass, SetVoreAi);
 		vm->RegisterFunction("SetHugsAi", PapyrusClass, SetHugsAi);
 		vm->RegisterFunction("SetKickAi", PapyrusClass, SetKickAi);
@@ -439,6 +451,8 @@ namespace Gts {
 		vm->RegisterFunction("SetActorPanic", PapyrusClass, SetActorPanic);
 		vm->RegisterFunction("ToggleHostileDamage", PapyrusClass, ToggleHostileDamage);
 		vm->RegisterFunction("SetAllowPlayerVore", PapyrusClass, SetAllowPlayerVore);
+		vm->RegisterFunction("SetInsectVore", PapyrusClass, SetInsectVore);
+		vm->RegisterFunction("SetUndeadVore", PapyrusClass, SetUndeadVore);
 		vm->RegisterFunction("SetOnlyCombatVore", PapyrusClass, SetOnlyCombatVore);
 		vm->RegisterFunction("SetLaunchObjects", PapyrusClass, SetLaunchObjects);
 		vm->RegisterFunction("IncreaseSizeLimit", PapyrusClass, IncreaseSizeLimit);

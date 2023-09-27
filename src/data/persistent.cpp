@@ -14,6 +14,9 @@ namespace {
 	inline const auto HighHeelCorrectionRecord = _byteswap_ulong('HHCO');
 	inline const auto HighHeelFurnitureRecord = _byteswap_ulong('HHFO');
 	inline const auto AllowPlayerVoreRecord = _byteswap_ulong('APVR');
+	inline const auto AllowInsectVoreRecord = _byteswap_ulong('AIVR');
+	inline const auto AllowUndeadVoreRecord = _byteswap_ulong('AUVR');
+	inline const auto AllowFollowerInteractions = _byteswap_ulong('AVFI');
 	inline const auto DevourmentCompatRecord = _byteswap_ulong('DVCR');
 	inline const auto FeetTrackingRecord = _byteswap_ulong('FTRD');
 	inline const auto LessGoreRecord = _byteswap_ulong('LGRD');
@@ -331,7 +334,7 @@ namespace Gts {
 					case 2:
 						GetSingleton().size_method = SizeMethod::Hybrid;
 						break;
-          case 3:
+          			case 3:
 						GetSingleton().size_method = SizeMethod::RefScale;
 						break;
 				}
@@ -347,6 +350,18 @@ namespace Gts {
 				bool vore_allowplayervore;
 				serde->ReadRecordData(&vore_allowplayervore, sizeof(vore_allowplayervore));
 				GetSingleton().vore_allowplayervore = vore_allowplayervore;
+			} else if (type == AllowInsectVoreRecord) {
+				bool AllowInsectVore;
+				serde->ReadRecordData(&AllowInsectVore, sizeof(AllowInsectVore));
+				GetSingleton().AllowInsectVore = AllowInsectVore;
+			} else if (type == AllowUndeadVoreRecord) {
+				bool AllowUndeadVore;
+				serde->ReadRecordData(&AllowUndeadVore, sizeof(AllowUndeadVore));
+				GetSingleton().AllowUndeadVore = AllowUndeadVore;
+			} else if (type == AllowFollowerInteractions) {
+				bool FollowerInteractions;
+				serde->ReadRecordData(&FollowerInteractions, sizeof(FollowerInteractions));
+				GetSingleton().FollowerInteractions = FollowerInteractions;
 			} else if (type == VoreCombatOnlyRecord) {
 				bool vore_combatonly;
 				serde->ReadRecordData(&vore_combatonly, sizeof(vore_combatonly));
@@ -589,6 +604,27 @@ namespace Gts {
 
 		bool vore_allowplayervore = GetSingleton().vore_allowplayervore;
 		serde->WriteRecordData(&vore_allowplayervore, sizeof(vore_allowplayervore));
+
+		if (!serde->OpenRecord(AllowInsectVoreRecord, 0)) {
+			log::error("Unable to open Allow Insect Vore record to write cosave data.");
+			return;
+		}
+		bool AllowInsectVore = GetSingleton().AllowInsectVore;
+		serde->WriteRecordData(&AllowInsectVore, sizeof(AllowInsectVore));
+
+		if (!serde->OpenRecord(AllowUndeadVoreRecord, 0)) {
+			log::error("Unable to open Allow Undead Vore record to write cosave data.");
+			return;
+		}
+		bool AllowUndeadVore = GetSingleton().AllowUndeadVore;
+		serde->WriteRecordData(&AllowUndeadVore, sizeof(AllowUndeadVore));
+
+		if (!serde->OpenRecord(FollowerInteractions, 0)) {
+			log::error("Unable to open Follower Interactions record to write cosave data.");
+			return;
+		}
+		bool FollowerInteractions = GetSingleton().FollowerInteractions;
+		serde->WriteRecordData(&FollowerInteractions, sizeof(FollowerInteractions));
 
 		if (!serde->OpenRecord(VoreCombatOnlyRecord, 0)) {
 			log::error("Unable to open Vore Combat Only record to write cosave data");

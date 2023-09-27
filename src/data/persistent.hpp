@@ -72,6 +72,9 @@ namespace Gts {
 			bool highheel_furniture = false;
 			bool is_speed_adjusted = true;
 			bool vore_allowplayervore = false;
+			bool AllowInsectVore = true;
+			bool AllowUndeadVore = true;
+			bool FollowerInteractions = false;
 			bool vore_combatonly = true;
 			bool devourment_compatibility = false;
 			bool allow_feetracking = true;

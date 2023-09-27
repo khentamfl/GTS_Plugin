@@ -194,10 +194,6 @@ namespace Gts {
 		}
 	}
 
-	bool IsHostile(Actor* giant, Actor* tiny) {
-		return tiny->IsHostileToActor(giant);
-	}
-
 	void DoFootGrind_Left(Actor* giant, Actor* tiny) {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();

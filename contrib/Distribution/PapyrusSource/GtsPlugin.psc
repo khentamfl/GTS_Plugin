@@ -163,6 +163,8 @@ Function UpdateCrawlAnimations(bool enabled, bool player) global native
 ;===================A I                   |
 ;==========================================
 
+Function SetFollowerInteractions(bool enabled) global native
+
 Function SetVoreAi(bool enabled) global native
 Function SetStompAi(bool enabled) global native
 Function SetSandwichAi(bool enabled) global native   
@@ -204,6 +206,9 @@ Function SetDevourmentCompatibility(Bool enabled) global native
 ;==================================================
 ;===================M I S C F U N C T I O N S     |
 ;==================================================
+
+function SetInsectVore(bool enabled) global native
+function SetUndeadVore(bool enabled) global native
 
 function SetLaunchObjects(Bool enabled) global native
 

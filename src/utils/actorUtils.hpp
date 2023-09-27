@@ -53,12 +53,16 @@ namespace Gts {
 	bool InBleedout(Actor* actor);
 	bool AllowStagger(Actor* giant, Actor* tiny);
 	bool IsHuman(Actor* actor);
+	bool IsBlacklisted(Actor* actor);
 	bool IsInsect(Actor* actor);
 	bool IsFemale(Actor* actor);
 	bool IsDragon(Actor* actor);
 	bool IsLiving(Actor* actor);
+	bool IsUndead(Actor* actor);
 	bool IsMoving(Actor* giant);
 	bool IsHeadtracking(Actor* giant);
+	bool IsHostile(Actor* giant, Actor* tiny);
+	bool AllowActionsWithFollowers(Actor* giant, Actor* tiny);
 	// Gts Bools end
 
 	// GTS State Controllers

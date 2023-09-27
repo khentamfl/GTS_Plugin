@@ -498,7 +498,7 @@ namespace Gts {
 		for (auto actor: find_actors()) {
 			if (!actor->Is3DLoaded() || actor->IsDead()) {
 				return;
-			}
+			} 
 			float Gigantism = 1.0 / (1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(pred)/100);
 			int Requirement = (8 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
 
@@ -507,7 +507,7 @@ namespace Gts {
 			if (random <= decide_chance) {
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
-					if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
+					if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore || !AllowActionsWithFollowers(pred, prey)) {
 						return;
 					}
 					VoreManager.StartVore(pred, prey);
@@ -733,6 +733,7 @@ namespace Gts {
 		if (prey->IsDead()) {
 			return false;
 		}
+		bool Allow = 
 		if (transient) {
 			if (transient->can_be_vored == false) {
 				Notify("{} is already being eaten by someone else", prey->GetDisplayFullName());
@@ -759,10 +760,14 @@ namespace Gts {
 
 		float sizedifference = pred_scale/prey_scale;
 
-
-
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
+
+		if (IsInsect(prey) || IsBlacklisted(prey) || IsUndead(prey)) {
+			std::string_view message = std::format("{} has no desire to eat {}", prey->GetDisplayFullName(), pred->GetDisplayFullName());
+			TiredSound(pred, message);
+			return false;
+		} 
 
 		if (balancemode == 2.0) { // This is checked only if Balance Mode is enabled. Size requirement is bigger with it.
 			MINIMUM_VORE_SCALE *= 1.15;

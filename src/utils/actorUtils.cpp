@@ -370,7 +370,16 @@ namespace Gts {
 		return false;
 	}
 
+	bool IsBlacklisted(Actor* actor) {
+		bool blacklist = Runtime::HasKeyword(actor, "BlackListKeyword");
+		return blacklist;
+	}
+
 	bool IsInsect(Actor* actor) {
+		bool Check = Persistent::GetSingleton().AllowInsectVore;
+		if (Check) {
+			return false;
+		}
 		bool Spider = Runtime::IsRace(actor, "FrostbiteSpiderRace");
 		bool SpiderGiant = Runtime::IsRace(actor, "FrostbiteSpiderRaceGiant");
 		bool SpiderLarge = Runtime::IsRace(actor, "FrostbiteSpiderRaceLarge");
@@ -425,12 +434,20 @@ namespace Gts {
 			return true;
 		}
 		if (IsDraugr || IsDwemer) {
-			//log::info("{} is not living", actor->GetDisplayFullName());
 			return false;
 		} else {
 			return true;
 		}
 		return true;
+	}
+
+	bool IsUndead(Actor* actor) {
+		bool IsDraugr = Runtime::HasKeyword(actor, "UndeadKeyword");
+		bool Check = Persistent::GetSingleton().AllowUndeadVore;
+		if (Check) {
+			return false;
+		} 
+		return IsDraugr;
 	}
 
 	bool IsMoving(Actor* giant) {
@@ -449,6 +466,23 @@ namespace Gts {
 			}
 		}
 		return tracking;
+	}
+
+	bool IsHostile(Actor* giant, Actor* tiny) {
+		return tiny->IsHostileToActor(giant);
+	}
+
+	bool AllowActionsWithFollowers(Actor* giant, Actor* tiny) {
+		bool allow = Persistent::GetSingleton().FollowerInteractions;
+		bool hostile = IsHostile(giant, tiny);
+		bool Teammate = IsTeammate(tiny);
+		if (!Teammate || hostile) {
+			return true;
+		} else if (Teammate && !allow) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

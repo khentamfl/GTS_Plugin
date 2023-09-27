@@ -236,7 +236,7 @@ namespace Gts {
 		}
 		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale >= MINIMUM_BUTTCRUSH_SCALE) {
 			if ((prey->formID != 0x14 && prey->IsEssential() && Runtime::GetBool("ProtectEssentials"))) {
-				std::string_view message = std::format("{} is Essential", prey->GetDisplayFullName());
+				std::string_view message = std::format("{} is Essential", prey->GetDisplayFullName()); 
 				TiredSound(pred, message);
 				return false;
 			}

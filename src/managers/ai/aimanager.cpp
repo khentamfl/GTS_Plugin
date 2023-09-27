@@ -144,7 +144,7 @@ namespace {
 			return;
 		} if (!IsHostile(pred, prey) && persist.vore_combatonly) {
 			return;
-		} if (prey->formID == 0x14 && !persist.vore_allowplayervore) {
+		} if (prey->formID == 0x14 && !persist.vore_allowplayervore || !AllowActionsWithFollowers(pred, prey)) {
 			return; 
 		}
 		HugShrink::GetSingleton().HugActor(pred, prey);
@@ -377,7 +377,7 @@ namespace Gts {
 		if (IsGtsBusy(pred)) {
 			return false;
 		}
-		if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
+		if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore || !AllowActionsWithFollowers(pred, prey)) {
 			return false; 
 		}
 		float pred_scale = get_visual_scale(pred);
