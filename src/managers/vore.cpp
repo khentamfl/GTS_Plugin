@@ -799,11 +799,15 @@ namespace Gts {
 		this->buffs.erase(actor->formID);
 	}
 
-	void Vore::StartVore(Actor* pred, Actor* prey) {
-		if ((prey->formID != 0x14 && prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore)) {
-			return;
-		} if (pred->formID != 0x14 && !AllowActionsWithFollowers(pred, prey)) {
-			return;
+	void Vore::StartVore(Actor* pred, Actor* prey) { 
+		if (pred->formID != 0x14) {
+			if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
+				log::info("{} vore immunity is on", prey->GetDisplayFullName());
+				return;
+			} if (!AllowActionsWithFollowers(pred, prey)) {
+				log::info("Actions with {} and {} are disallowed", pred->GetDisplayFullName(), prey->GetDisplayFullName());
+				return;
+			}
 		}
 
 		float pred_scale = get_visual_scale(pred);
