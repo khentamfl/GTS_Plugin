@@ -509,11 +509,6 @@ namespace Gts {
 			if (random <= decide_chance) {
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
-					if ((prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) || !AllowActionsWithFollowers(pred, prey)) {
-						log::info("Condition 1: {}", prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore);
-						log::info("condition 2: {}", AllowActionsWithFollowers(pred, prey));
-						return;
-					}
 					VoreManager.StartVore(pred, prey);
 				}
 			}
@@ -805,6 +800,12 @@ namespace Gts {
 	}
 
 	void Vore::StartVore(Actor* pred, Actor* prey) {
+		if ((prey->formID != 0x14 && prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore)) {
+			return;
+		} if (pred->formID != 0x14 && !AllowActionsWithFollowers(pred, prey)) {
+			return;
+		}
+
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 
