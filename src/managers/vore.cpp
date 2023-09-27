@@ -809,7 +809,7 @@ namespace Gts {
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 
-		float sizedifference = pred_scale/prey_scale;
+		float sizedifference = pred_scale/prey_scale; 
 
 		float wastestamina = 45; // Drain stamina, should be 300 once tests are over
 		float staminacheck = pred->AsActorValueOwner()->GetActorValue(ActorValue::kStamina);
