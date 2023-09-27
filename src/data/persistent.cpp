@@ -17,6 +17,7 @@ namespace {
 	inline const auto AllowInsectVoreRecord = _byteswap_ulong('AIVR');
 	inline const auto AllowUndeadVoreRecord = _byteswap_ulong('AUVR');
 	inline const auto AllowFollowerInteractions = _byteswap_ulong('AVFI');
+	inline const auto FollowerProtectionRecord = _byteswap_ulong('FPRD');
 	inline const auto DevourmentCompatRecord = _byteswap_ulong('DVCR');
 	inline const auto FeetTrackingRecord = _byteswap_ulong('FTRD');
 	inline const auto LessGoreRecord = _byteswap_ulong('LGRD');
@@ -362,6 +363,10 @@ namespace Gts {
 				bool FollowerInteractions;
 				serde->ReadRecordData(&FollowerInteractions, sizeof(FollowerInteractions));
 				GetSingleton().FollowerInteractions = FollowerInteractions;
+			} else if (type == FollowerProtectionRecord) {
+				bool FollowerProtection;
+				serde->ReadRecordData(&FollowerProtection, sizeof(FollowerProtection));
+				GetSingleton().FollowerProtection = FollowerProtection;
 			} else if (type == VoreCombatOnlyRecord) {
 				bool vore_combatonly;
 				serde->ReadRecordData(&vore_combatonly, sizeof(vore_combatonly));
@@ -625,6 +630,13 @@ namespace Gts {
 		}
 		bool FollowerInteractions = GetSingleton().FollowerInteractions;
 		serde->WriteRecordData(&FollowerInteractions, sizeof(FollowerInteractions));
+
+		if (!serde->OpenRecord(FollowerProtectionRecord, 0)) {
+			log::error("Unable to open Follower Protection record to write cosave data.");
+			return;
+		}
+		bool FollowerProtection = GetSingleton().FollowerProtection;
+		serde->WriteRecordData(&FollowerProtection, sizeof(FollowerProtection));
 
 		if (!serde->OpenRecord(VoreCombatOnlyRecord, 0)) {
 			log::error("Unable to open Vore Combat Only record to write cosave data");

@@ -430,7 +430,6 @@ namespace Gts {
 		bool IsDwemer = Runtime::HasKeyword(actor, "DwemerKeyword");
 		bool IsVampire = Runtime::HasKeyword(actor, "VampireKeyword");
 		if (IsVampire) {
-			log::info("{} is Vampire", actor->GetDisplayFullName());
 			return true;
 		}
 		if (IsDraugr || IsDwemer) {
@@ -448,6 +447,19 @@ namespace Gts {
 			return false;
 		} 
 		return IsDraugr;
+	}
+
+	bool IsEssential(Actor* actor) {
+		bool essential = actor->IsEssential() && Runtime::GetBool("ProtectEssentials");
+		bool teammate = IsTeammate(actor);
+		bool protectfollowers = Persistent::GetSingleton().FollowerProtection;
+		if (!teammate && essential) {
+			return true;
+		} else if ((teammate && protectfollowers)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	bool IsMoving(Actor* giant) {
@@ -475,7 +487,6 @@ namespace Gts {
 	bool AllowActionsWithFollowers(Actor* giant, Actor* tiny) {
 		auto player = PlayerCharacter::GetSingleton();
 		bool allow = Persistent::GetSingleton().FollowerInteractions;
-		log::info("Allow: {}", allow);
 		bool hostile = IsHostile(player, tiny);
 		bool Teammate = IsTeammate(tiny);
 		if (!Teammate || hostile) {

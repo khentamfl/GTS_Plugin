@@ -1,6 +1,7 @@
 #pragma once
 #include "managers/GtsSizeManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
+#include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
 #include "data/time.hpp"
@@ -242,7 +243,7 @@ namespace Gts {
 		const float SMT_BONUS = 2.0;
 		float PERK_BONUS = 1.0;
 
-		if (Runtime::GetBool("ProtectEssentials") && target->IsEssential()) {
+		if (IsEssential(target)) {
 			return;
 		}
 
@@ -321,7 +322,7 @@ namespace Gts {
 		float sizedifference = caster_scale/target_scale;
 		float instacrushrequirement = 24.0;
 
-		if (Runtime::GetBool("ProtectEssentials") && target->IsEssential()) {
+		if (IsEssential(target)) {
 			return;
 		}
 		int Random = rand() % 8;

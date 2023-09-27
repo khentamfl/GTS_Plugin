@@ -1,6 +1,7 @@
 #include "magic/effects/shrink_foe.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "magic/effects/common.hpp"
+#include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
@@ -155,7 +156,7 @@ namespace Gts {
 		log::info("Weakness of {} is {}", target->GetDisplayFullName(), weakness);
 
 		bool has_smt = HasSMT(caster);
-		if (target->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
+		if (IsEssential(target)) {
 			return; // Disallow shrinking Essentials
 		}
 		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus * weakness, gainpower * balancemodebonus, has_smt);

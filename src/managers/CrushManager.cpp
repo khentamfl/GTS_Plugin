@@ -287,7 +287,7 @@ namespace Gts {
 		if (CrushManager::AlreadyCrushed(tiny)) {
 			return false;
 		}
-		if (tiny->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
+		if (IsEssential(tiny)) {
 			return false;
 		}
 		// Check if they are immune

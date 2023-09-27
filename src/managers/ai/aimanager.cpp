@@ -87,11 +87,13 @@ namespace {
 		}
 		std::vector<Actor*> preys = Sandwiching.GetSandwichTargetsInFront(pred, numberOfPrey);
 		for (auto prey: preys) {
-			Sandwiching.StartSandwiching(pred, prey);
-			auto node = find_node(pred, "GiantessRune", false);
-			if (node) {
-				node->local.scale = 0.01;
-				update_node(node);
+			if (AllowActionsWithFollowers(pred, prey)) {
+				Sandwiching.StartSandwiching(pred, prey);
+				auto node = find_node(pred, "GiantessRune", false);
+				if (node) {
+					node->local.scale = 0.01;
+					update_node(node);
+				}
 			}
 		}
 	}

@@ -42,7 +42,7 @@ namespace Gts {
 		float target_scale = get_visual_scale(target);
 		float size_difference = caster_scale/target_scale;
 		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
-		if (target->IsEssential() && Runtime::GetBool("ProtectEssentials")) {
+		if (IsEssential(target)) {
 			return; // Disallow shrinking Essentials
 		}
 		if (HasSMT(caster)) {

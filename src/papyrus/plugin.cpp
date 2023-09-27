@@ -289,6 +289,9 @@ namespace {
 	void SetFollowerInteractions(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().FollowerInteractions = enabled;
 	}
+	void SetFollowerProtection(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().FollowerProtection = enabled;
+	}
 	void SetVoreAi(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().Vore_Ai = enabled;
 	}
@@ -444,6 +447,7 @@ namespace Gts {
 		vm->RegisterFunction("SetStompAi", PapyrusClass, SetStompAi);
 		vm->RegisterFunction("SetSandwichAi", PapyrusClass, SetSandwichAi);
 		vm->RegisterFunction("SetFollowerInteractions", PapyrusClass, SetFollowerInteractions);
+		vm->RegisterFunction("SetFollowerProtection", PapyrusClass, SetFollowerProtection);
 		vm->RegisterFunction("SetVoreAi", PapyrusClass, SetVoreAi);
 		vm->RegisterFunction("SetHugsAi", PapyrusClass, SetHugsAi);
 		vm->RegisterFunction("SetKickAi", PapyrusClass, SetKickAi);

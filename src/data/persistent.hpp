@@ -75,6 +75,7 @@ namespace Gts {
 			bool AllowInsectVore = true;
 			bool AllowUndeadVore = true;
 			bool FollowerInteractions = false;
+			bool FollowerProtection = true;
 			bool vore_combatonly = true;
 			bool devourment_compatibility = false;
 			bool allow_feetracking = true;
