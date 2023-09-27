@@ -733,7 +733,7 @@ namespace Gts {
 		if (prey->IsDead()) {
 			return false;
 		}
-		bool Allow = 
+
 		if (transient) {
 			if (transient->can_be_vored == false) {
 				Notify("{} is already being eaten by someone else", prey->GetDisplayFullName());
