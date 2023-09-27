@@ -619,7 +619,7 @@ namespace Gts {
 		bool AllowUndeadVore = GetSingleton().AllowUndeadVore;
 		serde->WriteRecordData(&AllowUndeadVore, sizeof(AllowUndeadVore));
 
-		if (!serde->OpenRecord(FollowerInteractions, 0)) {
+		if (!serde->OpenRecord(AllowFollowerInteractions, 0)) {
 			log::error("Unable to open Follower Interactions record to write cosave data.");
 			return;
 		}
