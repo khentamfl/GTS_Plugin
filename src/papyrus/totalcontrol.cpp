@@ -19,18 +19,15 @@ namespace {
 	constexpr std::string_view PapyrusClass = "GtsControl";
 
 	void GrowTeammate(StaticFunctionTag*, float power) {
-		log::info("Called GrowTeammate");
 		auto casterRef = PlayerCharacter::GetSingleton();
 		if (!casterRef) {
 			return;
 		}
-		log::info("  - Finding teammates");
 		for (auto targetRef: FindTeammates()) {
 			if (!targetRef) {
 				continue;
 			}
 			
-			log::info("  - Found: {}", targetRef->GetDisplayFullName());
 			float Volume = clamp(0.10, 1.0, get_visual_scale(targetRef)/8);
 			Runtime::PlaySoundAtNode("growthSound", targetRef, Volume, 1.0, "NPC Pelvis [Pelv]");
 			KnockAreaEffect(targetRef, 6, 60 * get_visual_scale(targetRef));

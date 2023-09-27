@@ -455,11 +455,8 @@ namespace Gts {
 			log::info("Looking for Vore Actors");
 			std::vector<Actor*> AbleToVore = {};
 			for (auto actor: find_actors()) {
-				if (actor->formID == 0x14) {
-					return; // Don't do attempts if actor is Player
-				}
-				log::info("Found Vore Actor: {}", actor->GetDisplayFullName());
-				if (IsTeammate(actor) && (actor->IsInCombat() || !persist.vore_combatonly)) {
+				if (actor->formID != 0x14 && IsTeammate(actor) && (actor->IsInCombat() || !persist.vore_combatonly)) {
+					log::info("Found Vore Actor: {}", actor->GetDisplayFullName());
 					AbleToVore.push_back(actor);
 				}
 			}
