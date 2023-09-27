@@ -38,7 +38,7 @@ namespace {
 	}
 
 	float GetShrinkThreshold(Actor* actor) {
-		float threshold = 2.5;
+		float threshold = 2.4;
 		float bonus = 1.0;
 		if (Runtime::HasPerk(actor, "HugCrush")) {
 			bonus += 0.25;
@@ -160,27 +160,35 @@ namespace {
 		if (IsGtsBusy(pred)) {
 			return;
 		} 
-		if (CanDoPaired(pred) && !IsSynced(pred) && !IsTransferingTiny(pred)) {
-			auto& hugs = HugAnimationController::GetSingleton();
-			std::size_t numberOfPrey = 1;
-			std::vector<Actor*> preys = hugs.GetHugTargetsInFront(pred, numberOfPrey);
-			for (auto prey: preys) {
-				float sizedifference = get_visual_scale(pred)/get_visual_scale(prey);
-				if (sizedifference > 0.9 && sizedifference < GetShrinkThreshold(pred)) {
-					StartHugs(pred, prey);
+		int rng = rand() % 7;
+		if (rng >= 6) {
+			if (CanDoPaired(pred) && !IsSynced(pred) && !IsTransferingTiny(pred)) {
+				auto& hugs = HugAnimationController::GetSingleton();
+				std::size_t numberOfPrey = 1;
+				std::vector<Actor*> preys = hugs.GetHugTargetsInFront(pred, numberOfPrey);
+				for (auto prey: preys) {
+					float sizedifference = get_visual_scale(pred)/get_visual_scale(prey);
+					if (sizedifference > 0.98 && sizedifference < GetShrinkThreshold(pred)) {
+						StartHugs(pred, prey);
+					}
 				}
 			}
 		}
 	}
 
 	void StrongStomp(Actor* pred, int rng) {
-		if (rng <= 5) {
+		if (!Persistent::GetSingleton().Stomp_Ai) {
+			return; // don't check any further if it is disabled
+		} if (rng <= 5) {
 			AnimationManager::StartAnim("StrongStompRight", pred);
 		} else {
 			AnimationManager::StartAnim("StrongStompLeft", pred);
 		}
 	}
 	void LightStomp(Actor* pred, int rng) {
+		if (!Persistent::GetSingleton().Stomp_Ai) {
+			return; // don't check any further if it is disabled
+		}
 		if (rng <= 5) {
 			AnimationManager::StartAnim("StompRight", pred);
 		} else {
@@ -219,8 +227,6 @@ namespace {
 				if (random <= 2 && butt_rng <= 2 && Persistent::GetSingleton().Butt_Ai) {
 					FastButtCrush(pred);
 					return;
-				} if (!Persistent::GetSingleton().Stomp_Ai) {
-					return; // don't check any further if it is disabled
 				} else if (random <= 3) {
 					StrongStomp(pred, actionrng);
 					return;
@@ -236,7 +242,6 @@ namespace {
 	}
 
 	void AnimationAttempt(Actor* actor) {
-		log::info("Hugs: {}, ButtCrush: {}, Kick: {}", Persistent::GetSingleton().Hugs_Ai, Persistent::GetSingleton().Butt_Ai, Persistent::GetSingleton().Kick_Ai);
 		float scale = std::clamp(get_visual_scale(actor), 1.0f, 6.0f);
 		int rng = rand() % 100;
 		if (rng > 7 && rng < 33 * scale) {
