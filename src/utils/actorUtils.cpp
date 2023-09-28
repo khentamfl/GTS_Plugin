@@ -490,9 +490,8 @@ namespace Gts {
 	}
 
 	bool AllowActionsWithFollowers(Actor* giant, Actor* tiny) {
-		auto player = PlayerCharacter::GetSingleton();
 		bool allow = Persistent::GetSingleton().FollowerInteractions;
-		bool hostile = IsHostile(player, tiny);
+		bool hostile = IsHostile(giant, tiny);
 		bool Teammate = IsTeammate(tiny);
 		if (hostile) {
 			return true;

@@ -724,8 +724,11 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		if (!IsStomping(player) && !IsTransitioning(player)) {
 			auto grabbedActor = Grab::GetHeldActor(player);
-			if (!grabbedActor) {
+			if (!grabbedActor) { 
 				return;
+			}
+			if (IsInsect(grabbedActor) || IsBlacklisted(grabbedActor) || IsUndead(grabbedActor)) {
+				return; // Same rules as with Vore
 			}
 			AnimationManager::StartAnim("GrabEatSomeone", player);
 		}
