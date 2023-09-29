@@ -58,29 +58,29 @@ namespace {
 		return static_cast<ExtraDataList*>(memory);
 	}
 
-  struct SpringGrowData {
-    Spring amount = Spring(0.0, 1.0);
-    float addedSoFar = 0.0;
-    ActorHandle actor;
+	struct SpringGrowData {
+		Spring amount = Spring(0.0, 1.0);
+		float addedSoFar = 0.0;
+		ActorHandle actor;
 
-    SpringGrowData(Actor* actor, float amountToAdd, float halfLife): actor(actor->CreateRefHandle()) {
-      amount.value = 0.0;
-      amount.target = amountToAdd;
-      amount.halflife = halfLife;
-    }
-  };
+		SpringGrowData(Actor* actor, float amountToAdd, float halfLife) : actor(actor->CreateRefHandle()) {
+			amount.value = 0.0;
+			amount.target = amountToAdd;
+			amount.halflife = halfLife;
+		}
+	};
 
-  struct SpringShrinkData {
-    Spring amount = Spring(0.0, 1.0);
-    float addedSoFar = 0.0;
-    ActorHandle actor;
+	struct SpringShrinkData {
+		Spring amount = Spring(0.0, 1.0);
+		float addedSoFar = 0.0;
+		ActorHandle actor;
 
-    SpringShrinkData(Actor* actor, float amountToAdd, float halfLife): actor(actor->CreateRefHandle()) {
-      amount.value = 0.0;
-      amount.target = amountToAdd;
-      amount.halflife = halfLife;
-    }
-  };
+		SpringShrinkData(Actor* actor, float amountToAdd, float halfLife) : actor(actor->CreateRefHandle()) {
+			amount.value = 0.0;
+			amount.target = amountToAdd;
+			amount.halflife = halfLife;
+		}
+	};
 }
 
 RE::ExtraDataList::~ExtraDataList() {
@@ -118,17 +118,17 @@ namespace Gts {
 	float GetLaunchPower(float sizeRatio) {
 		// https://www.desmos.com/calculator/wh0vwgljfl
 		SoftPotential launch {
-				.k = 1.42,
-				.n = 0.78,
-				.s = 0.6,
-				.a = 0.8,
-			};
+			.k = 1.42,
+			.n = 0.78,
+			.s = 0.6,
+			.a = 0.8,
+		};
 		float power = soft_power(sizeRatio, launch);
 		return power;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 G T S   ST A T E S  B O O L S                                                                      //
+	//                                 G T S   ST A T E S  B O O L S                                                                      //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	bool IsEquipBusy(Actor* actor) {
 		auto profiler = Profilers::Profile("ActorUtils: IsEquipBusy");
@@ -286,12 +286,12 @@ namespace Gts {
 	bool CanDoButtCrush(Actor* actor) {
 		static Timer Default = Timer(30);
 		static Timer UnstableGrowth = Timer(25.5);
-        static Timer LoomingDoom = Timer(19.1);
+		static Timer LoomingDoom = Timer(19.1);
 		bool lvl70 = Runtime::HasPerk(actor, "ButtCrush_UnstableGrowth");
-        bool lvl100 = Runtime::HasPerk(actor, "ButtCrush_LoomingDoom");
-        if (lvl100) {
-            return LoomingDoom.ShouldRunFrame();
-        } else if (lvl70) {
+		bool lvl100 = Runtime::HasPerk(actor, "ButtCrush_LoomingDoom");
+		if (lvl100) {
+			return LoomingDoom.ShouldRunFrame();
+		} else if (lvl70) {
 			return UnstableGrowth.ShouldRunFrame();
 		} else {
 			return Default.ShouldRunFrame();
@@ -312,7 +312,7 @@ namespace Gts {
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 G T S   ST A T E S  O T H E R                                                                      //
+	//                                 G T S   ST A T E S  O T H E R                                                                      //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -362,7 +362,8 @@ namespace Gts {
 		log::info("{} is vamp: {}, drag: {}, anim: {}, dwem: {}, undead: {}, creat: {}", actor->GetDisplayFullName(), vampire, dragon, animal, dwemer, undead, creature);
 		if (!dragon && !animal && !dwemer && !undead && !creature) {
 			return true; // Detect non-vampire
-		} if (!dragon && !animal && !dwemer && !creature && undead && vampire) {
+		}
+		if (!dragon && !animal && !dwemer && !creature && undead && vampire) {
 			return true; // Detect Vampire
 		} else {
 			return false;
@@ -507,7 +508,7 @@ namespace Gts {
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 G T S   ST A T E S  S E T S                                                                        //
+	//                                 G T S   ST A T E S  S E T S                                                                        //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	void SetBeingHeld(Actor* tiny, bool decide) {
 		auto transient = Transient::GetSingleton().GetData(tiny);
@@ -569,7 +570,8 @@ namespace Gts {
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!tinyhandle) {
 				return false;
-			} if (!gianthandle) {
+			}
+			if (!gianthandle) {
 				return false;
 			}
 
@@ -581,14 +583,14 @@ namespace Gts {
 			if (tiny->IsDead()) {
 				TransferInventoryToDropbox(tiny, removeQuestItems);
 				/*log::info("Attempting to steal items from {} to {}", from->GetDisplayFullName(), to->GetDisplayFullName());
-				for (auto &[a_object, invData]: from->GetInventory()) {
-					log::info("Transfering item {} from {}, formID {}", a_object->GetName(), from->GetDisplayFullName(), a_object->formID);
-					if (a_object->GetPlayable()) {
-						if (!invData.second->IsQuestObject() || removeQuestItems ) {
-							from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, to, nullptr, nullptr);
-						}
-					}
-				}*/
+				   for (auto &[a_object, invData]: from->GetInventory()) {
+				        log::info("Transfering item {} from {}, formID {}", a_object->GetName(), from->GetDisplayFullName(), a_object->formID);
+				        if (a_object->GetPlayable()) {
+				                if (!invData.second->IsQuestObject() || removeQuestItems ) {
+				                        from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, to, nullptr, nullptr);
+				                }
+				        }
+				   }*/
 				return false; // stop it, we looted the target.
 			}
 			return true;
@@ -707,14 +709,14 @@ namespace Gts {
 			auto ai = receiver->GetActorRuntimeData().currentProcess;
 			if (ai) {
 				if (ai->InHighProcess()) {
-				if (receiver->Is3DLoaded()) {
-					if (source->Is3DLoaded()) {
-					NiPoint3 direction = receiver->GetPosition() - source->GetPosition();
-					direction = direction / direction.Length();
+					if (receiver->Is3DLoaded()) {
+						if (source->Is3DLoaded()) {
+							NiPoint3 direction = receiver->GetPosition() - source->GetPosition();
+							direction = direction / direction.Length();
 
-					typedef void(*DefPushActorAway)(AIProcess *ai, Actor* actor, NiPoint3& direction, float force);
-					REL::Relocation<DefPushActorAway> RealPushActorAway{ RELOCATION_ID(38858, 39895) };
-					RealPushActorAway(ai, receiver, direction, afKnockBackForce);
+							typedef void (*DefPushActorAway)(AIProcess *ai, Actor* actor, NiPoint3& direction, float force);
+							REL::Relocation<DefPushActorAway> RealPushActorAway{ RELOCATION_ID(38858, 39895) };
+							RealPushActorAway(ai, receiver, direction, afKnockBackForce);
 						}
 					}
 				}
@@ -732,11 +734,11 @@ namespace Gts {
 			auto ai = receiver->GetActorRuntimeData().currentProcess;
 			if (ai) {
 				if (ai->InHighProcess()) {
-				if (receiver->Is3DLoaded()) {
-					if (source->Is3DLoaded()) {
-					typedef void(*DefPushActorAway)(AIProcess *ai, Actor* actor, NiPoint3& direction, float force);
-					REL::Relocation<DefPushActorAway> RealPushActorAway{ RELOCATION_ID(38858, 39895) };
-					RealPushActorAway(ai, receiver, direction, force);
+					if (receiver->Is3DLoaded()) {
+						if (source->Is3DLoaded()) {
+							typedef void (*DefPushActorAway)(AIProcess *ai, Actor* actor, NiPoint3& direction, float force);
+							REL::Relocation<DefPushActorAway> RealPushActorAway{ RELOCATION_ID(38858, 39895) };
+							RealPushActorAway(ai, receiver, direction, force);
 						}
 					}
 				}
@@ -949,7 +951,8 @@ namespace Gts {
 		if (int(level) % 5 == 0) {
 			Notify("You've learned a bonus perk point");
 			GtsSkillPerkPoints->value += 1.0;
-		} if (level == 20 || level == 40) {
+		}
+		if (level == 20 || level == 40) {
 			GtsSkillPerkPoints->value += 2.0;
 		} else if (level == 60 || level == 80) {
 			GtsSkillPerkPoints->value += 3.0;
@@ -1011,19 +1014,22 @@ namespace Gts {
 	}
 
 	float GetButtCrushCost(Actor* actor) {
-        float cost = 1.0;
-        if (Runtime::HasPerkTeam(actor, "ButtCrush_KillerBooty")) {
-            cost -= 0.15;
-        } if (Runtime::HasPerkTeam(actor, "ButtCrush_LoomingDoom")) {
-            cost -= 0.25;
-        } if (Runtime::HasPerkTeam(actor, "SkilledGTS")) {
+		float cost = 1.0;
+		if (Runtime::HasPerkTeam(actor, "ButtCrush_KillerBooty")) {
+			cost -= 0.15;
+		}
+		if (Runtime::HasPerkTeam(actor, "ButtCrush_LoomingDoom")) {
+			cost -= 0.25;
+		}
+		if (Runtime::HasPerkTeam(actor, "SkilledGTS")) {
 			float level = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
 			cost -= level;
-		} if (IsCrawling(actor)) {
+		}
+		if (IsCrawling(actor)) {
 			cost *= 1.35;
 		}
-        return cost;
-    }
+		return cost;
+	}
 
 	float GetAnimationSlowdown(Actor* giant) {
 		if (!giant) {
@@ -1131,7 +1137,8 @@ namespace Gts {
 		radius *= 1.0 + (GetHighHeelsBonusDamage(giant) * 2.5);
 		if (kind == FootEvent::Left) {
 			AccurateDamage::GetSingleton().DoAccurateCollisionLeft(giant, (45.0 * damage), radius, random, bonedamage, crushmult, Cause);
-		} if (kind == FootEvent::Right) {
+		}
+		if (kind == FootEvent::Right) {
 			AccurateDamage::GetSingleton().DoAccurateCollisionRight(giant, (45.0 * damage), radius, random, bonedamage, crushmult, Cause);
 			//                                                                                         ^        ^           ^ - - - - Normal Crush
 			//                                                               Chance to trigger bone crush   Damage of            Threshold multiplication
@@ -1178,8 +1185,7 @@ namespace Gts {
 
 					if (sizedifference < 1.2) {
 						return false; // terminate task
-					}
-					else if (sizedifference > 1.2 && sizedifference < 3.0) {
+					} else if (sizedifference > 1.2 && sizedifference < 3.0) {
 						tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 						tiny->NotifyAnimationGraph("staggerStart");
 						return false; //Only Stagger
@@ -1272,7 +1278,8 @@ namespace Gts {
 
 		if (get_target_scale(tiny) <= 0.11) {
 			set_target_scale(tiny, 0.11);
-		} if (sizedifference <= 4.0) { // Stagger or Push
+		}
+		if (sizedifference <= 4.0) { // Stagger or Push
 			StaggerActor(tiny);
 		} else {
 			PushActorAway(giant, tiny, 1.0 * GetLaunchPower(sizedifference));
@@ -1362,8 +1369,8 @@ namespace Gts {
 			return;
 		}
 		if (IsFirstPerson()) {
-            return;
-        }
+			return;
+		}
 		static Timer Cooldown = Timer(1.2);
 		if (Cooldown.ShouldRun()) {
 			Runtime::PlaySound("VoreSound_Fail", player, 0.7, 0.0);
@@ -1496,7 +1503,7 @@ namespace Gts {
 		}
 	}
 
-  	void ShrinkUntil(Actor* giant, Actor* tiny, float expected) {
+	void ShrinkUntil(Actor* giant, Actor* tiny, float expected) {
 		if (HasSMT(giant)) {
 			float predscale = get_target_scale(giant);
 			float preyscale = get_target_scale(tiny);
@@ -1509,132 +1516,132 @@ namespace Gts {
 		}
 	}
 
-  void DisableCollisions(Actor* actor, TESObjectREFR* otherActor) {
-    if (actor) {
-      auto trans = Transient::GetSingleton().GetData(actor);
-      if (trans) {
-        trans->disable_collision_with = otherActor;
-        log::info("Disable collision for: {}", actor->GetDisplayFullName());
-        auto colliders = ActorCollisionData(actor);
-        colliders.UpdateCollisionFilter();
-        if (otherActor) {
-          Actor* asOtherActor = skyrim_cast<Actor*>(otherActor);
-          auto otherColliders = ActorCollisionData(asOtherActor);
-          otherColliders.UpdateCollisionFilter();
-        }
-      }
-    }
-  }
-  void EnableCollisions(Actor* actor) {
-    if (actor) {
-      auto trans = Transient::GetSingleton().GetData(actor);
-      if (trans) {
-        auto otherActor = trans->disable_collision_with;
-        trans->disable_collision_with = nullptr;
-        log::info("Enable collision for: {}", actor->GetDisplayFullName());
-        auto colliders = ActorCollisionData(actor);
-        colliders.UpdateCollisionFilter();
-        if (otherActor) {
-          Actor* asOtherActor = skyrim_cast<Actor*>(otherActor);
-          auto otherColliders = ActorCollisionData(asOtherActor);
-          otherColliders.UpdateCollisionFilter();
-        }
-      }
-    }
-  }
-
-  void SpringGrow(Actor* actor, float amt, float halfLife, std::string_view naming) {
-    if (!actor) {
-      return;
-    }
-
-    auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
-	std::string name = std::format("SpringGrow {}: {}", naming, actor->formID);
-	const float DURATION = halfLife * 3.2;
-
-    TaskManager::RunFor(DURATION,
-		[ growData ](const auto& progressData) {
-		float totalScaleToAdd = growData->amount.value;
-		float prevScaleAdded = growData->addedSoFar;
-		float deltaScale = totalScaleToAdd - prevScaleAdded;
-		Actor* actor = growData->actor.get().get();
-
+	void DisableCollisions(Actor* actor, TESObjectREFR* otherActor) {
 		if (actor) {
-			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(actor));
-			DamageAV(actor, ActorValue::kStamina, 0.55 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());
-			auto actorData = Persistent::GetSingleton().GetData(actor);
-			if (actorData) {
-				actorData->target_scale += deltaScale;
-				actorData->visual_scale += deltaScale;
-				growData->addedSoFar = totalScaleToAdd;
+			auto trans = Transient::GetSingleton().GetData(actor);
+			if (trans) {
+				trans->disable_collision_with = otherActor;
+				log::info("Disable collision for: {}", actor->GetDisplayFullName());
+				auto colliders = ActorCollisionData(actor);
+				colliders.UpdateCollisionFilter();
+				if (otherActor) {
+					Actor* asOtherActor = skyrim_cast<Actor*>(otherActor);
+					auto otherColliders = ActorCollisionData(asOtherActor);
+					otherColliders.UpdateCollisionFilter();
 				}
 			}
-        return fabs(growData->amount.value - growData->amount.target) > 1e-4;
-      }
-    );
-  }
-
-  void SpringGrow_Free(Actor* actor, float amt, float halfLife, std::string_view naming) {
-    if (!actor) {
-      return;
-    }
-
-    auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
-	std::string name = std::format("SpringGrow_Free {}: {}", naming, actor->formID);
-	const float DURATION = halfLife * 3.2;
-
-    TaskManager::RunFor(name, DURATION,
-		[ growData ](const auto& progressData) {
-		float totalScaleToAdd = growData->amount.value;
-		float prevScaleAdded = growData->addedSoFar;
-		float deltaScale = totalScaleToAdd - prevScaleAdded;
-		Actor* actor = growData->actor.get().get();
-
+		}
+	}
+	void EnableCollisions(Actor* actor) {
 		if (actor) {
-			auto actorData = Persistent::GetSingleton().GetData(actor);
-			if (actorData) {
-				actorData->target_scale += deltaScale;
-				actorData->visual_scale += deltaScale;
-				growData->addedSoFar = totalScaleToAdd;
+			auto trans = Transient::GetSingleton().GetData(actor);
+			if (trans) {
+				auto otherActor = trans->disable_collision_with;
+				trans->disable_collision_with = nullptr;
+				log::info("Enable collision for: {}", actor->GetDisplayFullName());
+				auto colliders = ActorCollisionData(actor);
+				colliders.UpdateCollisionFilter();
+				if (otherActor) {
+					Actor* asOtherActor = skyrim_cast<Actor*>(otherActor);
+					auto otherColliders = ActorCollisionData(asOtherActor);
+					otherColliders.UpdateCollisionFilter();
 				}
 			}
-        return fabs(growData->amount.value - growData->amount.target) > 1e-4;
-      }
-    );
-  }
+		}
+	}
 
-  void SpringShrink(Actor* actor, float amt, float halfLife, std::string_view naming) {
-    if (!actor) {
-      return;
-    }
+	void SpringGrow(Actor* actor, float amt, float halfLife, std::string_view naming) {
+		if (!actor) {
+			return;
+		}
 
-    auto growData = std::make_shared<SpringShrinkData>(actor, amt, halfLife);
-	std::string name = std::format("SpringShrink {}: {}", naming, actor->formID);
-	const float DURATION = halfLife * 3.2;
-    TaskManager::RunFor(DURATION,
-	[ growData ](const auto& progressData) {
-		float totalScaleToAdd = growData->amount.value;
-		float prevScaleAdded = growData->addedSoFar;
-		float deltaScale = totalScaleToAdd - prevScaleAdded;
-		Actor* actor = growData->actor.get().get();
+		auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
+		std::string name = std::format("SpringGrow {}: {}", naming, actor->formID);
+		const float DURATION = halfLife * 3.2;
 
-		if (actor) {
-			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(actor));
-			DamageAV(actor, ActorValue::kStamina, 0.35 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());
-          	auto actorData = Persistent::GetSingleton().GetData(actor);
-			if (actorData) {
-				actorData->target_scale += deltaScale;
-				actorData->visual_scale += deltaScale;
-            	growData->addedSoFar = totalScaleToAdd;
-        	}
-	    }
+		TaskManager::RunFor(DURATION,
+		                    [ growData ](const auto& progressData) {
+			float totalScaleToAdd = growData->amount.value;
+			float prevScaleAdded = growData->addedSoFar;
+			float deltaScale = totalScaleToAdd - prevScaleAdded;
+			Actor* actor = growData->actor.get().get();
 
-        return fabs(growData->amount.value - growData->amount.target) > 1e-4;
-      }
-    );
-  }
+			if (actor) {
+				float stamina = clamp(0.05, 1.0, GetStaminaPercentage(actor));
+				DamageAV(actor, ActorValue::kStamina, 0.55 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());
+				auto actorData = Persistent::GetSingleton().GetData(actor);
+				if (actorData) {
+					actorData->target_scale += deltaScale;
+					actorData->visual_scale += deltaScale;
+					growData->addedSoFar = totalScaleToAdd;
+				}
+			}
+			return fabs(growData->amount.value - growData->amount.target) > 1e-4;
+		}
+		                    );
+	}
 
-  	void ResetGrab(Actor* giant) {
+	void SpringGrow_Free(Actor* actor, float amt, float halfLife, std::string_view naming) {
+		if (!actor) {
+			return;
+		}
+
+		auto growData = std::make_shared<SpringGrowData>(actor, amt, halfLife);
+		std::string name = std::format("SpringGrow_Free {}: {}", naming, actor->formID);
+		const float DURATION = halfLife * 3.2;
+
+		TaskManager::RunFor(name, DURATION,
+		                    [ growData ](const auto& progressData) {
+			float totalScaleToAdd = growData->amount.value;
+			float prevScaleAdded = growData->addedSoFar;
+			float deltaScale = totalScaleToAdd - prevScaleAdded;
+			Actor* actor = growData->actor.get().get();
+
+			if (actor) {
+				auto actorData = Persistent::GetSingleton().GetData(actor);
+				if (actorData) {
+					actorData->target_scale += deltaScale;
+					actorData->visual_scale += deltaScale;
+					growData->addedSoFar = totalScaleToAdd;
+				}
+			}
+			return fabs(growData->amount.value - growData->amount.target) > 1e-4;
+		}
+		                    );
+	}
+
+	void SpringShrink(Actor* actor, float amt, float halfLife, std::string_view naming) {
+		if (!actor) {
+			return;
+		}
+
+		auto growData = std::make_shared<SpringShrinkData>(actor, amt, halfLife);
+		std::string name = std::format("SpringShrink {}: {}", naming, actor->formID);
+		const float DURATION = halfLife * 3.2;
+		TaskManager::RunFor(DURATION,
+		                    [ growData ](const auto& progressData) {
+			float totalScaleToAdd = growData->amount.value;
+			float prevScaleAdded = growData->addedSoFar;
+			float deltaScale = totalScaleToAdd - prevScaleAdded;
+			Actor* actor = growData->actor.get().get();
+
+			if (actor) {
+				float stamina = clamp(0.05, 1.0, GetStaminaPercentage(actor));
+				DamageAV(actor, ActorValue::kStamina, 0.35 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());
+				auto actorData = Persistent::GetSingleton().GetData(actor);
+				if (actorData) {
+					actorData->target_scale += deltaScale;
+					actorData->visual_scale += deltaScale;
+					growData->addedSoFar = totalScaleToAdd;
+				}
+			}
+
+			return fabs(growData->amount.value - growData->amount.target) > 1e-4;
+		}
+		                    );
+	}
+
+	void ResetGrab(Actor* giant) {
 		if (giant->formID == 0x14 || IsTeammate(giant)) {
 			AnimationManager::StartAnim("GrabAbort", giant); // Abort Grab animation
 			AnimationManager::StartAnim("TinyDied", giant);
@@ -1668,30 +1675,35 @@ namespace Gts {
 		}
 	}
 
-  // From an actor place a new container at them and transfer
-  // all of their inventory into it
-  void TransferInventoryToDropbox(Actor* actor, bool removeQuestItems) {
-    auto dropbox = Runtime::PlaceContainer(actor, "Dropbox");
-	std::string name = std::format("{} remains", actor->GetDisplayFullName());
-    if (!dropbox) {
-      	return;
-    }
-	log::info("Spawning DropBox for {}", actor->GetDisplayFullName());
-    float scale = std::clamp(get_visual_scale(actor), 0.2f, 1.5f);
-	auto dropbox3D = dropbox->GetCurrent3D();
-	dropbox->SetDisplayName(name, false);
-	if (dropbox3D) {
-		dropbox3D->local.scale = scale;
+	// From an actor place a new container at them and transfer
+	// all of their inventory into it
+	void TransferInventoryToDropbox(Actor* actor, bool removeQuestItems) {
+		auto dropbox = Runtime::PlaceContainer(actor, "Dropbox");
+		std::string name = std::format("{} remains", actor->GetDisplayFullName());
+		if (!dropbox) {
+			return;
+		}
+		log::info("Spawning DropBox for {}", actor->GetDisplayFullName());
+		float scale = std::clamp(get_visual_scale(actor), 0.2f, 1.5f);
+		auto dropbox3D = dropbox->GetCurrent3D();
+		dropbox->SetDisplayName(name, false);
+		if (dropbox3D) {
+			dropbox3D->local.scale = scale;
+			auto actor3D = actor->GetCurrent3D();
+			if (actor3D) {
+				dropbox3D->local.rotate = actor3D->local.rotate;
+			}
+			update_node(dropbox3D);
+		}
+
+		for (auto &[a_object, invData]: actor->GetInventory()) {
+			log::info("Transfering item {} from {}, formID {} to dropbox", a_object->GetName(), actor->GetDisplayFullName(), a_object->formID);
+			if (a_object->GetPlayable()) {
+				if (!invData.second->IsQuestObject() || removeQuestItems ) {
+					actor->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
+				}
+			}
+		}
+
 	}
-
-    for (auto &[a_object, invData]: actor->GetInventory()) {
-      log::info("Transfering item {} from {}, formID {} to dropbox", a_object->GetName(), actor->GetDisplayFullName(), a_object->formID);
-      if (a_object->GetPlayable()) {
-        if (!invData.second->IsQuestObject() || removeQuestItems ) {
-          actor->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
-        }
-      }
-    }
-
-  }
 }
