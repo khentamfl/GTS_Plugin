@@ -16,7 +16,7 @@ namespace Gts
 	};
 	enum class TriggerMode {
 		Once,
-    Release,
+		Release,
 		Continuous,
 	};
 
@@ -54,19 +54,19 @@ namespace Gts
 			//bool IsOnUp();
 			bool HasKeys() const;
 
-					// Checks if this key is the same as another in terms
-					// of mutaally exclusive triggers
+			// Checks if this key is the same as another in terms
+			// of mutaally exclusive triggers
 			bool SameGroup(const InputEventData& other) const;
 
-				private:
-					std::string name = "";
-					unordered_set<std::uint32_t> keys = {};
-					float minDuration = 0.0;
-					double startTime = 0.0;
-					// If true this event won't fire unles ONLY the keys are pressed for the entire duration
-					bool exclusive = false;
-					TriggerMode trigger = TriggerMode::Once;
-					InputEventState state = InputEventState::Idle;
+		private:
+			std::string name = "";
+			unordered_set<std::uint32_t> keys = {};
+			float minDuration = 0.0;
+			double startTime = 0.0;
+			// If true this event won't fire unles ONLY the keys are pressed for the entire duration
+			bool exclusive = false;
+			TriggerMode trigger = TriggerMode::Once;
+			InputEventState state = InputEventState::Idle;
 			bool primed = false; // Used for release events. Once primed, when keys are not pressed we fire
 	};
 

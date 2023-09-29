@@ -20,7 +20,7 @@ namespace Gts {
 		float SMT_Penalty_Duration;
 		float carryweight_boost;
 		float basehp;
-    	float otherScales;
+		float otherScales;
 		float WorldFov_Default;
 		float FpFov_Default;
 		float ButtCrushGrowthAmount;
@@ -37,7 +37,7 @@ namespace Gts {
 		bool being_foot_grinded;
 		bool OverrideCamera;
 		bool FPCrawling;
-    	TESObjectREFR* disable_collision_with;
+		TESObjectREFR* disable_collision_with;
 	};
 
 	class Transient : public EventListener {

@@ -140,7 +140,7 @@ namespace {
 			case 2:
 				Persistent::GetSingleton().size_method = SizeMethod::Hybrid;
 				break;
-      case 3:
+			case 3:
 				Persistent::GetSingleton().size_method = SizeMethod::RefScale;
 				break;
 		}
@@ -156,9 +156,9 @@ namespace {
 			case SizeMethod::Hybrid:
 				return 2;
 				break;
-      case SizeMethod::RefScale:
-        return 3;
-        break;
+			case SizeMethod::RefScale:
+				return 3;
+				break;
 		}
 		log::error("Scale method is invalid");
 		return Persistent::GetSingleton().size_method;

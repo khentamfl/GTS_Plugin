@@ -87,7 +87,7 @@ namespace {
 		switch (foot_kind) {
 			case FootEvent::JumpLand:
 				return Runtime::GetSound("lJumpLand");
-			break;
+				break;
 		}
 		return nullptr;
 	}
@@ -164,7 +164,7 @@ namespace {
 			return Runtime::GetSound("Normal_x4");
 		} else if (scale == 8.0) {
 			return Runtime::GetSound("Normal_x8");
-		}  else if (scale == 12.0) {
+		} else if (scale == 12.0) {
 			return Runtime::GetSound("Normal_x12");
 		} else if (scale == 24.0) {
 			return Runtime::GetSound("Normal_x24");
@@ -174,7 +174,8 @@ namespace {
 			return Runtime::GetSound("Normal_x96");
 		} else if (scale > 96.0) {
 			return Runtime::GetSound("Normal_Mega");
-		} return nullptr;
+		}
+		return nullptr;
 	}
 	BSISoundDescriptor* GetNormalSound_Jump(float scale) {
 		if (scale == 2.0) {
@@ -193,7 +194,8 @@ namespace {
 			return Runtime::GetSound("NormalLand_x96");
 		} else if (scale > 96.0) {
 			return Runtime::GetSound("NormalLand_Mega");
-		} return nullptr;
+		}
+		return nullptr;
 	}
 
 	BSISoundDescriptor* GetHHSound_Normal(float scale) {
@@ -213,7 +215,8 @@ namespace {
 			return Runtime::GetSound("HighHeel_x96");
 		} else if (scale > 96.0) {
 			return Runtime::GetSound("HighHeel_Mega");
-		} return nullptr;
+		}
+		return nullptr;
 	}
 	BSISoundDescriptor* GetHHSound_Jump(float scale) {
 		if (scale == 2.0) {
@@ -232,7 +235,8 @@ namespace {
 			return Runtime::GetSound("HighHeelLand_x96");
 		} else if (scale > 96.0) {
 			return Runtime::GetSound("HighHeelLand_Mega");
-		} return nullptr;
+		}
+		return nullptr;
 	}
 	BSISoundDescriptor* get_footstep_highheel(const FootEvent& foot_kind, float scale) {
 		switch (foot_kind) {
@@ -285,14 +289,14 @@ namespace Gts {
 			auto actor = impact.actor;
 			float scale = impact.scale;
 			/*if (actor->formID != 0x14) {
-				float sizedifference = ((get_visual_scale(actor)/get_visual_scale(player)));
-				scale = sizedifference;
-			}*/
+			        float sizedifference = ((get_visual_scale(actor)/get_visual_scale(player)));
+			        scale = sizedifference;
+			   }*/
 			if (actor->formID == 0x14 && HasSMT(actor)) {
 				scale *= 1.80;
 			}
 			float sprint_factor = 1.0;
-			bool LegacySounds = Persistent::GetSingleton().legacy_sounds;  // Determine if we should play old pre 2.00 update sounds 
+			bool LegacySounds = Persistent::GetSingleton().legacy_sounds;  // Determine if we should play old pre 2.00 update sounds
 			// ^ Currently forced to true: there's no sounds yet.
 			bool sprinting = false;
 			bool WearingHighHeels = HighHeelManager::IsWearingHH(actor);
@@ -303,10 +307,10 @@ namespace Gts {
 				float start_xxl = 20.0;
 
 				FootEvent foot_kind = impact.kind;
-				
+
 				if (actor->AsActorState()->IsSprinting()) { // Sprinting makes you sound bigger
 					sprint_factor = 1.10;
-					scale *= sprint_factor; 
+					scale *= sprint_factor;
 					start_xl = 9.8;
 					start_xxl = 16.0;
 					sprinting = true;
@@ -328,8 +332,8 @@ namespace Gts {
 				}
 				if (Runtime::GetBool("EnableGiantSounds")) {
 					for (NiAVObject* foot: impact.nodes) {
-							FootStepManager::PlayLegacySounds(foot, foot_kind, scale, start_l, start_xl, start_xxl);
-							return; // New soundsa re disabled for now
+						FootStepManager::PlayLegacySounds(foot, foot_kind, scale, start_l, start_xl, start_xxl);
+						return; // New soundsa re disabled for now
 						if (!LegacySounds && WearingHighHeels) { // Play high heel sounds
 							log::info("Playing HH Sounds");
 							FootStepManager::PlayHighHeelSounds(foot, foot_kind, scale, sprint_factor, sprinting);
@@ -399,21 +403,29 @@ namespace Gts {
 
 		if (Footstep_1.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_1.Play();
-		} if (Footstep_2.soundID != BSSoundHandle::kInvalidID) {
+		}
+		if (Footstep_2.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_2.Play();
-		} if (Footstep_4.soundID != BSSoundHandle::kInvalidID) {
+		}
+		if (Footstep_4.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_4.Play();
-		} if (Footstep_8.soundID != BSSoundHandle::kInvalidID) {
+		}
+		if (Footstep_8.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_8.Play();
-		} if (Footstep_12.soundID != BSSoundHandle::kInvalidID) {
+		}
+		if (Footstep_12.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_12.Play();
-		} if (Footstep_24.soundID != BSSoundHandle::kInvalidID) {
+		}
+		if (Footstep_24.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_24.Play();
-		} if (Footstep_48.soundID != BSSoundHandle::kInvalidID) {
+		}
+		if (Footstep_48.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_48.Play();
-		} if (Footstep_96.soundID != BSSoundHandle::kInvalidID) {
+		}
+		if (Footstep_96.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_96.Play();
-		} if (Footstep_Mega.soundID != BSSoundHandle::kInvalidID) {
+		}
+		if (Footstep_Mega.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_Mega.Play();
 		}
 	}
@@ -431,21 +443,29 @@ namespace Gts {
 
 		if (Footstep_1.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_1.Play();
-		} if (Footstep_2.soundID != BSSoundHandle::kInvalidID) {
+		}
+		if (Footstep_2.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_2.Play();
-		} if (Footstep_4.soundID != BSSoundHandle::kInvalidID) {
+		}
+		if (Footstep_4.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_4.Play();
-		} if (Footstep_8.soundID != BSSoundHandle::kInvalidID) {
+		}
+		if (Footstep_8.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_8.Play();
-		} if (Footstep_12.soundID != BSSoundHandle::kInvalidID) {
+		}
+		if (Footstep_12.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_12.Play();
-		} if (Footstep_24.soundID != BSSoundHandle::kInvalidID) {
+		}
+		if (Footstep_24.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_24.Play();
-		} if (Footstep_48.soundID != BSSoundHandle::kInvalidID) {
+		}
+		if (Footstep_48.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_48.Play();
-		} if (Footstep_96.soundID != BSSoundHandle::kInvalidID) {
+		}
+		if (Footstep_96.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_96.Play();
-		} if (Footstep_Mega.soundID != BSSoundHandle::kInvalidID) {
+		}
+		if (Footstep_Mega.soundID != BSSoundHandle::kInvalidID) {
 			Footstep_Mega.Play();
 		}
 	}

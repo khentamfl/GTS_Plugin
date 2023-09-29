@@ -45,9 +45,9 @@ namespace Gts {
 	bool IsBeingGrinded(Actor* actor);
 	bool CanDoButtCrush(Actor* actor);
 	bool GetCameraOverride(Actor* actor);
-    // GTS State Bools End
+	// GTS State Bools End
 
-    // Gts Bools
+	// Gts Bools
 	bool IsGrowthSpurtActive(Actor* actor);
 	bool HasGrowthSpurt(Actor* actor);
 	bool InBleedout(Actor* actor);
@@ -173,5 +173,5 @@ namespace Gts {
 	void ResetGrab(Actor* giant);
 	void FixAnimations();
 
-  void TransferInventoryToDropbox(Actor* actor, bool removeQuestItems);
+	void TransferInventoryToDropbox(Actor* actor, bool removeQuestItems);
 }

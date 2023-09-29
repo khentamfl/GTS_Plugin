@@ -11,13 +11,13 @@ using namespace RE;
 
 namespace Gts {
 
-	class ActorCollisionData: public ColliderData {
+	class ActorCollisionData : public ColliderData {
 		public:
 			ActorCollisionData(Actor* actor);
-    protected:
-      virtual std::vector<ColliderData*> GetChildren() override;
-    private:
-      CharContData charCont;
-      RagdollData ragdoll;
+		protected:
+			virtual std::vector<ColliderData*> GetChildren() override;
+		private:
+			CharContData charCont;
+			RagdollData ragdoll;
 	};
 }

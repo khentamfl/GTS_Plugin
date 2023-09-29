@@ -38,7 +38,7 @@ namespace {
 		std::unordered_map<std::string, std::string> impacts;
 		std::unordered_map<std::string, std::string> races;
 		std::unordered_map<std::string, std::string> keywords;
-    std::unordered_map<std::string, std::string> containers;
+		std::unordered_map<std::string, std::string> containers;
 
 		articuno_serde(ar) {
 			ar <=> kv(sounds, "sounds");
@@ -52,7 +52,7 @@ namespace {
 			ar <=> kv(impacts, "impacts");
 			ar <=> kv(races, "races");
 			ar <=> kv(keywords, "keywords");
-      ar <=> kv(containers, "containers");
+			ar <=> kv(containers, "containers");
 		}
 	};
 }
@@ -514,8 +514,8 @@ namespace Gts {
 		}
 	}
 
-  // Containers
-  TESObjectCONT* Runtime::GetContainer(const std::string_view& tag) {
+	// Containers
+	TESObjectCONT* Runtime::GetContainer(const std::string_view& tag) {
 		TESObjectCONT* data = nullptr;
 		try {
 			data = Runtime::GetSingleton().containers.at(std::string(tag)).data;
@@ -532,14 +532,14 @@ namespace Gts {
 		if (actor) {
 			return PlaceContainerAtPos(actor, actor->GetPosition(), tag);
 		}
-    return nullptr;
+		return nullptr;
 	}
 
 	TESObjectREFR* Runtime::PlaceContainerAtPos(Actor* actor, NiPoint3 pos, const std::string_view& tag) {
 		auto data = GetContainer(tag);
 		if (data) {
 			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(data, false);
-      if (!instance_ptr) {
+			if (!instance_ptr) {
 				return nullptr;
 			}
 			TESObjectREFR* instance = instance_ptr.get();
@@ -547,10 +547,10 @@ namespace Gts {
 				return nullptr;
 			}
 
-      instance->SetPosition(pos);
-      return instance;
+			instance->SetPosition(pos);
+			return instance;
 		}
-    return nullptr;
+		return nullptr;
 	}
 
 	// Team Functions
@@ -716,7 +716,7 @@ namespace Gts {
 			}
 		}
 
-    for (auto &[key, value]: config.containers) {
+		for (auto &[key, value]: config.containers) {
 			auto form = find_form<TESObjectCONT>(value);
 			if (form) {
 				this->containers.try_emplace(key, form);

@@ -17,7 +17,7 @@
 #include "Config.hpp"
 #include "timer.hpp"
 #include "node.hpp"
-#include <vector> 
+#include <vector>
 #include <string>
 
 using namespace Gts;
@@ -49,7 +49,7 @@ namespace {
 	}
 
 	void TinyAsShield(Actor* attacker, Actor* receiver, float a_damage) {
-		
+
 		auto grabbedActor = Grab::GetHeldActor(receiver);
 		if (!grabbedActor) {
 			return;
@@ -85,7 +85,7 @@ namespace {
 				Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
 				Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
 				Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
-			} else {   
+			} else {
 				Runtime::PlaySoundAtNode("SoftHandAttack", receiver, 1.0, 1.0, "NPC L Hand [LHnd]");
 			}
 			Rumble::Once("GrabAttackKill", receiver, 8.0, 0.15, "NPC L Hand [LHnd]");
@@ -98,7 +98,7 @@ namespace {
 		auto camera = PlayerCamera::GetSingleton();
 		if (!camera) {
 			return;
-		} 
+		}
 		auto AllowEdits = Persistent::GetSingleton().Camera_PermitFovEdits;
 		if (!AllowEdits) {
 			return;
@@ -190,12 +190,13 @@ namespace {
 	void HugDamageResistance(Actor* receiver, float damage) {
 		if (!Runtime::HasPerk(receiver, "HugCrush_ToughGrip")) {
 			return;
-		} if (HugShrink::GetHuggiesActor(receiver)) {
+		}
+		if (HugShrink::GetHuggiesActor(receiver)) {
 			float reduction = 0.25; // 25% resistance
 			if (Runtime::HasPerk(receiver, "HugCrush_HugsOfDeath")) {
-				reduction += 0.35; // 35% additional resistance 
+				reduction += 0.35; // 35% additional resistance
 			}
-			receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, damage * reduction); 
+			receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, damage * reduction);
 			// ^ Restore % hp, fake damage resistance
 		}
 	}
@@ -323,7 +324,7 @@ namespace Gts {
 					set_target_scale(receiver, naturalscale); // reset to normal scale
 					return;
 				}
-				
+
 				mod_target_scale(receiver, -ShrinkValue);
 			}
 		}

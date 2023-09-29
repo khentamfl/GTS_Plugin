@@ -18,7 +18,7 @@ namespace {
 
 
 namespace Gts {
-	
+
 	std::string_view GetDeathNodeName(DamageSource cause) {
 		std::string_view node;
 		if (cause == DamageSource::HandCrawlRight||cause == DamageSource::HandSwipeRight||cause == DamageSource::HandSlamRight) {
@@ -43,7 +43,7 @@ namespace Gts {
 	}
 
 	void ReportDeath(Actor* giant, Actor* tiny, DamageSource cause) {
-        int random = rand()% 8;
+		int random = rand()% 8;
 
 		std::string_view TinyName = tiny->GetDisplayFullName();
 		std::string_view GiantName = giant->GetDisplayFullName();
@@ -113,8 +113,7 @@ namespace Gts {
 			} else if (random >= 7) {
 				Cprint("{} stole all the size from {}, exploding {}", GiantName, TinyName);
 			}
-		} 
-		else if (cause == DamageSource::Shrinked) { // Shrink to nothing
+		} else if (cause == DamageSource::Shrinked) { // Shrink to nothing
 			if (random <= 2) {
 				Cprint("{} greedily absorbed {}", GiantName, TinyName);
 			} else if (random == 3) {
@@ -288,7 +287,7 @@ namespace Gts {
 				Cprint("{} has been squashed by butt attack of {}", TinyName, GiantName);
 			} else if (random == 6) {
 				Cprint("{} cheeks dropped on {}, turning {} into red paste", GiantName, TinyName);
-			}else if (random >= 7) {
+			} else if (random >= 7) {
 				Cprint("{} relentlessly crushed {} with butt attack", GiantName, TinyName);
 			}
 			return;
@@ -395,5 +394,5 @@ namespace Gts {
 			}
 			return;
 		}
-    }
+	}
 }

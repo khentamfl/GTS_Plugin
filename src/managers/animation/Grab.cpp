@@ -145,9 +145,11 @@ namespace {
 			auto BreastR = find_node(giant, "R Breast02");
 			if (!NPC) {
 				return false;
-			} if (!BreastL) {
+			}
+			if (!BreastL) {
 				return false;
-			} if (!BreastR) {
+			}
+			if (!BreastR) {
 				return false;
 			}
 
@@ -160,10 +162,10 @@ namespace {
 			NiMatrix3 NPCROT = NPC->world.rotate;
 
 			//NPCROT.SetEulerAnglesXYZ(NewRot); = NiPoint3((LPosX + RPosX) / 2, 0, giantref->data.angle.z);
-			
+
 			auto NewRot = NiPoint3(((LPosX + RPosX) * 70) / 2, 0, giantref->data.angle.z);
 			auto Reset = NiPoint3(0, 0, 0);
-			
+
 			NPCROT.SetEulerAnglesXYZ(NewRot);
 			update_node(NPC);
 
@@ -464,88 +466,88 @@ namespace {
 
 		// Do this next frame (or rather until some world time has elapsed)
 		TaskManager::Run([=](auto& update){
-  		Actor* giant = gianthandle.get().get();
-  		Actor* tiny = tinyHandle.get().get();
-  		if (!giant) {
-  			return false;
-  		}
-  		if (!tiny) {
-  			return false;
-  		}
-      // Wait for 3D to be ready
-      if (!giant->Is3DLoaded()) {
-        return true;
-      }
-      if (!giant->GetCurrent3D()) {
-        return true;
-      }
-      if (!tiny->Is3DLoaded()) {
-        return true;
-      }
-      if (!tiny->GetCurrent3D()) {
-        return true;
-      }
-
-  		NiPoint3 endThrow = tiny->GetPosition();
-  		double endTime = Time::WorldTimeElapsed();
-
-  		if ((endTime - startTime) > 1e-4) {
-  			// Time has elapsed
-  			SetBeingHeld(tiny, false);
-  			EnableCollisions(tiny);
-
-  			NiPoint3 vector = endThrow - startThrow;
-  			float distanceTravelled = vector.Length();
-  			float timeTaken = endTime - startTime;
-  			float speed = distanceTravelled / timeTaken;
-			if (!IsCrawling(giant)) {
-				log::info("Not Crawling");
+			Actor* giant = gianthandle.get().get();
+			Actor* tiny = tinyHandle.get().get();
+			if (!giant) {
+				return false;
 			}
-  			// NiPoint3 direction = vector / vector.Length();
+			if (!tiny) {
+				return false;
+			}
+			// Wait for 3D to be ready
+			if (!giant->Is3DLoaded()) {
+				return true;
+			}
+			if (!giant->GetCurrent3D()) {
+				return true;
+			}
+			if (!tiny->Is3DLoaded()) {
+				return true;
+			}
+			if (!tiny->GetCurrent3D()) {
+				return true;
+			}
 
-        // Angles in degrees
-        // Sermit: Please just adjust these
+			NiPoint3 endThrow = tiny->GetPosition();
+			double endTime = Time::WorldTimeElapsed();
+
+			if ((endTime - startTime) > 1e-4) {
+				// Time has elapsed
+				SetBeingHeld(tiny, false);
+				EnableCollisions(tiny);
+
+				NiPoint3 vector = endThrow - startThrow;
+				float distanceTravelled = vector.Length();
+				float timeTaken = endTime - startTime;
+				float speed = distanceTravelled / timeTaken;
+				if (!IsCrawling(giant)) {
+					log::info("Not Crawling");
+				}
+				// NiPoint3 direction = vector / vector.Length();
+
+				// Angles in degrees
+				// Sermit: Please just adjust these
 
 
 
-        float angle_x = 60;//Runtime::GetFloat("cameraAlternateX"); // 60
-        float angle_y = 10; //Runtime::GetFloat("cameraAlternateY");//10.0;
-        float angle_z = 0;//::GetFloat("combatCameraAlternateX"); // 0
+				float angle_x = 60;//Runtime::GetFloat("cameraAlternateX"); // 60
+				float angle_y = 10; //Runtime::GetFloat("cameraAlternateY");//10.0;
+				float angle_z = 0;//::GetFloat("combatCameraAlternateX"); // 0
 
-        // Conversion to radians
-        const float PI = 3.141592653589793;
-        float angle_x_rad = angle_x * 180.0 / PI;
-        float angle_y_rad = angle_y * 180.0 / PI;
-        float angle_z_rad = angle_z * 180.0 / PI;
+				// Conversion to radians
+				const float PI = 3.141592653589793;
+				float angle_x_rad = angle_x * 180.0 / PI;
+				float angle_y_rad = angle_y * 180.0 / PI;
+				float angle_z_rad = angle_z * 180.0 / PI;
 
-        // Work out direction from angles and an initial (forward) vector;
-        //
-        // If all angles are zero then it goes forward
-        // angle_x is pitch
-        // angle_y is yaw
-        // angle_z is roll
-        //
-        // The order of operation is pitch > yaw > roll
-        NiMatrix3 customRot = NiMatrix3(angle_x_rad, angle_y_rad, angle_z_rad);
-        NiPoint3 forward = NiPoint3(0.0, 0.0, 1.0);
-        NiPoint3 customDirection = customRot * forward;
+				// Work out direction from angles and an initial (forward) vector;
+				//
+				// If all angles are zero then it goes forward
+				// angle_x is pitch
+				// angle_y is yaw
+				// angle_z is roll
+				//
+				// The order of operation is pitch > yaw > roll
+				NiMatrix3 customRot = NiMatrix3(angle_x_rad, angle_y_rad, angle_z_rad);
+				NiPoint3 forward = NiPoint3(0.0, 0.0, 1.0);
+				NiPoint3 customDirection = customRot * forward;
 
-        // Convert to giant local space
-        // Only use rotation not translaion or scale since those will mess everything up
-        NiMatrix3 giantRot = giant->GetCurrent3D()->world.rotate;
-        NiPoint3 direction = giantRot * (customDirection / customDirection.Length());
-        log::info("forward : {}", Vector2Str(forward));
-        log::info("customDirection : {}", Vector2Str(customDirection));
-        log::info("Direction : {}", Vector2Str(direction));
-		log::info("Speed: {}", Runtime::GetFloat("cameraAlternateX") * 100);
+				// Convert to giant local space
+				// Only use rotation not translaion or scale since those will mess everything up
+				NiMatrix3 giantRot = giant->GetCurrent3D()->world.rotate;
+				NiPoint3 direction = giantRot * (customDirection / customDirection.Length());
+				log::info("forward : {}", Vector2Str(forward));
+				log::info("customDirection : {}", Vector2Str(customDirection));
+				log::info("Direction : {}", Vector2Str(direction));
+				log::info("Speed: {}", Runtime::GetFloat("cameraAlternateX") * 100);
 
-  			//PushActorAway(giant, tiny, direction, speed * 100);
-  			PushActorAway(giant, tiny, 1);
-  			//ApplyHavokImpulse(tiny, direction.x, direction.y, direction.z, Runtime::GetFloat("cameraAlternateX") * 100);//speed * 100);
-  			return false;
-  		} else {
-  			return true;
-  		}
+				//PushActorAway(giant, tiny, direction, speed * 100);
+				PushActorAway(giant, tiny, 1);
+				//ApplyHavokImpulse(tiny, direction.x, direction.y, direction.z, Runtime::GetFloat("cameraAlternateX") * 100);//speed * 100);
+				return false;
+			} else {
+				return true;
+			}
 		});
 	}
 
@@ -724,7 +726,7 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		if (!IsStomping(player) && !IsTransitioning(player)) {
 			auto grabbedActor = Grab::GetHeldActor(player);
-			if (!grabbedActor) { 
+			if (!grabbedActor) {
 				return;
 			}
 			if (IsInsect(grabbedActor) || IsBlacklisted(grabbedActor) || IsUndead(grabbedActor)) {
@@ -761,7 +763,7 @@ namespace {
 		}
 		if (IsGtsBusy(player) || IsTransitioning(player)) {
 			return;
-		} 
+		}
 		AnimationManager::StartAnim("GrabReleasePunies", player);
 	}
 
@@ -830,7 +832,7 @@ namespace Gts {
 			}
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
-			
+
 
 			// Exit on death
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);

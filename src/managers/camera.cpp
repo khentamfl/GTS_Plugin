@@ -118,7 +118,7 @@ namespace Gts {
 			if (IsGtsBusy(player) && IsCrawling(player) && GetCameraOverride(player)) {
 				IsCurrentlyCrawling = false;
 			}
-			
+
 			// Get scale based on camera state
 			float scale = currentState->GetScale();
 

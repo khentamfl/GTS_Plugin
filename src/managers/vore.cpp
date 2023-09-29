@@ -219,7 +219,7 @@ namespace Gts {
 				TaskManager::RunOnce([=](auto& update) {
 					if (!tinyref) {
 						return;
-					} 
+					}
 					if (!giantref) {
 						return;
 					}
@@ -345,7 +345,8 @@ namespace Gts {
 		}
 		if (Runtime::HasPerkTeam(giant, "AdditionalGrowth")) {
 			perkbonus = 1.25;
-		} if (Runtime::HasPerkTeam(giant, "AdditionalGrowth_p2")) {
+		}
+		if (Runtime::HasPerkTeam(giant, "AdditionalGrowth_p2")) {
 			perkbonus += 0.30;
 		}
 		if (IsDragon(tiny)) {
@@ -411,7 +412,7 @@ namespace Gts {
 						if (giant->formID == 0x14) {
 							AdjustSizeLimit(0.0260, giant);
 							AdjustMassLimit(0.0106, giant);
-							SurvivalMode_AdjustHunger(giant, this->tinySize, this->naturalsize ,this->WasDragon, this->WasLiving, 1);
+							SurvivalMode_AdjustHunger(giant, this->tinySize, this->naturalsize,this->WasDragon, this->WasLiving, 1);
 						}
 						Rumble::Once("GrowthRumble", giant, 2.45, 0.30);
 						Rumble::Once("VoreShake", giant, this->sizePower * 4, 0.05);
@@ -497,7 +498,7 @@ namespace Gts {
 		for (auto actor: find_actors()) {
 			if (!actor->Is3DLoaded() || actor->IsDead()) {
 				return;
-			} 
+			}
 			float Gigantism = 1.0 / (1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(pred)/100);
 			int Requirement = (8 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
 
@@ -763,7 +764,7 @@ namespace Gts {
 			std::string_view message = std::format("{} has no desire to eat {}", pred->GetDisplayFullName(), prey->GetDisplayFullName());
 			TiredSound(pred, message);
 			return false;
-		} 
+		}
 
 		if (balancemode == 2.0) { // This is checked only if Balance Mode is enabled. Size requirement is bigger with it.
 			MINIMUM_VORE_SCALE *= 1.15;
@@ -796,12 +797,13 @@ namespace Gts {
 		this->buffs.erase(actor->formID);
 	}
 
-	void Vore::StartVore(Actor* pred, Actor* prey) { 
-		if (pred->formID != 0x14) { 
+	void Vore::StartVore(Actor* pred, Actor* prey) {
+		if (pred->formID != 0x14) {
 			if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
 				log::info("{} vore immunity is on", prey->GetDisplayFullName());
 				return;
-			} if (!AllowActionsWithFollowers(pred, prey)) {
+			}
+			if (!AllowActionsWithFollowers(pred, prey)) {
 				log::info("Actions with {} and {} are disallowed", pred->GetDisplayFullName(), prey->GetDisplayFullName());
 				return;
 			}
@@ -810,7 +812,7 @@ namespace Gts {
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 
-		float sizedifference = pred_scale/prey_scale; 
+		float sizedifference = pred_scale/prey_scale;
 
 		float wastestamina = 45; // Drain stamina, should be 300 once tests are over
 		float staminacheck = pred->AsActorValueOwner()->GetActorValue(ActorValue::kStamina);

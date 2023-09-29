@@ -192,7 +192,7 @@ namespace Gts {
 		if (!grabbing.CanGrab(pred, prey)) {
 			return;
 		}
-		
+
 		ShrinkUntil(pred, prey, 8.0);
 		Grab::GetSingleton().GrabActor(pred, prey);
 		//BlockFirstPerson(pred, true);

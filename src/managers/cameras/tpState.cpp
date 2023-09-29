@@ -111,7 +111,7 @@ namespace Gts {
 		float proneFactor = Runtime::GetFloat("CalcProne");
 		auto player = PlayerCharacter::GetSingleton();
 		//if (!IsCrawling(player)) {
-			//proneFactor = 1.0;
+		//proneFactor = 1.0;
 		//}
 		NiPoint3 result = NiPoint3();
 		//log::info("ProneFactor = {}, IsCrawling: {}, IsGtsBusy: {}", proneFactor, IsCrawling(player), IsGtsBusy(player));

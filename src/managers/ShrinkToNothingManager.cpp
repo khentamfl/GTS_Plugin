@@ -53,7 +53,7 @@ namespace Gts {
 					}
 					// Fully shrunk
 					ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
-					
+
 
 					if (!IsLiving(tiny)) {
 						SpawnDustParticle(tiny, tiny, "NPC Root [Root]", 3.6);
@@ -68,7 +68,7 @@ namespace Gts {
 								SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
 								SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
 								SpawnParticle(tiny, 1.20, "GTS/Damage/ShrinkOrCrush.nif", NiMatrix3(), root->world.translate, get_visual_scale(tiny) * 10, 7, root);
-								
+
 							}
 							Runtime::CreateExplosion(tiny, get_visual_scale(tiny)/4, "BloodExplosion");
 							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
@@ -82,7 +82,7 @@ namespace Gts {
 
 					ReportCrime(giant, tiny, 1000.0, true);
 					//StartCombat(giant, tiny, false);
-					
+
 					AddSMTDuration(giant, 5.0);
 
 					ApplyShakeAtNode(tiny, 20, "NPC Root [Root]", 20.0);
@@ -94,7 +94,8 @@ namespace Gts {
 					TaskManager::RunOnce([=](auto& update){
 						if (!tinyHandle) {
 							return;
-						} if (!giantHandle) {
+						}
+						if (!giantHandle) {
 							return;
 						}
 						auto giant = giantHandle.get().get();
@@ -169,7 +170,7 @@ namespace Gts {
 		if (Caster->formID != 0x14) {
 			return; //Bye
 		}
-		
+
 		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
 		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
 		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");

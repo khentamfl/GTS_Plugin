@@ -37,7 +37,7 @@ namespace Gts {
 			virtual void ResetActor(Actor* actor) override;
 
 			EmotionData& GetGiant(Actor* giant);
-			
+
 
 		private:
 			std::map<Actor*, EmotionData> data;

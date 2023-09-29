@@ -190,8 +190,8 @@ namespace Gts {
 
 	void AnimationManager::StartAnim(std::string_view trigger, Actor& giant, TESObjectREFR* tiny) {
 		if (giant.formID == 0x14 && IsFirstPerson()) {
-            return; // Don't start animations in FP, it's not supported.
-        }
+			return; // Don't start animations in FP, it's not supported.
+		}
 		try {
 			auto& me = AnimationManager::GetSingleton();
 			// Find the behavior for this trigger exit on catch if not

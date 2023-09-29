@@ -15,28 +15,28 @@
 #include "raycast.hpp"
 
 namespace {
-    void SpawnCrawlParticle(Actor* actor, float scale, NiPoint3 position) {
-        SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), position, scale * 1.8, 7, nullptr);
-    }
+	void SpawnCrawlParticle(Actor* actor, float scale, NiPoint3 position) {
+		SpawnParticle(actor, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), position, scale * 1.8, 7, nullptr);
+	}
 
-    std::string_view GetImpactNode(CrawlEvent kind) {
-        if (kind == CrawlEvent::RightKnee) {
-            return "NPC R Calf [RClf]";
-        } else if (kind == CrawlEvent::LeftKnee) {
-            return "NPC L Calf [LClf]";
-        } else if (kind == CrawlEvent::RightHand) {
-            return "NPC R Finger20 [RF20]";
-        } else if (kind == CrawlEvent::LeftHand) {
-            return "NPC L Finger20 [LF20]";
-        } else {
-            return "NPC L Finger20 [LF20]";
-        }
-    }
+	std::string_view GetImpactNode(CrawlEvent kind) {
+		if (kind == CrawlEvent::RightKnee) {
+			return "NPC R Calf [RClf]";
+		} else if (kind == CrawlEvent::LeftKnee) {
+			return "NPC L Calf [LClf]";
+		} else if (kind == CrawlEvent::RightHand) {
+			return "NPC R Finger20 [RF20]";
+		} else if (kind == CrawlEvent::LeftHand) {
+			return "NPC L Finger20 [LF20]";
+		} else {
+			return "NPC L Finger20 [LF20]";
+		}
+	}
 }
 
 namespace Gts {
 
-    void DoCrawlingSounds(Actor* actor, float scale, NiAVObject* node, FootEvent foot_kind) { // Call crawling sounds
+	void DoCrawlingSounds(Actor* actor, float scale, NiAVObject* node, FootEvent foot_kind) { // Call crawling sounds
 		if (actor) {
 			auto profiler = Profilers::Profile("CrawlSounds");
 			auto player = PlayerCharacter::GetSingleton();
@@ -75,13 +75,13 @@ namespace Gts {
 		}
 	}
 
-    void DoCrawlingFunctions(Actor* actor, float scale, float multiplier, float damage, CrawlEvent kind, std::string_view tag, float launch_dist, float damage_dist, float crushmult, DamageSource Cause) { // Call everything
-        std::string_view name = GetImpactNode(kind);
-        
-        auto node = find_node(actor, name);
-        if (!node) {
-            return; // Make sure to return if node doesn't exist, no CTD in that case
-        }
+	void DoCrawlingFunctions(Actor* actor, float scale, float multiplier, float damage, CrawlEvent kind, std::string_view tag, float launch_dist, float damage_dist, float crushmult, DamageSource Cause) { // Call everything
+		std::string_view name = GetImpactNode(kind);
+
+		auto node = find_node(actor, name);
+		if (!node) {
+			return; // Make sure to return if node doesn't exist, no CTD in that case
+		}
 
 		float SMT = 1.0;
 		float minimal_scale = 2.0;
@@ -90,7 +90,7 @@ namespace Gts {
 		//                                                   radius           power       object       damage
 		// Order matters here since we don't want to make it even stronger during SMT, so that's why SMT check is after this function
 
-        if (actor->formID == 0x14) {
+		if (actor->formID == 0x14) {
 			if (HasSMT(actor)) {
 				SMT = 2.5; // Stronger Camera Shake
 				multiplier *= 1.8;
@@ -100,40 +100,41 @@ namespace Gts {
 			}
 		}
 
-        std::string rumbleName = std::format("{}{}", tag, actor->formID);
-        Rumble::Once(rumbleName, actor, 0.90 * multiplier * SMT, 0.02, name); // Do Rumble
+		std::string rumbleName = std::format("{}{}", tag, actor->formID);
+		Rumble::Once(rumbleName, actor, 0.90 * multiplier * SMT, 0.02, name); // Do Rumble
 
 		DoDamageAtPoint(actor, damage_dist, 70 * damage, node, 20, 0.05, crushmult, Cause); // Do size-related damage
-        DoCrawlingSounds(actor, scale, node, FootEvent::Left);                      // Do impact sounds
+		DoCrawlingSounds(actor, scale, node, FootEvent::Left);                      // Do impact sounds
 
-        if (scale >= minimal_scale && !actor->AsActorState()->IsSwimming()) {
-            NiPoint3 node_location = node->world.translate;
+		if (scale >= minimal_scale && !actor->AsActorState()->IsSwimming()) {
+			NiPoint3 node_location = node->world.translate;
 
-            NiPoint3 ray_start = node_location + NiPoint3(0.0, 0.0, meter_to_unit(-0.05*scale)); // Shift up a little
-            NiPoint3 ray_direction(0.0, 0.0, -1.0);
-            bool success = false;
-            float ray_length = meter_to_unit(std::max(1.05*scale, 1.05));
-            NiPoint3 explosion_pos = CastRay(actor, ray_start, ray_direction, ray_length, success);
+			NiPoint3 ray_start = node_location + NiPoint3(0.0, 0.0, meter_to_unit(-0.05*scale)); // Shift up a little
+			NiPoint3 ray_direction(0.0, 0.0, -1.0);
+			bool success = false;
+			float ray_length = meter_to_unit(std::max(1.05*scale, 1.05));
+			NiPoint3 explosion_pos = CastRay(actor, ray_start, ray_direction, ray_length, success);
 
-            if (!success) {
-                explosion_pos = node_location;
-                explosion_pos.z = actor->GetPosition().z;
-            }
-            if (actor->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
-                SpawnCrawlParticle(actor, scale * multiplier, explosion_pos);
-            }
-            if (actor->formID != 0x14 && Runtime::GetBool("NPCSizeEffects")) {
-                SpawnCrawlParticle(actor, scale * multiplier, explosion_pos);
-            }
-        }
-    }
+			if (!success) {
+				explosion_pos = node_location;
+				explosion_pos.z = actor->GetPosition().z;
+			}
+			if (actor->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
+				SpawnCrawlParticle(actor, scale * multiplier, explosion_pos);
+			}
+			if (actor->formID != 0x14 && Runtime::GetBool("NPCSizeEffects")) {
+				SpawnCrawlParticle(actor, scale * multiplier, explosion_pos);
+			}
+		}
+	}
 
 
-    void DoDamageAtPoint(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, DamageSource Cause) { // Apply crawl damage to each bone individually
-        auto profiler = Profilers::Profile("Other: CrawlDamage");
+	void DoDamageAtPoint(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, DamageSource Cause) { // Apply crawl damage to each bone individually
+		auto profiler = Profilers::Profile("Other: CrawlDamage");
 		if (!node) {
 			return;
-		} if (!giant) {
+		}
+		if (!giant) {
 			return;
 		}
 		float giantScale = get_visual_scale(giant);
@@ -165,7 +166,7 @@ namespace Gts {
 		NiPoint3 giantLocation = giant->GetPosition();
 
 		for (auto otherActor: find_actors()) {
-			if (otherActor != giant) { 
+			if (otherActor != giant) {
 				float tinyScale = get_visual_scale(otherActor);
 				if (giantScale / tinyScale > SCALE_RATIO) {
 					NiPoint3 actorLocation = otherActor->GetPosition();
@@ -173,9 +174,9 @@ namespace Gts {
 						float distance = (point - actorLocation).Length();
 						if (distance <= maxDistance) {
 							float force = 1.0 - distance / maxDistance;
-                            float aveForce = std::clamp(force, 0.00f, 0.70f);
+							float aveForce = std::clamp(force, 0.00f, 0.70f);
 							AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
-                        }
+						}
 					}
 				}
 			}
@@ -183,28 +184,31 @@ namespace Gts {
 	}
 
 	void ApplyAllCrawlingDamage(Actor* giant, float damage, int random, float bonedamage) { // Applies damage to all 4 crawl bones at once
-        auto LC = find_node(giant, "NPC L Calf [LClf]");
-        auto RC = find_node(giant, "NPC R Calf [RClf]");
-        auto LH = find_node(giant, "NPC L Finger20 [LF20]");
-        auto RH = find_node(giant, "NPC R Finger20 [RF20]");
+		auto LC = find_node(giant, "NPC L Calf [LClf]");
+		auto RC = find_node(giant, "NPC R Calf [RClf]");
+		auto LH = find_node(giant, "NPC L Finger20 [LF20]");
+		auto RH = find_node(giant, "NPC R Finger20 [RF20]");
 		if (!LC) {
 			return;
-		} if (!RC) {
+		}
+		if (!RC) {
 			return;
-		} if (!LH) {
+		}
+		if (!LH) {
 			return;
-		} if (!RH) {
+		}
+		if (!RH) {
 			return;
 		} // CTD protection
 
 
-		DoDamageAtPoint(giant, 10, damage, LC, random, bonedamage, 2.5, DamageSource::KneeLeft); 		// Call Left Calf
+		DoDamageAtPoint(giant, 10, damage, LC, random, bonedamage, 2.5, DamageSource::KneeLeft);                // Call Left Calf
 		DoDamageAtPoint(giant, 10, damage, RC, random, bonedamage, 2.5, DamageSource::KneeRight);        // Call Right Calf
 
 		if (!IsTransferingTiny(giant)) { // Only do if we don't have someone in our left hand
 			DoDamageAtPoint(giant, 8, damage, LH, random, bonedamage, 2.5, DamageSource::HandCrawlLeft);   // Call Left Hand
 		}
-		
+
 		DoDamageAtPoint(giant, 8, damage, RH, random, bonedamage, 2.5, DamageSource::HandCrawlRight);   // Call Right Hand
 	}
 }

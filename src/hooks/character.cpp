@@ -17,8 +17,8 @@ namespace Hooks
 	void Hook_Character::Hook() {
 		logger::info("Hooking Character");
 		REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_Character[0] };
-    // _GetBoundMin = Vtbl.write_vfunc(0x73, GetBoundMin);
-    // _GetBoundMax = Vtbl.write_vfunc(0x74, GetBoundMax);
+		// _GetBoundMin = Vtbl.write_vfunc(0x73, GetBoundMin);
+		// _GetBoundMax = Vtbl.write_vfunc(0x74, GetBoundMax);
 		_HandleHealthDamage = Vtbl.write_vfunc(REL::Relocate(0x104, 0x104, 0x106), HandleHealthDamage);
 		_AddPerk = Vtbl.write_vfunc(REL::Relocate(0x0FB, 0x0FB, 0x0FD), AddPerk);
 		_RemovePerk = Vtbl.write_vfunc(REL::Relocate(0x0FC, 0x0FC, 0x0FE), RemovePerk);
@@ -138,24 +138,24 @@ namespace Hooks
 		return _NPCAnimEvents(a_this, a_event, a_src);
 	}
 
-  NiPoint3 Hook_Character::GetBoundMax(Character* a_this) {
-    auto bound = _GetBoundMax(a_this);
-    if (a_this) {
-      float scale = get_giantess_scale(a_this);
-      if (scale > 1e-4) {
-        bound = bound * scale;
-      }
-    }
-    return bound;
-  }
-  NiPoint3 Hook_Character::GetBoundMin(Character* a_this) {
-    auto bound = _GetBoundMin(a_this);
-    if (a_this) {
-      float scale = get_giantess_scale(a_this);
-      if (scale > 1e-4) {
-        bound = bound * scale;
-      }
-    }
-    return bound;
-  }
+	NiPoint3 Hook_Character::GetBoundMax(Character* a_this) {
+		auto bound = _GetBoundMax(a_this);
+		if (a_this) {
+			float scale = get_giantess_scale(a_this);
+			if (scale > 1e-4) {
+				bound = bound * scale;
+			}
+		}
+		return bound;
+	}
+	NiPoint3 Hook_Character::GetBoundMin(Character* a_this) {
+		auto bound = _GetBoundMin(a_this);
+		if (a_this) {
+			float scale = get_giantess_scale(a_this);
+			if (scale > 1e-4) {
+				bound = bound * scale;
+			}
+		}
+		return bound;
+	}
 }

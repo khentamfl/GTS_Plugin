@@ -98,12 +98,12 @@ namespace {
 				float TargetHp = Target->AsActorValueOwner()->GetActorValue(ActorValue::kHealth);
 				if (CasterHp >= (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
 					CrushManager::Crush(Caster, Target);
-					CrushBonuses(Caster, Target);   
+					CrushBonuses(Caster, Target);
 
 					Runtime::PlaySound("GtsCrushSound", Caster, 1.0, 1.0);
 					Runtime::PlaySound("GtsCrushSound", Caster, 1.0, 1.0);
 					Runtime::PlaySound("GtsCrushSound", Caster, 1.0, 1.0);
-					
+
 					PrintDeathSource(Caster, Target, DamageSource::Collision); // Report Death
 					shake_camera(Caster, 0.75 * caster_scale, 0.45);
 					Cprint("{} was instantly turned into mush by the body of {}", Target->GetDisplayFullName(), Caster->GetDisplayFullName());
@@ -197,14 +197,16 @@ namespace Gts {
 		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
 		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(actor);
 
-		auto leftFoot = find_node(actor, leftFootLookup); 
+		auto leftFoot = find_node(actor, leftFootLookup);
 		auto leftCalf = find_node(actor, leftCalfLookup);
 		auto leftToe = find_node(actor, leftToeLookup);
 		if (!leftFoot) {
 			return;
-		}if (!leftCalf) {
+		}
+		if (!leftCalf) {
 			return;
-		}if (!leftToe) {
+		}
+		if (!leftToe) {
 			return;
 		}
 		NiMatrix3 leftRotMat;
@@ -216,7 +218,7 @@ namespace Gts {
 			NiPoint3 forward = inverseFoot*toe->world.translate;
 			forward = forward / forward.Length();
 
-			NiPoint3 up = inverseFoot*calf->world.translate; 
+			NiPoint3 up = inverseFoot*calf->world.translate;
 			up = up / up.Length();
 
 			NiPoint3 right = forward.UnitCross(up);
@@ -370,7 +372,7 @@ namespace Gts {
 
 							auto model = otherActor->GetCurrent3D();
 
-							if (model) { 
+							if (model) {
 								for (auto point: footPoints) {
 									VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
 										float distance = (point - a_obj.world.translate).Length();
@@ -461,12 +463,12 @@ namespace Gts {
 			result *= 0.33;
 		}
 
-		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result * bbmult, random);  
+		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result * bbmult, random);
 		// ^ Chance to break bonues and inflict additional damage, as well as making target more vulerable to size damage
 
 
 		StartCombat(giant, tiny, false);
-		
+
 
 		result *= damagebonus * TimeScale();
 
@@ -478,18 +480,19 @@ namespace Gts {
 		if (!tiny->IsDead()) {
 			AdjustGtsSkill(experience, giant);
 		}
-		
+
 		if (tiny->formID == 0x14 || SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, result * 2.0);
 			result -= GetAV(tiny, ActorValue::kStamina); // Reduce damage by stamina amount
 			if (result < 0) {
 				result = 0; // just to be safe
-			} if (result < GetAV(tiny, ActorValue::kStamina)) {
+			}
+			if (result < GetAV(tiny, ActorValue::kStamina)) {
 				return; // Fully protect against size-related damage
 			}
 		}
 		if (DoDamage) {
-			ModVulnerability(giant, tiny, result); 
+			ModVulnerability(giant, tiny, result);
 			DamageAV(tiny, ActorValue::kHealth, result);
 		}
 

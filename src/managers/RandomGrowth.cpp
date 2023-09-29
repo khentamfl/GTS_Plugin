@@ -69,7 +69,7 @@ namespace Gts {
 		for (auto actor: find_actors()) {
 			if (!actor) {
 				return;
-			} 
+			}
 			if (actor->formID == 0x14 || IsTeammate(actor)) {
 				if (ShouldGrow(actor)) {
 					// Calculations
@@ -95,7 +95,7 @@ namespace Gts {
 						// Grow
 						float delta_time = Time::WorldTimeDelta();
 						mod_target_scale(giantref, base_power * delta_time * Gigantism);
-						
+
 						// Play sound
 						Rumble::Once("RandomGrowth", giantref, 6.0, 0.05);
 						RestoreStats(giantref); // Regens Attributes if PC has perk

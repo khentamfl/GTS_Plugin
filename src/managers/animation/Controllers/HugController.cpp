@@ -151,7 +151,8 @@ namespace Gts {
 		}
 		if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
 			return false;
-		} if (IsCrawling(pred) || IsTransitioning(pred)) {
+		}
+		if (IsCrawling(pred) || IsTransitioning(pred)) {
 			return false;
 		}
 
@@ -159,7 +160,7 @@ namespace Gts {
 		float prey_scale = get_visual_scale(prey);
 		if (HasSMT(pred)) {
 			pred_scale += 0.25;
-		} 
+		}
 
 		float sizedifference = pred_scale/prey_scale;
 
@@ -176,15 +177,15 @@ namespace Gts {
 		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale >= MINIMUM_HUG_SCALE) {
 			if ((prey->formID != 0x14 && IsEssential(prey) && !AllowActionsWithFollowers(pred, prey))) {
 				return false;
-			} 
+			}
 			if (!IsHuman(prey)) { // Allow hugs with humanoids only
 				if (pred->formID == 0x14) {
 					std::string_view message = std::format("You have no desire to hug {}", prey->GetDisplayFullName());
 					TiredSound(pred, message); // Just no. We don't have Creature Anims.
 					return false;
-				} 
+				}
 				return false;
-			} 
+			}
 			return true;
 		} else {
 			return false;
@@ -200,10 +201,10 @@ namespace Gts {
 		if (!HugTimer.ShouldRunFrame()) {
 			TiredSound(pred, "Hugs are on the cooldown");
 			return;
-		} 
+		}
 		HugShrink::GetSingleton().HugActor(pred, prey);
 		AnimationManager::StartAnim("Huggies_Try", pred);
 		AnimationManager::StartAnim("Huggies_Try_Victim", prey);
-		
+
 	}
 }

@@ -8,7 +8,7 @@ using namespace RE;
 
 namespace Gts {
 
-	class CharContData: public ColliderData {
+	class CharContData : public ColliderData {
 		public:
 			CharContData(bhkCharacterController* charCont);
 	};

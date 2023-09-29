@@ -11,8 +11,8 @@ namespace Gts {
 			return;
 		}
 
-    for (auto rb: ragdoll->rigidBodies) {
-      AddRB(rb);
-    }
+		for (auto rb: ragdoll->rigidBodies) {
+			AddRB(rb);
+		}
 	}
 }

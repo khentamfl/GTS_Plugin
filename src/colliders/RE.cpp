@@ -11,10 +11,10 @@ namespace RE {
 	// dorment in your machine
 	//
 
-  // Hack in the vtables in a super hacky way
-  //
-  // Seriously don't use this, just replace the vtable
-  // with the real one via some other hacky code
+	// Hack in the vtables in a super hacky way
+	//
+	// Seriously don't use this, just replace the vtable
+	// with the real one via some other hacky code
 	hkpShape::~hkpShape()  // 00
 	{
 		REL::Relocation<std::uintptr_t> vtable{VTABLE_hkpShape[0]};
@@ -239,21 +239,21 @@ namespace RE {
 		// func(this);
 	}
 
-  void SetMotionType(hkpRigidBody* a_this, hkpMotion::MotionType a_newState, hkpEntityActivation a_preferredActivationState, hkpUpdateCollisionFilterOnEntityMode a_collisionFilterUpdateMode) {
-    typedef void (*DefRealSetMotionType)(hkpRigidBody* a_this, hkpMotion::MotionType a_newState, hkpEntityActivation a_preferredActivationState, hkpUpdateCollisionFilterOnEntityMode a_collisionFilterUpdateMode);
-    REL::Relocation<DefRealSetMotionType> RealSetMotionType{ RELOCATION_ID(60153, 60908) };
-    RealSetMotionType(a_this, a_newState, a_preferredActivationState, a_collisionFilterUpdateMode);
-  }
+	void SetMotionType(hkpRigidBody* a_this, hkpMotion::MotionType a_newState, hkpEntityActivation a_preferredActivationState, hkpUpdateCollisionFilterOnEntityMode a_collisionFilterUpdateMode) {
+		typedef void (*DefRealSetMotionType)(hkpRigidBody* a_this, hkpMotion::MotionType a_newState, hkpEntityActivation a_preferredActivationState, hkpUpdateCollisionFilterOnEntityMode a_collisionFilterUpdateMode);
+		REL::Relocation<DefRealSetMotionType> RealSetMotionType{ RELOCATION_ID(60153, 60908) };
+		RealSetMotionType(a_this, a_newState, a_preferredActivationState, a_collisionFilterUpdateMode);
+	}
 
-  void UpdateCollisionFilterOnEntity(hkpWorld *world, hkpEntity* entity, hkpUpdateCollisionFilterOnEntityMode updateMode, hkpUpdateCollectionFilterMode updateShapeCollectionFilter) {
-    typedef void(*DefUpdateCollisionFilterOnEntity)(hkpWorld *world, hkpEntity* entity, hkpUpdateCollisionFilterOnEntityMode updateMode, hkpUpdateCollectionFilterMode updateShapeCollectionFilter);
-    REL::Relocation<DefUpdateCollisionFilterOnEntity> RealUpdateCollisionFilterOnEntity{ RELOCATION_ID(60509, 61321) };
-    RealUpdateCollisionFilterOnEntity(world, entity, updateMode, updateShapeCollectionFilter);
-  }
+	void UpdateCollisionFilterOnEntity(hkpWorld *world, hkpEntity* entity, hkpUpdateCollisionFilterOnEntityMode updateMode, hkpUpdateCollectionFilterMode updateShapeCollectionFilter) {
+		typedef void (*DefUpdateCollisionFilterOnEntity)(hkpWorld *world, hkpEntity* entity, hkpUpdateCollisionFilterOnEntityMode updateMode, hkpUpdateCollectionFilterMode updateShapeCollectionFilter);
+		REL::Relocation<DefUpdateCollisionFilterOnEntity> RealUpdateCollisionFilterOnEntity{ RELOCATION_ID(60509, 61321) };
+		RealUpdateCollisionFilterOnEntity(world, entity, updateMode, updateShapeCollectionFilter);
+	}
 
-  void UpdateCollisionFilterOnPhantom(hkpWorld *world, hkpPhantom* phantom, hkpUpdateCollectionFilterMode updateShapeCollectionFilter ) {
-    typedef void(*DefUpdateCollisionFilterOnPhantom)(hkpWorld *world, hkpPhantom* entity, hkpUpdateCollectionFilterMode updateShapeCollectionFilter);
-    REL::Relocation<DefUpdateCollisionFilterOnPhantom> RealUpdateCollisionFilterOnPhantom{ RELOCATION_ID(60509, 61321) };
-    RealUpdateCollisionFilterOnPhantom(world, phantom, updateShapeCollectionFilter);
-  }
+	void UpdateCollisionFilterOnPhantom(hkpWorld *world, hkpPhantom* phantom, hkpUpdateCollectionFilterMode updateShapeCollectionFilter ) {
+		typedef void (*DefUpdateCollisionFilterOnPhantom)(hkpWorld *world, hkpPhantom* entity, hkpUpdateCollectionFilterMode updateShapeCollectionFilter);
+		REL::Relocation<DefUpdateCollisionFilterOnPhantom> RealUpdateCollisionFilterOnPhantom{ RELOCATION_ID(60509, 61321) };
+		RealUpdateCollisionFilterOnPhantom(world, phantom, updateShapeCollectionFilter);
+	}
 }

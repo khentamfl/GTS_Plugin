@@ -31,7 +31,8 @@ namespace {
 		float hp = 0.20;
 		if (Runtime::HasPerkTeam(actor, "HugCrush_MightyCuddles")) {
 			hp += 0.10; // 0.30
-		} if (Runtime::HasPerkTeam(actor, "HugCrush_HugsOfDeath")) {
+		}
+		if (Runtime::HasPerkTeam(actor, "HugCrush_HugsOfDeath")) {
 			hp += 0.20; // 0.50
 		}
 		return hp;
@@ -42,9 +43,11 @@ namespace {
 		float bonus = 1.0;
 		if (Runtime::HasPerk(actor, "HugCrush")) {
 			bonus += 0.25;
-		} if (Runtime::HasPerk(actor, "HugCrush_Greed")) {
+		}
+		if (Runtime::HasPerk(actor, "HugCrush_Greed")) {
 			bonus += 0.35;
-		} if (HasGrowthSpurt(actor)) {
+		}
+		if (HasGrowthSpurt(actor)) {
 			bonus *= 2.0;
 		}
 		return threshold * bonus;
@@ -118,10 +121,10 @@ namespace {
 				return false;
 			}
 
-			if (ActionTimer.ShouldRunFrame()) { 
+			if (ActionTimer.ShouldRunFrame()) {
 				int rng = rand() % 10;
 				if (rng < 6) {
-					float health = GetHealthPercentage(tinyref);	
+					float health = GetHealthPercentage(tinyref);
 					float HpThreshold = GetCrushThreshold(giantref);
 					if (health <= HpThreshold) {
 						AnimationManager::StartAnim("Huggies_HugCrush", giantref);
@@ -136,7 +139,7 @@ namespace {
 				return false;
 			}
 			return true;
-		});	 
+		});
 	}
 
 	void StartHugs(Actor* pred, Actor* prey) {
@@ -144,10 +147,12 @@ namespace {
 		auto& persist = Persistent::GetSingleton();
 		if (!hugging.CanHug(pred, prey)) {
 			return;
-		} if (!IsHostile(pred, prey) && persist.vore_combatonly) {
+		}
+		if (!IsHostile(pred, prey) && persist.vore_combatonly) {
 			return;
-		} if (prey->formID == 0x14 && !persist.vore_allowplayervore || !AllowActionsWithFollowers(pred, prey)) {
-			return; 
+		}
+		if (prey->formID == 0x14 && !persist.vore_allowplayervore || !AllowActionsWithFollowers(pred, prey)) {
+			return;
 		}
 		HugShrink::GetSingleton().HugActor(pred, prey);
 		AnimationManager::StartAnim("Huggies_Try", pred);
@@ -161,7 +166,7 @@ namespace {
 		}
 		if (IsGtsBusy(pred)) {
 			return;
-		} 
+		}
 		int rng = rand() % 7;
 		if (rng >= 6) {
 			if (CanDoPaired(pred) && !IsSynced(pred) && !IsTransferingTiny(pred)) {
@@ -181,7 +186,8 @@ namespace {
 	void StrongStomp(Actor* pred, int rng) {
 		if (!Persistent::GetSingleton().Stomp_Ai) {
 			return; // don't check any further if it is disabled
-		} if (rng <= 5) {
+		}
+		if (rng <= 5) {
 			AnimationManager::StartAnim("StrongStompRight", pred);
 		} else {
 			AnimationManager::StartAnim("StrongStompLeft", pred);
@@ -200,7 +206,8 @@ namespace {
 	void Kicks(Actor* pred, int rng) {
 		if (!Persistent::GetSingleton().Kick_Ai) {
 			return;
-		} if (rng <= 3) {
+		}
+		if (rng <= 3) {
 			AnimationManager::StartAnim("SwipeHeavy_Right", pred);
 		} else if (rng <= 4) {
 			AnimationManager::StartAnim("SwipeHeavy_Left", pred);
@@ -380,14 +387,14 @@ namespace Gts {
 			return false;
 		}
 		if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore || !AllowActionsWithFollowers(pred, prey)) {
-			return false; 
+			return false;
 		}
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 
 		float bonus = 1.0;
 		if (IsCrawling(pred)) {
-			bonus = 2.0; // +100% stomp distance 
+			bonus = 2.0; // +100% stomp distance
 		}
 
 		if (IsDragon(prey)) {

@@ -9,7 +9,7 @@ namespace {
 	void SetHeadtrackTargetImpl(Actor* actor, NiPoint3& target) {
 		if (!actor) {
 			return;
-		} 
+		}
 		if (IsHeadtracking(actor)) { // Needed to fix TDM bugs with deforming Meshes of Actors when we lock onto someone
 			return;
 		}
@@ -39,11 +39,11 @@ namespace Hooks
 
 	void Hook_HeadTracking::Hook(Trampoline& trampoline) {
 		static FunctionHook<void(AIProcess* a_this, Actor* a_owner, NiPoint3& a_targetPosition)> SetHeadtrackTarget(RELOCATION_ID(38850, 39887),
-				[](auto* a_this, auto* a_owner, auto& a_targetPosition) {
-				SetHeadtrackTargetImpl(a_owner, a_targetPosition);
-				SetHeadtrackTarget(a_this, a_owner, a_targetPosition);
-				return;
+		                                                                                                            [](auto* a_this, auto* a_owner, auto& a_targetPosition) {
+		                                                                                                            SetHeadtrackTargetImpl(a_owner, a_targetPosition);
+		                                                                                                            SetHeadtrackTarget(a_this, a_owner, a_targetPosition);
+		                                                                                                            return;
 			}
-		);
+		                                                                                                            );
 	}
 }

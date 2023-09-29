@@ -36,7 +36,7 @@ namespace {
 		} else if (matches(tag, ".*Jump.*(Down|Land).*")) {
 			foot_kind = FootEvent::JumpLand;
 		}
-		return foot_kind; 
+		return foot_kind;
 	}
 
 	std::vector<NiAVObject*> get_landing_nodes(Actor* actor, const FootEvent& foot_kind) {
@@ -129,17 +129,18 @@ namespace Gts {
 			}
 			if (actor->IsSneaking()) {
 				bonus *= 0.5;
-			} if (actor->AsActorState()->IsSprinting()) {
+			}
+			if (actor->AsActorState()->IsSprinting()) {
 				bonus *= 1.50;
 				if (Runtime::HasPerkTeam(actor, "LethalSprint")) {
 					bonus *= 1.5;
 				}
-			} 
+			}
 			if (kind != FootEvent::JumpLand) { // We already do it for Jump Land inside Compat.cpp. We do NOT want to apply it for Jump Land because of it!
 				if (kind == FootEvent::Left) {
-					DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedLeft); 
+					DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedLeft);
 				} else if (kind == FootEvent::Right) {
-					DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedRight); 
+					DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedRight);
 				}
 				//                     ^          ^
 				//                 Damage         Radius

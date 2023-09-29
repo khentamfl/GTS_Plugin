@@ -82,7 +82,7 @@ namespace Gts {
 
 	template<typename T, typename U>
 	bool AttachToUnderFoot_Left(T& anyGiant, U& anyTiny) {
-		Actor* giant = GetActorPtr(anyGiant); 
+		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
 			return false;
 		}
@@ -94,9 +94,11 @@ namespace Gts {
 		auto leftToe = find_node(giant, leftToeLookup);
 		if (!leftFoot) {
 			return false;
-		} if (!leftCalf) {
+		}
+		if (!leftCalf) {
 			return false;
-		} if (!leftToe) {
+		}
+		if (!leftToe) {
 			return false;
 		}
 		NiMatrix3 leftRotMat;
@@ -108,7 +110,7 @@ namespace Gts {
 			NiPoint3 forward = inverseFoot*toe->world.translate;
 			forward = forward / forward.Length();
 
-			NiPoint3 up = inverseFoot*calf->world.translate; 
+			NiPoint3 up = inverseFoot*calf->world.translate;
 			up = up / up.Length();
 
 			NiPoint3 right = forward.UnitCross(up);
@@ -121,7 +123,7 @@ namespace Gts {
 		// Make a list of points to check
 
 		float Forward = 9; //Runtime::GetFloat("cameraAlternateX"); // 8 is ok, 5 with HH
-		float UpDown = 9; //Runtime::GetFloat("cameraAlternateY"); // 8 too 
+		float UpDown = 9; //Runtime::GetFloat("cameraAlternateY"); // 8 too
 
 		std::vector<NiPoint3> points = {
 			NiPoint3(0, Forward - hh/45, -(UpDown + hh * 0.65)),
@@ -141,7 +143,7 @@ namespace Gts {
 
 	template<typename T, typename U>
 	bool AttachToUnderFoot_Right(T& anyGiant, U& anyTiny) {
-		Actor* giant = GetActorPtr(anyGiant); 
+		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
 			return false;
 		}
@@ -184,7 +186,7 @@ namespace Gts {
 		float hh = hhOffsetbase[2];
 		// Make a list of points to check
 		float Forward = 9; //Runtime::GetFloat("cameraAlternateX"); // 8 is ok, 5 with HH
-		float UpDown = 9; //Runtime::GetFloat("cameraAlternateY"); // 8 too 
+		float UpDown = 9; //Runtime::GetFloat("cameraAlternateY"); // 8 too
 
 		std::vector<NiPoint3> points = {
 			NiPoint3(0, Forward - hh/45, -(UpDown + hh * 0.65)),
@@ -202,7 +204,7 @@ namespace Gts {
 
 		return false;
 	}
-	
+
 
 	template<typename T, typename U>
 	bool AttachToHand(T& anyGiant, U& anyTiny) {
@@ -223,19 +225,19 @@ namespace Gts {
 		if (!targetRootA) {
 			return false;
 		}
-    auto targetA = targetRootA->world.translate;
+		auto targetA = targetRootA->world.translate;
 
-    float scaleFactor = get_visual_scale(tiny) / get_visual_scale(giant);
+		float scaleFactor = get_visual_scale(tiny) / get_visual_scale(giant);
 
-    NiPoint3 targetB = NiPoint3();
-    std::vector<std::string_view> bone_names = {
-      "NPC L Finger02 [LF02]",
-      "NPC R Finger02 [RF02]",
-      "L Breast02",
-      "R Breast02"
-    };
-    std::uint32_t bone_count = bone_names.size();
-    for (auto bone_name: bone_names) {
+		NiPoint3 targetB = NiPoint3();
+		std::vector<std::string_view> bone_names = {
+			"NPC L Finger02 [LF02]",
+			"NPC R Finger02 [RF02]",
+			"L Breast02",
+			"R Breast02"
+		};
+		std::uint32_t bone_count = bone_names.size();
+		for (auto bone_name: bone_names) {
 			auto bone = find_node(giant, bone_name);
 			if (!bone) {
 				return false;
@@ -243,11 +245,11 @@ namespace Gts {
 			targetB += (bone->world * NiPoint3()) * (1.0/bone_count);
 		}
 
-    // scaleFactor = std::clamp(scaleFactor, 0.0f, 1.0f);
-    auto targetPoint = targetA*(scaleFactor) + targetB*(1.0 - scaleFactor);
-    if (Runtime::GetBool("EnableDebugOverlay")) {
-      		DebugAPI::DrawSphere(glm::vec3(targetA.x, targetA.y, targetA.z), 2.0, 40, {1.0, 0.0, 0.0, 1.0});
-      		DebugAPI::DrawSphere(glm::vec3(targetB.x, targetB.y, targetB.z), 2.0, 40, {0.0, 1.0, 0.0, 1.0});
+		// scaleFactor = std::clamp(scaleFactor, 0.0f, 1.0f);
+		auto targetPoint = targetA*(scaleFactor) + targetB*(1.0 - scaleFactor);
+		if (Runtime::GetBool("EnableDebugOverlay")) {
+			DebugAPI::DrawSphere(glm::vec3(targetA.x, targetA.y, targetA.z), 2.0, 40, {1.0, 0.0, 0.0, 1.0});
+			DebugAPI::DrawSphere(glm::vec3(targetB.x, targetB.y, targetB.z), 2.0, 40, {0.0, 1.0, 0.0, 1.0});
 			DebugAPI::DrawSphere(glm::vec3(targetPoint.x, targetPoint.y, targetPoint.z), 2.0, 40, {0.0, 0.0, 1.0, 1.0});
 		}
 
@@ -271,7 +273,7 @@ namespace Gts {
 		};
 
 		NiPoint3 clevagePos = NiPoint3();
-		
+
 		std::uint32_t bone_count = bone_names.size();
 		for (auto bone_name: bone_names) {
 			auto bone = find_node(giant, bone_name);
@@ -291,7 +293,7 @@ namespace Gts {
 		//tiny->data.angle.x = ((RPosX + LPosX) * 70) / 2;
 		//tiny->data.angle.y = giant->data.angle.y;
 		tiny->data.angle.z = giant->data.angle.z;
-		
+
 		if (Runtime::GetBool("EnableDebugOverlay")) {
 			DebugAPI::DrawSphere(glm::vec3(clevagePos.x, clevagePos.y, clevagePos.z), 2.0, 10, {1.0, 0.0, 0.0, 1.0});
 		}

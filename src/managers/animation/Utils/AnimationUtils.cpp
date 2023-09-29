@@ -88,7 +88,8 @@ namespace Gts {
 		float WasteMult = 1.0;
 		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
 			WasteMult *= 0.65;
-		} if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
+		}
+		if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
 			float level = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
 			WasteMult -= level;
 		}
@@ -101,7 +102,8 @@ namespace Gts {
 		float WasteMult = 1.0;
 		if (Runtime::HasPerkTeam(giant, perk)) {
 			WasteMult -= 0.35;
-		} if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
+		}
+		if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
 			float level = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
 			WasteMult -= level;
 		}
@@ -206,10 +208,10 @@ namespace Gts {
 			if (!tinyhandle) {
 				return false;
 			}
-			
+
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
-			
+
 			auto FrameB = Time::FramesElapsed() - FrameA;
 			if (FrameB <= 4.0) {
 				return true;
@@ -218,11 +220,13 @@ namespace Gts {
 				log::info("Attach is false");
 				SetBeingGrinded(tinyref, false);
 				return false;
-			} if (!IsFootGrinding(giantref)) {
+			}
+			if (!IsFootGrinding(giantref)) {
 				SetBeingGrinded(tinyref, false);
 				log::info("IsGrinding = false");
 				return false;
-			} if (tinyref->IsDead()) {
+			}
+			if (tinyref->IsDead()) {
 				SetBeingGrinded(tinyref, false);
 				log::info("Tiny is dead");
 				return false;
@@ -243,7 +247,7 @@ namespace Gts {
 			if (!tinyhandle) {
 				return false;
 			}
-			
+
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 			auto FrameB = Time::FramesElapsed() - FrameA;
@@ -254,11 +258,13 @@ namespace Gts {
 				log::info("Attach is false");
 				SetBeingGrinded(tinyref, false);
 				return false;
-			} if (!IsFootGrinding(giantref)) {
+			}
+			if (!IsFootGrinding(giantref)) {
 				SetBeingGrinded(tinyref, false);
 				log::info("IsGrinding = false");
 				return false;
-			} if (tinyref->IsDead()) {
+			}
+			if (tinyref->IsDead()) {
 				SetBeingGrinded(tinyref, false);
 				log::info("Tiny is dead");
 				return false;
@@ -289,9 +295,11 @@ namespace Gts {
 		auto leftToe = find_node(actor, leftToeLookup);
 		if (!leftFoot) {
 			return;
-		}if (!leftCalf) {
+		}
+		if (!leftCalf) {
 			return;
-		}if (!leftToe) {
+		}
+		if (!leftToe) {
 			return;
 		}
 		NiMatrix3 leftRotMat;
@@ -303,7 +311,7 @@ namespace Gts {
 			NiPoint3 forward = inverseFoot*toe->world.translate;
 			forward = forward / forward.Length();
 
-			NiPoint3 up = inverseFoot*calf->world.translate; 
+			NiPoint3 up = inverseFoot*calf->world.translate;
 			up = up / up.Length();
 
 			NiPoint3 right = forward.UnitCross(up);
@@ -365,7 +373,7 @@ namespace Gts {
 									DoFootGrind_Left(actor, otherActor);
 									SetBeingGrinded(otherActor, true);
 									AnimationManager::StartAnim("GrindLeft", actor);
-                                }
+								}
 							}
 						}
 					}
@@ -476,7 +484,7 @@ namespace Gts {
 									DoFootGrind_Right(actor, otherActor);
 									SetBeingGrinded(otherActor, true);
 									AnimationManager::StartAnim("GrindRight", actor);
-                                }
+								}
 							}
 						}
 					}
@@ -486,10 +494,11 @@ namespace Gts {
 	}
 
 	void DoDamageAtPoint_Cooldown(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, float pushpower, DamageSource Cause) { // Apply crawl damage to each bone individually
-        auto profiler = Profilers::Profile("Other: CrawlDamage");
+		auto profiler = Profilers::Profile("Other: CrawlDamage");
 		if (!node) {
 			return;
-		} if (!giant) {
+		}
+		if (!giant) {
 			return;
 		}
 
@@ -497,7 +506,7 @@ namespace Gts {
 		float giantScale = get_visual_scale(giant);
 
 		float SCALE_RATIO = 1.0;
-		
+
 		NiPoint3 NodePosition = node->world.translate;
 
 		float maxDistance = radius * giantScale;
@@ -509,7 +518,7 @@ namespace Gts {
 		NiPoint3 giantLocation = giant->GetPosition();
 
 		for (auto otherActor: find_actors()) {
-			if (otherActor != giant) { 
+			if (otherActor != giant) {
 				float tinyScale = get_visual_scale(otherActor);
 				NiPoint3 actorLocation = otherActor->GetPosition();
 				if ((actorLocation - giantLocation).Length() < maxDistance * 6.0) {
@@ -528,7 +537,7 @@ namespace Gts {
 							}
 							return true;
 						});
-					} 
+					}
 					if (nodeCollisions > 0) {
 						bool allow = sizemanager.IsHandDamaging(otherActor);
 						if (!allow) {
@@ -540,7 +549,7 @@ namespace Gts {
 								pushForce *= 1.5;
 								damage *= 2.25;
 								audio = 3.0;
-								
+
 							}
 							AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
 							if (giantScale / tinyScale > 2.5) {

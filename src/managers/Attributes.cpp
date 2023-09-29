@@ -96,10 +96,10 @@ namespace {
 			power = 0;
 		}
 		/*auto charCont = actor->GetCharController();
-		if (charCont) {
-			log::info("JumpHeight is {}, acrobatics: {}", charCont->jumpHeight, charCont->acrobatics);
-			charCont->jumpHeight = 76.0 + (76.0 * power);
-		}*/
+		   if (charCont) {
+		        log::info("JumpHeight is {}, acrobatics: {}", charCont->jumpHeight, charCont->acrobatics);
+		        charCont->jumpHeight = 76.0 + (76.0 * power);
+		   }*/
 
 		SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
 		//SetINIFloat("fJumpFallHeightMin", 600.0 + (600.0 * power));
@@ -334,12 +334,12 @@ namespace Gts {
 					transient->health_boost = finalValue - originalValue;
 				}
 				return finalValue;
-			} 
+			}
 			case ActorValue::kMagicka: {
 				float perkbonus = GetStolenAttributes_Values(actor, ActorValue::kMagicka);
 				finalValue = originalValue + perkbonus;
 				return finalValue;
-			} 
+			}
 			case ActorValue::kStamina: {
 				float perkbonus = GetStolenAttributes_Values(actor, ActorValue::kStamina);
 				finalValue = originalValue + perkbonus;
@@ -376,9 +376,9 @@ namespace Gts {
 	}
 
 	float AttributeManager::AlterMovementSpeed(Actor* actor, const NiPoint3& direction) {
-    // if (IsBeingHeld(actor)) {
-    //   return 0.0;
-    // }
+		// if (IsBeingHeld(actor)) {
+		//   return 0.0;
+		// }
 
 		float bonus = 1.0;
 		if (actor) {
@@ -386,12 +386,12 @@ namespace Gts {
 			bonus = attributes.GetAttributeBonus(actor, ActorValue::kSpeedMult);
 			float volume = 0.0;
 			/*float origSpeed = direction.Length();
-			if (actor->formID != 0x14) {
-				float sizedifference = get_giantess_scale(actor)/get_giantess_scale(PlayerCharacter::GetSingleton());
-				volume = bonus * origSpeed * sizedifference / 250;
-			} else {
-				volume = bonus * origSpeed / 250;
-			}*/
+			   if (actor->formID != 0x14) {
+			        float sizedifference = get_giantess_scale(actor)/get_giantess_scale(PlayerCharacter::GetSingleton());
+			        volume = bonus * origSpeed * sizedifference / 250;
+			   } else {
+			        volume = bonus * origSpeed / 250;
+			   }*/
 		}
 		return bonus;
 	}

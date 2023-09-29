@@ -19,7 +19,7 @@ namespace Gts {
 			return;
 		}
 		auto GtsSkillLevel = GetGtsSkillLevel();
-		
+
 		float SkillMult = 1.0 + (GtsSkillLevel * 0.01);
 
 		float power = BASE_POWER * SkillMult;

@@ -72,11 +72,11 @@ namespace {
 	float GetLaunchPower_Object(float sizeRatio) {
 		// https://www.desmos.com/calculator/wh0vwgljfl
 		SoftPotential launch {
-				.k = 1.42, 
-				.n = 0.62, 
-				.s = 0.6, 
-				.a = 0.0, 
-			};
+			.k = 1.42,
+			.n = 0.62,
+			.s = 0.6,
+			.a = 0.0,
+		};
 		float power = soft_power(sizeRatio, launch);
 		return power;
 	}
@@ -85,7 +85,8 @@ namespace {
 		auto profiler = Profilers::Profile("Other: Launch Actors Decide");
 		if (IsBeingHeld(tiny)) {
 			return;
-		} if (IsBeingGrinded(tiny)) {
+		}
+		if (IsBeingGrinded(tiny)) {
 			return; // Disallow to launch if we're grinding an actor
 		}
 		auto& accuratedamage = AccurateDamage::GetSingleton();
@@ -110,7 +111,7 @@ namespace {
 		bool IsLaunching = sizemanager.IsLaunching(tiny);
 		if (IsLaunching) {
 			return;
-		}	
+		}
 
 		if (force >= 0.10) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
@@ -139,7 +140,7 @@ namespace {
 					}
 				}
 				PushActorAway(giant, tiny, 1.0);
-				
+
 				std::string name = std::format("PushOther_{}", tiny->formID);
 
 				ActorHandle tinyHandle = tiny->CreateRefHandle();
@@ -151,7 +152,7 @@ namespace {
 							ApplyHavokImpulse(tiny_is_object, 0, 0, 40 * GetLaunchPower(sizeRatio) * force * power * bonus, 40 * GetLaunchPower(sizeRatio) * force * power * bonus);
 						}
 					}
-				});	
+				});
 			}
 		}
 	}
@@ -168,12 +169,12 @@ namespace {
 		if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
 			power *= 1.5;
 		}
-		if (cell) { 
+		if (cell) {
 			auto data = cell->GetRuntimeData();
 			for (auto object: data.references) {
 				auto objectref = object.get();
 				if (objectref) {
-					Actor* NonRef = skyrim_cast<Actor*>(objectref); 
+					Actor* NonRef = skyrim_cast<Actor*>(objectref);
 					if (!NonRef) {
 						NiPoint3 objectlocation = objectref->GetPosition();
 						for (auto point: footPoints) {
@@ -220,9 +221,11 @@ namespace Gts {
 		}
 		if (kind == FootEvent::Left) {
 			LaunchActor::GetSingleton().LaunchLeft(giant, radius, damagebonus, power);
-		} if (kind == FootEvent::Right) {
+		}
+		if (kind == FootEvent::Right) {
 			LaunchActor::GetSingleton().LaunchRight(giant, radius, damagebonus, power);
-		} if (kind == FootEvent::Butt) {
+		}
+		if (kind == FootEvent::Butt) {
 			auto ThighL = find_node(giant, "NPC L Thigh [LThg]");
 			auto ThighR = find_node(giant, "NPC R Thigh [RThg]");
 			if (ThighL && ThighR) {
@@ -249,14 +252,16 @@ namespace Gts {
 		}
 		LaunchActor::LaunchAtNode(giant, radius, power, node, power);
 	}
-	
+
 	void LaunchActor::LaunchAtNode(Actor* giant, float radius, float power, NiAVObject* node, float damagebonus) {
-        auto profiler = Profilers::Profile("Other: Launch Actor Crawl");
-        if (!Runtime::HasPerkTeam(giant, "LaunchPerk")) {
+		auto profiler = Profilers::Profile("Other: Launch Actor Crawl");
+		if (!Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 			return;
-		} if (!node) {
+		}
+		if (!node) {
 			return;
-		} if (!giant) {
+		}
+		if (!giant) {
 			return;
 		}
 		float giantScale = get_visual_scale(giant);
@@ -293,7 +298,7 @@ namespace Gts {
 			if (otherActor != giant) {
 				if (!AllowStagger(giant, otherActor)) {
 					return;
-				} 
+				}
 				float tinyScale = get_visual_scale(otherActor);
 				if (giantScale / tinyScale > SCALE_RATIO) {
 					NiPoint3 actorLocation = otherActor->GetPosition();
@@ -302,7 +307,7 @@ namespace Gts {
 						if (distance <= maxDistance) {
 							float force = 1.0 - distance / maxDistance;
 							LaunchDecide(giant, otherActor, force, damagebonus/6, power);
-						} 
+						}
 					}
 				}
 			}
@@ -334,11 +339,14 @@ namespace Gts {
 		auto BodyBone = find_node(giant, bodyLookup);
 		if (!leftFoot) {
 			return;
-		}if (!leftCalf) {
+		}
+		if (!leftCalf) {
 			return;
-		}if (!leftToe) {
+		}
+		if (!leftToe) {
 			return;
-		}if (!BodyBone) {
+		}
+		if (!BodyBone) {
 			return; // CTD protection attempts
 		}
 		NiMatrix3 leftRotMat;
@@ -387,7 +395,7 @@ namespace Gts {
 				if (otherActor != giant) {
 					if (!AllowStagger(giant, otherActor)) {
 						return;
-					} 
+					}
 					float tinyScale = get_visual_scale(otherActor);
 					if (giantScale / tinyScale > SCALE_RATIO/GetMovementModifier(giant)) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
@@ -403,7 +411,7 @@ namespace Gts {
 			}
 		}
 	}
-	
+
 
 
 	void LaunchActor::LaunchRight(Actor* giant, float radius, float damagebonus, float power) {

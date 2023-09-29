@@ -132,10 +132,10 @@ namespace Gts {
 				}
 			}
 
-      for (auto tag: tagsToErase) {
-        data.tags.erase(tag);
-      }
-      
+			for (auto tag: tagsToErase) {
+				data.tags.erase(tag);
+			}
+
 			// Now collect the data
 			//    - Multiple effects can add rumble to the same node
 			//    - We sum those effects up into cummulativeIntensity

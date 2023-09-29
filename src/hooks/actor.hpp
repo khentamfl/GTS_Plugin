@@ -62,10 +62,10 @@ namespace Hooks
 			static float GetActorValueModifier_9(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value);
 			static inline REL::Relocation<decltype(GetActorValueModifier_9)> _GetActorValueModifier_9;
 
-      static NiPoint3 GetBoundMin(Actor* a_this);
+			static NiPoint3 GetBoundMin(Actor* a_this);
 			static inline REL::Relocation<decltype(GetBoundMin)> _GetBoundMin;
 
-      static NiPoint3 GetBoundMax(Actor* a_this);
+			static NiPoint3 GetBoundMax(Actor* a_this);
 			static inline REL::Relocation<decltype(GetBoundMax)> _GetBoundMax;
 	};
 }

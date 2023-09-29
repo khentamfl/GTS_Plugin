@@ -22,9 +22,9 @@ using namespace Gts;
 
 
 namespace {
-    void RapidGrowthEvent(const InputEventData& data) {
+	void RapidGrowthEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!Runtime::HasPerk(player, "TotalControl")) { 
+		if (!Runtime::HasPerk(player, "TotalControl")) {
 			return;
 		}
 		if (IsCrawling(player) || !player->IsSneaking()) {
@@ -107,7 +107,7 @@ namespace {
 	}
 
 	void ShrinkOutburstEvent(const InputEventData& data) {
-		
+
 		auto player = PlayerCharacter::GetSingleton();
 		bool DarkArts = Runtime::HasPerk(player, "DarkArts");
 		if (!DarkArts) {
@@ -117,16 +117,17 @@ namespace {
 		bool DarkArts3 = Runtime::HasPerk(player, "DarkArts_Aug3");
 
 		float gigantism = std::clamp(1.0f + SizeManager::GetSingleton().GetEnchantmentBonus(player)*0.01f, 1.0f, 20.0f);
-		
+
 		float multi = std::clamp(Runtime::GetFloat("bonusHPMultiplier"), 0.5f, 10000.0f);
-		
+
 		float healthMax = GetMaxAV(player, ActorValue::kHealth);
 		float healthCur = GetAV(player, ActorValue::kHealth);
 		float damagehp = 80.0;
-		
+
 		if (DarkArts2) {
 			damagehp -= 10; // less hp drain
-		} if (DarkArts3) {
+		}
+		if (DarkArts3) {
 			damagehp -= 10; // even less hp drain
 		}
 
@@ -137,7 +138,7 @@ namespace {
 			Notify("Your health is too low");
 			return; // don't allow us to die from own shrinking
 		}
-	
+
 		static Timer NotifyTimer = Timer(2.0);
 
 		if (!ShouldTimerRun(player)) {
@@ -146,7 +147,7 @@ namespace {
 				Notify("Shrink Outburst is on a cooldown");
 			}
 			return;
-		} 
+		}
 		DamageAV(player, ActorValue::kHealth, damagehp);
 		ShrinkOutburstExplosion(player, false);
 	}
@@ -165,7 +166,7 @@ namespace {
 namespace Gts
 {
 	void InputFunctions::RegisterEvents() {
-        InputManager::RegisterInputEvent("SizeReserve", SizeReserveEvent);
+		InputManager::RegisterInputEvent("SizeReserve", SizeReserveEvent);
 		InputManager::RegisterInputEvent("DisplaySizeReserve", DisplaySizeReserveEvent);
 		InputManager::RegisterInputEvent("PartyReport", PartyReportEvent);
 		InputManager::RegisterInputEvent("AnimSpeedUp", AnimSpeedUpEvent);

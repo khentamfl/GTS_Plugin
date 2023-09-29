@@ -52,7 +52,7 @@ namespace Gts {
 		BGSKeyword* data;
 	};
 
-  struct ContainerData {
+	struct ContainerData {
 		TESObjectCONT* data;
 	};
 
@@ -118,10 +118,10 @@ namespace Gts {
 			static BGSKeyword* GetKeyword(const std::string_view& tag);
 			static bool HasKeyword(Actor* actor, const std::string_view& tag);
 
-      // Containers
-      static TESObjectCONT* GetContainer(const std::string_view& tag);
-    	static TESObjectREFR* PlaceContainer(Actor* actor, const std::string_view& tag);
-    	static TESObjectREFR* PlaceContainerAtPos(Actor* actor, NiPoint3 pos, const std::string_view& tag);
+			// Containers
+			static TESObjectCONT* GetContainer(const std::string_view& tag);
+			static TESObjectREFR* PlaceContainer(Actor* actor, const std::string_view& tag);
+			static TESObjectREFR* PlaceContainerAtPos(Actor* actor, NiPoint3 pos, const std::string_view& tag);
 
 			// Team Functions
 			static bool HasMagicEffectTeam(Actor* actor, const std::string_view& tag);
@@ -145,7 +145,7 @@ namespace Gts {
 			std::unordered_map<std::string, ImpactData> impacts;
 			std::unordered_map<std::string, RaceData> races;
 			std::unordered_map<std::string, KeywordData> keywords;
-      std::unordered_map<std::string, ContainerData> containers;
+			std::unordered_map<std::string, ContainerData> containers;
 
 			std::unordered_set<std::string> logged;
 	};

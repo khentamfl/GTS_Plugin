@@ -28,11 +28,11 @@ namespace {
 	float GetShrinkPenalty(float size) {
 		// https://www.desmos.com/calculator/pqgliwxzi2
 		SoftPotential launch {
-				.k = 0.98, 
-				.n = 0.82, 
-				.s = 0.70, 
-				.a = 0.0, 
-			};
+			.k = 0.98,
+			.n = 0.82,
+			.s = 0.70,
+			.a = 0.0,
+		};
 		float power = soft_power(size, launch);
 		return power;
 	}

@@ -21,11 +21,11 @@ namespace {
 	float GetPushPower(float sizeRatio) {
 		// https://www.desmos.com/calculator/wh0vwgljfl
 		SoftPotential push {
-				.k = 1.42, 
-				.n = 0.78, 
-				.s = 0.50, 
-				.a = 0.0, 
-			};
+			.k = 1.42,
+			.n = 0.78,
+			.s = 0.50,
+			.a = 0.0,
+		};
 		float power = soft_power(sizeRatio, push);
 		return power;
 	}
@@ -106,7 +106,7 @@ namespace Gts {
 			if (hitName.find("Bow") == std::string::npos) {
 				shake_camera(attacker, size_difference * 0.20, 0.35);
 			}
-			PushActorAway(attacker, receiver, pushpower); 
+			PushActorAway(attacker, receiver, pushpower);
 		}
 	}
 
@@ -124,7 +124,8 @@ namespace Gts {
 		TaskManager::RunOnce([=](auto& update){
 			if (!tinyHandle) {
 				return;
-			} if (!giantHandle) {
+			}
+			if (!giantHandle) {
 				return;
 			}
 			auto giant = giantHandle.get().get();

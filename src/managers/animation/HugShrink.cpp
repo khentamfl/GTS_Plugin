@@ -39,7 +39,8 @@ namespace {
 		float hp = 0.20;
 		if (Runtime::HasPerkTeam(actor, "HugCrush_MightyCuddles")) {
 			hp += 0.10; // 0.30
-		} if (Runtime::HasPerkTeam(actor, "HugCrush_HugsOfDeath")) {
+		}
+		if (Runtime::HasPerkTeam(actor, "HugCrush_HugsOfDeath")) {
 			hp += 0.20; // 0.50
 		}
 		return hp;
@@ -48,7 +49,8 @@ namespace {
 		float steal = 0.18;
 		if (Runtime::HasPerkTeam(actor, "HugCrush_ToughGrip")) {
 			steal += 0.072;
-		} if (Runtime::HasPerkTeam(actor, "HugCrush")) {
+		}
+		if (Runtime::HasPerkTeam(actor, "HugCrush")) {
 			steal *= 1.35;
 		}
 		return steal;
@@ -58,15 +60,18 @@ namespace {
 		float bonus = 1.0;
 		if (Runtime::HasPerk(actor, "HugCrush")) {
 			bonus += 0.25;
-		} if (Runtime::HasPerk(actor, "HugCrush_Greed")) {
+		}
+		if (Runtime::HasPerk(actor, "HugCrush_Greed")) {
 			bonus += 0.35;
-		} if (HasGrowthSpurt(actor)) {
+		}
+		if (HasGrowthSpurt(actor)) {
 			bonus *= 2.0;
 		}
 		return threshold * bonus;
 	}
 
-	void GTS_Hug_Catch(AnimationEventData& data) {} // Unused
+	void GTS_Hug_Catch(AnimationEventData& data) {
+	} // Unused
 
 	void GTS_Hug_Grab(AnimationEventData& data) {
 		auto giant = &data.giant;
@@ -86,7 +91,7 @@ namespace {
 			Rumble::Once("HugGrab", giant, sizedifference * 12, 0.15);
 		}
 
-   		DisableCollisions(huggedActor, giant);
+		DisableCollisions(huggedActor, giant);
 	}
 
 	void GTS_Hug_Grow(AnimationEventData& data) {
@@ -147,7 +152,7 @@ namespace {
 	}
 
 	void GTS_Hug_RunShrinkTask(AnimationEventData& data) {
-		
+
 	}
 
 	void GTS_Hug_StopShrinkTask(AnimationEventData& data) {
@@ -164,7 +169,7 @@ namespace {
 		PrintDeathSource(giant, huggedActor, DamageSource::Hugs);
 		Rumble::For("HugCrush", giant, 76.0, 0.10, "NPC COM [COM ]", 0.15);
 		HugShrink::DetachActorTask(giant);
-		
+
 		AdjustFacialExpression(giant, 0, 0.0, "phenome");
 		AdjustFacialExpression(giant, 0, 0.0, "modifier");
 		AdjustFacialExpression(giant, 1, 0.0, "modifier");
@@ -184,19 +189,19 @@ namespace {
 		HugShrink::Release(giant);
 	}
 
-  // Cancel all the things
-  void AbortAnimation(Actor* giant, Actor* tiny) {
-    AnimationManager::StartAnim("Huggies_Spare", giant);
-	AdjustFacialExpression(giant, 0, 0.0, "phenome");
-	AdjustFacialExpression(giant, 0, 0.0, "modifier");
-	AdjustFacialExpression(giant, 1, 0.0, "modifier");
-	HugShrink::Release(giant);
-	if (tiny) {
-		EnableCollisions(tiny);
-		SetBeingHeld(tiny, false);
-		PushActorAway(giant, tiny, 1.0);
+	// Cancel all the things
+	void AbortAnimation(Actor* giant, Actor* tiny) {
+		AnimationManager::StartAnim("Huggies_Spare", giant);
+		AdjustFacialExpression(giant, 0, 0.0, "phenome");
+		AdjustFacialExpression(giant, 0, 0.0, "modifier");
+		AdjustFacialExpression(giant, 1, 0.0, "modifier");
+		HugShrink::Release(giant);
+		if (tiny) {
+			EnableCollisions(tiny);
+			SetBeingHeld(tiny, false);
+			PushActorAway(giant, tiny, 1.0);
+		}
 	}
-  }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////// I N P U T
@@ -230,7 +235,7 @@ namespace {
 		if (!huggedActor) {
 			return;
 		}
-		float health = GetHealthPercentage(huggedActor);	
+		float health = GetHealthPercentage(huggedActor);
 		float HpThreshold = GetHPThreshold(player);
 		if (HasSMT(player)) {
 			AnimationManager::StartAnim("Huggies_HugCrush", player);
@@ -261,7 +266,7 @@ namespace {
 			AnimationManager::StartAnim("Huggies_HugCrush_Victim", huggedActor);
 			DamageAV(player, ActorValue::kStamina, stamina * 1.10);
 			return;
-		} 
+		}
 	}
 
 	void HugShrinkEvent(const InputEventData& data) {
@@ -286,7 +291,7 @@ namespace {
 			return; // disallow manual release when it's true
 		}
 		AbortAnimation(player, huggedActor);
-    	HugShrink::DetachActorTask(player);
+		HugShrink::DetachActorTask(player);
 	}
 }
 
@@ -335,7 +340,8 @@ namespace Gts {
 			if (Runtime::HasPerkTeam(giantref, "HugCrush_Greed")) {
 				shrink *= 1.25;
 				stamina *= 0.75;
-			} if (Runtime::HasPerkTeam(giantref, "SkilledGTS")) {
+			}
+			if (Runtime::HasPerkTeam(giantref, "SkilledGTS")) {
 				float level = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
 				stamina -= level;
 			}
@@ -351,7 +357,7 @@ namespace Gts {
 			}
 			DamageAV(tinyref, ActorValue::kStamina, (0.60 * TimeScale())); // Drain Stamina
 			DamageAV(giantref, ActorValue::kStamina, 0.50 * stamina * TimeScale()); // Damage GTS Stamina
-			
+
 			TransferSize(giantref, tinyref, false, shrink, steal, false); // Shrink foe, enlarge gts
 			AdjustGtsSkill(0.00020, giantref);
 			if (giantref->formID == 0x14) {
@@ -382,7 +388,7 @@ namespace Gts {
 			}
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
-			
+
 			ShutUp(tinyref);
 			float threshold = GetShrinkThreshold(giantref);
 
@@ -401,7 +407,7 @@ namespace Gts {
 
 			bool IsHugCrushing;
 			giantref->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
-			
+
 			bool TinyAbsorbed;
 			giantref->GetGraphVariableBool("GTS_TinyAbsorbed", TinyAbsorbed);
 
@@ -417,8 +423,8 @@ namespace Gts {
 					return false;
 				}
 			}
-      		// Ensure they are NOT in ragdoll
-      		ForceRagdoll(tinyref, false);
+			// Ensure they are NOT in ragdoll
+			ForceRagdoll(tinyref, false);
 			if (!HugAttach(gianthandle, tinyhandle)) {
 				return false;
 			}

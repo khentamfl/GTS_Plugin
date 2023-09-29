@@ -17,7 +17,7 @@
 using namespace std;
 using namespace SKSE;
 using namespace RE;
-using namespace Gts;	
+using namespace Gts;
 
 namespace {
 
@@ -34,54 +34,54 @@ namespace {
 
 	void GTS_Crawl_Knee_Trans_Impact(AnimationEventData& data) {
 		auto giant = &data.giant;
-        float scale = get_visual_scale(giant);
-        DoCrawlingFunctions(giant, scale, 1.80, 1.80, CrawlEvent::LeftKnee, "LeftKnee", 26, 24, 1.15, DamageSource::KneeLeft);
+		float scale = get_visual_scale(giant);
+		DoCrawlingFunctions(giant, scale, 1.80, 1.80, CrawlEvent::LeftKnee, "LeftKnee", 26, 24, 1.15, DamageSource::KneeLeft);
 		DoCrawlingFunctions(giant, scale, 1.80, 1.80, CrawlEvent::RightKnee, "RightKnee", 26, 24, 1.15, DamageSource::KneeRight);
 		//                                     damage                                     ^    ^ --- Size Damage Radius
-        //                                                                             Launch       ^ -- crush threshold
+		//                                                                             Launch       ^ -- crush threshold
 		//                                                                             Radius
 	}
 
 	void GTS_Crawl_Hand_Trans_Impact(AnimationEventData& data) {
 		auto giant = &data.giant;
-        float scale = get_visual_scale(giant);
-        DoCrawlingFunctions(giant, scale, 1.60, 1.60, CrawlEvent::LeftHand, "LeftHand", 22, 20, 1.15, DamageSource::HandCrawlLeft);
+		float scale = get_visual_scale(giant);
+		DoCrawlingFunctions(giant, scale, 1.60, 1.60, CrawlEvent::LeftHand, "LeftHand", 22, 20, 1.15, DamageSource::HandCrawlLeft);
 		DoCrawlingFunctions(giant, scale, 1.60, 1.60, CrawlEvent::RightHand, "RightHand", 22, 20, 1.15, DamageSource::HandCrawlRight);
 	}
 
-    void GTSCrawl_KneeImpact_L(AnimationEventData& data) {
-        auto giant = &data.giant;
-        float scale = get_visual_scale(giant);
-        DoCrawlingFunctions(giant, scale, 1.25, 1.25, CrawlEvent::LeftKnee, "LeftKnee", 20, 18, 1.25, DamageSource::KneeLeft);
+	void GTSCrawl_KneeImpact_L(AnimationEventData& data) {
+		auto giant = &data.giant;
+		float scale = get_visual_scale(giant);
+		DoCrawlingFunctions(giant, scale, 1.25, 1.25, CrawlEvent::LeftKnee, "LeftKnee", 20, 18, 1.25, DamageSource::KneeLeft);
 	}
 	void GTSCrawl_KneeImpact_R(AnimationEventData& data) {
-        auto giant = &data.giant;
-        float scale = get_visual_scale(giant);
-        DoCrawlingFunctions(giant, scale, 1.25, 1.25, CrawlEvent::RightKnee, "RightKnee", 20, 18, 1.25, DamageSource::KneeRight);
+		auto giant = &data.giant;
+		float scale = get_visual_scale(giant);
+		DoCrawlingFunctions(giant, scale, 1.25, 1.25, CrawlEvent::RightKnee, "RightKnee", 20, 18, 1.25, DamageSource::KneeRight);
 	}
 	void GTSCrawl_HandImpact_L(AnimationEventData& data) {
-        auto giant = &data.giant;
-        float scale = get_visual_scale(giant);
+		auto giant = &data.giant;
+		float scale = get_visual_scale(giant);
 		if (IsTransferingTiny(giant)) {
 			return; // Prevent effects from left hand
 		}
-        DoCrawlingFunctions(giant, scale, 1.10, 1.0, CrawlEvent::LeftHand, "LeftHand", 18, 14, 1.25, DamageSource::HandCrawlLeft);
+		DoCrawlingFunctions(giant, scale, 1.10, 1.0, CrawlEvent::LeftHand, "LeftHand", 18, 14, 1.25, DamageSource::HandCrawlLeft);
 	}
 	void GTSCrawl_HandImpact_R(AnimationEventData& data) {
-        auto giant = &data.giant;
-        float scale = get_visual_scale(giant);
-        DoCrawlingFunctions(giant, scale, 1.10, 1.0, CrawlEvent::RightHand, "RightHand", 18, 14, 1.25, DamageSource::HandCrawlRight);
+		auto giant = &data.giant;
+		float scale = get_visual_scale(giant);
+		DoCrawlingFunctions(giant, scale, 1.10, 1.0, CrawlEvent::RightHand, "RightHand", 18, 14, 1.25, DamageSource::HandCrawlRight);
 		//                                                                               ^    ^ --- Size Damage Radius
-        //                                                                             Launch 
+		//                                                                             Launch
 		//                                                                             Radius
 	}
 
-	void GTSCrawl_Slam_Raise_Arm_R(AnimationEventData& data) {	
+	void GTSCrawl_Slam_Raise_Arm_R(AnimationEventData& data) {
 		DrainStamina(&data.giant, "StaminaDrain_CrawlStomp", "DestructionBasics", true, 1.0, 1.4);
 		EnableHandTracking(&data.giant, CrawlEvent::RightHand, true);
 	}
 
-	void GTSCrawl_Slam_Raise_Arm_L(AnimationEventData& data) {	
+	void GTSCrawl_Slam_Raise_Arm_L(AnimationEventData& data) {
 		DrainStamina(&data.giant, "StaminaDrain_CrawlStomp", "DestructionBasics", true, 1.0, 1.4);
 		EnableHandTracking(&data.giant, CrawlEvent::LeftHand, true);
 	}
@@ -89,16 +89,20 @@ namespace {
 		DrainStamina(&data.giant, "StaminaDrain_CrawlStompStrong", "DestructionBasics", true, 1.10, 2.3);
 		EnableHandTracking(&data.giant, CrawlEvent::RightHand, true);
 	}
-	
+
 	void GTSCrawl_SlamStrong_Raise_Arm_L(AnimationEventData& data) {
 		DrainStamina(&data.giant, "StaminaDrain_CrawlStompStrong", "DestructionBasics", true, 1.10, 2.3);
 		EnableHandTracking(&data.giant, CrawlEvent::LeftHand, true);
 	}
 
-	void GTSCrawl_Slam_Lower_Arm_R(AnimationEventData& data) {}
-	void GTSCrawl_SlamStrong_Lower_Arm_R(AnimationEventData& data) {}
-	void GTSCrawl_Slam_Lower_Arm_L(AnimationEventData& data) {}
-	void GTSCrawl_SlamStrong_Lower_Arm_L(AnimationEventData& data) {}
+	void GTSCrawl_Slam_Lower_Arm_R(AnimationEventData& data) {
+	}
+	void GTSCrawl_SlamStrong_Lower_Arm_R(AnimationEventData& data) {
+	}
+	void GTSCrawl_Slam_Lower_Arm_L(AnimationEventData& data) {
+	}
+	void GTSCrawl_SlamStrong_Lower_Arm_L(AnimationEventData& data) {
+	}
 
 	void GTSCrawl_Slam_Impact_R(AnimationEventData& data) {
 		auto giant = &data.giant;
@@ -190,9 +194,9 @@ namespace {
 
 	void DisableHandTrackingTask(Actor* giant) { // Used to disable camera with some delay
 		std::string name = std::format("CameraOff_{}", giant->formID);
-        auto gianthandle = giant->CreateRefHandle();
-        auto FrameA = Time::FramesElapsed();
-        TaskManager::Run(name, [=](auto& progressData) {
+		auto gianthandle = giant->CreateRefHandle();
+		auto FrameA = Time::FramesElapsed();
+		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
 			}
@@ -201,16 +205,18 @@ namespace {
 			if (FrameB <= 60.0/GetAnimationSlowdown(giantref)) {
 				return true;
 			}
-	
-            EnableHandTracking(giantref, CrawlEvent::RightHand, false);
+
+			EnableHandTracking(giantref, CrawlEvent::RightHand, false);
 			EnableHandTracking(giantref, CrawlEvent::LeftHand, false);
 
 			return false;
 		});
 	}
 
-	void GTS_Crawl_Swipe_ArmSfx_Start(AnimationEventData& data) {}
-	void GTS_Crawl_Swipe_ArmSfx_End(AnimationEventData& data) {}
+	void GTS_Crawl_Swipe_ArmSfx_Start(AnimationEventData& data) {
+	}
+	void GTS_Crawl_Swipe_ArmSfx_End(AnimationEventData& data) {
+	}
 
 	void GTS_Crawl_Swipe_On_R(AnimationEventData& data) {
 		TriggerHandCollision_Right(&data.giant, 1.4, 1.6, 0.75);

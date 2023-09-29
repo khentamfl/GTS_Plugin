@@ -52,12 +52,12 @@ namespace {
 	}
 
 	void AttachToObjectBTask(Actor* giant, Actor* tiny) {
-        SetBeingEaten(tiny, true);
-        std::string name = std::format("ButtCrush_{}", tiny->formID);
-        auto tinyhandle = tiny->CreateRefHandle();
-        auto gianthandle = giant->CreateRefHandle();
-        auto FrameA = Time::FramesElapsed();
-        TaskManager::Run(name, [=](auto& progressData) {
+		SetBeingEaten(tiny, true);
+		std::string name = std::format("ButtCrush_{}", tiny->formID);
+		auto tinyhandle = tiny->CreateRefHandle();
+		auto gianthandle = giant->CreateRefHandle();
+		auto FrameA = Time::FramesElapsed();
+		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
 			}
@@ -71,44 +71,45 @@ namespace {
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 
-            
 
-            auto node = find_node(giantref, "AnimObjectB"); 
-            if (!node) {
-                return false;
-            }
 
-            float stamina = GetAV(giantref, ActorValue::kStamina);
-            ForceRagdoll(tinyref, false);
-            DamageAV(giantref, ActorValue::kStamina, 0.32 * GetButtCrushCost(giant));
-            
-            if (stamina <= 2.0) {
-                AnimationManager::StartAnim("ButtCrush_Attack", giantref); // Try to Abort it
-            }
+			auto node = find_node(giantref, "AnimObjectB");
+			if (!node) {
+				return false;
+			}
 
-            auto coords = node->world.translate;
-            if (!IsCrawling(giantref)) {
-                float HH = HighHeelManager::GetHHOffset(giantref).Length();
-                coords.z -= HH;
-            }
+			float stamina = GetAV(giantref, ActorValue::kStamina);
+			ForceRagdoll(tinyref, false);
+			DamageAV(giantref, ActorValue::kStamina, 0.32 * GetButtCrushCost(giant));
+
+			if (stamina <= 2.0) {
+				AnimationManager::StartAnim("ButtCrush_Attack", giantref); // Try to Abort it
+			}
+
+			auto coords = node->world.translate;
+			if (!IsCrawling(giantref)) {
+				float HH = HighHeelManager::GetHHOffset(giantref).Length();
+				coords.z -= HH;
+			}
 			if (!IsButtCrushing(giantref)) {
-                log::info("Not Butt Crushing, resetting");
-                SetBeingEaten(tiny, false);
-                EnableCollisions(tiny);
+				log::info("Not Butt Crushing, resetting");
+				SetBeingEaten(tiny, false);
+				EnableCollisions(tiny);
 				return false;
 			}
 			if (!AttachTo_NoForceRagdoll(giantref, tinyref, coords)) {
-                SetBeingEaten(tiny, false);
-                EnableCollisions(tiny);
+				SetBeingEaten(tiny, false);
+				EnableCollisions(tiny);
 				return false;
-			}  if (tinyref->IsDead()) {
-                SetBeingEaten(tiny, false);
-                EnableCollisions(tiny);
+			}
+			if (tinyref->IsDead()) {
+				SetBeingEaten(tiny, false);
+				EnableCollisions(tiny);
 				return false;
 			}
 			return true;
 		});
-    }
+	}
 }
 
 namespace Gts {
@@ -237,7 +238,7 @@ namespace Gts {
 		}
 		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale >= MINIMUM_BUTTCRUSH_SCALE) {
 			if ((prey->formID != 0x14 && IsEssential(prey) && !AllowActionsWithFollowers(pred, prey))) {
-				std::string_view message = std::format("{} is Essential", prey->GetDisplayFullName()); 
+				std::string_view message = std::format("{} is Essential", prey->GetDisplayFullName());
 				TiredSound(pred, message);
 				return false;
 			}
@@ -252,24 +253,24 @@ namespace Gts {
 		if (!buttcrush.CanButtCrush(pred, prey)) {
 			return;
 		}
-        if (CanDoButtCrush(pred) && !IsBeingHeld(prey)) {
-            prey->NotifyAnimationGraph("GTS_EnterFear");
-            auto camera = PlayerCamera::GetSingleton();
-            ShrinkUntil(pred, prey, 3.0);
-            DisableCollisions(prey, pred);
+		if (CanDoButtCrush(pred) && !IsBeingHeld(prey)) {
+			prey->NotifyAnimationGraph("GTS_EnterFear");
+			auto camera = PlayerCamera::GetSingleton();
+			ShrinkUntil(pred, prey, 3.0);
+			DisableCollisions(prey, pred);
 
 			float WasteStamina = 60.0 * GetButtCrushCost(pred);
-            DamageAV(pred, ActorValue::kStamina, WasteStamina);
-			
+			DamageAV(pred, ActorValue::kStamina, WasteStamina);
+
 			AttachToObjectBTask(pred, prey);
-            AnimationManager::StartAnim("ButtCrush_Start", pred);
+			AnimationManager::StartAnim("ButtCrush_Start", pred);
 			//BlockFirstPerson(pred, true);
-        } else {
-            if (!IsCrawling(pred)) {
-			    TiredSound(pred, "Butt Crush is on a cooldown");
-            } else {
-                TiredSound(pred, "Breast Crush is on a cooldown");
-            }
-        }
+		} else {
+			if (!IsCrawling(pred)) {
+				TiredSound(pred, "Butt Crush is on a cooldown");
+			} else {
+				TiredSound(pred, "Breast Crush is on a cooldown");
+			}
+		}
 	}
 }

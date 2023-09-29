@@ -102,27 +102,27 @@ namespace {
 		auto gianthandle = giant->CreateRefHandle();
 		auto FrameA = Time::FramesElapsed();
 		TaskManager::Run(name, [=](auto& progressData) {
-		if (!gianthandle) {
-			return false; 
-		}
-		/*auto FrameB = Time::FramesElapsed() - FrameA;
-		if (FrameB <= 60.0) {
-			return true;
-		}*/
-		auto giantref = gianthandle.get().get();
-		auto ThighL = find_node(giantref, "NPC L Thigh [LThg]");
-		auto ThighR = find_node(giantref, "NPC R Thigh [RThg]");
-		
-		if (!IsThighCrushing(giantref)) {
-			log::info("IS not Thigh Crushing");
-			return false; //Disable it once we leave Thigh Crush state
-		}
-		if (ThighL && ThighR) {
-			DoDamageAtPoint(giantref, 16, 0.5, ThighL, 100, 0.20, 2.5, DamageSource::Booty);
-			DoDamageAtPoint(giantref, 16, 0.5, ThighR, 100, 0.20, 2.5, DamageSource::Booty);
-			return true;
-		}
-		return false; // Cancel it if we don't have these bones
+			if (!gianthandle) {
+				return false;
+			}
+			/*auto FrameB = Time::FramesElapsed() - FrameA;
+			   if (FrameB <= 60.0) {
+			        return true;
+			   }*/
+			auto giantref = gianthandle.get().get();
+			auto ThighL = find_node(giantref, "NPC L Thigh [LThg]");
+			auto ThighR = find_node(giantref, "NPC R Thigh [RThg]");
+
+			if (!IsThighCrushing(giantref)) {
+				log::info("IS not Thigh Crushing");
+				return false; //Disable it once we leave Thigh Crush state
+			}
+			if (ThighL && ThighR) {
+				DoDamageAtPoint(giantref, 16, 0.5, ThighL, 100, 0.20, 2.5, DamageSource::Booty);
+				DoDamageAtPoint(giantref, 16, 0.5, ThighR, 100, 0.20, 2.5, DamageSource::Booty);
+				return true;
+			}
+			return false; // Cancel it if we don't have these bones
 		});
 	}
 
@@ -265,7 +265,7 @@ namespace {
 	void ThighCrushKillEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		float WasteStamina = 40.0;
-		if (Runtime::HasPerk(player, "KillerThighs")) { 
+		if (Runtime::HasPerk(player, "KillerThighs")) {
 			WasteStamina *= 0.65;
 		}
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {

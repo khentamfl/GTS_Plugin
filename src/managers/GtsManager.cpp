@@ -65,7 +65,7 @@ namespace {
 		}
 		float currentOtherScale = Get_Other_Scale(actor);
 		trans_actor_data->otherScales = currentOtherScale;
-		
+
 		float target_scale = persi_actor_data->target_scale;
 
 		// Smooth target_scale towards max_scale if target_scale > max_scale
@@ -131,7 +131,7 @@ namespace {
 			visual_scale = scaleOverride;
 		}
 
-		
+
 		// Is scale correct already?
 		if (fabs(visual_scale - scale) <= 1e-5 && !force) {
 			return;
@@ -245,7 +245,7 @@ void GtsManager::Update() {
 			if (IsCrawling(actor)) {
 				ApplyAllCrawlingDamage(actor, 1.0, 1000, 0.25);
 			}
-			
+
 			GameModeManager::GetSingleton().GameMode(actor); // Handle Game Modes
 		}
 		if (Runtime::GetBool("PreciseDamageOthers")) {

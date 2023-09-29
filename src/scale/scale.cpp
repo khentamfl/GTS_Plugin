@@ -15,11 +15,11 @@ namespace {
 	float GetShrinkPenalty(float size) {
 		// https://www.desmos.com/calculator/pqgliwxzi2
 		SoftPotential cut {
-				.k = 1.08, 
-				.n = 0.90, 
-				.s = 3.00, 
-				.a = 0.0, 
-			};
+			.k = 1.08,
+			.n = 0.90,
+			.s = 3.00,
+			.a = 0.0,
+		};
 		float power = soft_power(size, cut);
 		if (SizeManager::GetSingleton().BalancedMode() >= 2.0) {
 			return std::clamp(power, 1.0f, 99999.0f); // So it never reports values below 1.0. Just to make sure.
@@ -152,7 +152,7 @@ namespace Gts {
 	float get_visual_scale(Actor& actor) {
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
 		if (actor_data) {
-		     return actor_data->visual_scale * get_natural_scale(actor);
+			return actor_data->visual_scale * get_natural_scale(actor);
 		}
 		return -1.0;
 	}
@@ -182,7 +182,7 @@ namespace Gts {
 		return 1.0;
 	}
 
-  	float get_giantess_scale(Actor& actor) {
+	float get_giantess_scale(Actor& actor) {
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
 		if (actor_data) {
 			return actor_data->visual_scale;

@@ -26,10 +26,10 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-    const std::string_view RNode = "NPC R Foot [Rft ]";
+	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
-    void StartDamageAt_L(Actor* actor, float power, float crush, float pushpower, std::string_view node) {
+	void StartDamageAt_L(Actor* actor, float power, float crush, float pushpower, std::string_view node) {
 		std::string name = std::format("LegKick_{}", actor->formID);
 		auto gianthandle = actor->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
@@ -43,7 +43,7 @@ namespace {
 			}
 			return true;
 		});
-	} 
+	}
 
 	void StartDamageAt_R(Actor* actor, float power, float crush, float pushpower, std::string_view node) {
 		std::string name = std::format("LegKick_{}", actor->formID);
@@ -61,12 +61,12 @@ namespace {
 		});
 	}
 
-    void StopAllDamageAndStamina(Actor* actor) {
-        std::string name = std::format("LegKick_{}", actor->formID);
-        DrainStamina(actor, "StaminaDrain_StrongKick", "DestructionBasics", false, 2.0, 8.0);
-        DrainStamina(actor, "StaminaDrain_Kick", "DestructionBasics", false, 2.0, 4.0);
-        TaskManager::Cancel(name);
-    }
+	void StopAllDamageAndStamina(Actor* actor) {
+		std::string name = std::format("LegKick_{}", actor->formID);
+		DrainStamina(actor, "StaminaDrain_StrongKick", "DestructionBasics", false, 2.0, 8.0);
+		DrainStamina(actor, "StaminaDrain_Kick", "DestructionBasics", false, 2.0, 4.0);
+		TaskManager::Cancel(name);
+	}
 
 	void GTS_Kick_Camera_On_R(AnimationEventData& data) {
 		TrackFeet(&data.giant, 6.0, true);
@@ -81,60 +81,60 @@ namespace {
 		TrackFeet(&data.giant, 5.0, false);
 	}
 
-    void GTS_Kick_SwingLeg_L(AnimationEventData& data) { 
-    }
-    void GTS_Kick_SwingLeg_R(AnimationEventData& data) {
-    }
+	void GTS_Kick_SwingLeg_L(AnimationEventData& data) {
+	}
+	void GTS_Kick_SwingLeg_R(AnimationEventData& data) {
+	}
 
-    void GTS_Kick_Stomp_R(AnimationEventData& data) {
-        DoDamageEffect(&data.giant, 1.40, 1.6, 10, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+	void GTS_Kick_Stomp_R(AnimationEventData& data) {
+		DoDamageEffect(&data.giant, 1.40, 1.6, 10, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.85, 1.75, 1.4, FootEvent::Right, 0.85);
-    }
-    void GTS_Kick_Stomp_L(AnimationEventData& data) {
-        DoDamageEffect(&data.giant, 1.40, 1.6, 10, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
-        DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
-        DoDustExplosion(&data.giant, 1.0, FootEvent::Left, LNode);
-        DoLaunch(&data.giant, 0.85, 1.75, 1.4, FootEvent::Left, 0.85);
-    }
+	}
+	void GTS_Kick_Stomp_L(AnimationEventData& data) {
+		DoDamageEffect(&data.giant, 1.40, 1.6, 10, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
+		DoDustExplosion(&data.giant, 1.0, FootEvent::Left, LNode);
+		DoLaunch(&data.giant, 0.85, 1.75, 1.4, FootEvent::Left, 0.85);
+	}
 
-    void GTS_Kick_HitBox_On_R(AnimationEventData& data) {
-        StartDamageAt_R(&data.giant, 0.7, 1.8, 0.50, "NPC R Toe0 [RToe]");
+	void GTS_Kick_HitBox_On_R(AnimationEventData& data) {
+		StartDamageAt_R(&data.giant, 0.7, 1.8, 0.50, "NPC R Toe0 [RToe]");
 		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 2.0, 4.0);
-    }
-    void GTS_Kick_HitBox_On_L(AnimationEventData& data) {
-        StartDamageAt_L(&data.giant, 0.7, 1.8, 0.50, "NPC L Toe0 [LToe]");
+	}
+	void GTS_Kick_HitBox_On_L(AnimationEventData& data) {
+		StartDamageAt_L(&data.giant, 0.7, 1.8, 0.50, "NPC L Toe0 [LToe]");
 		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 2.0, 4.0);
-    }
-    void GTS_Kick_HitBox_Off_R(AnimationEventData& data) {
-        StopAllDamageAndStamina(&data.giant);
-    }
-    void GTS_Kick_HitBox_Off_L(AnimationEventData& data) {
-        StopAllDamageAndStamina(&data.giant);
-    }
+	}
+	void GTS_Kick_HitBox_Off_R(AnimationEventData& data) {
+		StopAllDamageAndStamina(&data.giant);
+	}
+	void GTS_Kick_HitBox_Off_L(AnimationEventData& data) {
+		StopAllDamageAndStamina(&data.giant);
+	}
 
-    void GTS_Kick_HitBox_Power_On_R(AnimationEventData& data) {
-        StartDamageAt_R(&data.giant, 1.4, 1.8, 1.8, "NPC R Toe0 [RToe]");
+	void GTS_Kick_HitBox_Power_On_R(AnimationEventData& data) {
+		StartDamageAt_R(&data.giant, 1.4, 1.8, 1.8, "NPC R Toe0 [RToe]");
 		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 2.0, 8.0);
-    }
-    void GTS_Kick_HitBox_Power_On_L(AnimationEventData& data) {
-        StartDamageAt_L(&data.giant, 1.4, 1.8, 1.8, "NPC L Toe0 [LToe]");
+	}
+	void GTS_Kick_HitBox_Power_On_L(AnimationEventData& data) {
+		StartDamageAt_L(&data.giant, 1.4, 1.8, 1.8, "NPC L Toe0 [LToe]");
 		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 2.0, 8.0);
-    }
-    void GTS_Kick_HitBox_Power_Off_R(AnimationEventData& data) {
-        StopAllDamageAndStamina(&data.giant);
-    }
-    void GTS_Kick_HitBox_Power_Off_L(AnimationEventData& data) {
-        StopAllDamageAndStamina(&data.giant);
-    }
+	}
+	void GTS_Kick_HitBox_Power_Off_R(AnimationEventData& data) {
+		StopAllDamageAndStamina(&data.giant);
+	}
+	void GTS_Kick_HitBox_Power_Off_L(AnimationEventData& data) {
+		StopAllDamageAndStamina(&data.giant);
+	}
 
-    
 
-    // ======================================================================================
-    //  Triggers
-    // ======================================================================================
-    void LightKickLeftEvent(const InputEventData& data) {
+
+	// ======================================================================================
+	//  Triggers
+	// ======================================================================================
+	void LightKickLeftEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		if (!player->IsSneaking() && !player->AsActorState()->IsSprinting()) {
 			float WasteStamina = 35.0 * GetWasteMult(player);
@@ -185,7 +185,7 @@ namespace {
 namespace Gts
 {
 	void AnimationKicks::RegisterEvents() {
-        InputManager::RegisterInputEvent("LightKickLeft", LightKickLeftEvent);
+		InputManager::RegisterInputEvent("LightKickLeft", LightKickLeftEvent);
 		InputManager::RegisterInputEvent("LightKickRight", LightKickRightEvent);
 		InputManager::RegisterInputEvent("HeavyKickLeft", HeavyKickLeftEvent);
 		InputManager::RegisterInputEvent("HeavyKickRight", HeavyKickRightEvent);
@@ -195,20 +195,20 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTS_Kick_Camera_Off_R", "Kicks", GTS_Kick_Camera_On_R);
 		AnimationManager::RegisterEvent("GTS_Kick_Camera_Off_L", "Kicks", GTS_Kick_Camera_On_L);
 
-        AnimationManager::RegisterEvent("GTS_Kick_SwingLeg_R", "Kicks", GTS_Kick_SwingLeg_R);
-        AnimationManager::RegisterEvent("GTS_Kick_SwingLeg_L", "Kicks", GTS_Kick_SwingLeg_L);
+		AnimationManager::RegisterEvent("GTS_Kick_SwingLeg_R", "Kicks", GTS_Kick_SwingLeg_R);
+		AnimationManager::RegisterEvent("GTS_Kick_SwingLeg_L", "Kicks", GTS_Kick_SwingLeg_L);
 
-        AnimationManager::RegisterEvent("GTS_Kick_Stomp_R", "Kicks", GTS_Kick_Stomp_R);
-        AnimationManager::RegisterEvent("GTS_Kick_Stomp_L", "Kicks", GTS_Kick_Stomp_L);
-        
-        AnimationManager::RegisterEvent("GTS_Kick_HitBox_On_R", "Kicks", GTS_Kick_HitBox_On_R);
-        AnimationManager::RegisterEvent("GTS_Kick_HitBox_Off_R", "Kicks", GTS_Kick_HitBox_Off_R);
-        AnimationManager::RegisterEvent("GTS_Kick_HitBox_On_L", "Kicks", GTS_Kick_HitBox_On_L);
-        AnimationManager::RegisterEvent("GTS_Kick_HitBox_Off_L", "Kicks", GTS_Kick_HitBox_Off_L);
+		AnimationManager::RegisterEvent("GTS_Kick_Stomp_R", "Kicks", GTS_Kick_Stomp_R);
+		AnimationManager::RegisterEvent("GTS_Kick_Stomp_L", "Kicks", GTS_Kick_Stomp_L);
 
-        AnimationManager::RegisterEvent("GTS_Kick_HitBox_Power_On_R", "Kicks", GTS_Kick_HitBox_Power_On_R);
-        AnimationManager::RegisterEvent("GTS_Kick_HitBox_Power_Off_R", "Kicks", GTS_Kick_HitBox_Power_Off_R);
-        AnimationManager::RegisterEvent("GTS_Kick_HitBox_Power_On_L", "Kicks", GTS_Kick_HitBox_Power_On_L);
-        AnimationManager::RegisterEvent("GTS_Kick_HitBox_Power_Off_L", "Kicks", GTS_Kick_HitBox_Power_Off_L);
+		AnimationManager::RegisterEvent("GTS_Kick_HitBox_On_R", "Kicks", GTS_Kick_HitBox_On_R);
+		AnimationManager::RegisterEvent("GTS_Kick_HitBox_Off_R", "Kicks", GTS_Kick_HitBox_Off_R);
+		AnimationManager::RegisterEvent("GTS_Kick_HitBox_On_L", "Kicks", GTS_Kick_HitBox_On_L);
+		AnimationManager::RegisterEvent("GTS_Kick_HitBox_Off_L", "Kicks", GTS_Kick_HitBox_Off_L);
+
+		AnimationManager::RegisterEvent("GTS_Kick_HitBox_Power_On_R", "Kicks", GTS_Kick_HitBox_Power_On_R);
+		AnimationManager::RegisterEvent("GTS_Kick_HitBox_Power_Off_R", "Kicks", GTS_Kick_HitBox_Power_Off_R);
+		AnimationManager::RegisterEvent("GTS_Kick_HitBox_Power_On_L", "Kicks", GTS_Kick_HitBox_Power_On_L);
+		AnimationManager::RegisterEvent("GTS_Kick_HitBox_Power_Off_L", "Kicks", GTS_Kick_HitBox_Power_Off_L);
 	}
 }

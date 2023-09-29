@@ -8,11 +8,11 @@ using namespace RE;
 
 namespace Gts {
 
-  // Enable/disable collisions fails for current implementation
-  //
-  // A ragdoll goes from kBiped into kDeadBip depending on
-  // if they are active/inactive
-	class RagdollData: public ColliderData {
+	// Enable/disable collisions fails for current implementation
+	//
+	// A ragdoll goes from kBiped into kDeadBip depending on
+	// if they are active/inactive
+	class RagdollData : public ColliderData {
 		public:
 			RagdollData(hkaRagdollInstance* ragdoll);
 	};

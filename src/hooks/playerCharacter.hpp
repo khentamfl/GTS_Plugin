@@ -45,10 +45,10 @@ namespace Hooks
 			static void PCAnimEvents(BSTEventSink<BSAnimationGraphEvent>* a_this, BSAnimationGraphEvent& a_event, BSTEventSource<BSAnimationGraphEvent>* a_src);
 			static inline REL::Relocation<decltype(PCAnimEvents)> _PCAnimEvents;
 
-      static NiPoint3 GetBoundMin(PlayerCharacter* a_this);
+			static NiPoint3 GetBoundMin(PlayerCharacter* a_this);
 			static inline REL::Relocation<decltype(GetBoundMin)> _GetBoundMin;
 
-      static NiPoint3 GetBoundMax(PlayerCharacter* a_this);
+			static NiPoint3 GetBoundMax(PlayerCharacter* a_this);
 			static inline REL::Relocation<decltype(GetBoundMax)> _GetBoundMax;
 
 			float protectionticks = 360.0;

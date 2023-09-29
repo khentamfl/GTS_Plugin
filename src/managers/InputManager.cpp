@@ -51,9 +51,11 @@ namespace {
 			}
 		}
 
-    // Sort longest duration first
-    std::sort(results.begin(), results.end(),
-          [] (InputEventData const& a, InputEventData const& b) { return a.MinDuration() > b.MinDuration(); });
+		// Sort longest duration first
+		std::sort(results.begin(), results.end(),
+		          [] (InputEventData const& a, InputEventData const& b) {
+			return a.MinDuration() > b.MinDuration();
+		});
 		return results;
 	}
 }
@@ -67,8 +69,8 @@ namespace Gts {
 		std::string lower_trigger = str_tolower(trigger);
 		if (lower_trigger == "once") {
 			this->trigger = TriggerMode::Once;
-    } else if (lower_trigger == "release") {
-  			this->trigger = TriggerMode::Release;
+		} else if (lower_trigger == "release") {
+			this->trigger = TriggerMode::Release;
 		} else if (
 			lower_trigger ==  "continuous"
 			|| lower_trigger ==  "cont"
@@ -128,26 +130,26 @@ namespace Gts {
 		return keys.size() == 0;
 	}
 
-  void InputEventData::Reset() {
-    this->startTime = Time::WorldTimeElapsed();
-    this->state = InputEventState::Idle;
-    this->primed = false;
-  }
+	void InputEventData::Reset() {
+		this->startTime = Time::WorldTimeElapsed();
+		this->state = InputEventState::Idle;
+		this->primed = false;
+	}
 
-  float InputEventData::MinDuration() const {
-    return this->minDuration;
-  }
+	float InputEventData::MinDuration() const {
+		return this->minDuration;
+	}
 
-  bool InputEventData::IsOnUp() const {
-    return this->trigger == TriggerMode::Release;
-  }
+	bool InputEventData::IsOnUp() const {
+		return this->trigger == TriggerMode::Release;
+	}
 
-  bool InputEventData::SameGroup(const InputEventData& other) const {
-    if (this->IsOnUp() && other.IsOnUp()) {
-      return this->keys == other.keys;
-    }
-    return false;
-  }
+	bool InputEventData::SameGroup(const InputEventData& other) const {
+		if (this->IsOnUp() && other.IsOnUp()) {
+			return this->keys == other.keys;
+		}
+		return false;
+	}
 
 	bool InputEventData::ShouldFire(const std::unordered_set<std::uint32_t>& keys) {
 		bool shouldFire = false;
@@ -169,19 +171,19 @@ namespace Gts {
 		}
 		// Check based on held and trigger state
 		if (shouldFire) {
-      this->primed = true;
+			this->primed = true;
 			switch (this->state) {
 				case InputEventState::Idle: {
 					this->state = InputEventState::Held;
-          switch (this->trigger) {
-            // If once or continius start firing now
+					switch (this->trigger) {
+						// If once or continius start firing now
 						case TriggerMode::Once: {
 							return true;
 						}
 						case TriggerMode::Continuous: {
 							return true;
 						}
-            case TriggerMode::Release: {
+						case TriggerMode::Release: {
 							return false;
 						}
 						default: {
@@ -192,16 +194,16 @@ namespace Gts {
 				}
 				case InputEventState::Held: {
 					switch (this->trigger) {
-            // If once stop firing
+						// If once stop firing
 						case TriggerMode::Once: {
 							return false;
 						}
 						case TriggerMode::Continuous: {
-              // if continous keep firing
+							// if continous keep firing
 							return true;
 						}
-            case TriggerMode::Release: {
-              // For release still do nothing
+						case TriggerMode::Release: {
+							// For release still do nothing
 							return false;
 						}
 						default: {
@@ -216,20 +218,20 @@ namespace Gts {
 				}
 			}
 		} else {
-      if (this->primed) {
-        this->primed = false;
-        switch (this->trigger) {
-          case TriggerMode::Release: {
-            // For release fire now that we have stopped pressing
-            return true;
-          }
-          default: {
-            return false;
-          }
-        }
-      } else {
-			     return false;
-      }
+			if (this->primed) {
+				this->primed = false;
+				switch (this->trigger) {
+					case TriggerMode::Release: {
+						// For release fire now that we have stopped pressing
+						return true;
+					}
+					default: {
+						return false;
+					}
+				}
+			} else {
+				return false;
+			}
 		}
 	}
 
@@ -310,26 +312,26 @@ namespace Gts {
 			// log::trace("Checking the {} event", trigger.GetName());
 			std::vector<InputEventData*> firedTriggers; // Store triggers in here that have been fired this frame
 			if (trigger.ShouldFire(keys)) {
-        bool groupAlreadyFired = false;
-        for (auto firedTrigger: firedTriggers) {
-          if (trigger.SameGroup(*firedTrigger)) {
-            groupAlreadyFired = true;
-            break;
-          }
-        }
-        if (groupAlreadyFired) {
-          trigger.Reset();
-        } else {
-          log::debug(" - Running event {}", trigger.GetName());
-          firedTriggers.push_back(&trigger);
-  				try {
-  					auto& eventData = this->registedInputEvents.at(trigger.GetName());
-  					eventData.callback(trigger);
-  				} catch (std::out_of_range e) {
-  					log::warn("Event {} was triggered but there is no event of that name", trigger.GetName());
-  					continue;
-  				}
-        }
+				bool groupAlreadyFired = false;
+				for (auto firedTrigger: firedTriggers) {
+					if (trigger.SameGroup(*firedTrigger)) {
+						groupAlreadyFired = true;
+						break;
+					}
+				}
+				if (groupAlreadyFired) {
+					trigger.Reset();
+				} else {
+					log::debug(" - Running event {}", trigger.GetName());
+					firedTriggers.push_back(&trigger);
+					try {
+						auto& eventData = this->registedInputEvents.at(trigger.GetName());
+						eventData.callback(trigger);
+					} catch (std::out_of_range e) {
+						log::warn("Event {} was triggered but there is no event of that name", trigger.GetName());
+						continue;
+					}
+				}
 			}
 		}
 		return BSEventNotifyControl::kContinue;

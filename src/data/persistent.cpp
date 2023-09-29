@@ -335,7 +335,7 @@ namespace Gts {
 					case 2:
 						GetSingleton().size_method = SizeMethod::Hybrid;
 						break;
-          			case 3:
+					case 3:
 						GetSingleton().size_method = SizeMethod::RefScale;
 						break;
 				}
@@ -415,9 +415,7 @@ namespace Gts {
 				float stolen_attributes;
 				serde->ReadRecordData(&stolen_attributes, sizeof(stolen_attributes));
 				GetSingleton().stolen_attributes = stolen_attributes;
-			} 
-			
-			else if (type == Att_HealthStorage) {
+			} else if (type == Att_HealthStorage) {
 				float stolen_health;
 				serde->ReadRecordData(&stolen_health, sizeof(stolen_health));
 				GetSingleton().stolen_health = stolen_health;
@@ -681,7 +679,7 @@ namespace Gts {
 		}
 		bool Stomp_Ai = GetSingleton().Stomp_Ai;
 		serde->WriteRecordData(&Stomp_Ai, sizeof(Stomp_Ai));
-		
+
 
 		if (!serde->OpenRecord(LaunchObjects, 1)) {
 			log::error("Unable to open Launch Objects record to write cosave data");
@@ -689,7 +687,7 @@ namespace Gts {
 		}
 		bool launch_objects = GetSingleton().launch_objects;
 		serde->WriteRecordData(&launch_objects, sizeof(launch_objects));
-		
+
 		if (!serde->OpenRecord(CameraFovEdits, 1)) {
 			log::error("Unable to open Camera For Permission record to write cosave data");
 			return;

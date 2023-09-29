@@ -21,25 +21,25 @@ namespace Gts {
 
 
 	/*vector<Actor*> find_actors() {
-		auto profiler = Profilers::Profile("Other: Find Actors");
-		vector<Actor*> result;
+	        auto profiler = Profilers::Profile("Other: Find Actors");
+	        vector<Actor*> result;
 
-		auto high_actors = find_actors_high();
-		result.insert(result.end(), high_actors.begin(), high_actors.end());
+	        auto high_actors = find_actors_high();
+	        result.insert(result.end(), high_actors.begin(), high_actors.end());
 
-		auto middle_high_actors = find_actors_middle_high();
-		result.insert(result.end(), middle_high_actors.begin(), middle_high_actors.end());
+	        auto middle_high_actors = find_actors_middle_high();
+	        result.insert(result.end(), middle_high_actors.begin(), middle_high_actors.end());
 
-		auto middle_low_actors = find_actors_high();
-		result.insert(result.end(), middle_low_actors.begin(), middle_low_actors.end());
+	        auto middle_low_actors = find_actors_high();
+	        result.insert(result.end(), middle_low_actors.begin(), middle_low_actors.end());
 
-		auto low_actors = find_actors_high();
-		result.insert(result.end(), low_actors.begin(), low_actors.end());
+	        auto low_actors = find_actors_high();
+	        result.insert(result.end(), low_actors.begin(), low_actors.end());
 
-		std::sort( result.begin(), result.end() );
-		result.erase( std::unique( result.begin(), result.end() ), result.end() );
-		return result;
-	}*/    //Backup
+	        std::sort( result.begin(), result.end() );
+	        result.erase( std::unique( result.begin(), result.end() ), result.end() );
+	        return result;
+	   }*///Backup
 
 
 	vector<Actor*> find_actors() { // Backup above ^

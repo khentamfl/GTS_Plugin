@@ -26,14 +26,14 @@ using namespace Gts;
 
 namespace Gts {
 
-    void SurvivalMode_RemoveAllSpells(Actor* actor, SpellItem* stage0, SpellItem* stage1, SpellItem* stage2, SpellItem* stage3, SpellItem* stage4, SpellItem* stage5) {
+	void SurvivalMode_RemoveAllSpells(Actor* actor, SpellItem* stage0, SpellItem* stage1, SpellItem* stage2, SpellItem* stage3, SpellItem* stage4, SpellItem* stage5) {
 		actor->RemoveSpell(stage0);
 		actor->RemoveSpell(stage1);
 		actor->RemoveSpell(stage2);
 		actor->RemoveSpell(stage3);
 		actor->RemoveSpell(stage4);
 		actor->RemoveSpell(stage5);
-        log::info("Removing all survival spells");
+		log::info("Removing all survival spells");
 	}
 
 	void SurvivalMode_RefreshSpells(Actor* actor, float currentvalue) {
@@ -52,7 +52,7 @@ namespace Gts {
 
 		SurvivalMode_RemoveAllSpells(actor, stage0, stage1, stage2, stage3, stage4, stage5);
 
-        log::info("Adjust current value, value: {}", currentvalue);
+		log::info("Adjust current value, value: {}", currentvalue);
 		if (currentvalue <= stage1threshold) {
 			Runtime::AddSpell(actor, "Survival_HungerStage1");
 		} else if (currentvalue <= stage2threshold) {
@@ -69,31 +69,33 @@ namespace Gts {
 	void SurvivalMode_AdjustHunger(Actor* giant, float tinyscale, float naturalsize, bool IsDragon, bool IsLiving, float type) {
 		if (giant->formID != 0x14) {
 			return; //Only for Player
-		} 
-        auto Survival = Runtime::GetGlobal("Survival_ModeEnabled");
-        if (!Survival) {
-            log::info("Survival not found, returning");
-            return; // Abort if it doesn't exist (Should fix issues if we don't have AE CC mods)
-        }
-        float SurvivalEnabled = Runtime::GetBool("Survival_ModeEnabled");
-        if (!SurvivalEnabled) {
-            log::info("Survival OFF, returning");
-            return; // Survival OFF, do nothing.
-        }
-		auto HungerNeed = Runtime::GetGlobal("Survival_HungerNeedValue"); // Obtain 
-        float restore = 16.0 * 6.0; // * 6.0 to compensate default size difference threshold for Vore
-        
-        if (IsDragon) {
-            naturalsize *= 8.0; // Dragons are huge, makes sense to give a lot of value
-        } if (!IsLiving) {
-            naturalsize *= 0.20; // Less effective on non living targets
-        } if (type >= 1.0) {
-            restore *= 6.0; // Stronger gain on Vore Finish
-        }
+		}
+		auto Survival = Runtime::GetGlobal("Survival_ModeEnabled");
+		if (!Survival) {
+			log::info("Survival not found, returning");
+			return; // Abort if it doesn't exist (Should fix issues if we don't have AE CC mods)
+		}
+		float SurvivalEnabled = Runtime::GetBool("Survival_ModeEnabled");
+		if (!SurvivalEnabled) {
+			log::info("Survival OFF, returning");
+			return; // Survival OFF, do nothing.
+		}
+		auto HungerNeed = Runtime::GetGlobal("Survival_HungerNeedValue"); // Obtain
+		float restore = 16.0 * 6.0; // * 6.0 to compensate default size difference threshold for Vore
 
-        float power = (get_visual_scale(giant)/tinyscale); // Get size difference and * it by natural size
+		if (IsDragon) {
+			naturalsize *= 8.0; // Dragons are huge, makes sense to give a lot of value
+		}
+		if (!IsLiving) {
+			naturalsize *= 0.20; // Less effective on non living targets
+		}
+		if (type >= 1.0) {
+			restore *= 6.0; // Stronger gain on Vore Finish
+		}
 
-        log::info("Adjusting HungerNeed, restore: {}, power: {}, type: {}", restore, power, type);
+		float power = (get_visual_scale(giant)/tinyscale); // Get size difference and * it by natural size
+
+		log::info("Adjusting HungerNeed, restore: {}, power: {}, type: {}", restore, power, type);
 		HungerNeed->value -= (restore / power) * naturalsize;
 		if (HungerNeed->value <= 0.0) {
 			HungerNeed->value = 0.0; // Cap it at 0.0
