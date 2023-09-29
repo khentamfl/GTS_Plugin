@@ -579,7 +579,8 @@ namespace Gts {
 				KillActor(giant, tiny); // just to make sure
 			}
 			if (tiny->IsDead()) {
-				log::info("Attempting to steal items from {} to {}", from->GetDisplayFullName(), to->GetDisplayFullName());
+				TransferInventoryToDropbox(tiny, removeQuestItems);
+				/*log::info("Attempting to steal items from {} to {}", from->GetDisplayFullName(), to->GetDisplayFullName());
 				for (auto &[a_object, invData]: from->GetInventory()) {
 					log::info("Transfering item {} from {}, formID {}", a_object->GetName(), from->GetDisplayFullName(), a_object->formID);
 					if (a_object->GetPlayable()) {
@@ -587,7 +588,7 @@ namespace Gts {
 							from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, to, nullptr, nullptr);
 						}
 					}
-				}
+				}*/
 				return false; // stop it, we looted the target.
 			}
 			return true;
