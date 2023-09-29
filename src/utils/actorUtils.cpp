@@ -1677,11 +1677,11 @@ namespace Gts {
       	return;
     }
 	log::info("Spawning DropBox for {}", actor->GetDisplayFullName());
-    float scale = std::clamp(get_visual_scale(actor), 0.4f, 1.5f);
+    float scale = std::clamp(get_visual_scale(actor), 0.2f, 1.5f);
 	auto dropbox3D = dropbox->GetCurrent3D();
 	dropbox->SetDisplayName(name, false);
 	if (dropbox3D) {
-		dropbox3D->world.scale = scale;
+		dropbox3D->local.scale = scale;
 	}
 
     for (auto &[a_object, invData]: actor->GetInventory()) {
