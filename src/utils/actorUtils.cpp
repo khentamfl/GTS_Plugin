@@ -1670,16 +1670,25 @@ namespace Gts {
   // From an actor place a new container at them and transfer
   // all of their inventory into it
   void TransferInventoryToDropbox(Actor* actor, bool removeQuestItems) {
-    auto dropox = Runtime::PlaceContainer(actor, "Dropbox");
-    if (!dropox) {
+    auto dropbox = Runtime::PlaceContainer(actor, "Dropbox");
+    if (!dropbox) {
       return;
+    }
+
+    float scale = get_visual_scale(actor);
+    if (scale < 0.4) {
+      scale = 0.4;
+      auto dropbox3D = dropbox->GetCurrent3D();
+      if (dropbox3D) {
+        dropbox3D->world.scale = scale;
+      }
     }
 
     for (auto &[a_object, invData]: actor->GetInventory()) {
       log::info("Transfering item {} from {}, formID {} to dropbox", a_object->GetName(), actor->GetDisplayFullName(), a_object->formID);
       if (a_object->GetPlayable()) {
         if (!invData.second->IsQuestObject() || removeQuestItems ) {
-          actor->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, dropox, nullptr, nullptr);
+          actor->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
         }
       }
     }
