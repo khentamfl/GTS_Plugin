@@ -1672,18 +1672,17 @@ namespace Gts {
   // all of their inventory into it
   void TransferInventoryToDropbox(Actor* actor, bool removeQuestItems) {
     auto dropbox = Runtime::PlaceContainer(actor, "Dropbox");
+	std::string name = std::format("{} remains", actor->GetDisplayFullName());
     if (!dropbox) {
-      return;
+      	return;
     }
-
-    float scale = get_visual_scale(actor);
-    if (scale < 0.4) {
-      scale = 0.4;
-      auto dropbox3D = dropbox->GetCurrent3D();
-      if (dropbox3D) {
-        dropbox3D->world.scale = scale;
-      }
-    }
+	log::info("Spawning DropBox for {}", actor->GetDisplayFullName());
+    float scale = std::clamp(get_visual_scale(actor), 0.4f, 1.5f);
+	auto dropbox3D = dropbox->GetCurrent3D();
+	dropbox->SetDisplayName(name);
+	if (dropbox3D) {
+		dropbox3D->world.scale = scale;
+	}
 
     for (auto &[a_object, invData]: actor->GetInventory()) {
       log::info("Transfering item {} from {}, formID {} to dropbox", a_object->GetName(), actor->GetDisplayFullName(), a_object->formID);

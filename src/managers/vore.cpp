@@ -452,11 +452,9 @@ namespace Gts {
 
 		static Timer timer = Timer(2.50); // Random Vore once per 2.5 sec
 		if (timer.ShouldRunFrame()) { //Try to not call it too often
-			log::info("Looking for Vore Actors");
 			std::vector<Actor*> AbleToVore = {};
 			for (auto actor: find_actors()) {
 				if (actor->formID != 0x14 && IsTeammate(actor) && (actor->IsInCombat() || !persist.vore_combatonly)) {
-					log::info("Found Vore Actor: {}", actor->GetDisplayFullName());
 					AbleToVore.push_back(actor);
 				}
 			}
@@ -464,7 +462,6 @@ namespace Gts {
 				int idx = rand() % AbleToVore.size();
 				Actor* voreActor = AbleToVore[idx];
 				if (voreActor) {
-					log::info("Attempting to do random vore");
 					RandomVoreAttempt(voreActor);
 				}
 			}
