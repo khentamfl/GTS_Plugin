@@ -1712,7 +1712,7 @@ namespace Gts {
   				dropbox3D->local.rotate = actor3D->local.rotate;
   			}
   			update_node(dropbox3D);
-        return false
+        return false;
       }
     });
 
