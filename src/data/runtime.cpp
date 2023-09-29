@@ -38,6 +38,7 @@ namespace {
 		std::unordered_map<std::string, std::string> impacts;
 		std::unordered_map<std::string, std::string> races;
 		std::unordered_map<std::string, std::string> keywords;
+    std::unordered_map<std::string, std::string> containers;
 
 		articuno_serde(ar) {
 			ar <=> kv(sounds, "sounds");
@@ -51,6 +52,7 @@ namespace {
 			ar <=> kv(impacts, "impacts");
 			ar <=> kv(races, "races");
 			ar <=> kv(keywords, "keywords");
+      ar <=> kv(containers, "containers");
 		}
 	};
 }
@@ -306,7 +308,7 @@ namespace Gts {
 			if (!instance) {
 				return;
 			}
-			
+
 			Explosion* explosion = instance->AsExplosion();
 			if (!explosion) {
 				return;
@@ -512,6 +514,49 @@ namespace Gts {
 		}
 	}
 
+  // Containers
+  TESObjectCONT* Runtime::GetContainer(const std::string_view& tag) {
+		TESObjectCONT* data = nullptr;
+		try {
+			data = Runtime::GetSingleton().containers.at(std::string(tag)).data;
+		}  catch (const std::out_of_range& oor) {
+			data = nullptr;
+			if (!Runtime::Logged("cont", tag)) {
+				log::warn("Container: {} not found", tag);
+			}
+		}
+		return data;
+	}
+
+	TESObjectCONT* Runtime::PlaceContainer(Actor* actor, const std::string_view& tag) {
+		if (actor) {
+			return PlaceContainerAtPos(actor, actor->GetPosition(), tag);
+		}
+    return nullptr;
+	}
+
+	TESObjectCONT* Runtime::PlaceContainerAtPos(Actor* actor, NiPoint3 pos, const std::string_view& tag) {
+		auto data = GetContainer(tag);
+		if (data) {
+			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(data, false);
+      if (!instance_ptr) {
+				return nullptr;
+			}
+			TESObjectREFR* instance = instance_ptr.get();
+			if (!instance) {
+				return nullptr;
+			}
+
+			TESObjectCONT* cont = skyrim_cast<TESObjectCONT*>(instance);
+			if (!cont) {
+				return nullptr;
+			}
+      cont->SetPosition(pos);
+      return cont;
+		}
+    return nullptr;
+	}
+
 	// Team Functions
 	bool Runtime::HasMagicEffectTeam(Actor* actor, const std::string_view& tag) {
 		return Runtime::HasMagicEffectTeamOr(actor, tag, false);
@@ -672,6 +717,15 @@ namespace Gts {
 				this->keywords.try_emplace(key, form);
 			} else if (!Runtime::Logged("kywd", key)) {
 				log::warn("Keyword form not found for {}", key);
+			}
+		}
+
+    for (auto &[key, value]: config.containers) {
+			auto form = find_form<TESObjectCONT>(value);
+			if (form) {
+				this->containers.try_emplace(key, form);
+			} else if (!Runtime::Logged("cont", key)) {
+				log::warn("Container form not found for {}", key);
 			}
 		}
 

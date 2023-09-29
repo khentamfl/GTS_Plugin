@@ -143,7 +143,7 @@ namespace Gts {
 	void TinyCalamityExplosion(Actor* giant, float radius);
 	void ShrinkOuburst_Shrink(Actor* giant, Actor* tiny, float shrink, float gigantism);
 	void ShrinkOutburstExplosion(Actor* giant, bool WasHit);
-	
+
 	bool HasSMT(Actor* giant);
 	void TiredSound(Actor* player, std::string_view message);
 
@@ -165,11 +165,13 @@ namespace Gts {
 	void DisableCollisions(Actor* actor, TESObjectREFR* otherActor);
 	void EnableCollisions(Actor* actor);
 
- 
+
 	void SpringGrow(Actor* actor, float amt, float halfLife, std::string_view naming);
 	void SpringGrow_Free(Actor* actor, float amt, float halfLife, std::string_view naming);
 	void SpringShrink(Actor* actor, float amt, float halfLife, std::string_view naming);
 
 	void ResetGrab(Actor* giant);
 	void FixAnimations();
+
+  void TransferInventoryToDropbox(Actor* actor, bool removeQuestItems);
 }

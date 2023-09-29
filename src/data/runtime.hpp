@@ -52,6 +52,10 @@ namespace Gts {
 		BGSKeyword* data;
 	};
 
+  struct ContainerData {
+		TESObjectCONT* data;
+	};
+
 	class Runtime : public EventListener {
 		public:
 			[[nodiscard]] static Runtime& GetSingleton() noexcept;
@@ -114,6 +118,11 @@ namespace Gts {
 			static BGSKeyword* GetKeyword(const std::string_view& tag);
 			static bool HasKeyword(Actor* actor, const std::string_view& tag);
 
+      // Containers
+      static TESObjectCONT* GetContainer(const std::string_view& tag);
+    	static TESObjectCONT* PlaceContainer(Actor* actor, const std::string_view& tag);
+    	static TESObjectCONT* PlaceContainerAtPos(Actor* actor, NiPoint3 pos, const std::string_view& tag);
+
 			// Team Functions
 			static bool HasMagicEffectTeam(Actor* actor, const std::string_view& tag);
 			static bool HasMagicEffectTeamOr(Actor* actor, const std::string_view& tag, const bool& default_value);
@@ -136,6 +145,7 @@ namespace Gts {
 			std::unordered_map<std::string, ImpactData> impacts;
 			std::unordered_map<std::string, RaceData> races;
 			std::unordered_map<std::string, KeywordData> keywords;
+      std::unordered_map<std::string, ContainerData> containers;
 
 			std::unordered_set<std::string> logged;
 	};

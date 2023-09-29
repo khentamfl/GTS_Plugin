@@ -118,10 +118,10 @@ namespace Gts {
 	float GetLaunchPower(float sizeRatio) {
 		// https://www.desmos.com/calculator/wh0vwgljfl
 		SoftPotential launch {
-				.k = 1.42, 
-				.n = 0.78, 
-				.s = 0.6, 
-				.a = 0.8, 
+				.k = 1.42,
+				.n = 0.78,
+				.s = 0.6,
+				.a = 0.8,
 			};
 		float power = soft_power(sizeRatio, launch);
 		return power;
@@ -158,7 +158,7 @@ namespace Gts {
 
 	bool IsFootGrinding(Actor* actor) {
 		bool grind;
-		actor->GetGraphVariableBool("GTS_IsFootGrinding", grind); 
+		actor->GetGraphVariableBool("GTS_IsFootGrinding", grind);
 		return grind;
 	}
 
@@ -351,7 +351,7 @@ namespace Gts {
 		}
 		return true;
 	}
-    
+
 	bool IsHuman(Actor* actor) { // Check if Actor is humanoid or not. Currently used for Hugs Animation
 		bool vampire = Runtime::HasKeyword(actor, "VampireKeyword");
 		bool dragon = Runtime::HasKeyword(actor, "DragonKeyword");
@@ -445,7 +445,7 @@ namespace Gts {
 		bool Check = Persistent::GetSingleton().AllowUndeadVore;
 		if (Check) {
 			return false;
-		} 
+		}
 		return IsDraugr;
 	}
 
@@ -475,7 +475,7 @@ namespace Gts {
 		bool tracking = false;
 		auto profiler = Profilers::Profile("ActorUtils: HeadTracking");
 		if (giant->formID == 0x14) {
-			auto currentProcess = giant->GetActorRuntimeData().currentProcess;	
+			auto currentProcess = giant->GetActorRuntimeData().currentProcess;
 			if (currentProcess) {
 				if (currentProcess->GetHeadtrackTarget()) {
 					tracking = true;
@@ -965,7 +965,7 @@ namespace Gts {
 			}
 		}
 	}
-	
+
 	float GetStolenAttributes_Values(Actor* giant, ActorValue type) {
 		if (giant->formID == 0x14) {
 			if (type == ActorValue::kHealth) {
@@ -977,7 +977,7 @@ namespace Gts {
 			} else {
 				return 0.0;
 			}
-		} 
+		}
 		return 0.0;
 	}
 
@@ -1091,7 +1091,7 @@ namespace Gts {
 				explosion->GetExplosionRuntimeData().imodRadius *= 3 * get_visual_scale(tiny) * size;
 				explosion->GetExplosionRuntimeData().unkB8 = nullptr;
 				explosion->GetExplosionRuntimeData().negativeVelocity *= 0.0;
-				explosion->GetExplosionRuntimeData().unk11C *= 0.0; 
+				explosion->GetExplosionRuntimeData().unk11C *= 0.0;
 			}
 		}
 	}
@@ -1123,7 +1123,7 @@ namespace Gts {
 			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 			tiny->NotifyAnimationGraph("staggerStart");
 			return;
-		} 
+		}
 	}
 
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind, float crushmult, DamageSource Cause) {
@@ -1132,7 +1132,7 @@ namespace Gts {
 			AccurateDamage::GetSingleton().DoAccurateCollisionLeft(giant, (45.0 * damage), radius, random, bonedamage, crushmult, Cause);
 		} if (kind == FootEvent::Right) {
 			AccurateDamage::GetSingleton().DoAccurateCollisionRight(giant, (45.0 * damage), radius, random, bonedamage, crushmult, Cause);
-			//                                                                                         ^        ^           ^ - - - - Normal Crush 
+			//                                                                                         ^        ^           ^ - - - - Normal Crush
 			//                                                               Chance to trigger bone crush   Damage of            Threshold multiplication
 			//                                                                                             Bone Crush
 		}
@@ -1167,14 +1167,14 @@ namespace Gts {
 				float timeTaken = endTime - startTime;
 				float speed = distanceTravelled / timeTaken;
 				NiPoint3 direction = vector / vector.Length();
-				if (sizecheck) { 
+				if (sizecheck) {
 					float giantscale = get_visual_scale(giant);
 					float tinyscale = get_visual_scale(tiny);
 					if (HasSMT(giant)) {
 						giantscale *= 6.0;
 					}
 					float sizedifference = giantscale/tinyscale;
-					
+
 					if (sizedifference < 1.2) {
 						return false; // terminate task
 					}
@@ -1182,7 +1182,7 @@ namespace Gts {
 						tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 						tiny->NotifyAnimationGraph("staggerStart");
 						return false; //Only Stagger
-					} 
+					}
 				}
 				// If we pass checks, launch actor instead
 				log::info("Applying Havok: Direction: {}, force: {}, speed: {}", Vector2Str(direction), power, speed);
@@ -1204,7 +1204,7 @@ namespace Gts {
 		auto node = find_node(giant, "NPC Root [Root]");
 		if (!node) {
 			return;
-		} 
+		}
 		float giantScale = get_visual_scale(giant);
 		NiPoint3 NodePosition = node->world.translate;
 		const float maxDistance = radius;
@@ -1217,7 +1217,7 @@ namespace Gts {
 		NiPoint3 giantLocation = giant->GetPosition();
 
 		for (auto otherActor: find_actors()) {
-			if (otherActor != giant) { 
+			if (otherActor != giant) {
 				NiPoint3 actorLocation = otherActor->GetPosition();
 				if ((actorLocation-giantLocation).Length() < (maxDistance*giantScale * 3.0)) {
 					int nodeCollisions = 0;
@@ -1249,7 +1249,7 @@ namespace Gts {
 
 	void ShrinkOuburst_Shrink(Actor* giant, Actor* tiny, float shrink, float gigantism) {
 		bool DarkArts1 = Runtime::HasPerk(giant, "DarkArts_Aug");
-		bool DarkArts2 = Runtime::HasPerk(giant, "DarkArts_Aug2"); 
+		bool DarkArts2 = Runtime::HasPerk(giant, "DarkArts_Aug2");
 
 		float shrinkpower = (shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, tiny);
 
@@ -1262,7 +1262,7 @@ namespace Gts {
 		}
 		if (DarkArts2 && (IsGrowthSpurtActive(giant) || HasSMT(giant))) {
 			shrinkpower *= 1.40;
-		}	
+		}
 
 		mod_target_scale(tiny, -(shrinkpower * gigantism));
 		StartCombat(giant, tiny, true);
@@ -1272,7 +1272,7 @@ namespace Gts {
 		if (get_target_scale(tiny) <= 0.11) {
 			set_target_scale(tiny, 0.11);
 		} if (sizedifference <= 4.0) { // Stagger or Push
-			StaggerActor(tiny); 
+			StaggerActor(tiny);
 		} else {
 			PushActorAway(giant, tiny, 1.0 * GetLaunchPower(sizedifference));
 		}
@@ -1286,7 +1286,7 @@ namespace Gts {
 		if (!node) {
 			return;
 		}
-		NiPoint3 NodePosition = node->world.translate; 
+		NiPoint3 NodePosition = node->world.translate;
 
 		float giantScale = get_visual_scale(giant);
 		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(giant)*0.01;
@@ -1304,12 +1304,12 @@ namespace Gts {
 			radius *= 1.33;
 			shrink *= 1.33;
 			explosion += 0.30;
-		} 
+		}
 
 		const float BASE_DISTANCE = 84.0;
 		float CheckDistance = BASE_DISTANCE*giantScale*gigantism*radius;
 
-		Runtime::PlaySoundAtNode("ShrinkOutburstSound", giant, explosion, 1.0, "NPC Pelvis [Pelv]"); 
+		Runtime::PlaySoundAtNode("ShrinkOutburstSound", giant, explosion, 1.0, "NPC Pelvis [Pelv]");
 		Rumble::For("ShrinkOutburst", giant, 20.0, 0.15, "NPC COM [COM ]", 0.60);
 
 		SpawnParticle(giant, 6.00, "GTS/Shouts/ShrinkOutburst.nif", NiMatrix3(), NodePosition, giantScale*explosion*3.0, 7, nullptr); // Spawn effect
@@ -1320,7 +1320,7 @@ namespace Gts {
 
 		NiPoint3 giantLocation = giant->GetPosition();
 		for (auto otherActor: find_actors()) {
-			if (otherActor != giant) { 
+			if (otherActor != giant) {
 				float tinyScale = get_visual_scale(otherActor);
 				NiPoint3 actorLocation = otherActor->GetPosition();
 				if ((actorLocation - giantLocation).Length() < BASE_DISTANCE*giantScale*radius*3) {
@@ -1339,7 +1339,7 @@ namespace Gts {
 							}
 							return true;
 						});
-					} 
+					}
 					if (nodeCollisions > 0) {
 						ShrinkOuburst_Shrink(giant, otherActor, shrink, gigantism);
 					}
@@ -1347,7 +1347,7 @@ namespace Gts {
 			}
 		}
 	}
-	
+
 
 	bool HasSMT(Actor* giant) {
 		if (Runtime::HasMagicEffect(giant, "SmallMassiveThreat")) {
@@ -1619,7 +1619,7 @@ namespace Gts {
 
 		if (actor) {
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(actor));
-			DamageAV(actor, ActorValue::kStamina, 0.35 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());	
+			DamageAV(actor, ActorValue::kStamina, 0.35 * (get_visual_scale(actor) * 0.5 + 0.5) * stamina * TimeScale());
           	auto actorData = Persistent::GetSingleton().GetData(actor);
 			if (actorData) {
 				actorData->target_scale += deltaScale;
@@ -1637,7 +1637,7 @@ namespace Gts {
 		if (giant->formID == 0x14 || IsTeammate(giant)) {
 			AnimationManager::StartAnim("GrabAbort", giant); // Abort Grab animation
 			AnimationManager::StartAnim("TinyDied", giant);
-			
+
 			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
 			giant->SetGraphVariableInt("GTS_Grab_State", 0);
 			giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
@@ -1666,4 +1666,23 @@ namespace Gts {
 			}
 		}
 	}
+
+  // From an actor place a new container at them and transfer for
+  // all of their inventory into it
+  void TransferInventoryToDropbox(Actor* actor, bool removeQuestItems) {
+    auto dropox = Runtime::PlaceContainer(actor, "Dropbox");
+    if (!dropox) {
+      return;
+    }
+
+    for (auto &[a_object, invData]: actor->GetInventory()) {
+      log::info("Transfering item {} from {}, formID {} to dropbox", a_object->GetName(), from->GetDisplayFullName(), a_object->formID);
+      if (a_object->GetPlayable()) {
+        if (!invData.second->IsQuestObject() || removeQuestItems ) {
+          from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, dropox, nullptr, nullptr);
+        }
+      }
+    }
+
+  }
 }
