@@ -528,14 +528,14 @@ namespace Gts {
 		return data;
 	}
 
-	TESObjectCONT* Runtime::PlaceContainer(Actor* actor, const std::string_view& tag) {
+	TESObjectREFR* Runtime::PlaceContainer(Actor* actor, const std::string_view& tag) {
 		if (actor) {
 			return PlaceContainerAtPos(actor, actor->GetPosition(), tag);
 		}
     return nullptr;
 	}
 
-	TESObjectCONT* Runtime::PlaceContainerAtPos(Actor* actor, NiPoint3 pos, const std::string_view& tag) {
+	TESObjectREFR* Runtime::PlaceContainerAtPos(Actor* actor, NiPoint3 pos, const std::string_view& tag) {
 		auto data = GetContainer(tag);
 		if (data) {
 			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(data, false);
@@ -547,12 +547,8 @@ namespace Gts {
 				return nullptr;
 			}
 
-			TESObjectCONT* cont = skyrim_cast<TESObjectCONT*>(instance);
-			if (!cont) {
-				return nullptr;
-			}
-      cont->SetPosition(pos);
-      return cont;
+      instance->SetPosition(pos);
+      return instance;
 		}
     return nullptr;
 	}

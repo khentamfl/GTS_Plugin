@@ -1667,7 +1667,7 @@ namespace Gts {
 		}
 	}
 
-  // From an actor place a new container at them and transfer for
+  // From an actor place a new container at them and transfer
   // all of their inventory into it
   void TransferInventoryToDropbox(Actor* actor, bool removeQuestItems) {
     auto dropox = Runtime::PlaceContainer(actor, "Dropbox");
