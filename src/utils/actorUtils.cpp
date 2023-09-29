@@ -1688,13 +1688,16 @@ namespace Gts {
 		auto dropbox3D = dropbox->GetCurrent3D();
 		dropbox->SetDisplayName(name, false);
 		if (dropbox3D) {
+      log::info(" - Got 3D for dropbox");
 			dropbox3D->local.scale = scale;
 			auto actor3D = actor->GetCurrent3D();
 			if (actor3D) {
 				dropbox3D->local.rotate = actor3D->local.rotate;
 			}
 			update_node(dropbox3D);
-		}
+		} else {
+      log::info(" - NO 3D for dropbox");
+    }
 
 		for (auto &[a_object, invData]: actor->GetInventory()) {
 			log::info("Transfering item {} from {}, formID {} to dropbox", a_object->GetName(), actor->GetDisplayFullName(), a_object->formID);
