@@ -1685,19 +1685,35 @@ namespace Gts {
 		}
 		log::info("Spawning DropBox for {}", actor->GetDisplayFullName());
 		float scale = std::clamp(get_visual_scale(actor), 0.2f, 1.5f);
-		auto dropbox3D = dropbox->GetCurrent3D();
-		dropbox->SetDisplayName(name, false);
-		if (dropbox3D) {
-      log::info(" - Got 3D for dropbox");
-			dropbox3D->local.scale = scale;
-			auto actor3D = actor->GetCurrent3D();
-			if (actor3D) {
-				dropbox3D->local.rotate = actor3D->local.rotate;
-			}
-			update_node(dropbox3D);
-		} else {
-      log::info(" - NO 3D for dropbox");
+    NiMatrix3 rot;
+    auto actor3D = actor->GetCurrent3D();
+    if (actor3D) {
+      rot = actor3D->local.rotate;
     }
+    ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
+		TaskManager::RunFor([=](30.0, auto& progressData) {
+      auto dropboxPtr = dropboxHandle.get().get();
+      if (!dropboxPtr) {
+        return false;
+      }
+      if (!dropboxPtr->Is3DLoaded()) {
+        log::info(" - 3D Not loaded yet for dropbox");
+        return true;
+      }
+      auto dropbox3D = dropboxPtr->GetCurrent3D();
+      if (!dropbox3D) {
+        log::info(" - 3D is nullptr still for dropbox");
+        return true; // Retry next frame
+      } else {
+        log::info(" - Got 3D for dropbox");
+  			dropbox3D->local.scale = scale;
+  			auto actor3D = actor->GetCurrent3D();
+  			if (actor3D) {
+  				dropbox3D->local.rotate = actor3D->local.rotate;
+  			}
+  			update_node(dropbox3D);
+      }
+    });
 
 		for (auto &[a_object, invData]: actor->GetInventory()) {
 			log::info("Transfering item {} from {}, formID {} to dropbox", a_object->GetName(), actor->GetDisplayFullName(), a_object->formID);
