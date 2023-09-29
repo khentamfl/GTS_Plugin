@@ -129,6 +129,7 @@ namespace Gts {
 							.progress = 0.0,
 							.progressDelta = 0.0,
 						};
+						this->initRun = true;
 					}
 				this->lastRunTime = currentTime;
 				this->lastProgress = currentProgress;
