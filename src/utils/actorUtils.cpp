@@ -1691,7 +1691,7 @@ namespace Gts {
       rot = actor3D->local.rotate;
     }
     ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
-		TaskManager::RunFor([=](30.0, auto& progressData) {
+		TaskManager::RunFor(30.0, [=](auto& progressData) {
       auto dropboxPtr = dropboxHandle.get().get();
       if (!dropboxPtr) {
         return false;
