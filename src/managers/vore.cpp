@@ -129,11 +129,7 @@ namespace {
 	}
 
 	void Vore_TransferItems(Actor* pred, Actor* prey) {
-		if (!AllowDevourment() && pred->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
-			TransferInventory(prey, pred, false, true);
-		} else if (!AllowDevourment() && pred->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
-			TransferInventory(prey, pred, false, true);
-		}
+		TransferInventory(prey, pred, false, true);
 	}
 
 	void VoreMessage_SwallowedAbsorbing(Actor* pred, Actor* prey) {

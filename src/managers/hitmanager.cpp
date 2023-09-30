@@ -130,11 +130,7 @@ namespace Gts {
 			}
 			auto giant = giantHandle.get().get();
 			auto tiny = tinyHandle.get().get();
-			if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
-				TransferInventory(tiny, giant, false, true);
-			} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
-				TransferInventory(tiny, giant, false, true);
-			}
+			TransferInventory(tiny, giant, false, true);
 		});
 
 		Runtime::CreateExplosion(receiver, get_visual_scale(receiver), "BloodExplosion");

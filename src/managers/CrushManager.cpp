@@ -224,13 +224,11 @@ namespace Gts {
 						if (!giantHandle) {
 							return;
 						}
+						log::info("Crush Scale: {}", get_visual_scale(tinyHandle));
 						auto giant = giantHandle.get().get();
 						auto tiny = tinyHandle.get().get();
-						if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
-							TransferInventory(tiny, giant, false, true);
-						} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
-							TransferInventory(tiny, giant, false, true);
-						}
+						TransferInventory(tiny, giant, false, true);
+						
 						EventDispatcher::DoResetActor(tiny);
 					});
 
