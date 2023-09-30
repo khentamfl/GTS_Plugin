@@ -574,9 +574,9 @@ namespace Gts {
 			if (!gianthandle) {
 				return false;
 			}
-			float scale = get_visual_scale(tiny);
 			auto tiny = tinyhandle.get().get();
 			auto giant = gianthandle.get().get();
+			float scale = get_visual_scale(tiny);
 			if (!tiny->IsDead()) {
 				KillActor(giant, tiny); // just to make sure
 			}
