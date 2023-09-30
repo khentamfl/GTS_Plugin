@@ -1708,11 +1708,12 @@ namespace Gts {
 							dropbox3D->local.rotate = actor3D->local.rotate;
 						}
 						update_node(dropbox3D);
-						log::info("Updated Dropbox, scale: {}", dropbox3D->local.scale);
-						if (dropbox3D->local.scale != scale) {
-							return true; // Run task again if it wasn't scaled properly
+						log::info("Updated Dropbox, scale: {}, expected scale: {}", dropbox3D->local.scale, scale);
+						if (dropbox3D->local.scale == scale) {
+							log::info("Task completed");
+							return false; // Run task again if it wasn't scaled properly
 						}
-					return false;
+					return true;
 				}
     		});
 		for (auto &[a_object, invData]: actor->GetInventory()) {
