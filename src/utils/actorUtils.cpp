@@ -581,7 +581,7 @@ namespace Gts {
 				KillActor(giant, tiny); // just to make sure
 			}
 			if (tiny->IsDead()) {
-				TransferInventoryToDropbox(tiny, removeQuestItems);
+				TransferInventoryToDropbox(tiny, get_visual_scale(tiny), removeQuestItems);
 				/*log::info("Attempting to steal items from {} to {}", from->GetDisplayFullName(), to->GetDisplayFullName());
 				   for (auto &[a_object, invData]: from->GetInventory()) {
 				        log::info("Transfering item {} from {}, formID {}", a_object->GetName(), from->GetDisplayFullName(), a_object->formID);
@@ -1677,7 +1677,7 @@ namespace Gts {
 
 	// From an actor place a new container at them and transfer
 	// all of their inventory into it
-	void TransferInventoryToDropbox(Actor* actor, bool removeQuestItems) {
+	void TransferInventoryToDropbox(Actor* actor, const float scale, bool removeQuestItems) {
 		auto dropbox = Runtime::PlaceContainer(actor, "Dropbox");
 		std::string name = std::format("{} remains", actor->GetDisplayFullName());
 		if (!dropbox) {
@@ -1685,8 +1685,8 @@ namespace Gts {
 		}
 		dropbox->SetDisplayName(name, false);
 		log::info("Spawning DropBox for {}", actor->GetDisplayFullName());
-		float scale = std::clamp(get_visual_scale(actor), 0.2f, 1.5f);
-		log::info("Expected Scale: Clamp: {}, Real: {}", scale, get_visual_scale(actor));
+		float Scale = std::clamp(scale, 0.2f, 1.5f);
+		log::info("Expected Scale: Clamp: {}, Real: {}", Scale, scale);
 		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
 			TaskManager::RunFor(30.0, [=](auto& progressData) {
 				auto dropboxPtr = dropboxHandle.get().get();
@@ -1703,18 +1703,14 @@ namespace Gts {
 					return true; // Retry next frame
 				} else {
 					log::info(" - Got 3D for dropbox");
-						dropbox3D->local.scale = scale;
+						dropbox3D->local.scale = Scale;
 						auto actor3D = actor->GetCurrent3D();
 						if (actor3D) {
 							dropbox3D->local.rotate = actor3D->local.rotate;
 						}
 						update_node(dropbox3D);
-						log::info("Updated Dropbox, scale: {}, expected scale: {}", dropbox3D->local.scale, scale);
-						if (dropbox3D->local.scale == scale) {
-							log::info("Task completed");
-							return false; // Stop the task, we scaled it
-						}
-					return true;
+						log::info("Updated Dropbox, scale: {}, expected scale: {}", dropbox3D->local.scale, Scale);
+					return false;
 				}
     		});
 		for (auto &[a_object, invData]: actor->GetInventory()) {
