@@ -580,8 +580,7 @@ namespace Gts {
 				KillActor(giant, tiny); // just to make sure
 			}
 			if (tiny->IsDead()) {
-				log::info("Scale: {}", scale);
-				TransferInventoryToDropbox(tiny, scale, removeQuestItems);
+				TransferInventoryToDropbox(tiny, 0.25, removeQuestItems);
 				/*log::info("Attempting to steal items from {} to {}", from->GetDisplayFullName(), to->GetDisplayFullName());
 				   for (auto &[a_object, invData]: from->GetInventory()) {
 				        log::info("Transfering item {} from {}, formID {}", a_object->GetName(), from->GetDisplayFullName(), a_object->formID);
