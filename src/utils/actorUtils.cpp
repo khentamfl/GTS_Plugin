@@ -563,7 +563,7 @@ namespace Gts {
 		actor->NotifyAnimationGraph(animName);
 	}
 
-	void TransferInventory(Actor* from, Actor* to, float scale, bool keepOwnership, bool removeQuestItems) {
+	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems) {
 		std::string name = std::format("TransferItems_{}_{}", from->formID, to->formID);
 		ActorHandle gianthandle = to->CreateRefHandle();
 		ActorHandle tinyhandle = from->CreateRefHandle();
