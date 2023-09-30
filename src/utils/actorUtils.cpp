@@ -574,14 +574,15 @@ namespace Gts {
 			if (!gianthandle) {
 				return false;
 			}
-
+			float scale = get_visual_scale(tiny);
 			auto tiny = tinyhandle.get().get();
 			auto giant = gianthandle.get().get();
 			if (!tiny->IsDead()) {
 				KillActor(giant, tiny); // just to make sure
 			}
 			if (tiny->IsDead()) {
-				TransferInventoryToDropbox(tiny, get_visual_scale(tiny), removeQuestItems);
+				log::info("Scale: {}", scale);
+				TransferInventoryToDropbox(tiny, scale, removeQuestItems);
 				/*log::info("Attempting to steal items from {} to {}", from->GetDisplayFullName(), to->GetDisplayFullName());
 				   for (auto &[a_object, invData]: from->GetInventory()) {
 				        log::info("Transfering item {} from {}, formID {}", a_object->GetName(), from->GetDisplayFullName(), a_object->formID);
