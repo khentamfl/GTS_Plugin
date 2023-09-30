@@ -563,7 +563,7 @@ namespace Gts {
 		actor->NotifyAnimationGraph(animName);
 	}
 
-	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems) {
+	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause) {
 		std::string name = std::format("TransferItems_{}_{}", from->formID, to->formID);
 		ActorHandle gianthandle = to->CreateRefHandle();
 		ActorHandle tinyhandle = from->CreateRefHandle();
@@ -580,7 +580,7 @@ namespace Gts {
 				KillActor(giant, tiny); // just to make sure
 			}
 			if (tiny->IsDead()) {
-				TransferInventoryToDropbox(tiny, 0.25, removeQuestItems);
+				TransferInventoryToDropbox(tiny, scale, removeQuestItems, Cause);
 				/*log::info("Attempting to steal items from {} to {}", from->GetDisplayFullName(), to->GetDisplayFullName());
 				   for (auto &[a_object, invData]: from->GetInventory()) {
 				        log::info("Transfering item {} from {}, formID {}", a_object->GetName(), from->GetDisplayFullName(), a_object->formID);
@@ -1676,7 +1676,7 @@ namespace Gts {
 
 	// From an actor place a new container at them and transfer
 	// all of their inventory into it
-	void TransferInventoryToDropbox(Actor* actor, const float scale, bool removeQuestItems) {
+	void TransferInventoryToDropbox(Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause) {
 		auto dropbox = Runtime::PlaceContainer(actor, "Dropbox");
 		std::string name = std::format("{} remains", actor->GetDisplayFullName());
 		if (!dropbox) {
@@ -1715,11 +1715,10 @@ namespace Gts {
 		for (auto &[a_object, invData]: actor->GetInventory()) {
 			log::info("Transfering item {} from {}, formID {} to dropbox", a_object->GetName(), actor->GetDisplayFullName(), a_object->formID);
 			if (a_object->GetPlayable()) {
-				if (!invData.second->IsQuestObject() || removeQuestItems ) {
+				if (!invData.second->IsQuestObject() || removeQuestItems) {
 					actor->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
 				}
 			}
 		}
-
 	}
 }

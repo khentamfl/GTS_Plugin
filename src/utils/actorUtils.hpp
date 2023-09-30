@@ -77,7 +77,7 @@ namespace Gts {
 	// GTS State Controllers end
 	void PlayAnimation(Actor* actor, std::string_view animName);
 
-	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems);
+	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause);
 
 	void Disintegrate(Actor* actor);
 	void UnDisintegrate(Actor* actor);
@@ -173,5 +173,5 @@ namespace Gts {
 	void ResetGrab(Actor* giant);
 	void FixAnimations();
 
-	void TransferInventoryToDropbox(Actor* actor, const float scale, bool removeQuestItems);
+	void TransferInventoryToDropbox(Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause);
 }

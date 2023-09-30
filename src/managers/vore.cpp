@@ -124,12 +124,11 @@ namespace {
 			} else if (Boost >= 2) {
 				giant->AsActorValueOwner()->ModActorValue(ActorValue::kStamina, TotalMod);
 			}
-			//log::info("Buffing Attributes {}, Target: {}, Caster: {}", Boost, Target->GetDisplayFullName(), Caster->GetDisplayFullName());
 		}
 	}
 
 	void Vore_TransferItems(Actor* pred, Actor* prey) {
-		TransferInventory(prey, pred, false, true);
+		TransferInventory(prey, pred, 1.0, false, true, DamageSource::Vored);
 	}
 
 	void VoreMessage_SwallowedAbsorbing(Actor* pred, Actor* prey) {

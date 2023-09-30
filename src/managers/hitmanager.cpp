@@ -130,7 +130,8 @@ namespace Gts {
 			}
 			auto giant = giantHandle.get().get();
 			auto tiny = tinyHandle.get().get();
-			TransferInventory(tiny, giant, false, true);
+			float scale = get_visual_scale(tiny);
+			TransferInventory(tiny, giant, scale, false, true, DamageSource::Crushed);
 		});
 
 		Runtime::CreateExplosion(receiver, get_visual_scale(receiver), "BloodExplosion");
