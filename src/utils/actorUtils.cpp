@@ -1686,6 +1686,7 @@ namespace Gts {
 		dropbox->SetDisplayName(name, false);
 		log::info("Spawning DropBox for {}", actor->GetDisplayFullName());
 		float scale = std::clamp(get_visual_scale(actor), 0.2f, 1.5f);
+		log::info("Expected Scale: {}", scale);
 		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
 			TaskManager::RunFor(30.0, [=](auto& progressData) {
 				auto dropboxPtr = dropboxHandle.get().get();
@@ -1711,7 +1712,7 @@ namespace Gts {
 						log::info("Updated Dropbox, scale: {}, expected scale: {}", dropbox3D->local.scale, scale);
 						if (dropbox3D->local.scale == scale) {
 							log::info("Task completed");
-							return false; // Run task again if it wasn't scaled properly
+							return false; // Stop the task, we scaled it
 						}
 					return true;
 				}
