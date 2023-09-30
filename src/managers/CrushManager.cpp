@@ -224,9 +224,10 @@ namespace Gts {
 						if (!giantHandle) {
 							return;
 						}
-						log::info("Crush Scale: {}", get_visual_scale(tinyHandle));
+						
 						auto giant = giantHandle.get().get();
 						auto tiny = tinyHandle.get().get();
+						log::info("Crush Scale: {}", get_visual_scale(tiny));
 						TransferInventory(tiny, giant, false, true);
 						
 						EventDispatcher::DoResetActor(tiny);
