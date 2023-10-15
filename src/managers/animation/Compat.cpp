@@ -108,11 +108,30 @@ namespace {
 		DoLaunch(&data.giant, 1.05 * perk, 1.60, 1.2, FootEvent::Left, 1.15);
 		DoLaunch(&data.giant, 1.05 * perk, 1.60, 1.2, FootEvent::Right, 1.15);
 	}
+
+	void SBEProneOnEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		AnimationManager::StartAnim("SBE_ProneOn", player);
+	}
+
+	void SBEProneOffEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		AnimationManager::StartAnim("SBE_ProneOff", player);
+	}
+
+	void SBEDiveEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		AnimationManager::StartAnim("SBE_Dive", player);
+	}
 }
 
 namespace Gts
 {
 	void AnimationCompat::RegisterEvents() {
+		InputManager::RegisterInputEvent("SBO_ToggleProne", SBOProneOnEvent);
+		InputManager::RegisterInputEvent("SBO_DisableProne", SBOProneOffEvent);
+		InputManager::RegisterInputEvent("SBO_ToggleDive", SBODiveEvent);
+
 		AnimationManager::RegisterEvent("GTScrush_caster", "Compat1", GTScrush_caster);
 		AnimationManager::RegisterEvent("GTScrush_victim", "Compat2", GTScrush_victim);
 		AnimationManager::RegisterEvent("MCO_SecondDodge", "MCOCompat1", MCO_SecondDodge);
@@ -121,5 +140,8 @@ namespace Gts
 	}
 
 	void AnimationCompat::RegisterTriggers() {
+		AnimationManager::RegisterTrigger("SBO_ProneOn", "Crawl", "GTSBeh_ProneStart");
+		AnimationManager::RegisterTrigger("SBO_ProneOff", "Crawl", "GTSBeh_ProneStop");
+		AnimationManager::RegisterTrigger("SBO_Dive", "Crawl", "GTSBeh_ProneStart_Dive");
 	}
 }

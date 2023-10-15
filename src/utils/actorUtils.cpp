@@ -581,16 +581,7 @@ namespace Gts {
 			}
 			if (tiny->IsDead()) {
 				TransferInventoryToDropbox(tiny, scale, removeQuestItems, Cause);
-				/*log::info("Attempting to steal items from {} to {}", from->GetDisplayFullName(), to->GetDisplayFullName());
-				   for (auto &[a_object, invData]: from->GetInventory()) {
-				        log::info("Transfering item {} from {}, formID {}", a_object->GetName(), from->GetDisplayFullName(), a_object->formID);
-				        if (a_object->GetPlayable()) {
-				                if (!invData.second->IsQuestObject() || removeQuestItems ) {
-				                        from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, to, nullptr, nullptr);
-				                }
-				        }
-				   }*/
-				return false; // stop it, we looted the target.
+				return false; // stop it, we started the looting of the Target.
 			}
 			return true;
 		});

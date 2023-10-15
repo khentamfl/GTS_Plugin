@@ -315,6 +315,32 @@ duration = 0.25
 # Perform drop-down, dealing massive damage at butt/breast zone.
 
 #========================================================
+#========================= SBO
+#========================================================
+
+[[InputEvent]]
+name = "SBO_ToggleProne"
+keys = ["LCONTROL"]
+exclusive = false
+trigger = "continuous"
+duration = 0.33
+
+[[InputEvent]]
+name = "SBO_DisableProne"
+keys = ["LCONTROL"]
+exclusive = false
+trigger = "release"
+duration = 0.0
+
+[[InputEvent]]
+name = "SBO_ToggleDive"
+keys = ["LALT"]
+exclusive = false
+trigger = "release"
+duration = 0.0
+
+
+#========================================================
 #========================= G R A B
 #======================================================== 
 
