@@ -109,17 +109,17 @@ namespace {
 		DoLaunch(&data.giant, 1.05 * perk, 1.60, 1.2, FootEvent::Right, 1.15);
 	}
 
-	void SBEProneOnEvent(const InputEventData& data) {
+	void SBOProneOnEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		AnimationManager::StartAnim("SBE_ProneOn", player);
 	}
 
-	void SBEProneOffEvent(const InputEventData& data) {
+	void SBOProneOffEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		AnimationManager::StartAnim("SBE_ProneOff", player);
 	}
 
-	void SBEDiveEvent(const InputEventData& data) {
+	void SBODiveEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		AnimationManager::StartAnim("SBE_Dive", player);
 	}
