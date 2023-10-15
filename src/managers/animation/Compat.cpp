@@ -13,6 +13,7 @@
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/animation/Compat.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "managers/InputManager.hpp"
 #include "managers/Rumble.hpp"
 #include "managers/CrushManager.hpp"
 #include "data/runtime.hpp"
