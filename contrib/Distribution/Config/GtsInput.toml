@@ -318,6 +318,9 @@ duration = 0.25
 #========================= SBO
 #========================================================
 
+#----- This is for prone movement that looks good together with Sneak Behavior Overhaul. This Toggles/Disables it.
+#----- In Prone mode, Giantess is only able to perform Stomps: Stomps are replaced with matching side-rolls.
+
 [[InputEvent]]
 name = "SBO_ToggleProne"
 keys = ["LCONTROL"]
@@ -329,7 +332,7 @@ duration = 0.33
 name = "SBO_DisableProne"
 keys = ["LCONTROL"]
 exclusive = false
-trigger = "release"
+trigger = "once"
 duration = 0.0
 
 [[InputEvent]]
