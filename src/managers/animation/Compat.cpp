@@ -74,7 +74,7 @@ namespace {
 	}
 
 	void StartBodyDamage_DOT(Actor* giant) {
-		float damage = 1.0;
+		float damage = 2.0;
 		auto gianthandle = giant->CreateRefHandle();
 		std::string name = std::format("BodyDOT_{}", giant->formID);
 		TaskManager::Run(name, [=](auto& progressData) {
@@ -95,17 +95,17 @@ namespace {
 			for (auto Nodes: BODY_NODES) {
 				auto Node = find_node(giantref, Nodes);
 				if (Node) {
-					DoDamageAtPoint(giant, 15, 0.45 * damage, Node, 400, 0.10, 2.0, DamageSource::BodyCrush);
+					DoDamageAtPoint(giant, 15, 0.45 * damage, Node, 400, 0.10, 1.33, DamageSource::BodyCrush);
 				}
 			}
 
 			if (BreastL03 && BreastR03) {
-				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastL03, 400, 0.10, 2.5, DamageSource::BreastImpact);
-				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastR03, 400, 0.10, 2.5, DamageSource::BreastImpact);
+				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastL03, 400, 0.10, 1.33, DamageSource::BreastImpact);
+				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastR03, 400, 0.10, 1.33, DamageSource::BreastImpact);
 				return true;
 			} else if (BreastL && BreastR) {
-				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastL, 400, 0.10, 2.5, DamageSource::BreastImpact);
-				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastR, 400, 0.10, 2.5, DamageSource::BreastImpact);
+				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastL, 400, 0.10, 1.33, DamageSource::BreastImpact);
+				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastR, 400, 0.10, 1.33, DamageSource::BreastImpact);
 				return true;
 			}
 			return false;
@@ -113,7 +113,7 @@ namespace {
 	}
 
 	void StartBodyDamage_Slide(Actor* giant) {
-		float damage = 12.0;
+		float damage = 24.0;
 		auto gianthandle = giant->CreateRefHandle();
 		std::string name = std::format("BodyDOT_Slide_{}", giant->formID);
 		TaskManager::Run(name, [=](auto& progressData) {
