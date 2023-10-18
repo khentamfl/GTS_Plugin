@@ -10,12 +10,14 @@
 
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/animation/Utils/CrawlUtils.hpp"
 #include "managers/damage/AccurateDamage.hpp"
 #include "managers/animation/Compat.hpp"
 #include "managers/GtsSizeManager.hpp"
-#include "managers/InputManager.hpp"
-#include "managers/Rumble.hpp"
 #include "managers/CrushManager.hpp"
+#include "managers/InputManager.hpp"
+#include "utils/actorUtils.hpp"
+#include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 
@@ -72,8 +74,8 @@ namespace {
 	}
 
 	void StartBodyDamage_DOT(Actor* giant) {
-		auto gianthandle = giant->CreateRefHandle();
 		float damage = 1.0;
+		auto gianthandle = giant->CreateRefHandle();
 		std::string name = std::format("BodyDOT_{}", giant->formID);
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
@@ -111,8 +113,8 @@ namespace {
 	}
 
 	void StartBodyDamage_Slide(Actor* giant) {
-		auto gianthandle = giant->CreateRefHandle();
 		float damage = 12.0;
+		auto gianthandle = giant->CreateRefHandle();
 		std::string name = std::format("BodyDOT_Slide_{}", giant->formID);
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
