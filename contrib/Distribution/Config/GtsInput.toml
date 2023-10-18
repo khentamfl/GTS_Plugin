@@ -323,24 +323,24 @@ duration = 0.25
 
 [[InputEvent]]
 name = "SBO_ToggleProne"
-keys = ["LCONTROL"]
+keys = ["X"]
 exclusive = false
 trigger = "continuous"
-duration = 0.33
+duration = 0.66
 
 [[InputEvent]]
 name = "SBO_DisableProne"
-keys = ["LCONTROL"]
+keys = ["X"]
 exclusive = false
 trigger = "once"
 duration = 0.0
 
 [[InputEvent]]
 name = "SBO_ToggleDive"
-keys = ["LALT"]
+keys = ["LALT", "W"]
 exclusive = false
-trigger = "release"
-duration = 0.0
+trigger = "continuous"
+duration = 0.20
 
 
 #========================================================

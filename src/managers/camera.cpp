@@ -117,6 +117,8 @@ namespace Gts {
 			bool IsCurrentlyCrawling = IsCrawling(player);
 			if (IsGtsBusy(player) && IsCrawling(player) && GetCameraOverride(player)) {
 				IsCurrentlyCrawling = false;
+			} else if (IsProning(player)) {
+				IsCurrentlyCrawling = true;
 			}
 
 			// Get scale based on camera state

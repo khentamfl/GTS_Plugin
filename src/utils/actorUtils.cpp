@@ -140,14 +140,20 @@ namespace Gts {
 		return false;
 	}
 
-	bool IsCrawling(Actor* actor) {
+	bool IsProning(Actor* actor) {
 		bool prone;
+		actor->GetGraphVariableBool("GTS_IsProne", prone);
+		return prone;
+	}
+
+	bool IsCrawling(Actor* actor) {
+		bool crawl;
 		auto transient = Transient::GetSingleton().GetData(actor);
-		actor->GetGraphVariableBool("GTS_IsCrawling", prone);
+		actor->GetGraphVariableBool("GTS_IsCrawling", crawl);
 		if (actor->formID == 0x14 && actor->IsSneaking() && IsFirstPerson() && transient) {
 			return transient->FPCrawling; // Needed to fix crawling being applied to FP even when Prone is off
 		}
-		return actor!= nullptr && actor->formID == 0x14 && actor->IsSneaking() && prone;
+		return actor!= nullptr && actor->formID == 0x14 && actor->IsSneaking() && crawl;
 	}
 
 	bool IsTransitioning(Actor* actor) { // reports sneak transition to crawl

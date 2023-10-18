@@ -24,6 +24,7 @@ namespace Gts {
 	// GTS State Bools
 	bool IsEquipBusy(Actor* actor);
 	bool IsFootGrinding(Actor* actor);
+	bool IsProning(Actor* actor);
 	bool IsCrawling(Actor* actor);
 	bool IsTransitioning(Actor* actor);
 	bool IsJumping(Actor* actor);

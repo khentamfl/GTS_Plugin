@@ -28,6 +28,16 @@ namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
+	const std::vector<std::string_view> BODY_NODES = {
+		"NPC R Thigh [RThg]",
+		"NPC L Thigh [LThg]",
+		"NPC R Butt",
+		"NPC L Butt",
+		"NPC Spine [Spn0]",
+		"NPC Spine1 [Spn1]",
+		"NPC Spine2 [Spn2]",
+	};
+
 	void TriggerKillZone(Actor* giant) {
 		if (!giant) {
 			return;
@@ -49,6 +59,100 @@ namespace {
 				}
 			}
 		}
+	}
+
+	void StopBodyDamage_Slide(Actor* giant) {
+		std::string name = std::format("BodyDOT_Slide_{}", giant->formID);
+		TaskManager::Cancel(name);
+	}
+
+	void StopBodyDamage_DOT(Actor* giant) {
+		std::string name = std::format("BodyDOT_{}", giant->formID);
+		TaskManager::Cancel(name);
+	}
+
+	void StartBodyDamage_DOT(Actor* giant) {
+		auto gianthandle = giant->CreateRefHandle();
+		float damage = 1.0;
+		std::string name = std::format("BodyDOT_{}", giant->formID);
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			auto giantref = gianthandle.get().get();
+
+			auto BreastL = find_node(giantref, "NPC L Breast");
+			auto BreastR = find_node(giantref, "NPC R Breast");
+			auto BreastL03 = find_node(giantref, "L Breast03");
+			auto BreastR03 = find_node(giantref, "R Breast03");
+
+			if (!IsProning(giantref)) {
+				return false;
+			}
+
+			for (auto Nodes: BODY_NODES) {
+				auto Node = find_node(giantref, Nodes);
+				if (Node) {
+					DoDamageAtPoint(giant, 15, 0.45 * damage, Node, 400, 0.10, 2.0, DamageSource::BodyCrush);
+				}
+			}
+
+			if (BreastL03 && BreastR03) {
+				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastL03, 400, 0.10, 2.5, DamageSource::BreastImpact);
+				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastR03, 400, 0.10, 2.5, DamageSource::BreastImpact);
+				return true;
+			} else if (BreastL && BreastR) {
+				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastL, 400, 0.10, 2.5, DamageSource::BreastImpact);
+				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastR, 400, 0.10, 2.5, DamageSource::BreastImpact);
+				return true;
+			}
+			return false;
+		});
+	}
+
+	void StartBodyDamage_Slide(Actor* giant) {
+		auto gianthandle = giant->CreateRefHandle();
+		float damage = 12.0;
+		std::string name = std::format("BodyDOT_Slide_{}", giant->formID);
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			auto giantref = gianthandle.get().get();
+
+			auto BreastL = find_node(giantref, "NPC L Breast");
+			auto BreastR = find_node(giantref, "NPC R Breast");
+			auto BreastL03 = find_node(giantref, "L Breast03");
+			auto BreastR03 = find_node(giantref, "R Breast03");
+
+			if (!IsProning(giantref)) {
+				return false;
+			}
+
+			for (auto Nodes: BODY_NODES) {
+				auto Node = find_node(giantref, Nodes);
+				if (Node) {
+					std::string rumbleName = std::format("Node: {}", Nodes);
+					DoDamageAtPoint(giant, 15, 0.45 * damage, Node, 200, 0.10, 2.0, DamageSource::BodyCrush);
+					Rumble::Once(rumbleName, giant, 0.25, 0.02, Nodes);
+				}
+			}
+
+			if (BreastL03 && BreastR03) {
+				Rumble::Once("BreastDot_L", giantref, 0.25, 0.025, "L Breast03");
+				Rumble::Once("BreastDot_R", giantref, 0.25, 0.025, "R Breast03");
+				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastL03, 200, 0.10, 2.5, DamageSource::BreastImpact);
+				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastR03, 200, 0.10, 2.5, DamageSource::BreastImpact);
+				return true;
+			} else if (BreastL && BreastR) {
+				Rumble::Once("BreastDot_L", giantref, 0.25, 0.025, "NPC L Breast");
+				Rumble::Once("BreastDot_R", giantref, 0.25, 0.025, "NPC R Breast");
+				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastL, 200, 0.10, 2.5, DamageSource::BreastImpact);
+				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastR, 200, 0.10, 2.5, DamageSource::BreastImpact);
+				return true;
+			}
+			return false;
+		});
 	}
 
 
@@ -110,6 +214,23 @@ namespace {
 		DoLaunch(&data.giant, 1.05 * perk, 1.60, 1.2, FootEvent::Right, 1.15);
 	}
 
+	void GTS_DiveSlide_ON(AnimationEventData& data) {
+		auto giant = &data.giant;
+		StartBodyDamage_Slide(giant);
+	}
+	void GTS_DiveSlide_OFF(AnimationEventData& data) {
+		auto giant = &data.giant;
+		StopBodyDamage_Slide(giant);
+	}
+	void GTS_BodyDamage_ON(AnimationEventData& data) {
+		auto giant = &data.giant;
+		StartBodyDamage_DOT(giant);
+	}
+	void GTS_BodyDamage_OFF(AnimationEventData& data) {
+		auto giant = &data.giant;
+		StopBodyDamage_DOT(giant);
+	}
+
 	void SBOProneOnEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		AnimationManager::StartAnim("SBO_ProneOn", player);
@@ -137,6 +258,10 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTScrush_victim", "Compat2", GTScrush_victim);
 		AnimationManager::RegisterEvent("MCO_SecondDodge", "MCOCompat1", MCO_SecondDodge);
 		AnimationManager::RegisterEvent("SoundPlay.MCO_DodgeSound", "MCOCompat2", MCO_DodgeSound);
+		AnimationManager::RegisterEvent("GTS_DiveSlide_ON", "Body", GTS_DiveSlide_ON);
+		AnimationManager::RegisterEvent("GTS_DiveSlide_OFF", "Body", GTS_DiveSlide_OFF);
+		AnimationManager::RegisterEvent("GTS_BodyDamage_ON", "Body", GTS_BodyDamage_ON);
+		AnimationManager::RegisterEvent("GTS_BodyDamage_OFF", "Body", GTS_BodyDamage_OFF);
 		AnimationManager::RegisterEvent("JumpDown", "JumpCompat1", JumpDown);
 	}
 
