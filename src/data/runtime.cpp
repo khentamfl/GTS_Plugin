@@ -535,10 +535,35 @@ namespace Gts {
 		return nullptr;
 	}
 
+	TESObjectREFR* Runtime::PlaceContainer(TESObjectREFR* object, const std::string_view& tag) {
+		if (actor) {
+			return PlaceContainerAtPos(object, object->GetPosition(), tag);
+		}
+		return nullptr;
+	}
+
 	TESObjectREFR* Runtime::PlaceContainerAtPos(Actor* actor, NiPoint3 pos, const std::string_view& tag) {
 		auto data = GetContainer(tag);
 		if (data) {
 			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(data, false);
+			if (!instance_ptr) {
+				return nullptr;
+			}
+			TESObjectREFR* instance = instance_ptr.get();
+			if (!instance) {
+				return nullptr;
+			}
+
+			instance->SetPosition(pos);
+			return instance;
+		}
+		return nullptr;
+	}
+
+	TESObjectREFR* Runtime::PlaceContainerAtPos(TESObjectREFR* object, NiPoint3 pos, const std::string_view& tag) {
+		auto data = GetContainer(tag);
+		if (data) {
+			NiPointer<TESObjectREFR> instance_ptr = object->PlaceObjectAtMe(data, false);
 			if (!instance_ptr) {
 				return nullptr;
 			}

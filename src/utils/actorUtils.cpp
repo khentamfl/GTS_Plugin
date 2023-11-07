@@ -1674,7 +1674,7 @@ namespace Gts {
 	// From an actor place a new container at them and transfer
 	// all of their inventory into it
 	void TransferInventoryToDropbox(Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause) {
-		auto dropbox = Runtime::PlaceContainer(actor, "Dropbox");
+		auto dropbox = Runtime::PlaceContainer(actor, "Dropbox_Physics");
 		std::string name = std::format("{} remains", actor->GetDisplayFullName());
 		if (!dropbox) {
 			return;
@@ -1705,7 +1705,7 @@ namespace Gts {
 							dropbox3D->local.rotate = actor3D->local.rotate;
 						}
 						update_node(dropbox3D);
-						log::info("Updated Dropbox, scale: {}, expected scale: {}", dropbox3D->local.scale, Scale);
+						ReplaceDropBox(dropboxHandle, actor->GetDisplayFullName(), actor->formID, dropbox3D->local.rotate); // replace it with non-physical drop box
 					return false;
 				}
     		});
@@ -1717,5 +1717,54 @@ namespace Gts {
 				}
 			}
 		}
+	}
+
+	void ReplaceDropBox(ObjectRefHandle boxref, std::string_view npcname, FormID Form, NiMatrix3 rotate) { // This function is used for replacing DropBox 
+		auto box = boxref.get().get(); // box? box.
+		if (box) {
+			float Start = Time::WorldTimeElapsed();
+			std::string name = std::format("ReplaceBox_{}", Form);
+			TaskManager::Run(name, [=](auto& progressData) {
+				std::string name = std::format("{} remains_Test", npcname);
+				float Finish = Time::WorldTimeElapsed();
+				float timepassed = Finish - Start;
+				if (timepassed >= 6.00) {
+					auto dropbox = Runtime::PlaceContainer(box, "Dropbox");
+					for (auto &[a_object, invData]: box->GetInventory()) {
+						if (a_object->GetPlayable()) {
+							if (!invData.second->IsQuestObject() || removeQuestItems) {
+								box->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
+							}
+						}
+					}
+					UpdateBoxRotation(dropbox, rotate); // update rotation of new box to match old one
+					box->SetDelete(true); // delete old box
+					return false; // end the task once done
+				}
+				return true; // else keep it running
+			});
+		}	
+	}
+
+	void UpdateBoxRotation(ObjectRefHandle boxref, NiMatrix3 rotate) {
+		TaskManager::RunFor(30.0, [=](auto& progressData) {
+			auto dropboxPtr = boxref;
+			if (!dropboxPtr) {
+				return false;
+			} if (!dropboxPtr->Is3DLoaded()) {
+				log::info(" - 3D Not loaded yet for dropbox 2");
+				return true;
+			}
+			auto dropbox3D = dropboxPtr->GetCurrent3D();
+			if (!dropbox3D) {
+				log::info(" - 3D is nullptr still for dropbox 2");
+				return true; // Retry next frame
+			} else {
+				log::info(" - Got 3D for dropbox 2");
+				dropbox3D->local.rotate = rotate;
+				update_node(dropbox3D);
+				return false;
+			}
+		});
 	}
 }
