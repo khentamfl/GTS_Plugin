@@ -1737,7 +1737,8 @@ namespace Gts {
 							}
 						}
 					}
-					UpdateBoxRotation(dropbox, rotate); // update rotation of new box to match old one
+					auto secondbox = dropbox->CreateRefHandle();
+					UpdateBoxRotation(secondbox, rotate); // update rotation of new box to match old one
 					box->SetDelete(true); // delete old box
 					return false; // end the task once done
 				}
