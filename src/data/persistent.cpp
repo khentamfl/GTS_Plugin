@@ -824,7 +824,7 @@ namespace Gts {
 			log::error("Unable to open Stage 7 record to write cosave data");
 			return;
 		}
-		float GiantCount = GetSignBit().GiantCount;
+		float GiantCount = GetSingleton().GiantCount;
 		serde->WriteRecordData(&GiantCount, sizeof(GiantCount));
 
 		///////////////////////////////////////////////////////////////////////////////////////////
