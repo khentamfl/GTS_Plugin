@@ -1,6 +1,7 @@
 #pragma once
-#include "managers/GtsSizeManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
+#include "managers/GtsSizeManager.hpp"
+#include "managers/ai/aifunctions.hpp"
 #include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
@@ -118,7 +119,7 @@ namespace Gts {
 		if (IsDragon(target)) {
 			efficiency *= DRAGON_PEANLTY;
 		} if (IsMammoth(target)) {
-			effeciency *= 0.35;
+			efficiency *= 0.35;
  		} if (IsGiant(target)) {
 			efficiency *= 0.45;
 		} if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
@@ -142,7 +143,7 @@ namespace Gts {
 		if (IsDragon(target)) {
 			efficiency *= DRAGON_PEANLTY;
 		} if (IsMammoth(target)) {
-			effeciency *= 0.35;
+			efficiency *= 0.35;
  		} if (IsGiant(target)) {
 			efficiency *= 0.45;
 		} if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
