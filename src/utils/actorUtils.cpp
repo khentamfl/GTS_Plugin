@@ -1705,7 +1705,7 @@ namespace Gts {
 							dropbox3D->local.rotate = actor3D->local.rotate;
 						}
 						update_node(dropbox3D);
-						ReplaceDropBox(dropboxHandle, actor->GetDisplayFullName(), actor->formID, dropbox3D->local.rotate, removeQuestItems); // replace it with non-physical drop box
+						//ReplaceDropBox(dropboxHandle, actor->GetDisplayFullName(), actor->formID, dropbox3D->local.rotate, removeQuestItems); // replace it with non-physical drop box
 					return false;
 				}
     		});
