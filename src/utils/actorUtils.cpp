@@ -1774,9 +1774,9 @@ namespace Gts {
 				log::info(" - Got 3D for dropbox 2");
 				dropbox3D->local.rotate = rotate;
 				rotate.ToEulerAnglesXYZ(X_Original, Y_Original, Z_Original);
-				dropbox3D->local.rotate.ToEulerAnglesXYZ(X_Box, Y_Box, Z_Box)
-				NiPoint3 OriginalROT = (X_Original, Y_Original, Z_Original);
-				NiPoint3 BoxROT = (X_Box, Y_Box, Z_Box);
+				dropbox3D->local.rotate.ToEulerAnglesXYZ(X_Box, Y_Box, Z_Box);
+				NiPoint3 OriginalROT = NiPoint3(X_Original, Y_Original, Z_Original);
+				NiPoint3 BoxROT = NiPoint3(X_Box, Y_Box, Z_Box);
 				log::info("Original BOX ROT: {}, New Box ROT: {}", Vector2Str(OriginalROT), Vector2Str(BoxROT));
 				update_node(dropbox3D);
 				return false;
