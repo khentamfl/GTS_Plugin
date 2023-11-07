@@ -1749,7 +1749,7 @@ namespace Gts {
 
 	void UpdateBoxRotation(ObjectRefHandle boxref, NiMatrix3 rotate) {
 		TaskManager::RunFor(30.0, [=](auto& progressData) {
-			auto dropboxPtr = boxref;
+			auto dropboxPtr = boxref.get().get();
 			if (!dropboxPtr) {
 				return false;
 			} if (!dropboxPtr->Is3DLoaded()) {
