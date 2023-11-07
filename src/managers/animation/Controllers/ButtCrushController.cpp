@@ -125,7 +125,7 @@ namespace Gts {
 	std::vector<Actor*> ButtCrushController::GetButtCrushTargets(Actor* pred, std::size_t numberOfPrey) {
 		// Get vore target for actor
 		auto& sizemanager = SizeManager::GetSingleton();
-		if (!CanPerformAnimation(player, 2)) {
+		if (!CanPerformAnimation(pred, 2)) {
 			return;
 		}
 		if (IsGtsBusy(pred)) {
