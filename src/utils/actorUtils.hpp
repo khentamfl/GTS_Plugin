@@ -58,6 +58,8 @@ namespace Gts {
 	bool IsInsect(Actor* actor);
 	bool IsFemale(Actor* actor);
 	bool IsDragon(Actor* actor);
+	bool IsGiant(Actor* actor);
+	bool IsMammoth(Actor* actor);
 	bool IsLiving(Actor* actor);
 	bool IsUndead(Actor* actor);
 	bool IsEssential(Actor* actor);
@@ -177,4 +179,7 @@ namespace Gts {
 	void TransferInventoryToDropbox(Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause);
 	void ReplaceDropBox(ObjectRefHandle boxref, std::string_view npcname, FormID Form, NiMatrix3 rotate, bool removeQuestItems);
 	void UpdateBoxRotation(ObjectRefHandle boxref, NiMatrix3 rotate);
+
+	void AdvanceQuestProgression(Actor* actor, float stage, float value);
+	float GetQuestProgression(float stage);
 }

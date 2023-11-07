@@ -117,8 +117,11 @@ namespace Gts {
 		float efficiency = clamp(0.25, 1.25, (casterlevel/targetlevel)) * progression_multiplier;
 		if (IsDragon(target)) {
 			efficiency *= DRAGON_PEANLTY;
-		}
-		if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
+		} if (IsMammoth(target)) {
+			effeciency *= 0.35;
+ 		} if (IsGiant(target)) {
+			efficiency *= 0.45;
+		} if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
 			efficiency *= 0.25;
 		}
 
@@ -138,8 +141,11 @@ namespace Gts {
 		//log::info("LevelDifference: {}, caster level: {}, target level: {}", efficiency, casterlevel, targetlevel);
 		if (IsDragon(target)) {
 			efficiency *= DRAGON_PEANLTY;
-		}
-		if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
+		} if (IsMammoth(target)) {
+			effeciency *= 0.35;
+ 		} if (IsGiant(target)) {
+			efficiency *= 0.45;
+		} if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
 			efficiency *= 0.25;
 		}
 
@@ -306,7 +312,16 @@ namespace Gts {
 
 			AdjustSizeReserve(caster, target_scale/25);
 
+			if (!target->IsDead()) {
+				if (IsGiant(target)) {
+					AdvanceQuestProgression(caster, 7, 1);
+				} else {
+					AdvanceQuestProgression(caster, 4, 1);
+				}
+			}
+
 			PrintDeathSource(caster, target, DamageSource::Shrinked);
+			KillActor(caster, target);
 			return true;
 		}
 		return false;

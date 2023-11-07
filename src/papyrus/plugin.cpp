@@ -190,6 +190,10 @@ namespace {
 		Persistent::GetSingleton().PCEffectImmunity = enabled;
 	}
 
+	float Quest_GetProgression(StaticFunctionTag*, float stage) {
+		return GetQuestProgression(stage);
+	}
+
 	bool GetIsHighHeelEnabled(StaticFunctionTag*) {
 		return Persistent::GetSingleton().highheel_correction;
 	}

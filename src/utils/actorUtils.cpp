@@ -432,6 +432,14 @@ namespace Gts {
 		}
 	}
 
+	bool IsGiant(Actor* actor) {
+		return Runtime::IsRace(actor, "GiantRace");
+	}
+
+	bool IsMammoth(Actor* actor) {
+		return Runtime::IsRace(actor, "MammothRace");
+	}
+
 	bool IsLiving(Actor* actor) {
 		bool IsDraugr = Runtime::HasKeyword(actor, "UndeadKeyword");
 		bool IsDwemer = Runtime::HasKeyword(actor, "DwemerKeyword");
@@ -1781,5 +1789,53 @@ namespace Gts {
 				return false;
 			}
 		});
+	}
+
+	void AdvanceQuestProgression(Actor* actor, float stage, float value) {
+		if (actor->FormID == 0x14) { // Player Only
+			auto progressionQuest = Runtime::GetQuest("MainQuest");
+			if (progressionQuest) {
+				auto queststage = progressionQuest->GetCurrentStageID();
+				if (queststage >= 100) {
+					return;
+				}
+				if (stage == 1) {
+					Persistent::GetSingleton().HugStealCount += value;
+				} else if (stage == 2) {
+					Persistent::GetSingleton().StolenSize += value;
+				} else if (stage == 3) {
+					Persistent::GetSingleton().CrushCount += value;
+				} else if (stage == 4) {
+					Persistent::GetSingleton().CrushCount += value;
+					Persistent::GetSingleton().STNCount += value;
+				} else if (stage == 5) {
+					Persistent::GetSingleton().HandCrushed += value;
+				} else if (stage == 6) {
+					Persistent::GetSingleton().VoreCount += value;
+				} else if (stage == 7) {
+					Persistent::GetSingleton().GiantCount += value;
+				}
+			}
+		}
+	}
+
+	float GetQuestProgression(float stage) {
+		if (stage == 1) {
+			return Persistent::GetSingleton().HugStealCount;
+		} else if (stage == 2) {
+			return Persistent::GetSingleton().StolenSize;
+		} else if (stage == 3) {
+			return Persistent::GetSingleton().CrushCount;
+		} else if (stage == 4) {
+			return Persistent::GetSingleton().CrushCount + (Persistent::GetSingleton().STNCount - 3.0);
+		} else if (stage == 5) {
+			return Persistent::GetSingleton().HandCrushed;
+		} else if (stage == 6) {
+			return Persistent::GetSingleton().VoreCount;
+		} else if (stage == 7) {
+			return Persistent::GetSingleton().GiantCount;
+		} else {
+			return 0.0;
+		}
 	}
 }

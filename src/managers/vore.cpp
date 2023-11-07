@@ -145,7 +145,7 @@ namespace {
 		}
 	}
 
-	void VoreMessage_Absorbed(Actor* pred, std::string_view prey, bool WasDragon) {
+	void VoreMessage_Absorbed(Actor* pred, std::string_view prey, bool WasDragon, bool WasGiant) {
 		if (!pred) {
 			return;
 		}
@@ -153,6 +153,11 @@ namespace {
 		if (!AllowDevourment() && pred->formID == 0x14 && WasDragon) {
 			log::info("{} was dragon", prey);
 			CompleteDragonQuest();
+		}
+		if (WasGiant) {
+			AdvanceQuestProgression(pred, 7, 1);
+		} else {
+			AdvanceQuestProgression(pred, 6, 1);
 		}
 		if (!Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
 			Cprint("{} was absorbed by {}", prey, pred->GetDisplayFullName());
@@ -359,6 +364,7 @@ namespace Gts {
 			} else {
 				this->restorePower = 0.0;
 			}
+			this->WasGiant = IsGiant(tiny);
 			this->WasDragon = IsDragon(tiny);
 			this->WasLiving = IsLiving(tiny);
 			this->sizePower = tiny_scale * mealEffiency * perkbonus;
@@ -400,7 +406,7 @@ namespace Gts {
 				if (!AllowDevourment()) {
 					if (this->giant) {
 						AdjustGiantessSkill(giant, this->tinySize);
-						VoreMessage_Absorbed(giant, this->tiny_name, this->WasDragon);
+						VoreMessage_Absorbed(giant, this->tiny_name, this->WasDragon, this->WasGiant);
 						BuffAttributes(giant, this->tinySize);
 						mod_target_scale(giant, this->sizePower * 0.5);
 						AdjustSizeReserve(giant, this->sizePower);

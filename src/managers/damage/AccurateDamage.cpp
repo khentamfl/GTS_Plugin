@@ -504,6 +504,13 @@ namespace Gts {
 			if (multiplier >= 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
 					crushmanager.Crush(giant, tiny);
+					if (!tiny->IsDead()) {
+						if (IsGiant(tiny)) {
+							AdvanceQuestProgression(giant, 7, 1);
+						} else {
+							AdvanceQuestProgression(giant, 3, 1);
+						}
+					}
 					CrushBonuses(giant, tiny);
 					PrintDeathSource(giant, tiny, Cause);
 					if (!LessGore()) {

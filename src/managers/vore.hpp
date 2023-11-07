@@ -76,6 +76,7 @@ namespace Gts
 		float naturalsize = 0.0;
 		bool WasDragon = false;
 		bool WasLiving = false;
+		bool WasGiant = false;
 		std::string tiny_name;
 
 

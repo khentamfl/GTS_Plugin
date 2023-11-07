@@ -280,6 +280,7 @@ namespace {
 				Runtime::PlaySoundAtNode("GtsCrushSound", giant, 1.0, 1.0, "NPC L Hand [LHnd]");
 				SetBetweenBreasts(giant, false);
 				AdjustSizeReserve(giant, get_visual_scale(grabbedActor)/10);
+				AdvanceQuestProgression(giant, 5, 1.0);
 				ReportCrime(giant, grabbedActor, 1000.0, true); // Report Crime since we killed someone
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
