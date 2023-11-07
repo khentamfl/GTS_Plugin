@@ -63,7 +63,7 @@ namespace {
 		if (progressionQuest) {
 			auto queststage = progressionQuest->GetCurrentStageID();
 			if (queststage == 20) {
-				AdvanceQuestProgression(caster, 2, calculation * CalcEffeciency_NoProgression(caster, target));
+				AdvanceQuestProgression(caster, 2, calculation * 0.01 * CalcEffeciency_NoProgression(caster, target));
 			}
 		}
 	}
