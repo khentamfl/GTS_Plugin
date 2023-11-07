@@ -1705,7 +1705,7 @@ namespace Gts {
 							dropbox3D->local.rotate = actor3D->local.rotate;
 						}
 						update_node(dropbox3D);
-						ReplaceDropBox(dropboxHandle, actor->GetDisplayFullName(), actor->formID, dropbox3D->local.rotate); // replace it with non-physical drop box
+						ReplaceDropBox(dropboxHandle, actor->GetDisplayFullName(), actor->formID, dropbox3D->local.rotate, removeQuestItems); // replace it with non-physical drop box
 					return false;
 				}
     		});
@@ -1719,7 +1719,7 @@ namespace Gts {
 		}
 	}
 
-	void ReplaceDropBox(ObjectRefHandle boxref, std::string_view npcname, FormID Form, NiMatrix3 rotate) { // This function is used for replacing DropBox 
+	void ReplaceDropBox(ObjectRefHandle boxref, std::string_view npcname, FormID Form, NiMatrix3 rotate, bool removeQuestItems) { // This function is used for replacing DropBox 
 		auto box = boxref.get().get(); // box? box.
 		if (box) {
 			float Start = Time::WorldTimeElapsed();
