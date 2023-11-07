@@ -536,7 +536,7 @@ namespace Gts {
 	}
 
 	TESObjectREFR* Runtime::PlaceContainer(TESObjectREFR* object, const std::string_view& tag) {
-		if (actor) {
+		if (object) {
 			return PlaceContainerAtPos(object, object->GetPosition(), tag);
 		}
 		return nullptr;
@@ -749,6 +749,5 @@ namespace Gts {
 				log::warn("Container form not found for {}", key);
 			}
 		}
-
 	}
 }
