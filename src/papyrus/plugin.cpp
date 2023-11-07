@@ -182,6 +182,14 @@ namespace {
 		Persistent::GetSingleton().allow_stagger = enabled;
 	}
 
+	void SetNPCProtection(StaticFunctionTag*, bool enabled) {
+		Persisntet::GetSingleton().NPCEffectImmunity = enabled;
+	}
+
+	void SetPCProtection(StaticFunctionTag*, bool enabled) {
+		Persisntet::GetSingleton().PCEffectImmunity = enabled;
+	}
+
 	bool GetIsHighHeelEnabled(StaticFunctionTag*) {
 		return Persistent::GetSingleton().highheel_correction;
 	}
@@ -439,6 +447,8 @@ namespace Gts {
 		vm->RegisterFunction("AllowCameraFOVEdits", PapyrusClass, AllowCameraFOVEdits);
 		vm->RegisterFunction("SetLessGore", PapyrusClass, SetLessGore);
 		vm->RegisterFunction("SetPlayerStagger", PapyrusClass, SetPlayerStagger);
+		vm->RegisterFunction("SetNPCProtection", PapyrusClass, SetNPCProtection);
+		vm->RegisterFunction("SetPCProtection", PapyrusClass, SetPCProtection);
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
 		vm->RegisterFunction("SetIsHHFurnitureEnabled", PapyrusClass, SetIsHHFurnitureEnabled);
 		vm->RegisterFunction("SetCrawlAnimation", PapyrusClass, SetCrawlAnimation);

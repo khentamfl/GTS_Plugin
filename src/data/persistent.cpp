@@ -42,6 +42,8 @@ namespace {
 	inline const auto LaunchObjects = _byteswap_ulong('LOBj');
 	inline const auto CameraFovEdits = _byteswap_ulong('CFET');
 	inline const auto StolenAttributes = _byteswap_ulong('STAT');
+	inline const auto NPC_EffectImmunity = _byteswap_ulong('NPER');
+	inline const auto PC_EffectImmunity = _byteswap_ulong('PCER');
 
 	inline const auto Att_HealthStorage = _byteswap_ulong('HTSG');
 	inline const auto Att_StaminStorage = _byteswap_ulong('STSG');
@@ -451,6 +453,14 @@ namespace Gts {
 				bool Vore_Ai;
 				serde->ReadRecordData(&Vore_Ai, sizeof(Vore_Ai));
 				GetSingleton().Vore_Ai = Vore_Ai;
+			} else if (type == NPC_EffectImmunity) {
+				bool NPCEffectImmunity;
+				serde->ReadRecordData(&NPCEffectImmunity, sizeof(NPCEffectImmunity));
+				GetSingleton().NPCEffectImmunity = NPCEffectImmunity;
+			} else if (type == PC_EffectImmunity) {
+				bool PCEffectImmunity;
+				serde->ReadRecordData(&PCEffectImmunity, sizeof(PCEffectImmunity));
+				GetSingleton().PCEffectImmunity = PCEffectImmunity;
 			} else if (type == IsSpeedAdjustedRecord) {
 				bool is_speed_adjusted;
 				serde->ReadRecordData(&is_speed_adjusted, sizeof(is_speed_adjusted));
@@ -737,6 +747,20 @@ namespace Gts {
 		}
 		bool legacy_sounds = GetSingleton().legacy_sounds;
 		serde->WriteRecordData(&legacy_sounds, sizeof(legacy_sounds));
+
+		if (!serde->OpenRecord(NPC_EffectImmunity, 1)) {
+			log::error("Unable to open NPC Effect Immunity record to write cosave data");
+			return;
+		}
+		bool NPCEffectImmunity = GetSingleton().NPCEffectImmunity;
+		serde->WriteRecordData(&NPCEffectImmunity, sizeof(NPCEffectImmunity));
+
+		if (!serde->OpenRecord(PC_EffectImmunity, 1)) {
+			log::error("Unable to open PC Effect Immunity record to write cosave data");
+			return;
+		}
+		bool PCEffectImmunity = GetSingleton().PCEffectImmunity;
+		serde->WriteRecordData(&PCEffectImmunity, sizeof(PCEffectImmunity));
 
 		if (!serde->OpenRecord(HostileToggle, 1)) {
 			log::error("Unable to open Hostile Toggle Actors record to write cosave data");

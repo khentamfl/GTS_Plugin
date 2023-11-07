@@ -57,13 +57,15 @@ namespace {
 		if (IsBeingHeld(tiny)) {
 			return false;
 		}
-		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && (IsTeammate(tiny))) {
+		bool NPC = Persistent::GetSingleton().NPCEffectImmunity;
+		bool PC = Persistent::GetSingleton().PCEffectImmunity;
+		if (NPC && giant->formID == 0x14 && (IsTeammate(tiny))) {
 			return false; // Protect NPC's against player size-related effects
 		}
-		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && (IsTeammate(giant)) && (IsTeammate(tiny))) {
+		if (NPC && (IsTeammate(giant)) && (IsTeammate(tiny))) {
 			return false; // Disallow NPC's to damage each-other if they're following Player
 		}
-		if (Runtime::GetBool("GtsPCEffectImmunityToggle") && (IsTeammate(giant)) && tiny->formID == 0x14) {
+		if (PC && (IsTeammate(giant)) && tiny->formID == 0x14) {
 			return false; // Protect Player against friendly NPC's damage
 		}
 		return true;

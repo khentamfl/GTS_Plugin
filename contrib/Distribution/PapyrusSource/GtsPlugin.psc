@@ -55,6 +55,9 @@ Bool function ModSizeVulnerability(Actor target, Float amt) global native
 
 Function SetLessGore(Bool enabled) global native 
 Function SetPlayerStagger(Bool enabled) global native ; Allows/disallows player to be staggered by friendly size sources
+Function SetNPCProtection(Bool enabled) global native ; Protect friendly NPC's from size-related damage/effects
+Function SetPCProtection(Bool enabled) global native  ; Protect Player from friendly size-related effects 
+    
     
 
 ;==================================================================================

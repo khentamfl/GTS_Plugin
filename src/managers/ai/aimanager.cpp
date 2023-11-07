@@ -288,7 +288,7 @@ namespace Gts {
 			for (auto actor: find_actors()) {
 				std::vector<Actor*> AbleToAct = {};
 				for (auto actor: find_actors()) {
-					if (IsTeammate(actor) && actor->formID != 0x14) {
+					if (IsTeammate(actor) && actor->formID != 0x14 && IsFemale(actor)) {
 						if (actor->IsInCombat() || !persist.vore_combatonly) {
 							AbleToAct.push_back(actor);
 						}
