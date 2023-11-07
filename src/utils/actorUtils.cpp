@@ -1725,11 +1725,11 @@ namespace Gts {
 			float Start = Time::WorldTimeElapsed();
 			std::string name = std::format("ReplaceBox_{}", Form);
 			TaskManager::Run(name, [=](auto& progressData) {
-				std::string name = std::format("{} remains_Test", npcname);
+				std::string boxname = std::format("{} remains_Test", npcname);
 				float Finish = Time::WorldTimeElapsed();
 				float timepassed = Finish - Start;
-				if (timepassed >= 6.00) {
-					auto dropbox = Runtime::PlaceContainer(box, "Dropbox");
+				if (timepassed >= 2.00) {
+					auto dropbox = Runtime::PlaceContainer(box, "Dropbox"); // place the new box with physics off
 					for (auto &[a_object, invData]: box->GetInventory()) {
 						if (a_object->GetPlayable()) {
 							if (!invData.second->IsQuestObject() || removeQuestItems) {
@@ -1739,7 +1739,9 @@ namespace Gts {
 					}
 					auto secondbox = dropbox->CreateRefHandle();
 					UpdateBoxRotation(secondbox, rotate); // update rotation of new box to match old one
+					dropbox->SetDisplayName(boxname, false); // update the name
 					box->SetDelete(true); // delete old box
+					box->Predestroy();
 					return false; // end the task once done
 				}
 				return true; // else keep it running
@@ -1761,8 +1763,19 @@ namespace Gts {
 				log::info(" - 3D is nullptr still for dropbox 2");
 				return true; // Retry next frame
 			} else {
+				float X_Box = 0;
+				float Y_Box = 0;
+				float Z_Box = 0;
+
+				float X_Original = 0;
+				float Y_Original = 0;
+				float Z_Original = 0;
+
 				log::info(" - Got 3D for dropbox 2");
 				dropbox3D->local.rotate = rotate;
+				NiPoint3 OriginalROT = rotate.ToEulerAnglesXYZ(X_Original, Y_Original, Z_Original);
+				NiPoint3 BoxROT = dropbox3D->local.rotate.ToEulerAnglesXYZ(X_Box, Y_Box, Z_Box);
+				log::info("Original BOX ROT: {}, New Box ROT: {}", Vector2Str(OriginalROT), Vector2Str(BoxROT));
 				update_node(dropbox3D);
 				return false;
 			}
