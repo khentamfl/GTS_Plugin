@@ -1792,8 +1792,9 @@ namespace Gts {
 	}
 
 	void AdvanceQuestProgression(Actor* actor, float stage, float value) {
-		if (actor->FormID == 0x14) { // Player Only
+		if (actor->formID == 0x14) { // Player Only
 			auto progressionQuest = Runtime::GetQuest("MainQuest");
+			log::info("Adjusting Stage {} with value {}", stage, value);
 			if (progressionQuest) {
 				auto queststage = progressionQuest->GetCurrentStageID();
 				if (queststage >= 100) {
