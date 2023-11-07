@@ -453,6 +453,7 @@ namespace Gts {
 		vm->RegisterFunction("SetPlayerStagger", PapyrusClass, SetPlayerStagger);
 		vm->RegisterFunction("SetNPCProtection", PapyrusClass, SetNPCProtection);
 		vm->RegisterFunction("SetPCProtection", PapyrusClass, SetPCProtection);
+		vm->RegisterFunction("Quest_GetProgression", PapyrusClass, Quest_GetProgression);
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
 		vm->RegisterFunction("SetIsHHFurnitureEnabled", PapyrusClass, SetIsHHFurnitureEnabled);
 		vm->RegisterFunction("SetCrawlAnimation", PapyrusClass, SetCrawlAnimation);
