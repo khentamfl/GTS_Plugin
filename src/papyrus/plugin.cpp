@@ -183,11 +183,11 @@ namespace {
 	}
 
 	void SetNPCProtection(StaticFunctionTag*, bool enabled) {
-		Persisntet::GetSingleton().NPCEffectImmunity = enabled;
+		Persistent::GetSingleton().NPCEffectImmunity = enabled;
 	}
 
 	void SetPCProtection(StaticFunctionTag*, bool enabled) {
-		Persisntet::GetSingleton().PCEffectImmunity = enabled;
+		Persistent::GetSingleton().PCEffectImmunity = enabled;
 	}
 
 	bool GetIsHighHeelEnabled(StaticFunctionTag*) {
