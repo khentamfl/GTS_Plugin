@@ -58,12 +58,12 @@ namespace {
 		TaskManager::Cancel(name);
 	}
 
-	void QuestFunction(Actor* caster, Actor* target) {
+	void QuestFunction(Actor* caster, Actor* target, float calculation) {
 		auto progressionQuest = Runtime::GetQuest("MainQuest");
 		if (progressionQuest) {
 			auto queststage = progressionQuest->GetCurrentStageID();
 			if (queststage == 20) {
-				AdvanceQuestProgression(caster, 2, shrink * SizeDifference * bonus * weakness * CalcEffeciency_NoProgression(caster, target));
+				AdvanceQuestProgression(caster, 2, calculation * CalcEffeciency_NoProgression(caster, target));
 			}
 		}
 	}
@@ -171,7 +171,7 @@ namespace Gts {
 		}
 		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus * weakness, gainpower * balancemodebonus, has_smt);
 
-		QuestFunction(caster, target);
+		QuestFunction(caster, target, shrink * SizeDifference * bonus * weakness);
 		
 		if (ShrinkToNothing(caster, target)) {
 		}
