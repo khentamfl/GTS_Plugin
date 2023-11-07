@@ -1741,7 +1741,6 @@ namespace Gts {
 					UpdateBoxRotation(secondbox, rotate); // update rotation of new box to match old one
 					dropbox->SetDisplayName(boxname, false); // update the name
 					box->SetDelete(true); // delete old box
-					box->Predestroy();
 					return false; // end the task once done
 				}
 				return true; // else keep it running
