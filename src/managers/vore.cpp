@@ -727,8 +727,8 @@ namespace Gts {
 		if (pred == prey) {
 			return false;
 		}
-		if (!CanPerformAnimation(player, 3)) {
-			return;
+		if (!CanPerformAnimation(pred, 3)) {
+			return false;
 		}
 		auto transient = Transient::GetSingleton().GetData(prey);
 		if (prey->IsDead()) {

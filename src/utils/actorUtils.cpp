@@ -1830,10 +1830,9 @@ namespace Gts {
 			return true;
 		} else {
 			auto progressionQuest = Runtime::GetQuest("MainQuest");
-			log::info("Adjusting Stage {} with value {}", stage, value);
 			if (progressionQuest) {
 				auto queststage = progressionQuest->GetCurrentStageID();
-				if (queststage >= 10 && type = 0) {
+				if (queststage >= 10 && type == 0) {
 					return true; // allow hugs
 				} else if (queststage >= 30 && type == 1) {
 					return true; // allow stomps and kicks
