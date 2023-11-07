@@ -243,6 +243,9 @@ namespace {
 
 	void RightStrongStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 1)) {
+			return;
+		}
 		float WasteMult = 1.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			WasteMult -= 0.35;
@@ -261,6 +264,9 @@ namespace {
 
 	void LeftStrongStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 1)) {
+			return;
+		}
 		float WasteMult = 1.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			WasteMult -= 0.35;

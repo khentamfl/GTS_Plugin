@@ -181,5 +181,6 @@ namespace Gts {
 	void UpdateBoxRotation(ObjectRefHandle boxref, NiMatrix3 rotate);
 
 	void AdvanceQuestProgression(Actor* actor, float stage, float value);
+	bool CanPerformAnimation(Actor* giant, float type);
 	float GetQuestProgression(float stage);
 }

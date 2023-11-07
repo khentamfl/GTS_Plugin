@@ -258,6 +258,9 @@ namespace {
 
 	void ThighCrushEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 2)) {
+			return;
+		}
 		//BlockFirstPerson(player, true);
 		AnimationManager::StartAnim("ThighLoopEnter", player);
 	}

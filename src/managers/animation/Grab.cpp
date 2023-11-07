@@ -690,6 +690,9 @@ namespace {
 		if (grabbedActor) { //If we have actor, don't pick anyone up.
 			return;
 		}
+		if (!CanPerformAnimation(player, 2)) {
+			return;
+		}
 		if (IsEquipBusy(player) || IsTransitioning(player)) {
 			return; // Disallow Grabbing if Behavior is busy doing other stuff.
 		}

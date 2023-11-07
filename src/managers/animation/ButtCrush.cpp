@@ -325,6 +325,8 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		if (IsFirstPerson()) {
 			return;
+		} if (!CanPerformAnimation(player, 2)) {
+			return;
 		}
 		auto grabbedActor = Grab::GetHeldActor(player);
 		if (grabbedActor && !IsCrawling(player)) { // IF we have someone in hands, allow only when we crawl
@@ -357,6 +359,8 @@ namespace {
 	void QuickButtCrushStartEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		if (IsFirstPerson()) {
+			return;
+		} if (!CanPerformAnimation(player, 2)) {
 			return;
 		}
 		auto grabbedActor = Grab::GetHeldActor(player);

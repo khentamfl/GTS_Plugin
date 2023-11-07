@@ -210,6 +210,9 @@ namespace {
 
 	void HugAttemptEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 0)) {
+			return;
+		}
 		if (IsGtsBusy(player)) {
 			return;
 		}

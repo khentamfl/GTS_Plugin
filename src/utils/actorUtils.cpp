@@ -1797,7 +1797,7 @@ namespace Gts {
 			log::info("Adjusting Stage {} with value {}", stage, value);
 			if (progressionQuest) {
 				auto queststage = progressionQuest->GetCurrentStageID();
-				if (queststage >= 100) {
+				if (queststage < 10 || queststage >= 100) {
 					return;
 				}
 				if (stage == 1) {
@@ -1817,6 +1817,35 @@ namespace Gts {
 					Persistent::GetSingleton().GiantCount += value;
 				}
 			}
+		}
+	}
+
+	bool CanPerformAnimation(Actor* giant, float type) {
+		// 0 = Hugs
+		// 1 = stomps and kicks
+		// 2 = Grab and Sandwich
+		// 3 = Vore
+		// 5 = Others
+		if (giant->formID != 0x14) {
+			return true;
+		} else {
+			auto progressionQuest = Runtime::GetQuest("MainQuest");
+			log::info("Adjusting Stage {} with value {}", stage, value);
+			if (progressionQuest) {
+				auto queststage = progressionQuest->GetCurrentStageID();
+				if (queststage >= 10 && type = 0) {
+					return true; // allow hugs
+				} else if (queststage >= 30 && type == 1) {
+					return true; // allow stomps and kicks
+				} else if (queststage >= 50 && type == 2) {
+					return true;
+				} else if (queststage >= 60 && type >= 3) {
+					return true;
+				} else {
+					return false;
+				}
+			} 
+			return false;
 		}
 	}
 

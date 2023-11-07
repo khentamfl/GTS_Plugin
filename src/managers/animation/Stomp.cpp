@@ -169,6 +169,9 @@ namespace {
 
 	void RightStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 1)) {
+			return;
+		}
 		float WasteStamina = 25.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			WasteStamina *= 0.65;
@@ -183,6 +186,9 @@ namespace {
 
 	void LeftStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 1)) {
+			return;
+		}
 		float WasteStamina = 25.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			WasteStamina *= 0.65;
