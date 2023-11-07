@@ -126,7 +126,7 @@ namespace Gts {
 		// Get vore target for actor
 		auto& sizemanager = SizeManager::GetSingleton();
 		if (!CanPerformAnimation(pred, 2)) {
-			return;
+			return {};
 		}
 		if (IsGtsBusy(pred)) {
 			return {};
