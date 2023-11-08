@@ -121,7 +121,7 @@ namespace Gts {
 		} if (IsMammoth(target)) {
 			efficiency *= 0.35;
  		} if (IsGiant(target)) {
-			efficiency *= 0.50;
+			efficiency *= 0.45;
 		} if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
 			efficiency *= 0.25;
 		}
@@ -145,7 +145,7 @@ namespace Gts {
 		} if (IsMammoth(target)) {
 			efficiency *= 0.35;
  		} if (IsGiant(target)) {
-			efficiency *= 0.50;
+			efficiency *= 0.45;
 		} if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
 			efficiency *= 0.25;
 		}

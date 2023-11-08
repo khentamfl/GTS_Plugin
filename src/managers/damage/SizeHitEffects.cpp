@@ -30,8 +30,10 @@ namespace {
 		if (damage > GetAV(receiver, ActorValue::kHealth) * 1.5) { // Overkill effect
 			float attackerscale = get_visual_scale(attacker);
 			float receiverscale = get_visual_scale(receiver);
-			if (IsDragon(receiver)) {
+			if (IsDragon(receiver) || IsGiant(receiver)) {
 				receiverscale *= 2.0;
+			} if (IsMammoth(receiver)) {
+				receiverscale *= 3.0;
 			}
 			float size_difference = attackerscale/receiverscale;
 			if (size_difference >= 18.0) {
@@ -283,7 +285,7 @@ namespace Gts {
 		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(receiver)/100;
 		float SizeDifference = get_visual_scale(receiver)/get_visual_scale(attacker);
 		float Dragon = 1.0;
-		if (IsDragon(attacker)) {
+		if (IsDragon(attacker) || IsGiant(attacker) || IsMammoth(attacker)) {
 			Dragon = 2.5;
 		}
 		float resistance = 1.0;

@@ -399,6 +399,8 @@ namespace Gts {
 
 		if (IsDragon(prey)) {
 			prey_scale *= 3.0;
+		} if (IsGiant(prey)) {
+			prey_scale *= 2.0;
 		}
 		if (prey->IsDead() && pred_scale/prey_scale < 8.0) {
 			return false;

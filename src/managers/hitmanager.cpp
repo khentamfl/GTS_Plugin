@@ -83,8 +83,8 @@ namespace Gts {
 
 		float attackerscale = get_visual_scale(attacker);
 		float receiverscale = get_visual_scale(receiver);
-		if (IsDragon(receiver)) {
-			receiverscale *= 2.0;
+		if (IsDragon(receiver) || IsGiant(receiver) || IsMammoth(receiver)) {
+			receiverscale *= 2.5;
 		}
 
 		float size_difference = attackerscale/receiverscale;

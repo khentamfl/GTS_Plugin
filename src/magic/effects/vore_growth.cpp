@@ -15,7 +15,7 @@ namespace Gts {
 		auto target = GetTarget();
 		float Scale = get_visual_scale(target);
 		this->ScaleOnVore = Scale;
-		if (IsDragon(target)) {
+		if (IsDragon(target) || IsGiant(target)) {
 			this->ScaleOnVore = 1.0;
 		}
 	}

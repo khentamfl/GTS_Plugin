@@ -102,8 +102,10 @@ namespace {
 			force += 0.20;
 		}
 		float tinySize = get_visual_scale(tiny);
-		if (IsDragon(tiny)) {
+		if (IsDragon(tiny) || IsGiant(tiny)) {
 			tinySize *= 2.6;
+		} if (IsMammoth(tiny)) {
+			tinySize *= 3.2;
 		}
 		float sizeRatio = giantSize/tinySize;
 
@@ -132,7 +134,7 @@ namespace {
 					if (power >= 1.5) { // Apply only when we have DisastrousTremor perk
 						mod_target_scale(tiny, -(damage * DamageSetting) / 500);
 						float modifier = 1.0;
-						if (IsDragon(tiny)) {
+						if (IsDragon(tiny) || IsGiant(tiny) || IsMammoth(tiny)) {
 							modifier = 3.0;
 						}
 

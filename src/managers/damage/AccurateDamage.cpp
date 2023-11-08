@@ -142,7 +142,7 @@ namespace {
 		}
 		float giantscale = get_visual_scale(giant);
 		float tinyscale = get_visual_scale(tiny);
-		if (IsDragon(tiny)) {
+		if (IsDragon(tiny) || IsGiant(tiny)) {
 			tinyscale *= 2.0;
 		}
 		float size_difference = giantscale/tinyscale;
@@ -430,7 +430,7 @@ namespace Gts {
 		auto& crushmanager = CrushManager::GetSingleton();
 		float giantsize = get_visual_scale(giant);
 		float tinysize = get_visual_scale(tiny);
-		if (IsDragon(tiny)) {
+		if (IsDragon(tiny) || IsGiant(tiny)) {
 			tinysize *= 2.0;
 		}
 
