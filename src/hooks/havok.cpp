@@ -1,6 +1,7 @@
-#include "hooks/havok.hpp"
-#include "events.hpp"
 #include "data/transient.hpp"
+#include "hooks/havok.hpp"
+#include "scale/scale.hpp"
+#include "events.hpp"
 
 #include "managers/contact.hpp"
 #include "data/runtime.hpp"
