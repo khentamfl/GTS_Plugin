@@ -118,8 +118,8 @@ namespace {
 				return false; //Disable it once we leave Thigh Crush state
 			}
 			if (ThighL && ThighR) {
-				DoDamageAtPoint(giantref, 16, 0.5, ThighL, 100, 0.20, 2.5, DamageSource::Booty);
-				DoDamageAtPoint(giantref, 16, 0.5, ThighR, 100, 0.20, 2.5, DamageSource::Booty);
+				DoDamageAtPoint(giantref, 16, 0.5 * TimeScale(), ThighL, 100, 0.20, 2.5, DamageSource::Booty);
+				DoDamageAtPoint(giantref, 16, 0.5 * TimeScale(), ThighR, 100, 0.20, 2.5, DamageSource::Booty);
 				return true;
 			}
 			return false; // Cancel it if we don't have these bones

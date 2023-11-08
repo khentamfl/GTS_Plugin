@@ -74,7 +74,7 @@ namespace {
 	}
 
 	void StartBodyDamage_DOT(Actor* giant) {
-		float damage = 2.0;
+		float damage = 2.0 * TimeScale();
 		auto gianthandle = giant->CreateRefHandle();
 		std::string name = std::format("BodyDOT_{}", giant->formID);
 		TaskManager::Run(name, [=](auto& progressData) {
@@ -113,7 +113,7 @@ namespace {
 	}
 
 	void StartBodyDamage_Slide(Actor* giant) {
-		float damage = 24.0;
+		float damage = 24.0 * TimeScale();
 		auto gianthandle = giant->CreateRefHandle();
 		std::string name = std::format("BodyDOT_Slide_{}", giant->formID);
 		TaskManager::Run(name, [=](auto& progressData) {

@@ -446,7 +446,7 @@ namespace Gts {
 			return; // Do not do damage is Size Difference is < than x1.4
 		}
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
-		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.25, 0.25, 999999.0);
+		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.30, 0.30, 999999.0);
 		float highheelsdamage = 1.0 + (GetHighHeelsBonusDamage(giant) * 5);
 		float sprintdamage = 1.0; // default Sprint damage of 1.0
 		float falldamage = 1.0; // default Fall damage of 1.0
@@ -472,7 +472,7 @@ namespace Gts {
 		StartCombat(giant, tiny, false);
 
 
-		result *= damagebonus * TimeScale();
+		result *= damagebonus;
 
 		if ((Cause == DamageSource::CrushedLeft || Cause == DamageSource::CrushedRight) && Runtime::HasPerkTeam(giant, "hhBonus")) {
 			result *= 1.15; // 15% bonus damage if we have High Heels perk

@@ -147,7 +147,7 @@ namespace {
 	void StartDamageOverTime(Actor* giant) {
 		auto gianthandle = giant->CreateRefHandle();
 		std::string name = std::format("BreastDOT_{}", giant->formID);
-		float damage = GetBoobCrushDamage(giant);
+		float damage = GetBoobCrushDamage(giant) * TimeScale();
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;

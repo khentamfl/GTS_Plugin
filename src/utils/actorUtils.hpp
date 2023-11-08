@@ -177,8 +177,6 @@ namespace Gts {
 	void FixAnimations();
 
 	void TransferInventoryToDropbox(Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause);
-	void ReplaceDropBox(ObjectRefHandle boxref, std::string_view npcname, FormID Form, NiMatrix3 rotate, bool removeQuestItems);
-	void UpdateBoxRotation(ObjectRefHandle boxref, NiMatrix3 rotate);
 
 	void AdvanceQuestProgression(Actor* actor, float stage, float value);
 	bool CanPerformAnimation(Actor* giant, float type);

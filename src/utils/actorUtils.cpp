@@ -1713,7 +1713,6 @@ namespace Gts {
 							dropbox3D->local.rotate = actor3D->local.rotate;
 						}
 						update_node(dropbox3D);
-						//ReplaceDropBox(dropboxHandle, actor->GetDisplayFullName(), actor->formID, dropbox3D->local.rotate, removeQuestItems); // replace it with non-physical drop box
 					return false;
 				}
     		});
@@ -1725,70 +1724,6 @@ namespace Gts {
 				}
 			}
 		}
-	}
-
-	void ReplaceDropBox(ObjectRefHandle boxref, std::string_view npcname, FormID Form, NiMatrix3 rotate, bool removeQuestItems) { // This function is used for replacing DropBox 
-		auto box = boxref.get().get(); // box? box.
-		if (box) {
-			float Start = Time::WorldTimeElapsed();
-			std::string name = std::format("ReplaceBox_{}", Form);
-			TaskManager::Run(name, [=](auto& progressData) {
-				std::string boxname = std::format("{} remains_Test", npcname);
-				float Finish = Time::WorldTimeElapsed();
-				float timepassed = Finish - Start;
-				if (timepassed >= 2.00) {
-					auto dropbox = Runtime::PlaceContainer(box, "Dropbox"); // place the new box with physics off
-					for (auto &[a_object, invData]: box->GetInventory()) {
-						if (a_object->GetPlayable()) {
-							if (!invData.second->IsQuestObject() || removeQuestItems) {
-								box->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
-							}
-						}
-					}
-					auto secondbox = dropbox->CreateRefHandle();
-					UpdateBoxRotation(secondbox, rotate); // update rotation of new box to match old one
-					dropbox->SetDisplayName(boxname, false); // update the name
-					box->SetDelete(true); // delete old box
-					return false; // end the task once done
-				}
-				return true; // else keep it running
-			});
-		}	
-	}
-
-	void UpdateBoxRotation(ObjectRefHandle boxref, NiMatrix3 rotate) {
-		TaskManager::RunFor(30.0, [=](auto& progressData) {
-			auto dropboxPtr = boxref.get().get();
-			if (!dropboxPtr) {
-				return false;
-			} if (!dropboxPtr->Is3DLoaded()) {
-				log::info(" - 3D Not loaded yet for dropbox 2");
-				return true;
-			}
-			auto dropbox3D = dropboxPtr->GetCurrent3D();
-			if (!dropbox3D) {
-				log::info(" - 3D is nullptr still for dropbox 2");
-				return true; // Retry next frame
-			} else {
-				float X_Box = 0;
-				float Y_Box = 0;
-				float Z_Box = 0;
-
-				float X_Original = 0;
-				float Y_Original = 0;
-				float Z_Original = 0;
-
-				log::info(" - Got 3D for dropbox 2");
-				dropbox3D->local.rotate = rotate;
-				rotate.ToEulerAnglesXYZ(X_Original, Y_Original, Z_Original);
-				dropbox3D->local.rotate.ToEulerAnglesXYZ(X_Box, Y_Box, Z_Box);
-				NiPoint3 OriginalROT = NiPoint3(X_Original, Y_Original, Z_Original);
-				NiPoint3 BoxROT = NiPoint3(X_Box, Y_Box, Z_Box);
-				log::info("Original BOX ROT: {}, New Box ROT: {}", Vector2Str(OriginalROT), Vector2Str(BoxROT));
-				update_node(dropbox3D);
-				return false;
-			}
-		});
 	}
 
 	void AdvanceQuestProgression(Actor* actor, float stage, float value) {
@@ -1837,13 +1772,15 @@ namespace Gts {
 				} else if (queststage >= 30 && type == 1) {
 					return true; // allow stomps and kicks
 				} else if (queststage >= 50 && type == 2) {
-					return true;
+					return true; // Allow grabbing and sandwiching
 				} else if (queststage >= 60 && type >= 3) {
-					return true;
+					return true; // Allow Vore
 				} else {
+					Notify("You're not experienced to perform this action");
 					return false;
 				}
 			} 
+			Notify("You're not experienced to perform this action");
 			return false;
 		}
 	}

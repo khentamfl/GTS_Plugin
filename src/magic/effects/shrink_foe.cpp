@@ -57,16 +57,6 @@ namespace {
 		std::string name = std::format("ShrinkDebuff_{}", tiny->formID);
 		TaskManager::Cancel(name);
 	}
-
-	void QuestFunction(Actor* caster, Actor* target, float calculation) {
-		auto progressionQuest = Runtime::GetQuest("MainQuest");
-		if (progressionQuest) {
-			auto queststage = progressionQuest->GetCurrentStageID();
-			if (queststage == 20) {
-				AdvanceQuestProgression(caster, 2, calculation * 0.01 * CalcEffeciency_NoProgression(caster, target));
-			}
-		}
-	}
 }
 
 
@@ -169,7 +159,7 @@ namespace Gts {
 		if (IsEssential(target)) {
 			return; // Disallow shrinking Essentials
 		}
-		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus * weakness, gainpower * balancemodebonus, has_smt);
+		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus * weakness, gainpower * balancemodebonus, has_smt, ShrinkSource::magic);
 
 		QuestFunction(caster, target, shrink * SizeDifference * bonus * weakness);
 		

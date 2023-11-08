@@ -267,7 +267,14 @@ namespace Gts {
 
 			AttachToObjectBTask(pred, prey);
 			AnimationManager::StartAnim("ButtCrush_Start", pred);
-			//BlockFirstPerson(pred, true);
+
+
+			auto root = find_node(prey, "NPC Root [Root]");
+			if (root) { 
+				auto scale = get_visual_scale(prey);
+				SpawnParticle(prey, 60.00, "GTS/Magic/bind_rune.nif", NiMatrix3(), position, scale * 3.0, 7, nullptr); // Spawn Bind Rune
+				Notify("Rune spawned succesfully");
+			}
 		} else {
 			if (!IsCrawling(pred)) {
 				TiredSound(pred, "Butt Crush is on a cooldown");

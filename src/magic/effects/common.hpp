@@ -121,7 +121,7 @@ namespace Gts {
 		} if (IsMammoth(target)) {
 			efficiency *= 0.35;
  		} if (IsGiant(target)) {
-			efficiency *= 0.45;
+			efficiency *= 0.50;
 		} if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
 			efficiency *= 0.25;
 		}
@@ -145,7 +145,7 @@ namespace Gts {
 		} if (IsMammoth(target)) {
 			efficiency *= 0.35;
  		} if (IsGiant(target)) {
-			efficiency *= 0.45;
+			efficiency *= 0.50;
 		} if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
 			efficiency *= 0.25;
 		}
@@ -205,7 +205,7 @@ namespace Gts {
 		return true;
 	}
 
-	inline void Steal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency) {
+	inline void Steal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency, ShrinkSource source) {
 		effeciency = clamp(0.01, 1.0, effeciency);
 		float effeciency_noscale = clamp(0.01, 1.0, CalcEffeciency_NoProgression(to, from));
 		//log::info("Efficiency is: {}", effeciency_noscale);
@@ -215,6 +215,12 @@ namespace Gts {
 		AdjustGtsSkill(0.52 * scale_factor * target_scale, to);
 		mod_target_scale(from, -amountnomult * 0.55 * effeciency_noscale);
 		mod_target_scale(to, amount*effeciency);
+
+		if (source == ShrinkSource::hugs) {
+			AdvanceQuestProgression(to, 1.0, amountnomult * 0.55 * effeciency_noscale);
+		} else {
+			AdvanceQuestProgression(to, 2.0, amountnomult * 0.55 * effeciency_noscale);
+		}
 
 		AddStolenAttributes(to, amount*effeciency);
 	}
@@ -244,7 +250,7 @@ namespace Gts {
 		mod_target_scale(to, receive);
 	}
 
-	inline void TransferSize(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smt) {
+	inline void TransferSize(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smt, ShrinkSource source) {
 		const float BASE_POWER = 0.0005;
 		const float DUAL_CAST_BONUS = 2.0;
 		const float SMT_BONUS = 2.0;
@@ -284,7 +290,7 @@ namespace Gts {
 		auto GtsSkillLevel = GetGtsSkillLevel();
 
 		float alteration_level_bonus = 0.0380 + (GtsSkillLevel * 0.000360); // + 100% bonus at level 100
-		Steal(target, caster, power, power * alteration_level_bonus, transfer_effeciency);
+		Steal(target, caster, power, power * alteration_level_bonus, transfer_effeciency, source);
 	}
 
 	inline bool ShrinkToNothing(Actor* caster, Actor* target) {
