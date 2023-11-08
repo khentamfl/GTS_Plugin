@@ -1742,7 +1742,6 @@ namespace Gts {
 				} else if (stage == 3) {
 					Persistent::GetSingleton().CrushCount += value;
 				} else if (stage == 4) {
-					Persistent::GetSingleton().CrushCount += value;
 					Persistent::GetSingleton().STNCount += value;
 				} else if (stage == 5) {
 					Persistent::GetSingleton().HandCrushed += value;
@@ -1793,7 +1792,7 @@ namespace Gts {
 		} else if (stage == 3) {
 			return Persistent::GetSingleton().CrushCount;
 		} else if (stage == 4) {
-			return Persistent::GetSingleton().CrushCount + (Persistent::GetSingleton().STNCount - 3.0);
+			return (Persistent::GetSingleton().CrushCount - 3.0) + Persistent::GetSingleton().STNCount;
 		} else if (stage == 5) {
 			return Persistent::GetSingleton().HandCrushed;
 		} else if (stage == 6) {
