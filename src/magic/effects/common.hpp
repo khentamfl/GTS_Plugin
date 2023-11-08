@@ -237,7 +237,7 @@ namespace Gts {
 	}
 
 	inline void Transfer(Actor* from, Actor* to, float scale_factor, float bonus) {
-		Steal(from, to, scale_factor, bonus, 1.0); // 100% efficent for friendly steal
+		Steal(from, to, scale_factor, bonus, 1.0, ShrinkSource::other); // 100% efficent for friendly steal
 	}
 
 	inline void Grow_Ally(Actor* from, Actor* to, float receiver, float caster) {

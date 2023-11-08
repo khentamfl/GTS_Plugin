@@ -19,6 +19,7 @@ namespace Gts {
 	};
 
 	enum ShrinkSource {
+		other,
 		magic,
 		hugs,
 	};
