@@ -158,6 +158,13 @@ namespace {
 		});
 	}
 
+	void GTS_DisableHH(AnimationEventData& data) {
+		data.disableHH = true;
+	}
+
+	void GTS_EnableHH(AnimationEventData& data) {
+		data.disableHH = false;
+	}
 
 	void GTScrush_caster(AnimationEventData& data) {
 		//data.stage = 0;

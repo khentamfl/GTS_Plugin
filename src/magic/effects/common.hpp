@@ -300,9 +300,9 @@ namespace Gts {
 			return false;
 		}
 		if (IsDragon(target) || IsMammoth(target)) {
-			SHRINK_TO_NOTHING_SCALE = 0.032;
+			SHRINK_TO_NOTHING_SCALE = 0.026;
 		} if (IsGiant(target)) {
-			SHRINK_TO_NOTHING_SCALE = 0.050;
+			SHRINK_TO_NOTHING_SCALE = 0.046;
 		}
 
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !Runtime::HasMagicEffect(target,"ShrinkToNothing") && !target->IsPlayerTeammate()) {

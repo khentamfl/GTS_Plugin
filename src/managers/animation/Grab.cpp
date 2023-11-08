@@ -728,6 +728,9 @@ namespace {
 
 	void GrabVoreEvent(const InputEventData& data) { // Eat everyone in hand
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 3)) {
+			return;
+		}
 		if (!IsStomping(player) && !IsTransitioning(player)) {
 			auto grabbedActor = Grab::GetHeldActor(player);
 			if (!grabbedActor) {
