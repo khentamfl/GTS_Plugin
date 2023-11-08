@@ -1739,9 +1739,9 @@ namespace Gts {
 					Persistent::GetSingleton().HugStealCount += value;
 				} else if (stage == 2) {
 					Persistent::GetSingleton().StolenSize += value;
-				} else if (stage == 3) {
+				} else if (stage == 3 && queststage >= 30) {
 					Persistent::GetSingleton().CrushCount += value;
-				} else if (stage == 4) {
+				} else if (stage == 4 && queststage >= 40) {
 					Persistent::GetSingleton().STNCount += value;
 				} else if (stage == 5) {
 					Persistent::GetSingleton().HandCrushed += value;
