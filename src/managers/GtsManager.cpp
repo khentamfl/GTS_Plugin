@@ -7,6 +7,7 @@
 #include "managers/RipClothManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
+#include "magic/effects/common.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/Attributes.hpp"
 #include "managers/hitmanager.hpp"

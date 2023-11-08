@@ -16,6 +16,7 @@
 #include "managers/GtsSizeManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/InputManager.hpp"
+#include "magic/effects/common.hpp"
 #include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
