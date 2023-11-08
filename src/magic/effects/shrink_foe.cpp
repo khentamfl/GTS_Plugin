@@ -160,8 +160,6 @@ namespace Gts {
 			return; // Disallow shrinking Essentials
 		}
 		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus * weakness, gainpower * balancemodebonus, has_smt, ShrinkSource::magic);
-
-		QuestFunction(caster, target, shrink * SizeDifference * bonus * weakness);
 		
 		if (ShrinkToNothing(caster, target)) {
 		}
