@@ -88,7 +88,7 @@ namespace {
 		Actor* actor_a = skyrim_cast<Actor*>(actor);
 		Actor* actor_b = skyrim_cast<Actor*>(otherActor);
 		if (actor_a && actor_b) {
-			float sizedifference = get_visual_scale(actor)/get_visual_scale(otherActor);
+			float sizedifference = get_visual_scale(actor_a)/get_visual_scale(actor_b);
 			if (sizedifference >= 3.4) {
 				return true;
 			}
