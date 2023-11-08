@@ -272,6 +272,7 @@ namespace Gts {
 			auto root = find_node(prey, "NPC Root [Root]");
 			if (root) { 
 				auto scale = get_visual_scale(prey);
+				NiPoint3 position = root->world.translate;
 				SpawnParticle(prey, 60.00, "GTS/Magic/bind_rune.nif", NiMatrix3(), position, scale * 3.0, 7, nullptr); // Spawn Bind Rune
 				Notify("Rune spawned succesfully");
 			}
