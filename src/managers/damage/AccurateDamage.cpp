@@ -499,7 +499,6 @@ namespace Gts {
 		}
 
 		if (GetAV(tiny, ActorValue::kHealth) <= 0 || tiny->IsDead()) {
-			KillActor(giant, tiny);
 			ReportCrime(giant, tiny, 1000, true);
 			if (multiplier >= 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
@@ -511,6 +510,7 @@ namespace Gts {
 							AdvanceQuestProgression(giant, 3, 1);
 						}
 					}
+					KillActor(giant, tiny);
 					CrushBonuses(giant, tiny);
 					PrintDeathSource(giant, tiny, Cause);
 					if (!LessGore()) {
