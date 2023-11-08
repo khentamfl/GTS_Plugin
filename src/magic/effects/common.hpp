@@ -115,7 +115,7 @@ namespace Gts {
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)*0.01;
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)*0.01;
 		float GigantismTarget = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)*0.01;  // May go negative needs fixing with a smooth clamp
-		float efficiency = clamp(0.25, 1.25, (casterlevel/targetlevel)) * progression_multiplier;
+		float efficiency = clamp(0.25, 1.0, (casterlevel/targetlevel)) * progression_multiplier;
 		if (IsDragon(target)) {
 			efficiency *= DRAGON_PEANLTY;
 		} if (IsMammoth(target)) {
@@ -138,7 +138,7 @@ namespace Gts {
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)*0.01;
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)*0.01;
 		float GigantismTarget = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)*0.01;  // May go negative needs fixing with a smooth clamp
-		float efficiency = clamp(0.25, 1.25, (casterlevel/targetlevel));
+		float efficiency = clamp(0.25, 1.0, (casterlevel/targetlevel));
 		//log::info("LevelDifference: {}, caster level: {}, target level: {}", efficiency, casterlevel, targetlevel);
 		if (IsDragon(target)) {
 			efficiency *= DRAGON_PEANLTY;
@@ -299,8 +299,10 @@ namespace Gts {
 		if (!caster) {
 			return false;
 		}
-		if (IsDragon(target)) {
-			SHRINK_TO_NOTHING_SCALE = 0.035;
+		if (IsDragon(target) || IsMammoth(target)) {
+			SHRINK_TO_NOTHING_SCALE = 0.032;
+		} if (IsGiant(target)) {
+			SHRINK_TO_NOTHING_SCALE = 0.050;
 		}
 
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !Runtime::HasMagicEffect(target,"ShrinkToNothing") && !target->IsPlayerTeammate()) {
