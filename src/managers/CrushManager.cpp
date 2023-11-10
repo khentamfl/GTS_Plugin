@@ -176,6 +176,9 @@ namespace Gts {
 					}
 					//Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
 					float currentSize = get_visual_scale(tiny);
+
+					std::string taskname = std::format("CrushTiny {}", tiny->formID);
+					
 					MoanOrLaugh(giant, tiny);
 					GrowAfterTheKill(giant, tiny);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
@@ -217,7 +220,7 @@ namespace Gts {
 					}
 					ActorHandle giantHandle = giant->CreateRefHandle();
 					ActorHandle tinyHandle = tiny->CreateRefHandle();
-					TaskManager::RunOnce([=](auto& update){
+					TaskManager::RunOnce(taskname, [=](auto& update){
 						if (!tinyHandle) {
 							return;
 						}

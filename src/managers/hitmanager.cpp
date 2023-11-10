@@ -121,6 +121,8 @@ namespace Gts {
 		ActorHandle giantHandle = attacker->CreateRefHandle();
 		ActorHandle tinyHandle = receiver->CreateRefHandle();
 
+		
+
 		TaskManager::RunOnce([=](auto& update){
 			if (!tinyHandle) {
 				return;
