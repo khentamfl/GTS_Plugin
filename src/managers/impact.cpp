@@ -100,7 +100,7 @@ namespace {
 		if (actor->formID != 0x14) {
 			return;
 		}
-		auto node = get_landing_nodes(giant, foot_kind);
+		auto node = get_landing_nodes(actor, foot_kind);
 		float scale = get_visual_scale(actor);
 
 		std::random_device rd;
