@@ -216,7 +216,10 @@ namespace Gts {
 					TriggerScreenBlood(50);
 					tiny->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
 				}
-				TaskManager::RunOnce([=](auto& update) {
+
+				std::string taskname = std::format("VoreAbsorb {}", tiny->formID);
+
+				TaskManager::RunOnce(taskname, [=](auto& update) {
 					if (!tinyref) {
 						return;
 					}

@@ -121,9 +121,11 @@ namespace Gts {
 		ActorHandle giantHandle = attacker->CreateRefHandle();
 		ActorHandle tinyHandle = receiver->CreateRefHandle();
 
+		std::string taskname = std::format("Overkill {}", receiver->formID);
+
 		
 
-		TaskManager::RunOnce([=](auto& update){
+		TaskManager::RunOnce(taskname, [=](auto& update){
 			if (!tinyHandle) {
 				return;
 			}

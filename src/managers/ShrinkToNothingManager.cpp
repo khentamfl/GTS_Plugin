@@ -91,7 +91,9 @@ namespace Gts {
 					}
 					ActorHandle giantHandle = giant->CreateRefHandle();
 					ActorHandle tinyHandle = tiny->CreateRefHandle();
-					TaskManager::RunOnce([=](auto& update){
+					std::string taskname = std::format("STN {}", tiny->formID);
+
+					TaskManager::RunOnce(taskname, [=](auto& update){
 						if (!tinyHandle) {
 							return;
 						}
