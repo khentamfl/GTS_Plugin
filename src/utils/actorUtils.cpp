@@ -1715,12 +1715,15 @@ namespace Gts {
 					float timepassed = Finish - Start;
 
 					auto node = find_object_node(dropboxPtr, "GorePile_Obj");
+					auto trigger = find_object_node(dropboxPtr, "Trigger_Obj");
 					if (node) {
-						log::info("DropBox Scale Pre:{}", node->local.scale);
 						node->local.scale = (Scale * 0.33) + (timepassed*0.15);
-						log::info("DropBox Scale Post: {}", node->local.scale);
+						update_node(node);
 					}
-					update_node(node);
+					if (trigger) {
+						trigger->local.scale = (Scale * 0.33) + (timepassed*0.15);
+						update_node(trigger);
+					}
 					if (node && node->local.scale >= Scale) {
 						log::info(" - Scale == expected scale, ending task");
 						return false; // End task
