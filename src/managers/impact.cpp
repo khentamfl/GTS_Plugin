@@ -20,23 +20,6 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-	void DecalTest(Actor* actor, const FootEvent& foot_kind) {
-		if (actor->formID != 0x14) {
-			return;
-		}
-		auto node = get_landing_nodes(foot_kind);
-		float scale = get_visual_scale(actor);
-		auto decal = Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", node, NiPoint3{dis(gen), 0, -1}, 512, true, true);
-		ObjectRefHandle decalref = dropbox->CreateRefHandle();
-		auto decalget = decalref.get().get();
-		if (decalget) {
-			decalget->dData.decalMinWidth *= scale;
-			decalget->dData.decalMaxWidth *= scale;
-			decalget->dData.decalMinHeight *= scale;
-			decalget->dData.decalMaxHeight *= scale;
-			log::info("decal test success");
-		}
-	}
 
 	FootEvent get_foot_kind(Actor* actor, std::string_view tag) {
 		auto profiler = Profilers::Profile("Impact: Get Foot Kind");
@@ -111,6 +94,29 @@ namespace {
 				break;
 		}
 		return results;
+	}
+
+	void DecalTest(Actor* actor, const FootEvent& foot_kind) {
+		if (actor->formID != 0x14) {
+			return;
+		}
+		auto node = get_landing_nodes(foot_kind);
+		float scale = get_visual_scale(actor);
+
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_real_distribution<float> dis(-0.2, 0.2);
+
+		auto decal = Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", node, NiPoint3{dis(gen), 0, -1}, 512, true, true);
+		ObjectRefHandle decalref = dropbox->CreateRefHandle();
+		auto decalget = decalref.get().get();
+		if (decalget) {
+			decalget->dData.decalMinWidth *= scale;
+			decalget->dData.decalMaxWidth *= scale;
+			decalget->dData.decalMinHeight *= scale;
+			decalget->dData.decalMaxHeight *= scale;
+			log::info("decal test success");
+		}
 	}
 }
 namespace Gts {
