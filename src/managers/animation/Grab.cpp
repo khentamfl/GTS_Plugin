@@ -882,6 +882,7 @@ namespace Gts {
 				}
 				if (!AttachToCleavage(gianthandle, tinyhandle)) {
 					// Unable to attach
+					Grab::Release(giantref);
 					return false;
 				}
 			} else if (AttachToHand(gianthandle, tinyhandle)) {

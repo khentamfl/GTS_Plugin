@@ -1685,12 +1685,14 @@ namespace Gts {
 		if (!dropbox) {
 			return;
 		}
+		float Start = Time::WorldTimeElapsed();
 		dropbox->SetDisplayName(name, false);
 		log::info("Spawning DropBox for {}", actor->GetDisplayFullName());
-		float Scale = std::clamp(scale, 0.2f, 1.5f);
+		float Scale = std::clamp(scale, 0.10f, 1.5f);
 		log::info("Expected Scale: Clamp: {}, Real: {}", Scale, scale);
 		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
 			TaskManager::RunFor(30.0, [=](auto& progressData) {
+				float Finish = Time::WorldTimeElapsed();
 				auto dropboxPtr = dropboxHandle.get().get();
 				if (!dropboxPtr) {
 					return false;
@@ -1705,13 +1707,18 @@ namespace Gts {
 					return true; // Retry next frame
 				} else {
 					log::info(" - Got 3D for dropbox");
-						dropbox3D->local.scale = Scale;
-						auto actor3D = actor->GetCurrent3D();
+						float timepassed = Finish - Start;
+						dropbox3D->local.scale = (Scale * 0.10) + (timepassed*0.3);
+						/*auto actor3D = actor->GetCurrent3D();
 						if (actor3D) {
 							dropbox3D->local.rotate = actor3D->local.rotate;
-						}
+						}*/
 						update_node(dropbox3D);
-					return false;
+						if (dropbox3D->local.scale >= Scale) {
+							log::info(" - Scale == expected scale, ending task");
+							return false; // End task
+						}
+					return true;
 				}
     		});
 		for (auto &[a_object, invData]: actor->GetInventory()) {

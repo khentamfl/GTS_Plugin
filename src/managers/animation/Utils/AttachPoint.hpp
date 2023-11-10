@@ -278,6 +278,8 @@ namespace Gts {
 		for (auto bone_name: bone_names) {
 			auto bone = find_node(giant, bone_name);
 			if (!bone) {
+				Notify("ERROR: Breast 02 bones not found");
+				Notify("Install 3BB/XPMS32");
 				return false;
 			}
 			if (Runtime::GetBool("EnableDebugOverlay")) {
