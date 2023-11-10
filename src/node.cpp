@@ -106,7 +106,7 @@ namespace Gts {
 	}
 
 
-	NiAVObject* find_object_node(Actor* actor, std::string_view node_name) {
+	NiAVObject* find_object_node(TESObjectREFR* object, std::string_view node_name) {
 		auto model = object->GetCurrent3D();
 		if (!model) {
 			return nullptr;
