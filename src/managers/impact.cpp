@@ -108,7 +108,7 @@ namespace {
 			std::mt19937 gen(rd());
 			std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
-			auto decal = GetImpactEffect("GtsBloodSprayImpactSetVoreSmallest");
+			auto decal = Runtime::GetImpactEffect("GtsBloodSprayImpactSetVoreSmallest");
 			
 			Runtime::PlayImpactEffect(actor, decal, foot, NiPoint3{dis(gen), 0, -1}, 512, true, true);
 			if (decal) {
