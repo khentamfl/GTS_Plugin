@@ -1692,7 +1692,7 @@ namespace Gts {
 		auto taskname = std::format("Dropbox {}", dropbox->GetOwner()->formID);
 		//log::info("Expected Scale: Clamp: {}, Real: {}, name: {}", Scale, scale, taskname);
 		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
-			TaskManager::RunFor(name, 30.0, [=](auto& progressData) {
+			TaskManager::RunFor(taskname, 30.0, [=](auto& progressData) {
 				float Finish = Time::WorldTimeElapsed();
 				auto dropboxPtr = dropboxHandle.get().get();
 				if (!dropboxPtr) {
