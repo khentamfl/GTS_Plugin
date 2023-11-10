@@ -194,6 +194,11 @@ namespace {
 		return GetQuestProgression(stage);
 	}
 
+	float GetAspectOfGiantessPower(StaticFunctionTag*) {
+		auto player = PlayerCharacter::GetSingleton();
+		return SizeManager::GetSingleton().GetEnchantmentBonus(player)*0.01;
+	}
+
 	bool GetIsHighHeelEnabled(StaticFunctionTag*) {
 		return Persistent::GetSingleton().highheel_correction;
 	}
@@ -454,6 +459,7 @@ namespace Gts {
 		vm->RegisterFunction("SetNPCProtection", PapyrusClass, SetNPCProtection);
 		vm->RegisterFunction("SetPCProtection", PapyrusClass, SetPCProtection);
 		vm->RegisterFunction("Quest_GetProgression", PapyrusClass, Quest_GetProgression);
+		vm->RegisterFunction("GetAspectOfGiantessPower", PapyrusClass, GetAspectOfGiantessPower);
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
 		vm->RegisterFunction("SetIsHHFurnitureEnabled", PapyrusClass, SetIsHHFurnitureEnabled);
 		vm->RegisterFunction("SetCrawlAnimation", PapyrusClass, SetCrawlAnimation);

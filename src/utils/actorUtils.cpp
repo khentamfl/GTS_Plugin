@@ -1682,7 +1682,13 @@ namespace Gts {
 	// From an actor place a new container at them and transfer
 	// all of their inventory into it
 	void TransferInventoryToDropbox(Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause) {
-		auto dropbox = Runtime::PlaceContainer(actor, "Dropbox_Physics");
+		std::string_view container;
+		if (IsLiving(actor)) {
+			container = "Dropbox_Physics";
+		} else {
+			container = "Dropbox_Undead_Physics";
+		}
+		auto dropbox = Runtime::PlaceContainer(actor, container);
 		std::string name = std::format("{} remains", actor->GetDisplayFullName());
 		std::string taskname = std::format("Dropbox {}", actor->formID);
 		if (!dropbox) {
@@ -1700,34 +1706,25 @@ namespace Gts {
 					return false;
 				}
 				if (!dropboxPtr->Is3DLoaded()) {
-					//log::info(" - 3D Not loaded yet for dropbox");
 					return true;
 				}
 				auto dropbox3D = dropboxPtr->GetCurrent3D();
 				if (!dropbox3D) {
-					//log::info(" - 3D is nullptr still for dropbox");
 					return true; // Retry next frame
 				} else {
-					//log::info(" - Got 3D for dropbox");
-						float timepassed = Finish - Start;
-						//NiPoint3 Position = dropboxPtr->GetPosition();
+					float timepassed = Finish - Start;
 
-						auto node = find_object_node(dropboxPtr, "GorePile_Obj");
-						if (node) {
-							log::info("DropBox Scale Pre:{}", node->local.scale);
-							node->local.scale = (Scale * 0.10) + (timepassed*0.05);
-							log::info("DropBox Scale Post: {}", node->local.scale);
-						}
-						//Position.z+= 0.001;
-						/*auto actor3D = actor->GetCurrent3D();
-						if (actor3D) {
-							dropbox3D->local.rotate = actor3D->local.rotate;
-						}*/
-						update_node(node);
-						if (node && node->local.scale >= Scale) {
-							log::info(" - Scale == expected scale, ending task");
-							return false; // End task
-						}
+					auto node = find_object_node(dropboxPtr, "GorePile_Obj");
+					if (node) {
+						log::info("DropBox Scale Pre:{}", node->local.scale);
+						node->local.scale = (Scale * 0.33) + (timepassed*0.15);
+						log::info("DropBox Scale Post: {}", node->local.scale);
+					}
+					update_node(node);
+					if (node && node->local.scale >= Scale) {
+						log::info(" - Scale == expected scale, ending task");
+						return false; // End task
+					}
 					return true;
 				}
     		});
