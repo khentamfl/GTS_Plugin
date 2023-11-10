@@ -1689,23 +1689,24 @@ namespace Gts {
 		float Start = Time::WorldTimeElapsed();
 		dropbox->SetDisplayName(name, false);
 		float Scale = std::clamp(scale, 0.10f, 1.5f);
+		log::info("Starting task: {}", taskname);
 		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
-			TaskManager::RunFor(taskname, 30.0, [=](auto& progressData) {
+			TaskManager::Run(taskname, [=](auto& progressData) {
 				float Finish = Time::WorldTimeElapsed();
 				auto dropboxPtr = dropboxHandle.get().get();
 				if (!dropboxPtr) {
 					return false;
 				}
 				if (!dropboxPtr->Is3DLoaded()) {
-					log::info(" - 3D Not loaded yet for dropbox");
+					//log::info(" - 3D Not loaded yet for dropbox");
 					return true;
 				}
 				auto dropbox3D = dropboxPtr->GetCurrent3D();
 				if (!dropbox3D) {
-					log::info(" - 3D is nullptr still for dropbox");
+					//log::info(" - 3D is nullptr still for dropbox");
 					return true; // Retry next frame
 				} else {
-					log::info(" - Got 3D for dropbox");
+					//log::info(" - Got 3D for dropbox");
 						float timepassed = Finish - Start;
 						dropbox3D->local.scale = (Scale * 0.10) + (timepassed*0.3);
 						/*auto actor3D = actor->GetCurrent3D();
