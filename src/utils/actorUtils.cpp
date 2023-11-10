@@ -1710,15 +1710,18 @@ namespace Gts {
 				} else {
 					//log::info(" - Got 3D for dropbox");
 						float timepassed = Finish - Start;
-						log::info("DropBox Scale Pre:{}", dropbox3D->local.scale);
-						dropbox3D->local.scale = (Scale * 0.10) + (timepassed*0.05);
-						log::info("DropBox Scale Post: {}", dropbox3D->local.scale);
+						auto node = find_object_node(dropboxPtr, "GorePile_Obj");
+						if (node) {
+							log::info("DropBox Scale Pre:{}", node->local.scale);
+							node->local.scale = (Scale * 0.10) + (timepassed*0.05);
+							log::info("DropBox Scale Post: {}", node->local.scale);
+						}
 						/*auto actor3D = actor->GetCurrent3D();
 						if (actor3D) {
 							dropbox3D->local.rotate = actor3D->local.rotate;
 						}*/
-						update_node(dropbox3D);
-						if (dropbox3D->local.scale >= Scale) {
+						update_node(node);
+						if (node && node->local.scale >= Scale) {
 							log::info(" - Scale == expected scale, ending task");
 							return false; // End task
 						}
