@@ -577,6 +577,7 @@ namespace Gts {
 
 	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause) {
 		std::string name = std::format("TransferItems_{}_{}", from->formID, to->formID);
+		log::info("Starting Transfer: {}", name);
 		ActorHandle gianthandle = to->CreateRefHandle();
 		ActorHandle tinyhandle = from->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
@@ -590,6 +591,7 @@ namespace Gts {
 			auto giant = gianthandle.get().get();
 			if (!tiny->IsDead()) {
 				KillActor(giant, tiny); // just to make sure
+				return true; // try again
 			}
 			if (tiny->IsDead()) {
 				TransferInventoryToDropbox(tiny, scale, removeQuestItems, Cause);

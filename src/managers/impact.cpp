@@ -100,21 +100,19 @@ namespace {
 		if (actor->formID != 0x14) {
 			return;
 		}
-		auto node = get_landing_nodes(foot_kind);
+		auto node = get_landing_nodes(giant, foot_kind);
 		float scale = get_visual_scale(actor);
 
 		std::random_device rd;
 		std::mt19937 gen(rd());
 		std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
-		auto decal = Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", node, NiPoint3{dis(gen), 0, -1}, 512, true, true);
-		ObjectRefHandle decalref = dropbox->CreateRefHandle();
-		auto decalget = decalref.get().get();
-		if (decalget) {
-			decalget->dData.decalMinWidth *= scale;
-			decalget->dData.decalMaxWidth *= scale;
-			decalget->dData.decalMinHeight *= scale;
-			decalget->dData.decalMaxHeight *= scale;
+		auto decal = Runtime::PlayImpactEffect(actor, "GtsBloodSprayImpactSetVoreSmallest", node, NiPoint3{dis(gen), 0, -1}, 512, true, true);
+		if (decal) {
+			decal->dData.decalMinWidth *= scale;
+			decal->dData.decalMaxWidth *= scale;
+			decal->dData.decalMinHeight *= scale;
+			decal->dData.decalMaxHeight *= scale;
 			log::info("decal test success");
 		}
 	}
