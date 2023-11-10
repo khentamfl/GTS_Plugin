@@ -1690,11 +1690,11 @@ namespace Gts {
 			container = "Dropbox_Undead_Physics";
 		}
 		if (IsDragon(actor)) {
-			Scale *= 2.5;
+			Scale *= 3.2;
 		} else if (IsGiant(actor)) {
-			Scale *= 1.7;
+			Scale *= 2.0;
 		} else if (IsMammoth(actor)) {
-			Scale *= 3.0;
+			Scale *= 5.0;
 		}
 		auto dropbox = Runtime::PlaceContainer(actor, container);
 		std::string name = std::format("{} remains", actor->GetDisplayFullName());
@@ -1703,11 +1703,11 @@ namespace Gts {
 			return;
 		}
 		float Start = Time::WorldTimeElapsed();
-		dropbox->SetDisplayName(name, true);
+		dropbox->SetDisplayName(name, false);
 		
 		log::info("Starting task: {}", taskname);
 		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
-			TaskManager::RunFor(taskname, 10, [=](auto& progressData) {
+			TaskManager::RunFor(taskname, 16, [=](auto& progressData) {
 				float Finish = Time::WorldTimeElapsed();
 				auto dropboxPtr = dropboxHandle.get().get();
 				if (!dropboxPtr) {
@@ -1725,11 +1725,11 @@ namespace Gts {
 					auto node = find_object_node(dropboxPtr, "GorePile_Obj");
 					auto trigger = find_object_node(dropboxPtr, "Trigger_Obj");
 					if (node) {
-						node->local.scale = (Scale * 0.33) + (timepassed*0.15);
+						node->local.scale = (Scale * 0.33) + (timepassed*0.18);
 						update_node(node);
 					}
 					if (trigger) {
-						trigger->local.scale = (Scale * 0.33) + (timepassed*0.15);
+						trigger->local.scale = (Scale * 0.33) + (timepassed*0.18);
 						log::info("Scaling Trigger");
 						update_node(trigger);
 					}
