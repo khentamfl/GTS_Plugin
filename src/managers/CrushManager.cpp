@@ -229,6 +229,7 @@ namespace Gts {
 						auto tiny = tinyHandle.get().get();
 						float scale = get_visual_scale(tiny);
 						TransferInventory(tiny, giant, scale, false, true, DamageSource::Crushed);
+						log::info("Crushing: {}", tiny->GetDisplayFullName());
 						
 						EventDispatcher::DoResetActor(tiny);
 					});
