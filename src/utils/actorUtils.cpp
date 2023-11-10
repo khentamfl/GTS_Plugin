@@ -1689,7 +1689,7 @@ namespace Gts {
 		dropbox->SetDisplayName(name, false);
 		log::info("Spawning DropBox for {}", actor->GetDisplayFullName());
 		float Scale = std::clamp(scale, 0.10f, 1.5f);
-		auto taskname = std::format("Dropbox {}", dropbox->GetOwner()->formID);
+		std::string taskname = std::format("Dropbox {}", dropbox->GetOwner()->formID);
 		//log::info("Expected Scale: Clamp: {}, Real: {}, name: {}", Scale, scale, taskname);
 		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
 			TaskManager::RunFor(taskname, 30.0, [=](auto& progressData) {
