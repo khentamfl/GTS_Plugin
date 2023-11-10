@@ -20,6 +20,24 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
+	void DecalTest(Actor* actor, const FootEvent& foot_kind) {
+		if (actor->formID != 0x14) {
+			return;
+		}
+		auto node = get_landing_nodes(foot_kind);
+		float scale = get_visual_scale(actor);
+		auto decal = Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", node, NiPoint3{dis(gen), 0, -1}, 512, true, true);
+		ObjectRefHandle decalref = dropbox->CreateRefHandle();
+		auto decalget = decalref.get().get();
+		if (decalget) {
+			decalget->dData.decalMinWidth *= scale;
+			decalget->dData.decalMaxWidth *= scale;
+			decalget->dData.decalMinHeight *= scale;
+			decalget->dData.decalMaxHeight *= scale;
+			log::info("decal test success");
+		}
+	}
+
 	FootEvent get_foot_kind(Actor* actor, std::string_view tag) {
 		auto profiler = Profilers::Profile("Impact: Get Foot Kind");
 		FootEvent foot_kind = FootEvent::Unknown;
@@ -136,6 +154,9 @@ namespace Gts {
 					bonus *= 1.5;
 				}
 			}
+
+			DecalTest(actor, kind);
+
 			if (kind != FootEvent::JumpLand) { // We already do it for Jump Land inside Compat.cpp. We do NOT want to apply it for Jump Land because of it!
 				if (kind == FootEvent::Left) {
 					DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedLeft);

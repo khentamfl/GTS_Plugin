@@ -1708,7 +1708,7 @@ namespace Gts {
 				} else {
 					//log::info(" - Got 3D for dropbox");
 						float timepassed = Finish - Start;
-						dropbox3D->local.scale = (Scale * 0.10) + (timepassed*0.3);
+						dropbox3D->local.scale = (Scale * 0.10) + (timepassed*0.05);
 						/*auto actor3D = actor->GetCurrent3D();
 						if (actor3D) {
 							dropbox3D->local.rotate = actor3D->local.rotate;
