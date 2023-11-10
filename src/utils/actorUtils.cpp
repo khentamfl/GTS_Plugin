@@ -1695,11 +1695,11 @@ namespace Gts {
 			return;
 		}
 		float Start = Time::WorldTimeElapsed();
-		dropbox->SetDisplayName(name, false);
+		dropbox->SetDisplayName(name, true);
 		float Scale = std::clamp(scale, 0.10f, 1.5f);
 		log::info("Starting task: {}", taskname);
 		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
-			TaskManager::Run(taskname, [=](auto& progressData) {
+			TaskManager::RunFor(taskname, 10, [=](auto& progressData) {
 				float Finish = Time::WorldTimeElapsed();
 				auto dropboxPtr = dropboxHandle.get().get();
 				if (!dropboxPtr) {
@@ -1722,6 +1722,7 @@ namespace Gts {
 					}
 					if (trigger) {
 						trigger->local.scale = (Scale * 0.33) + (timepassed*0.15);
+						log::info("Scaling Trigger");
 						update_node(trigger);
 					}
 					if (node && node->local.scale >= Scale) {
