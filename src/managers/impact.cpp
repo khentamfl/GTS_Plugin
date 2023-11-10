@@ -95,31 +95,6 @@ namespace {
 		}
 		return results;
 	}
-
-	void DecalTest(Actor* actor, std::string_view foot) {
-		if (actor->formID != 0x14) {
-			return;
-		}
-		auto node = find_node(actor, foot);
-		if (node) {
-			float scale = get_visual_scale(actor);
-
-			std::random_device rd;
-			std::mt19937 gen(rd());
-			std::uniform_real_distribution<float> dis(-0.2, 0.2);
-
-			auto decal = Runtime::GetImpactEffect("GtsBloodSprayImpactSetVoreSmallest");
-			
-			Runtime::PlayImpactEffect(actor, decal, foot, NiPoint3{dis(gen), 0, -1}, 512, true, true);
-			if (decal) {
-				decal->dData.decalMinWidth *= scale;
-				decal->dData.decalMaxWidth *= scale;
-				decal->dData.decalMinHeight *= scale;
-				decal->dData.decalMaxHeight *= scale;
-				log::info("decal test success");
-			}
-		}
-	}
 }
 namespace Gts {
 	ImpactManager& ImpactManager::GetSingleton() noexcept {
@@ -168,10 +143,8 @@ namespace Gts {
 			if (kind != FootEvent::JumpLand) { // We already do it for Jump Land inside Compat.cpp. We do NOT want to apply it for Jump Land because of it!
 				if (kind == FootEvent::Left) {
 					DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedLeft);
-					DecalTest(actor, "NPC L Foot [Lft ]");
 				} else if (kind == FootEvent::Right) {
 					DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedRight);
-					DecalTest(actor, "NPC R Foot [Rft ]");
 				}
 				//                     ^          ^
 				//                 Damage         Radius
