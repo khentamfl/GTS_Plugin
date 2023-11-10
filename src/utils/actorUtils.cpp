@@ -1682,15 +1682,13 @@ namespace Gts {
 	void TransferInventoryToDropbox(Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause) {
 		auto dropbox = Runtime::PlaceContainer(actor, "Dropbox_Physics");
 		std::string name = std::format("{} remains", actor->GetDisplayFullName());
+		std::string taskname = std::format("Dropbox {}", actor->formID);
 		if (!dropbox) {
 			return;
 		}
 		float Start = Time::WorldTimeElapsed();
 		dropbox->SetDisplayName(name, false);
-		log::info("Spawning DropBox for {}", actor->GetDisplayFullName());
 		float Scale = std::clamp(scale, 0.10f, 1.5f);
-		std::string taskname = std::format("Dropbox {}", dropbox->GetOwner()->formID);
-		//log::info("Expected Scale: Clamp: {}, Real: {}, name: {}", Scale, scale, taskname);
 		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
 			TaskManager::RunFor(taskname, 30.0, [=](auto& progressData) {
 				float Finish = Time::WorldTimeElapsed();
