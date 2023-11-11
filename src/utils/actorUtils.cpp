@@ -358,6 +358,11 @@ namespace Gts {
 		return true;
 	}
 
+	bool IsMechanical(Actor* actor) {
+		bool dwemer = Runtime::HasKeyword(actor, "DwemerKeyword");
+		return dwemer;
+	}
+
 	bool IsHuman(Actor* actor) { // Check if Actor is humanoid or not. Currently used for Hugs Animation
 		bool vampire = Runtime::HasKeyword(actor, "VampireKeyword");
 		bool dragon = Runtime::HasKeyword(actor, "DragonKeyword");
@@ -1681,11 +1686,16 @@ namespace Gts {
 	// From an actor place a new container at them and transfer
 	// all of their inventory into it
 	void TransferInventoryToDropbox(Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause) {
-		std::string_view container;
-		float Scale = std::clamp(scale, 0.10f, 4.4f);
-		std::string name = std::format("{} remains", actor->GetDisplayFullName());
+
 		bool soul = false;
-		if (Cause == DamageSource::Vored) { // Always spawn soul on vore
+		float Scale = std::clamp(scale, 0.10f, 4.4f);
+
+		std::string_view container;
+		std::string name = std::format("{} remains", actor->GetDisplayFullName());
+		
+		if (IsMechanical(actor)) {
+			container = "Dropbox_Mechanical";
+		} else if (Cause == DamageSource::Vored) { // Always spawn soul on vore
 			container = "Dropbox_Soul";
 			name = std::format("{} Soul Remains", actor->GetDisplayFullName());
 			soul = true;
@@ -1698,6 +1708,7 @@ namespace Gts {
 		} else {
 			container = "Dropbox_Undead_Physics";
 		}
+		
 		if (IsDragon(actor)) { // These affect the scale of dropbox visuals
 			Scale *= 3.2;
 		} else if (IsGiant(actor)) {
