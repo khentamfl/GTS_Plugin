@@ -617,9 +617,10 @@ namespace Gts {
 	}
 
 	void MarkForDeletion(Actor* actor) {
-		TESForm form = actor->formID;
-		form->GetFormFlags().kDeleted = 1;
-		log::info("Is Marked: {}", form->GetFormFlags().kDeleted);
+		TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
+		if (ref) {
+			MarkForDeletion(ref);
+		}
 	}
 
 	void MarkForDeletion(TESObjectREFR* ref) {
