@@ -626,8 +626,8 @@ namespace Gts {
 	void MarkForDeletion(TESObjectREFR* ref) {
 		TESForm* = ref->GetOwner();
 		if (form) {
-			form.GetFormFlags().kDeleted = 1;
-			log::info("Is Marked: {}", form.GetFormFlags().kDeleted);
+			form.GetFormFlags().inGameFormFlags.set(InGameFormFlag::kWantsDelete);
+			log::info("Is Marked for deletion");
 		}
 	}
 
