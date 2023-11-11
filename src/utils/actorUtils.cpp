@@ -403,6 +403,7 @@ namespace Gts {
 		bool ExplSpiderPackMule = Runtime::IsRace(actor, "DLC2ExpSpiderPackmuleRace");
 		bool AshHopper = Runtime::IsRace(actor, "DLC2AshHopperRace");
 		if (Spider||SpiderGiant||SpiderLarge||ChaurusReaper||Chaurus||ChaurusHunterDLC||ChaurusDLC||ExplSpider||ExplSpiderPackMule||AshHopper) {
+			log::info("{} is insect", actor->GetDisplayFullName());
 			return true;
 		} else {
 			return false;
@@ -1695,6 +1696,7 @@ namespace Gts {
 		
 		if (IsMechanical(actor)) {
 			container = "Dropbox_Mechanical";
+			log::info("{} is mechanical", actor->GetDisplayFullName());
 		} else if (Cause == DamageSource::Vored) { // Always spawn soul on vore
 			container = "Dropbox_Soul";
 			name = std::format("{} Soul Remains", actor->GetDisplayFullName());
@@ -1704,9 +1706,11 @@ namespace Gts {
 			name = std::format("Crushed Soul of {} ", actor->GetDisplayFullName());
 			soul = true;
 		} else if (IsInsect(actor)) {
+			log::info("{} is insect", actor->GetDisplayFullName());
 			container = "Dropbox_Bug";
 			name = std::format("Remains of {}", actor->GetDisplayFullName());
 		} else if (IsLiving(actor)) {
+			log::info("{} is living", actor->GetDisplayFullName());
 			container = "Dropbox_Physics";
 		} else {
 			container = "Dropbox_Undead_Physics";

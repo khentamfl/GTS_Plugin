@@ -516,7 +516,11 @@ namespace Gts {
 					if (!LessGore()) {
 						auto node = find_node(giant, GetDeathNodeName(Cause));
 						if (node) {
-							Runtime::PlaySoundAtNode("GtsCrushSound", giant, 1.0, 1.0, node);
+							if (IsMechanical(tiny)) {
+								return;
+							} else {
+								Runtime::PlaySoundAtNode("GtsCrushSound", giant, 1.0, 1.0, node);
+							}
 						} else {
 							Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
 							log::info("Error, node not found. Cause: {}", Cause);
