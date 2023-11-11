@@ -218,7 +218,7 @@ namespace Gts {
 				if (scale > 1.0) {
 					return power*scale + 1.0 - power;
 				} else {
-					return scale;
+					return 1.0; // Don't reduce it if scale is < 1.0
 				}
 			}
 			case ActorValue::kSpeedMult: {

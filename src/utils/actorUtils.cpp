@@ -1683,9 +1683,11 @@ namespace Gts {
 	void TransferInventoryToDropbox(Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause) {
 		std::string_view container;
 		float Scale = std::clamp(scale, 0.10f, 4.4f);
+		std::string name = std::format("{} remains", actor->GetDisplayFullName());
 		bool soul = false;
 		if (Cause == DamageSource::Vored) {
 			container = "Dropbox_Soul";
+			name = std::format("{} soul remains", actor->GetDisplayFullName());
 			soul = true;
 		} else if (IsLiving(actor)) {
 			container = "Dropbox_Physics";
@@ -1700,7 +1702,7 @@ namespace Gts {
 			Scale *= 5.0;
 		}
 		auto dropbox = Runtime::PlaceContainer(actor, container);
-		std::string name = std::format("{} remains", actor->GetDisplayFullName());
+		
 		std::string taskname = std::format("Dropbox {}", actor->formID);
 		if (!dropbox) {
 			return;
@@ -1712,9 +1714,9 @@ namespace Gts {
 		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
 			TaskManager::RunFor(taskname, 16, [=](auto& progressData) {
 				float Finish = Time::WorldTimeElapsed();
-				//if (soul) {
-					//return false; // end it right away, we don't want to scale the soul
-				//}
+				if (soul) {
+					return false; // end it right away, we don't want to scale the soul
+				}
 				auto dropboxPtr = dropboxHandle.get().get();
 				if (!dropboxPtr) {
 					return false;
