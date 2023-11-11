@@ -273,7 +273,7 @@ namespace Gts {
 			if (root) { 
 				auto scale = get_visual_scale(prey);
 				NiPoint3 position = root->world.translate;
-				GetNifReference(Actor* actor, position, 60, scale);
+				GetNifReference(prey, position, 60, scale);
 				//SpawnParticle(prey, 60.00, "GTS/Magic/bind_rune.nif", NiMatrix3(), position, scale * 3.0, 7, nullptr); // Spawn Bind Rune
 				Notify("Rune spawned succesfully");
 			}
