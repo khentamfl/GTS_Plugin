@@ -1671,7 +1671,6 @@ namespace Gts {
 			giant->GetGraphVariableInt("GTS_Def_State", GTSStateID);
 
 			ResetGrab(giant);
-			//log::info("StateID: {}, GTSStateID:{}", StateID, GTSStateID);
 			if (GTSStateID != StateID) {
 				log::info("Setting Grab Int to {}", StateID);
 				giant->SetGraphVariableInt("GTS_Def_State", StateID);
@@ -1684,7 +1683,11 @@ namespace Gts {
 	void TransferInventoryToDropbox(Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause) {
 		std::string_view container;
 		float Scale = std::clamp(scale, 0.10f, 4.4f);
-		if (IsLiving(actor)) {
+		bool soul = false;
+		if (Cause == DamageSource::Vored) {
+			container = "Dropbox_Soul";
+			soul = true;
+		} else if (IsLiving(actor)) {
 			container = "Dropbox_Physics";
 		} else {
 			container = "Dropbox_Undead_Physics";
@@ -1709,6 +1712,9 @@ namespace Gts {
 		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
 			TaskManager::RunFor(taskname, 16, [=](auto& progressData) {
 				float Finish = Time::WorldTimeElapsed();
+				//if (soul) {
+					//return false; // end it right away, we don't want to scale the soul
+				//}
 				auto dropboxPtr = dropboxHandle.get().get();
 				if (!dropboxPtr) {
 					return false;
