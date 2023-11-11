@@ -180,7 +180,6 @@ namespace Gts {
 	void TransferInventoryToDropbox(Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause);
 
 	void AdvanceQuestProgression(Actor* actor, float stage, float value);
-	TESObjectREFR* GetNifReference(Actor* actor, NiPoint3 position, float lifetime, float scale);
 	bool CanPerformAnimation(Actor* giant, float type);
 	float GetQuestProgression(float stage);
 }
