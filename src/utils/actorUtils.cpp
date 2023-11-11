@@ -616,21 +616,6 @@ namespace Gts {
 		actor->GetActorRuntimeData().criticalStage.reset(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
 	}
 
-	void MarkForDeletion(Actor* actor) {
-		TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
-		if (ref) {
-			MarkForDeletion(ref);
-		}
-	}
-
-	void MarkForDeletion(TESObjectREFR* ref) {
-		TESForm* form = ref->GetOwner();
-		if (form) {
-			form->GetFormFlags()->inGameFormFlags.set(InGameFormFlag::kWantsDelete);
-			log::info("Is Marked for deletion");
-		}
-	}
-
 	void SetRestrained(Actor* actor) {
 		CallFunctionOn(actor, "Actor", "SetRestrained", true);
 	}
