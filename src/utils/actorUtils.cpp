@@ -1703,12 +1703,15 @@ namespace Gts {
 			container = "Dropbox_Soul";
 			name = std::format("Crushed Soul of {} ", actor->GetDisplayFullName());
 			soul = true;
+		} else if (IsInsect(actor)) {
+			container = "Dropbox_Bug";
+			name = std::format("Remains of {}", actor->GetDisplayFullName());
 		} else if (IsLiving(actor)) {
 			container = "Dropbox_Physics";
 		} else {
 			container = "Dropbox_Undead_Physics";
 		}
-		
+
 		if (IsDragon(actor)) { // These affect the scale of dropbox visuals
 			Scale *= 3.2;
 		} else if (IsGiant(actor)) {
