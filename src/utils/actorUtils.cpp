@@ -624,9 +624,11 @@ namespace Gts {
 	}
 
 	void MarkForDeletion(TESObjectREFR* ref) {
-		TESForm form = ref->GetOwner();
-		form->GetFormFlags().kDeleted = 1;
-		log::info("Is Marked: {}", form->GetFormFlags().kDeleted);
+		TESForm* = ref->GetOwner();
+		if (form) {
+			form.GetFormFlags().kDeleted = 1;
+			log::info("Is Marked: {}", form.GetFormFlags().kDeleted);
+		}
 	}
 
 	void SetRestrained(Actor* actor) {
