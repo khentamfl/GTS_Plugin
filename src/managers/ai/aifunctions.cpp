@@ -20,8 +20,10 @@ namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
 		if (!Persistent::GetSingleton().hostile_toggle) {
 			tiny->KillImmediate();
+			MarkForDeletion(tiny);
 		} else {
 			tiny->KillImpl(giant, 0, true, true);
+			MarkForDeletion(tiny);
 		}
 		RagdollTask(tiny);
 	}

@@ -617,13 +617,13 @@ namespace Gts {
 	}
 
 	void MarkForDeletion(Actor* actor) {
-		FormID form = actor->formID;
+		TESForm form = actor->formID;
 		form->GetFormFlags().kDeleted = 1;
 		log::info("Is Marked: {}", form->GetFormFlags().kDeleted);
 	}
 
 	void MarkForDeletion(TESObjectREFR* ref) {
-		FormID form = ref->GetOwner();
+		TESForm form = ref->GetOwner();
 		form->GetFormFlags().kDeleted = 1;
 		log::info("Is Marked: {}", form->GetFormFlags().kDeleted);
 	}
