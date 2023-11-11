@@ -56,7 +56,7 @@ namespace Gts {
 	bool IsMechanical(Actor* actor);
 	bool IsHuman(Actor* actor);
 	bool IsBlacklisted(Actor* actor);
-	bool IsInsect(Actor* actor);
+	bool IsInsect(Actor* actor, bool performcheck);
 	bool IsFemale(Actor* actor);
 	bool IsDragon(Actor* actor);
 	bool IsGiant(Actor* actor);
@@ -85,6 +85,8 @@ namespace Gts {
 
 	void Disintegrate(Actor* actor);
 	void UnDisintegrate(Actor* actor);
+	void MarkForDeletion(Actor* actor);
+	void MarkForDeletion(TESObjectREFR* ref);
 
 	void SetRestrained(Actor* actor);
 	void SetUnRestrained(Actor* actor);

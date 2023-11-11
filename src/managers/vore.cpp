@@ -773,7 +773,7 @@ namespace Gts {
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 
-		if (IsInsect(prey) || IsBlacklisted(prey) || IsUndead(prey)) {
+		if (IsInsect(prey, true) || IsBlacklisted(prey) || IsUndead(prey)) {
 			std::string_view message = std::format("{} has no desire to eat {}", pred->GetDisplayFullName(), prey->GetDisplayFullName());
 			TiredSound(pred, message);
 			return false;

@@ -387,9 +387,9 @@ namespace Gts {
 		return blacklist;
 	}
 
-	bool IsInsect(Actor* actor) {
+	bool IsInsect(Actor* actor, bool performcheck) {
 		bool Check = Persistent::GetSingleton().AllowInsectVore;
-		if (Check) {
+		if (performcheck && Check) {
 			return false;
 		}
 		bool Spider = Runtime::IsRace(actor, "FrostbiteSpiderRace");
@@ -614,6 +614,18 @@ namespace Gts {
 
 	void UnDisintegrate(Actor* actor) {
 		actor->GetActorRuntimeData().criticalStage.reset(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
+	}
+
+	void MarkForDeletion(Actor* actor) {
+		FormID form = actor->formID;
+		form->GetFormFlags().kDeleted = 1;
+		log::info("Is Marked: {}", form->GetFormFlags().kDeleted);
+	}
+
+	void MarkForDeletion(TESObjectREFR* ref) {
+		FormID form = ref->GetOwner();
+		form->GetFormFlags().kDeleted = 1;
+		log::info("Is Marked: {}", form->GetFormFlags().kDeleted);
 	}
 
 	void SetRestrained(Actor* actor) {
@@ -1705,7 +1717,7 @@ namespace Gts {
 			container = "Dropbox_Soul";
 			name = std::format("Crushed Soul of {} ", actor->GetDisplayFullName());
 			soul = true;
-		} else if (IsInsect(actor)) {
+		} else if (IsInsect(actor, false)) {
 			log::info("{} is insect", actor->GetDisplayFullName());
 			container = "Dropbox_Bug";
 			name = std::format("Remains of {}", actor->GetDisplayFullName());
