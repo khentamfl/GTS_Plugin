@@ -164,7 +164,7 @@ namespace {
 		} else if (Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
 			Cprint("{} became one with {}", prey, pred->GetDisplayFullName());
 		} else if (Runtime::HasPerk(pred, "SoulVorePerk") && random >= 2) {
-			Cprint("{} both body and soul were greedily devoured by {}", prey, pred->GetDisplayFullName());
+			Cprint("{} was greedily devoured by {}", prey, pred->GetDisplayFullName());
 		} else {
 			Cprint("{} was absorbed by {}", prey, pred->GetDisplayFullName());
 		}

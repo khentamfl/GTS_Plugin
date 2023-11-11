@@ -1685,32 +1685,35 @@ namespace Gts {
 		float Scale = std::clamp(scale, 0.10f, 4.4f);
 		std::string name = std::format("{} remains", actor->GetDisplayFullName());
 		bool soul = false;
-		if (Cause == DamageSource::Vored) {
+		if (Cause == DamageSource::Vored) { // Always spawn soul on vore
 			container = "Dropbox_Soul";
-			name = std::format("{} soul remains", actor->GetDisplayFullName());
+			name = std::format("{} Soul Remains", actor->GetDisplayFullName());
+			soul = true;
+		} else if (LessGore()) { // Spawn soul if Less Gore is on
+			container = "Dropbox_Soul";
+			name = std::format("Crushed Soul of {} ", actor->GetDisplayFullName());
 			soul = true;
 		} else if (IsLiving(actor)) {
 			container = "Dropbox_Physics";
 		} else {
 			container = "Dropbox_Undead_Physics";
 		}
-		if (IsDragon(actor)) {
+		if (IsDragon(actor)) { // These affect the scale of dropbox visuals
 			Scale *= 3.2;
 		} else if (IsGiant(actor)) {
 			Scale *= 2.0;
 		} else if (IsMammoth(actor)) {
 			Scale *= 5.0;
 		}
-		auto dropbox = Runtime::PlaceContainer(actor, container);
+		auto dropbox = Runtime::PlaceContainer(actor, container); // Place chosen container
 		
-		std::string taskname = std::format("Dropbox {}", actor->formID);
+		std::string taskname = std::format("Dropbox {}", actor->formID); // create task name
 		if (!dropbox) {
 			return;
 		}
 		float Start = Time::WorldTimeElapsed();
-		dropbox->SetDisplayName(name, false);
+		dropbox->SetDisplayName(name, false); // Rename container to match chosen name
 		
-		log::info("Starting task: {}", taskname);
 		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
 			TaskManager::RunFor(taskname, 16, [=](auto& progressData) {
 				float Finish = Time::WorldTimeElapsed();
@@ -1738,7 +1741,6 @@ namespace Gts {
 					}
 					if (trigger) {
 						trigger->local.scale = (Scale * 0.33) + (timepassed*0.18);
-						log::info("Scaling Trigger");
 						update_node(trigger);
 					}
 					if (node && node->local.scale >= Scale) {
