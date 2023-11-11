@@ -1802,6 +1802,18 @@ namespace Gts {
 		}
 	}
 
+	TESObjectREFR* GetNifReference(Actor* actor, NiPoint3 position, float lifetime, float scale) {
+		NiPointer<TESObjectREFR> instance_ptr = SpawnParticle(actor, 60.00, "GTS/Magic/bind_rune.nif", NiMatrix3(), position, scale * 3.0, 7, nullptr);
+		if (!instance_ptr) {
+			return nullptr;
+		}
+		TESObjectREFR* instance = instance_ptr.get();
+		if (!instance) {
+			return nullptr;
+		}
+		return instance;
+	}
+
 	bool CanPerformAnimation(Actor* giant, float type) {
 		// 0 = Hugs
 		// 1 = stomps and kicks
