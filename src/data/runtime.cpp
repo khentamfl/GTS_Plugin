@@ -588,6 +588,17 @@ namespace Gts {
 				return nullptr;
 			}
 
+			bool success = false;
+			NiPoint3 ray_start = pos; 
+			NiPoint3 ray_direction(0.0, 0.0, -1.0);
+			
+			float ray_length = meter_to_unit(std::max(99999, 99999));
+			NiPoint3 endpos = CastRay(actor, ray_start, ray_direction, ray_length, success);
+
+			if (!success) {
+				endpos = pos;
+			}
+
 			instance->SetPosition(pos);
 			instance->data.angle.x = 0;
 			instance->data.angle.y = 0;
@@ -609,7 +620,18 @@ namespace Gts {
 				return nullptr;
 			}
 
-			instance->SetPosition(pos);
+			bool success = false;
+			NiPoint3 ray_start = pos; 
+			NiPoint3 ray_direction(0.0, 0.0, -1.0);
+			
+			float ray_length = meter_to_unit(std::max(99999, 99999));
+			NiPoint3 endpos = CastRay(actor, ray_start, ray_direction, ray_length, success);
+
+			if (!success) {
+				endpos = pos;
+			}
+
+			instance->SetPosition(endpos);
 			instance->data.angle.x = 0;
 			instance->data.angle.y = 0;
 			instance->data.angle.z = 0;

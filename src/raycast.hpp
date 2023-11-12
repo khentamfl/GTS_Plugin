@@ -27,4 +27,5 @@ namespace Gts {
 	};
 
 	NiPoint3 CastRay(Actor* actor, NiPoint3 origin, NiPoint3 direction, float length, bool& success);
+	NiPoint3 CastRay(TESObjectREFR* ref, NiPoint3 origin, NiPoint3 direction, float length, bool& success);
 }
