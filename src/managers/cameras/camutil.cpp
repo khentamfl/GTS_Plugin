@@ -364,6 +364,13 @@ namespace Gts {
 
 							UpdatePlayerCamera(targetLocationLocalShifted);
 							UpdateNiCamera(targetLocationLocalShifted);
+
+							bhkRigidBody* RigidBody = camera.rigidBody.get().get();
+							if (RigidBody) {
+								hkVector4 location = hkVector4(targetLocationLocalShifted.x, targetLocationLocalShifted.y, targetLocationLocalShifted.z, 1.0);
+								RigidBody->SetPosition(location);
+								log::info("Adjusting RigidBody, position: {}", Vector2Str(location));
+							}
 							// UpdateSceneManager(targetLocationLocal);
 							// UpdateRenderManager(targetLocationLocal);
 						}
