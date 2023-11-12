@@ -548,6 +548,74 @@ namespace Gts {
 		}
 	}
 
+	// Activators
+
+	TESObjectACTI* Runtime::GetActivator(const std::string_view& tag) {
+		TESObjectACTI* data = nullptr;
+		try {
+			data = Runtime::GetSingleton().containers.at(std::string(tag)).data;
+		}  catch (const std::out_of_range& oor) {
+			data = nullptr;
+			if (!Runtime::Logged("cont", tag)) {
+				log::warn("Container: {} not found", tag);
+			}
+		}
+		return data;
+	}
+
+	TESObjectREFR* Runtime::PlaceActivator(Actor* actor, const std::string_view& tag) {
+		if (actor) {
+			return PlaceActivatorAtPos(actor, actor->GetPosition(), tag);
+		}
+		return nullptr;
+	}
+
+	TESObjectREFR* Runtime::PlaceActivator(TESObjectREFR* object, const std::string_view& tag) {
+		if (object) {
+			return PlaceActivatorAtPos(object, object->GetPosition(), tag);
+		}
+		return nullptr;
+	}
+
+	TESObjectREFR* Runtime::PlaceActivatorAtPos(Actor* actor, NiPoint3 pos, const std::string_view& tag) {
+		auto data = GetActivator(tag);
+		if (data) {
+			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(data, false);
+			if (!instance_ptr) {
+				return nullptr;
+			}
+			TESObjectREFR* instance = instance_ptr.get();
+			if (!instance) {
+				return nullptr;
+			}
+
+			instance->SetPosition(pos);
+			return instance;
+		}
+		return nullptr;
+	}
+
+	TESObjectREFR* Runtime::PlaceActivatorAtPos(TESObjectREFR* object, NiPoint3 pos, const std::string_view& tag) {
+		auto data = GetActivator(tag);
+		if (data) {
+			NiPointer<TESObjectREFR> instance_ptr = object->PlaceObjectAtMe(data, false);
+			if (!instance_ptr) {
+				return nullptr;
+			}
+			TESObjectREFR* instance = instance_ptr.get();
+			if (!instance) {
+				return nullptr;
+			}
+
+			instance->SetPosition(pos);
+			return instance;
+		}
+		return nullptr;
+	}
+
+
+	//
+
 	// Containers
 	TESObjectCONT* Runtime::GetContainer(const std::string_view& tag) {
 		TESObjectCONT* data = nullptr;
@@ -781,6 +849,15 @@ namespace Gts {
 				this->containers.try_emplace(key, form);
 			} else if (!Runtime::Logged("cont", key)) {
 				log::warn("Container form not found for {}", key);
+			}
+		}
+
+		for (auto &[key, value]: config.activators) {
+			auto form = find_form<TESObjectACTI>(value);
+			if (form) {
+				this->activators.try_emplace(key, form);
+			} else if (!Runtime::Logged("cont", key)) {
+				log::warn("Activator form not found for {}", key);
 			}
 		}
 	}
