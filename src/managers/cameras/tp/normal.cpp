@@ -8,7 +8,7 @@ namespace Gts {
 	NiPoint3 Normal::GetOffset(const NiPoint3& cameraPos) {
 		return NiPoint3(
 			Runtime::GetFloat("cameraX"),
-			0.0,
+			Normal::ZOffset,
 			Runtime::GetFloat("cameraY")
 			);
 	}
@@ -16,7 +16,7 @@ namespace Gts {
 	NiPoint3 Normal::GetCombatOffset(const NiPoint3& cameraPos) {
 		return NiPoint3(
 			Runtime::GetFloat("combatCameraX"),
-			0.0,
+			Normal::ZOffset,
 			Runtime::GetFloat("combatCameraY")
 			);
 	}
@@ -24,7 +24,7 @@ namespace Gts {
 	NiPoint3 Normal::GetOffsetProne(const NiPoint3& cameraPos) {
 		return NiPoint3(
 			Runtime::GetFloat("proneCameraX"),
-			0.0,
+			Normal::ZOffset,
 			Runtime::GetFloat("proneCameraY")
 			);
 	}
@@ -32,15 +32,24 @@ namespace Gts {
 	NiPoint3 Normal::GetCombatOffsetProne(const NiPoint3& cameraPos)  {
 		return NiPoint3(
 			Runtime::GetFloat("proneCombatCameraX"),
-			0.0,
+			Normal::ZOffset,
 			Runtime::GetFloat("proneCombatCameraY")
 			);
+	}
+
+	 // fVanityModeMaxDist:Camera Changes The Offset Value We Need So we need to take this value into account;
+	void Normal::SetZOff(float Offset) { 
+		//The 0.15 was found through testing different fVanityModeMaxDist values
+		Normal::ZOffset = Offset - (0.15 * Gts::MaxZoom());
 	}
 
 	BoneTarget Normal::GetBoneTarget() {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 		int altMode = Runtime::GetInt("NormalCameraTarget");
+
+		SetZOff(-45.f);
+
 		if (sizemanager.GetActionBool(player, 3)) {
 			altMode = 8; // Thigh Sandwich
 		} else if (sizemanager.GetActionBool(player, 2)) {
