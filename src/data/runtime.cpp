@@ -39,6 +39,7 @@ namespace {
 		std::unordered_map<std::string, std::string> races;
 		std::unordered_map<std::string, std::string> keywords;
 		std::unordered_map<std::string, std::string> containers;
+		std::unordered_map<std::string, std::string> activators;
 
 		articuno_serde(ar) {
 			ar <=> kv(sounds, "sounds");
@@ -53,6 +54,7 @@ namespace {
 			ar <=> kv(races, "races");
 			ar <=> kv(keywords, "keywords");
 			ar <=> kv(containers, "containers");
+			ar <=> kv(activators, "activators");
 		}
 	};
 }
@@ -553,7 +555,7 @@ namespace Gts {
 	TESObjectACTI* Runtime::GetActivator(const std::string_view& tag) {
 		TESObjectACTI* data = nullptr;
 		try {
-			data = Runtime::GetSingleton().containers.at(std::string(tag)).data;
+			data = Runtime::GetSingleton().activators.at(std::string(tag)).data;
 		}  catch (const std::out_of_range& oor) {
 			data = nullptr;
 			if (!Runtime::Logged("cont", tag)) {

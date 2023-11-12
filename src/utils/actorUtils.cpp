@@ -1718,7 +1718,7 @@ namespace Gts {
 		} else if (IsMammoth(actor)) {
 			Scale *= 5.0;
 		}
-		auto dropbox = Runtime::PlaceActivator(actor, "Activator_Red");
+		auto dropbox = Runtime::PlaceActivator(actor, "Activator_Meat");
 		//Runtime::PlaceContainer(actor, container); // Place chosen container
 		
 		std::string taskname = std::format("Dropbox {}", actor->formID); // create task name
