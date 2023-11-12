@@ -1,3 +1,4 @@
+#include "managers/cameras/camutil.hpp"
 #include "managers/cameras/tp/alt.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "data/runtime.hpp"
