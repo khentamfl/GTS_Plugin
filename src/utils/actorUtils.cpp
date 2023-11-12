@@ -1777,7 +1777,7 @@ namespace Gts {
 						return true; // Retry next frame
 					} else {
 						log::info("Spawned Crush Sound");
-						Runtime::PlaySound_Object("GtsCrushSound", dropboxPtr, 1.0, 1.0);
+						Runtime::PlaySound("GtsCrushSound", dropboxPtr, 1.0, 1.0);
 						return false;
 					}
 				});
