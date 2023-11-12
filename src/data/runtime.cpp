@@ -110,6 +110,37 @@ namespace Gts {
 			log::error("Could not build sound");
 		}
 	}
+
+	void Runtime::PlaySound(const std::string_view& tag, TESObjectREFR* ref, const float& volume, const float& frequency) {
+		auto soundDescriptor = Runtime::GetSound(tag);
+		if (!soundDescriptor) {
+			log::error("Sound invalid: {}", tag);
+			return;
+		}
+		auto audioManager = BSAudioManager::GetSingleton();
+		if (!audioManager) {
+			log::error("Audio Manager invalid");
+			return;
+		}
+		BSSoundHandle soundHandle;
+		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
+		if (success) {
+			auto objectref = ref->CreateRefHandle();
+			auto objectget = objectref.get().get();
+			if (actorget) {
+				soundHandle.SetVolume(volume);
+				NiAVObject* follow = nullptr;
+				NiAVObject* current_3d = objectget->GetCurrent3D();
+				if (current_3d) {
+					follow = current_3d;
+					soundHandle.SetObjectToFollow(follow);
+					soundHandle.Play();
+				}
+			}
+		} else {
+			log::error("Could not build sound");
+		}
+	}
 	void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, const std::string_view& node) {
 		Runtime::PlaySoundAtNode(tag, actor, volume, frequency, find_node(actor, node));
 	}

@@ -1776,6 +1776,13 @@ namespace Gts {
 				}
 			}
 		}
+
+		if (Cause == DamageSource::Overkill) { // Play audio that won't disappear if source of loot transfer is Overkill
+			auto dropboxPtr = dropboxHandle.get().get();
+			if (dropboxPtr) {
+				Runtime::PlaySound("GtsCrushSound", dropboxPtr, 1.0, 1.0);
+			}
+		}
 	}
 
 	void AdvanceQuestProgression(Actor* actor, float stage, float value) {

@@ -79,7 +79,7 @@ namespace {
 		DoDustExplosion(&data.giant, dust + data.animSpeed/4, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25 * data.animSpeed, 1.0, FootEvent::Right, 0.95);
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);
-		FootGrindCheck_Right(&data.giant, 1.45);
+		FootGrindCheck_Right(&data.giant, 1.45, false);
 	}
 
 	void GTSstompimpactL(AnimationEventData& data) { // To-do: Add Foot Grind support  (Trigger it somehow)
@@ -98,7 +98,7 @@ namespace {
 		DoDustExplosion(&data.giant, dust + data.animSpeed/4, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25 * data.animSpeed, 1.0, FootEvent::Left, 0.95);
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);
-		FootGrindCheck_Left(&data.giant, 1.45);
+		FootGrindCheck_Left(&data.giant, 1.45, false);
 	}
 
 	void GTSstomplandR(AnimationEventData& data) { // To-do: Add Foot Grind support (Trigger it somehow)

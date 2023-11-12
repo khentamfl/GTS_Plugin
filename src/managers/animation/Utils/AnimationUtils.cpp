@@ -273,7 +273,7 @@ namespace Gts {
 		});
 	}
 
-	void FootGrindCheck_Left(Actor* actor, float radius) {  // Check if we hit someone with stomp. Yes = Start foot grind. Left Foot.
+	void FootGrindCheck_Left(Actor* actor, float radius, bool strong) {  // Check if we hit someone with stomp. Yes = Start foot grind. Left Foot.
 		if (!actor) {
 			return;
 		}
@@ -372,7 +372,11 @@ namespace Gts {
 								if (aveForce >= 0.00 && !otherActor->IsDead()) {
 									DoFootGrind_Left(actor, otherActor);
 									SetBeingGrinded(otherActor, true);
-									AnimationManager::StartAnim("GrindLeft", actor);
+									if (!strong) {
+										AnimationManager::StartAnim("GrindLeft", actor);
+									} else {
+										AnimationManager::StartAnim("GrindLeft", actor); // preparation for strong version
+									}
 								}
 							}
 						}
@@ -382,7 +386,7 @@ namespace Gts {
 		}
 	}
 
-	void FootGrindCheck_Right(Actor* actor, float radius) {  // Check if we hit someone with stomp. Yes = Start foot grind. Right Foot.
+	void FootGrindCheck_Right(Actor* actor, float radius, bool strong) {  // Check if we hit someone with stomp. Yes = Start foot grind. Right Foot.
 		if (!actor) {
 			return;
 		}
@@ -483,7 +487,11 @@ namespace Gts {
 								if (aveForce >= 0.00 && !otherActor->IsDead()) {
 									DoFootGrind_Right(actor, otherActor);
 									SetBeingGrinded(otherActor, true);
-									AnimationManager::StartAnim("GrindRight", actor);
+									if (!strong) {
+										AnimationManager::StartAnim("GrindRight", actor);
+									} else {
+										AnimationManager::StartAnim("GrindRight", actor); // Prepation for strong version
+									}
 								}
 							}
 						}
