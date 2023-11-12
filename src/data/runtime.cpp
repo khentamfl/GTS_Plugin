@@ -2,6 +2,7 @@
 #include "Config.hpp"
 #include <articuno/archives/ryml/ryml.h>
 #include <articuno/types/auto.h>
+#include "raycast.hpp"
 #include "node.hpp"
 
 using namespace articuno;
