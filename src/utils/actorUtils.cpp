@@ -1773,12 +1773,8 @@ namespace Gts {
 		}
 
 		if (Cause == DamageSource::Overkill) { // Play audio that won't disappear if source of loot transfer is Overkill
-			auto dropboxPtr = dropboxHandle.get().get();
-			log::info("Cause is Overkill");
-			if (dropboxPtr) {
-				log::info("Playing crush sound");
-				Runtime::PlaySound("GtsCrushSound", dropboxPtr, 1.0, 1.0);
-			}
+			log::info("Playing crush sound");
+			Runtime::PlaySound("GtsCrushSound", dropbox, 1.0, 1.0);
 		}
 	}
 
