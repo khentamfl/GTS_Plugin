@@ -111,7 +111,7 @@ namespace Gts {
 		}
 	}
 
-	void Runtime::PlaySound(const std::string_view& tag, Actor* actor, TESObjectREFR* ref, const float& volume, const float& frequency) {
+	void Runtime::PlaySound_Static(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency) {
 		auto soundDescriptor = Runtime::GetSound(tag);
 		if (!soundDescriptor) {
 			log::error("Sound invalid: {}", tag);
@@ -125,22 +125,19 @@ namespace Gts {
 		BSSoundHandle soundHandle;
 		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
 		if (success) {
-			auto objectref = ref->CreateRefHandle();
-			auto objectget = objectref.get().get();
-			if (objectget) {
+			auto actorref = actor->CreateRefHandle();
+			auto actorget = actorref.get().get();
+			if (actorget) {
+				log::info("Audio success, playing audio");
 				soundHandle.SetVolume(volume);
-				NiAVObject* current_3d = find_object_node(objectget, "GorePile_Obj");
-				log::info("ObjectGet true");
-				if (current_3d) {
-					log::info("Found3D");
-					soundHandle.SetObjectToFollow(current_3d);
-					soundHandle.Play();
-				}
+				soundHandle.SetPosition(actorget->GetPosition());
+				soundHandle.Play();
 			}
 		} else {
 			log::error("Could not build sound");
 		}
 	}
+
 	void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, const std::string_view& node) {
 		Runtime::PlaySoundAtNode(tag, actor, volume, frequency, find_node(actor, node));
 	}
