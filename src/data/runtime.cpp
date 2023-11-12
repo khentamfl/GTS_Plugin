@@ -126,7 +126,6 @@ namespace Gts {
 		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
 		if (success) {
 			auto objectref = ref->CreateRefHandle();
-			
 			if (ref) {
 				log::info("ObjectGet true");
 				soundHandle.SetVolume(volume);	
@@ -140,19 +139,20 @@ namespace Gts {
 						return true;
 					}
 					NiAVObject* current_3d = objectget->GetCurrent3D();
-					if (!current_3d) {
-						log::info("Not found, trying again");
-						return true; // try again
-					} else {
+					if (current_3d) {
 						log::info("Found3D, playing sound");
 						NiAVObject* follow = nullptr;
 						follow = current_3d;
 						soundHandle.SetObjectToFollow(follow);
 						soundHandle.Play();
+						return false; // end task
+					} else {
+						return true; // try again
 					}
 				});
 			} else {
 				log::error("Could not build sound");
+			}
 		}
 	}
 	void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, const std::string_view& node) {
