@@ -126,7 +126,7 @@ namespace Gts {
 		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
 		if (success) {
 			auto objectref = ref->CreateRefHandle();
-			NiAVObject* follow = nullptr;
+			
 			if (ref) {
 				log::info("ObjectGet true");
 				soundHandle.SetVolume(volume);	
@@ -145,6 +145,7 @@ namespace Gts {
 						return true; // try again
 					} else {
 						log::info("Found3D, playing sound");
+						NiAVObject* follow = nullptr;
 						follow = current_3d;
 						soundHandle.SetObjectToFollow(follow);
 						soundHandle.Play();
