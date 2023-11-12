@@ -127,7 +127,7 @@ namespace Gts {
 		if (success) {
 			auto objectref = ref->CreateRefHandle();
 			auto objectget = objectref.get().get();
-			if (actorget) {
+			if (objectget) {
 				soundHandle.SetVolume(volume);
 				NiAVObject* follow = nullptr;
 				NiAVObject* current_3d = objectget->GetCurrent3D();
