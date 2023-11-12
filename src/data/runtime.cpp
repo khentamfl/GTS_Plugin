@@ -126,33 +126,21 @@ namespace Gts {
 		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
 		if (success) {
 			auto objectref = ref->CreateRefHandle();
-			if (ref) {
+			auto objectget = objectref.get().get();
+			if (objectget) {
+				soundHandle.SetVolume(volume);
+				NiAVObject* follow = nullptr;
+				NiAVObject* current_3d = objectget->Get3D();
 				log::info("ObjectGet true");
-				soundHandle.SetVolume(volume);	
-				std::string taskname = std::format("ObjectAudio {}", actor->formID); // create task name
-				TaskManager::RunFor(taskname, 6, [=](auto& progressData) {
-					auto objectget = objectref.get().get();
-					if (!objectget) {
-						return false;
-					}
-					if (!objectget->Is3DLoaded()) {
-						return true;
-					}
-					NiAVObject* current_3d = objectget->GetCurrent3D();
-					if (current_3d) {
-						log::info("Found3D, playing sound");
-						NiAVObject* follow = nullptr;
-						follow = current_3d;
-						soundHandle.SetObjectToFollow(follow);
-						soundHandle.Play();
-						return false; // end task
-					} else {
-						return true; // try again
-					}
-				});
-			} else {
-				log::error("Could not build sound");
+				if (current_3d) {
+					log::info("Found3D");
+					follow = current_3d;
+					soundHandle.SetObjectToFollow(follow);
+					soundHandle.Play();
+				}
 			}
+		} else {
+			log::error("Could not build sound");
 		}
 	}
 	void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, const std::string_view& node) {
