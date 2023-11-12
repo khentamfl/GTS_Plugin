@@ -111,7 +111,7 @@ namespace Gts {
 		}
 	}
 
-	void Runtime::PlaySound_Static(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency) {
+	void Runtime::PlaySound(const std::string_view& tag, TESObjectREFR* ref, const float& volume, const float& frequency) {
 		auto soundDescriptor = Runtime::GetSound(tag);
 		if (!soundDescriptor) {
 			log::error("Sound invalid: {}", tag);
@@ -125,13 +125,19 @@ namespace Gts {
 		BSSoundHandle soundHandle;
 		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
 		if (success) {
-			auto actorref = actor->CreateRefHandle();
-			auto actorget = actorref.get().get();
-			if (actorget) {
-				log::info("Audio success, playing audio");
+			auto objectref = ref->CreateRefHandle();
+			auto objectget = objectref.get().get();
+			if (objectget) {
 				soundHandle.SetVolume(volume);
-				soundHandle.SetPosition(actorget->GetPosition());
-				soundHandle.Play();
+				NiAVObject* follow = nullptr;
+				NiAVObject* current_3d = objectget->GetCurrent3D();
+				log::info("ObjectGet true");
+				if (current_3d) {
+					log::info("Found3D");
+					follow = current_3d;
+					soundHandle.SetObjectToFollow(follow);
+					soundHandle.Play();
+				}
 			}
 		} else {
 			log::error("Could not build sound");

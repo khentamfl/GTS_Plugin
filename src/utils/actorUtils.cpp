@@ -1721,6 +1721,7 @@ namespace Gts {
 		auto dropbox = Runtime::PlaceContainer(actor, container); // Place chosen container
 		
 		std::string taskname = std::format("Dropbox {}", actor->formID); // create task name
+		std::string taskname_sound = std::format("DropboxAudio {}", actor->formID); // create task name
 		if (!dropbox) {
 			return;
 		}
@@ -1728,7 +1729,7 @@ namespace Gts {
 		dropbox->SetDisplayName(name, false); // Rename container to match chosen name
 		
 		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
-			TaskManager::RunFor(taskname, 16, [=](auto& progressData) {
+			TaskManager::RunFor(taskname, 16, [=](auto& progressData) { // Spawn loot piles
 				float Finish = Time::WorldTimeElapsed();
 				if (soul) {
 					return false; // end it right away, we don't want to scale the soul
@@ -1762,18 +1763,32 @@ namespace Gts {
 					return true;
 				}
     		});
-		for (auto &[a_object, invData]: actor->GetInventory()) {
+			if (Cause == DamageSource::Overkill) { // Play audio that won't disappear if source of loot transfer is Overkill
+				TaskManager::RunFor(taskname_sound, 6, [=](auto& progressData) {
+					auto dropboxPtr = dropboxHandle.get().get();
+					if (!dropboxPtr) {
+						return false; // cancel
+					}
+					if (!dropboxPtr->Is3DLoaded()) {
+						return true; // retry
+					}
+					auto dropbox3D = dropboxPtr->GetCurrent3D();
+					if (!dropbox3D) {
+						return true; // Retry next frame
+					} else {
+						log::info("Spawned Crush Sound");
+						Runtime::PlaySound_Object("GtsCrushSound", dropboxPtr, 1.0, 1.0);
+						return false;
+					}
+				});
+			}	
+		for (auto &[a_object, invData]: actor->GetInventory()) { // transfer loot
 			//log::info("Transfering item {} from {}, formID {} to dropbox", a_object->GetName(), actor->GetDisplayFullName(), a_object->formID);
 			if (a_object->GetPlayable()) {
 				if (!invData.second->IsQuestObject() || removeQuestItems) {
 					actor->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
 				}
 			}
-		}
-
-		if (Cause == DamageSource::Overkill) { // Play audio that won't disappear if source of loot transfer is Overkill
-			log::info("Playing crush sound");
-			Runtime::PlaySound_Static("GtsCrushSound", actor, 1.0, 1.0);
 		}
 	}
 
