@@ -135,10 +135,10 @@ namespace Gts {
 					if (!objectget) {
 						return false;
 					}
-					if (!dropboxPtr->Is3DLoaded()) {
+					if (!objectget->Is3DLoaded()) {
 						return true;
 					}
-					NiAVObject* current_3d = dropboxPtr->GetCurrent3D();
+					NiAVObject* current_3d = objectget->GetCurrent3D();
 					if (!current_3d) {
 						log::info("Not found, trying again");
 						return true; // try again
