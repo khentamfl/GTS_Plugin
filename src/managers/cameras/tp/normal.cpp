@@ -51,8 +51,6 @@ namespace Gts {
 
 		float offset = -45;	
 
-		
-
 		if (sizemanager.GetActionBool(player, 3)) {
 			altMode = 8; // Thigh Sandwich
 			offset = 0;
