@@ -583,7 +583,6 @@ namespace Gts {
 
 	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause) {
 		std::string name = std::format("TransferItems_{}_{}", from->formID, to->formID);
-		log::info("Starting Transfer: {}", name);
 		ActorHandle gianthandle = to->CreateRefHandle();
 		ActorHandle tinyhandle = from->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
@@ -1696,7 +1695,6 @@ namespace Gts {
 		
 		if (IsMechanical(actor)) {
 			container = "Dropbox_Mechanical";
-			log::info("{} is mechanical", actor->GetDisplayFullName());
 		} else if (Cause == DamageSource::Vored) { // Always spawn soul on vore
 			container = "Dropbox_Soul";
 			name = std::format("{} Soul Remains", actor->GetDisplayFullName());
@@ -1706,11 +1704,9 @@ namespace Gts {
 			name = std::format("Crushed Soul of {} ", actor->GetDisplayFullName());
 			soul = true;
 		} else if (IsInsect(actor, false)) {
-			log::info("{} is insect", actor->GetDisplayFullName());
 			container = "Dropbox_Bug";
 			name = std::format("Remains of {}", actor->GetDisplayFullName());
 		} else if (IsLiving(actor)) {
-			log::info("{} is living", actor->GetDisplayFullName());
 			container = "Dropbox_Physics";
 		} else {
 			container = "Dropbox_Undead_Physics";
@@ -1762,7 +1758,6 @@ namespace Gts {
 						update_node(trigger);
 					}
 					if (node && node->local.scale >= Scale) {
-						log::info(" - Scale == expected scale, ending task");
 						return false; // End task
 					}
 					return true;
@@ -1779,7 +1774,9 @@ namespace Gts {
 
 		if (Cause == DamageSource::Overkill) { // Play audio that won't disappear if source of loot transfer is Overkill
 			auto dropboxPtr = dropboxHandle.get().get();
+			log::info("Cause is Overkill");
 			if (dropboxPtr) {
+				log::info("Playing crush sound");
 				Runtime::PlaySound("GtsCrushSound", dropboxPtr, 1.0, 1.0);
 			}
 		}

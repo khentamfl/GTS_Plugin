@@ -274,6 +274,8 @@ namespace Gts {
 		auto grabbedActor = Grab::GetHeldActor(receiver);
 		if (grabbedActor == attacker) {
 			return;
+		} if (attacker == receiver) {
+			return;
 		}
 		int LaughChance = rand() % 12;
 		int ShrinkChance = rand() % 5;
@@ -298,7 +300,6 @@ namespace Gts {
 
 		if (receiver->formID == 0x14 && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0) {
 			float GrowthValue = std::clamp((-damage/2800) * SizeHunger * Gigantism, 0.0f, 0.25f * Gigantism);
-			log::info("GrowthValue of : {} is {} {}, OG damage: {}", receiver->GetDisplayFullName(), GrowthValue, -GrowthValue, damage);
 			mod_target_scale(receiver, GrowthValue);
 			DoHitShake(receiver, GrowthValue * 10);
 			if (soundtimer.ShouldRunFrame()) {
@@ -310,7 +311,6 @@ namespace Gts {
 				if (get_visual_scale(attacker) <= 0.12/Dragon) {
 					mod_target_scale(attacker, 0.12/Dragon);
 				}
-				log::info("Shrinking Actor: {}", attacker->GetDisplayFullName());
 			}
 			if (SizeDifference >= 4.0 && LaughChance >= 11 && laughtimer.ShouldRunFrame()) {
 				Runtime::PlaySoundAtNode("LaughSound", receiver, 1.0, 0.5, "NPC Head [Head]");
@@ -320,7 +320,6 @@ namespace Gts {
 			if (scale > naturalscale) {
 				float sizebonus = std::clamp(get_visual_scale(attacker), 0.10f, 1.0f);
 				float ShrinkValue = std::clamp(((-damage/850)/SizeHunger/Gigantism * sizebonus) * resistance, 0.0f, 0.25f / Gigantism); // affect limit by decreasing it
-				log::info("ShrinkValue of : {} is {} {}", receiver->GetDisplayFullName(), ShrinkValue, ShrinkValue);
 
 				if (scale < naturalscale) {
 					set_target_scale(receiver, naturalscale); // reset to normal scale
