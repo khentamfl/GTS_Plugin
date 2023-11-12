@@ -200,8 +200,8 @@ namespace Gts {
 
 					ScareChance(giant);
 
-					if (!IsLiving(tiny)) {
-						SpawnDustParticle(giant, tiny, "NPC L Hand [LHnd]", 3.0);
+					if (!IsLiving(tiny) || LessGore()) {
+						SpawnDustParticle(giant, tiny, "NPC Root [Root]", 3.0);
 					} else {
 						if (!LessGore()) {
 							auto root = find_node(tiny, "NPC Root [Root]");
