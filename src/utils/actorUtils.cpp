@@ -1773,7 +1773,7 @@ namespace Gts {
 
 		if (Cause == DamageSource::Overkill) { // Play audio that won't disappear if source of loot transfer is Overkill
 			log::info("Playing crush sound");
-			Runtime::PlaySound("GtsCrushSound", dropbox, 1.0, 1.0);
+			Runtime::PlaySound("GtsCrushSound", actor, dropbox, 1.0, 1.0);
 		}
 	}
 
