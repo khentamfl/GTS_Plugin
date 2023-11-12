@@ -36,7 +36,7 @@ namespace {
 				receiverscale *= 3.0;
 			}
 			float size_difference = attackerscale/receiverscale;
-			if (size_difference >= 18.0) {
+			if (size_difference >= 12.0) {
 				HitManager::GetSingleton().Overkill(receiver, attacker);
 			}
 		}
