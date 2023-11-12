@@ -179,7 +179,7 @@ namespace Gts {
 
 	void TransferInventoryToDropbox(Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause);
 
-	void AdvanceQuestProgression(Actor* actor, float stage, float value);
 	bool CanPerformAnimation(Actor* giant, float type);
+	void AdvanceQuestProgression(Actor* actor, float stage, float value);
 	float GetQuestProgression(float stage);
 }

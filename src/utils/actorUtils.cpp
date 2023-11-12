@@ -474,7 +474,6 @@ namespace Gts {
 		bool essential = actor->IsEssential() && Runtime::GetBool("ProtectEssentials");
 		bool teammate = IsTeammate(actor);
 		bool protectfollowers = Persistent::GetSingleton().FollowerProtection;
-		log::info("{} teammate: {}, essential: {}, protectfollowers: {}", actor->GetDisplayFullName(), teammate, essential, protectfollowers);
 		if (!teammate && essential) {
 			return true;
 		} else if (teammate && protectfollowers) {
@@ -1778,34 +1777,6 @@ namespace Gts {
 		}
 	}
 
-	void AdvanceQuestProgression(Actor* actor, float stage, float value) {
-		if (actor->formID == 0x14) { // Player Only
-			auto progressionQuest = Runtime::GetQuest("MainQuest");
-			log::info("Adjusting Stage {} with value {}", stage, value);
-			if (progressionQuest) {
-				auto queststage = progressionQuest->GetCurrentStageID();
-				if (queststage < 10 || queststage >= 100) {
-					return;
-				}
-				if (stage == 1) {
-					Persistent::GetSingleton().HugStealCount += value;
-				} else if (stage == 2) {
-					Persistent::GetSingleton().StolenSize += value;
-				} else if (stage == 3 && queststage >= 30) {
-					Persistent::GetSingleton().CrushCount += value;
-				} else if (stage == 4 && queststage >= 40) {
-					Persistent::GetSingleton().STNCount += value;
-				} else if (stage == 5) {
-					Persistent::GetSingleton().HandCrushed += value;
-				} else if (stage == 6) {
-					Persistent::GetSingleton().VoreCount += value;
-				} else if (stage == 7) {
-					Persistent::GetSingleton().GiantCount += value;
-				}
-			}
-		}
-	}
-
 	bool CanPerformAnimation(Actor* giant, float type) {
 		// 0 = Hugs
 		// 1 = stomps and kicks
@@ -1833,6 +1804,33 @@ namespace Gts {
 			} 
 			Notify("You're not experienced to perform this action");
 			return false;
+		}
+	}
+
+	void AdvanceQuestProgression(Actor* actor, float stage, float value) {
+		if (actor->formID == 0x14) { // Player Only
+			auto progressionQuest = Runtime::GetQuest("MainQuest");
+			if (progressionQuest) {
+				auto queststage = progressionQuest->GetCurrentStageID();
+				if (queststage < 10 || queststage >= 100) {
+					return;
+				}
+				if (stage == 1) {
+					Persistent::GetSingleton().HugStealCount += value;
+				} else if (stage == 2) {
+					Persistent::GetSingleton().StolenSize += value;
+				} else if (stage == 3 && queststage >= 30) {
+					Persistent::GetSingleton().CrushCount += value;
+				} else if (stage == 4 && queststage >= 40) {
+					Persistent::GetSingleton().STNCount += value;
+				} else if (stage == 5) {
+					Persistent::GetSingleton().HandCrushed += value;
+				} else if (stage == 6) {
+					Persistent::GetSingleton().VoreCount += value;
+				} else if (stage == 7) {
+					Persistent::GetSingleton().GiantCount += value;
+				}
+			}
 		}
 	}
 
