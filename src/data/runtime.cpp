@@ -129,13 +129,11 @@ namespace Gts {
 			auto objectget = objectref.get().get();
 			if (objectget) {
 				soundHandle.SetVolume(volume);
-				NiAVObject* follow = nullptr;
-				NiAVObject* current_3d = objectget->Get3D();
+				NiAVObject* current_3d = find_object_node(objectref, "GorePile_Obj");
 				log::info("ObjectGet true");
 				if (current_3d) {
 					log::info("Found3D");
-					follow = current_3d;
-					soundHandle.SetObjectToFollow(follow);
+					soundHandle.SetObjectToFollow(current_3d);
 					soundHandle.Play();
 				}
 			}
