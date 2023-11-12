@@ -626,7 +626,7 @@ namespace Gts {
 			NiPoint3 ray_direction(0.0, 0.0, -1.0);
 			
 			float ray_length = meter_to_unit(std::max(99999, 99999));
-			NiPoint3 endpos = CastRay(actor, ray_start, ray_direction, ray_length, success);
+			NiPoint3 endpos = CastRay(object, ray_start, ray_direction, ray_length, success);
 
 			if (!success) {
 				endpos = pos;
