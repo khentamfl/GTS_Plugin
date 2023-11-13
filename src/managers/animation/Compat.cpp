@@ -250,7 +250,9 @@ namespace {
 
 	void SBOProneOffEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		AnimationManager::StartAnim("SBO_ProneOff", player);
+		if (player->IsSneaking()) {
+			AnimationManager::StartAnim("SBO_ProneOff", player);
+		}
 	}
 
 	void SBODiveEvent(const InputEventData& data) {

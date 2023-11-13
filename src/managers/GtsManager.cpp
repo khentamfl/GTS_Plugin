@@ -39,7 +39,7 @@ namespace {
 		if (get_visual_scale(actor) < 1.5) {
 			return;
 		}
-		if ((actor->formID == 0x14 ||actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+		if ((actor->formID == 0x14 || IsTeammate(actor))) {
 			auto node = find_node(actor, "skeleton_female.nif");
 			NiAVObject* skeleton = node;
 			if (node) {
@@ -66,7 +66,7 @@ namespace {
 		}
 		float currentOtherScale = Get_Other_Scale(actor);
 		trans_actor_data->otherScales = currentOtherScale;
-		log::info("Other Scale of {} is {}", actor->GetDisplayFullName(), currentOtherScale);
+		//log::info("Other Scale of {} is {}", actor->GetDisplayFullName(), currentOtherScale);
 
 		float target_scale = persi_actor_data->target_scale;
 
