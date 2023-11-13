@@ -598,9 +598,12 @@ namespace Gts {
 
 			if (!success) {
 				endpos = pos;
+				log::info("RayCast failed");
 			}
 
-			instance->SetPosition(pos);
+			log::info("POS: {}", Vector2Str(endpos));
+
+			instance->SetPosition(endpos);
 			instance->data.angle.x = 0;
 			instance->data.angle.y = 0;
 			instance->data.angle.z = 0;
@@ -630,7 +633,10 @@ namespace Gts {
 
 			if (!success) {
 				endpos = pos;
+				log::info("RayCast failed");
 			}
+
+			log::info("POS: {}", Vector2Str(endpos));
 
 			instance->SetPosition(endpos);
 			instance->data.angle.x = 0;
