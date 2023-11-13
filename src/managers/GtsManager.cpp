@@ -141,7 +141,7 @@ namespace {
 		if (visual_scale <= 1e-5) {
 			return;
 		}
-		log::info("Setting {} scale to {}, visual scale: {}", actor->GetDisplayFullName(), visual_scale, vs);
+		//log::info("Setting {} scale to {}, visual scale: {}", actor->GetDisplayFullName(), visual_scale, vs);
 		set_scale(actor, visual_scale);
 	}
 

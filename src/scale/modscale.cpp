@@ -42,7 +42,7 @@ namespace Gts {
 			}
 		}
 
-		if (actor->IsChild() && allScale > 1.0) { // Fix for RSChildren. 
+		if (actor->IsChild()) { // Fix for RSChildren. 
 		    // For some reason, author did their scale like this: "NPC" = 1.65, "NPC Root [Root]" = 0.6
 			auto node_find = find_node(actor, node_name);
 			if (node_find) {
