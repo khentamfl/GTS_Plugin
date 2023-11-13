@@ -1785,7 +1785,7 @@ namespace Gts {
 		for (auto &[a_object, invData]: actor->GetInventory()) { // transfer loot
 			//log::info("Transfering item {} from {}, formID {} to dropbox", a_object->GetName(), actor->GetDisplayFullName(), a_object->formID);
 			if (a_object->GetPlayable()) {
-				if (!invData.second->IsQuestObject() || removeQuestItems) {
+				if ((!invData.second->IsQuestObject() || removeQuestItems) && !invData.second->IsLeveled()) {
 					actor->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
 				}
 			}
