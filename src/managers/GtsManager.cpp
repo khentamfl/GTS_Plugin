@@ -124,8 +124,7 @@ namespace {
 		if (scale < 0.0) {
 			return;
 		}
-		float vs = get_visual_scale(actor);
-		float visual_scale = persi_actor_data->visual_scale;
+		float visual_scale = get_visual_scale(actor);
 
 		float scaleOverride = persi_actor_data->scaleOverride;
 		if (scaleOverride >= 1e-4) {
