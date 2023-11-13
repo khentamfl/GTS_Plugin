@@ -9,7 +9,7 @@ namespace Gts {
 	NiPoint3 Alt::GetOffset(const NiPoint3& cameraPos) {
 		return NiPoint3(
 			Runtime::GetFloat("cameraAlternateX"),
-			0,
+			Alt::ZOffset,
 			Runtime::GetFloat("cameraAlternateY")
 			);
 	}
@@ -17,7 +17,7 @@ namespace Gts {
 	NiPoint3 Alt::GetCombatOffset(const NiPoint3& cameraPos) {
 		return NiPoint3(
 			Runtime::GetFloat("combatCameraAlternateX"),
-			0,
+			Alt::ZOffset,
 			Runtime::GetFloat("combatCameraAlternateY")
 			);
 	}
@@ -25,7 +25,7 @@ namespace Gts {
 	NiPoint3 Alt::GetOffsetProne(const NiPoint3& cameraPos) {
 		return NiPoint3(
 			Runtime::GetFloat("proneCameraAlternateX"),
-			0,
+			Alt::ZOffset,
 			Runtime::GetFloat("proneCameraAlternateY")
 			);
 	}
@@ -33,7 +33,7 @@ namespace Gts {
 	NiPoint3 Alt::GetCombatOffsetProne(const NiPoint3& cameraPos) {
 		return NiPoint3(
 			Runtime::GetFloat("proneCombatCameraAlternateX"),
-			0,
+			Alt::ZOffset,
 			Runtime::GetFloat("proneCombatCameraAlternateY")
 			);
 	}
@@ -41,7 +41,7 @@ namespace Gts {
 	// fVanityModeMaxDist:Camera Changes The Offset Value We Need So we need to take this value into account;
     void Alt::SetZOff(float Offset) {
         // The 0.15 was found through testing different fVanityModeMaxDist values
-        //Alt::ZOffset = Offset - (0.15 * Gts::MaxZoom());
+        Alt::ZOffset = Offset - (0.15 * Gts::MaxZoom());
     }
 
 	BoneTarget Alt::GetBoneTarget() {
