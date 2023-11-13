@@ -96,17 +96,17 @@ namespace {
 			for (auto Nodes: BODY_NODES) {
 				auto Node = find_node(giantref, Nodes);
 				if (Node) {
-					DoDamageAtPoint(giant, 15, 0.45 * damage, Node, 400, 0.10, 1.33, DamageSource::BodyCrush);
+					DoDamageAtPoint(giant, 15, 0.20 * damage, Node, 400, 0.10, 1.33, DamageSource::BodyCrush);
 				}
 			}
 
 			if (BreastL03 && BreastR03) {
-				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastL03, 400, 0.10, 1.33, DamageSource::BreastImpact);
-				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastR03, 400, 0.10, 1.33, DamageSource::BreastImpact);
+				DoDamageAtPoint(giant, 14, 0.2 * damage, BreastL03, 400, 0.10, 1.33, DamageSource::BreastImpact);
+				DoDamageAtPoint(giant, 14, 0.2 * damage, BreastR03, 400, 0.10, 1.33, DamageSource::BreastImpact);
 				return true;
 			} else if (BreastL && BreastR) {
-				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastL, 400, 0.10, 1.33, DamageSource::BreastImpact);
-				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastR, 400, 0.10, 1.33, DamageSource::BreastImpact);
+				DoDamageAtPoint(giant, 14, 0.2 * damage, BreastL, 400, 0.10, 1.33, DamageSource::BreastImpact);
+				DoDamageAtPoint(giant, 14, 0.2 * damage, BreastR, 400, 0.10, 1.33, DamageSource::BreastImpact);
 				return true;
 			}
 			return false;
