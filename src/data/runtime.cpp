@@ -565,14 +565,14 @@ namespace Gts {
 
 	TESObjectREFR* Runtime::PlaceContainer(Actor* actor, const std::string_view& tag) {
 		if (actor) {
-			return PlaceContainerAtPos(actor, actor->GetPosition(), scale, tag);
+			return PlaceContainerAtPos(actor, actor->GetPosition(), tag);
 		}
 		return nullptr;
 	}
 
 	TESObjectREFR* Runtime::PlaceContainer(TESObjectREFR* object, const std::string_view& tag) {
 		if (object) {
-			return PlaceContainerAtPos(object, object->GetPosition(), scale, tag);
+			return PlaceContainerAtPos(object, object->GetPosition(), tag);
 		}
 		return nullptr;
 	}
