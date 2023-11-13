@@ -612,7 +612,7 @@ namespace Gts {
 		return nullptr;
 	}
 
-	TESObjectREFR* Runtime::PlaceContainerAtPos(TESObjectREFR* object, NiPoint3 pos, float scale, const std::string_view& tag) {
+	TESObjectREFR* Runtime::PlaceContainerAtPos(TESObjectREFR* object, NiPoint3 pos, const std::string_view& tag) {
 		auto data = GetContainer(tag);
 		if (data) {
 			NiPointer<TESObjectREFR> instance_ptr = object->PlaceObjectAtMe(data, false);
