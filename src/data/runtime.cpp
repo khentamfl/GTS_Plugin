@@ -593,7 +593,7 @@ namespace Gts {
 			NiPoint3 ray_start = pos; 
 			NiPoint3 ray_direction(0.0, 0.0, -1.0);
 			
-			float ray_length = 2048 * scale;
+			float ray_length = 6200 * scale;
 			NiPoint3 endpos = CastRay(actor, ray_start, ray_direction, ray_length, success);
 
 			if (!success) {
@@ -628,7 +628,7 @@ namespace Gts {
 			NiPoint3 ray_start = pos; 
 			NiPoint3 ray_direction(0.0, 0.0, -1.0);
 			
-			float ray_length = 2048 * scale;
+			float ray_length = 6200 * scale;
 			NiPoint3 endpos = CastRay(object, ray_start, ray_direction, ray_length, success);
 
 			if (!success) {
