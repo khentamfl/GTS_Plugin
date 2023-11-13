@@ -66,6 +66,7 @@ namespace {
 		}
 		float currentOtherScale = Get_Other_Scale(actor);
 		trans_actor_data->otherScales = currentOtherScale;
+		log::info("Other Scale of {} is {}", actor->GetDisplayFullName(), currentOtherScale);
 
 		float target_scale = persi_actor_data->target_scale;
 
