@@ -41,16 +41,6 @@ namespace Gts {
 				}
 			}
 		}
-
-		if (actor->IsChild()) { // Fix for RSChildren. 
-		    // For some reason, author did their scale like this: "NPC" = 1.65, "NPC Root [Root]" = 0.6
-			auto node_find = find_node(actor, node_name);
-			if (node_find) {
-				allScale *= node_find->local.scale;// * by NPC ROOT scale
-				log::info("{} is Child, Scale: {}, root scale: {}, ourScale: {}", actor->GetDisplayFullName(), allScale, node_find->local.scale, ourScale);
-			}
-		}
-
 		return allScale / ourScale;
 	}
 
