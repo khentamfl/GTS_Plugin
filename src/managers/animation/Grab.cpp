@@ -241,9 +241,11 @@ namespace {
 			StartCombat(giant, grabbedActor, true); // force combat
 			float sd = get_visual_scale(giant)/get_visual_scale(grabbedActor);
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
+			float multiplier = Persistent::GetSingleton().size_related_damage_mult;
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
 			float damage = (1.400 * sd) * power * additionaldamage * additionaldamage;
+			damage *= multiplier;
 			if (HasSMT(giant)) {
 				damage *= 1.75;
 				bonus = 3.0;
