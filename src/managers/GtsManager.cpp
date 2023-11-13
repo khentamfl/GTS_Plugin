@@ -124,7 +124,6 @@ namespace {
 		if (scale < 0.0) {
 			return;
 		}
-		float other = Get_Other_Scale(actor);
 		float vs = get_visual_scale(actor);
 		float visual_scale = persi_actor_data->visual_scale;
 
