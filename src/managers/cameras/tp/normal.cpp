@@ -9,7 +9,7 @@ namespace Gts {
 	NiPoint3 Normal::GetOffset(const NiPoint3& cameraPos) {
 		return NiPoint3(
 			Runtime::GetFloat("cameraX"),
-			Normal::ZOffset,
+			0,
 			Runtime::GetFloat("cameraY")
 			);
 	}
@@ -17,7 +17,7 @@ namespace Gts {
 	NiPoint3 Normal::GetCombatOffset(const NiPoint3& cameraPos) {
 		return NiPoint3(
 			Runtime::GetFloat("combatCameraX"),
-			Normal::ZOffset,
+			0,
 			Runtime::GetFloat("combatCameraY")
 			);
 	}
@@ -25,7 +25,7 @@ namespace Gts {
 	NiPoint3 Normal::GetOffsetProne(const NiPoint3& cameraPos) {
 		return NiPoint3(
 			Runtime::GetFloat("proneCameraX"),
-			Normal::ZOffset,
+			0,
 			Runtime::GetFloat("proneCameraY")
 			);
 	}
@@ -33,7 +33,7 @@ namespace Gts {
 	NiPoint3 Normal::GetCombatOffsetProne(const NiPoint3& cameraPos)  {
 		return NiPoint3(
 			Runtime::GetFloat("proneCombatCameraX"),
-			Normal::ZOffset,
+			0,
 			Runtime::GetFloat("proneCombatCameraY")
 			);
 	}
@@ -41,7 +41,7 @@ namespace Gts {
 	 // fVanityModeMaxDist:Camera Changes The Offset Value We Need So we need to take this value into account;
 	void Normal::SetZOff(float Offset) { 
 		//The 0.15 was found through testing different fVanityModeMaxDist values
-		Normal::ZOffset = Offset - (0.15 * Gts::MaxZoom());
+		//Normal::ZOffset = Offset - (0.15 * Gts::MaxZoom());
 	}
 
 	BoneTarget Normal::GetBoneTarget() {
