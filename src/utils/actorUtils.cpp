@@ -598,7 +598,7 @@ namespace Gts {
 				return true; // try again
 			}
 			if (tiny->IsDead()) {
-				TransferInventoryToDropbox(tiny, scale, removeQuestItems, Cause);
+				TransferInventoryToDropbox(to, tiny, scale, removeQuestItems, Cause);
 				return false; // stop it, we started the looting of the Target.
 			}
 			return true;
@@ -1684,7 +1684,7 @@ namespace Gts {
 
 	// From an actor place a new container at them and transfer
 	// all of their inventory into it
-	void TransferInventoryToDropbox(Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause) {
+	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause) {
 
 		bool soul = false;
 		float Scale = std::clamp(scale, 0.10f, 4.4f);
@@ -1718,7 +1718,7 @@ namespace Gts {
 		} else if (IsMammoth(actor)) {
 			Scale *= 5.0;
 		}
-		auto dropbox = Runtime::PlaceContainer(actor, container); // Place chosen container
+		auto dropbox = Runtime::PlaceContainer(actor, get_visual_scale(giant), container); // Place chosen container
 		
 		std::string taskname = std::format("Dropbox {}", actor->formID); // create task name
 		std::string taskname_sound = std::format("DropboxAudio {}", actor->formID); // create task name

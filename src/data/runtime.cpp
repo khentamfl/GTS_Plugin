@@ -563,21 +563,21 @@ namespace Gts {
 		return data;
 	}
 
-	TESObjectREFR* Runtime::PlaceContainer(Actor* actor, const std::string_view& tag) {
+	TESObjectREFR* Runtime::PlaceContainer(Actor* actor, float scale, const std::string_view& tag) {
 		if (actor) {
-			return PlaceContainerAtPos(actor, actor->GetPosition(), tag);
+			return PlaceContainerAtPos(actor, actor->GetPosition(), scale, tag);
 		}
 		return nullptr;
 	}
 
-	TESObjectREFR* Runtime::PlaceContainer(TESObjectREFR* object, const std::string_view& tag) {
+	TESObjectREFR* Runtime::PlaceContainer(TESObjectREFR* object, float scale, const std::string_view& tag) {
 		if (object) {
-			return PlaceContainerAtPos(object, object->GetPosition(), tag);
+			return PlaceContainerAtPos(object, object->GetPosition(), scale, tag);
 		}
 		return nullptr;
 	}
 
-	TESObjectREFR* Runtime::PlaceContainerAtPos(Actor* actor, NiPoint3 pos, const std::string_view& tag) {
+	TESObjectREFR* Runtime::PlaceContainerAtPos(Actor* actor, NiPoint3 pos, float scale, const std::string_view& tag) {
 		auto data = GetContainer(tag);
 		if (data) {
 			NiPointer<TESObjectREFR> instance_ptr = actor->PlaceObjectAtMe(data, false);
@@ -593,7 +593,7 @@ namespace Gts {
 			NiPoint3 ray_start = pos; 
 			NiPoint3 ray_direction(0.0, 0.0, -1.0);
 			
-			float ray_length = meter_to_unit(std::max(99999, 99999));
+			float ray_length = meter_to_unit(100000 * scale);
 			NiPoint3 endpos = CastRay(actor, ray_start, ray_direction, ray_length, success);
 
 			if (!success) {
@@ -612,7 +612,7 @@ namespace Gts {
 		return nullptr;
 	}
 
-	TESObjectREFR* Runtime::PlaceContainerAtPos(TESObjectREFR* object, NiPoint3 pos, const std::string_view& tag) {
+	TESObjectREFR* Runtime::PlaceContainerAtPos(TESObjectREFR* object, NiPoint3 pos, float scale, const std::string_view& tag) {
 		auto data = GetContainer(tag);
 		if (data) {
 			NiPointer<TESObjectREFR> instance_ptr = object->PlaceObjectAtMe(data, false);
@@ -628,7 +628,7 @@ namespace Gts {
 			NiPoint3 ray_start = pos; 
 			NiPoint3 ray_direction(0.0, 0.0, -1.0);
 			
-			float ray_length = meter_to_unit(std::max(99999, 99999));
+			float ray_length = meter_to_unit(1000000 * scale);
 			NiPoint3 endpos = CastRay(object, ray_start, ray_direction, ray_length, success);
 
 			if (!success) {

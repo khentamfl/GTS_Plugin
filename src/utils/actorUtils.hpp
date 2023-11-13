@@ -177,7 +177,7 @@ namespace Gts {
 	void ResetGrab(Actor* giant);
 	void FixAnimations();
 
-	void TransferInventoryToDropbox(Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause);
+	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause);
 
 	bool CanPerformAnimation(Actor* giant, float type);
 	void AdvanceQuestProgression(Actor* actor, float stage, float value);

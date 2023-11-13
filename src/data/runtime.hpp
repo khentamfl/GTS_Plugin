@@ -121,10 +121,10 @@ namespace Gts {
 
 			// Containers
 			static TESObjectCONT* GetContainer(const std::string_view& tag);
-			static TESObjectREFR* PlaceContainer(Actor* actor, const std::string_view& tag);
-			static TESObjectREFR* PlaceContainer(TESObjectREFR* object, const std::string_view& tag);
-			static TESObjectREFR* PlaceContainerAtPos(Actor* actor, NiPoint3 pos, const std::string_view& tag);
-			static TESObjectREFR* PlaceContainerAtPos(TESObjectREFR* object, NiPoint3 pos, const std::string_view& tag);
+			static TESObjectREFR* PlaceContainer(Actor* actor, float scale, const std::string_view& tag);
+			static TESObjectREFR* PlaceContainer(TESObjectREFR* object, float scale, const std::string_view& tag);
+			static TESObjectREFR* PlaceContainerAtPos(Actor* actor, NiPoint3 pos, float scale, const std::string_view& tag);
+			static TESObjectREFR* PlaceContainerAtPos(TESObjectREFR* object, NiPoint3 pos, float scale, const std::string_view& tag);
 
 			// Team Functions
 			static bool HasMagicEffectTeam(Actor* actor, const std::string_view& tag);
