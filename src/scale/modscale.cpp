@@ -40,7 +40,11 @@ namespace Gts {
 					                        // but here it is just in case
 				}
 			}
+		}
 
+		if (actor->IsChild() && allScale > 1.0) {
+			log::info("{} is Child, Scale: {}", actor->GetDisplayFullName(), allScale);
+			allScale = 1.0; // Fix RSChildren bug. RSCHildren have "NPC" node scale of 1.65 by default...just why...
 		}
 
 		return allScale / ourScale;
