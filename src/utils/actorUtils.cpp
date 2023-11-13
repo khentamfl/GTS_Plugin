@@ -1682,6 +1682,26 @@ namespace Gts {
 		}
 	}
 
+	/*NiPoint3 GetContainerSpawnLocation(Actor* giant, Actor* tiny, NiPoint3 pos, DamageSource Cause) {
+		if (cause != DamageSource::HandCrushed && cause != DamageSource::Vored) { // Spawn piles doing raycast
+			auto node = find_node(giant, GetDeathNodeName(Cause));
+			bool success = false;
+			NiPoint3 ray_start = pos; 
+			NiPoint3 ray_direction(0.0, 0.0, -1.0);
+			
+			float ray_length = 1620000;
+			NiPoint3 endpos = CastRay(tiny, ray_start, ray_direction, ray_length, success);
+
+			if (!success) {
+				endpos = pos;
+				log::info("RayCast failed");
+			}
+		} else {
+			pos = giant->GetLocation(); // else spawn under our legs
+		}
+		return pos;
+	}*/
+
 	// From an actor place a new container at them and transfer
 	// all of their inventory into it
 	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause) {
@@ -1718,10 +1738,17 @@ namespace Gts {
 		} else if (IsMammoth(actor)) {
 			Scale *= 5.0;
 		}
-		auto dropbox = Runtime::PlaceContainer(actor, get_visual_scale(giant), container); // Place chosen container
+		NiPoint3 TinyPos = actor->GetPosition();
+		NiPoint3 GiantPos = giant->GetPosition();
+		NiPoint3 TotalPos = NiPoint3(TinyPos.x, TinyPos.y, GiantPos.z + 250);
+
+		// ^ use X and Y of Tiny, and Z of Giant. Doing so will prevent Cell issues with Raycast
+		//  and in theory all piles should spawn properly now
+
+		auto dropbox = Runtime::PlaceContainerAtPos(actor, TotalPos, container); // Place chosen container
 		
-		std::string taskname = std::format("Dropbox {}", actor->formID); // create task name
-		std::string taskname_sound = std::format("DropboxAudio {}", actor->formID); // create task name
+		std::string taskname = std::format("Dropbox {}", actor->formID); // create task name for, well, main task
+		std::string taskname_sound = std::format("DropboxAudio {}", actor->formID); // create task name for Audio play
 		if (!dropbox) {
 			return;
 		}
@@ -1792,7 +1819,7 @@ namespace Gts {
 		}
 	}
 
-	bool CanPerformAnimation(Actor* giant, float type) {
+	bool CanPerformAnimation(Actor* giant, float type) { // Needed for smooth animation unlocks during quest progression
 		// 0 = Hugs
 		// 1 = stomps and kicks
 		// 2 = Grab and Sandwich
