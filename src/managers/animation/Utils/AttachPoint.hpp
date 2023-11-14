@@ -84,7 +84,7 @@ namespace Gts {
 	NiPoint3 AttachToUnderFoot_Left(T& anyGiant, U& anyTiny) {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
-			return false;
+			return NiPoint3(0,0,0);
 		}
 
 		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(giant);
@@ -93,13 +93,13 @@ namespace Gts {
 		auto leftCalf = find_node(giant, leftCalfLookup);
 		auto leftToe = find_node(giant, leftToeLookup);
 		if (!leftFoot) {
-			return false;
+			return NiPoint3(0,0,0);
 		}
 		if (!leftCalf) {
-			return false;
+			return NiPoint3(0,0,0);
 		}
 		if (!leftToe) {
-			return false;
+			return NiPoint3(0,0,0);
 		}
 		NiMatrix3 leftRotMat;
 		{
@@ -158,13 +158,13 @@ namespace Gts {
 
 
 		if (!rightFoot) {
-			return false;
+			return NiPoint3(0,0,0);
 		}
 		if (!rightCalf) {
-			return false;
+			return NiPoint3(0,0,0);
 		}
 		if (!rightToe) {
-			return false;
+			return NiPoint3(0,0,0);
 		}
 		NiMatrix3 rightRotMat;
 		{
