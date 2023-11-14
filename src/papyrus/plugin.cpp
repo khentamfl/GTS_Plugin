@@ -190,6 +190,22 @@ namespace {
 		Persistent::GetSingleton().PCEffectImmunity = enabled;
 	}
 
+	void DisableCollisionLayerAndMotion(StaticFunctionTag*, TESObjectREFR* ref) {
+		log::info("Disabling collision");
+		if (!ref) {
+			return;
+		}
+		auto current3D = ref->GetCurrent3D();
+		log::info("Getting Ref");
+		if (!current3D) {
+			log::info("Ref failed");
+			return; // Retry next frame
+		} 
+		log::info("Setting motion type");
+		current3D->SetMotionType(4, true, true, true);
+		current3D->SetCollisionLayer(COL_LAYER::kUnidentified);
+	}
+
 	float Quest_GetProgression(StaticFunctionTag*, float stage) {
 		return GetQuestProgression(stage);
 	}
@@ -458,6 +474,7 @@ namespace Gts {
 		vm->RegisterFunction("SetPlayerStagger", PapyrusClass, SetPlayerStagger);
 		vm->RegisterFunction("SetNPCProtection", PapyrusClass, SetNPCProtection);
 		vm->RegisterFunction("SetPCProtection", PapyrusClass, SetPCProtection);
+		vm->RegisterFunction("DisableCollisionLayerAndMotion", PapyrusClass, DisableCollisionLayerAndMotion);
 		vm->RegisterFunction("Quest_GetProgression", PapyrusClass, Quest_GetProgression);
 		vm->RegisterFunction("GetAspectOfGiantessPower", PapyrusClass, GetAspectOfGiantessPower);
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);

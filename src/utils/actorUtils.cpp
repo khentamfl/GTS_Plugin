@@ -1757,9 +1757,6 @@ namespace Gts {
 		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
 			TaskManager::RunFor(taskname, 16, [=](auto& progressData) { // Spawn loot piles
 				float Finish = Time::WorldTimeElapsed();
-				if (soul) {
-					return false; // end it right away, we don't want to scale the soul
-				}
 				auto dropboxPtr = dropboxHandle.get().get();
 				if (!dropboxPtr) {
 					return false;
@@ -1772,7 +1769,9 @@ namespace Gts {
 					return true; // Retry next frame
 				} else {
 					float timepassed = Finish - Start;
-
+					if (soul) {
+						timepassed *= 1.33; // faster soul scale
+					}
 					auto node = find_object_node(dropboxPtr, "GorePile_Obj");
 					auto trigger = find_object_node(dropboxPtr, "Trigger_Obj");
 					if (node) {
