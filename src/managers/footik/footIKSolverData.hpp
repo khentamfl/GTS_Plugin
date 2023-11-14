@@ -1,6 +1,5 @@
 #pragma once
 // Module that handles footsteps
-#include "hooks/RE.hpp"
 
 using namespace std;
 using namespace SKSE;
