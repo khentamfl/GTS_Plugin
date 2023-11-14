@@ -221,7 +221,7 @@ namespace Gts {
 				return true;
 			}
 
-			AttachTo_NoForceRagdoll(giantref, tinyref, coordinates);
+			AttachTo(giantref, tinyref, coordinates);
 			/*if (!AttachToUnderFoot_Left(giantref, tinyref)) {
 				log::info("Attach is false");
 				SetBeingGrinded(tinyref, false);
@@ -265,7 +265,7 @@ namespace Gts {
 				return true;
 			}
 
-			AttachTo_NoForceRagdoll(giantref, tinyref, coordinates);
+			AttachTo(giantref, tinyref, coordinates);
 			/*if (!AttachToUnderFoot_Right(giantref, tinyref)) {
 				log::info("Attach is false");
 				SetBeingGrinded(tinyref, false);
