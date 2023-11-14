@@ -72,9 +72,9 @@ namespace Gts {
 
 		float scale_factor = get_visual_scale(actor);
 
-		if ((fabs(this->last_scale - scale_factor) <= EPSILON) &&  !needs_reset) {
-			return;
-		}
+		//if ((fabs(this->last_scale - scale_factor) <= EPSILON) &&  !needs_reset) {
+			//return;
+		//}
 
 		hkVector4 vecScale = hkVector4(scale_factor, scale_factor, scale_factor, scale_factor);
 

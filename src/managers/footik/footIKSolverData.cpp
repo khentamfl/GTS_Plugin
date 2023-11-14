@@ -19,37 +19,27 @@ namespace Gts {
 		}
 		// log::info("solver memSizeAndFlags: {:X}", this->solver->memSizeAndFlags);
 		this->m_footEndLS = solver->m_setup.m_footEndLS;
-
-        this->m_worldUpDirectionWS = solver->m_setup.m_worldUpDirectionWS;
-        this->m_modelUpDirectionMS = solver->m_setup.m_modelUpDirectionMS;
-
 		this->m_footPlantedAnkleHeightMS = solver->m_setup.m_footPlantedAnkleHeightMS;
 		this->m_footRaisedAnkleHeightMS = solver->m_setup.m_footRaisedAnkleHeightMS;
 		this->m_maxAnkleHeightMS = solver->m_setup.m_maxAnkleHeightMS;
 		this->m_minAnkleHeightMS = solver->m_setup.m_minAnkleHeightMS;
 		this->m_raycastDistanceUp = solver->m_setup.m_raycastDistanceUp;
 		this->m_raycastDistanceDown = solver->m_setup.m_raycastDistanceDown;
-        this->m_originalGroundHeightMS = solver->m_setup.m_originalGroundHeightMS;
 	}
 	FootIkSolverData::~FootIkSolverData() {
 	}
 
 	void FootIkSolverData::ApplyScale(const float& new_scale, const hkVector4& vecScale) {
 		this->solver->m_setup.m_footEndLS = this->m_footEndLS * vecScale;
-
-        this->solver->m_setup.m_worldUpDirectionWS = this->m_worldUpDirectionWS * vecScale;
-        this->solver->m_setup.m_modelUpDirectionMS = this->m_modelUpDirectionMS * vecScale;
-
 		this->solver->m_setup.m_footPlantedAnkleHeightMS = this->m_footPlantedAnkleHeightMS * new_scale;
 		this->solver->m_setup.m_footRaisedAnkleHeightMS = this->m_footRaisedAnkleHeightMS * new_scale;
 		this->solver->m_setup.m_maxAnkleHeightMS = this->m_maxAnkleHeightMS  * new_scale;
 		this->solver->m_setup.m_minAnkleHeightMS = this->m_minAnkleHeightMS * new_scale;
-        this->solver->m_setup.m_originalGroundHeightMS = this->m_originalGroundHeightMS * new_scale;
 		log::info("------");
-		log::info("OLD: m_raycastDistanceUp: {}", this->solver->m_setup.m_raycastDistanceUp);
+		log::info("OLD: this->solver->m_setup.m_raycastDistanceUp: {}", this->solver->m_setup.m_raycastDistanceUp);
 		this->solver->m_setup.m_raycastDistanceUp = this->m_raycastDistanceUp * new_scale;
-		log::info("NEW: m_raycastDistanceUp: {}", this->solver->m_setup.m_raycastDistanceUp);
-		
+		log::info("NEW: this->solver->m_setup.m_raycastDistanceUp: {}", this->solver->m_setup.m_raycastDistanceUp);
+		log::info("");
 		this->solver->m_setup.m_raycastDistanceDown = this->m_raycastDistanceDown * new_scale;
 	}
 }
