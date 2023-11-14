@@ -1,5 +1,7 @@
 #pragma once
 
+#include "events.hpp"
+
 #include <atomic>
 #include "colliders/RE.hpp"
 #include "managers/footik/collider_actor_data.hpp"
@@ -15,8 +17,8 @@ namespace Gts {
 		public:
 			[[nodiscard]] static ColliderManager& GetSingleton() noexcept;
 
-			void Update() override;
-			void HavokUpdate() override;
+			virtual void Update() override;
+			virtual void HavokUpdate() override;
 			void Reset() override;
 			void ResetActor(Actor* actor) override;
 			void ActorLoaded(Actor* actor) override;

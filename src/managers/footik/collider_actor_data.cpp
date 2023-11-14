@@ -1,6 +1,7 @@
 #include "managers/footik/collider_actor_data.hpp"
 #include "scale/scale.hpp"
 #include "colliders/RE.hpp"
+#include "data/world.hpp"
 #include "node.hpp"
 #include "util.hpp"
 
