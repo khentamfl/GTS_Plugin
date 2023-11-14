@@ -779,7 +779,7 @@ namespace Gts {
 		auto progressionQuest = Runtime::GetQuest("MainQuest");
 		if (progressionQuest) {
 			auto stage = progressionQuest->GetCurrentStageID();
-			if (stage == 90) {
+			if (stage == 80) {
 				auto transient = Transient::GetSingleton().GetData(pc);
 				if (transient) {
 					Cprint("Quest is Completed");
