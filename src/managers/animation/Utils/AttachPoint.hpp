@@ -81,7 +81,7 @@ namespace Gts {
 	}
 
 	template<typename T, typename U>
-	bool AttachToUnderFoot_Left(T& anyGiant, U& anyTiny) {
+	NiPoint3 AttachToUnderFoot_Left(T& anyGiant, U& anyTiny) {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
 			return false;
@@ -135,14 +135,16 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 				NiPoint3 coords = foot->world*(rotMat*point);
-				return AttachTo(anyGiant, anyTiny, coords);
+				return coords;
+				//return AttachTo(anyGiant, anyTiny, coords);
 			}
 		}
-		return false;
+		return coords;
+		//return false;
 	}
 
 	template<typename T, typename U>
-	bool AttachToUnderFoot_Right(T& anyGiant, U& anyTiny) {
+	NiPoint3 AttachToUnderFoot_Right(T& anyGiant, U& anyTiny) {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
 			return false;
@@ -198,11 +200,12 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 				NiPoint3 coords = foot->world*(rotMat*point);
-				return AttachTo(anyGiant, anyTiny, coords);
+				return coords;
+				//return AttachTo(anyGiant, anyTiny, coords);
 			}
 		}
-
-		return false;
+		//return false
+		return coords;
 	}
 
 

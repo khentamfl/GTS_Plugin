@@ -201,6 +201,7 @@ namespace Gts {
 		auto tinyhandle = tiny->CreateRefHandle();
 		std::string name = std::format("FootGrind_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
+		auto coordinates = AttachToUnderFoot_Left(giant, tiny);
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
@@ -216,11 +217,13 @@ namespace Gts {
 			if (FrameB <= 4.0) {
 				return true;
 			}
-			if (!AttachToUnderFoot_Left(giantref, tinyref)) {
+
+			AttachTo_NoForceRagdoll(giantref, tinyref, coordinates);
+			/*if (!AttachToUnderFoot_Left(giantref, tinyref)) {
 				log::info("Attach is false");
 				SetBeingGrinded(tinyref, false);
 				return false;
-			}
+			}*/
 			if (!IsFootGrinding(giantref)) {
 				SetBeingGrinded(tinyref, false);
 				log::info("IsGrinding = false");
@@ -240,6 +243,7 @@ namespace Gts {
 		auto tinyhandle = tiny->CreateRefHandle();
 		std::string name = std::format("FootGrind_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
+		auto coordinates = AttachToUnderFoot_Right(giant, tiny);
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
@@ -247,18 +251,20 @@ namespace Gts {
 			if (!tinyhandle) {
 				return false;
 			}
-
+			
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 			auto FrameB = Time::FramesElapsed() - FrameA;
 			if (FrameB <= 4.0) {
 				return true;
 			}
-			if (!AttachToUnderFoot_Right(giantref, tinyref)) {
+
+			AttachTo_NoForceRagdoll(giantref, tinyref, coordinates);
+			/*if (!AttachToUnderFoot_Right(giantref, tinyref)) {
 				log::info("Attach is false");
 				SetBeingGrinded(tinyref, false);
 				return false;
-			}
+			}*/
 			if (!IsFootGrinding(giantref)) {
 				SetBeingGrinded(tinyref, false);
 				log::info("IsGrinding = false");

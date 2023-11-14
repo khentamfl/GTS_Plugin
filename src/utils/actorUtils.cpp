@@ -736,7 +736,6 @@ namespace Gts {
 		if (receiver->IsDead()) {
 			return;
 		}
-		// CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
 
 		if (source) {
 			auto ai = receiver->GetActorRuntimeData().currentProcess;
