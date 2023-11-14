@@ -147,7 +147,7 @@ namespace Gts {
 	NiPoint3 AttachToUnderFoot_Right(T& anyGiant, U& anyTiny) {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
-			return false;
+			return NiPoint3(0,0,0);
 		}
 
 		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(giant);
