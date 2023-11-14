@@ -62,7 +62,7 @@ namespace Gts {
 
 		EventDispatcher::AddListener(&AiManager::GetSingleton()); // Rough AI controller for GTS-actions
 		EventDispatcher::AddListener(&Headtracking::GetSingleton()); // Headtracking fixes
-		EventDispatcher::AddListener(&ColliderManager::GetSingleton()); // Manage FootIK
+		//EventDispatcher::AddListener(&ColliderManager::GetSingleton()); // Manage FootIK
 
 
 		EventDispatcher::AddListener(&ContactManager::GetSingleton()); // Manages collisions

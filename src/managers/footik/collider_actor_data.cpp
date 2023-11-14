@@ -64,7 +64,7 @@ namespace Gts {
 
 		bool needs_reset = this->last_update_frame.exchange(last_reset_frame) < last_reset_frame;
 		bool footIkChanged = this->footIkData.ik != footIk;
-		if (actor->formID == 0x14 || IsTeammate(actor)) {//needs_reset || footIkChanged ) {
+		if (needs_reset || footIkChanged) {
 			this->UpdateColliders(actor);
 		}
 
@@ -72,9 +72,9 @@ namespace Gts {
 
 		float scale_factor = get_visual_scale(actor);
 
-		//if ((fabs(this->last_scale - scale_factor) <= EPSILON) &&  !needs_reset) {
-			//return;
-		//}
+		if ((fabs(this->last_scale - scale_factor) <= EPSILON) &&  !needs_reset) {
+			return;
+		}
 
 		hkVector4 vecScale = hkVector4(scale_factor, scale_factor, scale_factor, scale_factor);
 

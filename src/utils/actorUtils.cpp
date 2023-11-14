@@ -582,6 +582,7 @@ namespace Gts {
 
 	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause) {
 		std::string name = std::format("TransferItems_{}_{}", from->formID, to->formID);
+		float Start = Time::WorldTimeElapsed();
 		ActorHandle gianthandle = to->CreateRefHandle();
 		ActorHandle tinyhandle = from->CreateRefHandle();
 		bool PCLoot = Runtime::GetBool("GtsEnableLooting");
@@ -595,11 +596,17 @@ namespace Gts {
 			}
 			auto tiny = tinyhandle.get().get();
 			auto giant = gianthandle.get().get();
+			
 			if (!tiny->IsDead()) {
 				KillActor(giant, tiny); // just to make sure
 				return true; // try again
 			}
 			if (tiny->IsDead()) {
+				float Finish = Time::WorldTimeElapsed();
+				float timepassed = Finish - Start;
+				if (timepassed < 0.20) {
+					return true; // retry, not enough time has passed yet
+				}
 				if (giant->formID == 0x14 && !PCLoot) {
 					TransferInventory_Normal(to, tiny, removeQuestItems);
 					return false;
