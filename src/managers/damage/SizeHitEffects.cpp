@@ -236,7 +236,8 @@ namespace {
 
 		if (damage < 0) {
 			Overkill(attacker, receiver, -(a_damage + damage));
-			DamageAV(receiver, ActorValue::kHealth, -damage); // Damage hp
+			//DamageAV(receiver, ActorValue::kHealth, -damage); // Damage hp
+			InflictSizeDamage(attacker, receiver, -damage);
 			return;
 		}
 		if (damage > 0) {
@@ -363,7 +364,8 @@ namespace Gts {
 				//Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
 			}
 			SizeManager::GetSingleton().ModSizeVulnerability(tiny, 0.15);
-			DamageAV(tiny, ActorValue::kHealth, damage);
+			//DamageAV(tiny, ActorValue::kHealth, damage);
+			InflictSizeDamage(giant, tiny, damage);
 			float Health = GetAV(tiny, ActorValue::kHealth);
 			float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
 			

@@ -64,9 +64,9 @@ namespace {
 				auto perk = Runtime::GetPerk("TalkToActor");
 				if (perk) {
 					log::info("Perk found");
-					auto value = perk->perkConditions.TESCondition();
+					auto value = perk->perkConditions.head;
 					if (value) {
-						auto result = value->TESConditionItem().comparisonValue;
+						auto result = value->data.comparisonValue;
 						auto finalvalue = result.f;
 						log::info("Perk Value: {}", finalvalue);
 					}

@@ -495,11 +495,12 @@ namespace Gts {
 		}
 		if (DoDamage) {
 			ModVulnerability(giant, tiny, result);
-			DamageAV(tiny, ActorValue::kHealth, result);
+			//DamageAV(tiny, ActorValue::kHealth, result);
+			InflictSizeDamage(giant, tiny, result);
 		}
 
 		if (GetAV(tiny, ActorValue::kHealth) <= 0 || tiny->IsDead()) {
-			ReportCrime(giant, tiny, 1000, true);
+			//ReportCrime(giant, tiny, 1000, true);
 			if (multiplier >= 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
 					crushmanager.Crush(giant, tiny);

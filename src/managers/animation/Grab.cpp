@@ -250,7 +250,8 @@ namespace {
 				damage *= 1.75;
 				bonus = 3.0;
 			}
-			DamageAV(grabbedActor, ActorValue::kHealth, damage);
+			//DamageAV(grabbedActor, ActorValue::kHealth, damage);
+			InflictSizeDamage(giant, grabbedActor, damage);
 			Rumble::Once("GrabAttack", giant, 6.0 * bonus, 0.05, "NPC L Hand [LHnd]");
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1);
 
@@ -283,7 +284,7 @@ namespace {
 				SetBetweenBreasts(giant, false);
 				AdjustSizeReserve(giant, get_visual_scale(grabbedActor)/10);
 				AdvanceQuestProgression(giant, 5, 1.0);
-				ReportCrime(giant, grabbedActor, 1000.0, true); // Report Crime since we killed someone
+				//ReportCrime(giant, grabbedActor, 1000.0, true); // Report Crime since we killed someone
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
 				PrintDeathSource(giant, grabbedActor, DamageSource::HandCrushed);

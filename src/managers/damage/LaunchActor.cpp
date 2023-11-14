@@ -130,7 +130,8 @@ namespace {
 
 				if (Runtime::HasPerkTeam(giant, "LaunchDamage") && CanDoDamage(giant, tiny)) {
 					float damage = LAUNCH_DAMAGE * sizeRatio * force * damagebonus;
-					DamageAV(tiny, ActorValue::kHealth, damage * DamageSetting);
+					InflictSizeDamage(giant, tiny, damage * DamageSetting);
+					//DamageAV(tiny, ActorValue::kHealth, damage * DamageSetting);
 					if (power >= 1.5) { // Apply only when we have DisastrousTremor perk
 						mod_target_scale(tiny, -(damage * DamageSetting) / 500);
 						float modifier = 1.0;

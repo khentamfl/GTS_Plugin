@@ -211,7 +211,8 @@ namespace Gts {
 					KillActor(giantref.get().get(), tiny);
 					Disintegrate(tiny);
 				} else if (tiny->formID == 0x14) {
-					DamageAV(tiny, ActorValue::kHealth, 900000.0);
+					//DamageAV(tiny, ActorValue::kHealth, 900000.0);
+					InflictSizeDamage(giantref, tiny, 900000);
 					KillActor(giantref.get().get(), tiny);
 					TriggerScreenBlood(50);
 					tiny->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
