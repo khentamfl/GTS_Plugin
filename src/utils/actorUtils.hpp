@@ -82,6 +82,7 @@ namespace Gts {
 	void PlayAnimation(Actor* actor, std::string_view animName);
 
 	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause);
+	void TransferInventory_Normal(Actor* giant, Actor* tiny, bool removeQuestItems);
 
 	void Disintegrate(Actor* actor);
 	void UnDisintegrate(Actor* actor);

@@ -584,6 +584,8 @@ namespace Gts {
 		std::string name = std::format("TransferItems_{}_{}", from->formID, to->formID);
 		ActorHandle gianthandle = to->CreateRefHandle();
 		ActorHandle tinyhandle = from->CreateRefHandle();
+		bool PCLoot = Runtime::GetBool("GtsEnableLooting");
+		bool NPCLoot = Runtime::GetBool("GtsNPCEnableLooting");
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!tinyhandle) {
 				return false;
@@ -598,11 +600,28 @@ namespace Gts {
 				return true; // try again
 			}
 			if (tiny->IsDead()) {
+				if (giant->formID == 0x14 && !PCLoot) {
+					TransferInventory_Normal(to, tiny, removeQuestItems);
+					return false;
+				} if (giant->formID != 0x14 && !NPCLoot) {
+					TransferInventory_Normal(to, tiny, removeQuestItems);
+					return false;
+				}
 				TransferInventoryToDropbox(to, tiny, scale, removeQuestItems, Cause);
 				return false; // stop it, we started the looting of the Target.
 			}
 			return true;
 		});
+	}
+
+	void TransferInventory_Normal(Actor* giant, Actor* tiny, bool removeQuestItems) {
+		for (auto &[a_object, invData]: tiny->GetInventory()) { // transfer loot
+			if (a_object->GetPlayable()) {
+				if ((!invData.second->IsQuestObject() || removeQuestItems)) {
+					tiny->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, giant, nullptr, nullptr);
+				}
+			}
+		}
 	}
 
 	void Disintegrate(Actor* actor) {
