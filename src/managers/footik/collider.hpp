@@ -1,7 +1,6 @@
 #pragma once
 // Module that handles footsteps
 #include <atomic>
-#include "hooks/RE.hpp"
 #include "managers/footik/collider_actor_data.hpp"
 #include "events.hpp"
 
@@ -21,8 +20,6 @@ namespace Gts {
 			void ActorLoaded(Actor* actor) override;
 
 			void FlagReset();
-
-
 
 			ColliderActorData* GetActorData(Actor* actor);
 		private:

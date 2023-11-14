@@ -21,7 +21,7 @@ namespace Gts {
 	void ColliderManager::Update() {
 		auto playerCharacter = PlayerCharacter::GetSingleton();
 		auto cell = playerCharacter->GetParentCell();
-		if (!cell || Runtime::GetSingleton().EnableColliders->value == 0.0) {
+		if (!cell) {
 			return;
 		}
 
