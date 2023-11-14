@@ -1,6 +1,5 @@
 #pragma once
 // Module that handles FootIK
-#include "hooks/RE.hpp"
 #include "managers/footik/footIKSolverData.hpp"
 
 using namespace std;
