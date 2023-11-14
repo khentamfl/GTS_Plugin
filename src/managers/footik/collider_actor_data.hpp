@@ -19,7 +19,6 @@ namespace Gts {
 			void Reset();
 			void Update(Actor* actor, std::uint64_t last_reset_frame);
 			void ApplyScale(const float& new_scale, const hkVector4& vec_scale);
-			void ApplyPose(Actor* actor, const float& scale);
 			void UpdateColliders(Actor* actor);
 			void PruneColliders(Actor* actor);
 			void AddFootIk(hkbFootIkDriver* ik);

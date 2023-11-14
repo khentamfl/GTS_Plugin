@@ -18,7 +18,6 @@ namespace Gts {
 			hkaFootPlacementIkSolver* solver;
 		private:
 			hkVector4 m_footEndLS;
-            hkVector4 m_kneeAxisLS;
 
 			hkVector4 m_worldUpDirectionWS;
             hkVector4 m_modelUpDirectionMS;

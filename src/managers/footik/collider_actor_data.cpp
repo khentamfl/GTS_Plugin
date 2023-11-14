@@ -1,4 +1,5 @@
 #include "managers/footik/collider_actor_data.hpp"
+#include "utils/actorUtils.hpp"
 #include "scale/scale.hpp"
 #include "colliders/RE.hpp"
 #include "data/world.hpp"
@@ -49,13 +50,6 @@ namespace Gts {
 		this->footIkData.ApplyScale(new_scale, vec_scale);
 	}
 
-	void ColliderActorData::ApplyPose(Actor* actor, const float& new_scale) {
-		auto model = actor->GetCurrent3D();
-		if (model) {
-			hkVector4 origin = hkVector4(model->world.translate * (World::WorldScale()));
-			// this->ragdollData.ApplyPose(origin, new_scale);
-		}
-	}
 
 	void ColliderActorData::Update(Actor* actor, std::uint64_t last_reset_frame) {
 		auto charController = actor->GetCharController();
@@ -63,7 +57,7 @@ namespace Gts {
 
 		bool needs_reset = this->last_update_frame.exchange(last_reset_frame) < last_reset_frame;
 		bool footIkChanged = this->footIkData.ik != footIk;
-		if (needs_reset || footIkChanged ) {
+		if (actor->formID == 0x14 || IsTeammate(actor)) {//needs_reset || footIkChanged ) {
 			this->UpdateColliders(actor);
 		}
 
