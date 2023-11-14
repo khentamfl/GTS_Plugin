@@ -183,5 +183,5 @@ namespace Gts {
 	bool CanPerformAnimation(Actor* giant, float type);
 	void AdvanceQuestProgression(Actor* actor, float stage, float value);
 	float GetQuestProgression(float stage);
-	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value)
+	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value);
 }
