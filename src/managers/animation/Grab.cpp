@@ -238,7 +238,7 @@ namespace {
 
 		static Timer laughtimer = Timer(6.0);
 		if (grabbedActor) {
-			StartCombat(giant, grabbedActor, true); // force combat
+			//StartCombat(giant, grabbedActor, true); // force combat
 			float sd = get_visual_scale(giant)/get_visual_scale(grabbedActor);
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
 			float multiplier = Persistent::GetSingleton().size_related_damage_mult;

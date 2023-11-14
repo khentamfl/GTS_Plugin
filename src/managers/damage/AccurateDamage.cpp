@@ -469,7 +469,7 @@ namespace Gts {
 		// ^ Chance to break bonues and inflict additional damage, as well as making target more vulerable to size damage
 
 
-		StartCombat(giant, tiny, false);
+		//StartCombat(giant, tiny, false);
 
 
 		result *= damagebonus;
