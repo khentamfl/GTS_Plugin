@@ -64,12 +64,13 @@ namespace {
 				auto perk = Runtime::GetPerk("TalkToActor");
 				if (perk) {
 					log::info("Perk found");
-					if (giant->IsSneaking()) {
-						perk->perkConditions.head->data.comparisonValue.f = 1;
-						log::info("Is Sneaking, value = 1");
-					} else {
-						perk->perkConditions.head->data.comparisonValue.f = 2;
-						log::info("Is Sneaking, value = 2");
+					auto value = perk->perkConditions.head->data;
+					if (data) {
+						auto result = value.comparisonValue;
+						if (result) {
+							auto finalvalue = result.f;
+							log::info("Perk Value: {}", finalvalue);
+						}
 					}
 				}	
  			}
