@@ -1917,6 +1917,5 @@ namespace Gts {
 
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
 		DamageAV(receiver, ActorValue::kHealth, value);
-		receiver->HandleHealthDamage(attacker, value);
 	}
 }

@@ -196,7 +196,7 @@ namespace Gts {
 
 					AddSMTDuration(giant, 5.0);
 					ReportCrime(giant, tiny, 1000.0, true);
-					//StartCombat(giant, tiny, false);
+					StartCombat(giant, tiny, false);
 
 					ScareChance(giant);
 

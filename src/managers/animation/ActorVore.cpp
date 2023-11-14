@@ -181,7 +181,7 @@ namespace {
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("JumpFall");
 			ReportCrime(&data.giant, tiny, 1000.0, true);
-			//StartCombat(giant, tiny, true);
+			StartCombat(giant, tiny, true);
 		}
 		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			ManageCamera(giant, false, 4.0);
