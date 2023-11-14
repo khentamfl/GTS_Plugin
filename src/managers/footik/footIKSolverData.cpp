@@ -30,7 +30,7 @@ namespace Gts {
 		this->m_minAnkleHeightMS = solver->m_setup.m_minAnkleHeightMS;
 		this->m_raycastDistanceUp = solver->m_setup.m_raycastDistanceUp;
 		this->m_raycastDistanceDown = solver->m_setup.m_raycastDistanceDown;
-        this->m_originalGroundHeight = solver->m_setup.m_originalGroundHeight;
+        this->m_originalGroundHeightMS = solver->m_setup.m_originalGroundHeightMS;
 	}
 	FootIkSolverData::~FootIkSolverData() {
 	}
@@ -46,13 +46,13 @@ namespace Gts {
 		this->solver->m_setup.m_footRaisedAnkleHeightMS = this->m_footRaisedAnkleHeightMS * new_scale;
 		this->solver->m_setup.m_maxAnkleHeightMS = this->m_maxAnkleHeightMS  * new_scale;
 		this->solver->m_setup.m_minAnkleHeightMS = this->m_minAnkleHeightMS * new_scale;
-        this->solver->m_setup.m_originalGroundHeight = this->m_originalGroundHeight * new_scale;
+        this->solver->m_setup.m_originalGroundHeightMS = this->m_originalGroundHeightMS * new_scale;
 		log::info("------");
 		log::info("OLD: m_raycastDistanceUp: {}", this->solver->m_setup.m_raycastDistanceUp);
-        log::info("OLD: Knee: {}, WorldUP {}, ModelUP: {}", this->solver->m_setup.m_kneeAxisLS, Vector2Str(this->solver->m_setup.m_worldUpDirectionWS), Vector2Str(this->solver->m_setup.m_modelUpDirectionMS));
+        log::info("OLD: Knee: {}, WorldUP {}, ModelUP: {}, Ground Height: {}", this->solver->m_setup.m_kneeAxisLS, Vector2Str(this->solver->m_setup.m_worldUpDirectionWS), Vector2Str(this->solver->m_setup.m_modelUpDirectionMS), this->solver->m.setup.m_originalGroundHeightMS);
 		this->solver->m_setup.m_raycastDistanceUp = this->m_raycastDistanceUp * new_scale;
 		log::info("NEW: m_raycastDistanceUp: {}", this->solver->m_setup.m_raycastDistanceUp);
-        log::info("NEW: Knee: {}, WorldUP {}, ModelUP: {}", this->solver->m_setup.m_kneeAxisLS * new_scale, Vector2Str(this->solver->m_setup.m_worldUpDirectionWS * vecScale), Vector2Str(this->solver->m_setup.m_modelUpDirectionMS * vecScale));
+        log::info("NEW: Knee: {}, WorldUP {}, ModelUP: {}, Ground Height: {}", this->solver->m_setup.m_kneeAxisLS * new_scale, Vector2Str(this->solver->m_setup.m_worldUpDirectionWS * vecScale), Vector2Str(this->solver->m_setup.m_modelUpDirectionMS * vecScale), this->solver->m.setup.m_originalGroundHeightMS * new_scale);
 		
 		this->solver->m_setup.m_raycastDistanceDown = this->m_raycastDistanceDown * new_scale;
 	}

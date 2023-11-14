@@ -29,6 +29,6 @@ namespace Gts {
 			float m_minAnkleHeightMS;
 			float m_raycastDistanceUp;
 			float m_raycastDistanceDown;
-            float m_originalGroundHeight;
+            float m_originalGroundHeightMS;
 	};
 }
