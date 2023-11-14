@@ -16,6 +16,8 @@ namespace Gts {
 	class ColliderManager : public EventListener {
 		public:
 			[[nodiscard]] static ColliderManager& GetSingleton() noexcept;
+            
+            virtual std::string DebugName() override;
 
 			virtual void Update() override;
 			virtual void HavokUpdate() override;

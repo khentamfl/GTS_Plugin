@@ -20,6 +20,10 @@ namespace Gts {
 		return instance;
 	}
 
+    std::string ColliderManager::DebugName() {
+		return "ColliderManager";
+	}
+
 	void ColliderManager::Update() {
 		auto playerCharacter = PlayerCharacter::GetSingleton();
 		auto cell = playerCharacter->GetParentCell();

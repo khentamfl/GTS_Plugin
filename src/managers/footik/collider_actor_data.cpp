@@ -52,7 +52,7 @@ namespace Gts {
 	void ColliderActorData::ApplyPose(Actor* actor, const float& new_scale) {
 		auto model = actor->GetCurrent3D();
 		if (model) {
-			hkVector4 origin = hkVector4(model->world.translate * (*g_worldScale));
+			hkVector4 origin = hkVector4(model->world.translate * (*World::WorldScale()));
 			// this->ragdollData.ApplyPose(origin, new_scale);
 		}
 	}
