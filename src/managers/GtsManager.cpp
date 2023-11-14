@@ -65,12 +65,10 @@ namespace {
 				if (perk) {
 					log::info("Perk found");
 					auto value = perk->perkConditions.head->data;
-					if (data) {
-						auto result = value.comparisonValue;
-						if (result) {
-							auto finalvalue = result.f;
-							log::info("Perk Value: {}", finalvalue);
-						}
+					auto result = value.comparisonValue;
+					if (result) {
+						auto finalvalue = result.f;
+						log::info("Perk Value: {}", finalvalue);
 					}
 				}	
  			}
