@@ -53,6 +53,25 @@ namespace {
 		}
 	}
 
+	void ManageTalkPerk(Actor* giant) {
+		if (giant->formID == 0x14) {
+			if (Runtime::HasPerk(giant, "TalkToActor")) {
+				log::info("TalkToActor Perk True");
+				auto perk = Runtime::GetPerk("TalkToActor");
+				if (perk) {
+					log::info("Perk found");
+					if (giant->IsSneaking()) {
+						perk->perkConditions.data.comparisonValue.f = 1;
+						log::info("Is Sneaking, value = 1");
+					} else {
+						perk->perkConditions.data.comparisonValue.f = 2;
+						log::info("Is Sneaking, value = 2");
+					}
+				}	
+ 			}
+		}
+	}
+
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		auto profiler = Profilers::Profile("Manager: update_height");
 		if (!actor) {
@@ -233,6 +252,8 @@ void GtsManager::Update() {
 		}
 
 		FixActorFade(actor);
+
+		ManageTalkPerk(actor);
 
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
