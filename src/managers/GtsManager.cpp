@@ -54,7 +54,11 @@ namespace {
 	}
 
 	void ManageTalkPerk(Actor* giant) {
+		static Timer TriggerDelay = Timer(0.5);
 		if (giant->formID == 0x14) {
+			if (!TriggerDelay.ShouldRunFrame()) {
+				return;
+			}
 			if (Runtime::HasPerk(giant, "TalkToActor")) {
 				log::info("TalkToActor Perk True");
 				auto perk = Runtime::GetPerk("TalkToActor");
