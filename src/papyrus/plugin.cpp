@@ -203,7 +203,7 @@ namespace {
 		} 
 		log::info("Setting motion type");
 		current3D->SetMotionType(4, true, true, true);
-		current3D->SetCollisionLayer(COL_LAYER::kUnidentified);
+		current3D->SetCollisionLayer(COL_LAYER::kNonCollidable);
 	}
 
 	float Quest_GetProgression(StaticFunctionTag*, float stage) {
