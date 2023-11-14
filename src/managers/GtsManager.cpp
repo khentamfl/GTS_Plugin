@@ -66,7 +66,7 @@ namespace {
 					log::info("Perk found");
 					auto value = perk->perkConditions.head;
 					if (value) {
-						auto result = value->data.value.comparisonValue;
+						auto result = value->data.comparisonValue;
 						auto finalvalue = result.f;
 						log::info("Perk Value: {}", finalvalue);
 					}
