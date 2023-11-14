@@ -1,5 +1,6 @@
 // Module that handles footsteps
 #include "managers/footik/footIK.hpp"
+#include "colliders/RE.hpp"
 #include "util.hpp"
 
 namespace Gts {
