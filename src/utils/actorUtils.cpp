@@ -1785,6 +1785,7 @@ namespace Gts {
 					}
 					if (node && node->local.scale >= Scale) {
 						dropbox3D->SetMotionType(4, true, true, true);
+						dropbox3D->SetCollisionLayer(COL_LAYER::kUnidentified);
 						return false; // End task
 					}
 					return true;
