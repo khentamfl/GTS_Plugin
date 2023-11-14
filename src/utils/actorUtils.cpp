@@ -1783,8 +1783,11 @@ namespace Gts {
 						update_node(trigger);
 					}
 					if (node && node->local.scale >= Scale) {
+						NiUpdateData& Updatedata;
 						dropbox3D->SetMotionType(4, true, true, true);
 						dropbox3D->SetCollisionLayer(COL_LAYER::kNonCollidable);
+						dropbox3D->Update(Updatedata);
+						dropbox3D->UpdateWorldData(Updatedata);
 						return false; // End task
 					}
 					return true;
