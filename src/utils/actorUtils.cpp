@@ -1784,6 +1784,7 @@ namespace Gts {
 						update_node(trigger);
 					}
 					if (node && node->local.scale >= Scale) {
+						dropbox3D->SetMotionType(4, true, true, true);
 						return false; // End task
 					}
 					return true;
