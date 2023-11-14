@@ -1,5 +1,6 @@
 #pragma once
 // Module that handles footsteps
+#include "colliders/RE.hpp"
 
 using namespace std;
 using namespace SKSE;

@@ -2,6 +2,7 @@
 // Module that handles footIk scaling
 #include <atomic>
 #include "managers/footik/footIK.hpp"
+#include "colliders/RE.hpp"
 
 
 using namespace std;

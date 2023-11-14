@@ -2,7 +2,9 @@
 // Module that handles footsteps
 #include <atomic>
 #include "managers/footik/collider_actor_data.hpp"
+#include "colliders/RE.hpp"
 #include "events.hpp"
+
 
 using namespace std;
 using namespace SKSE;

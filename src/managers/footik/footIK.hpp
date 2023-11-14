@@ -1,6 +1,7 @@
 #pragma once
 // Module that handles FootIK
 #include "managers/footik/footIKSolverData.hpp"
+#include "colliders/RE.hpp"
 
 using namespace std;
 using namespace SKSE;
