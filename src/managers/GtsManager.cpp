@@ -61,10 +61,10 @@ namespace {
 				if (perk) {
 					log::info("Perk found");
 					if (giant->IsSneaking()) {
-						perk->perkConditions.head.data.comparisonValue.f = 1;
+						perk->perkConditions.head->data.comparisonValue.f = 1;
 						log::info("Is Sneaking, value = 1");
 					} else {
-						perk->perkConditions.head.data.comparisonValue.f = 2;
+						perk->perkConditions.head->data.comparisonValue.f = 2;
 						log::info("Is Sneaking, value = 2");
 					}
 				}	
