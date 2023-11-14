@@ -21,7 +21,7 @@ namespace Gts {
 		if (!Persistent::GetSingleton().hostile_toggle) {
 			tiny->KillImmediate();
 		} else {
-			tiny->KillImpl(giant, 0, true, true);
+			tiny->KillImpl(giant, 1000, true, true);
 		}
 		RagdollTask(tiny);
 	}
