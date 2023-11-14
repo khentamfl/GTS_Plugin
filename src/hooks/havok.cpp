@@ -93,16 +93,8 @@ namespace {
 				return true;
 			}
 		}
-
-		auto getcontainer = Runtime::GetContainer("Dropbox_Physics");
-		TESObjectREFR* container = skyrim_cast<TESObjectREFR*>(getcontainer);
-		if (container) {
-			if (actor == container) {
-				log::info("Colliding with Container");
-				return true;
-			}
-		}
 		
+
 		return false;
 	}
 }
@@ -134,9 +126,9 @@ namespace Hooks
 			auto colLayerA = GetCollisionLayer(a_collidableA);
 			auto colLayerB = GetCollisionLayer(a_collidableB);
 
-			if (colLayerA == COL_LAYER::kBiped || colLayerA == COL_LAYER::kCharController || colLayerA == COL_LAYER::kDeadBip || colLayerA == COL_LAYER::kBipedNoCC || colLayerA == COL_LAYER::kClutter) {
+			if (colLayerA == COL_LAYER::kBiped || colLayerA == COL_LAYER::kCharController || colLayerA == COL_LAYER::kDeadBip || colLayerA == COL_LAYER::kBipedNoCC) {
 				auto colLayerB = GetCollisionLayer(a_collidableB);
-				if (colLayerB == COL_LAYER::kBiped || colLayerB == COL_LAYER::kCharController || colLayerB == COL_LAYER::kDeadBip || colLayerB == COL_LAYER::kBipedNoCC || colLayerB == COL_LAYER::kSpellExplosion || colLayerB == COL_LAYER::kClutter) {
+				if (colLayerB == COL_LAYER::kBiped || colLayerB == COL_LAYER::kCharController || colLayerB == COL_LAYER::kDeadBip || colLayerB == COL_LAYER::kBipedNoCC || colLayerB == COL_LAYER::kSpellExplosion) {
 					auto objA = GetTESObjectREFR(a_collidableA);
 					if (objA) {
 						auto objB = GetTESObjectREFR(a_collidableB);
