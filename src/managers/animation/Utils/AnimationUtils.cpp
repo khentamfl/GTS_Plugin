@@ -202,6 +202,9 @@ namespace Gts {
 		std::string name = std::format("FootGrind_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
 		auto coordinates = AttachToUnderFoot_Left(giant, tiny);
+		if (coordinates == NiPoint3(0,0,0)) {
+			return;
+		}
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
@@ -244,6 +247,9 @@ namespace Gts {
 		std::string name = std::format("FootGrind_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
 		auto coordinates = AttachToUnderFoot_Right(giant, tiny);
+		if (coordinates == NiPoint3(0,0,0)) {
+			return;
+		}
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;

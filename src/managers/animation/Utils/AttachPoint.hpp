@@ -139,7 +139,7 @@ namespace Gts {
 				//return AttachTo(anyGiant, anyTiny, coords);
 			}
 		}
-		return coords;
+		return NiPoint3(0,0,0);
 		//return false;
 	}
 
@@ -205,7 +205,7 @@ namespace Gts {
 			}
 		}
 		//return false
-		return coords;
+		return NiPoint3(0,0,0);
 	}
 
 
