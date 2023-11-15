@@ -1984,7 +1984,7 @@ namespace Gts {
 						log::info("Node found and scaled");
 					} if (Node2) {
 						Node2->local.scale = 20.0;
-						update_node(*Node2);
+						update_node(Node2);
 						log::info("Node2 found and scaled");
 					}
 				}
