@@ -1973,19 +1973,14 @@ namespace Gts {
 			if (ai->high) {
 				auto Array = ai->high->knowledgeArray;
 				for (auto references: Array) {
-					if (!references) {
-						continue;
-					}
 					auto Find = references.second;
-					if (find) {
-						auto DetectionStage = Find.DetectionState.get();
-						std::int32_t level = DetectionState.level;
-						std::int32_t unk14 = DetectionState.unk14;
-						std::int32_t unk15 = DetectionState.unk15;
-						std::int32_t unk16 = DetectionState.unk16;
-						std::int32_t unk17 = DetectionState.unk17;
-						log::info("Detection levels of {}: L: {}, 14: {}, 15: {}, 16: {}, 17: {}", actor->GetDisplayFullName(), level, unk14, unk15, unk16, unk17);
-					}
+					auto DetectionStage = Find.DetectionState.get();
+					std::int32_t level = DetectionState.level;
+					std::int32_t unk14 = DetectionState.unk14;
+					std::int32_t unk15 = DetectionState.unk15;
+					std::int32_t unk16 = DetectionState.unk16;
+					std::int32_t unk17 = DetectionState.unk17;
+					log::info("Detection levels of {}: L: {}, 14: {}, 15: {}, 16: {}, 17: {}", actor->GetDisplayFullName(), level, unk14, unk15, unk16, unk17);
 				}
 			}
 		}
