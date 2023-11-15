@@ -601,7 +601,7 @@ namespace Gts {
 				log::info("RayCast failed");
 			}
 
-			log::info("POS: {}", Vector2Str(endpos));
+			//log::info("POS: {}", Vector2Str(endpos));
 
 			instance->SetPosition(endpos);
 			instance->data.angle.x = 0;
