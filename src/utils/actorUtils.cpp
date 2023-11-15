@@ -1979,8 +1979,11 @@ namespace Gts {
 					std::int32_t unk14 = DetectionStage->unk14;
 					std::int32_t unk15 = DetectionStage->unk15;
 					std::int32_t unk16 = DetectionStage->unk16;
-					std::int32_t unk17 = DetectionStage->unk17;
-					log::info("Detection levels of {}: L: {}, 14: {}, 15: {}, 16: {}, 17: {}", actor->GetDisplayFullName(), level, unk14, unk15, unk16, unk17);
+					std::int32_t pad17 = DetectionStage->pad17;
+					std::int32_t unk18 = DetectionStage->unk18;
+					std::int32_t unk28 = DetectionStage->unk28;
+					std::int32_t unk38 = DetectionStage->unk38;
+					log::info("Detection levels of {}: L: {}, 14: {}, 15: {}, 16: {}, 17: {}, 18: {}, 28: {}, 38: {}", actor->GetDisplayFullName(), level, unk14, unk15, unk16, pad17, unk18, unk28, unk38);
 				}
 			}
 		}
