@@ -1979,6 +1979,7 @@ namespace Gts {
 					ActionEvent->actionValue = 0;
 				}
 				return;
+				auto Array = ai->high->knowledgeArray;
 				for (auto references: Array) { // Do array stuff
 					auto Find = references.second; // Obtain BSTTuple.second member (first/second)
 					auto DetectionStage = Find->detectionState.get(); // get detection stage of actor
