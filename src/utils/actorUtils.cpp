@@ -1967,17 +1967,28 @@ namespace Gts {
 		DamageAV(receiver, ActorValue::kHealth, value);
 	}
 
-	void EditDetectionLevel(Actor* actor, Actor* giant) {
+	void EditDetectionLevel(Actor* actor, Actor* giant) { // Unused and does nothing.
 		giant = PlayerCharacter::GetSingleton();
 		float scale = get_visual_scale(giant);
 		auto ai = actor->GetActorRuntimeData().currentProcess;
 		if (ai) {
 			if (ai->high) {
-				auto Array = ai->high->knowledgeArray;
-				for (auto references: Array) {
-					auto Find = references.second;
-					auto DetectionStage = Find->detectionState.get();
-					if (DetectionStage) {
+				auto Array = ai->high->knowledgeArray; 
+				NiPoint3 AngleMod = ai->high->animationAngleMod;
+				NiPoint3 AnimationDelta = ai->high->animationDelta;
+				AngleMod.x += 1.0;
+				AngleMod.Y += 1.0;
+				AngleMod.Z += 1.0;
+				if (AngleMod.X >= 360.0) {
+					AngleMod.x = 0.0;
+					AngleMod.Y = 0.0;
+					AngleMod.Z = 0.0;
+				}
+				return;
+				for (auto references: Array) { // Do array stuff
+					auto Find = references.second; // Obtain BSTTuple.second member (first/second)
+					auto DetectionStage = Find->detectionState.get(); // get detection stage of actor
+					if (DetectionStage) { // Do nothing since it does nothing. Sigh.
 						std::int32_t level = DetectionStage->level = 0;
 						std::int32_t unk14 = DetectionStage->unk14 = 0;
 						std::int32_t unk15 = DetectionStage->unk15 = 0;
