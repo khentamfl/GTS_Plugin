@@ -85,7 +85,12 @@ namespace Gts {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
 			return NiPoint3(0,0,0);
+		} 
+		Actor* tiny = GetActorPtr(anyTiny);
+		if (!tiny) {
+			return NiPoint3(0,0,0);
 		}
+
 
 		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(giant);
 
@@ -135,6 +140,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 				NiPoint3 coords = foot->world*(rotMat*point);
+				coords.z = tiny->GetPosition().z; // Use Z offset of Tiny so it won't look off
 				return coords;
 				//return AttachTo(anyGiant, anyTiny, coords);
 			}
@@ -147,6 +153,10 @@ namespace Gts {
 	NiPoint3 AttachToUnderFoot_Right(T& anyGiant, U& anyTiny) {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
+			return NiPoint3(0,0,0);
+		} 
+		Actor* tiny = GetActorPtr(anyTiny);
+		if (!tiny) {
 			return NiPoint3(0,0,0);
 		}
 
@@ -200,6 +210,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 				NiPoint3 coords = foot->world*(rotMat*point);
+				coords.z = tiny->GetPosition().z; // Use Z offset of Tiny so it won't look off
 				return coords;
 				//return AttachTo(anyGiant, anyTiny, coords);
 			}
