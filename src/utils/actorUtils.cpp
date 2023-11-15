@@ -1975,11 +1975,11 @@ namespace Gts {
 				for (auto references: Array) {
 					auto Find = references.second;
 					auto DetectionStage = Find->detectionState.get();
-					std::int32_t level = DetectionStage.level;
-					std::int32_t unk14 = DetectionStage.unk14;
-					std::int32_t unk15 = DetectionStage.unk15;
-					std::int32_t unk16 = DetectionStage.unk16;
-					std::int32_t unk17 = DetectionStage.unk17;
+					std::int32_t level = DetectionStage->level;
+					std::int32_t unk14 = DetectionStage->unk14;
+					std::int32_t unk15 = DetectionStage->unk15;
+					std::int32_t unk16 = DetectionStage->unk16;
+					std::int32_t unk17 = DetectionStage->unk17;
 					log::info("Detection levels of {}: L: {}, 14: {}, 15: {}, 16: {}, 17: {}", actor->GetDisplayFullName(), level, unk14, unk15, unk16, unk17);
 				}
 			}
