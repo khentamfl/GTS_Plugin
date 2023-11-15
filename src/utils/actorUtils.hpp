@@ -70,6 +70,11 @@ namespace Gts {
 	bool AllowActionsWithFollowers(Actor* giant, Actor* tiny);
 	// Gts Bools end
 
+	// GTS Actor Functions
+	float GetActorWeight(Actor* giant, bool metric);
+	float GetActorWeight(Actor* giant, bool metric);
+	// End
+
 	// GTS State Controllers
 	void SetBeingHeld(Actor* tiny, bool decide);
 	void SetBetweenBreasts(Actor* actor, bool decide);

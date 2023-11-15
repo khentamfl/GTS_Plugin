@@ -523,9 +523,40 @@ namespace Gts {
 			return true;
 		}
 	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//                                 G T S   A C T OR   F U N C T I O N S                                                               //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	float GetActorWeight(Actor* giant, bool metric) {
+		float def = 70.1; // 70 kg as default
+		float scale = get_visual_scale(giant);
+		float hh = HighHeelManager::GetBaseHHOffset(actor)[2];
+		float totalscale = scale + (hh * scale);
+		float actorweight = 1.0 + giant->GetWeight()/300;
+		float weight;
+		if (metric) {
+			weight = def * actorweight * (totalscale * totalscale * totalscale) * 2.205;
+		} else {
+			weight = def * actorweight * (totalscale * totalscale * totalscale);
+		}
+		return weight;
+	}
+
+	float GetActorHeight(Actor* giant, bool metric) {
+		float hh = HighHeelManager::GetBaseHHOffset(actor)[2];
+		float scale = get_visual_scale(giant);
+		float height;
+		if (metric) {
+			height = 1.82 * scale + (hh * scale); // meters
+		} else {
+			height = scale + (hh * scale) * 3.28; // ft
+		}
+		return height;
+	}
+
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//                                 G T S   ST A T E S  S E T S                                                                        //
+	//                                 G T S   S T A T E S  S E T S                                                                       //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	void SetBeingHeld(Actor* tiny, bool decide) {
 		auto transient = Transient::GetSingleton().GetData(tiny);
@@ -1934,7 +1965,7 @@ namespace Gts {
 	}
 
 	void EditDetectionLevel(Actor* actor, Actor* giant) {
-		auto ai = actor->GetActorRuntimeData().currentProcess;
+		/*auto ai = actor->GetActorRuntimeData().currentProcess;
 		if (ai) {
 			if (ai->high) {
 				ActorKnowledge Knowledge = ai->high->knowledgeArray.second_type;
@@ -1949,5 +1980,5 @@ namespace Gts {
 				log::info("Detection levels of {}: L: {}, 14: {}, 15: {}, 16: {}, 17: {}", actor->GetDisplayFullName(), level, unk14, unk15, unk16, unk17);
 			}
 		}
-	}
+	}*/
 }
