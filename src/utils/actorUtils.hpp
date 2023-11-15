@@ -72,7 +72,7 @@ namespace Gts {
 
 	// GTS Actor Functions
 	float GetActorWeight(Actor* giant, bool metric);
-	float GetActorWeight(Actor* giant, bool metric);
+	float GetActorHeight(Actor* giant, bool metric);
 	// End
 
 	// GTS State Controllers
