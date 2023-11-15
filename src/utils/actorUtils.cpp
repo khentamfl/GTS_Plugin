@@ -1937,7 +1937,7 @@ namespace Gts {
 		auto ai = actor->GetActorRuntimeData().currentProcess;
 		if (ai) {
 			if (ai->high) {
-				ActorKnowledge = ai->high->ActorKnowledge[1];
+				ActorKnowledge = ai->high->knowledgeArray[1];
 				if (ActorKnowledge) {
 					auto DetectionStage = ActorKnowledge.DetectionState.get();
 					std::int32_t level = DetectionState.level;
