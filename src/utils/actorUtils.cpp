@@ -628,7 +628,7 @@ namespace Gts {
 
 	void TransferInventory_Normal(Actor* giant, Actor* tiny, bool removeQuestItems) {
 		for (auto &[a_object, invData]: tiny->GetInventory()) { // transfer loot
-			if (a_object->GetPlayable()) {
+			if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) {
 				if ((!invData.second->IsQuestObject() || removeQuestItems)) {
 					tiny->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, giant, nullptr, nullptr);
 				}
@@ -1937,9 +1937,16 @@ namespace Gts {
 		auto ai = actor->GetActorRuntimeData().currentProcess;
 		if (ai) {
 			if (ai->high) {
-				float Detection_0 = ai->high->detectionModifier;
-				float Detection_1 = ai->high->detectionModifierTimer;
-				log::info("Detection levels of {}: {}, {}", actor->GetDisplayFullName(), Detection_0, Detection_1);
+				ActorKnowledge = ai->high->ActorKnowledge[1];
+				if (ActorKnowledge) {
+					auto DetectionStage = ActorKnowledge.DetectionState.get();
+					std::int32_t level = DetectionState.level;
+					std::int32_t unk14 = DetectionState.unk14;
+					std::int32_t unk15 = DetectionState.unk15;
+					std::int32_t unk16 = DetectionState.unk16;
+					std::int32_t unk17 = DetectionState.unk17;
+				}
+				log::info("Detection levels of {}: L: {}, 14: {}, 15: {}, 16: {}, 17: {}", actor->GetDisplayFullName(), level, unk14, unk15, unk16, unk17);
 			}
 		}
 	}
