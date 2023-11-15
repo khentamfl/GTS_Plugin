@@ -1973,22 +1973,6 @@ namespace Gts {
 		auto ai = actor->GetActorRuntimeData().currentProcess;
 		if (ai) {
 			if (ai->high) {
-				auto Muzzle = ai->high->muzzleFlash;
-				if (Muzzle) {
-					auto Node = Muzzle->projectile3D.get();
-					auto Node2 = Muzzle->projectileNode.get();
-					log::info("Muzzle found");
-					if (Node) {
-						Node->local.scale = 20.0;
-						update_node(Node);
-						log::info("Node found and scaled");
-					} if (Node2) {
-						Node2->local.scale = 20.0;
-						update_node(Node2);
-						log::info("Node2 found and scaled");
-					}
-				}
-				return;
 				auto Array = ai->high->knowledgeArray;
 				for (auto references: Array) { // Do array stuff
 					auto Find = references.second; // Obtain BSTTuple.second member (first/second)
