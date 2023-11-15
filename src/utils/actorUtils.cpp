@@ -604,7 +604,7 @@ namespace Gts {
 			if (tiny->IsDead()) {
 				float Finish = Time::WorldTimeElapsed();
 				float timepassed = Finish - Start;
-				if (timepassed < 0.20) {
+				if (timepassed < 0.10) {
 					return true; // retry, not enough time has passed yet
 				}
 				if (giant->formID == 0x14 && !PCLoot) {
@@ -1837,7 +1837,7 @@ namespace Gts {
 			}	
 		for (auto &[a_object, invData]: actor->GetInventory()) { // transfer loot
 			//log::info("Transfering item {} from {}, formID {} to dropbox", a_object->GetName(), actor->GetDisplayFullName(), a_object->formID);
-			if (a_object->GetPlayable()) {
+			if (a_object->GetPlayable() && a_object->GetSavedFormType() != FormType::TESLevItem) { // We don't want to move Leveled Items
 				if ((!invData.second->IsQuestObject() || removeQuestItems)) {
 					actor->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
 				}

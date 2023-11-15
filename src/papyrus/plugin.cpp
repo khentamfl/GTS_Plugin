@@ -191,17 +191,13 @@ namespace {
 	}
 
 	void DisableCollisionLayerAndMotion(StaticFunctionTag*, TESObjectREFR* ref) {
-		log::info("Disabling collision");
 		if (!ref) {
 			return;
 		}
 		auto current3D = ref->GetCurrent3D();
-		log::info("Getting Ref");
 		if (!current3D) {
-			log::info("Ref failed");
 			return; // Retry next frame
 		} 
-		log::info("Setting motion type");
 		current3D->SetMotionType(4, true, true, true);
 		current3D->SetCollisionLayer(COL_LAYER::kNonCollidable);
 	}
