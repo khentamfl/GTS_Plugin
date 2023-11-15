@@ -1839,9 +1839,7 @@ namespace Gts {
 			if (ref) {
 				for (auto&[a_object, invData]: ref->GetDroppedInventory()) { // transfer drops
 					log::info("Transfering DropMap {} from {}, formID {} to dropbox", a_object->GetName(), actor->GetDisplayFullName(), a_object->formID);
-					if ((!invData.second->IsQuestObject() || removeQuestItems)) {
-						actor->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
-					}
+					actor->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
 				}
 			}
 		for (auto &[a_object, invData]: actor->GetInventory()) { // transfer loot
