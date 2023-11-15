@@ -1969,7 +1969,7 @@ namespace Gts {
 	}
 
 	void EditDetectionLevel(Actor* actor, Actor* giant) {
-		/*auto ai = actor->GetActorRuntimeData().currentProcess;
+		auto ai = actor->GetActorRuntimeData().currentProcess;
 		if (ai) {
 			if (ai->high) {
 				ActorKnowledge Knowledge = ai->high->knowledgeArray->second();
@@ -1983,6 +1983,6 @@ namespace Gts {
 				}
 				log::info("Detection levels of {}: L: {}, 14: {}, 15: {}, 16: {}, 17: {}", actor->GetDisplayFullName(), level, unk14, unk15, unk16, unk17);
 			}
-		}*/
+		}
 	}
 }
