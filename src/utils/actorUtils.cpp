@@ -1973,16 +1973,10 @@ namespace Gts {
 		auto ai = actor->GetActorRuntimeData().currentProcess;
 		if (ai) {
 			if (ai->high) {
-				auto Array = ai->high->knowledgeArray; 
-				NiPoint3 AngleMod = ai->high->animationAngleMod;
-				NiPoint3 AnimationDelta = ai->high->animationDelta;
-				AngleMod[0] += 1.0;
-				AngleMod[1] += 1.0;
-				AngleMod[2]= 1.0;
-				if (AngleMod[0] >= 360.0) {
-					AngleMod[0] = 0.0;
-					AngleMod[1] = 0.0;
-					AngleMod[2] = 0.0;
+				auto ActionEvent = ai->high->actorsGeneratedDetectionEvent;
+				if (ActionEvent) {
+					log::info("ActionEvent of {} value {}", actor->GetDisplayFullName(), ActionEvent->actionValue);
+					ActionEvent->actionValue = 0;
 				}
 				return;
 				for (auto references: Array) { // Do array stuff
