@@ -1979,6 +1979,6 @@ namespace Gts {
 				}
 				log::info("Detection levels of {}: L: {}, 14: {}, 15: {}, 16: {}, 17: {}", actor->GetDisplayFullName(), level, unk14, unk15, unk16, unk17);
 			}
-		}
-	}*/
+		}*/
+	}
 }
