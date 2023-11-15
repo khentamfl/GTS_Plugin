@@ -607,6 +607,11 @@ namespace Gts {
 				if (timepassed < 0.10) {
 					return true; // retry, not enough time has passed yet
 				}
+				TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(tiny);
+				if (ref) {
+					ref->GetInventoryChanges()->InitLeveledItems();
+					log::info("Initializing leveled items");
+				}
 				if (giant->formID == 0x14 && !PCLoot) {
 					TransferInventory_Normal(to, tiny, removeQuestItems);
 					return false;
@@ -1839,13 +1844,11 @@ namespace Gts {
 
 			log::info("Transfering item {} from {}, formID {} to dropbox", a_object->GetName(), actor->GetDisplayFullName(), a_object->formID);
 			
-			if (a_object->GetPlayable()) {// && a_object->GetFormType() != FormType::LeveledItem) { // We don't want to move Leveled Items
+			if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) { // We don't want to move Leveled Items
 				if ((!invData.second->IsQuestObject() || removeQuestItems)) {
 					actor->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
 				}
 			}
-			
-			dropbox->GetInventoryChanges()->InitLeveledItems();
 		}
 	}
 
