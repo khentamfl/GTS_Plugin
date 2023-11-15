@@ -1968,6 +1968,11 @@ namespace Gts {
 	}
 
 	void EditDetectionLevel(Actor* actor, Actor* giant) {
+		if (giant->formID == 0x14) {
+			return;
+		}
+		giant = PlayerCharacter::GetSingleton();
+		float scale = get_visual_scale(giant);
 		auto ai = actor->GetActorRuntimeData().currentProcess;
 		if (ai) {
 			if (ai->high) {
@@ -1976,14 +1981,14 @@ namespace Gts {
 					auto Find = references.second;
 					auto DetectionStage = Find->detectionState.get();
 					if (DetectionStage) {
-						std::int32_t level = DetectionStage->level;
+						std::int32_t level = DetectionStage->level = 0;
 						std::int32_t unk14 = DetectionStage->unk14;
 						std::int32_t unk15 = DetectionStage->unk15;
 						std::int32_t unk16 = DetectionStage->unk16;
 						std::int32_t pad17 = DetectionStage->pad17;
 						std::int32_t unk18 = DetectionStage->unk18;
 						std::int32_t unk28 = DetectionStage->unk28;
-						std::int32_t unk38 = DetectionStage->unk38;
+						std::int32_t unk38 = DetectionStage->unk38 = 0;
 						log::info("Detection levels of {}: L: {}, 14: {}, 15: {}, 16: {}, 17: {}, 18: {}, 28: {}, 38: {}", actor->GetDisplayFullName(), level, unk14, unk15, unk16, pad17, unk18, unk28, unk38);
 					}
 				}
