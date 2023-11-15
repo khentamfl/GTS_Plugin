@@ -1976,13 +1976,13 @@ namespace Gts {
 				auto Array = ai->high->knowledgeArray; 
 				NiPoint3 AngleMod = ai->high->animationAngleMod;
 				NiPoint3 AnimationDelta = ai->high->animationDelta;
-				AngleMod.x += 1.0;
-				AngleMod.Y += 1.0;
-				AngleMod.Z += 1.0;
-				if (AngleMod.X >= 360.0) {
-					AngleMod.x = 0.0;
-					AngleMod.Y = 0.0;
-					AngleMod.Z = 0.0;
+				AngleMod[0] += 1.0;
+				AngleMod[1] += 1.0;
+				AngleMod[2]= 1.0;
+				if (AngleMod[0] >= 360.0) {
+					AngleMod[0] = 0.0;
+					AngleMod[1] = 0.0;
+					AngleMod[2] = 0.0;
 				}
 				return;
 				for (auto references: Array) { // Do array stuff
