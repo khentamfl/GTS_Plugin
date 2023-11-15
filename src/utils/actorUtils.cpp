@@ -528,17 +528,16 @@ namespace Gts {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	float GetActorWeight(Actor* giant, bool metric) {
-		float def = 70.1; // 70 kg as default
-		float scale = get_visual_scale(giant);
 		float hh = HighHeelManager::GetBaseHHOffset(giant)[2]/100;
+		float scale = get_visual_scale(giant);
 		float smt = 1.0;
-		float totalscale = scale + (hh * scale);
+		float totalscale = scale + (hh*0.10 * scale);
 		float actorweight = 1.0 + giant->GetWeight()/300;
 		float weight;
-		if (metric) {
-			weight = def * actorweight * (totalscale * totalscale * totalscale);
+		if (metric) { // 70.1 kg as a base
+			weight = 70.1 * actorweight * (totalscale * totalscale * totalscale);
 		} else {
-			weight = def * actorweight * (totalscale * totalscale * totalscale) * 2.205;
+			weight = (70.1 * actorweight * (totalscale * totalscale * totalscale)) * 2.205;
 		} if (HasSMT(giant)) {
 			smt = 6.0;
 		}
@@ -550,10 +549,10 @@ namespace Gts {
 		float scale = get_visual_scale(giant);
 		float smt = 1.0;
 		float height;
-		if (metric) {
+		if (metric) { // 1.82 m as a base
 			height = 1.82 * scale + (hh * scale); // meters
 		} else {
-			height = 1.82 * scale + (hh * scale) * 3.28; // ft
+			height = (1.82 * scale + (hh * scale)) * 3.28; // ft
 		} 
 		return height;
 	}
@@ -1972,16 +1971,22 @@ namespace Gts {
 		auto ai = actor->GetActorRuntimeData().currentProcess;
 		if (ai) {
 			if (ai->high) {
-				ActorKnowledge Knowledge = ai->high->knowledgeArray.second;
-				if (Knowledge) {
-					auto DetectionStage = ActorKnowledge.DetectionState.get();
-					std::int32_t level = DetectionState.level;
-					std::int32_t unk14 = DetectionState.unk14;
-					std::int32_t unk15 = DetectionState.unk15;
-					std::int32_t unk16 = DetectionState.unk16;
-					std::int32_t unk17 = DetectionState.unk17;
+				auto Array = ai->high->knowledgeArray;
+				for (auto references: Array) {
+					if (!references) {
+						continue;
+					}
+					auto Find = references.second;
+					if (find) {
+						auto DetectionStage = Find.DetectionState.get();
+						std::int32_t level = DetectionState.level;
+						std::int32_t unk14 = DetectionState.unk14;
+						std::int32_t unk15 = DetectionState.unk15;
+						std::int32_t unk16 = DetectionState.unk16;
+						std::int32_t unk17 = DetectionState.unk17;
+						log::info("Detection levels of {}: L: {}, 14: {}, 15: {}, 16: {}, 17: {}", actor->GetDisplayFullName(), level, unk14, unk15, unk16, unk17);
+					}
 				}
-				log::info("Detection levels of {}: L: {}, 14: {}, 15: {}, 16: {}, 17: {}", actor->GetDisplayFullName(), level, unk14, unk15, unk16, unk17);
 			}
 		}
 	}
