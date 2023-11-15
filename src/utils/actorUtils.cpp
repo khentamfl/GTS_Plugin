@@ -1845,7 +1845,7 @@ namespace Gts {
 				}
 			}
 			
-			dropbox->GetInventoryChanges(false)->InitLeveledItems();
+			dropbox->GetInventoryChanges()->InitLeveledItems();
 		}
 	}
 
