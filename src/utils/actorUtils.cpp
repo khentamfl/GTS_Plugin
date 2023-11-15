@@ -1975,8 +1975,8 @@ namespace Gts {
 			if (ai->high) {
 				auto Muzzle = ai->high->muzzleFlash;
 				if (Muzzle) {
-					auto Node = Muzzle->projectile3D;
-					auto Node2 = Muzzle->projectileNode;
+					auto Node = Muzzle->projectile3D.get();
+					auto Node2 = Muzzle->projectileNode.get();
 					log::info("Muzzle found");
 					if (Node) {
 						Node->local.scale = 20.0;
@@ -1984,7 +1984,7 @@ namespace Gts {
 						log::info("Node found and scaled");
 					} if (Node2) {
 						Node2->local.scale = 20.0;
-						update_node(Node2);
+						update_node(*Node2);
 						log::info("Node2 found and scaled");
 					}
 				}
