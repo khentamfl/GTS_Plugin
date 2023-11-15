@@ -530,27 +530,31 @@ namespace Gts {
 	float GetActorWeight(Actor* giant, bool metric) {
 		float def = 70.1; // 70 kg as default
 		float scale = get_visual_scale(giant);
-		float hh = HighHeelManager::GetBaseHHOffset(giant)[2];
+		float hh = HighHeelManager::GetBaseHHOffset(giant)[2]/100;
+		float smt = 1.0;
 		float totalscale = scale + (hh * scale);
 		float actorweight = 1.0 + giant->GetWeight()/300;
 		float weight;
 		if (metric) {
-			weight = def * actorweight * (totalscale * totalscale * totalscale) * 2.205;
-		} else {
 			weight = def * actorweight * (totalscale * totalscale * totalscale);
+		} else {
+			weight = def * actorweight * (totalscale * totalscale * totalscale) * 2.205;
+		} if (HasSMT(giant)) {
+			smt = 6.0;
 		}
-		return weight;
+		return weight * smt;
 	}
 
 	float GetActorHeight(Actor* giant, bool metric) {
-		float hh = HighHeelManager::GetBaseHHOffset(giant)[2];
+		float hh = HighHeelManager::GetBaseHHOffset(giant)[2]/100;
 		float scale = get_visual_scale(giant);
+		float smt = 1.0;
 		float height;
 		if (metric) {
 			height = 1.82 * scale + (hh * scale); // meters
 		} else {
-			height = scale + (hh * scale) * 3.28; // ft
-		}
+			height = 1.82 * scale + (hh * scale) * 3.28; // ft
+		} 
 		return height;
 	}
 
@@ -1968,7 +1972,7 @@ namespace Gts {
 		/*auto ai = actor->GetActorRuntimeData().currentProcess;
 		if (ai) {
 			if (ai->high) {
-				ActorKnowledge Knowledge = ai->high->knowledgeArray.second_type;
+				ActorKnowledge Knowledge = ai->high->knowledgeArray->second();
 				if (Knowledge) {
 					auto DetectionStage = ActorKnowledge.DetectionState.get();
 					std::int32_t level = DetectionState.level;
