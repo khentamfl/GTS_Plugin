@@ -184,4 +184,5 @@ namespace Gts {
 	void AdvanceQuestProgression(Actor* actor, float stage, float value);
 	float GetQuestProgression(float stage);
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value);
+	void EditDetectionLevel(Actor* actor, Actor* giant)
 }

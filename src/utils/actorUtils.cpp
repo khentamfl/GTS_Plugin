@@ -1844,7 +1844,7 @@ namespace Gts {
 
 			log::info("Transfering item {} from {}, formID {} to dropbox", a_object->GetName(), actor->GetDisplayFullName(), a_object->formID);
 			
-			if (a_object->GetPlayable()) {// && a_object->GetFormType() != FormType::LeveledItem) { // We don't want to move Leveled Items
+			if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) { // We don't want to move Leveled Items
 				if ((!invData.second->IsQuestObject() || removeQuestItems)) {
 					actor->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
 				}
@@ -1931,5 +1931,16 @@ namespace Gts {
 
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
 		DamageAV(receiver, ActorValue::kHealth, value);
+	}
+
+	void EditDetectionLevel(Actor* actor, Actor* giant) {
+		auto ai = actor->GetActorRuntimeData().currentProcess;
+		if (ai) {
+			if (ai->high) {
+				float Detection_0 = ai->high->detectionModifier;
+				float Detection_1 = ai->high->detectionModifierTimer;
+				log::info("Detection levels of {}: {}, {}", actor->GetDisplayFullName(), Detection_0, Detection_1);
+			}
+		}
 	}
 }
