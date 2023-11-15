@@ -90,7 +90,7 @@ namespace {
 				float naturalscale = get_natural_scale(actor);
 				float scale = get_visual_scale(actor);
 				float maxscale = get_max_scale(actor);
-				Cprint("{} height is: {:.2f} m / {:.2f} ft; weight: {:.2f} kg / {:.2f} lb", actor->GetDisplayFullName(), GetActorHeight(giant, true), GetActorHeight(giant, false), GetActorWeight(giant, true), GetActorWeight(giant, false));
+				Cprint("{} height is: {:.2f} m / {:.2f} ft; weight: {:.2f} kg / {:.2f} lb", actor->GetDisplayFullName(), GetActorHeight(actor, true), GetActorHeight(actor, false), GetActorWeight(actor, true), GetActorWeight(actor, false));
 				Cprint("{} Scale is: {:.2f}; Natural Scale: {:.2f}; Size Limit is: {:.2f}; High Heels: {:.2f}; Aspect Of Giantess: {:.2f}", actor->GetDisplayFullName(), scale, naturalscale, maxscale, hh, gigantism);
 			}
 		}
