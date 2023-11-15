@@ -530,7 +530,7 @@ namespace Gts {
 	float GetActorWeight(Actor* giant, bool metric) {
 		float def = 70.1; // 70 kg as default
 		float scale = get_visual_scale(giant);
-		float hh = HighHeelManager::GetBaseHHOffset(actor)[2];
+		float hh = HighHeelManager::GetBaseHHOffset(giant)[2];
 		float totalscale = scale + (hh * scale);
 		float actorweight = 1.0 + giant->GetWeight()/300;
 		float weight;
@@ -543,7 +543,7 @@ namespace Gts {
 	}
 
 	float GetActorHeight(Actor* giant, bool metric) {
-		float hh = HighHeelManager::GetBaseHHOffset(actor)[2];
+		float hh = HighHeelManager::GetBaseHHOffset(giant)[2];
 		float scale = get_visual_scale(giant);
 		float height;
 		if (metric) {
