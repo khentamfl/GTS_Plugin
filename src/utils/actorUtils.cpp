@@ -1974,7 +1974,7 @@ namespace Gts {
 				auto Array = ai->high->knowledgeArray;
 				for (auto references: Array) {
 					auto Find = references.second;
-					auto DetectionStage = Find->detectionState.get().get();
+					auto DetectionStage = Find->detectionState.get();
 					std::int32_t level = DetectionStage.level;
 					std::int32_t unk14 = DetectionStage.unk14;
 					std::int32_t unk15 = DetectionStage.unk15;
