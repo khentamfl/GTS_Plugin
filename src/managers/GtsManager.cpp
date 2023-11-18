@@ -53,7 +53,7 @@ namespace {
 		}
 	}
 
-	void ManageTalkPerk(Actor* giant) {
+	/*void ManageTalkPerk(Actor* giant) {
 		static Timer TriggerDelay = Timer(0.5);
 		if (giant->formID == 0x14) {
 			if (!TriggerDelay.ShouldRunFrame()) {
@@ -74,7 +74,7 @@ namespace {
 				}	
  			}
 		}
-	}
+	}*/
 
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		auto profiler = Profilers::Profile("Manager: update_height");
@@ -257,7 +257,7 @@ void GtsManager::Update() {
 
 		FixActorFade(actor);
 
-		ManageTalkPerk(actor);
+		//ManageTalkPerk(actor);
 
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
