@@ -64,9 +64,10 @@ namespace {
 				auto perk = Runtime::GetPerk("TalkToActor");
 				if (perk) {
 					log::info("Perk found");
-					auto value = perk->perkConditions.head;
+					auto value = perk->perkConditions.CONDITION_ITEM_DATA();
 					if (value) {
-						auto result = value->data.comparisonValue;
+						//auto result = value->data.comparisonValue;
+						auto result = value->CONDITION_ITEM_DATA.comparisonValue;
 						auto finalvalue = result.f;
 						log::info("Perk Value: {}", finalvalue);
 					}
@@ -256,7 +257,7 @@ void GtsManager::Update() {
 
 		FixActorFade(actor);
 
-		//ManageTalkPerk(actor);
+		ManageTalkPerk(actor);
 
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
