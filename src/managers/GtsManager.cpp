@@ -251,7 +251,7 @@ void GtsManager::Start() {
 void GtsManager::Update() {
 	auto profiler = Profilers::Profile("Manager: Update()");
 	for (auto actor: find_actors()) {
-		if (!actor) {
+		if (!actor) { 
 			return;
 		}
 
