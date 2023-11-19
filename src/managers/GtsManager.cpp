@@ -255,7 +255,7 @@ void GtsManager::Update() {
 			return;
 		}
 
-		FixActorFade(actor); 
+		FixActorFade(actor);
 
 		//ManageTalkPerk(actor); 
 
