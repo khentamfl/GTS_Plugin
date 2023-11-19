@@ -257,7 +257,7 @@ void GtsManager::Update() {
 
 		FixActorFade(actor);
 
-		//ManageTalkPerk(actor);
+		//ManageTalkPerk(actor); 
 
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
