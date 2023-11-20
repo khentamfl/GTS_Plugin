@@ -159,7 +159,7 @@ namespace Hooks
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
 				float value = (a_this->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
 				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value, value);
-				log::info("GetAV1 true, modifier {}, value: {}, original_value: {}, bonus: {}", static_cast<uint32_t>(a_modifier), static_cast<uint32_t>(a_value), original_value, bonus);
+				//log::info("GetAV1 true, modifier {}, value: {}, original_value: {}, bonus: {}", static_cast<uint32_t>(a_modifier), static_cast<uint32_t>(a_value), original_value, bonus);
 			}
 		}
 		return GetActorValueModifier(original_value + bonus, a_this, a_modifier, a_value);
@@ -172,7 +172,7 @@ namespace Hooks
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
 				float value = (a_this->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
 				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value, value);
-				log::info("GetAV2 true, modifier {}, value: {}, original_value: {}, bonus: {}", static_cast<uint32_t>(a_modifier), static_cast<uint32_t>(a_value), original_value, bonus);
+				//log::info("GetAV2 true, modifier {}, value: {}, original_value: {}, bonus: {}", static_cast<uint32_t>(a_modifier), static_cast<uint32_t>(a_value), original_value, bonus);
 			}
 		}
 		return GetActorValueModifier(original_value + bonus, a_this, a_modifier, a_value);
@@ -185,7 +185,7 @@ namespace Hooks
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
 				float value = (a_this->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
 				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value, value);
-				log::info("GetAV3 true, modifier {}, value: {}, original_value: {}, bonus: {}", static_cast<uint32_t>(a_modifier), static_cast<uint32_t>(a_value), original_value, bonus);
+				//log::info("GetAV3 true, modifier {}, value: {}, original_value: {}, bonus: {}", static_cast<uint32_t>(a_modifier), static_cast<uint32_t>(a_value), original_value, bonus);
 			}
 		}
 		return GetActorValueModifier(original_value + bonus, a_this, a_modifier, a_value);
@@ -198,7 +198,7 @@ namespace Hooks
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
 				float value = (a_this->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
 				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value, value);
-				log::info("GetAV4 true, modifier {}, value: {}, original_value: {}, bonus: {}", a_modifier, a_value, original_value, bonus);
+				//log::info("GetAV4 true, modifier {}, value: {}, original_value: {}, bonus: {}", a_modifier, a_value, original_value, bonus);
 			}
 		}
 		return GetActorValueModifier(original_value + bonus, a_this, a_modifier, a_value);
@@ -206,31 +206,31 @@ namespace Hooks
 
 	float Hook_Actor::GetActorValueModifier_5(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_5(a_this, a_modifier, a_value);
-		log::info("GetAV5 true");
+		//log::info("GetAV5 true");
 		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 
 	float Hook_Actor::GetActorValueModifier_6(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_6(a_this, a_modifier, a_value);
-		log::info("GetAV6 true");
+		//log::info("GetAV6 true");
 		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 
 	float Hook_Actor::GetActorValueModifier_7(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_7(a_this, a_modifier, a_value);
-		log::info("GetAV7 true");
+		//log::info("GetAV7 true");
 		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 
 	float Hook_Actor::GetActorValueModifier_8(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_8(a_this, a_modifier, a_value);
-		log::info("GetAV8 true");
+		//log::info("GetAV8 true");
 		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 
 	float Hook_Actor::GetActorValueModifier_9(Actor* a_this, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		float original_value = _GetActorValueModifier_9(a_this, a_modifier, a_value);
-		log::info("GetAV9 true");
+		//log::info("GetAV9 true");
 		return GetActorValueModifier(original_value, a_this, a_modifier, a_value);
 	}
 
