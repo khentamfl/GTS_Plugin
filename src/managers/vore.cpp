@@ -151,7 +151,6 @@ namespace {
 		}
 		int random = rand() % 3;
 		if (!AllowDevourment() && pred->formID == 0x14 && WasDragon) {
-			log::info("{} was dragon", prey);
 			CompleteDragonQuest();
 		}
 		if (WasGiant) {
@@ -306,7 +305,6 @@ namespace Gts {
 						}
 						return true;
 					});
-					//log::info("Trying to shink {} nodes", nodes_inrange.size());
 
 					// Check all children of the nodes
 					std::vector<NiAVObject*> excludedChildren = {};
@@ -488,10 +486,8 @@ namespace Gts {
 
 	void Vore::RandomVoreAttempt(Actor* pred) {
 		if (!Persistent::GetSingleton().Vore_Ai) {
-			log::info("Vore Ai is False");
 			return;
 		}
-		log::info("Trying Random Vore for {}", pred->GetDisplayFullName());
 		Actor* player = PlayerCharacter::GetSingleton();
 		auto& VoreManager = Vore::GetSingleton();
 		if (IsGtsBusy(pred)) {
@@ -814,11 +810,9 @@ namespace Gts {
 	void Vore::StartVore(Actor* pred, Actor* prey) {
 		if (pred->formID != 0x14) {
 			if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
-				log::info("{} vore immunity is on", prey->GetDisplayFullName());
 				return;
 			}
 			if (!AllowActionsWithFollowers(pred, prey)) {
-				log::info("Actions with {} and {} are disallowed", pred->GetDisplayFullName(), prey->GetDisplayFullName());
 				return;
 			}
 		}
@@ -836,7 +830,6 @@ namespace Gts {
 		}
 
 		if (!CanVore(pred, prey)) {
-			log::info("{} can't do Vore", pred->GetDisplayFullName());
 			return;
 		}
 		if (!Runtime::HasPerkTeam(pred, "VorePerk")) { // Damage stamina if we don't have perk
@@ -859,7 +852,6 @@ namespace Gts {
 		}
 		auto& voreData = this->GetVoreData(pred);
 		voreData.AddTiny(prey);
-		log::info("{} is starting Vore", pred->GetDisplayFullName());
 
 		AnimationManager::GetSingleton().StartAnim("StartVore", pred);
 	}

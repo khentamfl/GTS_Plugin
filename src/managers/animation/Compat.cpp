@@ -170,7 +170,6 @@ namespace {
 
 	void GTScrush_caster(AnimationEventData& data) {
 		//data.stage = 0;
-		log::info("GTScrush_caster");
 		TriggerKillZone(&data.giant);
 	}
 

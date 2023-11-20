@@ -223,18 +223,15 @@ namespace Gts {
 
 			AttachTo(giantref, tinyref, coordinates);
 			/*if (!AttachToUnderFoot_Left(giantref, tinyref)) {
-				log::info("Attach is false");
 				SetBeingGrinded(tinyref, false);
 				return false;
 			}*/
 			if (!IsFootGrinding(giantref)) {
 				SetBeingGrinded(tinyref, false);
-				log::info("IsGrinding = false");
 				return false;
 			}
 			if (tinyref->IsDead()) {
 				SetBeingGrinded(tinyref, false);
-				log::info("Tiny is dead");
 				return false;
 			}
 			return true;
@@ -267,18 +264,15 @@ namespace Gts {
 
 			AttachTo(giantref, tinyref, coordinates);
 			/*if (!AttachToUnderFoot_Right(giantref, tinyref)) {
-				log::info("Attach is false");
 				SetBeingGrinded(tinyref, false);
 				return false;
 			}*/
 			if (!IsFootGrinding(giantref)) {
 				SetBeingGrinded(tinyref, false);
-				log::info("IsGrinding = false");
 				return false;
 			}
 			if (tinyref->IsDead()) {
 				SetBeingGrinded(tinyref, false);
-				log::info("Tiny is dead");
 				return false;
 			}
 			return true;

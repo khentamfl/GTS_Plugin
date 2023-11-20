@@ -14,7 +14,7 @@ namespace Gts {
 		auto CrushedFoe = GetTarget();
 		this->CrushGrowthAmount += 1.0;
 		this->ScaleOnCrush = get_visual_scale(CrushedFoe);
-		log::info(CrushedFoe->GetDisplayFullName());
+		//log::info(CrushedFoe->GetDisplayFullName());
 	}
 
 	void CrushGrowth::OnUpdate() {

@@ -621,7 +621,6 @@ void DebugOverlayMenu::DataReady()
 
 void DebugOverlayMenu::Start()
 {
-	//log::info("Start menu");
 	auto msgQ = RE::UIMessageQueue::GetSingleton();
 	if (msgQ) {
 		msgQ->AddMessage(MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
@@ -647,7 +646,6 @@ void DebugOverlayMenu::Unload()
 
 void DebugOverlayMenu::Show(std::string source)
 {
-	//log::info("Show");
 	auto sourceIdx = std::find(Hidden_Sources.begin(), Hidden_Sources.end(), source);
 	if (sourceIdx != Hidden_Sources.end()) {
 		Hidden_Sources.erase(sourceIdx);
@@ -660,7 +658,6 @@ void DebugOverlayMenu::Show(std::string source)
 
 void DebugOverlayMenu::Hide(std::string source)
 {
-	//log::info("Hide");
 	auto sourceIdx = std::find(Hidden_Sources.begin(), Hidden_Sources.end(), source);
 	if (sourceIdx == Hidden_Sources.end()) {
 		Hidden_Sources.push_back(source);
@@ -672,7 +669,6 @@ void DebugOverlayMenu::Hide(std::string source)
 }
 
 void DebugOverlayMenu::MenuChange(const MenuOpenCloseEvent* a_event) {
-	//log::info("Menu Change");
 	auto mName = a_event->menuName;
 	if (
 		mName == RE::JournalMenu::MENU_NAME ||

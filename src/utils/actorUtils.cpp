@@ -349,10 +349,8 @@ namespace Gts {
 
 	bool AllowStagger(Actor* giant, Actor* tiny) {
 		if (Persistent::GetSingleton().allow_stagger == true) {
-			//log::info("Allow_Stagger TRUE: {}, IsTeammate: {} {}", Persistent::GetSingleton().allow_stagger, tiny->GetDisplayFullName(), IsTeammate(tiny));
 			return true; // Allow it
 		} else if (Persistent::GetSingleton().allow_stagger == false && (giant->formID == 0x14 || IsTeammate(giant)) && (tiny->formID == 0x14 || IsTeammate(tiny))) {
-			//log::info("Allow_Stagger FALSE: {}, IsTeammate: {} {}", Persistent::GetSingleton().allow_stagger, tiny->GetDisplayFullName(), IsTeammate(tiny));
 			return false; // Protect
 		}
 		return true;
@@ -370,7 +368,6 @@ namespace Gts {
 		bool dwemer = Runtime::HasKeyword(actor, "DwemerKeyword");
 		bool undead = Runtime::HasKeyword(actor, "UndeadKeyword");
 		bool creature = Runtime::HasKeyword(actor, "CreatureKeyword");
-		log::info("{} is vamp: {}, drag: {}, anim: {}, dwem: {}, undead: {}, creat: {}", actor->GetDisplayFullName(), vampire, dragon, animal, dwemer, undead, creature);
 		if (!dragon && !animal && !dwemer && !undead && !creature) {
 			return true; // Detect non-vampire
 		}
@@ -403,7 +400,6 @@ namespace Gts {
 		bool ExplSpiderPackMule = Runtime::IsRace(actor, "DLC2ExpSpiderPackmuleRace");
 		bool AshHopper = Runtime::IsRace(actor, "DLC2AshHopperRace");
 		if (Spider||SpiderGiant||SpiderLarge||ChaurusReaper||Chaurus||ChaurusHunterDLC||ChaurusDLC||ExplSpider||ExplSpiderPackMule||AshHopper) {
-			log::info("{} is insect", actor->GetDisplayFullName());
 			return true;
 		} else {
 			return false;
@@ -423,7 +419,6 @@ namespace Gts {
 				sex = base->GetSex();
 			}
 		}
-		log::info("Sex of {}: {}", actor->GetDisplayFullName(), sex);
 		return sex > 0; // Else return sex value
 	}
 
@@ -821,7 +816,6 @@ namespace Gts {
 		CallFunctionOn(source, "ObjectReference", "KnockAreaEffect", afMagnitude, afRadius);
 	}
 	void ApplyHavokImpulse_Manual(Actor* target, float afX, float afY, float afZ, float afMagnitude) {
-		log::info("Applying RB One");
 		NiPoint3 direction = NiPoint3(afX, afY, afZ);
 		//NiPoint3 niImpulse = direction * afMagnitude/direction.Length();
 		//hkVector4 impulse = hkVector4(niImpulse.x, niImpulse.y, niImpulse.z, 0.0);
@@ -932,7 +926,6 @@ namespace Gts {
 		//   |____|_____
 		//        distance
 		float cuttoff = 450 * sizedifference * radius;
-		//log::info("Shake Actor:{}, Distance:{}, sourcesize: {}, recsize: {}, cutoff: {}", caster->GetDisplayFullName(), distance, sourcesize, receiversize, cuttoff);
 		if (distance < cuttoff) {
 			// To Sermit: Same value as before just with the math reduced to minimal steps
 			float intensity = (sizedifference * 18.8) / distance;
@@ -959,7 +952,6 @@ namespace Gts {
 		return Persistent::GetSingleton().allow_feetracking;
 	}
 	bool LessGore() {
-		//log::info("Less gore is {}", Persistent::GetSingleton().less_gore);
 		return Persistent::GetSingleton().less_gore;
 	}
 
@@ -1263,7 +1255,6 @@ namespace Gts {
 					}
 				}
 				// If we pass checks, launch actor instead
-				log::info("Applying Havok: Direction: {}, force: {}, speed: {}", Vector2Str(direction), power, speed);
 				TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tiny);
 				if (tiny_is_object) {
 					ApplyHavokImpulse(tiny_is_object, direction.x, direction.y, direction.z, speed * 2.0 * power);
@@ -1530,7 +1521,6 @@ namespace Gts {
 
 	float GetXpBonus() {
 		float xp = Persistent::GetSingleton().experience_mult;
-		//log::info("XP is: {}", xp);
 		return xp;
 	}
 
@@ -1542,7 +1532,6 @@ namespace Gts {
 			auto transient = Transient::GetSingleton().GetData(actor);
 			if (transient) {
 				transient->SMT_Bonus_Duration += duration;
-				log::info("SMT Duration Added: {}", duration);
 			}
 		}
 	}
@@ -1551,7 +1540,6 @@ namespace Gts {
 		auto transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
 			transient->SMT_Penalty_Duration += penalty;
-			log::info("SMT Penalty Added: {}", penalty);
 		}
 	}
 
@@ -1582,7 +1570,6 @@ namespace Gts {
 			if (preyscale >= targetScale) { // Apply ONLY if target is bigger than requirement
 				set_target_scale(tiny, targetScale);
 				AddSMTPenalty(giant, 5.0);
-				log::info("Shrink: {}, Old Scale: {}, New Scale: {}", tiny->GetDisplayFullName(), preyscale, get_target_scale(tiny));
 			}
 		}
 	}
@@ -1592,7 +1579,6 @@ namespace Gts {
 			auto trans = Transient::GetSingleton().GetData(actor);
 			if (trans) {
 				trans->disable_collision_with = otherActor;
-				log::info("Disable collision for: {}", actor->GetDisplayFullName());
 				auto colliders = ActorCollisionData(actor);
 				colliders.UpdateCollisionFilter();
 				if (otherActor) {
@@ -1609,7 +1595,6 @@ namespace Gts {
 			if (trans) {
 				auto otherActor = trans->disable_collision_with;
 				trans->disable_collision_with = nullptr;
-				log::info("Enable collision for: {}", actor->GetDisplayFullName());
 				auto colliders = ActorCollisionData(actor);
 				colliders.UpdateCollisionFilter();
 				if (otherActor) {
@@ -1721,7 +1706,6 @@ namespace Gts {
 			giant->SetGraphVariableInt("GTS_Grab_State", 0);
 			giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
 			SetBetweenBreasts(giant, false);
-			log::info("Resetting grab for {}", giant->GetDisplayFullName());
 		}
 	}
 
@@ -1739,7 +1723,6 @@ namespace Gts {
 
 			ResetGrab(giant);
 			if (GTSStateID != StateID) {
-				log::info("Setting Grab Int to {}", StateID);
 				giant->SetGraphVariableInt("GTS_Def_State", StateID);
 			}
 		}
@@ -1757,7 +1740,6 @@ namespace Gts {
 
 			if (!success) {
 				endpos = pos;
-				log::info("RayCast failed");
 			}
 		} else {
 			pos = giant->GetLocation(); // else spawn under our legs
@@ -1867,7 +1849,6 @@ namespace Gts {
 					if (!dropbox3D) {
 						return true; // Retry next frame
 					} else {
-						log::info("Spawned Crush Sound");
 						Runtime::PlaySound("GtsCrushSound", dropboxPtr, 1.0, 1.0);
 						return false;
 					}
@@ -1985,7 +1966,6 @@ namespace Gts {
 						std::int32_t unk18 = DetectionStage->unk18 = 0;
 						std::int32_t unk28 = DetectionStage->unk28 = 0;
 						std::int32_t unk38 = DetectionStage->unk38 = 0;
-						log::info("Detection levels of {}: L: {}, 14: {}, 15: {}, 16: {}, 17: {}, 18: {}, 28: {}, 38: {}", actor->GetDisplayFullName(), level, unk14, unk15, unk16, pad17, unk18, unk28, unk38);
 					}
 				}
 			}

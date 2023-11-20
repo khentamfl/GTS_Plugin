@@ -182,7 +182,6 @@ namespace {
 		data.animSpeed = 1.66;
 		if (data.giant.formID != 0x14) {
 			data.animSpeed = 1.66 + GetRandomBoost();
-			log::info("Anim Speed: {}, random: {}", data.animSpeed, GetRandomBoost());
 		}
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.EnableSuffocate(false);
@@ -196,7 +195,6 @@ namespace {
 		data.animSpeed = 1.66;
 		if (data.giant.formID != 0x14) {
 			data.animSpeed = 1.66 + GetRandomBoost();
-			log::info("Anim Speed: {}, random: {}", data.animSpeed, GetRandomBoost());
 		}
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.EnableSuffocate(false);

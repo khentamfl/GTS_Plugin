@@ -92,7 +92,6 @@ namespace {
 				coords.z -= HH;
 			}
 			if (!IsButtCrushing(giantref)) {
-				log::info("Not Butt Crushing, resetting");
 				SetBeingEaten(tiny, false);
 				EnableCollisions(tiny);
 				return false;

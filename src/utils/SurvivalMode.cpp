@@ -33,7 +33,6 @@ namespace Gts {
 		actor->RemoveSpell(stage3);
 		actor->RemoveSpell(stage4);
 		actor->RemoveSpell(stage5);
-		log::info("Removing all survival spells");
 	}
 
 	void SurvivalMode_RefreshSpells(Actor* actor, float currentvalue) {
@@ -52,7 +51,6 @@ namespace Gts {
 
 		SurvivalMode_RemoveAllSpells(actor, stage0, stage1, stage2, stage3, stage4, stage5);
 
-		log::info("Adjust current value, value: {}", currentvalue);
 		if (currentvalue <= stage1threshold) {
 			Runtime::AddSpell(actor, "Survival_HungerStage1");
 		} else if (currentvalue <= stage2threshold) {
@@ -72,12 +70,10 @@ namespace Gts {
 		}
 		auto Survival = Runtime::GetGlobal("Survival_ModeEnabled");
 		if (!Survival) {
-			log::info("Survival not found, returning");
 			return; // Abort if it doesn't exist (Should fix issues if we don't have AE CC mods)
 		}
 		float SurvivalEnabled = Runtime::GetBool("Survival_ModeEnabled");
 		if (!SurvivalEnabled) {
-			log::info("Survival OFF, returning");
 			return; // Survival OFF, do nothing.
 		}
 		auto HungerNeed = Runtime::GetGlobal("Survival_HungerNeedValue"); // Obtain
@@ -95,7 +91,6 @@ namespace Gts {
 
 		float power = (get_visual_scale(giant)/tinyscale); // Get size difference and * it by natural size
 
-		log::info("Adjusting HungerNeed, restore: {}, power: {}, type: {}", restore, power, type);
 		HungerNeed->value -= (restore / power) * naturalsize;
 		if (HungerNeed->value <= 0.0) {
 			HungerNeed->value = 0.0; // Cap it at 0.0

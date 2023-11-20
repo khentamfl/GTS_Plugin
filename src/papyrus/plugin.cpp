@@ -31,7 +31,6 @@ namespace {
 
 	void SetLegacySounds(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().legacy_sounds = enabled;
-		log::info("Legacy Sounds: {}", Persistent::GetSingleton().legacy_sounds);
 	}
 
 	float GetSizeRelatedDamage(StaticFunctionTag*, Actor* actor, float attribute) {
@@ -305,7 +304,6 @@ namespace {
 
 	void SetProgressionMultiplier(StaticFunctionTag*, float value) {
 		Persistent::GetSingleton().progression_multiplier = value;
-		log::info("Setting Progression Multiplier to {}", value);
 	}
 
 	void SetStompAi(StaticFunctionTag*, bool enabled) {
@@ -336,7 +334,6 @@ namespace {
 
 	void SetActorPanic(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().actors_panic = enabled;
-		log::info("Actor panic is set to {}", enabled);
 	}
 
 	void ToggleHostileDamage(StaticFunctionTag*, bool enabled) {

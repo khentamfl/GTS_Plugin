@@ -47,7 +47,7 @@ namespace {
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.0, 1.8);
 		TrackFeet(&data.giant, 6, true);
 		GRumble::Start("StompR", &data.giant, 0.35, 0.15, RNode);
-		log::info("StompStartR true");
+		//log::info("StompStartR true");
 	}
 
 	void GTSstompstartL(AnimationEventData& data) {
@@ -60,7 +60,7 @@ namespace {
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.0, 1.8);
 		TrackFeet(&data.giant, 5, true);
 		GRumble::Start("StompL", &data.giant, 0.45, 0.15, LNode); // Start stonger effect
-		log::info("StompStartL true");
+		//log::info("StompStartL true");
 	}
 
 	void GTSstompimpactR(AnimationEventData& data) {

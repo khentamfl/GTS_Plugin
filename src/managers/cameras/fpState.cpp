@@ -27,7 +27,6 @@ namespace  Gts {
 		float value = 1.0;//std::clamp(Runtime::GetFloat("ProneOffsetFP"), 0.10f, 1.0f);
 		if (IsCrawling(player)) {
 			value = std::clamp(Runtime::GetFloat("ProneOffsetFP"), 0.10f, 1.0f);
-			log::info("IsCrawling, Value is {}", value);
 		}
 		return value;
 	}

@@ -62,7 +62,6 @@ namespace {
 		if (grabbedActor == attacker) {
 			return; // Don't allow actor to do self-damage
 		}
-		log::info("a_damage: {}", a_damage);
 		receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, a_damage * 0.25);
 		DamageAV(grabbedActor, ActorValue::kHealth, a_damage * 0.25);
 		if (grabbedActor->IsDead() || GetAV(grabbedActor, ActorValue::kHealth) < a_damage * 0.25) {
@@ -170,7 +169,6 @@ namespace {
 					float overkill = a_damage + maxhp/5;
 
 					receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, overkill); // Restore to full
-					log::info("Applying Health Gate, overkill: {}, damage: {}", overkill, a_damage);
 
 					CameraFOVTask(receiver);
 
@@ -227,7 +225,6 @@ namespace {
 	void InflictDamage(Actor* attacker, Actor* receiver, float a_damage) {
 		float damagemult = AttributeManager::GetSingleton().GetAttributeBonus(attacker, ActorValue::kAttackDamageMult);
 		float damage = (a_damage * damagemult) - a_damage;
-		log::info("Damage: Receiver: {}, Attacker: {}, a_damage: {}, damage: {}", receiver->GetDisplayFullName(), attacker->GetDisplayFullName(), a_damage, damage);
 		float sizedifference = get_visual_scale(receiver)/get_visual_scale(attacker);
 		HealthGate(attacker, receiver, -(a_damage + damage));
 		TinyAsShield(attacker, receiver, -(a_damage + damage));

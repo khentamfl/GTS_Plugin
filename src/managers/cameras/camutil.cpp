@@ -85,7 +85,6 @@ namespace Gts {
 
 	Actor* GetCameraActor() {
 		auto camera = PlayerCamera::GetSingleton();
-		// log::info("Current Camera Target: {}", camera->cameraTarget.get().get()->GetDisplayFullName());
 		return camera->cameraTarget.get().get();
 	}
 
@@ -229,7 +228,6 @@ namespace Gts {
 		auto camera = PlayerCamera::GetSingleton();
 		if (camera) {
 			NiPointer<TESObjectREFR> Target = camera->cameraTarget.get();
-			// log::info("Camera Target is: {}", Target->GetDisplayFullName());
 
 			auto currentState = camera->currentState;
 			if (currentState) {

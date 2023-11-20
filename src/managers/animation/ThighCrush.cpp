@@ -115,7 +115,6 @@ namespace {
 			auto ThighR = find_node(giantref, "NPC R Thigh [RThg]");
 
 			if (!IsThighCrushing(giantref)) {
-				log::info("IS not Thigh Crushing");
 				return false; //Disable it once we leave Thigh Crush state
 			}
 			if (ThighL && ThighR) {

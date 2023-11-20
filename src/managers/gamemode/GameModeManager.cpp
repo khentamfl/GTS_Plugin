@@ -74,7 +74,6 @@ namespace Gts {
 				case ChosenGameMode::Grow: {
 					float modAmount = Scale * (0.00010 + (GrowthRate * 0.25)) * 60 * Time::WorldTimeDelta();
 					if (fabs(GrowthRate) < EPS) {
-						log::info("Returning");
 						return;
 					}
 					if ((targetScale + modAmount) < maxScale) {

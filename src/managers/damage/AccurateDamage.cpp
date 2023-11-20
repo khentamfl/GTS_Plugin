@@ -388,7 +388,6 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
-								//log::info("Actor: {}, Node collisions: {}, force: {}", actor->GetDisplayFullName(), nodeCollisions, force);
 								accuratedamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
 							}
 						}
@@ -451,7 +450,6 @@ namespace Gts {
 		float sprintdamage = 1.0; // default Sprint damage of 1.0
 		float falldamage = 1.0; // default Fall damage of 1.0
 		float weightdamage = giant->GetWeight()/100 + 1.0;
-		//log::info("Size Difference of {} with {} is {}, tiny scale: {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), multiplier, tinysize);
 
 		SizeModifications(giant, tiny, highheels);
 		SMTCrushCheck(giant, tiny);
@@ -524,7 +522,6 @@ namespace Gts {
 							}
 						} else {
 							Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
-							log::info("Error, node not found. Cause: {}", Cause);
 						}
 					}
 				}

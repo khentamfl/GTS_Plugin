@@ -128,7 +128,6 @@ namespace Gts {
 		// Make a list of points to check
 		float Forward = 8 - (hh * 0.6); //Runtime::GetFloat("cameraAlternateX"); // 8 is ok, 5 with HH
 		float UpDown = 9; //Runtime::GetFloat("cameraAlternateY"); // 8 too
-		log::info("HH: {}, HH New: {}", hh, hh * 0.4);
 		
 
 		std::vector<NiPoint3> points = {
@@ -200,7 +199,6 @@ namespace Gts {
 		// Make a list of points to check
 		float Forward = 8 - (hh * 0.6); //Runtime::GetFloat("cameraAlternateX"); // 8 is ok, 5 with HH
 		float UpDown = 9; //Runtime::GetFloat("cameraAlternateY"); // 8 too
-		log::info("HH: {}, HH New: {}", hh, hh * 0.4);
 		
 
 		std::vector<NiPoint3> points = {

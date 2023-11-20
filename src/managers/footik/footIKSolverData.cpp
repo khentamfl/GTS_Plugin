@@ -35,11 +35,7 @@ namespace Gts {
 		this->solver->m_setup.m_footRaisedAnkleHeightMS = this->m_footRaisedAnkleHeightMS * new_scale;
 		this->solver->m_setup.m_maxAnkleHeightMS = this->m_maxAnkleHeightMS  * new_scale;
 		this->solver->m_setup.m_minAnkleHeightMS = this->m_minAnkleHeightMS * new_scale;
-		log::info("------");
-		log::info("OLD: this->solver->m_setup.m_raycastDistanceUp: {}", this->solver->m_setup.m_raycastDistanceUp);
 		this->solver->m_setup.m_raycastDistanceUp = this->m_raycastDistanceUp * new_scale;
-		log::info("NEW: this->solver->m_setup.m_raycastDistanceUp: {}", this->solver->m_setup.m_raycastDistanceUp);
-		log::info("");
 		this->solver->m_setup.m_raycastDistanceDown = this->m_raycastDistanceDown * new_scale;
 	}
 }

@@ -171,8 +171,6 @@ namespace {
 
 			auto RotationResult = NPCROT.ToEulerAnglesXYZ(TinyX, TinyY, TinyZ);
 
-			log::info("Tiny Rot Angle Current: {}, Original: {}", Vector2Str(NewRot), Vector2Str(RotationResult));
-
 			//log::info("Angle of L breast: x: {}, y: {}, z: {}", LPosX, LPosY, LPosZ);
 			//log::info("Angle of R breast: x: {}, y: {}, z: {}", RPosX, RPosY, RPosZ);
 
@@ -305,12 +303,10 @@ namespace {
 		DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.40, 1.0);
 		StopLHandRumble("GrabMoveL", data.giant);
 		if (!grabbedActor) {
-			log::info("GrabbedActor is null");
 			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 			giant->SetGraphVariableInt("GTS_Grab_State", 0);
 			AnimationManager::StartAnim("GrabAbort", giant);
 			AnimationManager::StartAnim("TinyDied", giant);
-			//BlockFirstPerson(giant, false);
 			Grab::DetachActorTask(giant);
 			Grab::Release(giant);
 			return;
@@ -543,10 +539,10 @@ namespace {
 				// Only use rotation not translaion or scale since those will mess everything up
 				NiMatrix3 giantRot = giant->GetCurrent3D()->world.rotate;
 				NiPoint3 direction = giantRot * (customDirection / customDirection.Length());
-				log::info("forward : {}", Vector2Str(forward));
-				log::info("customDirection : {}", Vector2Str(customDirection));
-				log::info("Direction : {}", Vector2Str(direction));
-				log::info("Speed: {}", Runtime::GetFloat("cameraAlternateX") * 100);
+				//log::info("forward : {}", Vector2Str(forward));
+				//log::info("customDirection : {}", Vector2Str(customDirection));
+				//log::info("Direction : {}", Vector2Str(direction));
+				//log::info("Speed: {}", Runtime::GetFloat("cameraAlternateX") * 100);
 
 				//PushActorAway(giant, tiny, direction, speed * 100);
 				PushActorAway(giant, tiny, 1);
@@ -855,7 +851,6 @@ namespace Gts {
 			ShutUp(tinyref);
 
 			if (giantref->IsDead() || tinyref->IsDead() || GetAV(tinyref, ActorValue::kHealth) <= 0.0 || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
-				log::info("{} is small/dead", tinyref->GetDisplayFullName());
 				PushActorAway(giantref, tinyref, 1.0);
 				tinyref->SetGraphVariableBool("GTSBEH_T_InStorage", false);
 				SetBetweenBreasts(giantref, false);
