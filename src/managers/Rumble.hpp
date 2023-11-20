@@ -45,7 +45,7 @@ namespace Gts {
 	// Rumble for all actors
 	class GRumble : public EventListener {
 		public:
-			[[nodiscard]] static Rumble& GetSingleton() noexcept;
+			[[nodiscard]] static GRumble& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
 			virtual void Reset() override;

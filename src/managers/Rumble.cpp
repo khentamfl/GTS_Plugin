@@ -42,7 +42,7 @@ namespace Gts {
 	}
 
 	GRumble& GRumble::GetSingleton() noexcept {
-		static Rumble instance;
+		static GRumble instance;
 		return instance;
 	}
 
