@@ -115,13 +115,13 @@ namespace Gts {
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)*0.01;
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)*0.01;
 		float GigantismTarget = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)*0.01;  // May go negative needs fixing with a smooth clamp
-		float efficiency = clamp(0.25, 1.0, (casterlevel/targetlevel)) * progression_multiplier;
+		float efficiency = clamp(0.50, 1.0, (casterlevel/targetlevel)) * progression_multiplier;
 		if (IsDragon(target)) {
 			efficiency *= DRAGON_PEANLTY;
 		} if (IsMammoth(target)) {
 			efficiency *= 0.35;
  		} if (IsGiant(target)) {
-			efficiency *= 0.45;
+			efficiency *= 0.50;
 		} if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
 			efficiency *= 0.25;
 		}
@@ -138,14 +138,14 @@ namespace Gts {
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)*0.01;
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)*0.01;
 		float GigantismTarget = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)*0.01;  // May go negative needs fixing with a smooth clamp
-		float efficiency = clamp(0.25, 1.0, (casterlevel/targetlevel));
+		float efficiency = clamp(0.50, 1.0, (casterlevel/targetlevel));
 		//log::info("LevelDifference: {}, caster level: {}, target level: {}", efficiency, casterlevel, targetlevel);
 		if (IsDragon(target)) {
 			efficiency *= DRAGON_PEANLTY;
 		} if (IsMammoth(target)) {
 			efficiency *= 0.35;
  		} if (IsGiant(target)) {
-			efficiency *= 0.45;
+			efficiency *= 0.50;
 		} if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
 			efficiency *= 0.25;
 		}
@@ -160,13 +160,15 @@ namespace Gts {
 		float progression_multiplier = Persistent::GetSingleton().progression_multiplier;
 		// y = mx +c
 		// power = scale_factor * scale + bonus
-		return (get_visual_scale(actor) * scale_factor + bonus) * progression_multiplier * MASTER_POWER * TimeScale();
+		float scale = 1.0;// get_visual_scale(actor);
+		return (scale * scale_factor + bonus) * progression_multiplier * MASTER_POWER * TimeScale();
 	}
 
 	inline float CalcPower_NoMult(Actor* actor, float scale_factor, float bonus) {
 		// y = mx +c
 		// power = scale_factor * scale + bonus
-		return (get_visual_scale(actor) * scale_factor + bonus) * MASTER_POWER * TimeScale();
+		float scale = 1.0; //get_visual_scale(actor);
+		return (scale * scale_factor + bonus) * MASTER_POWER * TimeScale();
 	}
 
 	inline void Grow(Actor* actor, float scale_factor, float bonus) {

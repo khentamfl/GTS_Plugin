@@ -138,7 +138,7 @@ namespace Gts {
 			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2.0f, 1.0f, 2.5f);
 		} else {
 			if (actor_data) {
-				AddShrinkWeakness(target, 0.006 * TimeScale());
+				AddShrinkWeakness(target, 0.0085 * TimeScale());
 				actor_data->half_life = 1.0;
 			}
 		}
