@@ -5,6 +5,8 @@
 namespace Gts {
 	class Debug {
 		public:
+			
+
 			[[nodiscard]] inline spdlog::level::level_enum GetLogLevel() const noexcept {
 				return _logLevel;
 			}
@@ -76,6 +78,8 @@ namespace Gts {
 
 	class Config {
 		public:
+			ClassName() = "Config";
+
 			[[nodiscard]] inline const Debug& GetDebug() const noexcept {
 				return _debug;
 			}

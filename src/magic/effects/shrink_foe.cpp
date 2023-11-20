@@ -66,11 +66,11 @@ namespace Gts {
 	}
 
 	ShrinkFoe::ShrinkFoe(ActiveEffect* effect) : Magic(effect) {
-		const float SHRINK_POWER = 1.85; // Power = Shrink Power
+		const float SHRINK_POWER = 2.05; // Power = Shrink Power
 		const float SHRINK_EFFIC = 0.16; // Efficiency = size steal efficiency.
-		const float SHRINK_AOE_POWER = 2.05;
+		const float SHRINK_AOE_POWER = 2.35;
 		const float SHRINK_AOE_EFFIC = 0.18;
-		const float SHRINK_AOE_MASTER_POWER = 2.30;
+		const float SHRINK_AOE_MASTER_POWER = 2.70;
 		const float SHRINK_AOE_MASTER_EFFIC = 0.20;
 		const float SHRINK_BOLT_POWER = 17.50;
 		const float SHRINK_BOLT_EFFIC = 0.06;
@@ -122,7 +122,7 @@ namespace Gts {
 		float SizeDifference = 1.0;
 		float bonus = 1.0;
 		float balancemodebonus = 1.0;
-		float shrink = this->power;
+		float shrink = this->power * 2;
 		float gainpower = this->efficiency;
 		auto actor_data = Persist.GetData(target);
 
@@ -130,12 +130,12 @@ namespace Gts {
 			if (actor_data) {
 				actor_data->half_life = 0.25; // Faster shrink, less smooth.
 			}
-			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2.0f, 1.0f, 2.5f);
+			//SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2.0f, 1.0f, 2.5f);
 		} else if (this->power >= 10.0) {
 			if (actor_data) {
 				actor_data->half_life = 0.50; // Faster shrink, less smooth.
 			}
-			SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2.0f, 1.0f, 2.5f);
+			//SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2.0f, 1.0f, 2.5f);
 		} else {
 			if (actor_data) {
 				AddShrinkWeakness(target, 0.0085 * TimeScale());
@@ -161,6 +161,11 @@ namespace Gts {
 		}
 		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus * weakness, gainpower * balancemodebonus, has_smt, ShrinkSource::magic);
 		
+		// 20.11.2023: TO-DO: 
+		// 1) Power * 2, cost * 2 too, decreasing time to shrink.
+		// 2) Remove stacking debuff thing
+		// 3) Reduce shrink penalty at low scales to be 0.5 as a max, instead of being penalty = scale
+
 		if (ShrinkToNothing(caster, target)) {
 		}
 	}

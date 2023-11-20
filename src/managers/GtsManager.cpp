@@ -64,10 +64,10 @@ namespace {
 				auto perk = Runtime::GetPerk("TalkToActor");
 				if (perk) {
 					log::info("Perk found");
-					auto value = perk->perkConditions.CONDITION_ITEM_DATA();
+					auto value = perk->perkConditions.head;
 					if (value) {
 						//auto result = value->data.comparisonValue;
-						auto result = value->CONDITION_ITEM_DATA.comparisonValue;
+						auto result = value->data.comparisonValue;
 						auto finalvalue = result.f;
 						log::info("Perk Value: {}", finalvalue);
 					}

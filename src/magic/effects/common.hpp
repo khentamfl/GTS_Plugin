@@ -160,14 +160,14 @@ namespace Gts {
 		float progression_multiplier = Persistent::GetSingleton().progression_multiplier;
 		// y = mx +c
 		// power = scale_factor * scale + bonus
-		float scale = 1.0;// get_visual_scale(actor);
+		float scale = clamp(0.5, 1.5, get_visual_scale(actor));
 		return (scale * scale_factor + bonus) * progression_multiplier * MASTER_POWER * TimeScale();
 	}
 
 	inline float CalcPower_NoMult(Actor* actor, float scale_factor, float bonus) {
 		// y = mx +c
 		// power = scale_factor * scale + bonus
-		float scale = 1.0; //get_visual_scale(actor);
+		float scale = clamp(0.5, 1.5, get_visual_scale(actor));
 		return (scale * scale_factor + bonus) * MASTER_POWER * TimeScale();
 	}
 
