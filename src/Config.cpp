@@ -19,18 +19,15 @@ const Config& Config::GetSingleton() noexcept {
 
 namespace Gts {
   Debug::Debug(const toml::value& data) {
-    std::string logLevel;
-    std::string flushLevel;
-
     std::string logLevel = toml::find_or<std::string>(data, "logLevel", "info");
-    std::string logLevel = toml::find_or<std::string>(data, "flushLevel", "trace");
+    std::string flushLevel = toml::find_or<std::string>(data, "flushLevel", "trace");
     this->_logLevel = spdlog::level::from_str(logLevel);
     this->_flushLevel = spdlog::level::from_str(flushLevel);
   }
 
   Frame::Frame(const toml::value& data) {
-    int step = toml::find_or<std::int>(data, "step", 0);
-    int initDelay = toml::find_or<std::int>(data, "initDelay", 0);
+    int step = toml::find_or<int>(data, "step", 0);
+    int initDelay = toml::find_or<int>(data, "initDelay", 0);
     this->_step = step;
     this->_initDelay = initDelay;
   }

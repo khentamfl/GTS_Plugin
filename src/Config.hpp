@@ -63,7 +63,7 @@ namespace Gts {
 				return _minScale;
 			}
 
-      Tremor::Tremor(const toml::value& data);
+      Tremor(const toml::value& data);
 
 		private:
 			std::string _method;
@@ -91,7 +91,7 @@ namespace Gts {
 
 			[[nodiscard]] static const Config& GetSingleton() noexcept;
 
-      Config::Config(const toml::value& data);
+      Config(const toml::value& data);
 
 		private:
 			Debug _debug;
