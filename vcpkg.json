@@ -12,7 +12,8 @@
           "features": ["toml11-archive"]
         },
         "glm",
-        "toml11"
+        "toml11",
+        "nlohmann-json"
       ]
     }
   },

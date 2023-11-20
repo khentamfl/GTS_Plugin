@@ -47,6 +47,7 @@ find_package(ryml CONFIG REQUIRED)
 find_path(ARTICUNO_INCLUDE_DIRS "articuno/access.h")
 find_package(glm CONFIG REQUIRED)
 find_package(toml11 CONFIG REQUIRED)
+find_package(nlohmann_json 3.2.0 REQUIRED)
 
 add_commonlibsse_plugin(${PROJECT_NAME} DECLARATIVE SOURCES ${headers} ${sources})
 add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")
@@ -68,6 +69,7 @@ target_link_libraries(${PROJECT_NAME}
         PRIVATE
         ryml::ryml
         toml11::toml11
+        nlohmann_json::nlohmann_json
         )
 
 target_precompile_headers(${PROJECT_NAME}

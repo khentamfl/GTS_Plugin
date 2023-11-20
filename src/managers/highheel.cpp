@@ -5,14 +5,8 @@
 #include "managers/GtsManager.hpp"
 #include "data/persistent.hpp"
 #include "scale/scale.hpp"
-#include <articuno/articuno.h>
-#include <articuno/archives/ryml/ryml.h>
-#include <articuno/types/auto.h>
 #include "managers/animation/AnimationManager.hpp"
 #include "profiler.hpp"
-
-using namespace articuno;
-using namespace articuno::ryml;
 using namespace RE;
 using namespace Gts;
 
@@ -134,10 +128,8 @@ namespace Gts {
 	struct RaceMenuSDTA {
 		std::string name;
 		std::vector<float> pos;
-		articuno_serde(ar) {
-			ar <=> kv(name, "name");
-			ar <=> kv(pos, "pos");
-		}
+
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RaceMenuSDTA, name pos)
 	};
 
 	void HighHeelManager::UpdateHHOffset(Actor* actor) {
@@ -153,9 +145,8 @@ namespace Gts {
 				VisitExtraData<NiStringExtraData>(model, "SDTA", [&result](NiAVObject& currentnode, NiStringExtraData& data) {
 					std::string stringDataStr = data.value;
 					std::stringstream jsonData(stringDataStr);
-					yaml_source ar(jsonData);
-					vector<RaceMenuSDTA> alterations;
-					ar >> alterations;
+          json j = json::parse(jsonData);
+					vector<RaceMenuSDTA> alterations = j.template get<vector<RaceMenuSDTA>>();
 					for (auto alteration: alterations) {
 						if (alteration.name == "NPC") {
 							if (alteration.pos.size() > 2) {

@@ -1,12 +1,8 @@
 #include "data/runtime.hpp"
 #include "Config.hpp"
-#include <articuno/archives/ryml/ryml.h>
-#include <articuno/types/auto.h>
 #include "raycast.hpp"
 #include "node.hpp"
 
-using namespace articuno;
-using namespace articuno::ryml;
 using namespace SKSE;
 using namespace RE;
 
@@ -41,19 +37,19 @@ namespace {
 		std::unordered_map<std::string, std::string> keywords;
 		std::unordered_map<std::string, std::string> containers;
 
-		articuno_serde(ar) {
-			ar <=> kv(sounds, "sounds");
-			ar <=> kv(spellEffects, "spellEffects");
-			ar <=> kv(spells, "spells");
-			ar <=> kv(perks, "perks");
-			ar <=> kv(explosions, "explosions");
-			ar <=> kv(globals, "globals");
-			ar <=> kv(quests, "quests");
-			ar <=> kv(factions, "factions");
-			ar <=> kv(impacts, "impacts");
-			ar <=> kv(races, "races");
-			ar <=> kv(keywords, "keywords");
-			ar <=> kv(containers, "containers");
+    RuntimeConfig(const toml::value& data) {
+			this->sounds = toml::find_or(data, "sounds", std::unordered_map<std::string, std::string>());
+			this->spellEffects = toml::find_or(data, "spellEffects", std::unordered_map<std::string, std::string>());
+			this->spells = toml::find_or(data, "spells", std::unordered_map<std::string, std::string>());
+			this->perks = toml::find_or(data, "perks", std::unordered_map<std::string, std::string>());
+			this->explosions = toml::find_or(data, "explosions", std::unordered_map<std::string, std::string>());
+			this->globals = toml::find_or(data, "globals", std::unordered_map<std::string, std::string>());
+			this->quests = toml::find_or(data, "quests", std::unordered_map<std::string, std::string>());
+			this->factions = toml::find_or(data, "factions", std::unordered_map<std::string, std::string>());
+			this->impacts = toml::find_or(data, "impacts", std::unordered_map<std::string, std::string>());
+			this->races = toml::find_or(data, "races", std::unordered_map<std::string, std::string>());
+			this->keywords = toml::find_or(data, "keywords", std::unordered_map<std::string, std::string>());
+			this->containers = toml::find_or(data, "containers", std::unordered_map<std::string, std::string>());
 		}
 	};
 }
@@ -705,11 +701,8 @@ namespace Gts {
 	}
 
 	void Runtime::DataReady() {
-		RuntimeConfig config;
-
-		std::ifstream in(R"(Data\SKSE\Plugins\GtsRuntime.yaml)");
-		yaml_source src(in);
-		src >> config;
+    const auto data = toml::parse(R"(Data\SKSE\Plugins\GtsRuntime.yaml)");
+		RuntimeConfig config(data);
 
 		for (auto &[key, value]: config.sounds) {
 			auto form = find_form<BGSSoundDescriptorForm>(value);
