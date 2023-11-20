@@ -65,7 +65,7 @@ namespace Gts {
 	}
 	void GRumble::Stop(std::string_view tagsv, Actor* giant) {
 		string tag = std::string(tagsv);
-		auto& me = Rumble::GetSingleton();
+		auto& me = GRumble::GetSingleton();
 		try {
 			me.data.at(giant).tags.at(tag).state = RumpleState::RampingDown;
 		} catch (std::out_of_range e) {}
@@ -74,7 +74,7 @@ namespace Gts {
 	void GRumble::For(std::string_view tagsv, Actor* giant, float intensity, float halflife, std::string_view nodesv, float duration) {
 		std::string tag = std::string(tagsv);
 		std::string node = std::string(nodesv);
-		auto& me = Rumble::GetSingleton();
+		auto& me = GRumble::GetSingleton();
 		me.data.try_emplace(giant);
 		me.data.at(giant).tags.try_emplace(tag, intensity, duration, halflife, node);
 		// Reset if alreay there (but don't reset the intensity this will let us smooth into it)
