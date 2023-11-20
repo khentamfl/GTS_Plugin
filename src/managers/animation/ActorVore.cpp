@@ -154,8 +154,8 @@ namespace {
 		}
 		VoreData.AllowToBeVored(false);
 		Rumble::Once("StompLS", &data.giant, 0.45, 0.10, LNode);
-		DoFootstepSound(&data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode);
-		DoDustExplosion(&data.giant, 0.50 * data.animSpeed, FootEvent::Left, LNode);
+		DoFootstepSound(&data.giant, 0.90, FootEvent::Left, LNode);
+		DoDustExplosion(&data.giant, 0.90, FootEvent::Left, LNode);
 		DoDamageEffect(&data.giant, 0.5, 1.0, 30, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 	}
 
@@ -181,7 +181,7 @@ namespace {
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("JumpFall");
 			ReportCrime(&data.giant, tiny, 1000.0, true);
-			//StartCombat(giant, tiny, true);
+			StartCombat(giant, tiny, true);
 		}
 		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			ManageCamera(giant, false, 4.0);

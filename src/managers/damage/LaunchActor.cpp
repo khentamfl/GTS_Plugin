@@ -57,13 +57,15 @@ namespace {
 		if (IsBeingHeld(tiny)) {
 			return false;
 		}
-		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && (IsTeammate(tiny))) {
+		bool NPC = Persistent::GetSingleton().NPCEffectImmunity;
+		bool PC = Persistent::GetSingleton().PCEffectImmunity;
+		if (NPC && giant->formID == 0x14 && (IsTeammate(tiny))) {
 			return false; // Protect NPC's against player size-related effects
 		}
-		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && (IsTeammate(giant)) && (IsTeammate(tiny))) {
+		if (NPC && (IsTeammate(giant)) && (IsTeammate(tiny))) {
 			return false; // Disallow NPC's to damage each-other if they're following Player
 		}
-		if (Runtime::GetBool("GtsPCEffectImmunityToggle") && (IsTeammate(giant)) && tiny->formID == 0x14) {
+		if (PC && (IsTeammate(giant)) && tiny->formID == 0x14) {
 			return false; // Protect Player against friendly NPC's damage
 		}
 		return true;
@@ -100,8 +102,10 @@ namespace {
 			force += 0.20;
 		}
 		float tinySize = get_visual_scale(tiny);
-		if (IsDragon(tiny)) {
+		if (IsDragon(tiny) || IsGiant(tiny)) {
 			tinySize *= 2.6;
+		} if (IsMammoth(tiny)) {
+			tinySize *= 3.2;
 		}
 		float sizeRatio = giantSize/tinySize;
 
@@ -126,11 +130,12 @@ namespace {
 
 				if (Runtime::HasPerkTeam(giant, "LaunchDamage") && CanDoDamage(giant, tiny)) {
 					float damage = LAUNCH_DAMAGE * sizeRatio * force * damagebonus;
-					DamageAV(tiny, ActorValue::kHealth, damage * DamageSetting);
+					InflictSizeDamage(giant, tiny, damage * DamageSetting);
+					//DamageAV(tiny, ActorValue::kHealth, damage * DamageSetting);
 					if (power >= 1.5) { // Apply only when we have DisastrousTremor perk
 						mod_target_scale(tiny, -(damage * DamageSetting) / 500);
 						float modifier = 1.0;
-						if (IsDragon(tiny)) {
+						if (IsDragon(tiny) || IsGiant(tiny) || IsMammoth(tiny)) {
 							modifier = 3.0;
 						}
 

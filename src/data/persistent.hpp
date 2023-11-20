@@ -93,6 +93,8 @@ namespace Gts {
 			bool actors_panic = true;
 			bool launch_objects = true;
 			bool Camera_PermitFovEdits = true;
+			bool NPCEffectImmunity = false;
+			bool PCEffectImmunity = false;
 			float tremor_scale = 1.0;
 			float npc_tremor_scale = 1.0;
 			float size_related_damage_mult = 1.0;
@@ -103,6 +105,16 @@ namespace Gts {
 			float stolen_health = 0.0;
 			float stolen_magick = 0.0;
 			float stolen_stamin = 0.0;
+
+			////Quest Progression
+			float HugStealCount = 0.0; // Stage 1, Hugs
+			float CrushCount = 0.0; // Stage 2
+			float STNCount = 0.0; // Stage 3, Shrink to nothing
+			float StolenSize = 0.0; // Stage 4, 
+			float HandCrushed = 0.0; // Stage 5, Crushed with hand
+			float VoreCount = 0.0; // Stage 6, Fully Vored
+			float GiantCount = 0.0; // Stage 7, Giant Count
+			///
 
 			SoftPotential speed_adjustment {
 				.k = 0.125, // 0.125

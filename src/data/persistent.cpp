@@ -42,10 +42,22 @@ namespace {
 	inline const auto LaunchObjects = _byteswap_ulong('LOBj');
 	inline const auto CameraFovEdits = _byteswap_ulong('CFET');
 	inline const auto StolenAttributes = _byteswap_ulong('STAT');
+	inline const auto NPC_EffectImmunity = _byteswap_ulong('NPER');
+	inline const auto PC_EffectImmunity = _byteswap_ulong('PCER');
 
 	inline const auto Att_HealthStorage = _byteswap_ulong('HTSG');
 	inline const auto Att_StaminStorage = _byteswap_ulong('STSG');
 	inline const auto Att_MagickStorage = _byteswap_ulong('MTSG');
+
+	// Quest
+    inline const auto Record_StolenSize = _byteswap_ulong('QSSR');
+	inline const auto Record_CrushCount = _byteswap_ulong('QCCR');
+	inline const auto Record_STNCount = _byteswap_ulong('QSTR');
+	inline const auto Record_HugStealCount = _byteswap_ulong('QHSR');
+	inline const auto Record_HandCrushed = _byteswap_ulong('QHCR');
+	inline const auto Record_VoreCount = _byteswap_ulong('QVRR');
+	inline const auto Record_GiantCount = _byteswap_ulong('QGCR');
+	//
 
 
 	const float DEFAULT_MAX_SCALE = 65535.0;
@@ -427,7 +439,40 @@ namespace Gts {
 				float stolen_stamin;
 				serde->ReadRecordData(&stolen_stamin, sizeof(stolen_stamin));
 				GetSingleton().stolen_stamin = stolen_stamin;
-			} else if (type == HostileToggle) {
+			} 
+			/////////////////////////////////////////////////////////////////////////// Quest
+			else if (type == Record_StolenSize) { // stage 1
+				float StolenSize;
+				serde->ReadRecordData(&StolenSize, sizeof(StolenSize));
+				GetSingleton().StolenSize = StolenSize;
+			} else if (type == Record_CrushCount) { // stage 2
+				float CrushCount;
+				serde->ReadRecordData(&CrushCount, sizeof(CrushCount));
+				GetSingleton().CrushCount = CrushCount;
+			} else if (type == Record_STNCount) { // stage 3
+				float STNCount;
+				serde->ReadRecordData(&STNCount, sizeof(STNCount));
+				GetSingleton().STNCount = STNCount;
+			} else if (type == Record_HugStealCount) { // stage 4
+				float HugStealCount;
+				serde->ReadRecordData(&HugStealCount, sizeof(HugStealCount));
+				GetSingleton().HugStealCount = HugStealCount;
+			} else if (type == Record_HandCrushed) { // stage 5
+				float HandCrushed;
+				serde->ReadRecordData(&HandCrushed, sizeof(HandCrushed));
+				GetSingleton().HandCrushed = HandCrushed;
+			} else if (type == Record_VoreCount) { // stage 6
+				float VoreCount;
+				serde->ReadRecordData(&VoreCount, sizeof(VoreCount));
+				GetSingleton().VoreCount = VoreCount;
+			} else if (type == Record_GiantCount) { // stage 7
+				float GiantCount;
+				serde->ReadRecordData(&GiantCount, sizeof(GiantCount));
+				GetSingleton().GiantCount = GiantCount;
+			}
+			
+			///////////////////////////////////////////////////////////////////////////
+			else if (type == HostileToggle) {
 				bool hostile_toggle;
 				serde->ReadRecordData(&hostile_toggle, sizeof(hostile_toggle));
 				GetSingleton().hostile_toggle = hostile_toggle;
@@ -451,6 +496,14 @@ namespace Gts {
 				bool Vore_Ai;
 				serde->ReadRecordData(&Vore_Ai, sizeof(Vore_Ai));
 				GetSingleton().Vore_Ai = Vore_Ai;
+			} else if (type == NPC_EffectImmunity) {
+				bool NPCEffectImmunity;
+				serde->ReadRecordData(&NPCEffectImmunity, sizeof(NPCEffectImmunity));
+				GetSingleton().NPCEffectImmunity = NPCEffectImmunity;
+			} else if (type == PC_EffectImmunity) {
+				bool PCEffectImmunity;
+				serde->ReadRecordData(&PCEffectImmunity, sizeof(PCEffectImmunity));
+				GetSingleton().PCEffectImmunity = PCEffectImmunity;
 			} else if (type == IsSpeedAdjustedRecord) {
 				bool is_speed_adjusted;
 				serde->ReadRecordData(&is_speed_adjusted, sizeof(is_speed_adjusted));
@@ -723,7 +776,58 @@ namespace Gts {
 		}
 		float stolen_magick = GetSingleton().stolen_magick;
 		serde->WriteRecordData(&stolen_magick, sizeof(stolen_magick));
+		/////////////////////////////////////////////////////////////////////////////////////////// Quest
 
+		if (!serde->OpenRecord(Record_StolenSize, 1)) { // Stage 1
+			log::error("Unable to open Stage 1 record to write cosave data");
+			return;
+		}
+		float StolenSize = GetSingleton().StolenSize;
+		serde->WriteRecordData(&StolenSize, sizeof(StolenSize));
+
+		if (!serde->OpenRecord(Record_CrushCount, 1)) { // Stage 2
+			log::error("Unable to open Stage 2 record to write cosave data");
+			return;
+		}
+		float CrushCount = GetSingleton().CrushCount;
+		serde->WriteRecordData(&CrushCount, sizeof(CrushCount));
+
+		if (!serde->OpenRecord(Record_STNCount, 1)) { // Stage 3
+			log::error("Unable to open Stage 3 record to write cosave data");
+			return;
+		}
+		float STNCount = GetSingleton().STNCount;
+		serde->WriteRecordData(&STNCount, sizeof(STNCount));
+
+		if (!serde->OpenRecord(Record_HugStealCount, 1)) { // Stage 4
+			log::error("Unable to open Stage 4 record to write cosave data");
+			return;
+		}
+		float HugStealCount = GetSingleton().HugStealCount;
+		serde->WriteRecordData(&HugStealCount, sizeof(HugStealCount));
+
+		if (!serde->OpenRecord(Record_HandCrushed, 1)) { // Stage 5
+			log::error("Unable to open Stage 5 record to write cosave data");
+			return;
+		}
+		float HandCrushed = GetSingleton().HandCrushed;
+		serde->WriteRecordData(&HandCrushed, sizeof(HandCrushed));
+
+		if (!serde->OpenRecord(Record_VoreCount, 1)) { // Stage 6
+			log::error("Unable to open Stage 6 record to write cosave data");
+			return;
+		}
+		float VoreCount = GetSingleton().VoreCount;
+		serde->WriteRecordData(&VoreCount, sizeof(VoreCount));
+
+		if (!serde->OpenRecord(Record_GiantCount, 1)) { // stage 7
+			log::error("Unable to open Stage 7 record to write cosave data");
+			return;
+		}
+		float GiantCount = GetSingleton().GiantCount;
+		serde->WriteRecordData(&GiantCount, sizeof(GiantCount));
+
+		///////////////////////////////////////////////////////////////////////////////////////////
 		if (!serde->OpenRecord(ActorsPanic, 1)) {
 			log::error("Unable to open Actors Panic record to write cosave data");
 			return;
@@ -737,6 +841,20 @@ namespace Gts {
 		}
 		bool legacy_sounds = GetSingleton().legacy_sounds;
 		serde->WriteRecordData(&legacy_sounds, sizeof(legacy_sounds));
+
+		if (!serde->OpenRecord(NPC_EffectImmunity, 1)) {
+			log::error("Unable to open NPC Effect Immunity record to write cosave data");
+			return;
+		}
+		bool NPCEffectImmunity = GetSingleton().NPCEffectImmunity;
+		serde->WriteRecordData(&NPCEffectImmunity, sizeof(NPCEffectImmunity));
+
+		if (!serde->OpenRecord(PC_EffectImmunity, 1)) {
+			log::error("Unable to open PC Effect Immunity record to write cosave data");
+			return;
+		}
+		bool PCEffectImmunity = GetSingleton().PCEffectImmunity;
+		serde->WriteRecordData(&PCEffectImmunity, sizeof(PCEffectImmunity));
 
 		if (!serde->OpenRecord(HostileToggle, 1)) {
 			log::error("Unable to open Hostile Toggle Actors record to write cosave data");

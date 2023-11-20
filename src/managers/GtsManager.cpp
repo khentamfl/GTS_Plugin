@@ -7,6 +7,7 @@
 #include "managers/RipClothManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
+#include "magic/effects/common.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/Attributes.hpp"
 #include "managers/hitmanager.hpp"
@@ -38,7 +39,7 @@ namespace {
 		if (get_visual_scale(actor) < 1.5) {
 			return;
 		}
-		if ((actor->formID == 0x14 ||actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+		if ((actor->formID == 0x14 || IsTeammate(actor))) {
 			auto node = find_node(actor, "skeleton_female.nif");
 			NiAVObject* skeleton = node;
 			if (node) {
@@ -51,6 +52,29 @@ namespace {
 			}
 		}
 	}
+
+	/*void ManageTalkPerk(Actor* giant) {
+		static Timer TriggerDelay = Timer(0.5);
+		if (giant->formID == 0x14) {
+			if (!TriggerDelay.ShouldRunFrame()) {
+				return;
+			}
+			if (Runtime::HasPerk(giant, "TalkToActor")) {
+				log::info("TalkToActor Perk True");
+				auto perk = Runtime::GetPerk("TalkToActor");
+				if (perk) {
+					log::info("Perk found");
+					auto value = perk->perkConditions.CONDITION_ITEM_DATA();
+					if (value) {
+						//auto result = value->data.comparisonValue;
+						auto result = value->CONDITION_ITEM_DATA.comparisonValue;
+						auto finalvalue = result.f;
+						log::info("Perk Value: {}", finalvalue);
+					}
+				}	
+ 			}
+		}
+	}*/
 
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		auto profiler = Profilers::Profile("Manager: update_height");
@@ -65,6 +89,7 @@ namespace {
 		}
 		float currentOtherScale = Get_Other_Scale(actor);
 		trans_actor_data->otherScales = currentOtherScale;
+		//log::info("Other Scale of {} is {}", actor->GetDisplayFullName(), currentOtherScale);
 
 		float target_scale = persi_actor_data->target_scale;
 
@@ -122,8 +147,6 @@ namespace {
 		if (scale < 0.0) {
 			return;
 		}
-		float other = Get_Other_Scale(actor);
-		float vs = get_visual_scale(actor);
 		float visual_scale = persi_actor_data->visual_scale;
 
 		float scaleOverride = persi_actor_data->scaleOverride;
@@ -228,18 +251,20 @@ void GtsManager::Start() {
 void GtsManager::Update() {
 	auto profiler = Profilers::Profile("Manager: Update()");
 	for (auto actor: find_actors()) {
-		if (!actor) {
+		if (!actor) {  
 			return;
 		}
 
 		FixActorFade(actor);
 
+		//ManageTalkPerk(actor);
+
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 
 		if (actor->formID == 0x14 || IsTeammate(actor)) {
-			accuratedamage.DoAccurateCollisionLeft(actor, 0.4, 1.0, 2000, 0.05, 3.0, DamageSource::CrushedLeft);
-			accuratedamage.DoAccurateCollisionRight(actor, 0.4, 1.0, 2000, 0.05, 3.0, DamageSource::CrushedRight);
+			accuratedamage.DoAccurateCollisionLeft(actor, 0.4 * TimeScale(), 1.0, 2000, 0.05, 3.0, DamageSource::CrushedLeft);
+			accuratedamage.DoAccurateCollisionRight(actor, 0.4 * TimeScale(), 1.0, 2000, 0.05, 3.0, DamageSource::CrushedRight);
 			ClothManager::GetSingleton().CheckRip();
 
 			if (IsCrawling(actor)) {
@@ -250,8 +275,8 @@ void GtsManager::Update() {
 		}
 		if (Runtime::GetBool("PreciseDamageOthers")) {
 			if (actor->formID != 0x14 && !actor->IsPlayerTeammate() && !Runtime::InFaction(actor, "FollowerFaction")) {
-				accuratedamage.DoAccurateCollisionLeft(actor, 0.4, 1.0, 1000, 0.25, 3.0, DamageSource::CrushedLeft);
-				accuratedamage.DoAccurateCollisionRight(actor, 0.4, 1.0, 1000, 0.25, 3.0, DamageSource::CrushedRight);
+				accuratedamage.DoAccurateCollisionLeft(actor, 0.4 * TimeScale(), 1.0, 1000, 0.25, 3.0, DamageSource::CrushedLeft);
+				accuratedamage.DoAccurateCollisionRight(actor, 0.4 * TimeScale(), 1.0, 1000, 0.25, 3.0, DamageSource::CrushedRight);
 			}
 		}
 

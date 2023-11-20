@@ -83,8 +83,8 @@ namespace Gts {
 
 		float attackerscale = get_visual_scale(attacker);
 		float receiverscale = get_visual_scale(receiver);
-		if (IsDragon(receiver)) {
-			receiverscale *= 2.0;
+		if (IsDragon(receiver) || IsGiant(receiver) || IsMammoth(receiver)) {
+			receiverscale *= 2.5;
 		}
 
 		float size_difference = attackerscale/receiverscale;
@@ -121,7 +121,9 @@ namespace Gts {
 		ActorHandle giantHandle = attacker->CreateRefHandle();
 		ActorHandle tinyHandle = receiver->CreateRefHandle();
 
-		TaskManager::RunOnce([=](auto& update){
+		std::string taskname = std::format("Overkill {}", receiver->formID);
+
+		TaskManager::RunOnce(taskname, [=](auto& update){
 			if (!tinyHandle) {
 				return;
 			}
@@ -130,11 +132,10 @@ namespace Gts {
 			}
 			auto giant = giantHandle.get().get();
 			auto tiny = tinyHandle.get().get();
-			if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
-				TransferInventory(tiny, giant, false, true);
-			} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
-				TransferInventory(tiny, giant, false, true);
-			}
+			float scale = get_visual_scale(tiny);
+			TransferInventory(tiny, giant, scale, false, true, DamageSource::Overkill);
+			// ^ transferInventory>TransferInventoryToDropBox also plays crush audio on loot pile
+			// Was done like that because Audio disappears on actors
 		});
 
 		Runtime::CreateExplosion(receiver, get_visual_scale(receiver), "BloodExplosion");
@@ -142,7 +143,6 @@ namespace Gts {
 		std::mt19937 gen(rd());
 		std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
-		Runtime::PlaySound("GtsCrushSound", receiver, 4.0, 1.0);
 		if (!IsLiving(receiver)) {
 			SpawnDustParticle(receiver, attacker, "NPC Root [Root]", 3.0);
 		} else {
@@ -150,7 +150,9 @@ namespace Gts {
 			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 		}
-
+        
+		// We don't want to call CrushManager::crush here because it will double-transfer the loot
+		 
 		PrintDeathSource(attacker, receiver, DamageSource::Overkill);
 
 		if (receiver->formID != 0x14) {

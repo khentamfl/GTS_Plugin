@@ -174,7 +174,7 @@ namespace {
 		DoSounds(&data.giant, 1.35 + data.animSpeed/6, RNode);
 		DoDamageEffect(&data.giant, damage * (4.8 + data.animSpeed/2) * perk, (1.80 + data.animSpeed/4) * damage, 5, 0.35, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, SMT + (data.animSpeed/10), FootEvent::Right, RNode);
-		DoDustExplosion(&data.giant, 0.25 + SMT + (data.animSpeed * 0.05), FootEvent::Right, RNode);
+		DoDustExplosion(&data.giant, 0.25 + SMT + (data.animSpeed * 0.05), FootEvent::Right, RNode); 
 		DoLaunch(&data.giant, 0.95 * perk, 7.0 + data.animSpeed/2, 1.0, FootEvent::Right, 1.15);
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 2.8);
 		data.stage = 0;
@@ -243,6 +243,9 @@ namespace {
 
 	void RightStrongStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 1)) {
+			return;
+		}
 		float WasteMult = 1.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			WasteMult -= 0.35;
@@ -261,6 +264,9 @@ namespace {
 
 	void LeftStrongStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 1)) {
+			return;
+		}
 		float WasteMult = 1.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			WasteMult -= 0.35;

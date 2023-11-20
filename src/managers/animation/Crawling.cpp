@@ -254,6 +254,9 @@ namespace {
 
 	void LightSwipeLeftEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 1)) {
+			return;
+		}
 		if (IsCrawling(player)) {
 			float WasteStamina = 25.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
@@ -266,6 +269,9 @@ namespace {
 	}
 	void LightSwipeRightEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 1)) {
+			return;
+		}
 		if (IsCrawling(player)) {
 			float WasteStamina = 25.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
@@ -279,6 +285,9 @@ namespace {
 
 	void HeavySwipeLeftEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 1)) {
+			return;
+		}
 		if (IsCrawling(player)) {
 			float WasteStamina = 70.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
@@ -291,6 +300,9 @@ namespace {
 	}
 	void HeavySwipeRightEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 1)) {
+			return;
+		}
 		if (IsCrawling(player)) {
 			float WasteStamina = 70.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {

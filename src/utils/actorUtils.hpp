@@ -24,6 +24,7 @@ namespace Gts {
 	// GTS State Bools
 	bool IsEquipBusy(Actor* actor);
 	bool IsFootGrinding(Actor* actor);
+	bool IsProning(Actor* actor);
 	bool IsCrawling(Actor* actor);
 	bool IsTransitioning(Actor* actor);
 	bool IsJumping(Actor* actor);
@@ -52,11 +53,14 @@ namespace Gts {
 	bool HasGrowthSpurt(Actor* actor);
 	bool InBleedout(Actor* actor);
 	bool AllowStagger(Actor* giant, Actor* tiny);
+	bool IsMechanical(Actor* actor);
 	bool IsHuman(Actor* actor);
 	bool IsBlacklisted(Actor* actor);
-	bool IsInsect(Actor* actor);
+	bool IsInsect(Actor* actor, bool performcheck);
 	bool IsFemale(Actor* actor);
 	bool IsDragon(Actor* actor);
+	bool IsGiant(Actor* actor);
+	bool IsMammoth(Actor* actor);
 	bool IsLiving(Actor* actor);
 	bool IsUndead(Actor* actor);
 	bool IsEssential(Actor* actor);
@@ -65,6 +69,11 @@ namespace Gts {
 	bool IsHostile(Actor* giant, Actor* tiny);
 	bool AllowActionsWithFollowers(Actor* giant, Actor* tiny);
 	// Gts Bools end
+
+	// GTS Actor Functions
+	float GetActorWeight(Actor* giant, bool metric);
+	float GetActorHeight(Actor* giant, bool metric);
+	// End
 
 	// GTS State Controllers
 	void SetBeingHeld(Actor* tiny, bool decide);
@@ -77,7 +86,8 @@ namespace Gts {
 	// GTS State Controllers end
 	void PlayAnimation(Actor* actor, std::string_view animName);
 
-	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems);
+	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause);
+	void TransferInventory_Normal(Actor* giant, Actor* tiny, bool removeQuestItems);
 
 	void Disintegrate(Actor* actor);
 	void UnDisintegrate(Actor* actor);
@@ -173,5 +183,11 @@ namespace Gts {
 	void ResetGrab(Actor* giant);
 	void FixAnimations();
 
-	void TransferInventoryToDropbox(Actor* actor, bool removeQuestItems);
+	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause);
+
+	bool CanPerformAnimation(Actor* giant, float type);
+	void AdvanceQuestProgression(Actor* actor, float stage, float value);
+	float GetQuestProgression(float stage);
+	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value);
+	void EditDetectionLevel(Actor* actor, Actor* giant);
 }

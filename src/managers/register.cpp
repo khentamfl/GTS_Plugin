@@ -15,6 +15,7 @@
 #include "managers/Attributes.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/hitmanager.hpp"
+#include "managers/footik/collider.hpp"
 #include "managers/explosion.hpp"
 #include "managers/register.hpp"
 #include "managers/reloader.hpp"
@@ -61,6 +62,7 @@ namespace Gts {
 
 		EventDispatcher::AddListener(&AiManager::GetSingleton()); // Rough AI controller for GTS-actions
 		EventDispatcher::AddListener(&Headtracking::GetSingleton()); // Headtracking fixes
+		//EventDispatcher::AddListener(&ColliderManager::GetSingleton()); // Manage FootIK
 
 
 		EventDispatcher::AddListener(&ContactManager::GetSingleton()); // Manages collisions

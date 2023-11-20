@@ -93,7 +93,7 @@ namespace Gts {
 				NiPoint3 foot_location = node->world.translate;
 
 				float hh_offset = HighHeelManager::GetHHOffset(actor).Length();
-				NiPoint3 ray_start = foot_location + NiPoint3(0.0, 0.0, meter_to_unit(0.05*scale - hh_offset)); // Shift up a little then subtract the hh offset
+				NiPoint3 ray_start = foot_location - NiPoint3(0.0, 0.0, meter_to_unit(0.06*scale + hh_offset)); // Shift up a little then subtract the hh offset
 				NiPoint3 ray_direction(0.0, 0.0, -1.0);
 				bool success = false;
 				float ray_length = meter_to_unit(std::max(1.50*scale, 1.50));

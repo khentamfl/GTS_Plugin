@@ -176,6 +176,9 @@ namespace Gts {
 					}
 					//Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
 					float currentSize = get_visual_scale(tiny);
+
+					std::string taskname = std::format("CrushTiny {}", tiny->formID);
+					
 					MoanOrLaugh(giant, tiny);
 					GrowAfterTheKill(giant, tiny);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
@@ -193,12 +196,12 @@ namespace Gts {
 
 					AddSMTDuration(giant, 5.0);
 					ReportCrime(giant, tiny, 1000.0, true);
-					//StartCombat(giant, tiny, false);
+					StartCombat(giant, tiny, false);
 
 					ScareChance(giant);
 
-					if (!IsLiving(tiny)) {
-						SpawnDustParticle(giant, tiny, "NPC L Hand [LHnd]", 3.0);
+					if (!IsLiving(tiny) || LessGore()) {
+						SpawnDustParticle(giant, tiny, "NPC Root [Root]", 3.0);
 					} else {
 						if (!LessGore()) {
 							auto root = find_node(tiny, "NPC Root [Root]");
@@ -217,20 +220,19 @@ namespace Gts {
 					}
 					ActorHandle giantHandle = giant->CreateRefHandle();
 					ActorHandle tinyHandle = tiny->CreateRefHandle();
-					TaskManager::RunOnce([=](auto& update){
+					TaskManager::RunOnce(taskname, [=](auto& update){
 						if (!tinyHandle) {
 							return;
 						}
 						if (!giantHandle) {
 							return;
 						}
+						
 						auto giant = giantHandle.get().get();
 						auto tiny = tinyHandle.get().get();
-						if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
-							TransferInventory(tiny, giant, false, true);
-						} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
-							TransferInventory(tiny, giant, false, true);
-						}
+						float scale = get_visual_scale(tiny);
+						TransferInventory(tiny, giant, scale, false, true, DamageSource::Crushed);
+						
 						EventDispatcher::DoResetActor(tiny);
 					});
 

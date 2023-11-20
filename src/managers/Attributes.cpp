@@ -43,7 +43,6 @@ namespace {
 		float ExpectedSprintDamage = 1.0;
 		float ExpectedFallDamage = 1.0;
 
-		//log::info("High Heels Length: {}", HighHeels);
 		///Normal Damage
 		if (Runtime::HasPerkTeam(actor, "Cruelty")) {
 			ExpectedGlobalDamage += 0.35/BalancedMode;
@@ -53,6 +52,9 @@ namespace {
 		}
 		if (IsGrowthSpurtActive(actor)) {
 			ExpectedGlobalDamage *= (1.0 + (0.35/BalancedMode));
+		} 
+		if (Runtime::HasPerkTeam(actor, "MightOfGiants")) {
+			ExpectedGlobalDamage *= 1.15; // +15% damage
 		}
 
 		///Sprint Damage
@@ -216,7 +218,7 @@ namespace Gts {
 				if (scale > 1.0) {
 					return power*scale + 1.0 - power;
 				} else {
-					return scale;
+					return 1.0; // Don't reduce it if scale is < 1.0
 				}
 			}
 			case ActorValue::kSpeedMult: {

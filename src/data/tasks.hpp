@@ -65,24 +65,29 @@ namespace Gts {
 		public:
 			Task(std::function<bool(const TaskUpdate&)> tasking) : tasking(tasking), lastRunTime(Time::WorldTimeElapsed()), startTime(Time::WorldTimeElapsed()) {
 
-				auto update = TaskUpdate {
-					.runtime = 0.0,
-					.delta = 0.0,
-				};
-				tasking(update);
 			}
 
 			virtual bool Update() override {
+				TaskUpdate update;
 				double currentTime = Time::WorldTimeElapsed();
-				auto update = TaskUpdate {
-					.runtime = currentTime - this->startTime,
-					.delta = currentTime - this->lastRunTime,
-				};
+				if (this->initRun) {
+					update = TaskUpdate {
+						.runtime = currentTime - this->startTime,
+						.delta = currentTime - this->lastRunTime,
+					};
+				} else {
+					update = TaskUpdate {
+						.runtime = 0.0,
+						.delta = 0.0,
+					};
+					this->initRun = true;
+				}
 				this->lastRunTime = currentTime;
 				return this->tasking(update);
 			}
 
 		private:
+			bool initRun = false;
 			double startTime = 0.0;
 			double lastRunTime = 0.0;
 			std::function<bool(const TaskUpdate&)> tasking;
@@ -102,25 +107,30 @@ namespace Gts {
 	class TaskFor : public BaseTask {
 		public:
 			TaskFor(double duration, std::function<bool(const TaskForUpdate&)> tasking) : tasking(tasking), duration(duration), lastRunTime(Time::WorldTimeElapsed()), startTime(Time::WorldTimeElapsed()) {
-				auto update = TaskForUpdate {
-					.runtime = 0.0,
-					.delta = 0.0,
-					.progress = 0.0,
-					.progressDelta = 0.0,
-				};
-				tasking(update);
 			}
 
 			virtual bool Update() override {
 				double currentTime = Time::WorldTimeElapsed();
 				double currentRuntime = currentTime - this->startTime;
 				double currentProgress = std::clamp(currentRuntime / this->duration, 0.0, 1.0);
-				auto update = TaskForUpdate {
-					.runtime = currentRuntime,
-					.delta = currentTime - this->lastRunTime,
-					.progress = currentProgress,
-					.progressDelta = currentProgress - this->lastProgress,
-				};
+				
+				TaskForUpdate update;
+				if (this->initRun) {
+					update	= TaskForUpdate {
+							.runtime = currentRuntime,
+							.delta = currentTime - this->lastRunTime,
+							.progress = currentProgress,
+							.progressDelta = currentProgress - this->lastProgress,
+						};
+					} else {
+						update = TaskForUpdate {
+							.runtime = 0.0,
+							.delta = 0.0,
+							.progress = 0.0,
+							.progressDelta = 0.0,
+						};
+						this->initRun = true;
+					}
 				this->lastRunTime = currentTime;
 				this->lastProgress = currentProgress;
 				if (!this->tasking(update)) {
@@ -130,6 +140,7 @@ namespace Gts {
 				}
 			}
 		private:
+			bool initRun = false;
 			double startTime = 0.0;
 			double lastRunTime = 0.0;
 			double lastProgress = 0.0;

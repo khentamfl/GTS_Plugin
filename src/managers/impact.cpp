@@ -20,6 +20,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
+
 	FootEvent get_foot_kind(Actor* actor, std::string_view tag) {
 		auto profiler = Profilers::Profile("Impact: Get Foot Kind");
 		FootEvent foot_kind = FootEvent::Unknown;
@@ -136,6 +137,9 @@ namespace Gts {
 					bonus *= 1.5;
 				}
 			}
+
+			
+
 			if (kind != FootEvent::JumpLand) { // We already do it for Jump Land inside Compat.cpp. We do NOT want to apply it for Jump Land because of it!
 				if (kind == FootEvent::Left) {
 					DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedLeft);

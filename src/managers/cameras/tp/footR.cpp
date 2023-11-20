@@ -16,7 +16,6 @@ namespace Gts {
 		float base_hh = 0;
 		const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
 		auto player = GetCameraActor();
-
 		if (player) {
 			auto rootModel = player->Get3D(false);
 			if (rootModel) {

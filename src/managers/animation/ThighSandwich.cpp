@@ -102,7 +102,8 @@ namespace {
 		if (HasSMT(giant)) {
 			damage *= 1.5;
 		}
-		DamageAV(tiny, ActorValue::kHealth, damage);
+		//DamageAV(tiny, ActorValue::kHealth, damage);
+		InflictSizeDamage(giant, tiny, damage);
 
 		float experience = std::clamp(damage/200, 0.0f, 0.20f);
 		AdjustGtsSkill(experience, giant);

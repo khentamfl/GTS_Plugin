@@ -81,7 +81,7 @@ namespace Gts {
 					}
 
 					ReportCrime(giant, tiny, 1000.0, true);
-					//StartCombat(giant, tiny, false);
+					StartCombat(giant, tiny, false);
 
 					AddSMTDuration(giant, 5.0);
 
@@ -91,7 +91,9 @@ namespace Gts {
 					}
 					ActorHandle giantHandle = giant->CreateRefHandle();
 					ActorHandle tinyHandle = tiny->CreateRefHandle();
-					TaskManager::RunOnce([=](auto& update){
+					std::string taskname = std::format("STN {}", tiny->formID);
+
+					TaskManager::RunOnce(taskname, [=](auto& update){
 						if (!tinyHandle) {
 							return;
 						}
@@ -100,11 +102,9 @@ namespace Gts {
 						}
 						auto giant = giantHandle.get().get();
 						auto tiny = tinyHandle.get().get();
-						if (giant->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
-							TransferInventory(tiny, giant, false, true);
-						} else if (giant->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
-							TransferInventory(tiny, giant, false, true);
-						}
+						float scale = get_visual_scale(tiny);
+						TransferInventory(tiny, giant, scale, false, true, DamageSource::Crushed);
+						
 						EventDispatcher::DoResetActor(tiny);
 					});
 					if (tiny->formID != 0x14) {

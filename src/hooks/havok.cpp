@@ -1,6 +1,7 @@
-#include "hooks/havok.hpp"
-#include "events.hpp"
 #include "data/transient.hpp"
+#include "hooks/havok.hpp"
+#include "scale/scale.hpp"
+#include "events.hpp"
 
 #include "managers/contact.hpp"
 #include "data/runtime.hpp"
@@ -83,6 +84,16 @@ namespace {
 				return true;
 			}
 		}
+
+		Actor* actor_a = skyrim_cast<Actor*>(actor);
+		Actor* actor_b = skyrim_cast<Actor*>(otherActor);
+		if (actor_a && actor_b) {
+			float sizedifference = get_visual_scale(actor_a)/get_visual_scale(actor_b);
+			if (sizedifference >= 3.0) {
+				return true;
+			}
+		}
+		
 
 		return false;
 	}

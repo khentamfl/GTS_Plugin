@@ -28,7 +28,7 @@ namespace Gts {
 		auto player = GetCameraActor();
 		float playerScale = get_visual_scale(player);
 
-		NiPoint3 lookAt = CompuleLookAt(0.25);
+		NiPoint3 lookAt = CompuleLookAt(0.45); // float is zoom scale
 
 		NiPoint3 footPos = this->GetFootPos();
 

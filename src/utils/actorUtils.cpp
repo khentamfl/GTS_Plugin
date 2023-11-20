@@ -140,14 +140,20 @@ namespace Gts {
 		return false;
 	}
 
-	bool IsCrawling(Actor* actor) {
+	bool IsProning(Actor* actor) {
 		bool prone;
+		actor->GetGraphVariableBool("GTS_IsProne", prone);
+		return prone;
+	}
+
+	bool IsCrawling(Actor* actor) {
+		bool crawl;
 		auto transient = Transient::GetSingleton().GetData(actor);
-		actor->GetGraphVariableBool("GTS_IsCrawling", prone);
+		actor->GetGraphVariableBool("GTS_IsCrawling", crawl);
 		if (actor->formID == 0x14 && actor->IsSneaking() && IsFirstPerson() && transient) {
 			return transient->FPCrawling; // Needed to fix crawling being applied to FP even when Prone is off
 		}
-		return actor!= nullptr && actor->formID == 0x14 && actor->IsSneaking() && prone;
+		return actor!= nullptr && actor->formID == 0x14 && actor->IsSneaking() && crawl;
 	}
 
 	bool IsTransitioning(Actor* actor) { // reports sneak transition to crawl
@@ -352,6 +358,11 @@ namespace Gts {
 		return true;
 	}
 
+	bool IsMechanical(Actor* actor) {
+		bool dwemer = Runtime::HasKeyword(actor, "DwemerKeyword");
+		return dwemer;
+	}
+
 	bool IsHuman(Actor* actor) { // Check if Actor is humanoid or not. Currently used for Hugs Animation
 		bool vampire = Runtime::HasKeyword(actor, "VampireKeyword");
 		bool dragon = Runtime::HasKeyword(actor, "DragonKeyword");
@@ -376,9 +387,9 @@ namespace Gts {
 		return blacklist;
 	}
 
-	bool IsInsect(Actor* actor) {
+	bool IsInsect(Actor* actor, bool performcheck) {
 		bool Check = Persistent::GetSingleton().AllowInsectVore;
-		if (Check) {
+		if (performcheck && Check) {
 			return false;
 		}
 		bool Spider = Runtime::IsRace(actor, "FrostbiteSpiderRace");
@@ -392,6 +403,7 @@ namespace Gts {
 		bool ExplSpiderPackMule = Runtime::IsRace(actor, "DLC2ExpSpiderPackmuleRace");
 		bool AshHopper = Runtime::IsRace(actor, "DLC2AshHopperRace");
 		if (Spider||SpiderGiant||SpiderLarge||ChaurusReaper||Chaurus||ChaurusHunterDLC||ChaurusDLC||ExplSpider||ExplSpiderPackMule||AshHopper) {
+			log::info("{} is insect", actor->GetDisplayFullName());
 			return true;
 		} else {
 			return false;
@@ -426,6 +438,14 @@ namespace Gts {
 		}
 	}
 
+	bool IsGiant(Actor* actor) {
+		return Runtime::IsRace(actor, "GiantRace");
+	}
+
+	bool IsMammoth(Actor* actor) {
+		return Runtime::IsRace(actor, "MammothRace");
+	}
+
 	bool IsLiving(Actor* actor) {
 		bool IsDraugr = Runtime::HasKeyword(actor, "UndeadKeyword");
 		bool IsDwemer = Runtime::HasKeyword(actor, "DwemerKeyword");
@@ -454,7 +474,6 @@ namespace Gts {
 		bool essential = actor->IsEssential() && Runtime::GetBool("ProtectEssentials");
 		bool teammate = IsTeammate(actor);
 		bool protectfollowers = Persistent::GetSingleton().FollowerProtection;
-		log::info("{} teammate: {}, essential: {}, protectfollowers: {}", actor->GetDisplayFullName(), teammate, essential, protectfollowers);
 		if (!teammate && essential) {
 			return true;
 		} else if (teammate && protectfollowers) {
@@ -472,16 +491,14 @@ namespace Gts {
 		return giant->AsActorState()->IsSprinting() || giant->AsActorState()->IsWalking() || giant->IsRunning() || giant->IsSneaking();
 	}
 
-	bool IsHeadtracking(Actor* giant) { // Used to report True when we lock onto something, should be Player Exclusive. Used to fix TDM mesh issues.
-		bool tracking = false;
-		auto profiler = Profilers::Profile("ActorUtils: HeadTracking");
+	bool IsHeadtracking(Actor* giant) { // Used to report True when we lock onto something, should be Player Exclusive. 
+	    //Currently used to fix TDM mesh issues when we lock on someone.
+		//auto profiler = Profilers::Profile("ActorUtils: HeadTracking");
+		bool tracking;
 		if (giant->formID == 0x14) {
-			auto currentProcess = giant->GetActorRuntimeData().currentProcess;
-			if (currentProcess) {
-				if (currentProcess->GetHeadtrackTarget()) {
-					tracking = true;
-				}
-			}
+			giant->GetGraphVariableBool("TDM_TargetLock", tracking); // update tracking value
+		} else {
+			tracking = false;
 		}
 		return tracking;
 	}
@@ -506,9 +523,43 @@ namespace Gts {
 			return true;
 		}
 	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//                                 G T S   A C T O R   F U N C T I O N S                                                              //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	float GetActorWeight(Actor* giant, bool metric) {
+		float hh = HighHeelManager::GetBaseHHOffset(giant)[2]/100;
+		float scale = get_visual_scale(giant);
+		float smt = 1.0;
+		float totalscale = scale + (hh*0.10 * scale);
+		float actorweight = 1.0 + giant->GetWeight()/300;
+		float weight;
+		if (metric) { // 70.1 kg as a base
+			weight = 70.1 * actorweight * (totalscale * totalscale * totalscale);
+		} else {
+			weight = (70.1 * actorweight * (totalscale * totalscale * totalscale)) * 2.205;
+		} if (HasSMT(giant)) {
+			smt = 6.0;
+		}
+		return weight * smt;
+	}
+
+	float GetActorHeight(Actor* giant, bool metric) {
+		float hh = HighHeelManager::GetBaseHHOffset(giant)[2]/100;
+		float scale = get_visual_scale(giant);
+		float smt = 1.0;
+		float height;
+		if (metric) { // 1.82 m as a base
+			height = 1.82 * scale + (hh * scale); // meters
+		} else {
+			height = (1.82 * scale + (hh * scale)) * 3.28; // ft
+		} 
+		return height;
+	}
+
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//                                 G T S   ST A T E S  S E T S                                                                        //
+	//                                 G T S   S T A T E S  S E T S                                                                       //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	void SetBeingHeld(Actor* tiny, bool decide) {
 		auto transient = Transient::GetSingleton().GetData(tiny);
@@ -563,10 +614,13 @@ namespace Gts {
 		actor->NotifyAnimationGraph(animName);
 	}
 
-	void TransferInventory(Actor* from, Actor* to, bool keepOwnership, bool removeQuestItems) {
+	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause) {
 		std::string name = std::format("TransferItems_{}_{}", from->formID, to->formID);
+		float Start = Time::WorldTimeElapsed();
 		ActorHandle gianthandle = to->CreateRefHandle();
 		ActorHandle tinyhandle = from->CreateRefHandle();
+		bool PCLoot = Runtime::GetBool("GtsEnableLooting");
+		bool NPCLoot = Runtime::GetBool("GtsNPCEnableLooting");
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!tinyhandle) {
 				return false;
@@ -574,27 +628,45 @@ namespace Gts {
 			if (!gianthandle) {
 				return false;
 			}
-
 			auto tiny = tinyhandle.get().get();
 			auto giant = gianthandle.get().get();
+			
 			if (!tiny->IsDead()) {
 				KillActor(giant, tiny); // just to make sure
+				return true; // try again
 			}
 			if (tiny->IsDead()) {
-				TransferInventoryToDropbox(tiny, removeQuestItems);
-				/*log::info("Attempting to steal items from {} to {}", from->GetDisplayFullName(), to->GetDisplayFullName());
-				   for (auto &[a_object, invData]: from->GetInventory()) {
-				        log::info("Transfering item {} from {}, formID {}", a_object->GetName(), from->GetDisplayFullName(), a_object->formID);
-				        if (a_object->GetPlayable()) {
-				                if (!invData.second->IsQuestObject() || removeQuestItems ) {
-				                        from->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, to, nullptr, nullptr);
-				                }
-				        }
-				   }*/
-				return false; // stop it, we looted the target.
+				float Finish = Time::WorldTimeElapsed();
+				float timepassed = Finish - Start;
+				if (timepassed < 0.10) {
+					return true; // retry, not enough time has passed yet
+				}
+				TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(tiny);
+				if (ref) {
+					ref->GetInventoryChanges()->InitLeveledItems();
+				}
+				if (giant->formID == 0x14 && !PCLoot) {
+					TransferInventory_Normal(to, tiny, removeQuestItems);
+					return false;
+				} if (giant->formID != 0x14 && !NPCLoot) {
+					TransferInventory_Normal(to, tiny, removeQuestItems);
+					return false;
+				}
+				TransferInventoryToDropbox(to, tiny, scale, removeQuestItems, Cause);
+				return false; // stop it, we started the looting of the Target.
 			}
 			return true;
 		});
+	}
+
+	void TransferInventory_Normal(Actor* giant, Actor* tiny, bool removeQuestItems) {
+		for (auto &[a_object, invData]: tiny->GetInventory()) { // transfer loot
+			if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) {
+				if ((!invData.second->IsQuestObject() || removeQuestItems)) {
+					tiny->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, giant, nullptr, nullptr);
+				}
+			}
+		}
 	}
 
 	void Disintegrate(Actor* actor) {
@@ -728,7 +800,6 @@ namespace Gts {
 		if (receiver->IsDead()) {
 			return;
 		}
-		// CallFunctionOn(source, "ObjectReference", "PushActorAway", receiver, afKnockBackForce);
 
 		if (source) {
 			auto ai = receiver->GetActorRuntimeData().currentProcess;
@@ -772,7 +843,7 @@ namespace Gts {
 		auto progressionQuest = Runtime::GetQuest("MainQuest");
 		if (progressionQuest) {
 			auto stage = progressionQuest->GetCurrentStageID();
-			if (stage == 90) {
+			if (stage == 80) {
 				auto transient = Transient::GetSingleton().GetData(pc);
 				if (transient) {
 					Cprint("Quest is Completed");
@@ -1667,7 +1738,6 @@ namespace Gts {
 			giant->GetGraphVariableInt("GTS_Def_State", GTSStateID);
 
 			ResetGrab(giant);
-			//log::info("StateID: {}, GTSStateID:{}", StateID, GTSStateID);
 			if (GTSStateID != StateID) {
 				log::info("Setting Grab Int to {}", StateID);
 				giant->SetGraphVariableInt("GTS_Def_State", StateID);
@@ -1675,55 +1745,250 @@ namespace Gts {
 		}
 	}
 
+	/*NiPoint3 GetContainerSpawnLocation(Actor* giant, Actor* tiny, NiPoint3 pos, DamageSource Cause) {
+		if (cause != DamageSource::HandCrushed && cause != DamageSource::Vored) { // Spawn piles doing raycast
+			auto node = find_node(giant, GetDeathNodeName(Cause));
+			bool success = false;
+			NiPoint3 ray_start = pos; 
+			NiPoint3 ray_direction(0.0, 0.0, -1.0);
+			
+			float ray_length = 1620000;
+			NiPoint3 endpos = CastRay(tiny, ray_start, ray_direction, ray_length, success);
+
+			if (!success) {
+				endpos = pos;
+				log::info("RayCast failed");
+			}
+		} else {
+			pos = giant->GetLocation(); // else spawn under our legs
+		}
+		return pos;
+	}*/
+
 	// From an actor place a new container at them and transfer
 	// all of their inventory into it
-	void TransferInventoryToDropbox(Actor* actor, bool removeQuestItems) {
-		auto dropbox = Runtime::PlaceContainer(actor, "Dropbox");
+	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause) {
+
+		bool soul = false;
+		float Scale = std::clamp(scale, 0.10f, 4.4f);
+
+		std::string_view container;
 		std::string name = std::format("{} remains", actor->GetDisplayFullName());
+		
+		if (IsMechanical(actor)) {
+			container = "Dropbox_Mechanical";
+		} else if (Cause == DamageSource::Vored) { // Always spawn soul on vore
+			container = "Dropbox_Soul";
+			name = std::format("{} Soul Remains", actor->GetDisplayFullName());
+			soul = true;
+		} else if (LessGore()) { // Spawn soul if Less Gore is on
+			container = "Dropbox_Soul";
+			name = std::format("Crushed Soul of {} ", actor->GetDisplayFullName());
+			soul = true;
+		} else if (IsInsect(actor, false)) {
+			container = "Dropbox_Bug";
+			name = std::format("Remains of {}", actor->GetDisplayFullName());
+		} else if (IsLiving(actor)) {
+			container = "Dropbox_Physics";
+		} else {
+			container = "Dropbox_Undead_Physics";
+		}
+
+		if (IsDragon(actor)) { // These affect the scale of dropbox visuals
+			Scale *= 3.2;
+		} else if (IsGiant(actor)) {
+			Scale *= 2.0;
+		} else if (IsMammoth(actor)) {
+			Scale *= 5.0;
+		}
+		NiPoint3 TinyPos = actor->GetPosition();
+		NiPoint3 GiantPos = giant->GetPosition();
+		NiPoint3 TotalPos = NiPoint3(TinyPos.x, TinyPos.y, GiantPos.z + 250);
+
+		// ^ use X and Y of Tiny, and Z of Giant. Doing so will prevent Cell issues with Raycast
+		//  and in theory all piles should spawn properly now
+
+		auto dropbox = Runtime::PlaceContainerAtPos(actor, TotalPos, container); // Place chosen container
+		
+		std::string taskname = std::format("Dropbox {}", actor->formID); // create task name for, well, main task
+		std::string taskname_sound = std::format("DropboxAudio {}", actor->formID); // create task name for Audio play
 		if (!dropbox) {
 			return;
 		}
-		log::info("Spawning DropBox for {}", actor->GetDisplayFullName());
-		float scale = std::clamp(get_visual_scale(actor), 0.2f, 1.5f);
-    NiMatrix3 rot;
-    auto actor3D = actor->GetCurrent3D();
-    if (actor3D) {
-      rot = actor3D->local.rotate;
-    }
-    ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
-		TaskManager::RunFor(30.0, [=](auto& progressData) {
-      auto dropboxPtr = dropboxHandle.get().get();
-      if (!dropboxPtr) {
-        return false;
-      }
-      if (!dropboxPtr->Is3DLoaded()) {
-        log::info(" - 3D Not loaded yet for dropbox");
-        return true;
-      }
-      auto dropbox3D = dropboxPtr->GetCurrent3D();
-      if (!dropbox3D) {
-        log::info(" - 3D is nullptr still for dropbox");
-        return true; // Retry next frame
-      } else {
-        log::info(" - Got 3D for dropbox");
-  			dropbox3D->local.scale = scale;
-  			auto actor3D = actor->GetCurrent3D();
-  			if (actor3D) {
-  				dropbox3D->local.rotate = actor3D->local.rotate;
-  			}
-  			update_node(dropbox3D);
-        return false;
-      }
-    });
+		float Start = Time::WorldTimeElapsed();
+		dropbox->SetDisplayName(name, false); // Rename container to match chosen name
+		
+		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
+			TaskManager::RunFor(taskname, 16, [=](auto& progressData) { // Spawn loot piles
+				float Finish = Time::WorldTimeElapsed();
+				auto dropboxPtr = dropboxHandle.get().get();
+				if (!dropboxPtr) {
+					return false;
+				}
+				if (!dropboxPtr->Is3DLoaded()) {
+					return true;
+				}
+				auto dropbox3D = dropboxPtr->GetCurrent3D();
+				if (!dropbox3D) {
+					return true; // Retry next frame
+				} else {
+					float timepassed = Finish - Start;
+					if (soul) {
+						timepassed *= 1.33; // faster soul scale
+					}
+					auto node = find_object_node(dropboxPtr, "GorePile_Obj");
+					auto trigger = find_object_node(dropboxPtr, "Trigger_Obj");
+					if (node) {
+						node->local.scale = (Scale * 0.33) + (timepassed*0.18);
+						update_node(node);
+					}
+					if (trigger) {
+						trigger->local.scale = (Scale * 0.33) + (timepassed*0.18);
+						update_node(trigger);
+					}
+					if (node && node->local.scale >= Scale) {
+						dropbox3D->SetMotionType(4, true, true, true);
+						dropbox3D->SetCollisionLayer(COL_LAYER::kNonCollidable);
+						return false; // End task
+					}
+					return true;
+				}
+    		});
+			if (Cause == DamageSource::Overkill) { // Play audio that won't disappear if source of loot transfer is Overkill
+				TaskManager::RunFor(taskname_sound, 6, [=](auto& progressData) {
+					auto dropboxPtr = dropboxHandle.get().get();
+					if (!dropboxPtr) {
+						return false; // cancel
+					}
+					if (!dropboxPtr->Is3DLoaded()) {
+						return true; // retry
+					}
+					auto dropbox3D = dropboxPtr->GetCurrent3D();
+					if (!dropbox3D) {
+						return true; // Retry next frame
+					} else {
+						log::info("Spawned Crush Sound");
+						Runtime::PlaySound("GtsCrushSound", dropboxPtr, 1.0, 1.0);
+						return false;
+					}
+				});
+			}	
+		for (auto &[a_object, invData]: actor->GetInventory()) { // transfer loot
 
-		for (auto &[a_object, invData]: actor->GetInventory()) {
-			log::info("Transfering item {} from {}, formID {} to dropbox", a_object->GetName(), actor->GetDisplayFullName(), a_object->formID);
-			if (a_object->GetPlayable()) {
-				if (!invData.second->IsQuestObject() || removeQuestItems ) {
+			//log::info("Transfering item {} from {}, formID {} to dropbox", a_object->GetName(), actor->GetDisplayFullName(), a_object->formID);
+			
+			if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) { // We don't want to move Leveled Items
+				if ((!invData.second->IsQuestObject() || removeQuestItems)) {
 					actor->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
 				}
 			}
 		}
+	}
 
+	bool CanPerformAnimation(Actor* giant, float type) { // Needed for smooth animation unlocks during quest progression
+		// 0 = Hugs
+		// 1 = stomps and kicks
+		// 2 = Grab and Sandwich
+		// 3 = Vore
+		// 5 = Others
+		if (giant->formID != 0x14) {
+			return true;
+		} else {
+			auto progressionQuest = Runtime::GetQuest("MainQuest");
+			if (progressionQuest) {
+				auto queststage = progressionQuest->GetCurrentStageID();
+				if (queststage >= 10 && type == 0) {
+					return true; // allow hugs
+				} else if (queststage >= 30 && type == 1) {
+					return true; // allow stomps and kicks
+				} else if (queststage >= 50 && type == 2) {
+					return true; // Allow grabbing and sandwiching
+				} else if (queststage >= 60 && type >= 3) {
+					return true; // Allow Vore
+				} else {
+					Notify("You're not experienced to perform this action");
+					return false;
+				}
+			} 
+			Notify("You're not experienced to perform this action");
+			return false;
+		}
+	}
+
+	void AdvanceQuestProgression(Actor* actor, float stage, float value) {
+		if (actor->formID == 0x14) { // Player Only
+			auto progressionQuest = Runtime::GetQuest("MainQuest");
+			if (progressionQuest) {
+				auto queststage = progressionQuest->GetCurrentStageID();
+				if (queststage < 10 || queststage >= 100) {
+					return;
+				}
+				if (stage == 1) {
+					Persistent::GetSingleton().HugStealCount += value;
+				} else if (stage == 2) {
+					Persistent::GetSingleton().StolenSize += value;
+				} else if (stage == 3 && queststage >= 30) {
+					Persistent::GetSingleton().CrushCount += value;
+				} else if (stage == 4 && queststage >= 40) {
+					Persistent::GetSingleton().STNCount += value;
+				} else if (stage == 5) {
+					Persistent::GetSingleton().HandCrushed += value;
+				} else if (stage == 6) {
+					Persistent::GetSingleton().VoreCount += value;
+				} else if (stage == 7) {
+					Persistent::GetSingleton().GiantCount += value;
+				}
+			}
+		}
+	}
+
+	float GetQuestProgression(float stage) {
+		if (stage == 1) {
+			return Persistent::GetSingleton().HugStealCount;
+		} else if (stage == 2) {
+			return Persistent::GetSingleton().StolenSize;
+		} else if (stage == 3) {
+			return Persistent::GetSingleton().CrushCount;
+		} else if (stage == 4) {
+			return (Persistent::GetSingleton().CrushCount - 3.0) + Persistent::GetSingleton().STNCount;
+		} else if (stage == 5) {
+			return Persistent::GetSingleton().HandCrushed;
+		} else if (stage == 6) {
+			return Persistent::GetSingleton().VoreCount;
+		} else if (stage == 7) {
+			return Persistent::GetSingleton().GiantCount;
+		} else {
+			return 0.0;
+		}
+	}
+
+	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
+		DamageAV(receiver, ActorValue::kHealth, value);
+	}
+
+	void EditDetectionLevel(Actor* actor, Actor* giant) { // Unused and does nothing.
+		giant = PlayerCharacter::GetSingleton();
+		float scale = get_visual_scale(actor);
+		auto ai = actor->GetActorRuntimeData().currentProcess;
+		if (ai) {
+			if (ai->high) {
+				auto Array = ai->high->knowledgeArray;
+				for (auto references: Array) { // Do array stuff
+					auto Find = references.second; // Obtain BSTTuple.second member (first/second)
+					auto DetectionStage = Find->detectionState.get(); // get detection stage of actor
+					if (DetectionStage) { // Do nothing since it does nothing. Sigh.
+						std::int32_t level = DetectionStage->level = 0;
+						std::int32_t unk14 = DetectionStage->unk14 = 0;
+						std::int32_t unk15 = DetectionStage->unk15 = 0;
+						std::int32_t unk16 = DetectionStage->unk16 = 0;
+						std::int32_t pad17 = DetectionStage->pad17 = 0;
+						std::int32_t unk18 = DetectionStage->unk18 = 0;
+						std::int32_t unk28 = DetectionStage->unk28 = 0;
+						std::int32_t unk38 = DetectionStage->unk38 = 0;
+						log::info("Detection levels of {}: L: {}, 14: {}, 15: {}, 16: {}, 17: {}, 18: {}, 28: {}, 38: {}", actor->GetDisplayFullName(), level, unk14, unk15, unk16, pad17, unk18, unk28, unk38);
+					}
+				}
+			}
+		}
 	}
 }

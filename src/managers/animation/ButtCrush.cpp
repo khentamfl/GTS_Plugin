@@ -297,12 +297,12 @@ namespace {
 			if (!ButtR) {
 				Notify("Error: Missing Butt Nodes"); // Will help people to troubleshoot it. Not everyone has 3BB/XPMS32 body.
 				Notify("Error: effects not inflicted");
-				Notify("Suggestion: install XP32 Skeleton");
+				Notify("install 3BBB/XP32 Skeleton");
 			}
 			if (!ThighL) {
 				Notify("Error: Missing Thigh Nodes");
 				Notify("Error: effects not inflicted");
-				Notify("Suggestion: install XP32 Skeleton");
+				Notify("install 3BBB/XP32 Skeleton");
 			}
 		}
 		ModGrowthCount(giant, 0, true); // Reset limit
@@ -324,6 +324,8 @@ namespace {
 	void ButtCrushStartEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		if (IsFirstPerson()) {
+			return;
+		} if (!CanPerformAnimation(player, 2)) {
 			return;
 		}
 		auto grabbedActor = Grab::GetHeldActor(player);
@@ -357,6 +359,8 @@ namespace {
 	void QuickButtCrushStartEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		if (IsFirstPerson()) {
+			return;
+		} if (!CanPerformAnimation(player, 2)) {
 			return;
 		}
 		auto grabbedActor = Grab::GetHeldActor(player);

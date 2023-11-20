@@ -136,6 +136,9 @@ namespace {
 	// ======================================================================================
 	void LightKickLeftEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 1)) {
+			return;
+		}
 		if (!player->IsSneaking() && !player->AsActorState()->IsSprinting()) {
 			float WasteStamina = 35.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
@@ -148,6 +151,9 @@ namespace {
 
 	void LightKickRightEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 1)) {
+			return;
+		}
 		if (!player->IsSneaking() && !player->AsActorState()->IsSprinting()) {
 			float WasteStamina = 35.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
@@ -160,6 +166,9 @@ namespace {
 
 	void HeavyKickLeftEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 1)) {
+			return;
+		}
 		if (!player->IsSneaking() && !player->AsActorState()->IsSprinting()) {
 			float WasteStamina = 80.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
@@ -171,6 +180,9 @@ namespace {
 	}
 	void HeavyKickRightEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 1)) {
+			return;
+		}
 		if (!player->IsSneaking() && !player->AsActorState()->IsSprinting()) {
 			float WasteStamina = 80.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {

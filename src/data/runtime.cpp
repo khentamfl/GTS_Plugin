@@ -2,6 +2,7 @@
 #include "Config.hpp"
 #include <articuno/archives/ryml/ryml.h>
 #include <articuno/types/auto.h>
+#include "raycast.hpp"
 #include "node.hpp"
 
 using namespace articuno;
@@ -110,6 +111,40 @@ namespace Gts {
 			log::error("Could not build sound");
 		}
 	}
+
+	void Runtime::PlaySound(const std::string_view& tag, TESObjectREFR* ref, const float& volume, const float& frequency) {
+		auto soundDescriptor = Runtime::GetSound(tag);
+		if (!soundDescriptor) {
+			log::error("Sound invalid: {}", tag);
+			return;
+		}
+		auto audioManager = BSAudioManager::GetSingleton();
+		if (!audioManager) {
+			log::error("Audio Manager invalid");
+			return;
+		}
+		BSSoundHandle soundHandle;
+		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
+		if (success) {
+			auto objectref = ref->CreateRefHandle();
+			auto objectget = objectref.get().get();
+			if (objectget) {
+				soundHandle.SetVolume(volume);
+				NiAVObject* follow = nullptr;
+				NiAVObject* current_3d = objectget->GetCurrent3D();
+				log::info("ObjectGet true");
+				if (current_3d) {
+					log::info("Found3D");
+					follow = current_3d;
+					soundHandle.SetObjectToFollow(follow);
+					soundHandle.Play();
+				}
+			}
+		} else {
+			log::error("Could not build sound");
+		}
+	}
+
 	void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, const std::string_view& node) {
 		Runtime::PlaySoundAtNode(tag, actor, volume, frequency, find_node(actor, node));
 	}
@@ -535,6 +570,13 @@ namespace Gts {
 		return nullptr;
 	}
 
+	TESObjectREFR* Runtime::PlaceContainer(TESObjectREFR* object, const std::string_view& tag) {
+		if (object) {
+			return PlaceContainerAtPos(object, object->GetPosition(), tag);
+		}
+		return nullptr;
+	}
+
 	TESObjectREFR* Runtime::PlaceContainerAtPos(Actor* actor, NiPoint3 pos, const std::string_view& tag) {
 		auto data = GetContainer(tag);
 		if (data) {
@@ -547,7 +589,59 @@ namespace Gts {
 				return nullptr;
 			}
 
-			instance->SetPosition(pos);
+			bool success = false;
+			NiPoint3 ray_start = pos; 
+			NiPoint3 ray_direction(0.0, 0.0, -1.0);
+			
+			float ray_length = 1620000;
+			NiPoint3 endpos = CastRay(actor, ray_start, ray_direction, ray_length, success);
+
+			if (!success) {
+				endpos = pos;
+				log::info("RayCast failed");
+			}
+
+			//log::info("POS: {}", Vector2Str(endpos));
+
+			instance->SetPosition(endpos);
+			instance->data.angle.x = 0;
+			instance->data.angle.y = 0;
+			instance->data.angle.z = 0;
+			return instance;
+		}
+		return nullptr;
+	}
+
+	TESObjectREFR* Runtime::PlaceContainerAtPos(TESObjectREFR* object, NiPoint3 pos, const std::string_view& tag) {
+		auto data = GetContainer(tag);
+		if (data) {
+			NiPointer<TESObjectREFR> instance_ptr = object->PlaceObjectAtMe(data, false);
+			if (!instance_ptr) {
+				return nullptr;
+			}
+			TESObjectREFR* instance = instance_ptr.get();
+			if (!instance) {
+				return nullptr;
+			}
+
+			bool success = false;
+			NiPoint3 ray_start = pos; 
+			NiPoint3 ray_direction(0.0, 0.0, -1.0);
+			
+			float ray_length = 1620000;
+			NiPoint3 endpos = CastRay(object, ray_start, ray_direction, ray_length, success);
+
+			if (!success) {
+				endpos = pos;
+				log::info("RayCast failed");
+			}
+
+			log::info("POS: {}", Vector2Str(endpos));
+
+			instance->SetPosition(endpos);
+			instance->data.angle.x = 0;
+			instance->data.angle.y = 0;
+			instance->data.angle.z = 0;
 			return instance;
 		}
 		return nullptr;
@@ -724,6 +818,5 @@ namespace Gts {
 				log::warn("Container form not found for {}", key);
 			}
 		}
-
 	}
 }

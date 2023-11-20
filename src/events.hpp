@@ -18,6 +18,12 @@ namespace Gts {
 		Breasts,
 	};
 
+	enum ShrinkSource {
+		other,
+		magic,
+		hugs,
+	};
+
 	enum DamageSource {
 		HandCrawlRight,
 		HandCrawlLeft,

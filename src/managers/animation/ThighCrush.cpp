@@ -21,6 +21,7 @@
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
+#include "magic/effects/common.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
 #include "managers/tremor.hpp"
@@ -118,8 +119,8 @@ namespace {
 				return false; //Disable it once we leave Thigh Crush state
 			}
 			if (ThighL && ThighR) {
-				DoDamageAtPoint(giantref, 16, 0.5, ThighL, 100, 0.20, 2.5, DamageSource::Booty);
-				DoDamageAtPoint(giantref, 16, 0.5, ThighR, 100, 0.20, 2.5, DamageSource::Booty);
+				DoDamageAtPoint(giantref, 16, 0.5 * TimeScale(), ThighL, 100, 0.20, 2.5, DamageSource::Booty);
+				DoDamageAtPoint(giantref, 16, 0.5 * TimeScale(), ThighR, 100, 0.20, 2.5, DamageSource::Booty);
 				return true;
 			}
 			return false; // Cancel it if we don't have these bones
@@ -258,6 +259,9 @@ namespace {
 
 	void ThighCrushEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 2)) {
+			return;
+		}
 		//BlockFirstPerson(player, true);
 		AnimationManager::StartAnim("ThighLoopEnter", player);
 	}
@@ -271,7 +275,7 @@ namespace {
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("ThighLoopAttack", player);
 		} else {
-			if (IsGtsBusy(player)) {
+			if (IsGtsBusy(player) && IsThighCrushing(player)) {
 				TiredSound(player, "You're too tired to perform thighs attack");
 			}
 		}

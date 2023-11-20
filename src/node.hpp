@@ -8,6 +8,7 @@ namespace Gts {
 	void walk_nodes(Actor* actor);
 	NiAVObject* find_node(Actor* actor, std::string_view node_name, bool first_person = false);
 	NiAVObject* find_node_regex(Actor* actor, std::string_view node_regex, bool first_person = false);
+	NiAVObject* find_object_node(TESObjectREFR* object, std::string_view node_name);
 	NiAVObject* find_node_any(Actor* actor, std::string_view node_name);
 	NiAVObject* find_node_regex_any(Actor* actor, std::string_view node_regex);
 	void scale_hkpnodes(Actor* actor, float prev_scale, float new_scale);

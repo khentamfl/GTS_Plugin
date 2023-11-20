@@ -89,7 +89,8 @@ namespace {
 				float gigantism = SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
 				float naturalscale = get_natural_scale(actor);
 				float scale = get_visual_scale(actor);
-				float maxscale = get_max_scale(actor);
+				float maxscale = get_max_scale(actor) * naturalscale;
+				Cprint("{} Height is: {:.2f} m / {:.2f} ft; Weight: {:.2f} kg / {:.2f} lb", actor->GetDisplayFullName(), GetActorHeight(actor, true), GetActorHeight(actor, false), GetActorWeight(actor, true), GetActorWeight(actor, false));
 				Cprint("{} Scale is: {:.2f}; Natural Scale: {:.2f}; Size Limit is: {:.2f}; High Heels: {:.2f}; Aspect Of Giantess: {:.2f}", actor->GetDisplayFullName(), scale, naturalscale, maxscale, hh, gigantism);
 			}
 		}
@@ -153,13 +154,13 @@ namespace {
 	}
 
 	void AnimSpeedUpEvent(const InputEventData& data) {
-		AnimationManager::AdjustAnimSpeed(0.025); // Increase speed and power
+		AnimationManager::AdjustAnimSpeed(0.045); // Increase speed and power
 	}
 	void AnimSpeedDownEvent(const InputEventData& data) {
 		AnimationManager::AdjustAnimSpeed(-0.060); // Decrease speed and power
 	}
 	void AnimMaxSpeedEvent(const InputEventData& data) {
-		AnimationManager::AdjustAnimSpeed(0.060); // Strongest attack
+		AnimationManager::AdjustAnimSpeed(0.090); // Strongest attack speed buff
 	}
 }
 

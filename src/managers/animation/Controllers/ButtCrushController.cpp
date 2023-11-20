@@ -125,6 +125,9 @@ namespace Gts {
 	std::vector<Actor*> ButtCrushController::GetButtCrushTargets(Actor* pred, std::size_t numberOfPrey) {
 		// Get vore target for actor
 		auto& sizemanager = SizeManager::GetSingleton();
+		if (!CanPerformAnimation(pred, 2)) {
+			return {};
+		}
 		if (IsGtsBusy(pred)) {
 			return {};
 		}
@@ -264,7 +267,15 @@ namespace Gts {
 
 			AttachToObjectBTask(pred, prey);
 			AnimationManager::StartAnim("ButtCrush_Start", pred);
-			//BlockFirstPerson(pred, true);
+
+
+			/*auto root = find_node(prey, "NPC Root [Root]");
+			if (root) { 
+				auto scale = get_visual_scale(prey);
+				NiPoint3 position = root->world.translate;
+				SpawnParticle(prey, 60.00, "GTS/Magic/bind_rune.nif", NiMatrix3(), position, scale * 9.0, 7, nullptr); // Spawn Bind Rune
+				Notify("Rune spawned succesfully");
+			}*/
 		} else {
 			if (!IsCrawling(pred)) {
 				TiredSound(pred, "Butt Crush is on a cooldown");

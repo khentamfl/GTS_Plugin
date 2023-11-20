@@ -182,6 +182,35 @@ namespace {
 		Persistent::GetSingleton().allow_stagger = enabled;
 	}
 
+	void SetNPCProtection(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().NPCEffectImmunity = enabled;
+	}
+
+	void SetPCProtection(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().PCEffectImmunity = enabled;
+	}
+
+	void DisableCollisionLayerAndMotion(StaticFunctionTag*, TESObjectREFR* ref) {
+		if (!ref) {
+			return;
+		}
+		auto current3D = ref->GetCurrent3D();
+		if (!current3D) {
+			return; // Retry next frame
+		} 
+		current3D->SetMotionType(4, true, true, true);
+		current3D->SetCollisionLayer(COL_LAYER::kNonCollidable);
+	}
+
+	float Quest_GetProgression(StaticFunctionTag*, float stage) {
+		return GetQuestProgression(stage);
+	}
+
+	float GetAspectOfGiantessPower(StaticFunctionTag*) {
+		auto player = PlayerCharacter::GetSingleton();
+		return SizeManager::GetSingleton().GetEnchantmentBonus(player)*0.01;
+	}
+
 	bool GetIsHighHeelEnabled(StaticFunctionTag*) {
 		return Persistent::GetSingleton().highheel_correction;
 	}
@@ -439,6 +468,11 @@ namespace Gts {
 		vm->RegisterFunction("AllowCameraFOVEdits", PapyrusClass, AllowCameraFOVEdits);
 		vm->RegisterFunction("SetLessGore", PapyrusClass, SetLessGore);
 		vm->RegisterFunction("SetPlayerStagger", PapyrusClass, SetPlayerStagger);
+		vm->RegisterFunction("SetNPCProtection", PapyrusClass, SetNPCProtection);
+		vm->RegisterFunction("SetPCProtection", PapyrusClass, SetPCProtection);
+		vm->RegisterFunction("DisableCollisionLayerAndMotion", PapyrusClass, DisableCollisionLayerAndMotion);
+		vm->RegisterFunction("Quest_GetProgression", PapyrusClass, Quest_GetProgression);
+		vm->RegisterFunction("GetAspectOfGiantessPower", PapyrusClass, GetAspectOfGiantessPower);
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
 		vm->RegisterFunction("SetIsHHFurnitureEnabled", PapyrusClass, SetIsHHFurnitureEnabled);
 		vm->RegisterFunction("SetCrawlAnimation", PapyrusClass, SetCrawlAnimation);

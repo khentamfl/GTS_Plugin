@@ -1,3 +1,4 @@
+#include "managers/cameras/camutil.hpp"
 #include "managers/cameras/tp/alt.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "data/runtime.hpp"
@@ -8,7 +9,7 @@ namespace Gts {
 	NiPoint3 Alt::GetOffset(const NiPoint3& cameraPos) {
 		return NiPoint3(
 			Runtime::GetFloat("cameraAlternateX"),
-			0.0,
+			Alt::ZOffset,
 			Runtime::GetFloat("cameraAlternateY")
 			);
 	}
@@ -16,7 +17,7 @@ namespace Gts {
 	NiPoint3 Alt::GetCombatOffset(const NiPoint3& cameraPos) {
 		return NiPoint3(
 			Runtime::GetFloat("combatCameraAlternateX"),
-			0.0,
+			Alt::ZOffset,
 			Runtime::GetFloat("combatCameraAlternateY")
 			);
 	}
@@ -24,7 +25,7 @@ namespace Gts {
 	NiPoint3 Alt::GetOffsetProne(const NiPoint3& cameraPos) {
 		return NiPoint3(
 			Runtime::GetFloat("proneCameraAlternateX"),
-			0.0,
+			Alt::ZOffset,
 			Runtime::GetFloat("proneCameraAlternateY")
 			);
 	}
@@ -32,34 +33,55 @@ namespace Gts {
 	NiPoint3 Alt::GetCombatOffsetProne(const NiPoint3& cameraPos) {
 		return NiPoint3(
 			Runtime::GetFloat("proneCombatCameraAlternateX"),
-			0.0,
+			Alt::ZOffset,
 			Runtime::GetFloat("proneCombatCameraAlternateY")
 			);
 	}
+
+	// fVanityModeMaxDist:Camera Changes The Offset Value We Need So we need to take this value into account;
+    void Alt::SetZOff(float Offset) {
+        // The 0.15 was found through testing different fVanityModeMaxDist values
+        Alt::ZOffset = Offset - (0.15 * Gts::MaxZoom());
+    }
 
 	BoneTarget Alt::GetBoneTarget() {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 		int altMode = Runtime::GetInt("AltCameraTarget");
+
+		float offset = -45;		
+
 		if (sizemanager.GetActionBool(player, 3)) {
 			altMode = 8; // Thigh Sandwich
+			offset = 0;
 		} else if (sizemanager.GetActionBool(player, 2)) {
 			altMode = 9; // Vore
+			offset = 0;
 		} else if (sizemanager.GetActionBool(player, 4)) {
 			altMode = 10; // Vore: Track Hand
+			offset = 0;
 		} else if (sizemanager.GetActionBool(player, 5)) {
 			altMode = 11; // L Feet
+			offset = -10;
 		} else if (sizemanager.GetActionBool(player, 6)) {
 			altMode = 12; // R feet
+			offset = -10;
 		} else if (sizemanager.GetActionBool(player, 0)) {
 			altMode = 13; // Thigh Crushing
+			offset = -10;
 		} else if (sizemanager.GetActionBool(player, 7)) {
 			altMode = 14; // Track Left Hand
+			offset = 0;
 		} else if (sizemanager.GetActionBool(player, 8)) {
 			altMode = 15; // Track booty
+			offset = -45;
 		} else if (sizemanager.GetActionBool(player, 9)) {
 			altMode = 5; // Track Breasts
+			offset = -15;
 		}
+
+		SetZOff(offset);
+
 		switch (altMode) {
 			case 0: {
 				return BoneTarget();

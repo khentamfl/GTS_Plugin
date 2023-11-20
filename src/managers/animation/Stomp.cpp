@@ -76,10 +76,10 @@ namespace {
 		Rumble::Once("StompR", &data.giant, 2.20 * shake, 0.0, RNode);
 		DoDamageEffect(&data.giant, (1.8 + data.animSpeed/8) * launch * perk, (1.45 + data.animSpeed/4) * launch, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/8, FootEvent::Right, RNode);
-		DoDustExplosion(&data.giant, dust + data.animSpeed/4, FootEvent::Right, RNode);
+		DoDustExplosion(&data.giant, dust + (data.animSpeed * 0.05), FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25 * data.animSpeed, 1.0, FootEvent::Right, 0.95);
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);
-		FootGrindCheck_Right(&data.giant, 1.45);
+		FootGrindCheck_Right(&data.giant, 1.45, false);
 	}
 
 	void GTSstompimpactL(AnimationEventData& data) { // To-do: Add Foot Grind support  (Trigger it somehow)
@@ -95,10 +95,10 @@ namespace {
 		Rumble::Once("StompL", &data.giant, 2.20 * shake, 0.0, LNode);
 		DoDamageEffect(&data.giant, (1.8 + data.animSpeed/8) * launch * perk, (1.45 + data.animSpeed/4) * launch, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Left, LNode);
-		DoDustExplosion(&data.giant, dust + data.animSpeed/4, FootEvent::Left, LNode);
+		DoDustExplosion(&data.giant, dust + (data.animSpeed * 0.05), FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25 * data.animSpeed, 1.0, FootEvent::Left, 0.95);
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);
-		FootGrindCheck_Left(&data.giant, 1.45);
+		FootGrindCheck_Left(&data.giant, 1.45, false);
 	}
 
 	void GTSstomplandR(AnimationEventData& data) { // To-do: Add Foot Grind support (Trigger it somehow)
@@ -115,7 +115,7 @@ namespace {
 		Rumble::Once("StompRL", &data.giant, 1.25 * shake, 0.05, RNode);
 		DoDamageEffect(&data.giant, 1.6 * perk, 1.45, 25, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Right, RNode);
-		DoDustExplosion(&data.giant, dust + data.animSpeed/4, FootEvent::Right, RNode);
+		DoDustExplosion(&data.giant, dust + (data.animSpeed * 0.05), FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.75 * bonus * perk, 1.8 + data.animSpeed/4, 1.0, FootEvent::Right, 0.80);
 	}
 
@@ -169,6 +169,9 @@ namespace {
 
 	void RightStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 1)) {
+			return;
+		}
 		float WasteStamina = 25.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			WasteStamina *= 0.65;
@@ -183,6 +186,9 @@ namespace {
 
 	void LeftStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 1)) {
+			return;
+		}
 		float WasteStamina = 25.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			WasteStamina *= 0.65;

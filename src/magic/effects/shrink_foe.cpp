@@ -159,9 +159,9 @@ namespace Gts {
 		if (IsEssential(target)) {
 			return; // Disallow shrinking Essentials
 		}
-		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus * weakness, gainpower * balancemodebonus, has_smt);
+		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus * weakness, gainpower * balancemodebonus, has_smt, ShrinkSource::magic);
+		
 		if (ShrinkToNothing(caster, target)) {
-			//Dispel();
 		}
 	}
 

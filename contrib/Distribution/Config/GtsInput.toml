@@ -315,6 +315,35 @@ duration = 0.25
 # Perform drop-down, dealing massive damage at butt/breast zone.
 
 #========================================================
+#========================= SBO
+#========================================================
+
+#----- This is for prone movement that looks good together with Sneak Behavior Overhaul. This Toggles/Disables it.
+#----- In Prone mode, Giantess is only able to perform Stomps: Stomps are replaced with matching side-rolls.
+
+[[InputEvent]]
+name = "SBO_ToggleProne"
+keys = ["X"]
+exclusive = false
+trigger = "continuous"
+duration = 0.66
+
+[[InputEvent]]
+name = "SBO_DisableProne"
+keys = ["X"]
+exclusive = false
+trigger = "once"
+duration = 0.0
+
+[[InputEvent]]
+name = "SBO_ToggleDive"
+keys = ["LALT", "W"]
+exclusive = false
+trigger = "continuous"
+duration = 0.20
+
+
+#========================================================
 #========================= G R A B
 #======================================================== 
 

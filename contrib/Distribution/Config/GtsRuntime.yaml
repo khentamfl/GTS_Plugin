@@ -179,7 +179,7 @@ spells:
   Survival_HungerStage5: "ccQDRSSE001-SurvivalMode.esl|000885"
 
 perks:
-  TalkDuringSneak: "GTS.esp|5F7265"
+  TalkToActor: "GTS.esp|5F7265"
   SmallMassiveThreatSizeSteal: "GTS.esp|2496E8"
   VorePerk: "GTS.esp|355C68"
   CalamityPerk: "GTS.esp|18E161"
@@ -244,6 +244,8 @@ perks:
   ButtCrush_NoEscape: "GTS.esp|5FC36A"
 
   SizeAbsorption: "GTS.esp|610774"
+
+  MightOfGiants: "GTS.esp|6AD6B1"
 
 
 
@@ -397,6 +399,8 @@ races:
   DLC2ExpSpiderBaseRace: "Dragonborn.esm|014449"
   DLC2ExpSpiderPackmuleRace: "Dragonborn.esm|027483"
   DLC2AshHopperRace: "Dragonborn.esm|01B658"
+  MammothRace: "Skyrim.esm|0131FF"
+  GiantRace: "Skyrim.esm|0131F9"
 
 keywords:
   UndeadKeyword: "Skyrim.esm|013796"
@@ -406,6 +410,12 @@ keywords:
   AnimalKeyword: "Skyrim.esm|013798"
   CreatureKeyword: "Skyrim.esm|013795"
   BlackListKeyword: "GTS.esp|6A85AF"
+  
 
 containers:
   Dropbox: "GTS.esp|6A34AE"
+  Dropbox_Physics: "GTS.esp|6AD6B0"
+  Dropbox_Undead_Physics: "GTS.esp|6BC9BC"
+  Dropbox_Mechanical: "GTS.esp|6C1ABE"
+  Dropbox_Soul: "GTS.esp|6C1ABD"
+  Dropbox_Bug: "GTS.esp|6C1ABF"

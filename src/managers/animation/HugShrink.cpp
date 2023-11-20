@@ -210,6 +210,9 @@ namespace {
 
 	void HugAttemptEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 0)) {
+			return;
+		}
 		if (IsGtsBusy(player)) {
 			return;
 		}
@@ -358,7 +361,7 @@ namespace Gts {
 			DamageAV(tinyref, ActorValue::kStamina, (0.60 * TimeScale())); // Drain Stamina
 			DamageAV(giantref, ActorValue::kStamina, 0.50 * stamina * TimeScale()); // Damage GTS Stamina
 
-			TransferSize(giantref, tinyref, false, shrink, steal, false); // Shrink foe, enlarge gts
+			TransferSize(giantref, tinyref, false, shrink, steal, false, ShrinkSource::hugs); // Shrink foe, enlarge gts
 			AdjustGtsSkill(0.00020, giantref);
 			if (giantref->formID == 0x14) {
 				shake_camera(giantref, 0.70 * sizedifference, 0.05);

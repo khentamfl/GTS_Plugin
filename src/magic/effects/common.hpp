@@ -1,6 +1,7 @@
 #pragma once
-#include "managers/GtsSizeManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
+#include "managers/GtsSizeManager.hpp"
+#include "managers/ai/aifunctions.hpp"
 #include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
@@ -114,11 +115,14 @@ namespace Gts {
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)*0.01;
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)*0.01;
 		float GigantismTarget = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)*0.01;  // May go negative needs fixing with a smooth clamp
-		float efficiency = clamp(0.25, 1.25, (casterlevel/targetlevel)) * progression_multiplier;
+		float efficiency = clamp(0.25, 1.0, (casterlevel/targetlevel)) * progression_multiplier;
 		if (IsDragon(target)) {
 			efficiency *= DRAGON_PEANLTY;
-		}
-		if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
+		} if (IsMammoth(target)) {
+			efficiency *= 0.35;
+ 		} if (IsGiant(target)) {
+			efficiency *= 0.45;
+		} if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
 			efficiency *= 0.25;
 		}
 
@@ -134,12 +138,15 @@ namespace Gts {
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)*0.01;
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)*0.01;
 		float GigantismTarget = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)*0.01;  // May go negative needs fixing with a smooth clamp
-		float efficiency = clamp(0.25, 1.25, (casterlevel/targetlevel));
+		float efficiency = clamp(0.25, 1.0, (casterlevel/targetlevel));
 		//log::info("LevelDifference: {}, caster level: {}, target level: {}", efficiency, casterlevel, targetlevel);
 		if (IsDragon(target)) {
 			efficiency *= DRAGON_PEANLTY;
-		}
-		if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
+		} if (IsMammoth(target)) {
+			efficiency *= 0.35;
+ 		} if (IsGiant(target)) {
+			efficiency *= 0.45;
+		} if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
 			efficiency *= 0.25;
 		}
 
@@ -198,7 +205,7 @@ namespace Gts {
 		return true;
 	}
 
-	inline void Steal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency) {
+	inline void Steal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency, ShrinkSource source) {
 		effeciency = clamp(0.01, 1.0, effeciency);
 		float effeciency_noscale = clamp(0.01, 1.0, CalcEffeciency_NoProgression(to, from));
 		//log::info("Efficiency is: {}", effeciency_noscale);
@@ -208,6 +215,12 @@ namespace Gts {
 		AdjustGtsSkill(0.52 * scale_factor * target_scale, to);
 		mod_target_scale(from, -amountnomult * 0.55 * effeciency_noscale);
 		mod_target_scale(to, amount*effeciency);
+
+		if (source == ShrinkSource::hugs) {
+			AdvanceQuestProgression(to, 1.0, amountnomult * 0.55 * effeciency_noscale);
+		} else {
+			AdvanceQuestProgression(to, 2.0, amountnomult * 0.55 * effeciency_noscale);
+		}
 
 		AddStolenAttributes(to, amount*effeciency);
 	}
@@ -224,7 +237,7 @@ namespace Gts {
 	}
 
 	inline void Transfer(Actor* from, Actor* to, float scale_factor, float bonus) {
-		Steal(from, to, scale_factor, bonus, 1.0); // 100% efficent for friendly steal
+		Steal(from, to, scale_factor, bonus, 1.0, ShrinkSource::other); // 100% efficent for friendly steal
 	}
 
 	inline void Grow_Ally(Actor* from, Actor* to, float receiver, float caster) {
@@ -237,7 +250,7 @@ namespace Gts {
 		mod_target_scale(to, receive);
 	}
 
-	inline void TransferSize(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smt) {
+	inline void TransferSize(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smt, ShrinkSource source) {
 		const float BASE_POWER = 0.0005;
 		const float DUAL_CAST_BONUS = 2.0;
 		const float SMT_BONUS = 2.0;
@@ -277,17 +290,19 @@ namespace Gts {
 		auto GtsSkillLevel = GetGtsSkillLevel();
 
 		float alteration_level_bonus = 0.0380 + (GtsSkillLevel * 0.000360); // + 100% bonus at level 100
-		Steal(target, caster, power, power * alteration_level_bonus, transfer_effeciency);
+		Steal(target, caster, power, power * alteration_level_bonus, transfer_effeciency, source);
 	}
 
 	inline bool ShrinkToNothing(Actor* caster, Actor* target) {
-		float SHRINK_TO_NOTHING_SCALE = 0.12;
+		float SHRINK_TO_NOTHING_SCALE = 0.10;
 		float target_scale = get_visual_scale(target);
 		if (!caster) {
 			return false;
 		}
-		if (IsDragon(target)) {
-			SHRINK_TO_NOTHING_SCALE = 0.035;
+		if (IsDragon(target) || IsMammoth(target)) {
+			SHRINK_TO_NOTHING_SCALE = 0.026;
+		} if (IsGiant(target)) {
+			SHRINK_TO_NOTHING_SCALE = 0.046;
 		}
 
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !Runtime::HasMagicEffect(target,"ShrinkToNothing") && !target->IsPlayerTeammate()) {
@@ -306,7 +321,16 @@ namespace Gts {
 
 			AdjustSizeReserve(caster, target_scale/25);
 
+			if (!target->IsDead()) {
+				if (IsGiant(target)) {
+					AdvanceQuestProgression(caster, 7, 1);
+				} else {
+					AdvanceQuestProgression(caster, 4, 1);
+				}
+			}
+
 			PrintDeathSource(caster, target, DamageSource::Shrinked);
+			KillActor(caster, target);
 			return true;
 		}
 		return false;

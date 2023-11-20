@@ -124,16 +124,11 @@ namespace {
 			} else if (Boost >= 2) {
 				giant->AsActorValueOwner()->ModActorValue(ActorValue::kStamina, TotalMod);
 			}
-			//log::info("Buffing Attributes {}, Target: {}, Caster: {}", Boost, Target->GetDisplayFullName(), Caster->GetDisplayFullName());
 		}
 	}
 
 	void Vore_TransferItems(Actor* pred, Actor* prey) {
-		if (!AllowDevourment() && pred->formID == 0x14 && Runtime::GetBool("GtsEnableLooting")) {
-			TransferInventory(prey, pred, false, true);
-		} else if (!AllowDevourment() && pred->formID != 0x14 && Runtime::GetBool("GtsNPCEnableLooting")) {
-			TransferInventory(prey, pred, false, true);
-		}
+		TransferInventory(prey, pred, 1.0, false, true, DamageSource::Vored);
 	}
 
 	void VoreMessage_SwallowedAbsorbing(Actor* pred, Actor* prey) {
@@ -150,7 +145,7 @@ namespace {
 		}
 	}
 
-	void VoreMessage_Absorbed(Actor* pred, std::string_view prey, bool WasDragon) {
+	void VoreMessage_Absorbed(Actor* pred, std::string_view prey, bool WasDragon, bool WasGiant) {
 		if (!pred) {
 			return;
 		}
@@ -159,12 +154,17 @@ namespace {
 			log::info("{} was dragon", prey);
 			CompleteDragonQuest();
 		}
+		if (WasGiant) {
+			AdvanceQuestProgression(pred, 7, 1);
+		} else {
+			AdvanceQuestProgression(pred, 6, 1);
+		}
 		if (!Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
 			Cprint("{} was absorbed by {}", prey, pred->GetDisplayFullName());
 		} else if (Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
 			Cprint("{} became one with {}", prey, pred->GetDisplayFullName());
 		} else if (Runtime::HasPerk(pred, "SoulVorePerk") && random >= 2) {
-			Cprint("{} both body and soul were greedily devoured by {}", prey, pred->GetDisplayFullName());
+			Cprint("{} was greedily devoured by {}", prey, pred->GetDisplayFullName());
 		} else {
 			Cprint("{} was absorbed by {}", prey, pred->GetDisplayFullName());
 		}
@@ -211,12 +211,16 @@ namespace Gts {
 					KillActor(giantref.get().get(), tiny);
 					Disintegrate(tiny);
 				} else if (tiny->formID == 0x14) {
-					DamageAV(tiny, ActorValue::kHealth, 900000.0);
+					//DamageAV(tiny, ActorValue::kHealth, 900000.0);
+					InflictSizeDamage(giantref.get().get(), tiny, 900000);
 					KillActor(giantref.get().get(), tiny);
 					TriggerScreenBlood(50);
 					tiny->SetAlpha(0.0); // Player can't be disintegrated: simply nothing happens. So we Just make player Invisible instead.
 				}
-				TaskManager::RunOnce([=](auto& update) {
+
+				std::string taskname = std::format("VoreAbsorb {}", tiny->formID);
+
+				TaskManager::RunOnce(taskname, [=](auto& update) {
 					if (!tinyref) {
 						return;
 					}
@@ -351,6 +355,8 @@ namespace Gts {
 		}
 		if (IsDragon(tiny)) {
 			mealEffiency *= 6.0;
+		} if (IsGiant(tiny)) {
+			mealEffiency *= 2.6;
 		}
 		this->appliedFactor = 0.0;
 		this->state = VoreBuffState::Starting;
@@ -364,6 +370,7 @@ namespace Gts {
 			} else {
 				this->restorePower = 0.0;
 			}
+			this->WasGiant = IsGiant(tiny);
 			this->WasDragon = IsDragon(tiny);
 			this->WasLiving = IsLiving(tiny);
 			this->sizePower = tiny_scale * mealEffiency * perkbonus;
@@ -405,7 +412,7 @@ namespace Gts {
 				if (!AllowDevourment()) {
 					if (this->giant) {
 						AdjustGiantessSkill(giant, this->tinySize);
-						VoreMessage_Absorbed(giant, this->tiny_name, this->WasDragon);
+						VoreMessage_Absorbed(giant, this->tiny_name, this->WasDragon, this->WasGiant);
 						BuffAttributes(giant, this->tinySize);
 						mod_target_scale(giant, this->sizePower * 0.5);
 						AdjustSizeReserve(giant, this->sizePower);
@@ -726,6 +733,9 @@ namespace Gts {
 		if (pred == prey) {
 			return false;
 		}
+		if (!CanPerformAnimation(pred, 3)) {
+			return false;
+		}
 		auto transient = Transient::GetSingleton().GetData(prey);
 		if (prey->IsDead()) {
 			return false;
@@ -753,6 +763,10 @@ namespace Gts {
 		float prey_scale = get_visual_scale(prey);
 		if (IsDragon(prey)) {
 			prey_scale *= 3.0;
+		} if (IsGiant(prey)) {
+			prey_scale *= 2.2;
+		}if (IsMammoth(prey)) {
+			prey_scale *= 4.0;
 		}
 
 		float sizedifference = pred_scale/prey_scale;
@@ -760,7 +774,7 @@ namespace Gts {
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 
-		if (IsInsect(prey) || IsBlacklisted(prey) || IsUndead(prey)) {
+		if (IsInsect(prey, true) || IsBlacklisted(prey) || IsUndead(prey)) {
 			std::string_view message = std::format("{} has no desire to eat {}", pred->GetDisplayFullName(), prey->GetDisplayFullName());
 			TiredSound(pred, message);
 			return false;

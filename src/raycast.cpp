@@ -120,6 +120,56 @@ namespace Gts {
 			return NiPoint3();
 		}
 	}
+
+	NiPoint3 CastRay(TESObjectREFR* ref, NiPoint3 in_origin, NiPoint3 direction, float unit_length, bool& success) {
+		float length = unit_to_meter(unit_length);
+		success = false;
+		if (!ref) {
+			return NiPoint3();
+		}
+		auto cell = ref->GetParentCell();
+		if (!cell) {
+			return NiPoint3();
+		}
+		auto collision_world = cell->GetbhkWorld();
+		if (!collision_world) {
+			return NiPoint3();
+		}
+		bhkPickData pick_data;
+
+		NiPoint3 origin = unit_to_meter(in_origin);
+		pick_data.rayInput.from = origin;
+
+		NiPoint3 normed = direction / direction.Length();
+		NiPoint3 end = origin + normed * length;
+		pick_data.rayInput.to = end;
+
+		NiPoint3 delta = end - origin;
+		pick_data.ray = delta; // Length in each axis to travel
+
+		RayCollector collector = RayCollector();
+		collector.add_filter(ref->Get3D1(false));
+		collector.add_filter(ref->Get3D1(true));
+		// pick_data.rayHitCollectorA0 = &collector;
+		pick_data.rayHitCollectorA8 = &collector;
+		// pick_data.rayHitCollectorB0 = &collector;
+		// pick_data.rayHitCollectorB8 = &collector;
+
+		collision_world->PickObject(pick_data);
+		float min_fraction = 1.0;
+		success = !collector.results.empty();
+		if (collector.results.size() > 0) {
+			success = true;
+			for (auto ray_result: collector.results) {
+				if (ray_result.fraction < min_fraction) {
+					min_fraction = ray_result.fraction;
+				}
+			}
+			return meter_to_unit(origin + normed * length * min_fraction);
+		} else {
+			return NiPoint3();
+		}
+	}
 }
 
 

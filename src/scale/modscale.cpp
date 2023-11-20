@@ -40,9 +40,7 @@ namespace Gts {
 					                        // but here it is just in case
 				}
 			}
-
 		}
-
 		return allScale / ourScale;
 	}
 

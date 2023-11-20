@@ -201,6 +201,10 @@ namespace Gts {
 		auto tinyhandle = tiny->CreateRefHandle();
 		std::string name = std::format("FootGrind_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
+		auto coordinates = AttachToUnderFoot_Left(giant, tiny);
+		if (coordinates == NiPoint3(0,0,0)) {
+			return;
+		}
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
@@ -216,11 +220,13 @@ namespace Gts {
 			if (FrameB <= 4.0) {
 				return true;
 			}
-			if (!AttachToUnderFoot_Left(giantref, tinyref)) {
+
+			AttachTo(giantref, tinyref, coordinates);
+			/*if (!AttachToUnderFoot_Left(giantref, tinyref)) {
 				log::info("Attach is false");
 				SetBeingGrinded(tinyref, false);
 				return false;
-			}
+			}*/
 			if (!IsFootGrinding(giantref)) {
 				SetBeingGrinded(tinyref, false);
 				log::info("IsGrinding = false");
@@ -240,6 +246,10 @@ namespace Gts {
 		auto tinyhandle = tiny->CreateRefHandle();
 		std::string name = std::format("FootGrind_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
+		auto coordinates = AttachToUnderFoot_Right(giant, tiny);
+		if (coordinates == NiPoint3(0,0,0)) {
+			return;
+		}
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
@@ -247,18 +257,20 @@ namespace Gts {
 			if (!tinyhandle) {
 				return false;
 			}
-
+			
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 			auto FrameB = Time::FramesElapsed() - FrameA;
 			if (FrameB <= 4.0) {
 				return true;
 			}
-			if (!AttachToUnderFoot_Right(giantref, tinyref)) {
+
+			AttachTo(giantref, tinyref, coordinates);
+			/*if (!AttachToUnderFoot_Right(giantref, tinyref)) {
 				log::info("Attach is false");
 				SetBeingGrinded(tinyref, false);
 				return false;
-			}
+			}*/
 			if (!IsFootGrinding(giantref)) {
 				SetBeingGrinded(tinyref, false);
 				log::info("IsGrinding = false");
@@ -273,7 +285,7 @@ namespace Gts {
 		});
 	}
 
-	void FootGrindCheck_Left(Actor* actor, float radius) {  // Check if we hit someone with stomp. Yes = Start foot grind. Left Foot.
+	void FootGrindCheck_Left(Actor* actor, float radius, bool strong) {  // Check if we hit someone with stomp. Yes = Start foot grind. Left Foot.
 		if (!actor) {
 			return;
 		}
@@ -372,7 +384,11 @@ namespace Gts {
 								if (aveForce >= 0.00 && !otherActor->IsDead()) {
 									DoFootGrind_Left(actor, otherActor);
 									SetBeingGrinded(otherActor, true);
-									AnimationManager::StartAnim("GrindLeft", actor);
+									if (!strong) {
+										AnimationManager::StartAnim("GrindLeft", actor);
+									} else {
+										AnimationManager::StartAnim("GrindLeft", actor); // preparation for strong version
+									}
 								}
 							}
 						}
@@ -382,7 +398,7 @@ namespace Gts {
 		}
 	}
 
-	void FootGrindCheck_Right(Actor* actor, float radius) {  // Check if we hit someone with stomp. Yes = Start foot grind. Right Foot.
+	void FootGrindCheck_Right(Actor* actor, float radius, bool strong) {  // Check if we hit someone with stomp. Yes = Start foot grind. Right Foot.
 		if (!actor) {
 			return;
 		}
@@ -483,7 +499,11 @@ namespace Gts {
 								if (aveForce >= 0.00 && !otherActor->IsDead()) {
 									DoFootGrind_Right(actor, otherActor);
 									SetBeingGrinded(otherActor, true);
-									AnimationManager::StartAnim("GrindRight", actor);
+									if (!strong) {
+										AnimationManager::StartAnim("GrindRight", actor);
+									} else {
+										AnimationManager::StartAnim("GrindRight", actor); // Prepation for strong version
+									}
 								}
 							}
 						}

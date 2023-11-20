@@ -49,13 +49,15 @@ namespace {
 		if (IsBeingHeld(tiny)) {
 			return false;
 		}
-		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && giant->formID == 0x14 && (IsTeammate(tiny))) {
+		bool NPC = Persistent::GetSingleton().NPCEffectImmunity;
+		bool PC = Persistent::GetSingleton().PCEffectImmunity;
+		if (NPC && giant->formID == 0x14 && (IsTeammate(tiny))) {
 			return false; // Protect NPC's against player size-related effects
 		}
-		if (Runtime::GetBool("GtsNPCEffectImmunityToggle") && (IsTeammate(giant)) && (IsTeammate(tiny))) {
+		if (NPC && (IsTeammate(giant)) && (IsTeammate(tiny))) {
 			return false; // Disallow NPC's to damage each-other if they're following Player
 		}
-		if (Runtime::GetBool("GtsPCEffectImmunityToggle") && (IsTeammate(giant)) && tiny->formID == 0x14) {
+		if (PC && (IsTeammate(giant)) && tiny->formID == 0x14) {
 			return false; // Protect Player against friendly NPC's damage
 		}
 		return true;
@@ -140,7 +142,7 @@ namespace {
 		}
 		float giantscale = get_visual_scale(giant);
 		float tinyscale = get_visual_scale(tiny);
-		if (IsDragon(tiny)) {
+		if (IsDragon(tiny) || IsGiant(tiny)) {
 			tinyscale *= 2.0;
 		}
 		float size_difference = giantscale/tinyscale;
@@ -428,7 +430,7 @@ namespace Gts {
 		auto& crushmanager = CrushManager::GetSingleton();
 		float giantsize = get_visual_scale(giant);
 		float tinysize = get_visual_scale(tiny);
-		if (IsDragon(tiny)) {
+		if (IsDragon(tiny) || IsGiant(tiny)) {
 			tinysize *= 2.0;
 		}
 
@@ -444,7 +446,7 @@ namespace Gts {
 			return; // Do not do damage is Size Difference is < than x1.4
 		}
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
-		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.25, 0.25, 999999.0);
+		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.30, 0.30, 999999.0);
 		float highheelsdamage = 1.0 + (GetHighHeelsBonusDamage(giant) * 5);
 		float sprintdamage = 1.0; // default Sprint damage of 1.0
 		float falldamage = 1.0; // default Fall damage of 1.0
@@ -470,7 +472,7 @@ namespace Gts {
 		StartCombat(giant, tiny, false);
 
 
-		result *= damagebonus * TimeScale();
+		result *= damagebonus;
 
 		if ((Cause == DamageSource::CrushedLeft || Cause == DamageSource::CrushedRight) && Runtime::HasPerkTeam(giant, "hhBonus")) {
 			result *= 1.15; // 15% bonus damage if we have High Heels perk
@@ -493,21 +495,33 @@ namespace Gts {
 		}
 		if (DoDamage) {
 			ModVulnerability(giant, tiny, result);
-			DamageAV(tiny, ActorValue::kHealth, result);
+			//DamageAV(tiny, ActorValue::kHealth, result);
+			InflictSizeDamage(giant, tiny, result);
 		}
 
 		if (GetAV(tiny, ActorValue::kHealth) <= 0 || tiny->IsDead()) {
-			KillActor(giant, tiny);
 			ReportCrime(giant, tiny, 1000, true);
 			if (multiplier >= 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
 					crushmanager.Crush(giant, tiny);
+					if (!tiny->IsDead()) {
+						if (IsGiant(tiny)) {
+							AdvanceQuestProgression(giant, 7, 1);
+						} else {
+							AdvanceQuestProgression(giant, 3, 1);
+						}
+					}
+					KillActor(giant, tiny);
 					CrushBonuses(giant, tiny);
 					PrintDeathSource(giant, tiny, Cause);
 					if (!LessGore()) {
 						auto node = find_node(giant, GetDeathNodeName(Cause));
 						if (node) {
-							Runtime::PlaySoundAtNode("GtsCrushSound", giant, 1.0, 1.0, node);
+							if (IsMechanical(tiny)) {
+								return;
+							} else {
+								Runtime::PlaySoundAtNode("GtsCrushSound", giant, 1.0, 1.0, node);
+							}
 						} else {
 							Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
 							log::info("Error, node not found. Cause: {}", Cause);

@@ -81,11 +81,16 @@ namespace Gts {
 	}
 
 	template<typename T, typename U>
-	bool AttachToUnderFoot_Left(T& anyGiant, U& anyTiny) {
+	NiPoint3 AttachToUnderFoot_Left(T& anyGiant, U& anyTiny) {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
-			return false;
+			return NiPoint3(0,0,0);
+		} 
+		Actor* tiny = GetActorPtr(anyTiny);
+		if (!tiny) {
+			return NiPoint3(0,0,0);
 		}
+
 
 		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(giant);
 
@@ -93,13 +98,13 @@ namespace Gts {
 		auto leftCalf = find_node(giant, leftCalfLookup);
 		auto leftToe = find_node(giant, leftToeLookup);
 		if (!leftFoot) {
-			return false;
+			return NiPoint3(0,0,0);
 		}
 		if (!leftCalf) {
-			return false;
+			return NiPoint3(0,0,0);
 		}
 		if (!leftToe) {
-			return false;
+			return NiPoint3(0,0,0);
 		}
 		NiMatrix3 leftRotMat;
 		{
@@ -121,9 +126,10 @@ namespace Gts {
 
 		float hh = hhOffsetbase[2];
 		// Make a list of points to check
-
-		float Forward = 9; //Runtime::GetFloat("cameraAlternateX"); // 8 is ok, 5 with HH
+		float Forward = 8 - (hh * 0.6); //Runtime::GetFloat("cameraAlternateX"); // 8 is ok, 5 with HH
 		float UpDown = 9; //Runtime::GetFloat("cameraAlternateY"); // 8 too
+		log::info("HH: {}, HH New: {}", hh, hh * 0.4);
+		
 
 		std::vector<NiPoint3> points = {
 			NiPoint3(0, Forward - hh/45, -(UpDown + hh * 0.65)),
@@ -134,18 +140,25 @@ namespace Gts {
 			std::vector<NiPoint3> footPoints = {};
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
-				NiPoint3 coords = foot->world*(rotMat*point);
-				return AttachTo(anyGiant, anyTiny, coords);
+				NiPoint3 coords = leftFoot->world.translate;//foot->world*(rotMat*point);
+				coords.z = tiny->GetPosition().z; // Use Z offset of Tiny so it won't look off
+				return coords;
+				//return AttachTo(anyGiant, anyTiny, coords);
 			}
 		}
-		return false;
+		return NiPoint3(0,0,0);
+		//return false;
 	}
 
 	template<typename T, typename U>
-	bool AttachToUnderFoot_Right(T& anyGiant, U& anyTiny) {
+	NiPoint3 AttachToUnderFoot_Right(T& anyGiant, U& anyTiny) {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
-			return false;
+			return NiPoint3(0,0,0);
+		} 
+		Actor* tiny = GetActorPtr(anyTiny);
+		if (!tiny) {
+			return NiPoint3(0,0,0);
 		}
 
 		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(giant);
@@ -156,13 +169,13 @@ namespace Gts {
 
 
 		if (!rightFoot) {
-			return false;
+			return NiPoint3(0,0,0);
 		}
 		if (!rightCalf) {
-			return false;
+			return NiPoint3(0,0,0);
 		}
 		if (!rightToe) {
-			return false;
+			return NiPoint3(0,0,0);
 		}
 		NiMatrix3 rightRotMat;
 		{
@@ -185,11 +198,13 @@ namespace Gts {
 
 		float hh = hhOffsetbase[2];
 		// Make a list of points to check
-		float Forward = 9; //Runtime::GetFloat("cameraAlternateX"); // 8 is ok, 5 with HH
+		float Forward = 8 - (hh * 0.6); //Runtime::GetFloat("cameraAlternateX"); // 8 is ok, 5 with HH
 		float UpDown = 9; //Runtime::GetFloat("cameraAlternateY"); // 8 too
+		log::info("HH: {}, HH New: {}", hh, hh * 0.4);
+		
 
 		std::vector<NiPoint3> points = {
-			NiPoint3(0, Forward - hh/45, -(UpDown + hh * 0.65)),
+			NiPoint3(0, Forward, -(UpDown + hh * 0.65)),
 		};
 		std::tuple<NiAVObject*, NiMatrix3> right(rightFoot, rightRotMat);
 
@@ -197,12 +212,14 @@ namespace Gts {
 			std::vector<NiPoint3> footPoints = {};
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
-				NiPoint3 coords = foot->world*(rotMat*point);
-				return AttachTo(anyGiant, anyTiny, coords);
+				NiPoint3 coords = rightFoot->world.translate;//foot->world*(rotMat*point);
+				coords.z = tiny->GetPosition().z; // Use Z offset of Tiny so it won't look off
+				return coords;
+				//return AttachTo(anyGiant, anyTiny, coords);
 			}
 		}
-
-		return false;
+		//return false
+		return NiPoint3(0,0,0);
 	}
 
 
@@ -278,6 +295,8 @@ namespace Gts {
 		for (auto bone_name: bone_names) {
 			auto bone = find_node(giant, bone_name);
 			if (!bone) {
+				Notify("ERROR: Breast 02 bones not found");
+				Notify("Install 3BB/XPMS32");
 				return false;
 			}
 			if (Runtime::GetBool("EnableDebugOverlay")) {

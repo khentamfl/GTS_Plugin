@@ -30,11 +30,13 @@ namespace {
 		if (damage > GetAV(receiver, ActorValue::kHealth) * 1.5) { // Overkill effect
 			float attackerscale = get_visual_scale(attacker);
 			float receiverscale = get_visual_scale(receiver);
-			if (IsDragon(receiver)) {
+			if (IsDragon(receiver) || IsGiant(receiver)) {
 				receiverscale *= 2.0;
+			} if (IsMammoth(receiver)) {
+				receiverscale *= 3.0;
 			}
 			float size_difference = attackerscale/receiverscale;
-			if (size_difference >= 18.0) {
+			if (size_difference >= 12.0) {
 				HitManager::GetSingleton().Overkill(receiver, attacker);
 			}
 		}
@@ -225,7 +227,7 @@ namespace {
 	void InflictDamage(Actor* attacker, Actor* receiver, float a_damage) {
 		float damagemult = AttributeManager::GetSingleton().GetAttributeBonus(attacker, ActorValue::kAttackDamageMult);
 		float damage = (a_damage * damagemult) - a_damage;
-		//log::info("Damage: Receiver: {}, Attacker: {}, a_damage: {}, damage: {}", receiver->GetDisplayFullName(), attacker->GetDisplayFullName(), a_damage, damage);
+		log::info("Damage: Receiver: {}, Attacker: {}, a_damage: {}, damage: {}", receiver->GetDisplayFullName(), attacker->GetDisplayFullName(), a_damage, damage);
 		float sizedifference = get_visual_scale(receiver)/get_visual_scale(attacker);
 		HealthGate(attacker, receiver, -(a_damage + damage));
 		TinyAsShield(attacker, receiver, -(a_damage + damage));
@@ -234,7 +236,8 @@ namespace {
 
 		if (damage < 0) {
 			Overkill(attacker, receiver, -(a_damage + damage));
-			DamageAV(receiver, ActorValue::kHealth, -damage); // Damage hp
+			//DamageAV(receiver, ActorValue::kHealth, -damage); // Damage hp
+			InflictSizeDamage(attacker, receiver, -damage);
 			return;
 		}
 		if (damage > 0) {
@@ -272,6 +275,8 @@ namespace Gts {
 		auto grabbedActor = Grab::GetHeldActor(receiver);
 		if (grabbedActor == attacker) {
 			return;
+		} if (attacker == receiver) {
+			return;
 		}
 		int LaughChance = rand() % 12;
 		int ShrinkChance = rand() % 5;
@@ -283,7 +288,7 @@ namespace Gts {
 		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(receiver)/100;
 		float SizeDifference = get_visual_scale(receiver)/get_visual_scale(attacker);
 		float Dragon = 1.0;
-		if (IsDragon(attacker)) {
+		if (IsDragon(attacker) || IsGiant(attacker) || IsMammoth(attacker)) {
 			Dragon = 2.5;
 		}
 		float resistance = 1.0;
@@ -296,7 +301,6 @@ namespace Gts {
 
 		if (receiver->formID == 0x14 && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0) {
 			float GrowthValue = std::clamp((-damage/2800) * SizeHunger * Gigantism, 0.0f, 0.25f * Gigantism);
-			log::info("GrowthValue of : {} is {} {}, OG damage: {}", receiver->GetDisplayFullName(), GrowthValue, -GrowthValue, damage);
 			mod_target_scale(receiver, GrowthValue);
 			DoHitShake(receiver, GrowthValue * 10);
 			if (soundtimer.ShouldRunFrame()) {
@@ -308,7 +312,6 @@ namespace Gts {
 				if (get_visual_scale(attacker) <= 0.12/Dragon) {
 					mod_target_scale(attacker, 0.12/Dragon);
 				}
-				log::info("Shrinking Actor: {}", attacker->GetDisplayFullName());
 			}
 			if (SizeDifference >= 4.0 && LaughChance >= 11 && laughtimer.ShouldRunFrame()) {
 				Runtime::PlaySoundAtNode("LaughSound", receiver, 1.0, 0.5, "NPC Head [Head]");
@@ -318,7 +321,6 @@ namespace Gts {
 			if (scale > naturalscale) {
 				float sizebonus = std::clamp(get_visual_scale(attacker), 0.10f, 1.0f);
 				float ShrinkValue = std::clamp(((-damage/850)/SizeHunger/Gigantism * sizebonus) * resistance, 0.0f, 0.25f / Gigantism); // affect limit by decreasing it
-				log::info("ShrinkValue of : {} is {} {}", receiver->GetDisplayFullName(), ShrinkValue, ShrinkValue);
 
 				if (scale < naturalscale) {
 					set_target_scale(receiver, naturalscale); // reset to normal scale
@@ -362,7 +364,14 @@ namespace Gts {
 				//Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
 			}
 			SizeManager::GetSingleton().ModSizeVulnerability(tiny, 0.15);
-			DamageAV(tiny, ActorValue::kHealth, damage);
+			//DamageAV(tiny, ActorValue::kHealth, damage);
+			InflictSizeDamage(giant, tiny, damage);
+			float Health = GetAV(tiny, ActorValue::kHealth);
+			float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
+			
+			if (damage >= Health && sizedifference >= 8.0) {
+				CrushManager::Crush(giant, tiny);
+			}
 		}
 	}
 }

@@ -121,7 +121,7 @@ namespace Gts {
 				auto giantref = gianthandle.get().get();
 				auto node = find_node(giantref, node_name, false);
 				float timepassed = std::clamp(((Finish - Start) * GetAnimationSlowdown(giantref)) * 0.70f, 0.01f, 0.98f);
-				log::info("Shrink Rune task is running, timepassed: {}, AnimationSlowdown: {} ", timepassed, GetAnimationSlowdown(giantref));
+				//log::info("Shrink Rune task is running, timepassed: {}, AnimationSlowdown: {} ", timepassed, GetAnimationSlowdown(giantref));
 				if (node) {
 					node->local.scale = std::clamp(1.0f - timepassed, 0.01f, 1.0f);
 					update_node(node);
@@ -143,7 +143,7 @@ namespace Gts {
 				auto giantref = gianthandle.get().get();
 				auto node = find_node(giantref, node_name, false);
 				float timepassed = std::clamp(((Finish - Start) * GetAnimationSlowdown(giantref)) * 0.80f, 0.01f, 9999.0f);
-				log::info("Grow Rune task is running, timepassed: {}, AnimationSlowdown: {} ", timepassed, GetAnimationSlowdown(giantref));
+				//log::info("Grow Rune task is running, timepassed: {}, AnimationSlowdown: {} ", timepassed, GetAnimationSlowdown(giantref));
 				if (node) {
 					node->local.scale = std::clamp(timepassed, 0.01f, 1.0f);
 					update_node(node);
@@ -220,6 +220,9 @@ namespace Gts {
 	std::vector<Actor*> ThighSandwichController::GetSandwichTargetsInFront(Actor* pred, std::size_t numberOfPrey) {
 		// Get vore target for actor
 		auto& sizemanager = SizeManager::GetSingleton();
+		if (!CanPerformAnimation(pred, 2)) {
+			return {};
+		}
 		if (IsGtsBusy(pred)) {
 			return {};
 		}
@@ -312,6 +315,10 @@ namespace Gts {
 		float prey_scale = get_visual_scale(prey);
 		if (IsDragon(prey)) {
 			prey_scale *= 3.0;
+		} if (IsGiant(prey)) {
+			prey_scale *= 2.2;
+		} if (IsMammoth(prey)) {
+			prey_scale *= 4.0;
 		}
 
 		float sizedifference = pred_scale/prey_scale;

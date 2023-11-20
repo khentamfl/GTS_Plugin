@@ -208,6 +208,9 @@ namespace {
 		if (grabbedActor) {
 			Grab::AttachActorTask(giant, grabbedActor);
 			DisableCollisions(grabbedActor, &data.giant); // Just to be sure
+			if (!IsTeammate(grabbedActor)) {
+				StartCombat(giant, grabbedActor, true);
+			}
 			//std::string message = std::format("While you have actor grabbed, you constantly lose stamina over time. You transfer 50% received damage to the actor in your hand. Press E to damage the actor, RMB to release, V to eat, X to throw, B to put between breasts. You can have only one actor in hand and can't pick up other actor if you have actor between your breasts.");
 			//TutorialMessage(message, "Grab");
 		}
@@ -241,14 +244,17 @@ namespace {
 			StartCombat(giant, grabbedActor, true); // force combat
 			float sd = get_visual_scale(giant)/get_visual_scale(grabbedActor);
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
+			float multiplier = Persistent::GetSingleton().size_related_damage_mult;
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
 			float damage = (1.400 * sd) * power * additionaldamage * additionaldamage;
+			damage *= multiplier;
 			if (HasSMT(giant)) {
 				damage *= 1.75;
 				bonus = 3.0;
 			}
-			DamageAV(grabbedActor, ActorValue::kHealth, damage);
+			//DamageAV(grabbedActor, ActorValue::kHealth, damage);
+			InflictSizeDamage(giant, grabbedActor, damage);
 			Rumble::Once("GrabAttack", giant, 6.0 * bonus, 0.05, "NPC L Hand [LHnd]");
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1);
 
@@ -280,6 +286,7 @@ namespace {
 				Runtime::PlaySoundAtNode("GtsCrushSound", giant, 1.0, 1.0, "NPC L Hand [LHnd]");
 				SetBetweenBreasts(giant, false);
 				AdjustSizeReserve(giant, get_visual_scale(grabbedActor)/10);
+				AdvanceQuestProgression(giant, 5, 1.0);
 				ReportCrime(giant, grabbedActor, 1000.0, true); // Report Crime since we killed someone
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
@@ -689,6 +696,9 @@ namespace {
 		if (grabbedActor) { //If we have actor, don't pick anyone up.
 			return;
 		}
+		if (!CanPerformAnimation(player, 2)) {
+			return;
+		}
 		if (IsEquipBusy(player) || IsTransitioning(player)) {
 			return; // Disallow Grabbing if Behavior is busy doing other stuff.
 		}
@@ -724,12 +734,15 @@ namespace {
 
 	void GrabVoreEvent(const InputEventData& data) { // Eat everyone in hand
 		auto player = PlayerCharacter::GetSingleton();
+		if (!CanPerformAnimation(player, 3)) {
+			return;
+		}
 		if (!IsStomping(player) && !IsTransitioning(player)) {
 			auto grabbedActor = Grab::GetHeldActor(player);
 			if (!grabbedActor) {
 				return;
 			}
-			if (IsInsect(grabbedActor) || IsBlacklisted(grabbedActor) || IsUndead(grabbedActor)) {
+			if (IsInsect(grabbedActor, true) || IsBlacklisted(grabbedActor) || IsUndead(grabbedActor)) {
 				return; // Same rules as with Vore
 			}
 			AnimationManager::StartAnim("GrabEatSomeone", player);
@@ -875,6 +888,7 @@ namespace Gts {
 				}
 				if (!AttachToCleavage(gianthandle, tinyhandle)) {
 					// Unable to attach
+					Grab::Release(giantref);
 					return false;
 				}
 			} else if (AttachToHand(gianthandle, tinyhandle)) {

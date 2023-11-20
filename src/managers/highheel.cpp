@@ -72,13 +72,13 @@ namespace Gts {
 		this->data.try_emplace(actor);
 		auto& hhData = this->data[actor];
 		float speedup = 1.0;
-		if (IsCrawling(actor)) {
+		if (IsCrawling(actor) || IsProning(actor)) {
 			speedup = 4.00; // To shift down a lot faster
 		}
 		// Should disable HH?
 		bool disableHH = (
 			AnimationManager::HHDisabled(actor) ||
-			IsCrawling(actor) ||
+			IsCrawling(actor) || IsProning(actor) ||
 			!Persistent::GetSingleton().highheel_correction
 			);
 		//log::info("HH Disable: {}", disableHH);
