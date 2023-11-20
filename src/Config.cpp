@@ -42,9 +42,9 @@ namespace Gts {
   }
 
   Config::Config(const toml::value& data) {
-      this->_debug =  toml::find(Debug, "debug");
-      this->_frame =  toml::find(Frame, "frame");
-      this->_tremor =  toml::find(Tremor, "tremor");
+      this->_debug =  toml::find<Debug>(data, "debug");
+      this->_frame =  toml::find<Frame>(data, "frame");
+      this->_tremor =  toml::find<Tremor>(data, "tremor");
   }
 
 }
