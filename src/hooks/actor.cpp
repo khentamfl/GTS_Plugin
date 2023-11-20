@@ -159,7 +159,7 @@ namespace Hooks
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
 				float value = (a_this->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
 				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value, value);
-				log::info("GetAV1 true, modifier {}, value: {}, original_value: {}, bonus: {}", a_modifier, a_value, original_value, bonus);
+				log::info("GetAV1 true, modifier {}, value: {}, original_value: {}, bonus: {}", std::to_underlying(a_modifier), std::to_underlying(a_value), original_value, bonus);
 			}
 		}
 		return GetActorValueModifier(original_value + bonus, a_this, a_modifier, a_value);
@@ -172,7 +172,7 @@ namespace Hooks
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
 				float value = (a_this->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
 				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value, value);
-				log::info("GetAV2 true, modifier {}, value: {}, original_value: {}, bonus: {}", a_modifier, a_value, original_value, bonus);
+				log::info("GetAV2 true, modifier {}, value: {}, original_value: {}, bonus: {}", std::to_underlying(a_modifier), std::to_underlying(a_value), original_value, bonus);
 			}
 		}
 		return GetActorValueModifier(original_value + bonus, a_this, a_modifier, a_value);
@@ -185,7 +185,7 @@ namespace Hooks
 			if (a_this->formID == 0x14 && a_value == ActorValue::kHealth) {
 				float value = (a_this->AsActorValueOwner()->GetBaseActorValue(ActorValue::kHealth)) - original_value;
 				bonus = AttributeManager::AlterGetBaseAv(a_this, a_value, value);
-				log::info("GetAV3 true, modifier {}, value: {}, original_value: {}, bonus: {}", a_modifier, a_value, original_value, bonus);
+				log::info("GetAV3 true, modifier {}, value: {}, original_value: {}, bonus: {}", std::to_underlying(a_modifier), std::to_underlying(a_value), original_value, bonus);
 			}
 		}
 		return GetActorValueModifier(original_value + bonus, a_this, a_modifier, a_value);
