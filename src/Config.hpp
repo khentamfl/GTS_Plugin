@@ -5,6 +5,7 @@
 namespace Gts {
 	class Debug {
 		public:
+			Debug() = default;
 
 			[[nodiscard]] inline spdlog::level::level_enum GetLogLevel() const noexcept {
 				return _logLevel;
@@ -27,6 +28,8 @@ namespace Gts {
 
 	class Frame {
 		public:
+			Frame() = default;
+
 			[[nodiscard]] inline int GetInitDelay() const noexcept {
 				return _initDelay;
 			}
@@ -45,6 +48,8 @@ namespace Gts {
 
 	class Tremor {
 		public:
+			Tremor() = default;
+
 			[[nodiscard]] inline std::string GetMethod() const noexcept {
 				return _method;
 			}
@@ -77,7 +82,7 @@ namespace Gts {
 
 	class Config {
 		public:
-			ClassName() = default;
+			Config() = default;
 
 			[[nodiscard]] inline const Debug& GetDebug() const noexcept {
 				return _debug;
