@@ -590,9 +590,9 @@ namespace Gts {
 			}
 
 			bool success = false;
-			NiPoint3 ray_start = pos; 
+			NiPoint3 ray_start = pos;
 			NiPoint3 ray_direction(0.0, 0.0, -1.0);
-			
+
 			float ray_length = 1620000;
 			NiPoint3 endpos = CastRay(actor, ray_start, ray_direction, ray_length, success);
 
@@ -625,9 +625,9 @@ namespace Gts {
 			}
 
 			bool success = false;
-			NiPoint3 ray_start = pos; 
+			NiPoint3 ray_start = pos;
 			NiPoint3 ray_direction(0.0, 0.0, -1.0);
-			
+
 			float ray_length = 1620000;
 			NiPoint3 endpos = CastRay(object, ray_start, ray_direction, ray_length, success);
 
