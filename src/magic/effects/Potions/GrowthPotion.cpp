@@ -19,7 +19,7 @@ namespace Gts {
 			return;
 		}
 
-		Rumble::Once("GrowthPotion", caster, 2.0, 0.05);
+		GRumble::Once("GrowthPotion", caster, 2.0, 0.05);
 
 		float Volume = clamp(0.15, 2.0, get_visual_scale(caster)/8);
 		Runtime::PlaySoundAtNode("growthSound", caster, Volume, 1.0, "NPC Pelvis [Pelv]");
@@ -36,7 +36,7 @@ namespace Gts {
 
 		float AlchemyLevel = clamp(1.0, 2.0, caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlchemy)/100 + 1.0);
 		if (caster == PlayerCharacter::GetSingleton()) {
-			Rumble::Once("GrowthPotion", caster, 0.4, 0.05);
+			GRumble::Once("GrowthPotion", caster, 0.4, 0.05);
 		}
 
 		if (this->timer.ShouldRun()) {
@@ -50,7 +50,7 @@ namespace Gts {
 		float Power = BASE_POWER * get_visual_scale(caster) * AlchemyLevel;
 
 		Grow(caster, Power, 0.0);
-		Rumble::Once("GrowButton", caster, 0.6, 0.05);
+		GRumble::Once("GrowButton", caster, 0.6, 0.05);
 	}
 
 	void GrowthPotion::OnFinish() {

@@ -120,7 +120,7 @@ namespace Gts {
 			this->AllowStacking = false;
 		}
 
-		Rumble::Once("ExplosiveGrowth", actor, get_visual_scale(actor) * 2, 0.05);
+		GRumble::Once("ExplosiveGrowth", actor, get_visual_scale(actor) * 2, 0.05);
 		if (this->timerSound.ShouldRunFrame()) {
 			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 0.0);
 		}
@@ -141,7 +141,7 @@ namespace Gts {
 
 		this->AllowStacking = true;
 
-		Rumble::Once("ExplosiveGrowth", actor, 7.0, 0.05);
+		GRumble::Once("ExplosiveGrowth", actor, 7.0, 0.05);
 		if (this->timerSound.ShouldRunFrame()) {
 			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 0.0);
 		}

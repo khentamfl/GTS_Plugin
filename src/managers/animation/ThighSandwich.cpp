@@ -125,28 +125,28 @@ namespace {
 	void StartBodyRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: L_LEG_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+			GRumble::Start(rumbleName, &actor, power,  halflife, node_name);
 		}
 	}
 
 	void StopBodyRumble(std::string_view tag, Actor& actor) {
 		for (auto& node_name: L_LEG_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Stop(rumbleName, &actor);
+			GRumble::Stop(rumbleName, &actor);
 		}
 	}
 
 	void StartLeftLegRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: L_LEG_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+			GRumble::Start(rumbleName, &actor, power,  halflife, node_name);
 		}
 	}
 
 	void StopLeftLegRumble(std::string_view tag, Actor& actor) {
 		for (auto& node_name: L_LEG_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Stop(rumbleName, &actor);
+			GRumble::Stop(rumbleName, &actor);
 		}
 	}
 
@@ -208,7 +208,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		Runtime::PlaySoundAtNode("ThighSandwichImpact", &data.giant, 1.0, 1.0, "AnimObjectB");
 		sandwichdata.EnableSuffocate(true);
-		Rumble::Once("ThighImpact", &data.giant, 0.4, 0.15, "AnimObjectA");
+		GRumble::Once("ThighImpact", &data.giant, 0.4, 0.15, "AnimObjectA");
 		for (auto tiny: sandwichdata.GetActors()) {
 			DoThighDamage(&data.giant, tiny, data.animSpeed, 1.0, 1.0);
 			tiny->NotifyAnimationGraph("ragdoll");
@@ -223,7 +223,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		Runtime::PlaySoundAtNode("ThighSandwichImpact", &data.giant, 1.2, 1.0, "AnimObjectA");
 		sandwichdata.EnableSuffocate(true);
-		Rumble::Once("ThighImpact", &data.giant, 0.75, 0.15, "AnimObjectA");
+		GRumble::Once("ThighImpact", &data.giant, 0.75, 0.15, "AnimObjectA");
 		for (auto tiny: sandwichdata.GetActors()) {
 			DoThighDamage(&data.giant, tiny, data.animSpeed, 2.2, 0.75);
 			ReportCrime(&data.giant, tiny, 25.0, false);

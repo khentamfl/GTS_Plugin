@@ -41,29 +41,29 @@ namespace Gts {
 	ActorRumbleData::ActorRumbleData()  : delay(Timer(0.40)) {
 	}
 
-	Rumble& Rumble::GetSingleton() noexcept {
+	GRumble& GRumble::GetSingleton() noexcept {
 		static Rumble instance;
 		return instance;
 	}
 
-	std::string Rumble::DebugName() {
-		return "Rumble";
+	std::string GRumble::DebugName() {
+		return "GRumble";
 	}
 
-	void Rumble::Reset() {
+	void GRumble::Reset() {
 		this->data.clear();
 	}
-	void Rumble::ResetActor(Actor* actor) {
+	void GRumble::ResetActor(Actor* actor) {
 		this->data.erase(actor);
 	}
 
-	void Rumble::Start(std::string_view tag, Actor* giant, float intensity, float halflife, std::string_view node) {
-		Rumble::For(tag, giant, intensity, halflife, node, 0);
+	void GRumble::Start(std::string_view tag, Actor* giant, float intensity, float halflife, std::string_view node) {
+		GRumble::For(tag, giant, intensity, halflife, node, 0);
 	}
-	void Rumble::Start(std::string_view tag, Actor* giant, float intensity, float halflife) {
-		Rumble::For(tag, giant, intensity, halflife, "NPC COM [COM ]", 0);
+	void GRumble::Start(std::string_view tag, Actor* giant, float intensity, float halflife) {
+		GRumble::For(tag, giant, intensity, halflife, "NPC COM [COM ]", 0);
 	}
-	void Rumble::Stop(std::string_view tagsv, Actor* giant) {
+	void GRumble::Stop(std::string_view tagsv, Actor* giant) {
 		string tag = std::string(tagsv);
 		auto& me = Rumble::GetSingleton();
 		try {
@@ -71,7 +71,7 @@ namespace Gts {
 		} catch (std::out_of_range e) {}
 	}
 
-	void Rumble::For(std::string_view tagsv, Actor* giant, float intensity, float halflife, std::string_view nodesv, float duration) {
+	void GRumble::For(std::string_view tagsv, Actor* giant, float intensity, float halflife, std::string_view nodesv, float duration) {
 		std::string tag = std::string(tagsv);
 		std::string node = std::string(nodesv);
 		auto& me = Rumble::GetSingleton();
@@ -82,16 +82,16 @@ namespace Gts {
 		me.data.at(giant).tags.at(tag).ChangeDuration(duration);
 	}
 
-	void Rumble::Once(std::string_view tag, Actor* giant, float intensity, float halflife, std::string_view node) {
-		Rumble::For(tag, giant, intensity, halflife, node, 1.0);
+	void GRumble::Once(std::string_view tag, Actor* giant, float intensity, float halflife, std::string_view node) {
+		GRumble::For(tag, giant, intensity, halflife, node, 1.0);
 	}
 
-	void Rumble::Once(std::string_view tag, Actor* giant, float intensity, float halflife) {
-		Rumble::Once(tag, giant, intensity, halflife, "NPC Root [Root]");
+	void GRumble::Once(std::string_view tag, Actor* giant, float intensity, float halflife) {
+		GRumble::Once(tag, giant, intensity, halflife, "NPC Root [Root]");
 	}
 
 
-	void Rumble::Update() {
+	void GRumble::Update() {
 		auto profiler = Profilers::Profile("Rumble: Update");
 		for (auto& [actor, data]: this->data) {
 			//if (data.delay.ShouldRun()) {

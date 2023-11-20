@@ -421,8 +421,8 @@ namespace Gts {
 							AdjustMassLimit(0.0106, giant);
 							SurvivalMode_AdjustHunger(giant, this->tinySize, this->naturalsize,this->WasDragon, this->WasLiving, 1);
 						}
-						Rumble::Once("GrowthRumble", giant, 2.45, 0.30);
-						Rumble::Once("VoreShake", giant, this->sizePower * 4, 0.05);
+						GRumble::Once("GrowthRumble", giant, 2.45, 0.30);
+						GRumble::Once("VoreShake", giant, this->sizePower * 4, 0.05);
 						if (Vore::GetSingleton().GetVoreData(giant).GetTimer() == true) {
 							Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 						}

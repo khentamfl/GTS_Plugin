@@ -66,12 +66,12 @@ namespace {
 		if (type == "Left") {
 			for (auto& node_name: L_LEG_RUMBLE_NODES) {
 				std::string rumbleName = std::format("{}{}", tag, node_name);
-				Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+				GRumble::Start(rumbleName, &actor, power,  halflife, node_name);
 			}
 		} else if (type == "Right") {
 			for (auto& node_name: R_LEG_RUMBLE_NODES) {
 				std::string rumbleName = std::format("{}{}", tag, node_name);
-				Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+				GRumble::Start(rumbleName, &actor, power,  halflife, node_name);
 			}
 		}
 	}
@@ -80,12 +80,12 @@ namespace {
 		if (type == "Left") {
 			for (auto& node_name: L_LEG_RUMBLE_NODES) {
 				std::string rumbleName = std::format("{}{}", tag, node_name);
-				Rumble::Stop(rumbleName, &actor);
+				GRumble::Stop(rumbleName, &actor);
 			}
 		} else if (type == "Right") {
 			for (auto& node_name: R_LEG_RUMBLE_NODES) {
 				std::string rumbleName = std::format("{}{}", tag, node_name);
-				Rumble::Stop(rumbleName, &actor);
+				GRumble::Stop(rumbleName, &actor);
 			}
 		}
 	}
@@ -96,7 +96,7 @@ namespace {
 		if (HasSMT(giant)) {
 			force *= 12.0;
 		}
-		Rumble::Once(name, giant, force, 0.05, node);
+		GRumble::Once(name, giant, force, 0.05, node);
 	}
 
 	void DoSounds(Actor* giant, float animspeed, std::string_view feet) {
@@ -225,7 +225,7 @@ namespace {
 
 
 	void GTS_Next(AnimationEventData& data) {
-		Rumble::Stop("StompR", &data.giant);
+		GRumble::Stop("StompR", &data.giant);
 	}
 
 	void GTSBEH_Exit(AnimationEventData& data) {
@@ -238,7 +238,7 @@ namespace {
 		ManageCamera(&data.giant, false, 6.0);
 		ManageCamera(&data.giant, false, 7.0);
 
-		Rumble::Stop("StompR", &data.giant);
+		GRumble::Stop("StompR", &data.giant);
 	}
 
 	void RightStrongStompEvent(const InputEventData& data) {

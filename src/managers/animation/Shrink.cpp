@@ -65,7 +65,7 @@ namespace {
 			DamageAV(caster, ActorValue::kStamina, 0.45 * caster_scale * stamina * TimeScale() * multiply);
 			Grow(caster, -(0.0080 * stamina * multiply), 0.0);
 
-			Rumble::Once("ShrinkButton", caster, 4.0 * stamina, 0.05, "NPC Pelvis [Pelv]");
+			GRumble::Once("ShrinkButton", caster, 4.0 * stamina, 0.05, "NPC Pelvis [Pelv]");
 			if (elapsed >= 0.99) {
 				SetHalfLife(caster, 1.0);
 				return false;

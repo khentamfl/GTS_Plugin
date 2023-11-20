@@ -67,7 +67,7 @@ namespace {
 			Grow(caster, 0.0080 * stamina * multiply * animspeed, 0.0);
 			// value*scale ^  ; ^ static value, not affected by scale
 
-			Rumble::Once("GrowButton", caster, 6.0 * stamina, 0.05, "NPC Pelvis [Pelv]");
+			GRumble::Once("GrowButton", caster, 6.0 * stamina, 0.05, "NPC Pelvis [Pelv]");
 			if (elapsed >= 0.99) {
 				SetHalfLife(caster, 1.0);
 				return false;

@@ -73,28 +73,28 @@ namespace {
 	void LegRumbleOnce(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: LEG_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Once(rumbleName, &actor, power,  halflife, node_name);
+			GRumble::Once(rumbleName, &actor, power,  halflife, node_name);
 		}
 	}
 
 	void StartLegRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: LEG_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+			GRumble::Start(rumbleName, &actor, power,  halflife, node_name);
 		}
 	}
 
 	void StartBodyRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: BODY_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+			GRumble::Start(rumbleName, &actor, power,  halflife, node_name);
 		}
 	}
 
 	void StopLegRumble(std::string_view tag, Actor& actor) {
 		for (auto& node_name: LEG_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Stop(rumbleName, &actor);
+			GRumble::Stop(rumbleName, &actor);
 		}
 	}
 
@@ -204,7 +204,7 @@ namespace {
 		float volume = scale * 0.10 * speed;
 		float perk = GetPerkBonus_Thighs(&data.giant);
 
-		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
+		GRumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
 		DoFootstepSound(&data.giant, 1.05, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 1.1, FootEvent::Right, RNode);
 		DoDamageEffect(&data.giant, 1.6 * perk, 1.4, 25, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
@@ -219,7 +219,7 @@ namespace {
 		float volume = scale * 0.10 * speed;
 		float perk = GetPerkBonus_Thighs(&data.giant);
 
-		Rumble::Once("ThighCrushStompL", &data.giant, volume * 4, 0.10, LNode);
+		GRumble::Once("ThighCrushStompL", &data.giant, volume * 4, 0.10, LNode);
 		DoFootstepSound(&data.giant, 1.05, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, 1.1, FootEvent::Left, LNode);
 		DoDamageEffect(&data.giant, 1.6 * perk, 1.4, 25, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
@@ -234,7 +234,7 @@ namespace {
 		float volume = scale * 0.05 * speed;
 		float perk = GetPerkBonus_Thighs(&data.giant);
 
-		Rumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
+		GRumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 1.1, FootEvent::Right, RNode);
 		DoDamageEffect(&data.giant, 1.4 * perk, 1.3, 25, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);

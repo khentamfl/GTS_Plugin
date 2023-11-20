@@ -43,7 +43,7 @@ namespace Gts {
 	};
 
 	// Rumble for all actors
-	class Rumble : public EventListener {
+	class GRumble : public EventListener {
 		public:
 			[[nodiscard]] static Rumble& GetSingleton() noexcept;
 

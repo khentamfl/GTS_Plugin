@@ -20,7 +20,7 @@ namespace Gts {
 			return;
 		}
 
-		Rumble::Once("ShrinkPotion", caster, 2.0, 0.05);
+		GRumble::Once("ShrinkPotion", caster, 2.0, 0.05);
 
 		float Volume = clamp(0.15, 2.0, get_visual_scale(caster)/8);
 		Runtime::PlaySoundAtNode("growthSound", caster, Volume, 1.0, "NPC Pelvis [Pelv]");
@@ -36,7 +36,7 @@ namespace Gts {
 		}
 
 		float AlchemyLevel = clamp(1.0, 2.0, caster->AsActorValueOwner()->GetActorValue(ActorValue::kAlchemy)/100 + 1.0);
-		Rumble::Once("ShrinkPotion", caster, 0.4, 0.05);
+		GRumble::Once("ShrinkPotion", caster, 0.4, 0.05);
 
 		float Power = BASE_POWER * get_visual_scale(caster) * AlchemyLevel;
 

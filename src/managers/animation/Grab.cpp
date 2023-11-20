@@ -79,27 +79,27 @@ namespace {
 	void StartRHandRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: RHAND_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+			GRumble::Start(rumbleName, &actor, power,  halflife, node_name);
 		}
 	}
 
 	void StartLHandRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: LHAND_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Start(rumbleName, &actor, power,  halflife, node_name);
+			GRumble::Start(rumbleName, &actor, power,  halflife, node_name);
 		}
 	}
 
 	void StopRHandRumble(std::string_view tag, Actor& actor) {
 		for (auto& node_name: RHAND_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Stop(rumbleName, &actor);
+			GRumble::Stop(rumbleName, &actor);
 		}
 	}
 	void StopLHandRumble(std::string_view tag, Actor& actor) {
 		for (auto& node_name: RHAND_RUMBLE_NODES) {
 			std::string rumbleName = std::format("{}{}", tag, node_name);
-			Rumble::Stop(rumbleName, &actor);
+			GRumble::Stop(rumbleName, &actor);
 		}
 	}
 
@@ -214,7 +214,7 @@ namespace {
 			//std::string message = std::format("While you have actor grabbed, you constantly lose stamina over time. You transfer 50% received damage to the actor in your hand. Press E to damage the actor, RMB to release, V to eat, X to throw, B to put between breasts. You can have only one actor in hand and can't pick up other actor if you have actor between your breasts.");
 			//TutorialMessage(message, "Grab");
 		}
-		Rumble::Once("GrabCatch", giant, 2.0, 0.15);
+		GRumble::Once("GrabCatch", giant, 2.0, 0.15);
 	}
 
 	void GTSGrab_Catch_End(AnimationEventData& data) {
@@ -255,7 +255,7 @@ namespace {
 			}
 			//DamageAV(grabbedActor, ActorValue::kHealth, damage);
 			InflictSizeDamage(giant, grabbedActor, damage);
-			Rumble::Once("GrabAttack", giant, 6.0 * bonus, 0.05, "NPC L Hand [LHnd]");
+			GRumble::Once("GrabAttack", giant, 6.0 * bonus, 0.05, "NPC L Hand [LHnd]");
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1);
 
 			float experience = std::clamp(damage/800, 0.0f, 0.06f);
@@ -275,7 +275,7 @@ namespace {
 				CrushManager::Crush(giant, grabbedActor);
 				AdjustGtsSkill(0.14, giant);
 				SetBeingHeld(grabbedActor, false);
-				Rumble::Once("GrabAttackKill", giant, 16.0 * bonus, 0.15, "NPC L Hand [LHnd]");
+				GRumble::Once("GrabAttackKill", giant, 16.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 				if (!LessGore()) {
 					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
@@ -424,7 +424,7 @@ namespace {
 			launch = 1.5;
 			dust = 1.25;
 		}
-		Rumble::Once("StompR", &data.giant, 1.50 * shake, 0.0, RNode);
+		GRumble::Once("StompR", &data.giant, 1.50 * shake, 0.0, RNode);
 		DoDamageEffect(&data.giant, 1.1 * launch * data.animSpeed * perk, 1.0 * launch * data.animSpeed, 10, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
@@ -444,7 +444,7 @@ namespace {
 			launch = 1.5;
 			dust = 1.25;
 		}
-		Rumble::Once("StompL", &data.giant, 1.50 * shake, 0.0, LNode);
+		GRumble::Once("StompL", &data.giant, 1.50 * shake, 0.0, LNode);
 		DoDamageEffect(&data.giant, 1.1 * launch * data.animSpeed * perk, 1.0 * launch * data.animSpeed, 10, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
@@ -565,7 +565,7 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
 		ManageCamera(giant, false, 7.0);
-		Rumble::Once("ThrowFoe", &data.giant, 2.50, 0.10, "NPC L Hand [LHnd]");
+		GRumble::Once("ThrowFoe", &data.giant, 2.50, 0.10, "NPC L Hand [LHnd]");
 		AnimationManager::StartAnim("TinyDied", giant);
 		//BlockFirstPerson(giant, false);
 		Grab::DetachActorTask(giant);

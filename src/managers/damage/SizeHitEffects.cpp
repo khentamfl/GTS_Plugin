@@ -90,7 +90,7 @@ namespace {
 			} else {
 				Runtime::PlaySoundAtNode("SoftHandAttack", receiver, 1.0, 1.0, "NPC L Hand [LHnd]");
 			}
-			Rumble::Once("GrabAttackKill", receiver, 8.0, 0.15, "NPC L Hand [LHnd]");
+			GRumble::Once("GrabAttackKill", receiver, 8.0, 0.15, "NPC L Hand [LHnd]");
 			AnimationManager::StartAnim("GrabAbort", receiver); // Abort Grab animation
 			Grab::Release(receiver);
 		}
@@ -162,7 +162,7 @@ namespace {
 					attacker->NotifyAnimationGraph("staggerStart");
 
 					mod_target_scale(receiver, -0.35 * scale);
-					Rumble::For("CheatDeath", receiver, 240.0, 0.10, "NPC COM [COM ]", 1.50);
+					GRumble::For("CheatDeath", receiver, 240.0, 0.10, "NPC COM [COM ]", 1.50);
 					Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.5);
 					receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
 					receiver->NotifyAnimationGraph("staggerStart");
@@ -249,7 +249,7 @@ namespace {
 		if (IsFirstPerson()) {
 			value *= 0.05;
 		}
-		Rumble::Once("HitGrowth", receiver, value, 0.15);
+		GRumble::Once("HitGrowth", receiver, value, 0.15);
 	}
 }
 

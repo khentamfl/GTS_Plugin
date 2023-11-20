@@ -153,7 +153,7 @@ namespace Gts {
 						}
 						if (StrongGrowthChance >= 19.0) {
 							GrowthPower *= 4.0;                                                                       // Stronger growth if procs
-							Rumble::Once("CurseOfGrowth", actor, GrowthPower * 40, 0.10);
+							GRumble::Once("CurseOfGrowth", actor, GrowthPower * 40, 0.10);
 						}
 						if (targetScale >= sizelimit) {
 							set_target_scale(actor, sizelimit);
@@ -163,7 +163,7 @@ namespace Gts {
 						}
 						if (targetScale < maxScale) {
 							mod_target_scale(actor, GrowthPower);
-							Rumble::Once("CurseOfGrowth", actor, GrowthPower * 20, 0.10);
+							GRumble::Once("CurseOfGrowth", actor, GrowthPower * 20, 0.10);
 							Runtime::PlaySoundAtNode("growthSound", actor, GrowthPower * 6, 1.0, "NPC Pelvis [Pelv]");
 						}
 					}

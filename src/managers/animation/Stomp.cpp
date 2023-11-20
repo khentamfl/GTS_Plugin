@@ -46,7 +46,7 @@ namespace {
 		}
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.0, 1.8);
 		TrackFeet(&data.giant, 6, true);
-		Rumble::Start("StompR", &data.giant, 0.35, 0.15, RNode);
+		GRumble::Start("StompR", &data.giant, 0.35, 0.15, RNode);
 		log::info("StompStartR true");
 	}
 
@@ -59,7 +59,7 @@ namespace {
 		}
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.0, 1.8);
 		TrackFeet(&data.giant, 5, true);
-		Rumble::Start("StompL", &data.giant, 0.45, 0.15, LNode); // Start stonger effect
+		GRumble::Start("StompL", &data.giant, 0.45, 0.15, LNode); // Start stonger effect
 		log::info("StompStartL true");
 	}
 
@@ -73,7 +73,7 @@ namespace {
 			launch = 1.2;
 			dust = 1.45;
 		}
-		Rumble::Once("StompR", &data.giant, 2.20 * shake, 0.0, RNode);
+		GRumble::Once("StompR", &data.giant, 2.20 * shake, 0.0, RNode);
 		DoDamageEffect(&data.giant, (1.8 + data.animSpeed/8) * launch * perk, (1.45 + data.animSpeed/4) * launch, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/8, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust + (data.animSpeed * 0.05), FootEvent::Right, RNode);
@@ -92,7 +92,7 @@ namespace {
 			launch = 1.2;
 			dust = 1.45;
 		}
-		Rumble::Once("StompL", &data.giant, 2.20 * shake, 0.0, LNode);
+		GRumble::Once("StompL", &data.giant, 2.20 * shake, 0.0, LNode);
 		DoDamageEffect(&data.giant, (1.8 + data.animSpeed/8) * launch * perk, (1.45 + data.animSpeed/4) * launch, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust + (data.animSpeed * 0.05), FootEvent::Left, LNode);
@@ -112,7 +112,7 @@ namespace {
 			dust = 1.35;
 			shake = 4.0;
 		}
-		Rumble::Once("StompRL", &data.giant, 1.25 * shake, 0.05, RNode);
+		GRumble::Once("StompRL", &data.giant, 1.25 * shake, 0.05, RNode);
 		DoDamageEffect(&data.giant, 1.6 * perk, 1.45, 25, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust + (data.animSpeed * 0.05), FootEvent::Right, RNode);
@@ -130,7 +130,7 @@ namespace {
 			dust = 1.35;
 			shake = 4.0;
 		}
-		Rumble::Once("StompLL", &data.giant, 1.25 * shake, 0.05, LNode);
+		GRumble::Once("StompLL", &data.giant, 1.25 * shake, 0.05, LNode);
 		DoDamageEffect(&data.giant, 1.6 * perk, 1.45, 25, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust + data.animSpeed/4, FootEvent::Left, LNode);
@@ -152,15 +152,15 @@ namespace {
 	}
 
 	void GTS_Next(AnimationEventData& data) {
-		Rumble::Stop("StompR", &data.giant);
-		Rumble::Stop("StompL", &data.giant);
-		Rumble::Stop("StompRL", &data.giant);
-		Rumble::Stop("StompLL", &data.giant);
+		GRumble::Stop("StompR", &data.giant);
+		GRumble::Stop("StompL", &data.giant);
+		GRumble::Stop("StompRL", &data.giant);
+		GRumble::Stop("StompLL", &data.giant);
 	}
 
 	void GTSBEH_Exit(AnimationEventData& data) {
-		Rumble::Stop("StompR", &data.giant);
-		Rumble::Stop("StompL", &data.giant);
+		GRumble::Stop("StompR", &data.giant);
+		GRumble::Stop("StompL", &data.giant);
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 2.8);
 		TrackFeet(&data.giant, 6, false);

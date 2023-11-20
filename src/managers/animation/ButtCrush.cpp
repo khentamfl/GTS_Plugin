@@ -62,14 +62,14 @@ namespace {
 	void StartRumble(std::string_view tag, Actor& actor, float power, float halflife) {
 		for (auto& node_name: ALL_RUMBLE_NODES) {
 			std::string rumbleName = std::format("ButtCrush_{}{}", tag, node_name);
-			Rumble::Start(rumbleName, &actor, power, halflife, node_name);
+			GRumble::Start(rumbleName, &actor, power, halflife, node_name);
 		}
 	}
 
 	void StopRumble(std::string_view tag, Actor& actor) {
 		for (auto& node_name: ALL_RUMBLE_NODES) {
 			std::string rumbleName = std::format("ButtCrush_{}{}", tag, node_name);
-			Rumble::Stop(rumbleName, &actor);
+			GRumble::Stop(rumbleName, &actor);
 		}
 	}
 
@@ -233,7 +233,7 @@ namespace {
 			launch = 1.2;
 			dust = 1.25;
 		}
-		Rumble::Once("FS_R", &data.giant, 2.20, 0.0, RNode);
+		GRumble::Once("FS_R", &data.giant, 2.20, 0.0, RNode);
 		DoDamageEffect(&data.giant, 1.4, 1.45, 10, 0.25, FootEvent::Right, 1.0, DamageSource::Booty);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
@@ -250,7 +250,7 @@ namespace {
 			launch = 1.2;
 			dust = 1.25;
 		}
-		Rumble::Once("FS_L", &data.giant, 2.20, 0.0, LNode);
+		GRumble::Once("FS_L", &data.giant, 2.20, 0.0, LNode);
 		DoDamageEffect(&data.giant, 1.4, 1.45, 10, 0.25, FootEvent::Left, 1.0, DamageSource::Booty);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
@@ -290,8 +290,8 @@ namespace {
 				DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC L Butt");
 				DoFootstepSound(giant, 1.25, FootEvent::Right, RNode);
 				DoLaunch(&data.giant, 28.00 * launch * perk, 4.20, 1.4, FootEvent::Butt, 1.20);
-				Rumble::Once("Butt_L", &data.giant, 3.60 * damage, 0.02, "NPC R Butt");
-				Rumble::Once("Butt_R", &data.giant, 3.60 * damage, 0.02, "NPC L Butt");
+				GRumble::Once("Butt_L", &data.giant, 3.60 * damage, 0.02, "NPC R Butt");
+				GRumble::Once("Butt_R", &data.giant, 3.60 * damage, 0.02, "NPC L Butt");
 			}
 		} else {
 			if (!ButtR) {
