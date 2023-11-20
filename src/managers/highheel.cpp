@@ -128,13 +128,6 @@ namespace Gts {
 	}
 
 
-	struct RaceMenuSDTA {
-		std::string name;
-		std::vector<float> pos;
-
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RaceMenuSDTA, name, pos)
-	};
-
 	void HighHeelManager::UpdateHHOffset(Actor* actor) {
 		auto profiler = Profilers::Profile("HH: UpdateHHOffset");
 		auto models = GetModelsForSlot(actor, BGSBipedObjectForm::BipedObjectSlot::kFeet);
@@ -149,14 +142,12 @@ namespace Gts {
 					std::string stringDataStr = data.value;
 					std::stringstream jsonData(stringDataStr);
           json j = json::parse(jsonData);
-					vector<RaceMenuSDTA> alterations = j.template get<vector<RaceMenuSDTA>>();
-					for (auto alteration: alterations) {
-						if (alteration.name == "NPC") {
-							if (alteration.pos.size() > 2) {
-								result = NiPoint3(alteration.pos[0], alteration.pos[1], alteration.pos[2]);
+					for (auto alteration: j) {
+            if (alteration.contains("name") && alteration.contains("pos") && alteration["name"] == "NPC" && alteration["pos"].size() > 2) {
+                auto p = alteration["pos"].template get<std::vector<float>>();
+								result = NiPoint3(p[0], p[1], p[2]);
 								return false;
-							}
-						}
+            }
 					}
 					return true;
 				});
