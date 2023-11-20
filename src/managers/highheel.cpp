@@ -7,6 +7,9 @@
 #include "scale/scale.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "profiler.hpp"
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 using namespace RE;
 using namespace Gts;
 
@@ -129,7 +132,7 @@ namespace Gts {
 		std::string name;
 		std::vector<float> pos;
 
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RaceMenuSDTA, name pos)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RaceMenuSDTA, name, pos)
 	};
 
 	void HighHeelManager::UpdateHHOffset(Actor* actor) {
