@@ -1,6 +1,6 @@
 #include "utils/fmt.hpp"
 
-auto fmt::formatter<BSFixedString>::format(BSFixedString v, format_context& ctx) const {
+std::string fmt::formatter<BSFixedString>::format(BSFixedString v, format_context& ctx) const {
   string_view name = "<empty>";
   if v.c_str() {
     name = v.c_str();
@@ -8,7 +8,7 @@ auto fmt::formatter<BSFixedString>::format(BSFixedString v, format_context& ctx)
   return formatter<string_view>::format(name, ctx);
 }
 
-auto fmt::formatter<ACTOR_VALUE_MODIFIER>::format(ACTOR_VALUE_MODIFIER v, format_context& ctx) const {
+std::string fmt::formatter<ACTOR_VALUE_MODIFIER>::format(ACTOR_VALUE_MODIFIER v, format_context& ctx) const {
   string_view name = "unknown";
   switch (v) {
     case ACTOR_VALUE_MODIFIER::kPermanent: name = "kPermanent"; break;
