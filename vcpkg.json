@@ -7,10 +7,6 @@
       "description": "Build the SKSE plugin.",
       "dependencies": [
         "commonlibsse-ng",
-        {
-          "name": "articuno",
-          "features": ["toml11-archive"]
-        },
         "glm",
         "toml11",
         "nlohmann-json"
