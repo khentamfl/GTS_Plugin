@@ -8,7 +8,7 @@ const Config& Config::GetSingleton() noexcept {
 	static std::atomic_bool initialized;
 	static std::latch latch(1);
 	if (!initialized.exchange(true)) {
-		const auto data = toml::parse(R"(Data\SKSE\Plugins\GtsInput.toml)");
+		const auto data = toml::parse(R"(Data\SKSE\Plugins\GtșPlugin.toml)");
     instance = Config(data);
 		latch.count_down();
 	}

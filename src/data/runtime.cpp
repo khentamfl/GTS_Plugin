@@ -701,7 +701,7 @@ namespace Gts {
 	}
 
 	void Runtime::DataReady() {
-    const auto data = toml::parse(R"(Data\SKSE\Plugins\GtsRuntime.yaml)");
+    const auto data = toml::parse(R"(Data\SKSE\Plugins\GtsRuntime.toml)");
 		RuntimeConfig config(data);
 
 		for (auto &[key, value]: config.sounds) {
