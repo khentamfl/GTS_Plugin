@@ -46,6 +46,7 @@ find_package(CommonLibSSE CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(toml11 CONFIG REQUIRED)
 find_package(nlohmann_json 3.2.0 REQUIRED)
+find_path(GLUINO_INCLUDE_DIRS "gluino/gluino.h")
 
 add_commonlibsse_plugin(${PROJECT_NAME} DECLARATIVE SOURCES ${headers} ${sources})
 add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")
@@ -56,6 +57,7 @@ target_include_directories(${PROJECT_NAME}
         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/src>
         $<INSTALL_INTERFACE:src>
         ${GLM_INCLUDE_DIRS}
+        ${GLUINO_INCLUDE_DIRS}
         )
 
 target_include_directories(${PROJECT_NAME}
