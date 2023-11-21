@@ -1,5 +1,12 @@
 #include "utils/fmt.hpp"
 
+auto fmt::formatter<BSFixedString>::format(BSFixedString v, format_context& ctx) const {
+  string_view name = "<empty>";
+  if v.c_str() {
+    name = v.c_str();
+  }
+  return formatter<string_view>::format(name, ctx);
+}
 
 auto fmt::formatter<ACTOR_VALUE_MODIFIER>::format(ACTOR_VALUE_MODIFIER v, format_context& ctx) const {
   string_view name = "unknown";
