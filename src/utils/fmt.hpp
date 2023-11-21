@@ -7,7 +7,7 @@ using namespace RE;
 template <> struct fmt::formatter<BSFixedString> : formatter<string_view> {
   auto format(BSFixedString v, format_context& ctx) const {
     string_view name = "<empty>";
-    if v.c_str() {
+    if (v.c_str()) {
       name = v.c_str();
     }
     return formatter<string_view>::format(name, ctx);
