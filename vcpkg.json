@@ -9,7 +9,8 @@
         "commonlibsse-ng",
         "glm",
         "toml11",
-        "nlohmann-json"
+        "nlohmann-json",
+		"gluino"
       ]
     }
   },
