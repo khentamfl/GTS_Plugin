@@ -587,8 +587,8 @@ void DebugOverlayMenu::Init() {
 
 	scaleformManager->LoadMovieEx(this, MENU_PATH, [](RE::GFxMovieDef* a_def) -> void
 	{
-		// a_def->SetState(RE::GFxState::StateType::kLog,
-		//                 RE::make_gptr<Logger>().get());
+		a_def->SetState(RE::GFxState::StateType::kLog,
+		                RE::make_gptr<Logger>().get());
 	});
 	this->inited = true;
 
