@@ -69,6 +69,9 @@ namespace {
     } catch (const std::exception& ex) {
       log->error("Could not load config: {}", ex.what());
       report_and_fail(std::format("Could not load config: {}", ex.what()));
+    } catch (const std::runtime_error& ex) {
+      log->error("Could not load config: {}", ex.what());
+      report_and_fail(std::format("Could not load config: {}", ex.what()));
     }
 
 
