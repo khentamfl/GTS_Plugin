@@ -9,7 +9,7 @@ const Config& Config::GetSingleton() noexcept {
 	static std::latch latch(1);
 	if (!initialized.exchange(true)) {
     log::info("Parsing toml");
-		const auto data = toml::parse(R"(Data\SKSE\Plugins\GtșPlugin.toml)");
+		const auto data = toml::parse(R"(Data\SKSE\Plugins\GtsPlugin.toml)");
     log::info("Toml Parsed");
     log::info("Loading Config");
     instance = Config(data);
