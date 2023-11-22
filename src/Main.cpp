@@ -62,7 +62,7 @@ namespace {
 		    const auto& debugConfig = Gts::Config::GetSingleton().GetDebug();
     } catch (const std::exception& ex) {
       log->error("Could not load config: {}", ex);
-      throw ex;
+      report_and_fail(std::format("Could not load config: {}", ex));
     }
     log->info("Plugin Config Loaded");
 
