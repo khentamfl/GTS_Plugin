@@ -66,7 +66,7 @@ namespace {
     		log->flush_on(debugConfig.GetFlushLevel());
     } catch (const std::exception& ex) {
       log->error("Could not load config: {}", ex.what());
-      report_and_fail(std::vformat("Could not load config: {}", ex.what()));
+      report_and_fail(std::format("Could not load config: {}", ex.what()));
     }
 
 		spdlog::set_default_logger(std::move(log));
