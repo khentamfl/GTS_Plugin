@@ -7,7 +7,7 @@ profile = false
 initDelay = 0
 step = 0
 
-[tremor]:
+[tremor]
 # linear, smoothstep, softcore, cubic
 method = "linear"
 # Contolls falloff this is the scale at which falloff=50%
