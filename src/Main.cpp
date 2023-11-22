@@ -58,7 +58,14 @@ namespace {
 		log->flush_on(spdlog::level::level_enum::trace);
 		log->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%l] [%t] [%s:%#] %v");
 		log->info("Logging started");
-		const auto& debugConfig = Gts::Config::GetSingleton().GetDebug();
+    try {
+		    const auto& debugConfig = Gts::Config::GetSingleton().GetDebug();
+    } catch (const std::exception& ex) {
+      log->error("Could not load config: {}", ex);
+      throw ex;
+    }
+    log->info("Plugin Config Loaded");
+
 
 		log->set_level(debugConfig.GetLogLevel());
 		log->flush_on(debugConfig.GetFlushLevel());
