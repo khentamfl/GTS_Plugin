@@ -8,7 +8,7 @@ namespace Hooks
 {
 	// BGSImpactManager
 	void Hook_PlayerCamera::Hook() {
-		logger::info("Hooking PlayerCamera");
+		log::info("Hooking PlayerCamera");
 		REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_PlayerCamera[0] };
 		_Update = Vtbl.write_vfunc(0x02, Update);
 	}

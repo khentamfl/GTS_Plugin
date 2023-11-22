@@ -573,7 +573,7 @@ void DebugOverlayMenu::Init() {
 	}
 	auto scaleformManager = RE::BSScaleformManager::GetSingleton();
 	if (!scaleformManager) {
-		logger::error("Gts: failed to initialize DebugOverlayMenu - ScaleformManager not found");
+		log::error("Gts: failed to initialize DebugOverlayMenu - ScaleformManager not found");
 		return;
 	}
 
@@ -592,7 +592,7 @@ void DebugOverlayMenu::Init() {
 	});
 	this->inited = true;
 
-	logger::error("Gts: initialize scale forms");
+	log::error("Gts: initialize scale forms");
 }
 
 DebugOverlayMenu& DebugOverlayMenu::GetSingleton() noexcept {
@@ -606,16 +606,16 @@ std::string DebugOverlayMenu::DebugName() {
 
 void DebugOverlayMenu::DataReady()
 {
-	logger::info("Gts: registering DebugOverlayMenu...");
+	log::info("Gts: registering DebugOverlayMenu...");
 
 	auto ui = RE::UI::GetSingleton();
 	if (ui) {
 		ui->Register(MENU_NAME, Creator);
 		DebugOverlayMenu::Start();
 
-		logger::info("Gts: successfully registered DebugOverlayMenu");
+		log::info("Gts: successfully registered DebugOverlayMenu");
 	} else {
-		logger::error("Gts: failed to register DebugOverlayMenu");
+		log::error("Gts: failed to register DebugOverlayMenu");
 	}
 }
 
@@ -625,7 +625,7 @@ void DebugOverlayMenu::Start()
 	if (msgQ) {
 		msgQ->AddMessage(MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
 	} else {
-		logger::warn("Gts: failed to show DebugOverlayMenu");
+		log::warn("Gts: failed to show DebugOverlayMenu");
 	}
 }
 
@@ -640,7 +640,7 @@ void DebugOverlayMenu::Unload()
 	if (msgQ) {
 		msgQ->AddMessage(MENU_NAME, RE::UI_MESSAGE_TYPE::kHide, nullptr);
 	} else {
-		logger::warn("Gts: failed to hide DebugOverlayMenu");
+		log::warn("Gts: failed to hide DebugOverlayMenu");
 	}
 }
 
@@ -738,7 +738,7 @@ void DebugAPI::CacheMenuData()
 	ScreenResY = abs(rect.top - rect.bottom);
 
 	CachedMenuData = true;
-	logger::info("Gts: DebugAPI::CacheMenuData");
+	log::info("Gts: DebugAPI::CacheMenuData");
 
 }
 

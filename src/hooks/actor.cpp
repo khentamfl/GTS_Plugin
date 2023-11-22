@@ -24,7 +24,7 @@ namespace {
 namespace Hooks
 {
 	void Hook_Actor::Hook(Trampoline& trampoline) {
-		logger::info("Hooking Actor");
+		log::info("Hooking Actor");
 		REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_Actor[0] };
 		// _GetBoundMin = Vtbl.write_vfunc(0x73, GetBoundMin);
 		// _GetBoundMax = Vtbl.write_vfunc(0x74, GetBoundMax);

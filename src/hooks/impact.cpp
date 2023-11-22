@@ -7,7 +7,7 @@ namespace Hooks
 {
 	// BGSImpactManager
 	void Hook_BGSImpactManager::Hook() {
-		logger::info("Hooking BGSImpactManager");
+		log::info("Hooking BGSImpactManager");
 		REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_BGSImpactManager[0] };
 		_ProcessEvent = Vtbl.write_vfunc(0x01, ProcessEvent);
 	}

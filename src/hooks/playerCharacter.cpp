@@ -16,7 +16,7 @@ using namespace Gts;
 namespace Hooks
 {
 	void Hook_PlayerCharacter::Hook() {
-		logger::info("Hooking PlayerCharacter");
+		log::info("Hooking PlayerCharacter");
 		REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_PlayerCharacter[0] };
 		// _GetBoundMin = Vtbl.write_vfunc(0x73, GetBoundMin);
 		// _GetBoundMax = Vtbl.write_vfunc(0x74, GetBoundMax);

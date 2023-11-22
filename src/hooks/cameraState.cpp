@@ -26,7 +26,7 @@ namespace Hooks
 
 	// Base
 	void Hook_CameraState::Hook() {
-		logger::info("Hooking TESCameraState");
+		log::info("Hooking TESCameraState");
 		REL::Relocation<std::uintptr_t> Vtbl{ TESCameraState::VTABLE[0] };
 		_Update = Vtbl.write_vfunc(0x03, Update);
 	}
@@ -38,7 +38,7 @@ namespace Hooks
 
 	// Third
 	void Hook_ThirdPersonState::Hook() {
-		logger::info("Hooking ThirdPersonState");
+		log::info("Hooking ThirdPersonState");
 		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_ThirdPersonState[0] };
 		_Update = Vtbl.write_vfunc(0x03, Update);
 	}
@@ -50,7 +50,7 @@ namespace Hooks
 
 	// Dragon
 	void Hook_DragonState::Hook() {
-		logger::info("Hooking DragonState");
+		log::info("Hooking DragonState");
 		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_DragonCameraState[0] };
 		_Update = Vtbl.write_vfunc(0x03, Update);
 	}
@@ -62,7 +62,7 @@ namespace Hooks
 
 	// Horse
 	void Hook_HorseState::Hook() {
-		logger::info("Hooking HorseState");
+		log::info("Hooking HorseState");
 		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_HorseCameraState[0] };
 		_Update = Vtbl.write_vfunc(0x03, Update);
 	}
@@ -74,7 +74,7 @@ namespace Hooks
 
 	// First
 	void Hook_FirstPersonState::Hook() {
-		logger::info("Hooking FirstPersonState");
+		log::info("Hooking FirstPersonState");
 		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_FirstPersonState[0] };
 		_Update = Vtbl.write_vfunc(0x03, Update);
 	}
@@ -86,7 +86,7 @@ namespace Hooks
 
 	// FreeCamera
 	void Hook_FreeState::Hook() {
-		logger::info("Hooking FreeCamera");
+		log::info("Hooking FreeCamera");
 		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_FreeCameraState[0] };
 		_Update = Vtbl.write_vfunc(0x03, Update);
 	}
@@ -98,7 +98,7 @@ namespace Hooks
 
 	// Transistion
 	void Hook_TransitionState::Hook() {
-		logger::info("Hooking TransitionCamera");
+		log::info("Hooking TransitionCamera");
 		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_PlayerCameraTransitionState[0] };
 		_Update = Vtbl.write_vfunc(0x03, Update);
 	}
@@ -110,7 +110,7 @@ namespace Hooks
 
 	// Bleedout
 	void Hook_BleedoutState::Hook() {
-		logger::info("Hooking BleedoutCamera");
+		log::info("Hooking BleedoutCamera");
 		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_BleedoutCameraState[0] };
 		_Update = Vtbl.write_vfunc(0x03, Update);
 	}
@@ -122,7 +122,7 @@ namespace Hooks
 
 	// Vats
 	void Hook_VATState::Hook() {
-		logger::info("Hooking VATCamera");
+		log::info("Hooking VATCamera");
 		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_VATSCameraState[0] };
 		_Update = Vtbl.write_vfunc(0x03, Update);
 	}
@@ -134,7 +134,7 @@ namespace Hooks
 
 	// Furniture
 	void Hook_FurnitureState::Hook() {
-		logger::info("Hooking Furniture");
+		log::info("Hooking Furniture");
 		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_FurnitureCameraState[0] };
 		_Update = Vtbl.write_vfunc(0x03, Update);
 	}
@@ -146,7 +146,7 @@ namespace Hooks
 
 	// IronSights
 	void Hook_IronSightState::Hook() {
-		logger::info("Hooking IronSightState");
+		log::info("Hooking IronSightState");
 		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_IronSightsState[0] };
 		_Update = Vtbl.write_vfunc(0x03, Update);
 	}
@@ -158,7 +158,7 @@ namespace Hooks
 
 	// Vanity
 	void Hook_VanityState::Hook() {
-		logger::info("Hooking VanityState");
+		log::info("Hooking VanityState");
 		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_AutoVanityState[0] };
 		_Update = Vtbl.write_vfunc(0x03, Update);
 	}
@@ -170,7 +170,7 @@ namespace Hooks
 
 	// Tween
 	void Hook_TweenState::Hook() {
-		logger::info("Hooking TweenCameraState");
+		log::info("Hooking TweenCameraState");
 		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_TweenMenuCameraState[0] };
 		_Update = Vtbl.write_vfunc(0x03, Update);
 	}

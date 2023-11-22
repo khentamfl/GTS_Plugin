@@ -8,7 +8,7 @@ using namespace Gts;
 namespace Hooks
 {
 	void Hook_MagicTarget::Hook() {
-		logger::info("Hooking ActorTarget");
+		log::info("Hooking ActorTarget");
 
 		REL::Relocation<std::uintptr_t> playerVtbl{ PlayerCharacter::VTABLE[1] };
 		_AddTargetPlayer = playerVtbl.write_vfunc(0x01, AddTargetPlayer);

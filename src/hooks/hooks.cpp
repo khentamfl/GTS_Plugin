@@ -21,7 +21,7 @@ namespace Hooks
 {
 	void Install()
 	{
-		logger::info("Gts applying hooks...");
+		log::info("Gts applying hooks...");
 
 		auto& trampoline = SKSE::GetTrampoline();
 		trampoline.create(512);
@@ -41,6 +41,6 @@ namespace Hooks
 		Hook_Scale::Hook(trampoline);
 		HookCameraStates();
 
-		logger::info("Gts finished applying hooks...");
+		log::info("Gts finished applying hooks...");
 	}
 }

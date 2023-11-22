@@ -9,7 +9,7 @@ using namespace Gts;
 namespace Hooks
 {
 	void Hook_hkbBehaviorGraph::Hook() {
-		logger::info("Hooking hkbBehaviorGraph");
+		log::info("Hooking hkbBehaviorGraph");
 		REL::Relocation<std::uintptr_t> vtbl{ RE::VTABLE_hkbBehaviorGraph[0] };
 
 		_Update = vtbl.write_vfunc(0x05, Update);

@@ -10,7 +10,7 @@ namespace Hooks
 {
 	// BGSImpactManager
 	void Hook_VM::Hook() {
-		logger::info("Hooking VirtualMachine");
+		log::info("Hooking VirtualMachine");
 		REL::Relocation<std::uintptr_t> Vtbl{ VTABLE_BSScript__Internal__VirtualMachine[0] };
 		_SendEvent = Vtbl.write_vfunc(REL::Relocate(0x24, 0x24, 0x26), SendEvent);
 	}

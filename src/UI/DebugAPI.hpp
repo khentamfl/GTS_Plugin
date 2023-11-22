@@ -352,7 +352,7 @@ class DebugOverlayMenu : RE::IMenu, public Gts::EventListener
 					std::vsnprintf(buf.data(), buf.size(), fmt.c_str(), args);
 					va_end(args);
 
-					logger::info("{}"sv, buf.data());
+					log::info("{}"sv, buf.data());
 				}
 		};
 };

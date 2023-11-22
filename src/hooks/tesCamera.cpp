@@ -8,7 +8,7 @@ namespace Hooks
 {
 	// BGSImpactManager
 	void Hook_TESCamera::Hook() {
-		logger::info("Hooking TESCamera");
+		log::info("Hooking TESCamera");
 		REL::Relocation<std::uintptr_t> Vtbl{ RE::VTABLE_TESCamera[0] };
 		_Update = Vtbl.write_vfunc(0x02, Update);
 	}

@@ -57,24 +57,20 @@ namespace {
 		log->set_level(spdlog::level::level_enum::info);
 		log->flush_on(spdlog::level::level_enum::trace);
 		log->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%l] [%t] [%s:%#] %v");
-    spdlog::set_default_logger(std::move(log));
-		log::info("Logging started");
+		log->info("Logging started");
 
     try {
 		    const auto& debugConfig = Gts::Config::GetSingleton().GetDebug();
 
-        log::info("Plugin Config Loaded");
-    		// log::set_level(debugConfig.GetLogLevel());
-    		// log::flush_on(debugConfig.GetFlushLevel());
+        log->info("Plugin Config Loaded");
+    		log->set_level(debugConfig.GetLogLevel());
+    		log->flush_on(debugConfig.GetFlushLevel());
     } catch (const std::exception& ex) {
-      log->error("Could not load config: {}", ex.what());
-      report_and_fail(std::format("Could not load config: {}", ex.what()));
-    } catch (const std::runtime_error& ex) {
       log->error("Could not load config: {}", ex.what());
       report_and_fail(std::format("Could not load config: {}", ex.what()));
     }
 
-
+    spdlog::set_default_logger(std::move(log));
 		spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%l] [%t] [%s:%#] %v");
 	}
 
