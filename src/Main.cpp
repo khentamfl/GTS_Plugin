@@ -60,15 +60,14 @@ namespace {
 		log->info("Logging started");
     try {
 		    const auto& debugConfig = Gts::Config::GetSingleton().GetDebug();
+
+        log->info("Plugin Config Loaded");
+    		log->set_level(debugConfig.GetLogLevel());
+    		log->flush_on(debugConfig.GetFlushLevel());
     } catch (const std::exception& ex) {
       log->error("Could not load config: {}", ex);
       report_and_fail(std::format("Could not load config: {}", ex));
     }
-    log->info("Plugin Config Loaded");
-
-
-		log->set_level(debugConfig.GetLogLevel());
-		log->flush_on(debugConfig.GetFlushLevel());
 
 		spdlog::set_default_logger(std::move(log));
 		spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%l] [%t] [%s:%#] %v");
