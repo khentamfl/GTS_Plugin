@@ -3,6 +3,7 @@
 #include "managers/ai/aifunctions.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "magic/effects/common.hpp"
+#include "managers/Attributes.hpp"
 #include "utils/papyrusUtils.hpp"
 #include "managers/explosion.hpp"
 #include "utils/DeathReport.hpp"
@@ -1988,7 +1989,8 @@ namespace Gts {
 	}
 
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
-		DamageAV(receiver, ActorValue::kHealth, value);
+		float resistance = AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth);
+		DamageAV(receiver, ActorValue::kHealth, value / resistance);
 	}
 
 	void EditDetectionLevel(Actor* actor, Actor* giant) { // Unused and does nothing.
