@@ -230,7 +230,7 @@ namespace {
 		log::info("Attacker: {}, Reciever: {}, a_damage: {}", attacker->GetDisplayFullName(), receiver->GetDisplayFullName(), a_damage);
 		float damagemult_att = GetAttackBonus(attacker);
 		float damageresist = AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth); // get damage resistance
-		float damage = (a_damage * damagemult_att) - (a_damage * damageresist); // damage is used to restore health if > 0, if < = deal more damage
+		float damage = (a_damage * damagemult_att) - (a_damage / damageresist); // damage is used to restore health if > 0, if < = deal more damage
 		// We * damage by damage mult (actor damage bonus) and reduce damage by original damage. (-6.0 * 0.8) - 6.0
 		// as a result, -4.8 - 6.0 
 		// We restore 1.2 points of health based on that.
