@@ -197,10 +197,45 @@ namespace Gts {
 		}
 	}
 
-	void DoFootTrample_Left(Actor* giant, actor* tiny) {
+	void DoFootTrample_Left(Actor* giant, Actor* tiny) {
+		auto gianthandle = giant->CreateRefHandle();
+		auto tinyhandle = tiny->CreateRefHandle();
+		std::string name = std::format("FootTrample_{}", tiny->formID);
+		auto FrameA = Time::FramesElapsed();
+		auto coordinates = AttachToUnderFoot_Left(giant, tiny);
+		if (coordinates == NiPoint3(0,0,0)) {
+			return;
+		}
+		SetBeingGrinded(tinyref, true);
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			if (!tinyhandle) {
+				return false;
+			}
 
+			auto giantref = gianthandle.get().get();
+			auto tinyref = tinyhandle.get().get();
+
+			auto FrameB = Time::FramesElapsed() - FrameA;
+			if (FrameB <= 4.0) {
+				return true;
+			}
+			AttachTo(giantref, tinyref, coordinates);
+			if (!isTrampling(giantref)) {
+				SetBeingGrinded(tinyref, false);
+				return false;
+			}
+			if (tinyref->IsDead()) {
+				SetBeingGrinded(tinyref, false);
+				return false;
+			}
+			return true;
+		});
+		
 	}
-	void DoFootTrample_Right(Actor* giant, actor* tiny) {
+	void DoFootTrample_Right(Actor* giant, Actor* tiny) {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
 		std::string name = std::format("FootTrample_{}", tiny->formID);
