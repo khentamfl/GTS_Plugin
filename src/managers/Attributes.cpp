@@ -327,7 +327,7 @@ namespace Gts {
 					//at zero scale health=0.0
 					bonus = scale;
 				}
-				float perkbonus = GetStolenAttributes_Values(actor, ActorValue::kHealth) * bonus; // calc health from the perk bonuses
+				float perkbonus = GetStolenAttributes_Values(actor, ActorValue::kHealth); // calc health from the perk bonuses
 				float tempav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kTemporary, av); // Do temp boosts here too
 				float permav = actor->GetActorValueModifier(ACTOR_VALUE_MODIFIER::kPermanent, av);  //Do perm boosts here too
 				finalValue = originalValue + perkbonus; // * bonus + (bonus - 1.0)*(tempav + permav);
