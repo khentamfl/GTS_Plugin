@@ -229,12 +229,13 @@ namespace {
 	void InflictDamage(Actor* attacker, Actor* receiver, float a_damage) { // function receives negative number first (-6.0 for example)
 		log::info("Attacker: {}, Reciever: {}, a_damage: {}", attacker->GetDisplayFullName(), receiver->GetDisplayFullName(), a_damage);
 		float damagemult_att = GetAttackBonus(attacker);
-		float damageresist = std::clamp(1.0 / get_giantess_scale(receiver), 0.10f, 999.0f);
-		float damage = (a_damage * damagemult_att) - (a_damage * damageresist); 
+		float damageresist = std::clamp(1.0f / get_giantess_scale(receiver), 0.10f, 999.0f);
+		float damage = (a_damage * damagemult_att) - (a_damage * damageresist); // damage is used to restore health if > 0, if < = deal more damage
 		// We * damage by damage mult (actor damage bonus) and reduce damage by original damage. (-6.0 * 0.8) - 6.0
 		// as a result, -4.8 - 6.0 
 		// We restore 1.2 points of health based on that.
-		log::info("a_damage * mult: {}, damage result: {}", a_damage * damagemult, damage);
+		log::info("a_damage * mult: {}, damage result: {}", a_damage * damagemult_att, damage);
+		log::info("Resistance of {} is {}", receiver->GetDisplayFullName(), damageresist);
 		float sizedifference = get_visual_scale(receiver)/get_visual_scale(attacker);
 		// apply other functions
 		HealthGate(attacker, receiver, -(a_damage + damage));
