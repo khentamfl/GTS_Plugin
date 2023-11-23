@@ -133,7 +133,8 @@ namespace Gts {
 				float TinyScale = get_visual_scale(tiny);
 				float sizedifference = std::clamp(GiantScale/TinyScale, 0.10f, 24.0f);
 				float distancecheck = dist; // default dist is 256
-				int FleeChance = rand() % (100 * sizedifference);
+				int rng = 100 * sizedifference;
+				int FleeChance = rand() % rng;
 				if (sizedifference >= threshold) {
 					auto combat = tiny->GetActorRuntimeData().combatController;
 					if (!combat) {
