@@ -84,13 +84,13 @@ namespace {
 			log::info("Hitting nothing");
 		}
 
-		float room_height = fabs(endpos_dn.z - endpos_up1.z);
+		float room_height = fabs(endpos_dn.z - endpos_up.z);
 		log::info("RH of {} is {}", giant->GetDisplayFullName(), room_height);
 		
 		if (scale > unit_to_meter(room_height)) {
-			log::info("Scale > room height: ")
+			log::info("Scale {} > room height: {}", scale, room_height);
 			float adjust = std::clamp(room_height, 1.0f, 3.5f);
-			set_target_scale(giant, adjust)
+			set_target_scale(giant, adjust);
 		}
 
 
