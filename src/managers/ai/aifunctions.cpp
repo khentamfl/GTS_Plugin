@@ -121,7 +121,7 @@ namespace Gts {
 
 	void ScareHostileActors(Actor* giant, float dist) {
 		auto profiler = Profilers::Profile("ActorUtils: ScareHostileActors");
-		for (auto tiny: FindActors()) {
+		for (auto tiny: find_actors()) {
 			if (tiny != giant && tiny->formID != 0x14 && !IsTeammate(tiny)) {
 				if (tiny->IsDead()) {
 					return;

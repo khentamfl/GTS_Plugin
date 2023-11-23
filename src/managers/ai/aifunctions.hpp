@@ -12,5 +12,6 @@ namespace Gts {
 	void RagdollTask(Actor* tiny);
 	void StartCombat(Actor* giant, Actor* tiny, bool Forced);
 	void ScareActors(Actor* giant);
+	void ScareHostileActors(Actor* giant, float dist);
 	void ReportCrime(Actor* giant, Actor* tiny, float value, bool combat);
 }
