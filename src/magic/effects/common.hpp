@@ -203,7 +203,7 @@ namespace Gts {
 
 	inline void AbsorbSteal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency) {
 		effeciency = clamp(0.0, 1.0, effeciency);
-		float amount = CalcPower(from, scale_factor, bonus);
+		float amount = CalcPower(from, scale_factor, bonus, true);
 		float target_scale = get_visual_scale(from);
 		AdjustSizeLimit(0.0012 * scale_factor * target_scale, to);
 		AdjustMassLimit(0.0012 * scale_factor* target_scale, to);
@@ -217,8 +217,8 @@ namespace Gts {
 	}
 
 	inline void Grow_Ally(Actor* from, Actor* to, float receiver, float caster) {
-		float receive = CalcPower(from, receiver, 0);
-		float lose = CalcPower(from, receiver, 0);
+		float receive = CalcPower(from, receiver, 0, true);
+		float lose = CalcPower(from, receiver, 0, true);
 		float CasterScale = get_target_scale(from);
 		if (CasterScale > 1.0) { // We don't want to scale the caster below this limit!
 			mod_target_scale(from, -lose);
@@ -241,7 +241,7 @@ namespace Gts {
 		float target_scale = get_visual_scale(target);
 		float caster_scale = get_visual_scale(caster);
 
-		power *= BASE_POWER * CalcEffeciency(caster, target);
+		power *= BASE_POWER * CalcEffeciency(caster, target, true);
 
 		if (dual_casting) {
 			power *= DUAL_CAST_BONUS;
