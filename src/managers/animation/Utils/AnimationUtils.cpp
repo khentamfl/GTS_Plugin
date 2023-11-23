@@ -206,7 +206,7 @@ namespace Gts {
 		if (coordinates == NiPoint3(0,0,0)) {
 			return;
 		}
-		SetBeingGrinded(tinyref, true);
+		SetBeingGrinded(tiny, true);
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
@@ -244,7 +244,7 @@ namespace Gts {
 		if (coordinates == NiPoint3(0,0,0)) {
 			return;
 		}
-		SetBeingGrinded(tinyref, true);
+		SetBeingGrinded(tiny, true);
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
