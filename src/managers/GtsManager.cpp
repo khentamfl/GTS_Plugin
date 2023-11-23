@@ -53,15 +53,15 @@ namespace {
 		}
 	}
 
-	void WaterExperiments(Actor* giant) {
-		auto shaders =  BSShaderManager::State& GetSingleton();
+	/*void WaterExperiments(Actor* giant) {
+		auto shaders = BSShaderManager::State& GetSingleton();
 		if (shaders) {
 			float intersect = shaders->waterIntersect;
 			float bound = shaders->cachedPlayerBound->radius;
 			NiPoint3 center = shaders->cachedPlayerBound->center;
 			log::info("Intersect: {}, bound: {}, center: {}", intersect, bound, Vector2Str(center));
 		}
-	}
+	}*/
 
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		auto profiler = Profilers::Profile("Manager: update_height");
