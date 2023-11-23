@@ -54,7 +54,7 @@ namespace {
 	}
 
 	void WaterExperiments(Actor* giant) {
-		auto shaders = BSShaderManager::GetSingleton();
+		auto shaders =  BSShaderManager::State& GetSingleton();
 		if (shaders) {
 			float intersect = shaders->waterIntersect;
 			float bound = shaders->cachedPlayerBound->radius;
