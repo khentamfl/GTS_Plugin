@@ -209,11 +209,8 @@ namespace Gts {
 
 				float resistance = std::clamp(1.0f / get_giantess_scale(actor), 0.10f, 999.0f);
 
-				if (scale > 1.0) {
-					return resistance;
-				} else {
-					return scale;
-				}
+				return resistance;
+				
 
 				// 23.11.2023: Used to multiply health, now provides damage resistance instead.
 				
