@@ -1036,7 +1036,7 @@ namespace Gts {
 	void AddStolenAttributesTowards(Actor* giant, ActorValue type, float value) { 
 		if (giant->formID == 0x14) {
 
-			value * 1000;
+			value *= 1000;
 
 			float limit = 2.0 * giant->GetLevel();
 			if (type == ActorValue::kHealth) {
@@ -1086,7 +1086,7 @@ namespace Gts {
 			float Storage = GetStolenAttributes();
 			float limit = 2.0 * giant->GetLevel();
 
-			value * 1000;
+			value *= 1000;
 
 			if (Storage > 0) {
 				int Boost = rand() % 3;

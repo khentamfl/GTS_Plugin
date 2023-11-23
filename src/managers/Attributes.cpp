@@ -206,11 +206,16 @@ namespace Gts {
 			case ActorValue::kHealth: {
 				float bonusHPMultiplier = Runtime::GetFloatOr("bonusHPMultiplier", 1.0);
 				float power = (bonusHPMultiplier/BalancedMode);
-				if (scale > 1.0) {
+
+				float resistance = std::clamp(1.0f / get_giantess_scale(actor), 0.10f, 999.0f);
+
+
+				return resistance; // 23.11.2023: Used to multiply health, now provides damage resistance instead.
+				/*if (scale > 1.0) {
 					return power*scale + 1.0 - power;
 				} else {
 					return scale;
-				}
+				}*/
 			}
 			case ActorValue::kCarryWeight: {
 				float bonusCarryWeightMultiplier = Runtime::GetFloatOr("bonusCarryWeightMultiplier", 1.0);
