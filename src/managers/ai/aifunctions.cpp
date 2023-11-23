@@ -135,6 +135,7 @@ namespace Gts {
 				float distancecheck = dist; // default dist is 256
 				int rng = 100 * sizedifference;
 				int FleeChance = rand() % rng;
+				float threshold = 2.0;
 				if (sizedifference >= threshold) {
 					auto combat = tiny->GetActorRuntimeData().combatController;
 					if (!combat) {
