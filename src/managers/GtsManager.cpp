@@ -88,7 +88,7 @@ namespace {
 
 		float room_height = fabs(endpos_dn.z - endpos_up.z);
 		float room_height_m = unit_to_meter(room_height);
-		float meter_to_scale = room_height_m/1.82 // If height is = 8 meters, / it by 1.82 (default character height)
+		float meter_to_scale = room_height_m/1.82; // If height is = 8 meters, / it by 1.82 (default character height)
 		log::info("RH of {} is {}", giant->GetDisplayFullName(), room_height_m);
 		
 		if (scale > meter_to_scale) {
