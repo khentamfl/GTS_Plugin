@@ -75,11 +75,11 @@ namespace {
 		NiPoint3 ray_up(0.0, 0.0, 1.0);
 		NiPoint3 ray_dn(0.0, 0.0, -1.0);
 
-		DebugAPI::DrawSphere(glm::vec3(ray_start.x, ray_start.y, ray_start.z), 24.0, 800, {0.0, 1.0, 0.0, 1.0});
+		DebugAPI::DrawSphere(glm::vec3(ray_start.x, ray_start.y, ray_start.z), 8.0, 800, {0.0, 1.0, 0.0, 1.0});
 		
 		float ray_length = 720;
 		NiPoint3 endpos_up = CastRay(giant, ray_start, ray_up, ray_length, success_up);
-		NiPoint3 endpos_dn = CastRay(giant, ray_start, ray_dn, 70.0, success_down);
+		NiPoint3 endpos_dn = CastRay(giant, ray_start, ray_dn, ray_length, success_down);
 
 		if (!success_up) {
 			log::info("Hitting nothing");
@@ -88,18 +88,18 @@ namespace {
 
 		float room_height = fabs(endpos_dn.z - endpos_up.z);
 		float room_height_m = unit_to_meter(room_height);
-		log::info("RH of {} is {}", giant->GetDisplayFullName(), room_height);
+		float meter_to_scale = room_height_m/1.82 // If height is = 8 meters, / it by 1.82 (default character height)
+		log::info("RH of {} is {}", giant->GetDisplayFullName(), room_height_m);
 		
-		if (scale > room_height_m) {
-			log::info("Scale {} > room height: {}, height * 1.82: {}", scale, room_height_m, room_height_m * 1.82);
-			float meter_to_scale = room_height_m/1.82; // If height is = 8 meters, / it by 1.82 (default character height)
+		if (scale > meter_to_scale) {
+			log::info("Scale {} > room height: {}, height / 1.82: {}", scale, room_height_m, meter_to_scale);
 			float adjust = std::clamp(meter_to_scale, 1.0f, 3.5f); // Min is x1.0 (disallow to go below that), max is x3.5
 			set_target_scale(giant, adjust);
 		}
 
 
-		DebugAPI::DrawSphere(glm::vec3(endpos_up.x, endpos_up.y, endpos_up.z), 2.0, 800, {1.0, 0.0, 0.0, 1.0});
-		DebugAPI::DrawSphere(glm::vec3(endpos_dn.x, endpos_dn.y, endpos_dn.z), 2.0, 800, {0.0, 0.0, 1.0, 1.0});
+		DebugAPI::DrawSphere(glm::vec3(endpos_up.x, endpos_up.y, endpos_up.z), 4.0, 800, {1.0, 0.0, 0.0, 1.0});
+		DebugAPI::DrawSphere(glm::vec3(endpos_dn.x, endpos_dn.y, endpos_dn.z), 4.0, 800, {0.0, 0.0, 1.0, 1.0});
 	}
 
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
