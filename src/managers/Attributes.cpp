@@ -211,7 +211,7 @@ namespace Gts {
 					scale *= 3.0;
 				}
 
-				float resistance = std::clamp(1.0f / scale, 0.33f, 999.0f);
+				float resistance = std::clamp(1.0f / scale, 0.001f, 4.0f);
 
 				return resistance;
 				

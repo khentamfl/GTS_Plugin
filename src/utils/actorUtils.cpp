@@ -1797,7 +1797,7 @@ namespace Gts {
 	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause) {
 
 		bool soul = false;
-		float Scale = std::clamp(scale, 0.10f, 4.4f);
+		float Scale = std::clamp(scale, 0.40f, 4.4f);
 
 		std::string_view container;
 		std::string name = std::format("{} remains", actor->GetDisplayFullName());
