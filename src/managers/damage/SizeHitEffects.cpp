@@ -222,12 +222,21 @@ namespace {
 		HugShrink::CallRelease(receiver); // Else release
 	}
 
-	void InflictDamage(Actor* attacker, Actor* receiver, float a_damage) {
+	float GetAttackBonus(Actor* giant) {
+		return AttributeManager::GetSingleton().GetAttributeBonus(giant, ActorValue::kAttackDamageMult);
+	}
+
+	void InflictDamage(Actor* attacker, Actor* receiver, float a_damage) { // function receives negative number first (-6.0 for example)
 		log::info("Attacker: {}, Reciever: {}, a_damage: {}", attacker->GetDisplayFullName(), receiver->GetDisplayFullName(), a_damage);
-		float damagemult = AttributeManager::GetSingleton().GetAttributeBonus(attacker, ActorValue::kAttackDamageMult);
-		float damage = (a_damage * damagemult) - a_damage;
+		float damagemult_att = GetAttackBonus(attacker);
+		float damageresist = std::clamp(1.0 / get_giantess_scale(receiver), 0.10f, 999.0f);
+		float damage = (a_damage * damagemult_att) - (a_damage * damageresist); 
+		// We * damage by damage mult (actor damage bonus) and reduce damage by original damage. (-6.0 * 0.8) - 6.0
+		// as a result, -4.8 - 6.0 
+		// We restore 1.2 points of health based on that.
 		log::info("a_damage * mult: {}, damage result: {}", a_damage * damagemult, damage);
 		float sizedifference = get_visual_scale(receiver)/get_visual_scale(attacker);
+		// apply other functions
 		HealthGate(attacker, receiver, -(a_damage + damage));
 		TinyAsShield(attacker, receiver, -(a_damage + damage));
 		HugDamageResistance(receiver, -(a_damage + damage));

@@ -154,7 +154,7 @@ namespace Gts {
 		}
 
 		float weakness = 1.0;//std::clamp(GetShrinkWeakness(target), 1.0f, 10.0f);
-		log::info("Weakness of {} is {}", target->GetDisplayFullName(), weakness);
+		//log::info("Weakness of {} is {}", target->GetDisplayFullName(), weakness);
 
 		bool has_smt = HasSMT(caster);
 		if (IsEssential(target)) {
