@@ -66,7 +66,8 @@ namespace {
 	}*/
 
 	void Raycast_GetCeilingHeight(Actor* giant) {
-		bool success = false;
+		bool success_up = false;
+		bool success_down = false;
 		NiPoint3 ray_start = giant->GetPosition();
 		float scale = get_visual_scale(giant);
 		ray_start.z += 70; 
@@ -77,10 +78,10 @@ namespace {
 		DebugAPI::DrawSphere(glm::vec3(ray_start.x, ray_start.y, ray_start.z), 24.0, 800, {0.0, 1.0, 0.0, 1.0});
 		
 		float ray_length = 720;
-		NiPoint3 endpos_up = CastRay(giant, ray_start, ray_up, ray_length, success);
-		NiPoint3 endpos_dn = CastRay(giant, ray_start, ray_dn, 70.0, success);
+		NiPoint3 endpos_up = CastRay(giant, ray_start, ray_up, ray_length, success_up);
+		NiPoint3 endpos_dn = CastRay(giant, ray_start, ray_dn, 70.0, success_down);
 
-		if (!success) {
+		if (!success_up) {
 			log::info("Hitting nothing");
 			return;
 		}
@@ -89,9 +90,10 @@ namespace {
 		float room_height_m = unit_to_meter(room_height);
 		log::info("RH of {} is {}", giant->GetDisplayFullName(), room_height);
 		
-		if (scale > unit_to_meter(room_height_m)) {
+		if (scale > room_height_m) {
 			log::info("Scale {} > room height: {}, height * 1.82: {}", scale, room_height_m, room_height_m * 1.82);
-			float adjust = std::clamp(room_height_m, 1.0f, 3.5f);
+			float meter_to_scale = room_height_m/1.82; // If height is = 8 meters, / it by 1.82 (default character height)
+			float adjust = std::clamp(meter_to_scale, 1.0f, 3.5f); // Min is x1.0 (disallow to go below that), max is x3.5
 			set_target_scale(giant, adjust);
 		}
 
@@ -289,7 +291,7 @@ void GtsManager::Update() {
 			accuratedamage.DoAccurateCollisionRight(actor, 0.4 * TimeScale(), 1.0, 2000, 0.05, 3.0, DamageSource::CrushedRight);
 			
 			ClothManager::GetSingleton().CheckRip();
-			//Raycast_GetCeilingHeight(actor);
+			Raycast_GetCeilingHeight(actor);
 
 			//WaterExperiments(actor);
 
