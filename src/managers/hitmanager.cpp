@@ -69,8 +69,9 @@ namespace Gts {
 		if (hitName == "Stagger" || hitName == "SizeEffect" || hitName == "SprintingSizeEffect" || hitName == "GtsTastyFoe") {
 			return;
 		}
-
-		//log::info("Hit Name: {}, HitForm: {}", HitId->GetName(), HitIdForm);
+		if (attacker->formID == 0x14) {
+			log::info("Hit Name: {}, HitForm: {}", HitId->GetName(), HitIdForm);
+		}
 		auto ProjectileIDForm = a_event->projectile;
 		auto ProjectileID = TESForm::LookupByID(ProjectileIDForm);
 		auto player = PlayerCharacter::GetSingleton();

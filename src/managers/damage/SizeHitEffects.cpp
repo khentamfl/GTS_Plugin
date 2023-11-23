@@ -223,8 +223,10 @@ namespace {
 	}
 
 	void InflictDamage(Actor* attacker, Actor* receiver, float a_damage) {
+		log::info("Attacker: {}, Reciever: {}, a_damage: {}", attacker->GetDisplayFullName(), receiver->GetDisplayFullName(), a_damage);
 		float damagemult = AttributeManager::GetSingleton().GetAttributeBonus(attacker, ActorValue::kAttackDamageMult);
 		float damage = (a_damage * damagemult) - a_damage;
+		log::info("a_damage * mult: {}, damage result: {}", a_damage * damagemult, damage);
 		float sizedifference = get_visual_scale(receiver)/get_visual_scale(attacker);
 		HealthGate(attacker, receiver, -(a_damage + damage));
 		TinyAsShield(attacker, receiver, -(a_damage + damage));
@@ -322,7 +324,6 @@ namespace Gts {
 					set_target_scale(receiver, naturalscale); // reset to normal scale
 					return;
 				}
-
 				mod_target_scale(receiver, -ShrinkValue);
 			}
 		}
@@ -357,10 +358,8 @@ namespace Gts {
 				if (root) {
 					SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, ts * 1, 7, root);
 				}
-				//Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreSmallest", "NPC Spine [Spn0]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
 			}
 			SizeManager::GetSingleton().ModSizeVulnerability(tiny, 0.15);
-			//DamageAV(tiny, ActorValue::kHealth, damage);
 			InflictSizeDamage(giant, tiny, damage);
 			float Health = GetAV(tiny, ActorValue::kHealth);
 			float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);

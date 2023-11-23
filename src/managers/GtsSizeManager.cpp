@@ -413,10 +413,8 @@ namespace Gts {
 	float SizeManager::BalancedMode()
 	{
 		if (Runtime::GetBool("BalanceMode")) {
-			log::info("Balance Mode True");
 			return 2.0;
 		} else {
-			log::info("Balance Mode False");
 			return 1.0;
 		}
 	}

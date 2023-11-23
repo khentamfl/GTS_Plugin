@@ -94,9 +94,7 @@ namespace Gts {
 
 					if (distance <= distancecheck * sizedifference) {
 						auto combat = tiny->GetActorRuntimeData().combatController;
-						if (!combat) {
-							return;
-						}
+						
 						tiny->GetActorRuntimeData().currentCombatTarget = giant->CreateRefHandle();
 						auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
 
@@ -108,7 +106,9 @@ namespace Gts {
 								if (IsTrue || distance < (distancecheck/1.5) * sizedifference) {
 									auto cell = tiny->GetParentCell();
 									if (cell) {
-										tiny->InitiateFlee(TinyRef, true, true, false, cell, TinyRef, 100.0, 465.0 * sizedifference);
+										if (!combat) {
+											tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 465.0 * sizedifference);
+										}
 									}
 								}
 							}
