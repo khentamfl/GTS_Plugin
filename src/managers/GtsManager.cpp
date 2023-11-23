@@ -19,6 +19,7 @@
 #include "data/runtime.hpp"
 #include "utils/debug.hpp"
 #include "scale/modscale.hpp"
+#include "UI/DebugAPI.hpp"
 #include "scale/scale.hpp"
 #include "data/time.hpp"
 #include "profiler.hpp"
