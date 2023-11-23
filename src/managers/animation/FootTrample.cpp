@@ -27,11 +27,19 @@ namespace {
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
     void GTS_Trample_Leg_Raise_L(AnimationEventData& data) {
-        TrackFeet(&data.giant, 5, true);
+       // TrackFeet(&data.giant, 5, true);
     }
     void GTS_Trample_Leg_Raise_R(AnimationEventData& data) {
-        TrackFeet(&data.giant, 6, true);
+        //TrackFeet(&data.giant, 6, true);
     } 
+
+    void GTS_Trample_Cam_Start_L(AnimationEventData& data) {
+        TrackFeet(&data.giant, 5, true);
+    }
+    void GTS_Trample_Cam_Start_R(AnimationEventData& data) {
+        TrackFeet(&data.giant, 6, true);
+    }
+
     void GTS_Trample_Cam_End_L(AnimationEventData& data) {
         TrackFeet(&data.giant, 5, false);
     }
@@ -163,6 +171,9 @@ namespace Gts
 
         AnimationManager::RegisterEvent("GTS_Trample_Leg_Raise_L", "Trample", GTS_Trample_Leg_Raise_L);
         AnimationManager::RegisterEvent("GTS_Trample_Leg_Raise_R", "Trample", GTS_Trample_Leg_Raise_R);
+
+        AnimationManager::RegisterEvent("GTS_Trample_Cam_Start_L", "Trample", GTS_Trample_Cam_Start_L);
+        AnimationManager::RegisterEvent("GTS_Trample_Cam_Start_R", "Trample", GTS_Trample_Cam_Start_R);
 
         AnimationManager::RegisterEvent("GTS_Trample_Cam_End_L", "Trample", GTS_Trample_Cam_End_L);
         AnimationManager::RegisterEvent("GTS_Trample_Cam_End_R", "Trample", GTS_Trample_Cam_End_R);

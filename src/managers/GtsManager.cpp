@@ -291,7 +291,7 @@ void GtsManager::Update() {
 			accuratedamage.DoAccurateCollisionRight(actor, 0.4 * TimeScale(), 1.0, 2000, 0.05, 3.0, DamageSource::CrushedRight);
 			
 			ClothManager::GetSingleton().CheckRip();
-			Raycast_GetCeilingHeight(actor);
+			//Raycast_GetCeilingHeight(actor);
 
 			//WaterExperiments(actor);
 
