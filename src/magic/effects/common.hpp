@@ -252,10 +252,10 @@ namespace Gts {
 		}
 
 		if (Runtime::HasPerkTeam(caster, "FastShrink")) {
-			PERK_BONUS += 0.35;
+			PERK_BONUS += 0.15;
 		}
 		if (Runtime::HasPerkTeam(caster, "LethalShrink")) {
-			PERK_BONUS += 0.65;
+			PERK_BONUS += 0.35;
 		}
 
 		power *= PERK_BONUS; // multiply power by perk bonuses

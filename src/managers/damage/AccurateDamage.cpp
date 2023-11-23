@@ -493,7 +493,6 @@ namespace Gts {
 		}
 		if (DoDamage) {
 			ModVulnerability(giant, tiny, result);
-			//DamageAV(tiny, ActorValue::kHealth, result);
 			InflictSizeDamage(giant, tiny, result);
 		}
 

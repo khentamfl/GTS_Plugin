@@ -251,7 +251,6 @@ namespace {
 				damage *= 1.75;
 				bonus = 3.0;
 			}
-			//DamageAV(grabbedActor, ActorValue::kHealth, damage);
 			InflictSizeDamage(giant, grabbedActor, damage);
 			GRumble::Once("GrabAttack", giant, 6.0 * bonus, 0.05, "NPC L Hand [LHnd]");
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1);

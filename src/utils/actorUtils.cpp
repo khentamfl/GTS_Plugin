@@ -1990,7 +1990,8 @@ namespace Gts {
 
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
 		float resistance = AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth);
-		DamageAV(receiver, ActorValue::kHealth, value / resistance);
+		log::info("Att: {}, Rec: {}, Value: {}, Value * Resistance: {}", attacker->GetDisplayFullName(), receiver->GetDisplayFullName(), value, value * resistance);
+		DamageAV(receiver, ActorValue::kHealth, value * resistance);
 	}
 
 	void EditDetectionLevel(Actor* actor, Actor* giant) { // Unused and does nothing.

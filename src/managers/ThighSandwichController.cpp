@@ -202,7 +202,7 @@ namespace Gts {
 				float sizedifference = giantScale/tinyScale;
 				float damage = 0.005 * sizedifference * TimeScale();
 				float hp = GetAV(tiny, ActorValue::kHealth);
-				DamageAV(tiny, ActorValue::kHealth, damage);
+				InflictSizeDamage(giant, tiny, damage);
 				if (damage > hp && !tiny->IsDead()) {
 					this->Remove(tiny);
 					PrintSuffocate(giant, tiny);
