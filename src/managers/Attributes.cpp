@@ -207,6 +207,10 @@ namespace Gts {
 				float bonusHPMultiplier = Runtime::GetFloatOr("bonusHPMultiplier", 1.0);
 				float power = (bonusHPMultiplier/BalancedMode);
 
+				if (actor->formID == 0x14 && HasSMT(actor)) {
+					scale *= 3.0;
+				}
+
 				float resistance = std::clamp(1.0f / get_giantess_scale(actor), 0.10f, 999.0f);
 
 				return resistance;

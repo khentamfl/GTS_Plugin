@@ -98,7 +98,7 @@ namespace Gts {
 		float pushpower = GetPushPower(size_difference);
 		if (attacker->formID == 0x14 && size_difference >= 4.0) {
 			FormType formType = HitId->GetFormType();
-			if (formType != FormType::Weapon) {
+			if (formType != FormType::Weapon || formType == FormType::MagicEffect) {
 				return;
 			}
 			if (wasPowerAttack || hitName.find("Bow") != std::string::npos) {
@@ -108,6 +108,7 @@ namespace Gts {
 				shake_camera(attacker, size_difference * 0.20, 0.35);
 			}
 			PushActorAway(attacker, receiver, pushpower);
+			log::info("Size difference is met, pushing actor away");
 		}
 	}
 
