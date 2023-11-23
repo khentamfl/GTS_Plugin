@@ -1040,7 +1040,7 @@ namespace Gts {
 				if (Persistent::GetSingleton().stolen_health >= limit) {
 					Persistent::GetSingleton().stolen_health = limit;
 				} else {
-					ersistent::GetSingleton().stolen_health += value;
+					Persistent::GetSingleton().stolen_health += value;
 				}
 			} else if (type == ActorValue::kMagicka) {
 				if (Persistent::GetSingleton().stolen_magick >= limit) {
@@ -1358,7 +1358,7 @@ namespace Gts {
 		bool DarkArts1 = Runtime::HasPerk(giant, "DarkArts_Aug");
 		bool DarkArts2 = Runtime::HasPerk(giant, "DarkArts_Aug2");
 
-		float shrinkpower = (shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, tiny);
+		float shrinkpower = (shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, tiny, true);
 
 		float giantScale = get_visual_scale(giant);
 		float tinyScale = get_visual_scale(tiny);
