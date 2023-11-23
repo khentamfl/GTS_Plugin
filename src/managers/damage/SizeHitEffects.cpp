@@ -229,7 +229,7 @@ namespace {
 	void InflictDamage(Actor* attacker, Actor* receiver, float a_damage) { // function receives negative number first (-6.0 for example)
 		log::info("Attacker: {}, Reciever: {}, a_damage: {}", attacker->GetDisplayFullName(), receiver->GetDisplayFullName(), a_damage);
 		float damagemult_att = GetAttackBonus(attacker);
-		float damageresist = AttributeManager::GetSingleton().GetAttackBonus(receiver, ActorValue::khealth); // get damage resistance
+		float damageresist = AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth); // get damage resistance
 		float damage = (a_damage * damagemult_att) - (a_damage * damageresist); // damage is used to restore health if > 0, if < = deal more damage
 		// We * damage by damage mult (actor damage bonus) and reduce damage by original damage. (-6.0 * 0.8) - 6.0
 		// as a result, -4.8 - 6.0 
