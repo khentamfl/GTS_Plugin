@@ -204,8 +204,8 @@ namespace Gts {
 		}
 		switch (av) {
 			case ActorValue::kHealth: {
-				float bonusHPMultiplier = Runtime::GetFloatOr("bonusHPMultiplier", 1.0);
-				float power = (bonusHPMultiplier/BalancedMode);
+				//float bonusHPMultiplier = Runtime::GetFloatOr("bonusHPMultiplier", 1.0);
+				//float power = (bonusHPMultiplier/BalancedMode); // not used anymore
 
 				if (actor->formID == 0x14 && HasSMT(actor)) {
 					scale += 3.0;
@@ -227,6 +227,9 @@ namespace Gts {
 			case ActorValue::kCarryWeight: {
 				float bonusCarryWeightMultiplier = Runtime::GetFloatOr("bonusCarryWeightMultiplier", 1.0);
 				float power = (bonusCarryWeightMultiplier/BalancedMode);
+				if (actor->formID == 0x14 && HasSMT(actor)) {
+					scale += 3.0;
+				}
 				if (scale > 1.0) {
 					return power*scale + 1.0 - power;
 				} else {
@@ -260,7 +263,7 @@ namespace Gts {
 				}
 			}
 			case ActorValue::kAttackDamageMult: {
-				if (HasSMT(actor)) {
+				if (actor->formID == 0x14 && HasSMT(actor)) {
 					scale += 3.0;
 				}
 				float bonusDamageMultiplier = Runtime::GetFloatOr("bonusDamageMultiplier", 1.0);
