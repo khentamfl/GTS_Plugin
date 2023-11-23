@@ -101,19 +101,6 @@ namespace Gts {
 			if (formType != FormType::Weapon) {
 				return;
 			}
-
-			FormID id = HitId->GetFormID();
-			if (formType->IsMagicItem()) {
-				log::info("{} Is magic item, returning", HitId->GetName());
-			}
-			auto ShrinkBolt = Runtime::GetSpell(attacker, "ShrinkBolt");
-			auto ShrinkStorm = Runtime::GetSpell(attacker, "ShrinkStorm");
-			if (ShrinkBolt) {
-				if (id == ShrinkBolt->formID || id == ShrinkStorm->formID) {
-					log::info("Is spell, aborting");
-					return; // do nothing
-				} 
-			}
 			if (wasPowerAttack || hitName.find("Bow") != std::string::npos) {
 				size_difference *= 2.0;
 			}

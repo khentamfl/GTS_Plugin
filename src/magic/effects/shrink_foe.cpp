@@ -102,9 +102,17 @@ namespace Gts {
 	}
 
 	void ShrinkFoe::OnStart() {
+		auto caster = GetCaster();
+		if (!caster) {
+			return;
+		}
 		auto target = GetTarget();
 		if (!target) {
 			return;
+		}
+		float sizediff = get_visual_scale(caster)/get_visual_scale(target);
+		if (this->power >= 18.00 && sizediff > 4.0) {
+			StaggerActor(target);
 		}
 		//CancelWeaknessTask(target);
 	}
