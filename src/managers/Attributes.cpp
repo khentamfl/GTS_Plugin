@@ -211,7 +211,7 @@ namespace Gts {
 					scale *= 3.0;
 				}
 
-				float resistance = std::clamp(1.0f / get_giantess_scale(actor), 0.10f, 999.0f);
+				float resistance = std::clamp(1.0f / scale, 0.33f, 999.0f);
 
 				return resistance;
 				
