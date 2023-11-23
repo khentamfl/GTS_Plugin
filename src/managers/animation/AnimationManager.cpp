@@ -1,6 +1,7 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/ThighSandwich.hpp"
 #include "managers/animation/StrongStomp.hpp"
+#include "managers/animation/FootTrample.hpp"
 #include "managers/animation/ThighCrush.hpp"
 #include "managers/animation/ButtCrush.hpp"
 #include "managers/animation/BoobCrush.hpp"
@@ -71,6 +72,9 @@ namespace Gts {
 
 		AnimationFootGrind::RegisterEvents();
 		AnimationFootGrind::RegisterTriggers();
+
+		AnimationFootTrample::RegisterEvents();
+		AnimationFootTrample::RegisterTriggers();
 
 		AnimationCompat::RegisterEvents();
 		AnimationCompat::RegisterTriggers();

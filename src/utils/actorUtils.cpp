@@ -169,6 +169,12 @@ namespace Gts {
 		return grind;
 	}
 
+	bool isTrampling(Actor* actor) {
+		bool trample;
+		actor->GetGraphVariableBool("GTS_IsTrampling", trample);
+		return trample;
+	}
+
 	bool IsJumping(Actor* actor) {
 		auto profiler = Profilers::Profile("ActorUtils: IsJumping");
 		if (!actor) {

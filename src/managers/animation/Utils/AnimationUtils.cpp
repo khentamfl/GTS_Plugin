@@ -197,6 +197,47 @@ namespace Gts {
 		}
 	}
 
+	void DoFootTrample_Left(Actor* giant, actor* tiny) {
+
+	}
+	void DoFootTrample_Right(Actor* giant, actor* tiny) {
+		auto gianthandle = giant->CreateRefHandle();
+		auto tinyhandle = tiny->CreateRefHandle();
+		std::string name = std::format("FootTrample_{}", tiny->formID);
+		auto FrameA = Time::FramesElapsed();
+		auto coordinates = AttachToUnderFoot_Right(giant, tiny);
+		if (coordinates == NiPoint3(0,0,0)) {
+			return;
+		}
+		SetBeingGrinded(tinyref, true);
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			if (!tinyhandle) {
+				return false;
+			}
+
+			auto giantref = gianthandle.get().get();
+			auto tinyref = tinyhandle.get().get();
+
+			auto FrameB = Time::FramesElapsed() - FrameA;
+			if (FrameB <= 4.0) {
+				return true;
+			}
+			AttachTo(giantref, tinyref, coordinates);
+			if (!isTrampling(giantref)) {
+				SetBeingGrinded(tinyref, false);
+				return false;
+			}
+			if (tinyref->IsDead()) {
+				SetBeingGrinded(tinyref, false);
+				return false;
+			}
+			return true;
+		});
+	}
+
 	void DoFootGrind_Left(Actor* giant, Actor* tiny) {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
@@ -377,12 +418,13 @@ namespace Gts {
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
 								if (aveForce >= 0.00 && !otherActor->IsDead()) {
-									DoFootGrind_Left(actor, otherActor);
-									SetBeingGrinded(otherActor, true);
 									if (!strong) {
+										DoFootGrind_Left(actor, otherActor);
+										SetBeingGrinded(otherActor, true);
 										AnimationManager::StartAnim("GrindLeft", actor);
 									} else {
-										AnimationManager::StartAnim("GrindLeft", actor); // preparation for strong version
+										AnimationManager::StartAnim("TrampleStartL", actor); // preparation for strong version
+										DoFootTrample_Left(actor, otherActor);
 									}
 								}
 							}
@@ -492,12 +534,13 @@ namespace Gts {
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
 								if (aveForce >= 0.00 && !otherActor->IsDead()) {
-									DoFootGrind_Right(actor, otherActor);
-									SetBeingGrinded(otherActor, true);
 									if (!strong) {
+										DoFootGrind_Right(actor, otherActor);
+										SetBeingGrinded(otherActor, true);
 										AnimationManager::StartAnim("GrindRight", actor);
 									} else {
-										AnimationManager::StartAnim("GrindRight", actor); // Prepation for strong version
+										AnimationManager::StartAnim("TrampleStartR", actor); // Do Trample instead
+										DoFootTrample_Right(actor, otherActor);
 									}
 								}
 							}

@@ -82,7 +82,7 @@ namespace {
 		FootGrindCheck_Right(&data.giant, 1.45, false);
 	}
 
-	void GTSstompimpactL(AnimationEventData& data) { // To-do: Add Foot Grind support  (Trigger it somehow)
+	void GTSstompimpactL(AnimationEventData& data) {
 		float shake = 1.0;
 		float launch = 1.0;
 		float dust = 1.25;
@@ -101,7 +101,7 @@ namespace {
 		FootGrindCheck_Left(&data.giant, 1.45, false);
 	}
 
-	void GTSstomplandR(AnimationEventData& data) { // To-do: Add Foot Grind support (Trigger it somehow)
+	void GTSstomplandR(AnimationEventData& data) {
 		//data.stage = 2;
 		float shake = 1.0;
 		float bonus = 1.0;

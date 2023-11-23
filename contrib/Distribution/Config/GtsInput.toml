@@ -62,15 +62,30 @@ trigger = "once"
 name = "RightStomp_Strong"
 keys = ["LSHIFT", "E"]
 trigger = "continuous"
-duration = 0.33
+duration = 0.44
 
 [[InputEvent]]
 name = "LeftStomp_Strong"
 keys = ["LSHIFT", "Q"]
 trigger = "continuous"
-duration = 0.33
+duration = 0.44
 
 # ^ Trigger powerful stomps. 
+
+
+[[InputEvent]]
+name = "TrampleLeft"
+keys = ["LSHIFT", "E"]
+trigger = "continuous"
+duration = 0.20
+
+[[InputEvent]]
+name = "TrampleRight"
+keys = ["LSHIFT", "Q"]
+trigger = "continuous"
+duration = 0.20
+
+# ^ Trigger trample anims instead 
 
 
 [[InputEvent]]
