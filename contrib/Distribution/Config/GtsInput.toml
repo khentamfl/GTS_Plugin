@@ -75,14 +75,14 @@ duration = 0.44
 
 [[InputEvent]]
 name = "TrampleLeft"
-keys = ["LSHIFT", "E"]
-trigger = "continuous"
+keys = ["LSHIFT", "Q"]
+trigger = "release"
 duration = 0.20
 
 [[InputEvent]]
 name = "TrampleRight"
-keys = ["LSHIFT", "Q"]
-trigger = "continuous"
+keys = ["LSHIFT", "E"]
+trigger = "release"
 duration = 0.20
 
 # ^ Trigger trample anims instead 
