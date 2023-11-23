@@ -208,7 +208,7 @@ namespace Gts {
 				float power = (bonusHPMultiplier/BalancedMode);
 
 				if (actor->formID == 0x14 && HasSMT(actor)) {
-					scale *= 3.0;
+					scale += 3.0;
 				}
 
 				float resistance = std::clamp(1.0f / scale, 0.001f, 4.0f);
