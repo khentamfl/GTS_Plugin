@@ -57,7 +57,7 @@ namespace Gts {
 				} else if (random == 3) {
 					Cprint("Feet of {} crushed {} into nothing", GiantName, TinyName);
 				} else if (random == 4) {
-					Cprint("{} step on {} too hard", GiantName, TinyName);
+					Cprint("{} stept on {} too hard", GiantName, TinyName);
 				} else if (random == 5) {
 					Cprint("{} got crushed by {}", TinyName, GiantName);
 				} else if (random == 6) {
@@ -74,7 +74,7 @@ namespace Gts {
 				} else if (random == 3) {
 					Cprint("High Heels of {} obliterated {}", GiantName, TinyName);
 				} else if (random == 4) {
-					Cprint("{} step on {} too hard", GiantName, TinyName);
+					Cprint("{} stept on {} too hard", GiantName, TinyName);
 				} else if (random == 5) {
 					Cprint("{} got crushed under the heels of {}", TinyName, GiantName);
 				} else if (random == 6) {

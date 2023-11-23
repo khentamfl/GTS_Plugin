@@ -53,28 +53,15 @@ namespace {
 		}
 	}
 
-	/*void ManageTalkPerk(Actor* giant) {
-		static Timer TriggerDelay = Timer(0.5);
-		if (giant->formID == 0x14) {
-			if (!TriggerDelay.ShouldRunFrame()) {
-				return;
-			}
-			if (Runtime::HasPerk(giant, "TalkToActor")) {
-				log::info("TalkToActor Perk True");
-				auto perk = Runtime::GetPerk("TalkToActor");
-				if (perk) {
-					log::info("Perk found");
-					auto value = perk->perkConditions.head;
-					if (value) {
-						//auto result = value->data.comparisonValue;
-						auto result = value->data.comparisonValue;
-						auto finalvalue = result.f;
-						log::info("Perk Value: {}", finalvalue);
-					}
-				}	
- 			}
+	void WaterExperiments(Actor* giant) {
+		auto shaders = BSShaderManager::GetSingleton();
+		if (shaders) {
+			float intersect = shaders->waterIntersect;
+			float bound = shaders->cachedPlayerBound->radius;
+			NiPoint3 center = shaders->cachedPlayerBound->center;
+			log::info("Intersect: {}, bound: {}, center: {}", intersect, bound, Vector2Str(center));
 		}
-	}*/
+	}
 
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		auto profiler = Profilers::Profile("Manager: update_height");
@@ -257,8 +244,6 @@ void GtsManager::Update() {
 
 		FixActorFade(actor);
 
-		//ManageTalkPerk(actor);
-
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 
@@ -266,6 +251,8 @@ void GtsManager::Update() {
 			accuratedamage.DoAccurateCollisionLeft(actor, 0.4 * TimeScale(), 1.0, 2000, 0.05, 3.0, DamageSource::CrushedLeft);
 			accuratedamage.DoAccurateCollisionRight(actor, 0.4 * TimeScale(), 1.0, 2000, 0.05, 3.0, DamageSource::CrushedRight);
 			ClothManager::GetSingleton().CheckRip();
+
+			//WaterExperiments(actor);
 
 			if (IsCrawling(actor)) {
 				ApplyAllCrawlingDamage(actor, 1.0, 1000, 0.25);
@@ -292,7 +279,7 @@ void GtsManager::Update() {
 
 void GtsManager::OnAddPerk(const AddPerkEvent& evt) {
 	if (evt.actor->formID == 0x14) {
-		if (evt.perk == Runtime::GetPerk("TrueGiantess")) {
+		if (evt.perk == Runtime::GetPerk("TotalControl")) {
 			CallHelpMessage();
 		}
 		if (evt.perk == Runtime::GetPerk("FastShrink") && !Runtime::HasSpell(evt.actor, "ShrinkBolt")) {

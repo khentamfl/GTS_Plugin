@@ -115,14 +115,14 @@ namespace {
 			return;
 		}
 		if (Runtime::HasPerk(giant, "SoulVorePerk")) { // Permamently increases random AV after eating someone
-			float TotalMod = (0.75 * tinyscale);
+			float TotalMod = (0.25 * tinyscale);
 			int Boost = rand() % 3;
 			if (Boost == 0) {
-				giant->AsActorValueOwner()->ModActorValue(ActorValue::kHealth, TotalMod);
+				AddStolenAttributesTowards(giant, ActorValue::kHealth, TotalMod);
 			} else if (Boost == 1) {
-				giant->AsActorValueOwner()->ModActorValue(ActorValue::kMagicka, TotalMod);
+				AddStolenAttributesTowards(giant, ActorValue::kStamina, TotalMod);
 			} else if (Boost >= 2) {
-				giant->AsActorValueOwner()->ModActorValue(ActorValue::kStamina, TotalMod);
+				AddStolenAttributesTowards(giant, ActorValue::kMagicka, TotalMod);
 			}
 		}
 	}
@@ -188,7 +188,7 @@ namespace Gts {
 			auto giant = this->giant.get().get();
 			Vore::GetSingleton().AddVoreBuff(this->giant, tinyref);
 			VoreMessage_SwallowedAbsorbing(giant, tiny);
-			CallGainWeight(giant, 3.0 * get_visual_scale(tiny));
+			
 			if (giant->formID == 0x14) {
 				CallVampire();
 
@@ -411,6 +411,7 @@ namespace Gts {
 					if (this->giant) {
 						AdjustGiantessSkill(giant, this->tinySize);
 						VoreMessage_Absorbed(giant, this->tiny_name, this->WasDragon, this->WasGiant);
+						CallGainWeight(giant, 3.0 * this->tinySize);
 						BuffAttributes(giant, this->tinySize);
 						mod_target_scale(giant, this->sizePower * 0.5);
 						AdjustSizeReserve(giant, this->sizePower);

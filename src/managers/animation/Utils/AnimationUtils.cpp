@@ -12,6 +12,7 @@
 #include "managers/highheel.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
+#include "utils/DeathReport.hpp"
 #include "managers/Rumble.hpp"
 #include "managers/tremor.hpp"
 #include "data/transient.hpp"
@@ -570,7 +571,12 @@ namespace Gts {
 								PushTowards(giant, otherActor, node, pushForce * pushpower, true);
 							}
 							float Volume = clamp(0.10, 1.0, (giantScale/tinyScale)*pushForce);
-							Runtime::PlaySound("SwingImpact", otherActor, Volume, 0.0);
+
+							auto node = find_node(giant, GetDeathNodeName(Cause));
+							if (node) {
+								Runtime::PlaySoundAtNode("SwingImpact", giant, Volume, 1.0, node); // play swing impact sound
+							}
+
 							ApplyShakeAtPoint(giant, 3.0 * pushpower * audio, node->world.translate, 1.5);
 							sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
 						}

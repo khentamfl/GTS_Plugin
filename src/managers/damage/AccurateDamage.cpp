@@ -449,7 +449,7 @@ namespace Gts {
 		float highheelsdamage = 1.0 + (GetHighHeelsBonusDamage(giant) * 5);
 		float sprintdamage = 1.0; // default Sprint damage of 1.0
 		float falldamage = 1.0; // default Fall damage of 1.0
-		float weightdamage = giant->GetWeight()/100 + 1.0;
+		float weightdamage = 1.0 + (giant->GetWeight()*0.01);
 
 		SizeModifications(giant, tiny, highheels);
 		SMTCrushCheck(giant, tiny);

@@ -128,7 +128,7 @@ namespace Gts {
 		for (auto actor: find_actors()) {
 			// TODO move away from polling
 			float Endless = 0.0;
-			if (actor->formID == 0x14 && Runtime::HasPerk(actor, "TrueGiantess")) {
+			if (actor->formID == 0x14 && Runtime::HasPerk(actor, "TotalControl")) {
 				Endless = 999999.0;
 			}
 			float NaturalScale = get_neutral_scale(actor);
@@ -413,10 +413,10 @@ namespace Gts {
 	float SizeManager::BalancedMode()
 	{
 		if (Runtime::GetBool("BalanceMode")) {
-			//log::info("Balance Mode True");
+			log::info("Balance Mode True");
 			return 2.0;
 		} else {
-			//log::info("Balance Mode False");
+			log::info("Balance Mode False");
 			return 1.0;
 		}
 	}

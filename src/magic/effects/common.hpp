@@ -97,7 +97,7 @@ namespace Gts {
 				value *= 10.0 * modifier;
 				//log::info("Modifier: {}", modifier);
 				auto sizeLimit = Runtime::GetFloat("sizeLimit");
-				if (Runtime::HasPerk(caster, "TrueGiantess")) {
+				if (Runtime::HasPerk(caster, "TotalControl")) {
 					sizeLimit = 999999.0;
 				}
 				if (globalMassSize + 1.0 < sizeLimit) {
@@ -107,11 +107,14 @@ namespace Gts {
 		}
 	}
 
-	inline float CalcEffeciency(Actor* caster, Actor* target) {
+	inline float CalcEffeciency(Actor* caster, Actor* target, bool progression) {
 		const float DRAGON_PEANLTY = 0.20;
+		float progression_multiplier = 1.0;
+		if (progression) {
+			progression_multiplier = Persistent::GetSingleton().progression_multiplier;
+		}
 		float casterlevel = clamp(1.0, 500.0, caster->GetLevel());
 		float targetlevel = clamp(1.0, 500.0, target->GetLevel());
-		float progression_multiplier = Persistent::GetSingleton().progression_multiplier;
 		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)*0.01;
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)*0.01;
 		float GigantismTarget = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)*0.01;  // May go negative needs fixing with a smooth clamp
@@ -131,49 +134,20 @@ namespace Gts {
 		return efficiency;
 	}
 
-	inline float CalcEffeciency_NoProgression(Actor* caster, Actor* target) {
-		const float DRAGON_PEANLTY = 0.20;
-		float casterlevel = clamp(1.0, 500.0, caster->GetLevel());
-		float targetlevel = clamp(1.0, 500.0, target->GetLevel());
-		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)*0.01;
-		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)*0.01;
-		float GigantismTarget = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)*0.01;  // May go negative needs fixing with a smooth clamp
-		float efficiency = clamp(0.50, 1.0, (casterlevel/targetlevel));
-		//log::info("LevelDifference: {}, caster level: {}, target level: {}", efficiency, casterlevel, targetlevel);
-		if (IsDragon(target)) {
-			efficiency *= DRAGON_PEANLTY;
-		} if (IsMammoth(target)) {
-			efficiency *= 0.35;
- 		} if (IsGiant(target)) {
-			efficiency *= 0.50;
-		} if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
-			efficiency *= 0.25;
+	inline float CalcPower(Actor* actor, float scale_factor, float bonus, bool mult) {
+		float progression_multiplier = 1.0;
+		if (mult) {
+			progression_multiplier = Persistent::GetSingleton().progression_multiplier;
 		}
-
-		efficiency *= (GigantismCaster / GigantismTarget) * SizeHunger;
-		//log::info("Total Efficiency: {}", efficiency);
-
-		return efficiency;
-	}
-
-	inline float CalcPower(Actor* actor, float scale_factor, float bonus) {
-		float progression_multiplier = Persistent::GetSingleton().progression_multiplier;
 		// y = mx +c
 		// power = scale_factor * scale + bonus
-		float scale = clamp(0.5, 1.5, get_visual_scale(actor));
+		float scale = clamp(0.5, 999999.0, get_visual_scale(actor));
 		return (scale * scale_factor + bonus) * progression_multiplier * MASTER_POWER * TimeScale();
-	}
-
-	inline float CalcPower_NoMult(Actor* actor, float scale_factor, float bonus) {
-		// y = mx +c
-		// power = scale_factor * scale + bonus
-		float scale = clamp(0.5, 1.5, get_visual_scale(actor));
-		return (scale * scale_factor + bonus) * MASTER_POWER * TimeScale();
 	}
 
 	inline void Grow(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
+		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus, true));
 	}
 
 	inline void CrushGrow(Actor* actor, float scale_factor, float bonus) {
@@ -181,18 +155,18 @@ namespace Gts {
 		float modifier = SizeManager::GetSingleton().BalancedMode();
 		scale_factor /= modifier;
 		bonus /= modifier;
-		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus));
-		AddStolenAttributes(actor, CalcPower(actor, scale_factor, bonus));
+		mod_target_scale(actor, CalcPower(actor, scale_factor, bonus, true));
+		AddStolenAttributes(actor, CalcPower(actor, scale_factor, bonus, true));
 	}
 
 	inline void ShrinkActor(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		mod_target_scale(actor, -CalcPower(actor, scale_factor, bonus));
+		mod_target_scale(actor, -CalcPower(actor, scale_factor, bonus, true));
 	}
 
 	inline bool Revert(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		float amount = CalcPower(actor, scale_factor, bonus);
+		float amount = CalcPower(actor, scale_factor, bonus, true);
 		float target_scale = get_target_scale(actor);
 		float natural_scale = get_neutral_scale(actor);
 
@@ -209,10 +183,10 @@ namespace Gts {
 
 	inline void Steal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency, ShrinkSource source) {
 		effeciency = clamp(0.01, 1.0, effeciency);
-		float effeciency_noscale = clamp(0.01, 1.0, CalcEffeciency_NoProgression(to, from));
+		float effeciency_noscale = clamp(0.01, 1.0, CalcEffeciency(to, from, false));
 		//log::info("Efficiency is: {}", effeciency_noscale);
-		float amount = CalcPower(from, scale_factor, bonus);
-		float amountnomult = CalcPower_NoMult(from, scale_factor, bonus);
+		float amount = CalcPower(from, scale_factor, bonus, true);
+		float amountnomult = CalcPower(from, scale_factor, bonus, false);
 		float target_scale = get_visual_scale(from);
 		AdjustGtsSkill(0.52 * scale_factor * target_scale, to);
 		mod_target_scale(from, -amountnomult * 0.55 * effeciency_noscale);

@@ -233,8 +233,7 @@ namespace {
 
 		if (damage < 0) {
 			Overkill(attacker, receiver, -(a_damage + damage));
-			//DamageAV(receiver, ActorValue::kHealth, -damage); // Damage hp
-			InflictSizeDamage(attacker, receiver, -damage);
+			InflictSizeDamage(attacker, receiver, -damage); // damage hp
 			return;
 		}
 		if (damage > 0) {

@@ -1033,6 +1033,31 @@ namespace Gts {
 		}
 	}
 
+	void AddStolenAttributesTowards(Actor* giant, ActorValue type, float value) { 
+		if (giant->formID == 0x14) {
+			float limit = 2.0 * giant->GetLevel();
+			if (type == ActorValue::kHealth) {
+				if (Persistent::GetSingleton().stolen_health >= limit) {
+					Persistent::GetSingleton().stolen_health = limit;
+				} else {
+					ersistent::GetSingleton().stolen_health += value;
+				}
+			} else if (type == ActorValue::kMagicka) {
+				if (Persistent::GetSingleton().stolen_magick >= limit) {
+					Persistent::GetSingleton().stolen_magick = limit;
+				} else {
+					Persistent::GetSingleton().stolen_magick += value;
+				}
+			} else if (type == ActorValue::kStamina) {
+				if (Persistent::GetSingleton().stolen_stamin >= limit) {
+					Persistent::GetSingleton().stolen_stamin = limit;
+				} else {
+					Persistent::GetSingleton().stolen_stamin += value;
+				}
+			} 
+		}
+	}
+
 	float GetStolenAttributes_Values(Actor* giant, ActorValue type) {
 		if (giant->formID == 0x14) {
 			if (type == ActorValue::kHealth) {
@@ -1056,14 +1081,27 @@ namespace Gts {
 		if (giant->formID == 0x14 && Runtime::HasPerk(giant, "SizeAbsorption")) { // Permamently increases random AV after shrinking and stuff
 			float scale = std::clamp(get_visual_scale(giant), 0.01f, 999999.0f);
 			float Storage = GetStolenAttributes();
+			float limit = 2.0 * giant->GetLevel();
 			if (Storage > 0) {
 				int Boost = rand() % 3;
 				if (Boost == 0) {
-					Persistent::GetSingleton().stolen_health += (value * 4);
+					if (Persistent::GetSingleton().stolen_health >= limit) {
+						Persistent::GetSingleton().stolen_health = limit;
+					} else {
+						Persistent::GetSingleton().stolen_health += (value * 4);
+					}
 				} else if (Boost == 1) {
-					Persistent::GetSingleton().stolen_magick += (value * 4);
+					if (Persistent::GetSingleton().stolen_magick >= limit) {
+						Persistent::GetSingleton().stolen_magick = limit;
+					} else {
+						Persistent::GetSingleton().stolen_magick += (value * 4);
+					}
 				} else if (Boost >= 2) {
-					Persistent::GetSingleton().stolen_stamin += (value * 4);
+					if (Persistent::GetSingleton().stolen_stamin >= limit) {
+						Persistent::GetSingleton().stolen_stamin = limit;
+					} else {
+						Persistent::GetSingleton().stolen_stamin += (value * 4);
+					}
 				}
 				AddStolenAttributes(giant, -value); // reduce it
 			}
@@ -1785,7 +1823,7 @@ namespace Gts {
 		}
 		NiPoint3 TinyPos = actor->GetPosition();
 		NiPoint3 GiantPos = giant->GetPosition();
-		NiPoint3 TotalPos = NiPoint3(TinyPos.x, TinyPos.y, GiantPos.z + 250);
+		NiPoint3 TotalPos = NiPoint3(TinyPos.x, TinyPos.y, GiantPos.z + 170);
 
 		// ^ use X and Y of Tiny, and Z of Giant. Doing so will prevent Cell issues with Raycast
 		//  and in theory all piles should spawn properly now
