@@ -93,7 +93,7 @@ namespace {
 		
 		if (scale > meter_to_scale * 0.9) {
 			log::info("Scale {} > room height: {}, height / 1.82: {}", scale, room_height_m, meter_to_scale);
-			float adjust = std::clamp(meter_to_scale * 0.9, 1.0f, 3.5f); // Min is x1.0 (disallow to go below that), max is x3.5
+			float adjust = std::clamp(meter_to_scale * 0.9f, 1.0f, 3.5f); // Min is x1.0 (disallow to go below that), max is x3.5
 			set_target_scale(giant, adjust);
 		}
 
