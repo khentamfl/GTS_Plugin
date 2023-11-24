@@ -665,7 +665,8 @@ namespace Gts {
 		for (auto &[a_object, invData]: tiny->GetInventory()) { // transfer loot
 			if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) {
 				if ((!invData.second->IsQuestObject() || removeQuestItems)) {
-					tiny->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, giant, nullptr, nullptr);
+					float quantity = a_object->GetItemCount();
+					tiny->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, giant, nullptr, nullptr);
 				}
 			}
 		}
@@ -1906,12 +1907,10 @@ namespace Gts {
 				});
 			}	
 		for (auto &[a_object, invData]: actor->GetInventory()) { // transfer loot
-
-			//log::info("Transfering item {} from {}, formID {} to dropbox", a_object->GetName(), actor->GetDisplayFullName(), a_object->formID);
-			
 			if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) { // We don't want to move Leveled Items
 				if ((!invData.second->IsQuestObject() || removeQuestItems)) {
-					actor->RemoveItem(a_object, 1, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
+					float quantity = a_object->GetItemCount();
+					actor->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
 				}
 			}
 		}

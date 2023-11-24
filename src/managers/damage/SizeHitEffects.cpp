@@ -369,7 +369,7 @@ namespace Gts {
 					SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, ts * 1, 7, root);
 				}
 			}
-			SizeManager::GetSingleton().ModSizeVulnerability(tiny, 0.15);
+			SizeManager::GetSingleton().ModSizeVulnerability(tiny, 0.05);
 			InflictSizeDamage(giant, tiny, damage);
 			float Health = GetAV(tiny, ActorValue::kHealth);
 			float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
