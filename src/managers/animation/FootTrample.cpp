@@ -47,10 +47,16 @@ namespace {
 	}
 
     void GTS_Trample_Leg_Raise_L(AnimationEventData& data) {
+		data.stage = 1;
+		data.canEditAnimSpeed = true;
+		data.animSpeed = 1.33;
        // TrackFeet(&data.giant, 5, true);
     }
     void GTS_Trample_Leg_Raise_R(AnimationEventData& data) {
         //TrackFeet(&data.giant, 6, true);
+		data.stage = 1;
+		data.canEditAnimSpeed = true;
+		data.animSpeed = 1.33;
     } 
 
     void GTS_Trample_Cam_Start_L(AnimationEventData& data) {
