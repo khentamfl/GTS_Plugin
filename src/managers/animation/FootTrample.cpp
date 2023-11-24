@@ -49,28 +49,18 @@ namespace {
     void GTS_Trample_Leg_Raise_L(AnimationEventData& data) {
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
-		data.animSpeed = 1.33;
-       // TrackFeet(&data.giant, 5, true);
+		if (data.animSpeed < 1.05) {
+			data.animSpeed = 1.33;
+		}
     }
     void GTS_Trample_Leg_Raise_R(AnimationEventData& data) {
         //TrackFeet(&data.giant, 6, true);
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
-		data.animSpeed = 1.33;
+		if (data.animSpeed < 1.05) {
+			data.animSpeed = 1.33;
+		}
     } 
-
-	void GTSBEH_Next(AnimationEventData& data) { // reset anim speed
-		data.animSpeed = 1.0;
-		data.canEditAnimSpeed = false;
-		data.stage = 0;
-	}
-
-	void GTSBEH_Exit(AnimationEventData& data) { // reset anim speed again
-		data.animSpeed = 1.0;
-		data.canEditAnimSpeed = false;
-		data.stage = 0;
-	}
-	
 
     void GTS_Trample_Cam_Start_L(AnimationEventData& data) {
         TrackFeet(&data.giant, 5, true);
@@ -82,10 +72,18 @@ namespace {
     void GTS_Trample_Cam_End_L(AnimationEventData& data) {
         TrackFeet(&data.giant, 5, false);
         DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 1.0, 1.8);
+
+		data.animSpeed = 1.0;
+		data.canEditAnimSpeed = false;
+		data.stage = 0;
     }
     void GTS_Trample_Cam_End_R(AnimationEventData& data) {
         TrackFeet(&data.giant, 6, false);
         DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 1.0, 1.8);
+
+		data.animSpeed = 1.0;
+		data.canEditAnimSpeed = false;
+		data.stage = 0;
     }
 
     void GTS_Trample_Footstep_L(AnimationEventData& data) { // Stage 1 footsteps
@@ -105,6 +103,10 @@ namespace {
 		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25, 1.0, FootEvent::Left, 0.95);
 		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", true, 1.0, 1.8);
 		FootGrindCheck_Left(&data.giant, 1.65, true);
+
+		data.animSpeed = 1.0;
+		data.canEditAnimSpeed = false;
+		data.stage = 0;
     }
     void GTS_Trample_Footstep_R(AnimationEventData& data) { // stage 1 footsteps
         float shake = 1.0;
@@ -123,6 +125,10 @@ namespace {
 		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25, 1.0, FootEvent::Right, 0.95);
 		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", true, 1.0, 1.8);
         FootGrindCheck_Right(&data.giant, 1.65, true);
+
+		data.animSpeed = 1.0;
+		data.canEditAnimSpeed = false;
+		data.stage = 0;
     }
 
     void GTS_Trample_Impact_L(AnimationEventData& data) { // Stage 2 repeating footsteps
@@ -141,6 +147,12 @@ namespace {
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.95 * launch * perk, 2.50, 1.0, FootEvent::Left, 0.95);
         DeplenishStamina(&data.giant, 25.0);
+
+		data.stage = 1;
+		data.canEditAnimSpeed = true;
+		if (data.animSpeed < 1.05) {
+			data.animSpeed = 1.33;
+		}
     }
 
     void GTS_Trample_Impact_R(AnimationEventData& data) { // Stage 2 repeating footsteps
@@ -159,6 +171,12 @@ namespace {
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.95 * launch * perk, 2.50, 1.0, FootEvent::Right, 0.95);
         DeplenishStamina(&data.giant, 25.0);
+
+		data.stage = 1;
+		data.canEditAnimSpeed = true;
+		if (data.animSpeed < 1.05) {
+			data.animSpeed = 1.33;
+		}
     }
 
     void GTS_Trample_Finisher_L(AnimationEventData& data) { // last hit that deals huge chunk of damage
@@ -256,10 +274,6 @@ namespace Gts
 
         AnimationManager::RegisterEvent("GTS_Trample_Finisher_L", "Trample", GTS_Trample_Finisher_L);
         AnimationManager::RegisterEvent("GTS_Trample_Finisher_R", "Trample", GTS_Trample_Finisher_R);
-
-		AnimationManager::RegisterEvent("GTSBEH_Next", "Trample", GTSBEH_Next);
-		AnimationManager::RegisterEvent("GTSBEH_Exit", "Trample", GTSBEH_Exit);
- 
 	}
 
 	void AnimationFootTrample::RegisterTriggers() {
