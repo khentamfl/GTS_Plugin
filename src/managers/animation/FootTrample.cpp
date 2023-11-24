@@ -60,16 +60,14 @@ namespace {
     } 
 
 	void GTSBEH_Next(AnimationEventData& data) { // reset anim speed
-		data.stage = 1;
-		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
+		data.canEditAnimSpeed = false;
 		data.stage = 0;
 	}
 
 	void GTSBEH_Exit(AnimationEventData& data) { // reset anim speed again
-		data.stage = 1;
-		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
+		data.canEditAnimSpeed = false;
 		data.stage = 0;
 	}
 	
