@@ -150,14 +150,6 @@ namespace {
 			return;
 		}
 		int random = rand() % 3;
-		if (!AllowDevourment() && pred->formID == 0x14 && WasDragon) {
-			CompleteDragonQuest();
-		}
-		if (WasGiant) {
-			AdvanceQuestProgression(pred, 7, 1);
-		} else {
-			AdvanceQuestProgression(pred, 6, 1);
-		}
 		if (!Runtime::HasPerk(pred, "SoulVorePerk") || random == 0) {
 			Cprint("{} was absorbed by {}", prey, pred->GetDisplayFullName());
 		} else if (Runtime::HasPerk(pred, "SoulVorePerk") && random == 1) {
@@ -166,6 +158,16 @@ namespace {
 			Cprint("{} was greedily devoured by {}", prey, pred->GetDisplayFullName());
 		} else {
 			Cprint("{} was absorbed by {}", prey, pred->GetDisplayFullName());
+		}
+	}
+
+	void Vore_AdvanceQuest(Actor* pred, bool WasDragon, bool WasGiant) {
+		if (!AllowDevourment() && pred->formID == 0x14 && WasDragon) {
+			CompleteDragonQuest();
+		} if (WasGiant) {
+			AdvanceQuestProgression(pred, 7, 1);
+		} else {
+			AdvanceQuestProgression(pred, 6, 1);
 		}
 	}
 }
@@ -390,6 +392,8 @@ namespace Gts {
 				this->factor.target = 1.0;
 				this->factor.halflife = this->duration * 0.5;
 				this->state = VoreBuffState::Running;
+
+				Vore_AdvanceQuest(giant, this->WasDragon, this->WasGiant); // advance quest
 				break;
 			}
 			case VoreBuffState::Running: {
