@@ -645,7 +645,7 @@ namespace Gts {
 				}
 				TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(tiny);
 				if (ref) {
-					ref->GetInventoryChanges()->InitLeveledItems();
+					//ref->GetInventoryChanges()->InitLeveledItems();
 				}
 				if (giant->formID == 0x14 && !PCLoot) {
 					TransferInventory_Normal(to, tiny, removeQuestItems);
