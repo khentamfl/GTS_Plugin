@@ -662,10 +662,17 @@ namespace Gts {
 	}
 
 	void TransferInventory_Normal(Actor* giant, Actor* tiny, bool removeQuestItems) {
+		float quantity = 1.0;
+
 		for (auto &[a_object, invData]: tiny->GetInventory()) { // transfer loot
 			if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) {
 				if ((!invData.second->IsQuestObject() || removeQuestItems)) {
-					float quantity = a_object->GetItemCount();
+
+					TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(tiny);
+					if (ref) {
+						quantity = ref->GetInventoryChanges()->GetItemCount(a_object); // obtain item count
+					}
+
 					tiny->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, giant, nullptr, nullptr);
 				}
 			}
@@ -1907,9 +1914,15 @@ namespace Gts {
 				});
 			}	
 		for (auto &[a_object, invData]: actor->GetInventory()) { // transfer loot
+			float quantity = 1.0;
 			if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) { // We don't want to move Leveled Items
 				if ((!invData.second->IsQuestObject() || removeQuestItems)) {
-					float quantity = a_object->GetItemCount();
+					
+					TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
+					if (ref) {
+						quantity = ref->GetInventoryChanges()->GetItemCount(a_object); // obtain item count
+					}
+
 					actor->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
 				}
 			}
