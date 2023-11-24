@@ -59,6 +59,19 @@ namespace {
 		data.animSpeed = 1.33;
     } 
 
+	void GTSBEH_Next(AnimationEventData& data) { // reset anim speed
+		data.stage = 0;
+		data.canEditAnimSpeed = false;
+		data.animSpeed = 1.0;
+	}
+
+	void GTSBEH_Exit(AnimationEventData& data) { // reset anim speed again
+		data.stage = 0;
+		data.canEditAnimSpeed = false;
+		data.animSpeed = 1.0;
+	}
+	
+
     void GTS_Trample_Cam_Start_L(AnimationEventData& data) {
         TrackFeet(&data.giant, 5, true);
     }
@@ -243,6 +256,9 @@ namespace Gts
 
         AnimationManager::RegisterEvent("GTS_Trample_Finisher_L", "Trample", GTS_Trample_Finisher_L);
         AnimationManager::RegisterEvent("GTS_Trample_Finisher_R", "Trample", GTS_Trample_Finisher_R);
+
+		AnimationManager::RegisterEvent("GTSBEH_Next", "Trample", GTSBEH_Next);
+		AnimationManager::RegisterEvent("GTSBEH_Exit", "Trample", GTSBEH_Exit);
  
 	}
 
