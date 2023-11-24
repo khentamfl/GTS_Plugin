@@ -110,6 +110,7 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.95 * launch * perk, 2.45, 1.0, FootEvent::Left, 0.95);
+        DeplenishStamina(&data.giant, 25.0);
     }
 
     void GTS_Trample_Impact_R(AnimationEventData& data) { // Stage 2 repeating footsteps
@@ -127,6 +128,7 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25, 1.0, FootEvent::Right, 0.95);
+        DeplenishStamina(&data.giant, 25.0);
     }
 
     void GTS_Trample_Finisher_L(AnimationEventData& data) { // last hit that deals huge chunk of damage
@@ -141,9 +143,10 @@ namespace {
 		}
 		GRumble::Once("TrampleL", &data.giant, 3.20 * shake, 0.0, RNode);
 		DoDamageEffect(&data.giant, 8.8 * launch * perk, 2.45 * launch, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
-		DoFootstepSound(&data.giant, 1.15, FootEvent::Leftt, LNode);
+		DoFootstepSound(&data.giant, 1.15, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 1.60 * launch * perk, 4.60, 1.0, FootEvent::Left, 0.95);
+        DeplenishStamina(&data.giant, 80.0);
     }
     void GTS_Trample_Finisher_R(AnimationEventData& data) { // last hit that deals huge chunk of damage
         float shake = 1.0;
@@ -160,6 +163,7 @@ namespace {
 		DoFootstepSound(&data.giant, 1.15, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 1.60 * launch * perk, 4.60, 1.0, FootEvent::Right, 0.95);
+        DeplenishStamina(&data.giant, 80.0);
     }
 
     /////////////////////////////////////////////////////////// Triggers
