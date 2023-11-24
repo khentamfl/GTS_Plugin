@@ -26,6 +26,15 @@ namespace {
     const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
+    void DeplenishStamina(Actor* giant, float WasteStamina) {
+		if (Runtime::HasPerk(giant, "DestructionBasics")) {
+			WasteStamina *= 0.65;
+		} if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
+			WasteStamina *= 1.0 - GetGtsSkillLevel() * 0.0035;
+		}
+        DamageAV(giant, ActorValue::kStamina, WasteStamina);
+    }
+
     void GTS_Trample_Leg_Raise_L(AnimationEventData& data) {
        // TrackFeet(&data.giant, 5, true);
     }
@@ -42,13 +51,14 @@ namespace {
 
     void GTS_Trample_Cam_End_L(AnimationEventData& data) {
         TrackFeet(&data.giant, 5, false);
+        DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 1.0, 1.8);
     }
     void GTS_Trample_Cam_End_R(AnimationEventData& data) {
         TrackFeet(&data.giant, 6, false);
+        DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 1.0, 1.8);
     }
 
-
-    void GTS_Trample_Impact_L(AnimationEventData& data) { // First stomp that then determines if .dll should launch the rest of anim
+    void GTS_Trample_Footstep_L(AnimationEventData& data) { // Stage 1 footsteps
         float shake = 1.0;
 		float launch = 1.0;
 		float dust = 1.0;
@@ -63,11 +73,10 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25, 1.0, FootEvent::Left, 0.95);
-		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 1.0, 1.8);
-		FootGrindCheck_Left(&data.giant, 1.60, true);
+		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", true, 1.0, 1.8);
+		FootGrindCheck_Left(&data.giant, 1.65, true);
     }
-
-    void GTS_Trample_Impact_R(AnimationEventData& data) { // First stomp that then determines if .dll should launch the rest of anim
+    void GTS_Trample_Footstep_R(AnimationEventData& data) { // stage 1 footsteps
         float shake = 1.0;
 		float launch = 1.0;
 		float dust = 1.0;
@@ -77,55 +86,80 @@ namespace {
 			launch = 1.2;
 			dust = 1.25;
 		}
-		GRumble::Once("TrampleL", &data.giant, 1.60 * shake, 0.0, LNode);
+		GRumble::Once("TrampleR", &data.giant, 1.60 * shake, 0.0, RNode);
+		DoDamageEffect(&data.giant, 1.8 * launch * perk, 1.70 * launch, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
+		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
+		DoLaunch(&data.giant, 0.95 * launch * perk, 2.45, 1.0, FootEvent::Right, 0.95);
+		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", true, 1.0, 1.8);
+        FootGrindCheck_Right(&data.giant, 1.65, true);
+    }
+
+    void GTS_Trample_Impact_L(AnimationEventData& data) { // Stage 2 repeating footsteps
+        float shake = 1.0;
+		float launch = 1.0;
+		float dust = 1.0;
+		float perk = GetPerkBonus_Basics(&data.giant);
+		if (HasSMT(&data.giant)) {
+			shake = 4.0;
+			launch = 1.2;
+			dust = 1.25;
+		}
+		GRumble::Once("TrampleL", &data.giant, 2.20 * shake, 0.0, LNode);
+		DoDamageEffect(&data.giant, 1.8 * launch * perk, 1.70 * launch, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
+		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
+		DoLaunch(&data.giant, 0.95 * launch * perk, 2.45, 1.0, FootEvent::Left, 0.95);
+    }
+
+    void GTS_Trample_Impact_R(AnimationEventData& data) { // Stage 2 repeating footsteps
+        float shake = 1.0;
+		float launch = 1.0;
+		float dust = 1.0;
+		float perk = GetPerkBonus_Basics(&data.giant);
+		if (HasSMT(&data.giant)) {
+			shake = 4.0;
+			launch = 1.2;
+			dust = 1.25;
+		}
+		GRumble::Once("TrampleR", &data.giant, 2.20 * shake, 0.0, RNode);
 		DoDamageEffect(&data.giant, 1.2 * launch * perk, 1.45 * launch, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25, 1.0, FootEvent::Right, 0.95);
-		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 1.0, 1.8);
-		FootGrindCheck_Left(&data.giant, 1.60, true);
     }
 
-    void GTS_Trample_Footstep_L(AnimationEventData& data) { // Attack that happen after we 
+    void GTS_Trample_Finisher_L(AnimationEventData& data) { // last hit that deals huge chunk of damage
         float shake = 1.0;
 		float launch = 1.0;
-		float dust = 1.0;
+		float dust = 1.25;
 		float perk = GetPerkBonus_Basics(&data.giant);
 		if (HasSMT(&data.giant)) {
 			shake = 4.0;
 			launch = 1.2;
-			dust = 1.25;
+			dust = 1.50;
 		}
-		GRumble::Once("TrampleL", &data.giant, 2.40 * shake, 0.0, LNode);
-		DoDamageEffect(&data.giant, 1.8 * launch * perk, 1.75 * launch, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
-		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
+		GRumble::Once("TrampleL", &data.giant, 3.20 * shake, 0.0, RNode);
+		DoDamageEffect(&data.giant, 8.8 * launch * perk, 2.45 * launch, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+		DoFootstepSound(&data.giant, 1.15, FootEvent::Leftt, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25, 1.0, FootEvent::Left, 0.95);
-		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 1.0, 1.8);
+		DoLaunch(&data.giant, 1.60 * launch * perk, 4.60, 1.0, FootEvent::Left, 0.95);
     }
-    void GTS_Trample_Footstep_R(AnimationEventData& data) {
+    void GTS_Trample_Finisher_R(AnimationEventData& data) { // last hit that deals huge chunk of damage
         float shake = 1.0;
 		float launch = 1.0;
-		float dust = 1.0;
+		float dust = 1.25;
 		float perk = GetPerkBonus_Basics(&data.giant);
 		if (HasSMT(&data.giant)) {
 			shake = 4.0;
 			launch = 1.2;
-			dust = 1.25;
+			dust = 1.50;
 		}
-		GRumble::Once("TrampleL", &data.giant, 2.40 * shake, 0.0, LNode);
-		DoDamageEffect(&data.giant, 1.8 * launch * perk, 1.75 * launch, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
-		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
+		GRumble::Once("TrampleR", &data.giant, 3.20 * shake, 0.0, RNode);
+		DoDamageEffect(&data.giant, 8.8 * launch * perk, 2.45 * launch, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+		DoFootstepSound(&data.giant, 1.15, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25, 1.0, FootEvent::Right, 0.95);
-		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 1.0, 1.8);
-    }
-
-    void GTS_Trample_Finisher_L(AnimationEventData& data) { // last hit that always kills the target
-        
-    }
-    void GTS_Trample_Finisher_R(AnimationEventData& data) { // last hit that always kills the target
-        
+		DoLaunch(&data.giant, 1.60 * launch * perk, 4.60, 1.0, FootEvent::Right, 0.95);
     }
 
     /////////////////////////////////////////////////////////// Triggers
@@ -154,7 +188,7 @@ namespace {
 		float WasteStamina = 35.0;
 		if (Runtime::HasPerk(player, "DestructionBasics")) {
 			WasteStamina *= 0.65;
-		}
+		} 
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("TrampleR", player);
 		} else {
