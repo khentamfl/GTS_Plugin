@@ -97,7 +97,7 @@ namespace {
 			dust = 1.25;
 		}
 		GRumble::Once("TrampleL", &data.giant, 1.60 * shake, 0.0, LNode);
-		DoDamageEffect(&data.giant, 1.0 * launch * perk, 1.45 * launch, 100, 0.10, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+		DoDamageEffect(&data.giant, 0.9 * launch * perk, 1.45 * launch, 100, 0.10, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25, 1.0, FootEvent::Left, 0.50);
@@ -119,7 +119,7 @@ namespace {
 			dust = 1.25;
 		}
 		GRumble::Once("TrampleR", &data.giant, 1.60 * shake, 0.0, RNode);
-		DoDamageEffect(&data.giant, 1.0 * launch * perk, 1.45 * launch, 100, 0.10, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+		DoDamageEffect(&data.giant, 0.9 * launch * perk, 1.45 * launch, 100, 0.10, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25, 1.0, FootEvent::Right, 0.50);
@@ -142,7 +142,7 @@ namespace {
 			dust = 1.25;
 		}
 		GRumble::Once("TrampleL", &data.giant, 2.20 * shake, 0.0, LNode);
-		DoDamageEffect(&data.giant, 2.2 * launch * perk, 1.75 * launch, 100, 0.10, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+		DoDamageEffect(&data.giant, 1.4 * launch * perk, 1.75 * launch, 100, 0.10, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.95 * launch * perk, 2.50, 1.0, FootEvent::Left, 0.75);
@@ -166,7 +166,7 @@ namespace {
 			dust = 1.25;
 		}
 		GRumble::Once("TrampleR", &data.giant, 2.20 * shake, 0.0, RNode);
-		DoDamageEffect(&data.giant, 2.2 * launch * perk, 1.75 * launch, 100, 0.10, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+		DoDamageEffect(&data.giant, 1.4 * launch * perk, 1.75 * launch, 100, 0.10, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.95 * launch * perk, 2.50, 1.0, FootEvent::Right, 0.75);
@@ -190,7 +190,7 @@ namespace {
 			dust = 1.50;
 		}
 		GRumble::Once("TrampleL", &data.giant, 3.20 * shake, 0.0, RNode);
-		DoDamageEffect(&data.giant, 8.8 * launch * perk, 2.45 * launch, 10, 0.15, FootEvent::Left, 0.90, DamageSource::CrushedLeft);
+		DoDamageEffect(&data.giant, 8.0 * launch * perk, 2.25 * launch, 10, 0.15, FootEvent::Left, 0.90, DamageSource::CrushedLeft);
         DoLaunch(&data.giant, 1.60 * launch * perk, 4.60, 1.0, FootEvent::Left, 0.95);
 		DoFootstepSound(&data.giant, 1.15, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);

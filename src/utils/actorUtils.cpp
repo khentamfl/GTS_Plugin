@@ -1923,6 +1923,8 @@ namespace Gts {
 						quantity = ref->GetInventoryChanges()->GetItemCount(a_object); // obtain item count
 					}
 
+					log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
+
 					actor->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
 				}
 			}
