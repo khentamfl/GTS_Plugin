@@ -89,7 +89,7 @@ namespace Gts {
 		}
 	}
 
-	NiPoint3 CastRay(TESObjectREFR* ref, NiPoint3 in_origin, NiPoint3 direction, float unit_length, std::vector<COL_LAYER> groups, bool& success) {
+	NiPoint3 CastRay(TESObjectREFR* ref, const NiPoint3& in_origin, const NiPoint3& direction, const float& unit_length, const std::vector<COL_LAYER>& groups, bool& success) {
 		float length = unit_to_meter(unit_length);
 		success = false;
 		if (!ref) {
@@ -143,8 +143,9 @@ namespace Gts {
 	}
 }
 
-NiPoint3 CastRay(TESObjectREFR* ref, NiPoint3 in_origin, NiPoint3 direction, float unit_length, bool& success) {
-  return CastRay(ref, in_origin, direction, unit_length, {}, success);
+NiPoint3 CastRay(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success) {
+  std::vector<COL_LAYER> groups = {};
+  return CastRay(ref, origin, direction, unit_length, groups, success);
 }
 
 

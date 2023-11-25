@@ -30,6 +30,6 @@ namespace Gts {
 			std::uint32_t filter = 0x40122716; // https://gitlab.com/Shrimperator/skyrim-mod-betterthirdpersonselection/-/blob/main/src/SmoothCamStuff/bhkLinearCastCollector.h
 	};
 
-  NiPoint3 CastRay(TESObjectREFR* ref, NiPoint3 origin, NiPoint3 direction, float length, std::vector<COL_LAYER> groups, bool& success);
-	NiPoint3 CastRay(TESObjectREFR* ref, NiPoint3 origin, NiPoint3 direction, float length, bool& success);
+  NiPoint3 CastRay(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, const std::vector<COL_LAYER>& groups, bool& success);
+	NiPoint3 CastRay(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success);
 }
