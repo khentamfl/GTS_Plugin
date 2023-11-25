@@ -145,7 +145,7 @@ namespace Gts {
 
 NiPoint3 CastRay(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success) {
   std::vector<COL_LAYER> groups = {};
-  return CastRay(ref, origin, direction, unit_length, groups, success);
+  return CastRay(ref, origin, direction, length, groups, success);
 }
 
 
