@@ -5,7 +5,7 @@ using namespace RE;
 
 namespace Gts {
 
-  void RayCollector::add_group_filter(COL_LAYER group) {
+  void RayCollector::add_group_filter(COL_LAYER group) noexcept {
     groups.push_back(group);
   }
 
