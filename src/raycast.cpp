@@ -48,15 +48,18 @@ namespace Gts {
 			if (ni_shape) {
         auto filter_info = ni_shape->filterInfo;
         COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
+        log::info("Possible point on collision {}", collision_layer);
         if (! groups.empty()) {
           bool found = false;
           for (auto group: groups) {
+            log::info(" - Checking against: {}", group);
             if (group == collision_layer) {
               found = true;
               break;
             }
           }
           if (!found) {
+            log::info("  - Collision layer not in allowed group");
             return;
           }
         }
