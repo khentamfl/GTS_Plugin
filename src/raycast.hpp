@@ -17,7 +17,7 @@ namespace Gts {
 	{
 		public:
       // Must be a member of one of these groups
-      void add_group_filter(std::uint32_t group) noexcept;
+      void add_group_filter(COL_LAYER group) noexcept;
 
 			void add_filter(NiObject* obj) noexcept;
 			bool is_filtered(NiObject* obj);
