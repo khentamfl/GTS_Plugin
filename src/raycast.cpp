@@ -52,7 +52,6 @@ namespace Gts {
         if (! groups.empty()) {
           bool found = false;
           for (auto group: groups) {
-            log::info(" - Checking against: {}", group);
             if (group == collision_layer) {
               found = true;
               break;
