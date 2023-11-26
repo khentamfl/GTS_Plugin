@@ -149,7 +149,7 @@ namespace {
         DeplenishStamina(&data.giant, 25.0);
 
 		data.stage = 1;
-		data.canEditAnimSpeed = true;
+		data.canEditAnimSpeed = false;
 		if (data.animSpeed == 1.0) {
 			data.animSpeed = 1.15;
 		}
@@ -173,7 +173,7 @@ namespace {
         DeplenishStamina(&data.giant, 25.0);
 
 		data.stage = 1;
-		data.canEditAnimSpeed = true;
+		data.canEditAnimSpeed = false;
 		if (data.animSpeed == 1.00) {
 			data.animSpeed = 1.15;
 		}
