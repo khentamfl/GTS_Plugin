@@ -1344,7 +1344,6 @@ namespace Gts {
 	}
 
 	void PushTowards(Actor* giantref, Actor* tinyref, float power) {
-		NiPoint3 startCoords = bone->world.translate;
 		double startTime = Time::WorldTimeElapsed();
 		ActorHandle tinyHandle = tinyref->CreateRefHandle();
 		ActorHandle gianthandle = giantref->CreateRefHandle();
@@ -1501,7 +1500,7 @@ namespace Gts {
 
 		SpawnParticle(giant, 6.00, "GTS/Shouts/ShrinkOutburst.nif", NiMatrix3(), NodePosition, giantScale*explosion*3.0, 7, nullptr); // Spawn effect
 
-		if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate())) {
+		if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant))) {
 			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), CheckDistance, 600, {0.0, 1.0, 0.0, 1.0});
 		}
 
@@ -1847,25 +1846,25 @@ namespace Gts {
 
 	NiPoint3 GetContainerSpawnLocation(Actor* giant, Actor* tiny) {
 		bool success_first = false;
-		bool succes_second = false;
-		NiPoint3 ray_start = tiny->GetLocation();
-		ray_start.z = giant->GetLocation().z + 170.0; // overrize .z with giant .z + 170, so ray starts from above
+		bool success_second = false;
+		NiPoint3 ray_start = tiny->GetPosition();
+		ray_start.z = giant->GetPosition().z + 170.0; // overrize .z with giant .z + 170, so ray starts from above
 		NiPoint3 ray_direction(0.0, 0.0, -1.0);
 		
 		float ray_length = 40000;
 		NiPoint3 pos = NiPoint3(0, 0, 0); // default pos
-		NiPoint3 endpos = CastRay(tiny, ray_start, ray_direction, ray_length, success_first);
+		NiPoint3 endpos = CastRayStatics(tiny, ray_start, ray_direction, ray_length, success_first);
 
 		if (success) { // attempt 1, spawn at actor ray cast.
 		// Obtain actor coords, shift Z by 170 and cast ray down. That way we always do ray at around ground level.
-			NiPoint3 ray_start_second = giant->GetLocation();
+			NiPoint3 ray_start_second = giant->GetPosition();
 			ray_start_second.z += 170.0;
-			pos = CastRay(giant, ray_start_second, ray_direction, ray_length, success_second);
+			pos = CastRayStatics(giant, ray_start_second, ray_direction, ray_length, success_second);
 			log::info("Cast 1 success");
 			return pos;
 		} else { // failed, spawn at giant location directly.
 			log::info("Cast 1 failed, spawning on default GTS location");
-			pos = giant->GetLocation();
+			pos = giant->GetPosition();
 			return pos;
 		}
 	}
