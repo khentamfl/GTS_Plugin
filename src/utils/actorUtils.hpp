@@ -8,6 +8,8 @@ using namespace RE;
 using namespace Gts;
 
 namespace Gts {
+	[[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis);
+
 	Actor* GetActorPtr(Actor* actor);
 
 	Actor* GetActorPtr(Actor& actor);

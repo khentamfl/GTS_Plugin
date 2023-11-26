@@ -42,32 +42,6 @@ namespace {
 		return Result;
 	}
 
-	[[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
-	{
-		float S = sin(angle);
-		float C = cos(angle);
-
-		const float XX = axis.x * axis.x;
-		const float YY = axis.y * axis.y;
-		const float ZZ = axis.z * axis.z;
-
-		const float XY = axis.x * axis.y;
-		const float YZ = axis.y * axis.z;
-		const float ZX = axis.z * axis.x;
-
-		const float XS = axis.x * S;
-		const float YS = axis.y * S;
-		const float ZS = axis.z * S;
-
-		const float OMC = 1.f - C;
-
-		return RE::NiPoint3(
-			(OMC * XX + C) * vec.x + (OMC * XY - ZS) * vec.y + (OMC * ZX + YS) * vec.z,
-			(OMC * XY + ZS) * vec.x + (OMC * YY + C) * vec.y + (OMC * YZ - XS) * vec.z,
-			(OMC * ZX - YS) * vec.x + (OMC * YZ + XS) * vec.y + (OMC * ZZ + C) * vec.z
-		);
-	}
-
 	ExtraDataList* CreateExDataList() {
 		size_t a_size;
 		if (SKYRIM_REL_CONSTEXPR (REL::Module::IsAE()) && (REL::Module::get().version() >= SKSE::RUNTIME_SSE_1_6_629)) {
@@ -115,6 +89,32 @@ RE::ExtraDataList::~ExtraDataList() {
 }
 
 namespace Gts {
+
+	[[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis) {
+		float S = sin(angle);
+		float C = cos(angle);
+
+		const float XX = axis.x * axis.x;
+		const float YY = axis.y * axis.y;
+		const float ZZ = axis.z * axis.z;
+
+		const float XY = axis.x * axis.y;
+		const float YZ = axis.y * axis.z;
+		const float ZX = axis.z * axis.x;
+
+		const float XS = axis.x * S;
+		const float YS = axis.y * S;
+		const float ZS = axis.z * S;
+
+		const float OMC = 1.f - C;
+
+		return RE::NiPoint3(
+			(OMC * XX + C) * vec.x + (OMC * XY - ZS) * vec.y + (OMC * ZX + YS) * vec.z,
+			(OMC * XY + ZS) * vec.x + (OMC * YY + C) * vec.y + (OMC * YZ - XS) * vec.z,
+			(OMC * ZX - YS) * vec.x + (OMC * YZ + XS) * vec.y + (OMC * ZZ + C) * vec.z
+		);
+	}
+
 	Actor* GetActorPtr(Actor* actor) {
 		return actor;
 	}
@@ -1943,7 +1943,9 @@ namespace Gts {
 		*/
 
 		NiPoint3 TotalPos = GetContainerSpawnLocation(giant, actor); // obtain goal of container position by doing ray-cast
-		DebugAPI::DrawSphere(glm::vec3(TotalPos.x, TotalPos.y, TotalPos.z), 8.0, 6000, {1.0, 1.0, 0.0, 1.0});
+		if (IsDebugEnabled()) {
+			DebugAPI::DrawSphere(glm::vec3(TotalPos.x, TotalPos.y, TotalPos.z), 8.0, 6000, {1.0, 1.0, 0.0, 1.0});
+		}
 
 		auto dropbox = Runtime::PlaceContainerAtPos(actor, TotalPos, container); // Place chosen container
 
