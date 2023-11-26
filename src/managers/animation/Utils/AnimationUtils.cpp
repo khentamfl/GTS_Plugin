@@ -7,12 +7,12 @@
 #include "managers/CrushManager.hpp"
 #include "magic/effects/common.hpp"
 #include "utils/papyrusUtils.hpp"
-#include "utils/actorUtils.hpp"
-#include "data/persistent.hpp"
 #include "managers/highheel.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
 #include "utils/DeathReport.hpp"
+#include "utils/actorUtils.hpp"
+#include "data/persistent.hpp"
 #include "managers/Rumble.hpp"
 #include "managers/tremor.hpp"
 #include "data/transient.hpp"
@@ -418,7 +418,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 			}
-			if (Runtime::GetBool("EnableDebugOverlay") && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+			if (IsDebugEnabled() && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
 				for (auto point: footPoints) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance, 800, {0.0, 1.0, 0.0, 1.0});
 				}
@@ -534,7 +534,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 			}
-			if (Runtime::GetBool("EnableDebugOverlay") && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+			if (IsDebugEnabled() && (actor->formID == 0x14 || IsTeammate(actor))) {
 				for (auto point: footPoints) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance, 800, {0.0, 1.0, 0.0, 1.0});
 				}
@@ -604,7 +604,7 @@ namespace Gts {
 
 		float maxDistance = radius * giantScale;
 
-		if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
+		if (IsDebugEnabled() && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
 			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), maxDistance);
 		}
 

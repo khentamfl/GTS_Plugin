@@ -78,7 +78,7 @@ namespace Gts {
 				} else if (random == 5) {
 					Cprint("{} got crushed under the heels of {}", TinyName, GiantName);
 				} else if (random == 6) {
-					Cprint("{} ended up being crushed by high heels of {}", TinyName, GiantName);
+					Cprint("{} ended up being crushed by heels of {}", TinyName, GiantName);
 				} else if (random >= 7) {
 					Cprint("{} turned {} into bloody mist", GiantName, TinyName);
 				}

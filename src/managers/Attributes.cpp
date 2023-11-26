@@ -259,7 +259,7 @@ namespace Gts {
 				if (scale > 1.0) {
 					return power;
 				} else {
-					return scale;
+					return scale * (Bonus/2.2 + 1.0);
 				}
 			}
 			case ActorValue::kAttackDamageMult: {

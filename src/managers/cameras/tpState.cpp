@@ -3,6 +3,7 @@
 #include "managers/cameras/camutil.hpp"
 #include "managers/animation/Grab.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "utils/actorUtils.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "node.hpp"
@@ -74,14 +75,14 @@ namespace Gts {
 						auto bone_count = bones.size();
 						for (auto bone: bones) {
 							auto worldPos = bone->world * NiPoint3();
-							if (Runtime::GetBool("EnableDebugOverlay")) {
+							if (IsDebugEnabled()) {
 								DebugAPI::DrawSphere(glm::vec3(worldPos.x, worldPos.y, worldPos.z), 1.0, 10, {1.0, 1.0, 0.0, 1.0});
 							}
 							auto localPos = transform * worldPos;
 							bonePos += localPos * (1.0/bone_count);
 						}
 						NiPoint3 worldBonePos = playerTrans * bonePos;
-						if (Runtime::GetBool("EnableDebugOverlay")) {
+						if (IsDebugEnabled()) {
 							DebugAPI::DrawSphere(glm::vec3(worldBonePos.x, worldBonePos.y, worldBonePos.z), 1.0, 10, {0.0, 1.0, 0.0, 1.0});
 						}
 						smoothedBonePos.target = bonePos;
