@@ -1152,6 +1152,8 @@ namespace Gts {
 			float Storage = GetStolenAttributes();
 			float limit = 2.0 * giant->GetLevel();
 
+			log::info("Adding {} to attributes", value);
+
 			float &health = Persistent::GetSingleton().stolen_health;
 			float &magick = Persistent::GetSingleton().stolen_magick;
 			float &stamin = Persistent::GetSingleton().stolen_stamin;
