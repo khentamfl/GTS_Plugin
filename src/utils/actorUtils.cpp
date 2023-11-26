@@ -1925,10 +1925,11 @@ namespace Gts {
 		NiPoint3 pos = NiPoint3(0, 0, 0); // default pos
 		NiPoint3 endpos = CastRayStatics(tiny, ray_start, ray_direction, ray_length, success_first);
 		if (success_first) {
+			// attempt 1, spawn at actor ray cast.
+		// Obtain actor coords, shift Z by 170 and cast ray down. That way we always do ray at around ground level.
 			log::info("Cast 1 success");
 			return endpos;
-		} else if (!success_first) { // attempt 1, spawn at actor ray cast.
-		// Obtain actor coords, shift Z by 170 and cast ray down. That way we always do ray at around ground level.
+		} else if (!success_first) { 
 			NiPoint3 ray_start_second = giant->GetPosition();
 			ray_start_second.z += 170.0;
 			pos = CastRayStatics(giant, ray_start_second, ray_direction, ray_length, success_second);
@@ -1939,7 +1940,10 @@ namespace Gts {
 				pos = giant->GetPosition();
 				return pos;
 			}
+			return pos;
 		} 
+		log::info("Everything failed, spawning nowhere");
+		return pos;
 	}
 
 	// From an actor place a new container at them and transfer
