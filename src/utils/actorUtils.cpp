@@ -521,7 +521,7 @@ namespace Gts {
 		return giant->AsActorState()->IsSprinting() || giant->AsActorState()->IsWalking() || giant->IsRunning() || giant->IsSneaking();
 	}
 
-	bool IsHeadtracking(Actor* giant) { // Used to report True when we lock onto something, should be Player Exclusive. 
+	bool IsHeadtracking(Actor* giant) { // Used to report True when we lock onto something, should be Player Exclusive.
 	    //Currently used to fix TDM mesh issues when we lock on someone.
 		//auto profiler = Profilers::Profile("ActorUtils: HeadTracking");
 		bool tracking;
@@ -588,7 +588,7 @@ namespace Gts {
 			height = 1.82 * scale + (hh * scale); // meters
 		} else {
 			height = (1.82 * scale + (hh * scale)) * 3.28; // ft
-		} 
+		}
 		return height;
 	}
 
@@ -678,7 +678,7 @@ namespace Gts {
 			}
 			auto tiny = tinyhandle.get().get();
 			auto giant = gianthandle.get().get();
-			
+
 			if (!tiny->IsDead()) {
 				KillActor(giant, tiny); // just to make sure
 				return true; // try again
@@ -1094,7 +1094,7 @@ namespace Gts {
 		}
 	}
 
-	void AddStolenAttributesTowards(Actor* giant, ActorValue type, float value) { 
+	void AddStolenAttributesTowards(Actor* giant, ActorValue type, float value) {
 		if (giant->formID == 0x14) {
 
 			value *= 1000;
@@ -1118,7 +1118,7 @@ namespace Gts {
 				} else {
 					Persistent::GetSingleton().stolen_stamin += value;
 				}
-			} 
+			}
 		}
 	}
 
@@ -1387,17 +1387,20 @@ namespace Gts {
 				return false;
 			}
 
-			auto PushAngle = giant->data.angle.z;
-			RE::NiPoint3 forwardVector{ 0.f, 1.f, 0.f };
-			RE::NiPoint3 direction = RotateAngleAxis(forwardVector, PushAngle, { 0.f, 1.f, 0.f });
+      auto playerRotation = giant->GetCurrent3D()->world.rotate;
+			RE::NiPoint3 localForwardVector{ 0.f, 1.f, 0.f };
+      RE::NiPoint3 globalForwardVector = playerRotation * localForwardVector;
+
+			RE::NiPoint3 direction = globalForwardVector;
 			log::info("{} direction: {}", giant->GetDisplayFullName(), Vector2Str(direction));
 			double endTime = Time::WorldTimeElapsed();
 
 			if ((endTime - startTime) > 1e-4) {
 				// Time has elapsed
-				TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tiny);
-				if (tiny_is_object) {
-					ApplyHavokImpulse(tiny_is_object, direction.x, direction.y, direction.z, power);
+				// This cast should not be able to fail....
+				TESObjectREFR* tiny_as_object = skyrim_cast<TESObjectREFR*>(tiny);
+				if (tiny_as_object) {
+					ApplyHavokImpulse(tiny_as_object, direction.x, direction.y, direction.z, power);
 				}
 				return false;
 			} else {
@@ -1877,7 +1880,7 @@ namespace Gts {
 		NiPoint3 ray_start = tiny->GetPosition();
 		ray_start.z = giant->GetPosition().z + 170.0; // overrize .z with giant .z + 170, so ray starts from above
 		NiPoint3 ray_direction(0.0, 0.0, -1.0);
-		
+
 		float ray_length = 40000;
 		NiPoint3 pos = NiPoint3(0, 0, 0); // default pos
 		NiPoint3 endpos = CastRayStatics(tiny, ray_start, ray_direction, ray_length, success_first);
@@ -1907,7 +1910,7 @@ namespace Gts {
 
 		std::string_view container;
 		std::string name = std::format("{} remains", actor->GetDisplayFullName());
-		
+
 		if (IsMechanical(actor)) {
 			container = "Dropbox_Mechanical";
 		} else if (Cause == DamageSource::Vored) { // Always spawn soul on vore
@@ -1943,7 +1946,7 @@ namespace Gts {
 		DebugAPI::DrawSphere(glm::vec3(TotalPos.x, TotalPos.y, TotalPos.z), 8.0, 6000, {1.0, 1.0, 0.0, 1.0});
 
 		auto dropbox = Runtime::PlaceContainerAtPos(actor, TotalPos, container); // Place chosen container
-		
+
 		std::string taskname = std::format("Dropbox {}", actor->formID); // create task name for main task
 		std::string taskname_sound = std::format("DropboxAudio {}", actor->formID); // create task name for Audio play
 		if (!dropbox) {
@@ -1951,7 +1954,7 @@ namespace Gts {
 		}
 		float Start = Time::WorldTimeElapsed();
 		dropbox->SetDisplayName(name, false); // Rename container to match chosen name
-		
+
 		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
 			TaskManager::RunFor(taskname, 16, [=](auto& progressData) { // Spawn loot piles
 				float Finish = Time::WorldTimeElapsed();
@@ -2005,12 +2008,12 @@ namespace Gts {
 						return false;
 					}
 				});
-			}	
+			}
 		for (auto &[a_object, invData]: actor->GetInventory()) { // transfer loot
 			float quantity = 1.0;
 			if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) { // We don't want to move Leveled Items
 				if ((!invData.second->IsQuestObject() || removeQuestItems)) {
-					
+
 					TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
 					if (ref) {
 						quantity = ref->GetInventoryChanges()->GetItemCount(a_object); // obtain item count
@@ -2048,7 +2051,7 @@ namespace Gts {
 					Notify("You're not experienced to perform this action");
 					return false;
 				}
-			} 
+			}
 			Notify("You're not experienced to perform this action");
 			return false;
 		}
