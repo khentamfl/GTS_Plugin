@@ -25,6 +25,7 @@
 #include "utils/av.hpp"
 #include "colliders/RE.hpp"
 #include "UI/DebugAPI.hpp"
+#include "raycast.hpp"
 #include <vector>
 #include <string>
 
@@ -1854,16 +1855,18 @@ namespace Gts {
 		float ray_length = 40000;
 		NiPoint3 pos = NiPoint3(0, 0, 0); // default pos
 		NiPoint3 endpos = CastRayStatics(tiny, ray_start, ray_direction, ray_length, success_first);
-
-		if (success) { // attempt 1, spawn at actor ray cast.
+		if (success_first) {
+			log::info("Cast 1 success")
+			return endpos;
+		} else if (!success_first) { // attempt 1, spawn at actor ray cast.
 		// Obtain actor coords, shift Z by 170 and cast ray down. That way we always do ray at around ground level.
 			NiPoint3 ray_start_second = giant->GetPosition();
 			ray_start_second.z += 170.0;
 			pos = CastRayStatics(giant, ray_start_second, ray_direction, ray_length, success_second);
-			log::info("Cast 1 success");
+			log::info("Cast 1 fail, trying again");
 			return pos;
 		} else { // failed, spawn at giant location directly.
-			log::info("Cast 1 failed, spawning on default GTS location");
+			log::info("Cast 2 failed, spawning on default GTS location");
 			pos = giant->GetPosition();
 			return pos;
 		}
