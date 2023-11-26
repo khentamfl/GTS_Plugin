@@ -69,7 +69,8 @@ namespace {
 		bool success_up = false;
 		bool success_down = false;
 		NiPoint3 ray_start = giant->GetPosition();
-		float scale = get_visual_scale(giant) * GetRaycastStateScale(giant);
+		float stateScale = GetRaycastStateScale(giant);
+		float scale = get_visual_scale(giant) * stateScale;
 		ray_start.z += 70;
 
 		NiPoint3 ray_up(0.0, 0.0, 1.0);
@@ -93,7 +94,7 @@ namespace {
 
 		if (scale > meter_to_scale * 0.82) {
 			log::info("Scale {} > room height: {}, height to scale: {}", scale, room_height_m, meter_to_scale);
-			float adjust = std::clamp(meter_to_scale * 0.82f, 1.0f, 8.0f); // Min is x1.0 (disallow to go below that), max is x8.0
+			float adjust = std::clamp(meter_to_scale/stateScale * 0.82f, 1.0f, 8.0f); // Min is x1.0 (disallow to go below that), max is x8.0
 			set_target_scale(giant, adjust);
 		}
 

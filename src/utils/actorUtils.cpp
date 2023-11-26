@@ -427,7 +427,8 @@ namespace Gts {
 				sex = base->GetSex();
 			}
 		}
-		return sex > 0; // Else return sex value
+		log::info("Sex of {} is {}", actor->GetDisplayFullName(), sex);
+		return sex == 1; // Else return sex value
 	}
 
 	bool IsDragon(Actor* actor) {
