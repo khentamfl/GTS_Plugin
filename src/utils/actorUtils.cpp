@@ -2016,7 +2016,6 @@ namespace Gts {
 					auto node = find_object_node(dropboxPtr, "GorePile_Obj");
 					auto trigger = find_object_node(dropboxPtr, "Trigger_Obj");
 					if (node) {
-						float NodeScale = node->local.scale;
 						node->local.scale = (Scale * 0.33) + (timepassed*0.18);
 						if (!soul) {
 							node->world.translate.z = TotalPos.z;
@@ -2024,7 +2023,6 @@ namespace Gts {
 						update_node(node);
 					}
 					if (trigger) {
-						float TriggerScale = trigger->local.scale;
 						trigger->local.scale = (Scale * 0.33) + (timepassed*0.18);
 						if (!soul) {
 							trigger->world.translate.z = TotalPos.z;

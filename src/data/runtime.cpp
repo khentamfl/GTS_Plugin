@@ -584,22 +584,7 @@ namespace Gts {
 			if (!instance) {
 				return nullptr;
 			}
-
-			bool success = false;
-			NiPoint3 ray_start = pos;
-			NiPoint3 ray_direction(0.0, 0.0, -1.0);
-
-			float ray_length = 1620000;
-			NiPoint3 endpos = CastRay(actor, ray_start, ray_direction, ray_length, success);
-
-			if (!success) {
-				endpos = pos;
-				log::info("RayCast failed");
-			}
-
-			//log::info("POS: {}", Vector2Str(endpos));
-
-			instance->SetPosition(endpos);
+			instance->SetPosition(pos);
 			instance->data.angle.x = 0;
 			instance->data.angle.y = 0;
 			instance->data.angle.z = 0;
@@ -619,22 +604,7 @@ namespace Gts {
 			if (!instance) {
 				return nullptr;
 			}
-
-			bool success = false;
-			NiPoint3 ray_start = pos;
-			NiPoint3 ray_direction(0.0, 0.0, -1.0);
-
-			float ray_length = 1620000;
-			NiPoint3 endpos = CastRay(object, ray_start, ray_direction, ray_length, success);
-
-			if (!success) {
-				endpos = pos;
-				log::info("RayCast failed");
-			}
-
-			log::info("POS: {}", Vector2Str(endpos));
-
-			instance->SetPosition(endpos);
+			instance->SetPosition(pos);
 			instance->data.angle.x = 0;
 			instance->data.angle.y = 0;
 			instance->data.angle.z = 0;
