@@ -48,7 +48,7 @@ namespace {
 
     void GTS_Trample_Leg_Raise_L(AnimationEventData& data) {
 		data.stage = 1;
-		//data.canEditAnimSpeed = true;
+		data.canEditAnimSpeed = false;
 		if (data.animSpeed == 1.0) {
 			data.animSpeed = 1.3;
 		}
@@ -56,7 +56,7 @@ namespace {
     void GTS_Trample_Leg_Raise_R(AnimationEventData& data) {
         //TrackFeet(&data.giant, 6, true);
 		data.stage = 1;
-		//data.canEditAnimSpeed = true;
+		data.canEditAnimSpeed = false;
 		if (data.animSpeed == 1.0) {
 			data.animSpeed = 1.3;
 		}

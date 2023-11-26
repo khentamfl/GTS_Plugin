@@ -1375,9 +1375,10 @@ namespace Gts {
 		double startTime = Time::WorldTimeElapsed();
 		ActorHandle tinyHandle = tinyref->CreateRefHandle();
 		ActorHandle gianthandle = giantref->CreateRefHandle();
+		std::string taskname = std::format("PushOther {}", tinyref->formID);
 		PushActorAway(giantref, tinyref, 1);
 		// Do this next frame (or rather until some world time has elapsed)
-		TaskManager::Run([=](auto& update){
+		TaskManager::Run(taskname, [=](auto& update){
 			Actor* giant = gianthandle.get().get();
 			Actor* tiny = tinyHandle.get().get();
 			if (!giant) {
@@ -1387,9 +1388,9 @@ namespace Gts {
 				return false;
 			}
 
-      auto playerRotation = giant->GetCurrent3D()->world.rotate;
+      		auto playerRotation = giant->GetCurrent3D()->world.rotate;
 			RE::NiPoint3 localForwardVector{ 0.f, 1.f, 0.f };
-      RE::NiPoint3 globalForwardVector = playerRotation * localForwardVector;
+      		RE::NiPoint3 globalForwardVector = playerRotation * localForwardVector;
 
 			RE::NiPoint3 direction = globalForwardVector;
 			log::info("{} direction: {}", giant->GetDisplayFullName(), Vector2Str(direction));
