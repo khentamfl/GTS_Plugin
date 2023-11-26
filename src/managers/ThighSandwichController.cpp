@@ -25,32 +25,6 @@ namespace {
 	const float MINIMUM_SANDWICH_SCALE_RATIO = 6.0;
 	const float SANDWICH_ANGLE = 60;
 	const float PI = 3.14159;
-
-	[[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis)
-	{
-		float S = sin(angle);
-		float C = cos(angle);
-
-		const float XX = axis.x * axis.x;
-		const float YY = axis.y * axis.y;
-		const float ZZ = axis.z * axis.z;
-
-		const float XY = axis.x * axis.y;
-		const float YZ = axis.y * axis.z;
-		const float ZX = axis.z * axis.x;
-
-		const float XS = axis.x * S;
-		const float YS = axis.y * S;
-		const float ZS = axis.z * S;
-
-		const float OMC = 1.f - C;
-
-		return RE::NiPoint3(
-			(OMC * XX + C) * vec.x + (OMC * XY - ZS) * vec.y + (OMC * ZX + YS) * vec.z,
-			(OMC * XY + ZS) * vec.x + (OMC * YY + C) * vec.y + (OMC * YZ - XS) * vec.z,
-			(OMC * ZX - YS) * vec.x + (OMC * YZ + XS) * vec.y + (OMC * ZZ + C) * vec.z
-			);
-	}
 }
 
 
