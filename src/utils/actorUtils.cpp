@@ -1101,7 +1101,7 @@ namespace Gts {
 		if (giant->formID == 0x14) {
 			float health = Persistent::GetSingleton().stolen_health;
 			float magick = Persistent::GetSingleton().stolen_magick;
-			float stamin = Persistent::GetSingleton().stolen_stamina;
+			float stamin = Persistent::GetSingleton().stolen_stamin;
 			value *= 1000;
 			float limit = 2.0 * giant->GetLevel();
 			if (type == ActorValue::kHealth) {
@@ -1150,7 +1150,7 @@ namespace Gts {
 
 			float health = Persistent::GetSingleton().stolen_health;
 			float magick = Persistent::GetSingleton().stolen_magick;
-			float stamin = Persistent::GetSingleton().stolen_stamina;
+			float stamin = Persistent::GetSingleton().stolen_stamin;
 
 			value *= 1000;
 
