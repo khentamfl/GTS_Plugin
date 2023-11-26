@@ -90,7 +90,7 @@ RE::ExtraDataList::~ExtraDataList() {
 
 namespace Gts {
 
-	[[nodiscard]] inline RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis) {
+	RE::NiPoint3 RotateAngleAxis(const RE::NiPoint3& vec, const float angle, const RE::NiPoint3& axis) {
 		float S = sin(angle);
 		float C = cos(angle);
 
