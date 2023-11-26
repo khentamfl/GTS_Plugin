@@ -64,21 +64,6 @@ namespace {
 			log::info("Intersect: {}, bound: {}, center: {}", intersect, bound, Vector2Str(center));
 		}
 	}*/
-
-	void PushExperiment(Actor* giant) {
-		
-		auto charCont = giant->GetCharController();
-		if (!charCont) {
-			return;
-		}
-		if (get_visual_scale(giant) > 1.25) {
-			charCont->flags.set(CHARACTER_FLAGS::kNotPushable);
-		} else {
-			charCont->flags.reset(CHARACTER_FLAGS::kNotPushable);
-		}
-		
-	}
-
 	void Raycast_GetCeilingHeight(Actor* giant) {
 		bool debug = IsDebugEnabled();
 		bool success_up = false;
@@ -311,8 +296,6 @@ void GtsManager::Update() {
 
 			ClothManager::GetSingleton().CheckRip();
 			Raycast_GetCeilingHeight(actor);
-			PushExperiment(actor);
-
 			//WaterExperiments(actor);
 
 			if (IsCrawling(actor)) {
