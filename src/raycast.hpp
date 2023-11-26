@@ -27,8 +27,9 @@ namespace Gts {
 			std::vector<NiObject*> object_filter;
       std::vector<HitResult> results;
 			std::vector<COL_LAYER> groups;
+      bool skip_capsules = false;
 	};
 
-  NiPoint3 CastRay(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, const std::vector<COL_LAYER>& groups, bool& success);
-	NiPoint3 CastRay(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success);
+  NiPoint3 CastRay(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success);
+	NiPoint3 CastRayStatics(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success);
 }

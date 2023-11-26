@@ -3,6 +3,55 @@
 using namespace Gts;
 using namespace RE;
 
+namespace {
+  NiPoint3 CastRay(TESObjectREFR* ref, const NiPoint3& in_origin, const NiPoint3& direction, const float& unit_length, RayCollector& collector, bool& success) {
+		float length = unit_to_meter(unit_length);
+		success = false;
+		if (!ref) {
+			return NiPoint3();
+		}
+		auto cell = ref->GetParentCell();
+		if (!cell) {
+			return NiPoint3();
+		}
+		auto collision_world = cell->GetbhkWorld();
+		if (!collision_world) {
+			return NiPoint3();
+		}
+		bhkPickData pick_data;
+
+		NiPoint3 origin = unit_to_meter(in_origin);
+		pick_data.rayInput.from = origin;
+
+		NiPoint3 normed = direction / direction.Length();
+		NiPoint3 end = origin + normed * length;
+		pick_data.rayInput.to = end;
+
+		NiPoint3 delta = end - origin;
+		pick_data.ray = delta; // Length in each axis to travel
+
+		// pick_data.rayHitCollectorA0 = &collector;
+		pick_data.rayHitCollectorA8 = &collector;
+		// pick_data.rayHitCollectorB0 = &collector;
+		// pick_data.rayHitCollectorB8 = &collector;
+
+		collision_world->PickObject(pick_data);
+		float min_fraction = 1.0;
+		success = !collector.results.empty();
+		if (collector.results.size() > 0) {
+			success = true;
+			for (auto ray_result: collector.results) {
+				if (ray_result.fraction < min_fraction) {
+					min_fraction = ray_result.fraction;
+				}
+			}
+			return meter_to_unit(origin + normed * length * min_fraction);
+		} else {
+			return NiPoint3();
+		}
+	}
+}
+
 namespace Gts {
 
   void RayCollector::add_group_filter(COL_LAYER group) noexcept {
@@ -44,6 +93,10 @@ namespace Gts {
 		}
 
 		if (shape) {
+      if (this->skip_capsules && shape->type == hkpShapeType::kCapsule) {
+        // Skip capsules
+        return;
+      }
 			auto ni_shape = shape->userData;
 			if (ni_shape) {
         auto filter_info = ni_shape->filterInfo;
@@ -91,62 +144,24 @@ namespace Gts {
 		}
 	}
 
-	NiPoint3 CastRay(TESObjectREFR* ref, const NiPoint3& in_origin, const NiPoint3& direction, const float& unit_length, const std::vector<COL_LAYER>& groups, bool& success) {
-		float length = unit_to_meter(unit_length);
-		success = false;
-		if (!ref) {
-			return NiPoint3();
-		}
-		auto cell = ref->GetParentCell();
-		if (!cell) {
-			return NiPoint3();
-		}
-		auto collision_world = cell->GetbhkWorld();
-		if (!collision_world) {
-			return NiPoint3();
-		}
-		bhkPickData pick_data;
-
-		NiPoint3 origin = unit_to_meter(in_origin);
-		pick_data.rayInput.from = origin;
-
-		NiPoint3 normed = direction / direction.Length();
-		NiPoint3 end = origin + normed * length;
-		pick_data.rayInput.to = end;
-
-		NiPoint3 delta = end - origin;
-		pick_data.ray = delta; // Length in each axis to travel
-
-		RayCollector collector = RayCollector();
+  NiPoint3 CastRay(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success) {
+    RayCollector collector = RayCollector();
 		collector.add_filter(ref->Get3D1(false));
 		collector.add_filter(ref->Get3D1(true));
-    for (auto group: groups) {
+    collector.skip_capsules = false;
+    return CastRay(ref, origin, direction, length, collector, success);
+  }
+
+  NiPoint3 CastRayStatics(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success) {
+    RayCollector collector = RayCollector();
+		collector.add_filter(ref->Get3D1(false));
+		collector.add_filter(ref->Get3D1(true));
+    collector.skip_capsules = true;
+    std::vector<COL_LAYER> groups = {COL_LAYER::kUnidentified , COL_LAYER::kStatic, COL_LAYER::kTerrain, COL_LAYER::kGround, COL_LAYER::kInvisibleWall, COL_LAYER::kTransparentWall};
+    for (auto& group: groups) {
       collector.add_group_filter(group);
     }
-		// pick_data.rayHitCollectorA0 = &collector;
-		pick_data.rayHitCollectorA8 = &collector;
-		// pick_data.rayHitCollectorB0 = &collector;
-		// pick_data.rayHitCollectorB8 = &collector;
-
-		collision_world->PickObject(pick_data);
-		float min_fraction = 1.0;
-		success = !collector.results.empty();
-		if (collector.results.size() > 0) {
-			success = true;
-			for (auto ray_result: collector.results) {
-				if (ray_result.fraction < min_fraction) {
-					min_fraction = ray_result.fraction;
-				}
-			}
-			return meter_to_unit(origin + normed * length * min_fraction);
-		} else {
-			return NiPoint3();
-		}
-	}
-
-  NiPoint3 CastRay(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success) {
-    std::vector<COL_LAYER> groups = {};
-    return CastRay(ref, origin, direction, length, groups, success);
+    return CastRay(ref, origin, direction, length, collector, success);
   }
 }
 
