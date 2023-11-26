@@ -115,13 +115,13 @@ namespace {
 						AttributeManager::GetSingleton().OverrideSMTBonus(0.35); // Reduce more speed after crush
 					}
 				} else if (CasterHp < (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
-					PushActorAway(Caster, Target, 6.8);
-					StaggerActor(Caster);
+					PushForward(Caster, Target, 6.8);
 					AddSMTDuration(Caster, 2.5);
+					StaggerActor(Caster);
 					Caster->ApplyCurrent(0.5 * target_scale, 0.5 * target_scale); Target->ApplyCurrent(0.5 * caster_scale, 0.5 * caster_scale);  // Else simulate collision
 					Target->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.75);
 					Caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.25);
-					shake_camera(Caster, 2.35, 0.5);
+					shake_camera(Caster, 4.35, 0.5);
 					Runtime::PlaySound("lJumpLand", Caster, 0.5, 1.0);
 
 					std::string text_a = Target->GetDisplayFullName();
