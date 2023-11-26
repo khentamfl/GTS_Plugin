@@ -101,14 +101,14 @@ namespace Gts {
 			if (formType != FormType::Weapon) {
 				return;
 			}
-			if (wasPowerAttack || hitName.find("Bow") != std::string::npos) {
+			if (wasPowerAttack) { // || hitName.find("Bow") != std::string::npos) {
 				size_difference *= 2.0;
+				pushpower *= 2.0;
 			}
 			if (hitName.find("Bow") == std::string::npos) {
 				shake_camera(attacker, size_difference * 0.20, 0.35);
 			}
-			//PushActorAway(attacker, receiver, pushpower);
-			PushForward(attacker, receiver, pushpower * 10);
+			PushForward(attacker, receiver, pushpower * 30);
 			log::info("Size difference is met, pushing actor away");
 		}
 	}

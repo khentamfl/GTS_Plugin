@@ -5,6 +5,7 @@
 #include "managers/CrushManager.hpp"
 #include "magic/effects/common.hpp"
 #include "utils/InputFunctions.hpp"
+#include "managers/Attributes.hpp"
 #include "managers/highheel.hpp"
 #include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
@@ -114,12 +115,13 @@ namespace {
 		if (!DarkArts) {
 			return; // no perk, do nothing
 		}
+
 		bool DarkArts2 = Runtime::HasPerk(player, "DarkArts_Aug2");
 		bool DarkArts3 = Runtime::HasPerk(player, "DarkArts_Aug3");
 
 		float gigantism = std::clamp(1.0f + SizeManager::GetSingleton().GetEnchantmentBonus(player)*0.01f, 1.0f, 20.0f);
 
-		float multi = std::clamp(Runtime::GetFloat("bonusHPMultiplier"), 0.5f, 10000.0f);
+		float multi = AttributeManager::GetSingleton().GetAttributeBonus(player, ActorValue::kHealth);
 
 		float healthMax = GetMaxAV(player, ActorValue::kHealth);
 		float healthCur = GetAV(player, ActorValue::kHealth);
