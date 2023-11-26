@@ -154,7 +154,7 @@ namespace Gts {
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind, float crushmult, DamageSource Cause);
 
 	void PushTowards(Actor* giantref, Actor* tinyref, NiAVObject* bone, float power, bool sizecheck);
-	void PushTowards(Actor* giantref, Actor* tinyref, float power);
+	void PushForward(Actor* giantref, Actor* tinyref, float power);
 	void TinyCalamityExplosion(Actor* giant, float radius);
 	void ShrinkOuburst_Shrink(Actor* giant, Actor* tiny, float shrink, float gigantism);
 	void ShrinkOutburstExplosion(Actor* giant, bool WasHit);

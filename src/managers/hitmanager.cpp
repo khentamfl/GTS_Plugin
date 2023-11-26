@@ -108,7 +108,7 @@ namespace Gts {
 				shake_camera(attacker, size_difference * 0.20, 0.35);
 			}
 			//PushActorAway(attacker, receiver, pushpower);
-			PushTowards(attacker, receiver, pushpower);
+			PushForward(attacker, receiver, pushpower);
 			log::info("Size difference is met, pushing actor away");
 		}
 	}
