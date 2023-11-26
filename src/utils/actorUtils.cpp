@@ -1856,7 +1856,7 @@ namespace Gts {
 		NiPoint3 pos = NiPoint3(0, 0, 0); // default pos
 		NiPoint3 endpos = CastRayStatics(tiny, ray_start, ray_direction, ray_length, success_first);
 		if (success_first) {
-			log::info("Cast 1 success")
+			log::info("Cast 1 success");
 			return endpos;
 		} else if (!success_first) { // attempt 1, spawn at actor ray cast.
 		// Obtain actor coords, shift Z by 170 and cast ray down. That way we always do ray at around ground level.
