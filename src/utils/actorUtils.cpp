@@ -1087,7 +1087,7 @@ namespace Gts {
 
 	void AddStolenAttributes(Actor* giant, float value) {
 		if (giant->formID == 0x14 && Runtime::HasPerk(giant, "SizeAbsorption")) {
-			float attributes = Persistent::GetSingleton().stolen_attributes;
+			float &attributes = Persistent::GetSingleton().stolen_attributes;
 			log::info("Adding {} to stolen attributes", value);
 			attributes += value;
 		
@@ -1100,9 +1100,9 @@ namespace Gts {
 
 	void AddStolenAttributesTowards(Actor* giant, ActorValue type, float value) {
 		if (giant->formID == 0x14) {
-			float health = Persistent::GetSingleton().stolen_health;
-			float magick = Persistent::GetSingleton().stolen_magick;
-			float stamin = Persistent::GetSingleton().stolen_stamin;
+			float &health = Persistent::GetSingleton().stolen_health;
+			float &magick = Persistent::GetSingleton().stolen_magick;
+			float &stamin = Persistent::GetSingleton().stolen_stamin;
 			value *= 1000;
 			float limit = 2.0 * giant->GetLevel();
 			if (type == ActorValue::kHealth) {
@@ -1116,13 +1116,13 @@ namespace Gts {
 				if (magick >= limit) {
 					magick = limit;
 				} 
-				log::info("Adding {} to magick, health: {}", value, magick);
+				log::info("Adding {} to magick, magicka: {}", value, magick);
 			} else if (type == ActorValue::kStamina) {
 				stamin += value;
 				if (stamin >= limit) {
 					stamin = limit;
 				} 
-				log::info("Adding {} to stamina, health: {}", value, stamin);
+				log::info("Adding {} to stamina, stamina: {}", value, stamin);
 			}
 		}
 	}
@@ -1152,9 +1152,9 @@ namespace Gts {
 			float Storage = GetStolenAttributes();
 			float limit = 2.0 * giant->GetLevel();
 
-			float health = Persistent::GetSingleton().stolen_health;
-			float magick = Persistent::GetSingleton().stolen_magick;
-			float stamin = Persistent::GetSingleton().stolen_stamin;
+			float &health = Persistent::GetSingleton().stolen_health;
+			float &magick = Persistent::GetSingleton().stolen_magick;
+			float &stamin = Persistent::GetSingleton().stolen_stamin;
 
 			value *= 1000;
 
