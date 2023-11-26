@@ -239,7 +239,7 @@ namespace Gts {
 			case ActorValue::kSpeedMult: {
 				// TODO: Rework to something more succient that garuentees 1xspeed@1xscale
 				SoftPotential& MS_adjustment = Persistent::GetSingleton().MS_adjustment;
-				scale = get_visual_scale(actor); // take real scale into account for MS
+				scale = get_visual_scale(actor); // take real scale into account for MS, makes sense after all. Smaller = slower.
 				float MS_mult = soft_core(scale, MS_adjustment);
 				float MS_mult_limit = clamp(0.750, 1.0, MS_mult);
 				float Multy = clamp(0.70, 1.0, MS_mult);

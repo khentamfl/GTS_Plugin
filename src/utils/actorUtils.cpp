@@ -1088,12 +1088,13 @@ namespace Gts {
 	void AddStolenAttributes(Actor* giant, float value) {
 		if (giant->formID == 0x14 && Runtime::HasPerk(giant, "SizeAbsorption")) {
 			float attributes = Persistent::GetSingleton().stolen_attributes;
-			if (value > 0) {
-				attributes += value;
-				if (attributes < 0) {
-					attributes = 0; // Cap it just in case
-				}
+			log::info("Adding {} to stolen attributes", value);
+			attributes += value;
+		
+			if (attributes <= 0.0) {
+				attributes = 0.0; // Cap it just in case
 			}
+			log::info("Stolen AV value: {}", attributes);
 		}
 	}
 
@@ -1109,16 +1110,19 @@ namespace Gts {
 				if (health >= limit) {
 					health = limit;
 				} 
+				log::info("Adding {} to health, health: {}", value, health);
 			} else if (type == ActorValue::kMagicka) {
 				magick += value;
 				if (magick >= limit) {
 					magick = limit;
 				} 
+				log::info("Adding {} to magick, health: {}", value, magick);
 			} else if (type == ActorValue::kStamina) {
 				stamin += value;
 				if (stamin >= limit) {
 					stamin = limit;
 				} 
+				log::info("Adding {} to stamina, health: {}", value, stamin);
 			}
 		}
 	}
@@ -1154,7 +1158,7 @@ namespace Gts {
 
 			value *= 1000;
 
-			if (Storage > 0) {
+			if (Storage > 0.0) {
 				int Boost = rand() % 3;
 				if (Boost == 0) {
 					health += (value * 4);
