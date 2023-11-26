@@ -416,10 +416,10 @@ namespace Gts {
 	}
 
 	bool IsFemale(Actor* actor) {
-		bool FemaleCheck = false;
+		/*bool FemaleCheck = false;
 		if (!FemaleCheck) {
 			return true; // Always return true if we don't check for male/female
-		}
+		}*/
 		auto base = actor->GetActorBase();
 		int sex = 0;
 		if (base) {
