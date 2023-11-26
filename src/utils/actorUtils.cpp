@@ -1361,14 +1361,10 @@ namespace Gts {
 				return false;
 			}
 
-			auto charCont = giant->GetCharController();
-			hkVector4 CharDirection;
-			if (charCont) {
-				CharDirection = charCont->direction;
-				log::info("{} direction: {}", giant->GetDisplayFullName(), Vector2Str(CharDirection));
-			}
-
-			NiPoint3 direction = NiPoint3(CharDirection.quad.m128_f32[0], CharDirection.quad.m128_f32[1], 0.0);//bone->world.translate;
+			auto PushAngle = giant->data.angle.z;
+			RE::NiPoint3 forwardVector{ 0.f, 1.f, 0.f };
+			RE::NiPoint3 direction = RotateAngleAxis(forwardVector, PushAngle, { 0.f, 1.f, 0.f });
+			log::info("{} direction: {}", giant->GetDisplayFullName(), Vector2Str(direction));
 			double endTime = Time::WorldTimeElapsed();
 
 			if ((endTime - startTime) > 1e-4) {
@@ -1435,6 +1431,9 @@ namespace Gts {
 	}
 
 	void ShrinkOuburst_Shrink(Actor* giant, Actor* tiny, float shrink, float gigantism) {
+		if (IsEssential(tiny)) { // Protect followers/essentials
+			return;
+		}
 		bool DarkArts1 = Runtime::HasPerk(giant, "DarkArts_Aug");
 		bool DarkArts2 = Runtime::HasPerk(giant, "DarkArts_Aug2");
 
@@ -1955,8 +1954,8 @@ namespace Gts {
 						update_node(trigger);
 					}
 					if (node && node->local.scale >= Scale) { // disable collision once it is scaled enough
-						dropbox3D->SetMotionType(4, true, true, true);
-						dropbox3D->SetCollisionLayer(COL_LAYER::kNonCollidable);
+						//dropbox3D->SetMotionType(4, true, true, true);
+						//dropbox3D->SetCollisionLayer(COL_LAYER::kNonCollidable);
 						return false; // End task
 					}
 					return true;

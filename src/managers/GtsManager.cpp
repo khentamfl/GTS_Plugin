@@ -93,17 +93,17 @@ namespace {
 		float room_height = fabs(endpos_dn.z - endpos_up.z);
 		float room_height_m = unit_to_meter(room_height);
 		float meter_to_scale = room_height_m/1.82; // / height by 1.82 (default character height)
-		log::info("Room height of {} is {}", giant->GetDisplayFullName(), room_height_m);
+		//log::info("Room height of {} is {}", giant->GetDisplayFullName(), room_height_m);
 
 		if (scale > meter_to_scale * 0.82) {
-			log::info("Scale {} > room height: {}, height to scale: {}", scale, room_height_m, meter_to_scale);
+			//log::info("Scale {} > room height: {}, height to scale: {}", scale, room_height_m, meter_to_scale);
 			float adjust = std::clamp(meter_to_scale/stateScale * 0.82f, 1.0f, 8.0f); // Min is x1.0 (disallow to go below that), max is x8.0
 			set_target_scale(giant, adjust);
 		}
 
 		if (debug) {
-			DebugAPI::DrawSphere(glm::vec3(endpos_up.x, endpos_up.y, endpos_up.z), 4.0, 800, {1.0, 0.0, 0.0, 1.0});
-			DebugAPI::DrawSphere(glm::vec3(endpos_dn.x, endpos_dn.y, endpos_dn.z), 4.0, 800, {0.0, 0.0, 1.0, 1.0});
+			DebugAPI::DrawSphere(glm::vec3(endpos_up.x, endpos_up.y, endpos_up.z), 5.0, 800, {1.0, 0.0, 0.0, 1.0});
+			DebugAPI::DrawSphere(glm::vec3(endpos_dn.x, endpos_dn.y, endpos_dn.z), 5.0, 800, {0.0, 0.0, 1.0, 1.0});
 		}
 	}
 
