@@ -525,6 +525,11 @@ namespace Gts {
 			return true;
 		}
 	}
+
+	bool IsDebugEnabled() {
+		return Runtime::GetBool("EnableDebugOverlay"); // used for debug mode of collisions and such
+	}
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                                 G T S   A C T O R   F U N C T I O N S                                                              //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -557,6 +562,19 @@ namespace Gts {
 			height = (1.82 * scale + (hh * scale)) * 3.28; // ft
 		} 
 		return height;
+	}
+
+	float GetRaycastStateScale(Actor* giant) {
+	    // Goal is to make us effectively smaller during these checks, so RayCast won't adjust our height unless we're truly too big
+		if (IsProning(giant)) {
+			return 0.20;
+		} else if (IsCrawling(giant)) {
+			return 0.35;
+		} else if (giant->IsSneaking()) {
+			return 0.65;
+		} else {
+			return 1.0;
+		}
 	}
 
 
@@ -1325,6 +1343,46 @@ namespace Gts {
 		});
 	}
 
+	void PushTowards(Actor* giantref, Actor* tinyref, float power) {
+		NiPoint3 startCoords = bone->world.translate;
+		double startTime = Time::WorldTimeElapsed();
+		ActorHandle tinyHandle = tinyref->CreateRefHandle();
+		ActorHandle gianthandle = giantref->CreateRefHandle();
+		PushActorAway(giantref, tinyref, 1);
+		// Do this next frame (or rather until some world time has elapsed)
+		TaskManager::Run([=](auto& update){
+			Actor* giant = gianthandle.get().get();
+			Actor* tiny = tinyHandle.get().get();
+			if (!giant) {
+				return false;
+			}
+			if (!tiny) {
+				return false;
+			}
+
+			auto charCont = giant->GetCharController();
+			hkVector4 CharDirection;
+			if (charCont) {
+				CharDirection = charCont->direction;
+				log::info("{} direction: {}", giant->GetDisplayFullName(), Vector2Str(CharDirection));
+			}
+
+			NiPoint3 direction = NiPoint3(CharDirection.quad.m128_f32[0], CharDirection.quad.m128_f32[1], 0.0);//bone->world.translate;
+			double endTime = Time::WorldTimeElapsed();
+
+			if ((endTime - startTime) > 1e-4) {
+				// Time has elapsed
+				TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tiny);
+				if (tiny_is_object) {
+					ApplyHavokImpulse(tiny_is_object, direction.x, direction.y, direction.z, power);
+				}
+				return false;
+			} else {
+				return true;
+			}
+		});
+	}
+
 	void TinyCalamityExplosion(Actor* giant, float radius) { // Meant to just stagger actors
 		if (!giant) {
 			return;
@@ -1338,7 +1396,7 @@ namespace Gts {
 		const float maxDistance = radius;
 		float totaldistance = maxDistance * giantScale;
 		// Make a list of points to check
-		if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
+		if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant))) {
 			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), totaldistance, 600, {0.0, 1.0, 0.0, 1.0});
 		}
 
@@ -1443,7 +1501,7 @@ namespace Gts {
 
 		SpawnParticle(giant, 6.00, "GTS/Shouts/ShrinkOutburst.nif", NiMatrix3(), NodePosition, giantScale*explosion*3.0, 7, nullptr); // Spawn effect
 
-		if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
+		if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate())) {
 			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), CheckDistance, 600, {0.0, 1.0, 0.0, 1.0});
 		}
 
@@ -1787,24 +1845,30 @@ namespace Gts {
 		}
 	}
 
-	/*NiPoint3 GetContainerSpawnLocation(Actor* giant, Actor* tiny, NiPoint3 pos, DamageSource Cause) {
-		if (cause != DamageSource::HandCrushed && cause != DamageSource::Vored) { // Spawn piles doing raycast
-			auto node = find_node(giant, GetDeathNodeName(Cause));
-			bool success = false;
-			NiPoint3 ray_start = pos; 
-			NiPoint3 ray_direction(0.0, 0.0, -1.0);
-			
-			float ray_length = 1620000;
-			NiPoint3 endpos = CastRay(tiny, ray_start, ray_direction, ray_length, success);
+	NiPoint3 GetContainerSpawnLocation(Actor* giant, Actor* tiny) {
+		bool success_first = false;
+		bool succes_second = false;
+		NiPoint3 ray_start = tiny->GetLocation();
+		ray_start.z = giant->GetLocation().z + 170.0; // overrize .z with giant .z + 170, so ray starts from above
+		NiPoint3 ray_direction(0.0, 0.0, -1.0);
+		
+		float ray_length = 40000;
+		NiPoint3 pos = NiPoint3(0, 0, 0); // default pos
+		NiPoint3 endpos = CastRay(tiny, ray_start, ray_direction, ray_length, success_first);
 
-			if (!success) {
-				endpos = pos;
-			}
-		} else {
-			pos = giant->GetLocation(); // else spawn under our legs
+		if (success) { // attempt 1, spawn at actor ray cast.
+		// Obtain actor coords, shift Z by 170 and cast ray down. That way we always do ray at around ground level.
+			NiPoint3 ray_start_second = giant->GetLocation();
+			ray_start_second.z += 170.0;
+			pos = CastRay(giant, ray_start_second, ray_direction, ray_length, success_second);
+			log::info("Cast 1 success");
+			return pos;
+		} else { // failed, spawn at giant location directly.
+			log::info("Cast 1 failed, spawning on default GTS location");
+			pos = giant->GetLocation();
+			return pos;
 		}
-		return pos;
-	}*/
+	}
 
 	// From an actor place a new container at them and transfer
 	// all of their inventory into it
@@ -1842,16 +1906,16 @@ namespace Gts {
 		} else if (IsMammoth(actor)) {
 			Scale *= 5.0;
 		}
-		NiPoint3 TinyPos = actor->GetPosition();
+		/*NiPoint3 TinyPos = actor->GetPosition();
 		NiPoint3 GiantPos = giant->GetPosition();
 		NiPoint3 TotalPos = NiPoint3(TinyPos.x, TinyPos.y, GiantPos.z + 170);
+		*/
 
-		// ^ use X and Y of Tiny, and Z of Giant. Doing so will prevent Cell issues with Raycast
-		//  and in theory all piles should spawn properly now
+		NiPoint3 TotalPos = GetContainerSpawnLocation(giant, actor); // obtain goal of container position by doing ray-cast
 
 		auto dropbox = Runtime::PlaceContainerAtPos(actor, TotalPos, container); // Place chosen container
 		
-		std::string taskname = std::format("Dropbox {}", actor->formID); // create task name for, well, main task
+		std::string taskname = std::format("Dropbox {}", actor->formID); // create task name for main task
 		std::string taskname_sound = std::format("DropboxAudio {}", actor->formID); // create task name for Audio play
 		if (!dropbox) {
 			return;
@@ -1887,7 +1951,7 @@ namespace Gts {
 						trigger->local.scale = (Scale * 0.33) + (timepassed*0.18);
 						update_node(trigger);
 					}
-					if (node && node->local.scale >= Scale) {
+					if (node && node->local.scale >= Scale) { // disable collision once it is scaled enough
 						dropbox3D->SetMotionType(4, true, true, true);
 						dropbox3D->SetCollisionLayer(COL_LAYER::kNonCollidable);
 						return false; // End task

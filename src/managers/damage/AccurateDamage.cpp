@@ -150,8 +150,12 @@ namespace {
 		float BonusShrink = (IsJumping(giant) * 3.0) + 1.0;
 
 		if (Runtime::HasPerk(giant, "ExtraGrowth") && giant != tiny && HasGrowthSpurt(giant)) {
-			ShrinkActor(tiny, 0.0014 * BonusShrink, 0.0);
-			Grow(giant, 0.0, 0.0004 * BonusShrink);
+			if (get_target_scale(tiny) > 0.12) {
+				ShrinkActor(tiny, 0.0014 * BonusShrink, 0.0);
+				Grow(giant, 0.0, 0.0004 * BonusShrink);
+			} else {
+				set_target_scale(tiny, 0.12);
+			}
 			// ^ Augmentation for Growth Spurt: Steal size of enemies.
 		}
 
@@ -161,8 +165,13 @@ namespace {
 			if (Runtime::HasPerk(giant, "SmallMassiveThreatSizeSteal")) {
 				float HpRegen = GetMaxAV(giant, ActorValue::kHealth) * 0.005 * size_difference;
 				giant->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, (HpRegen * TimeScale()) * size_difference);
-				ShrinkActor(tiny, 0.0015 * BonusShrink, 0.0);
-				Grow(giant, 0.00045 * tinyscale * BonusShrink, 0.0);
+				if (get_target_scale(tiny) > 0.12) {
+					ShrinkActor(tiny, 0.0015 * BonusShrink, 0.0);
+					Grow(giant, 0.00045 * tinyscale * BonusShrink, 0.0);
+				} else {
+					set_target_scale(tiny, 0.12);
+				}
+                // ^ Tiny calamity augmentation, deals pretty much the same as the one above, but a bit stronger
 			}
 		}
 	}
@@ -190,9 +199,10 @@ namespace Gts {
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 90.0;
 		const float BASE_DISTANCE = 6.0;
-		const float SCALE_RATIO = 1.15;
+		float SCALE_RATIO = 1.15;
 		if (HasSMT(actor)) {
 			giantScale += 0.20;
+			SCALE_RATIO = 0.7;
 		}
 
 		// Get world HH offset
@@ -244,7 +254,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 			}
-			if (Runtime::GetBool("EnableDebugOverlay") && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+			if (IsDebugEnabled() && (actor->formID == 0x14 || IsTeammate(actor))) {
 				for (auto point: footPoints) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance);
 				}
@@ -297,9 +307,10 @@ namespace Gts {
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 90.0;
 		const float BASE_DISTANCE = 6.0;
-		const float SCALE_RATIO = 1.15;
+		float SCALE_RATIO = 1.15;
 		if (HasSMT(actor)) {
 			giantScale += 0.20;
+			SCALE_RATIO = 0.7;
 		}
 
 		// Get world HH offset
@@ -354,7 +365,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 			}
-			if (Runtime::GetBool("EnableDebugOverlay") && (actor->formID == 0x14 || actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+			if (IsDebugEnabled() && (actor->formID == 0x14 || IsTeammate(actor))) {
 				for (auto point: footPoints) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance);
 				}

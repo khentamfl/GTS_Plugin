@@ -291,7 +291,7 @@ namespace Gts {
 		}
 
 		for (auto point: CrawlPoints) {
-			if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
+			if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant))) {
 				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance, 600, {0.0, 0.0, 1.0, 1.0});
 			}
 		}
@@ -387,7 +387,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 			}
-			if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
+			if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant))) {
 				for (auto point: footPoints) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance, 600, {0.0, 0.0, 1.0, 1.0});
 				}
@@ -489,7 +489,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 			}
-			if (Runtime::GetBool("EnableDebugOverlay") && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
+			if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant))) {
 				for (auto point: footPoints) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance, 600, {0.0, 0.0, 1.0, 1.0});
 				}

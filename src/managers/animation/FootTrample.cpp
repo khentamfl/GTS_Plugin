@@ -48,7 +48,7 @@ namespace {
 
     void GTS_Trample_Leg_Raise_L(AnimationEventData& data) {
 		data.stage = 1;
-		data.canEditAnimSpeed = true;
+		//data.canEditAnimSpeed = true;
 		if (data.animSpeed == 1.0) {
 			data.animSpeed = 1.3;
 		}
@@ -56,7 +56,7 @@ namespace {
     void GTS_Trample_Leg_Raise_R(AnimationEventData& data) {
         //TrackFeet(&data.giant, 6, true);
 		data.stage = 1;
-		data.canEditAnimSpeed = true;
+		//data.canEditAnimSpeed = true;
 		if (data.animSpeed == 1.0) {
 			data.animSpeed = 1.3;
 		}
@@ -142,7 +142,7 @@ namespace {
 			dust = 1.25;
 		}
 		GRumble::Once("TrampleL", &data.giant, 2.20 * shake, 0.0, LNode);
-		DoDamageEffect(&data.giant, 1.4 * launch * perk, 1.75 * launch, 100, 0.10, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+		DoDamageEffect(&data.giant, 1.4 * launch * perk, 1.65 * launch, 100, 0.10, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.95 * launch * perk, 2.50, 1.0, FootEvent::Left, 0.75);
@@ -166,7 +166,7 @@ namespace {
 			dust = 1.25;
 		}
 		GRumble::Once("TrampleR", &data.giant, 2.20 * shake, 0.0, RNode);
-		DoDamageEffect(&data.giant, 1.4 * launch * perk, 1.75 * launch, 100, 0.10, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+		DoDamageEffect(&data.giant, 1.4 * launch * perk, 1.65 * launch, 100, 0.10, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.95 * launch * perk, 2.50, 1.0, FootEvent::Right, 0.75);
@@ -190,7 +190,7 @@ namespace {
 			dust = 1.50;
 		}
 		GRumble::Once("TrampleL", &data.giant, 3.20 * shake, 0.0, RNode);
-		DoDamageEffect(&data.giant, 8.0 * launch * perk, 2.25 * launch, 10, 0.15, FootEvent::Left, 0.90, DamageSource::CrushedLeft);
+		DoDamageEffect(&data.giant, 5.6 * launch * perk, 1.90 * launch, 10, 0.15, FootEvent::Left, 0.90, DamageSource::CrushedLeft);
         DoLaunch(&data.giant, 1.60 * launch * perk, 4.60, 1.0, FootEvent::Left, 0.95);
 		DoFootstepSound(&data.giant, 1.15, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
@@ -208,7 +208,7 @@ namespace {
 			dust = 1.50;
 		}
 		GRumble::Once("TrampleR", &data.giant, 3.20 * shake, 0.0, RNode);
-		DoDamageEffect(&data.giant, 8.8 * launch * perk, 2.45 * launch, 10, 0.15, FootEvent::Right, 0.90, DamageSource::CrushedRight);
+		DoDamageEffect(&data.giant, 5.6 * launch * perk, 1.90 * launch, 10, 0.15, FootEvent::Right, 0.90, DamageSource::CrushedRight);
         DoLaunch(&data.giant, 1.60 * launch * perk, 4.60, 1.0, FootEvent::Right, 0.95);
 		DoFootstepSound(&data.giant, 1.15, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
@@ -221,6 +221,9 @@ namespace {
     void TrampleLeftEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		if (!CanPerformAnimation(player, 1)) {
+			return;
+		}
+		if (IsCrawling(player) || player->IsSneaking() || IsProning(player)) {
 			return;
 		}
 		float WasteStamina = 35.0;
@@ -237,6 +240,9 @@ namespace {
     void TrampleRightEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		if (!CanPerformAnimation(player, 1)) {
+			return;
+		}
+		if (IsCrawling(player) || player->IsSneaking() || IsProning(player)) {
 			return;
 		}
 		float WasteStamina = 35.0;

@@ -69,11 +69,13 @@ namespace Gts {
 	bool IsHeadtracking(Actor* giant);
 	bool IsHostile(Actor* giant, Actor* tiny);
 	bool AllowActionsWithFollowers(Actor* giant, Actor* tiny);
+	bool IsDebugEnabled();
 	// Gts Bools end
 
 	// GTS Actor Functions
 	float GetActorWeight(Actor* giant, bool metric);
 	float GetActorHeight(Actor* giant, bool metric);
+	float GetRaycastStateScale(Actor* giant);
 	// End
 
 	// GTS State Controllers
@@ -152,6 +154,7 @@ namespace Gts {
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind, float crushmult, DamageSource Cause);
 
 	void PushTowards(Actor* giantref, Actor* tinyref, NiAVObject* bone, float power, bool sizecheck);
+	void PushTowards(Actor* giantref, Actor* tinyref, float power);
 	void TinyCalamityExplosion(Actor* giant, float radius);
 	void ShrinkOuburst_Shrink(Actor* giant, Actor* tiny, float shrink, float gigantism);
 	void ShrinkOutburstExplosion(Actor* giant, bool WasHit);
@@ -184,6 +187,8 @@ namespace Gts {
 
 	void ResetGrab(Actor* giant);
 	void FixAnimations();
+
+	NiPoint3 GetContainerSpawnLocation(Actor* giant, Actor* tiny);
 
 	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause);
 
