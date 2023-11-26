@@ -1147,7 +1147,7 @@ namespace Gts {
 	}
 
 	void DistributeStolenAttributes(Actor* giant, float value) {
-		if (giant->formID == 0x14 && Runtime::HasPerk(giant, "SizeAbsorption")) { // Permamently increases random AV after shrinking and stuff
+		if (value > 0 && giant->formID == 0x14 && Runtime::HasPerk(giant, "SizeAbsorption")) { // Permamently increases random AV after shrinking and stuff
 			float scale = std::clamp(get_visual_scale(giant), 0.01f, 999999.0f);
 			float Storage = GetStolenAttributes();
 			float limit = 2.0 * giant->GetLevel();
