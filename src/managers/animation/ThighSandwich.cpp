@@ -108,7 +108,7 @@ namespace {
 		AdjustGtsSkill(experience, giant);
 
 		float hp = GetAV(tiny, ActorValue::kHealth);
-		if (damage > hp) {
+		if (damage > hp || hp <= 0) {
 			CrushManager::GetSingleton().Crush(giant, tiny);
 			PrintDeathSource(giant, tiny, DamageSource::ThighSandwiched);
 			auto node = find_node(giant, "NPC R FrontThigh");

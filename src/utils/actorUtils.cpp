@@ -1087,37 +1087,38 @@ namespace Gts {
 
 	void AddStolenAttributes(Actor* giant, float value) {
 		if (giant->formID == 0x14 && Runtime::HasPerk(giant, "SizeAbsorption")) {
-			Persistent::GetSingleton().stolen_attributes += value;
-			if (Persistent::GetSingleton().stolen_attributes < 0) {
-				Persistent::GetSingleton().stolen_attributes = 0; // Cap it just in case
+			float attributes = Persistent::GetSingleton().stolen_attributes;
+			if (value > 0) {
+				attributes += value;
+				if (attributes < 0) {
+					attributes = 0; // Cap it just in case
+				}
 			}
 		}
 	}
 
 	void AddStolenAttributesTowards(Actor* giant, ActorValue type, float value) {
 		if (giant->formID == 0x14) {
-
+			float health = Persistent::GetSingleton().stolen_health;
+			float magick = Persistent::GetSingleton().stolen_magick;
+			float stamin = Persistent::GetSingleton().stolen_stamina;
 			value *= 1000;
-
 			float limit = 2.0 * giant->GetLevel();
 			if (type == ActorValue::kHealth) {
-				if (Persistent::GetSingleton().stolen_health >= limit) {
-					Persistent::GetSingleton().stolen_health = limit;
-				} else {
-					Persistent::GetSingleton().stolen_health += value;
-				}
+				health += value;
+				if (health >= limit) {
+					health = limit;
+				} 
 			} else if (type == ActorValue::kMagicka) {
-				if (Persistent::GetSingleton().stolen_magick >= limit) {
-					Persistent::GetSingleton().stolen_magick = limit;
-				} else {
-					Persistent::GetSingleton().stolen_magick += value;
-				}
+				magick += value;
+				if (magick >= limit) {
+					magick = limit;
+				} 
 			} else if (type == ActorValue::kStamina) {
-				if (Persistent::GetSingleton().stolen_stamin >= limit) {
-					Persistent::GetSingleton().stolen_stamin = limit;
-				} else {
-					Persistent::GetSingleton().stolen_stamin += value;
-				}
+				stamin += value;
+				if (stamin >= limit) {
+					stamin = limit;
+				} 
 			}
 		}
 	}
@@ -1147,27 +1148,28 @@ namespace Gts {
 			float Storage = GetStolenAttributes();
 			float limit = 2.0 * giant->GetLevel();
 
+			float health = Persistent::GetSingleton().stolen_health;
+			float magick = Persistent::GetSingleton().stolen_magick;
+			float stamin = Persistent::GetSingleton().stolen_stamina;
+
 			value *= 1000;
 
 			if (Storage > 0) {
 				int Boost = rand() % 3;
 				if (Boost == 0) {
-					if (Persistent::GetSingleton().stolen_health >= limit) {
-						Persistent::GetSingleton().stolen_health = limit;
-					} else {
-						Persistent::GetSingleton().stolen_health += (value * 4);
-					}
+					health += (value * 4);
+					if (health >= limit) {
+						health = limit;
+					} 
 				} else if (Boost == 1) {
-					if (Persistent::GetSingleton().stolen_magick >= limit) {
-						Persistent::GetSingleton().stolen_magick = limit;
-					} else {
-						Persistent::GetSingleton().stolen_magick += (value * 4);
-					}
+					magick += (value * 4);
+					if (magick >= limit) {
+						magick = limit;
+					} 
 				} else if (Boost >= 2) {
-					if (Persistent::GetSingleton().stolen_stamin >= limit) {
-						Persistent::GetSingleton().stolen_stamin = limit;
-					} else {
-						Persistent::GetSingleton().stolen_stamin += (value * 4);
+					stamin += (value * 4);
+					if (stamin >= limit) {
+						stamin = limit;
 					}
 				}
 				AddStolenAttributes(giant, -value); // reduce it
@@ -1931,12 +1933,13 @@ namespace Gts {
 			ray_start_second.z += 170.0;
 			pos = CastRayStatics(giant, ray_start_second, ray_direction, ray_length, success_second);
 			log::info("Cast 1 fail, trying again");
-			return pos;
-		} else { // failed, spawn at giant location directly.
-			log::info("Cast 2 failed, spawning on default GTS location");
-			pos = giant->GetPosition();
-			return pos;
-		}
+			if (!success_second) {
+				// failed, spawn at giant location directly.
+				log::info("Cast 2 failed, spawning on default GTS location");
+				pos = giant->GetPosition();
+				return pos;
+			}
+		} 
 	}
 
 	// From an actor place a new container at them and transfer

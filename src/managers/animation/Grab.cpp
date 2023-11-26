@@ -11,6 +11,7 @@
 #include "managers/CrushManager.hpp"
 #include "managers/InputManager.hpp"
 #include "magic/effects/common.hpp"
+#include "managers/Attributes.hpp"
 #include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "managers/tremor.hpp"
@@ -237,38 +238,33 @@ namespace {
 		auto giant = &data.giant;
 		auto grabbedActor = Grab::GetHeldActor(giant);
 
-		static Timer laughtimer = Timer(6.0);
 		if (grabbedActor) {
 			StartCombat(giant, grabbedActor, true); // force combat
-			float sd = get_visual_scale(giant)/get_visual_scale(grabbedActor);
+			float sizeDiff = get_visual_scale(giant)/get_visual_scale(grabbedActor);
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
 			float multiplier = Persistent::GetSingleton().size_related_damage_mult;
+			float resist = AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth);
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
-			float damage = (1.400 * sd) * power * additionaldamage * additionaldamage;
-			damage *= multiplier;
+			float damage = (1.400 * sizeDiff) * power * additionaldamage * additionaldamage * multiplier;
+			float experience = std::clamp(damage/800, 0.0f, 0.06f);
 			if (HasSMT(giant)) {
 				damage *= 1.75;
 				bonus = 3.0;
 			}
 			InflictSizeDamage(giant, grabbedActor, damage);
-			GRumble::Once("GrabAttack", giant, 6.0 * bonus, 0.05, "NPC L Hand [LHnd]");
-			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1);
 
-			float experience = std::clamp(damage/800, 0.0f, 0.06f);
+			damage *= resist; // take enemy resistance into account, it is important to do that after damage is done, for next checks
+
+			GRumble::Once("GrabAttack", giant, 6.0 * bonus, 0.05, "NPC L Hand [LHnd]");
+
+			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1); // don't do damage and just add flat debuff
+			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1); // do it twice
 
 			AdjustGtsSkill(experience, giant);
-
 			AddSMTDuration(giant, 1.6);
-			if (damage < Health) {
-				if (!LessGore()) {
-					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
-					SpawnHurtParticles(giant, grabbedActor, 1.0, 1.0);
-				} else {
-					Runtime::PlaySoundAtNode("SoftHandAttack", giant, 1.0, 1.0, "NPC L Hand [LHnd]");
-				}
-			}
-			if (damage >= Health) {
+
+			if (damage >= Health * 0.99 || Health <= 0) {
 				CrushManager::Crush(giant, grabbedActor);
 				AdjustGtsSkill(0.14, giant);
 				SetBeingHeld(grabbedActor, false);
@@ -290,6 +286,13 @@ namespace {
 				PrintDeathSource(giant, grabbedActor, DamageSource::HandCrushed);
 				Grab::DetachActorTask(giant);
 				Grab::Release(giant);
+			} else {
+				if (!LessGore()) {
+					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
+					SpawnHurtParticles(giant, grabbedActor, 1.0, 1.0);
+				} else {
+					Runtime::PlaySoundAtNode("SoftHandAttack", giant, 1.0, 1.0, "NPC L Hand [LHnd]");
+				}
 			}
 		}
 	}

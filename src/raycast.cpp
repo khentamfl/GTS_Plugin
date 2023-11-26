@@ -157,8 +157,7 @@ namespace Gts {
 		collector.add_filter(ref->Get3D1(false));
 		collector.add_filter(ref->Get3D1(true));
     collector.skip_capsules = true;
-    std::vector<COL_LAYER> groups = {COL_LAYER::kProps, COL_LAYER::kStatic, COL_LAYER::kTerrain, COL_LAYER::kGround, COL_LAYER::kInvisibleWall, COL_LAYER::kTransparentWall};
-	//COL_LAYER::kUnidentified
+    std::vector<COL_LAYER> groups = {COL_LAYER::kUnidentified, COL_LAYER::kProps, COL_LAYER::kStatic, COL_LAYER::kTerrain, COL_LAYER::kGround, COL_LAYER::kInvisibleWall, COL_LAYER::kTransparentWall};
     for (auto& group: groups) {
       collector.add_group_filter(group);
     }
