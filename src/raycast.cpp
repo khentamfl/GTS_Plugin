@@ -4,7 +4,7 @@ using namespace Gts;
 using namespace RE;
 
 namespace {
-  NiPoint3 CastRay(TESObjectREFR* ref, const NiPoint3& in_origin, const NiPoint3& direction, const float& unit_length, RayCollector& collector, bool& success) {
+  NiPoint3 CastRayImpl(TESObjectREFR* ref, const NiPoint3& in_origin, const NiPoint3& direction, const float& unit_length, RayCollector& collector, bool& success) {
 		float length = unit_to_meter(unit_length);
 		success = false;
 		if (!ref) {
@@ -149,7 +149,7 @@ namespace Gts {
 		collector.add_filter(ref->Get3D1(false));
 		collector.add_filter(ref->Get3D1(true));
     collector.skip_capsules = false;
-    return CastRay(ref, origin, direction, length, collector, success);
+    return CastRayImpl(ref, origin, direction, length, collector, success);
   }
 
   NiPoint3 CastRayStatics(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success) {
@@ -161,7 +161,7 @@ namespace Gts {
     for (auto& group: groups) {
       collector.add_group_filter(group);
     }
-    return CastRay(ref, origin, direction, length, collector, success);
+    return CastRayImpl(ref, origin, direction, length, collector, success);
   }
 }
 
