@@ -243,7 +243,7 @@ namespace {
 			float sizeDiff = get_visual_scale(giant)/get_visual_scale(grabbedActor);
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
 			float multiplier = Persistent::GetSingleton().size_related_damage_mult;
-			float resist = AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth);
+			float resist = AttributeManager::GetSingleton().GetAttributeBonus(grabbedActor, ActorValue::kHealth);
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
 			float damage = (1.400 * sizeDiff) * power * additionaldamage * additionaldamage * multiplier;
