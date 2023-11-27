@@ -81,27 +81,53 @@ namespace Gts {
 	}
 
 	void RayCollector::AddRayHit(const hkpCdBody& a_body, const hkpShapeRayCastCollectorOutput& a_hitInfo) {
+    log::info("New hit:")
 		const hkpShape* shape = a_body.GetShape(); // Shape that was collided with
-
+    if (shape) {
+      auto ni_shape = shape->userData;
+			if (ni_shape) {
+        auto filter_info = ni_shape->filterInfo;
+        log::info("  - First Shape: {}", filter_info);
+        COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
+        log::info("  - Layer {}", collision_layer);
+        log::info("  - Group {}", filter_info >> 16);
+      }
+    }
 		// Search for top level shape
 		const hkpCdBody* top_body = a_body.parent;
 		while (top_body) {
 			if (top_body->shape) {
 				shape = top_body->shape;
+        if (shape) {
+          auto ni_shape = shape->userData;
+    			if (ni_shape) {
+            auto filter_info = ni_shape->filterInfo;
+            log::info("  - Parent Shape: {}", filter_info);
+            COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
+            log::info("  - Layer {}", collision_layer);
+            log::info("  - Group {}", filter_info >> 16);
+          }
+        }
 			}
 			top_body = top_body->parent;
 		}
 
 		if (shape) {
-      if (this->skip_capsules && shape->type == hkpShapeType::kCapsule) {
-        // Skip capsules
-        return;
-      }
 			auto ni_shape = shape->userData;
 			if (ni_shape) {
         auto filter_info = ni_shape->filterInfo;
+
+        log::info("  - Final Shape: {}", filter_info);
+        if (this->skip_capsules && shape->type == hkpShapeType::kCapsule) {
+          log::info("  - Skip capsual");
+          // Skip capsules
+          return;
+        }
+
         COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
-        //log::info("Possible point on collision {}", collision_layer);
+        log::info("  - Layer {}", collision_layer);
+        log::info("  - Group {}", filter_info >> 16);
+
         if (! groups.empty()) {
           bool found = false;
           for (auto group: groups) {
@@ -111,7 +137,7 @@ namespace Gts {
             }
           }
           if (!found) {
-            //log::info("  - Collision layer not in allowed group");
+            log::info("  - Collision layer not in allowed group");
             return;
           }
         }
