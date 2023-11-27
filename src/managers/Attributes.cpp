@@ -208,10 +208,10 @@ namespace Gts {
 				//float power = (bonusHPMultiplier/BalancedMode); // not used anymore
 
 				if (actor->formID == 0x14 && HasSMT(actor)) {
-					scale += 3.0;
+					scale += 1.0;
 				}
 
-				float resistance = std::clamp(1.0f / scale, 0.001f, 4.0f); // 0.001% as max resistance, -400% is a max vulnerability.
+				float resistance = std::clamp(1.0f / scale, 0.001f, 3.0f); // 0.001% as max resistance, -300% is a max vulnerability.
 
 				return resistance;
 				

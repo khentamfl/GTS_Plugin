@@ -317,7 +317,7 @@ namespace Gts {
 		if (!Persistent) {
 			return 0.0;
 		}
-		return clamp(0.0, 4.0, Persistent->SizeVulnerability);
+		return clamp(0.0, 3.0, Persistent->SizeVulnerability);
 	}
 
 	void SizeManager::ModSizeVulnerability(Actor* actor, float amt) {
@@ -328,7 +328,7 @@ namespace Gts {
 		if (!Persistent) {
 			return;
 		}
-		if (Persistent->SizeVulnerability < 4) {
+		if (Persistent->SizeVulnerability < 3) {
 			Persistent->SizeVulnerability += amt;
 		}
 	}

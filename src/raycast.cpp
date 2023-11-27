@@ -81,7 +81,7 @@ namespace Gts {
 	}
 
 	void RayCollector::AddRayHit(const hkpCdBody& a_body, const hkpShapeRayCastCollectorOutput& a_hitInfo) {
-    log::info("New hit:")
+    log::info("New hit:");
 		const hkpShape* shape = a_body.GetShape(); // Shape that was collided with
     if (shape) {
       auto ni_shape = shape->userData;
