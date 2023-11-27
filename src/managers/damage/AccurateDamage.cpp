@@ -450,7 +450,7 @@ namespace Gts {
 		float multiplier = (giantsize/tinysize) * highheels;
 		if (HasSMT(giant)) {
 			multiplier += 7.8;
-			damagebonus *= 0.20; // A lot less damage to compensate it
+			damagebonus *= 0.25; // A lot less damage to compensate it
 		}
 		if (multiplier < 1.4) {
 			return; // Do not do damage is Size Difference is < than x1.4

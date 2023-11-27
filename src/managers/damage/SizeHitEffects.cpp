@@ -308,7 +308,7 @@ namespace Gts {
 		}
 
 		if (receiver->formID == 0x14 && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0) {
-			float GrowthValue = std::clamp((-damage/2800) * SizeHunger * Gigantism, 0.0f, 0.25f * Gigantism);
+			float GrowthValue = std::clamp((-damage/3500) * SizeHunger * Gigantism, 0.0f, 0.25f * Gigantism);
 			mod_target_scale(receiver, GrowthValue);
 			DoHitShake(receiver, GrowthValue * 10);
 			if (soundtimer.ShouldRunFrame()) {
@@ -316,7 +316,7 @@ namespace Gts {
 			}
 			if (ShrinkChance >= 2) {
 				mod_target_scale(attacker, -GrowthValue/(6.0 * Dragon* BalanceMode)); // Shrink Attacker
-				mod_target_scale(receiver, GrowthValue/(2.0 * Dragon * BalanceMode)); // Grow Attacker
+				mod_target_scale(receiver, GrowthValue/(2.0 * Dragon * BalanceMode)); // Grow receiver
 				if (get_visual_scale(attacker) <= 0.12/Dragon) {
 					mod_target_scale(attacker, 0.12/Dragon);
 				}
