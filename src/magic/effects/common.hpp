@@ -32,13 +32,13 @@ namespace Gts {
 
 	inline float GetStealEfficiency(Actor* tiny) {
 		float eff = 1.0;
-		if (IsDragon(target)) {
-			eff *= DRAGON_PEANLTY;
-		} else if (IsMammoth(target)) {
+		if (IsDragon(tiny)) {
+			eff *= 0.20;
+		} else if (IsMammoth(tiny)) {
 			eff *= 0.35;
- 		} else if (IsGiant(target)) {
+ 		} else if (IsGiant(tiny)) {
 			eff *= 0.50;
-		} else if (IsUndead(target)) {
+		} else if (IsUndead(tiny)) {
 			eff *= 0.60;
 		}
 		return eff;
@@ -122,7 +122,6 @@ namespace Gts {
 	}
 
 	inline float CalcEffeciency(Actor* caster, Actor* target, bool progression) {
-		const float DRAGON_PEANLTY = 0.20;
 		float progression_multiplier = 1.0;
 		if (progression) {
 			progression_multiplier = Persistent::GetSingleton().progression_multiplier;
