@@ -165,6 +165,7 @@ namespace Gts {
 			}
 
 			if (data.state == CrushState::Healthy) {
+				SetReanimatedState(tiny);
 				data.state = CrushState::Crushing;
 			} else if (data.state == CrushState::Crushing) {
 				if (data.delay.ShouldRun()) {

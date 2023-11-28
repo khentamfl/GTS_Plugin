@@ -505,6 +505,9 @@ namespace Gts {
 		auto transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
 			reanimated = transient->WasReanimated;
+			Cprint("Transient returned true");
+		} else {
+			Cprint("Transient returned false");
 		}
 		Cprint("{} reanimated: {}", actor->GetDisplayFullName(), reanimated);
 		return reanimated;
@@ -658,7 +661,7 @@ namespace Gts {
 		bool reanimated = actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kReanimate;
 		if (transient) {
 			transient->WasReanimated = reanimated;
-			Cprint("Set {} to reanimated", actor->GetDisplayFullName());
+			Cprint("Set {} to reanimated: {}", actor->GetDisplayFullName(), reanimated);
 		}
 	}
 
