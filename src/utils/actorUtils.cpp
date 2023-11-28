@@ -502,7 +502,7 @@ namespace Gts {
 
 	bool WasReanimated(Actor* actor) { // must be called while actor is still alive, else it will return false.
 		bool reanimated = false;
-		auto transient = Transient::GetSingleton().GetData(tiny);
+		auto transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
 			reanimated = transient->WasReanimated;
 		}
@@ -684,8 +684,11 @@ namespace Gts {
 	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause) {
 		std::string name = std::format("TransferItems_{}_{}", from->formID, to->formID);
 
-		bool reanimated = WasReanimated(from); // shall we avoid transfering items or not. 
-		// we generally do not want to do that: 2 loot piles will spawn if actor was resurrected
+		bool reanimated = false; // shall we avoid transfering items or not. 
+		if (Cause != DamageSource::Vored) {
+			reanimated = WasReanimated(from);
+		}
+		// ^ we generally do not want to transfer loot in that case: 2 loot piles will spawn if actor was resurrected
 
 		float Start = Time::WorldTimeElapsed();
 		ActorHandle gianthandle = to->CreateRefHandle();
@@ -708,8 +711,7 @@ namespace Gts {
 			if (!tiny->IsDead()) {
 				KillActor(giant, tiny); // just to make sure
 				return true; // try again
-			}
-			if (tiny->IsDead()) {
+			} if (tiny->IsDead()) {
 				float Finish = Time::WorldTimeElapsed();
 				float timepassed = Finish - Start;
 				if (timepassed < 0.10) {
