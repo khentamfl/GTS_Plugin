@@ -1955,6 +1955,11 @@ namespace Gts {
 	// From an actor place a new container at them and transfer
 	// all of their inventory into it
 	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause) {
+		
+		if (actor->GetLifeState() == ACTOR_LIFE_STATE::kReanimate) {
+			Cprint("Was reanimated, canceling");
+			return;
+		}
 
 		bool soul = false;
 		float Scale = std::clamp(scale, 0.40f, 4.4f);

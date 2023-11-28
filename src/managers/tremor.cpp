@@ -60,7 +60,7 @@ namespace Gts {
 		}
 		if (actor->formID == 0x14) {
 			tremor_scale = persist.tremor_scale;// * (0.95 + get_visual_scale(actor) * 0.025);
-			tremor_scale *= 2.0; // stronger PC shake
+			tremor_scale *= 1.6; // stronger PC shake
 		}
 
 		if (tremor_scale < 1e-5) {
@@ -70,7 +70,7 @@ namespace Gts {
 		float scale = impact.scale;
 
 		if (HasSMT(actor)) {
-			scale += 2.0;
+			scale += 1.4;
 		}
 
 		if (!actor->AsActorState()->IsSwimming()) {
@@ -85,7 +85,7 @@ namespace Gts {
 			}
 			FootEvent foot_kind = impact.kind;
 			if (foot_kind == FootEvent::JumpLand) {
-				scale *= 2.0; // Jumping makes you seem bigger
+				scale *= 1.5; // Jumping makes you seem bigger
 			}
 
 			if (HighHeelManager::IsWearingHH(actor) && Runtime::HasPerkTeam(actor, "hhBonus")) {
