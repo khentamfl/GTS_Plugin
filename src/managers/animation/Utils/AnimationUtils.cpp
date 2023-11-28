@@ -428,6 +428,10 @@ namespace Gts {
 			for (auto otherActor: find_actors()) {
 				if (otherActor != actor) {
 					float tinyScale = get_visual_scale(otherActor);
+					if (HasSMT(actor) && strong) {
+						tinyScale = get_target_scale(otherActor); // switch to target scale instead
+						ShrinkUntil(actor, otherActor, 3.0);
+					}
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
 
@@ -544,6 +548,10 @@ namespace Gts {
 			for (auto otherActor: find_actors()) {
 				if (otherActor != actor) {
 					float tinyScale = get_visual_scale(otherActor);
+					if (HasSMT(actor) && strong) {
+						tinyScale = get_target_scale(otherActor); // switch to target scale instead
+						ShrinkUntil(actor, otherActor, 3.0);
+					}
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
 

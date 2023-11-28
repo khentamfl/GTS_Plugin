@@ -40,7 +40,7 @@ namespace Gts {
 		return "TremorManager";
 	}
 
-	void TremorManager::OnImpact(const Impact& impact) { // This Tremor is used for regular footsteps, not foot attacks
+	void TremorManager::OnImpact(const Impact& impact) { // This Tremor is used for regular footsteps, not feet attacks
 		if (!impact.actor) {
 			return;
 		}
@@ -56,22 +56,21 @@ namespace Gts {
 		if (actor->formID != 0x14) {
 			float sizedifference = ((get_visual_scale(actor)/get_visual_scale(player)) * 0.20);
 			tremor_scale = persist.npc_tremor_scale * (sizedifference + 0.50);
-			tremor_scale *= 1.5; // stronger NPC shake
 		}
 		if (actor->formID == 0x14) {
 			tremor_scale = persist.tremor_scale;// * (0.95 + get_visual_scale(actor) * 0.025);
-			tremor_scale *= 1.6; // stronger PC shake
 		}
 
 		if (tremor_scale < 1e-5) {
 			return;
 		}
 
-		float scale = impact.scale;
-
+		float Calamity = 0.0;
 		if (HasSMT(actor)) {
-			scale += 1.4;
+			Calamity = 1.2;
 		}
+
+		float scale = impact.scale + Calamity;
 
 		if (!actor->AsActorState()->IsSwimming()) {
 			if (actor->AsActorState()->IsSprinting()) {
@@ -85,7 +84,7 @@ namespace Gts {
 			}
 			FootEvent foot_kind = impact.kind;
 			if (foot_kind == FootEvent::JumpLand) {
-				scale *= 1.5; // Jumping makes you seem bigger
+				scale *= 2.0; // Jumping makes you seem bigger
 			}
 
 			if (HighHeelManager::IsWearingHH(actor) && Runtime::HasPerkTeam(actor, "hhBonus")) {
@@ -193,6 +192,7 @@ namespace Gts {
 				if (actor->formID == 0x14 && pcEffects) {
 
 					if (intensity > 0.01 && duration > 0.01) {
+						intensity *= 1.65; // stronger PC shake
 						if (IsFirstPerson()) {
 							intensity *= 0.075; // Shake effects are weaker when in first person
 						}
@@ -220,6 +220,7 @@ namespace Gts {
 				bool npcEffects = Runtime::GetBoolOr("NPCSizeEffects", true);
 				if (actor->formID != 0x14 && npcEffects) {
 					if (intensity > 0.01 && duration > 0.01) {
+						intensity *= 1.4;
 						shake_camera(actor, intensity, duration);
 
 						float left_shake = intensity;
