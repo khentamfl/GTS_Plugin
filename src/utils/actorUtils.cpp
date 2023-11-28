@@ -1956,7 +1956,7 @@ namespace Gts {
 	// all of their inventory into it
 	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause) {
 		
-		if (actor->GetLifeState() == ACTOR_LIFE_STATE::kReanimate) {
+		if (actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kReanimate) {
 			Cprint("Was reanimated, canceling");
 			return;
 		}
