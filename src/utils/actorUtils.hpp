@@ -87,6 +87,7 @@ namespace Gts {
 	void SetBeingEaten(Actor* tiny, bool decide);
 	void SetBeingGrinded(Actor* tiny, bool decide);
 	void SetCameraOverride(Actor* actor, bool decide);
+	void UpdateReanimatedState(Actor* actor);
 	void ShutUp(Actor* actor);
 
 	// GTS State Controllers end

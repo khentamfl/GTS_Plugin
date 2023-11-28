@@ -501,17 +501,8 @@ namespace Gts {
 	}
 
 	bool IsReanimated(Actor* actor) {
-		bool darksouls = Runtime::HasKeyword(actor, "DarkSouls");
-		bool summonundead = Runtime::HasKeyword(actor, "SummonUndead");
-		bool alive = actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kAlive;
-		bool dead = actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kDead;
 		bool reanimated = actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kReanimate;
-		Cprint("{} is alive: {}, dead: {}, reanimated: {}, darksouls: {}, summonundead: {}", actor->GetDisplayFullName(), alive, dead, reanimated, darksouls, summonundead);
-		if (darksouls || summonundead) {
-			return true;
-		} else {
-			return false;
-		}
+		return reanimated;
 	}
 
 	bool IsEssential(Actor* actor) {
@@ -653,6 +644,17 @@ namespace Gts {
 			auto transient = Transient::GetSingleton().GetData(actor);
 			if (transient) {
 				transient->OverrideCamera = decide;
+			}
+		}
+	}
+
+	void UpdateReanimatedState(Actor* actor) { // needed to manually write WasReanimated state since when we kill actor, IsReanimated returns false.
+		auto transient = Transient::GetSingleton().GetData(actor);
+		if (IsReanimated(actor) && transient) {
+			auto reanimated = transient->WasReanimated;
+			if (!reanimated) {
+				reanimated = true;
+				Cprint("Setting reanimated to True for {}", actor->GetDisplayFullName());
 			}
 		}
 	}
@@ -2184,12 +2186,9 @@ namespace Gts {
 	}
 
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
-		if (IsReanimated(receiver)) {
-			//do nothing, just for test
-		}
 		float resistance = AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth);
-		log::info("Att: {}, Rec: {}, Value: {}, Value * Resistance: {}", attacker->GetDisplayFullName(), receiver->GetDisplayFullName(), value, value * resistance);
 		DamageAV(receiver, ActorValue::kHealth, value * resistance);
+		UpdateReanimatedState(receiver);
 	}
 
 	void EditDetectionLevel(Actor* actor, Actor* giant) { // Unused and does nothing.
