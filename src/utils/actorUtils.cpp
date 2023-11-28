@@ -501,7 +501,7 @@ namespace Gts {
 	}
 
 	bool IsReanimated(Actor* actor) {
-		return receiver->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kReanimate;
+		return actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kReanimate;
 	}
 
 	bool IsEssential(Actor* actor) {
