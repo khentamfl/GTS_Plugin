@@ -40,16 +40,14 @@ namespace Gts {
 			if (!giant) {
 				continue;
 			}
-			bool Reanimated = IsReanimated(tiny);
-
 			if (data.state == ShrinkState::Healthy) {
-				KillActor(giant, tiny);
+				
 				data.state = ShrinkState::Shrinking;
 			} else if (data.state == ShrinkState::Shrinking) {
 				if (data.delay.ShouldRun()) {
 					// Do shrink
 					float currentSize = get_visual_scale(tiny);
-					
+					bool Reanimated = IsReanimated(tiny);
 					
 					KillActor(giant, tiny);
 					
