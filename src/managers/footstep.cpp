@@ -288,13 +288,11 @@ namespace Gts {
 			auto player = PlayerCharacter::GetSingleton();
 			auto actor = impact.actor;
 			float scale = impact.scale;
-			/*if (actor->formID != 0x14) {
-			        float sizedifference = ((get_visual_scale(actor)/get_visual_scale(player)));
-			        scale = sizedifference;
-			   }*/
+			
 			if (actor->formID == 0x14 && HasSMT(actor)) {
-				scale *= 1.80;
+				scale *= 2.5;
 			}
+			
 			float sprint_factor = 1.0;
 			bool LegacySounds = Persistent::GetSingleton().legacy_sounds;  // Determine if we should play old pre 2.00 update sounds
 			// ^ Currently forced to true: there's no sounds yet.
@@ -334,16 +332,13 @@ namespace Gts {
 					for (NiAVObject* foot: impact.nodes) {
 						FootStepManager::PlayLegacySounds(foot, foot_kind, scale, start_l, start_xl, start_xxl);
 						return; // New soundsa re disabled for now
-						if (!LegacySounds && WearingHighHeels) { // Play high heel sounds
-							log::info("Playing HH Sounds");
+						if (!LegacySounds && WearingHighHeels) { // Play high heel sounds that will be done someday
 							FootStepManager::PlayHighHeelSounds(foot, foot_kind, scale, sprint_factor, sprinting);
 							return;
-						} else if (!LegacySounds && !WearingHighHeels) { // Play non HH sounds
-							//log::info("Playing Non-HH sounds");
+						} else if (!LegacySounds && !WearingHighHeels) { // Play non HH sounds that will be done someday
 							FootStepManager::PlayNormalSounds(foot, foot_kind, scale, sprint_factor, sprinting);
 							return;
 						} else if (LegacySounds) { // Play old sounds
-							//log::info("Playing Legacy Sounds");
 							FootStepManager::PlayLegacySounds(foot, foot_kind, scale, start_l, start_xl, start_xxl);
 							return;
 						}
