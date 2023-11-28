@@ -519,6 +519,7 @@ namespace Gts {
 							AdvanceQuestProgression(giant, 3, 1);
 						}
 					}
+					KillActor(giant, tiny);
 					CrushBonuses(giant, tiny);
 					PrintDeathSource(giant, tiny, Cause);
 					if (!LessGore()) {

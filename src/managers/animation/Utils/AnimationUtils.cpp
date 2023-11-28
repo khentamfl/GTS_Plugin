@@ -314,10 +314,6 @@ namespace Gts {
 			}
 
 			AttachTo(giantref, tinyref, coordinates);
-			/*if (!AttachToUnderFoot_Left(giantref, tinyref)) {
-				SetBeingGrinded(tinyref, false);
-				return false;
-			}*/
 			if (!IsFootGrinding(giantref)) {
 				SetBeingGrinded(tinyref, false);
 				return false;
@@ -360,10 +356,6 @@ namespace Gts {
 			}
 
 			AttachTo(giantref, tinyref, coordinates);
-			/*if (!AttachToUnderFoot_Right(giantref, tinyref)) {
-				SetBeingGrinded(tinyref, false);
-				return false;
-			}*/
 			if (!IsFootGrinding(giantref)) {
 				SetBeingGrinded(tinyref, false);
 				return false;

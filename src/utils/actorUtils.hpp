@@ -66,7 +66,7 @@ namespace Gts {
 	bool IsMammoth(Actor* actor);
 	bool IsLiving(Actor* actor);
 	bool IsUndead(Actor* actor);
-	bool IsReanimated(Actor* actor);
+	bool WasReanimated(Actor* actor);
 	bool IsEssential(Actor* actor);
 	bool IsMoving(Actor* giant);
 	bool IsHeadtracking(Actor* giant);
@@ -87,12 +87,13 @@ namespace Gts {
 	void SetBeingEaten(Actor* tiny, bool decide);
 	void SetBeingGrinded(Actor* tiny, bool decide);
 	void SetCameraOverride(Actor* actor, bool decide);
+	void SetReanimatedState(Actor* actor);
 	void ShutUp(Actor* actor);
 
 	// GTS State Controllers end
 	void PlayAnimation(Actor* actor, std::string_view animName);
 
-	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause, bool Reanimated);
+	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause);
 	void TransferInventory_Normal(Actor* giant, Actor* tiny, bool removeQuestItems);
 
 	void Disintegrate(Actor* actor);
@@ -184,7 +185,6 @@ namespace Gts {
 	void DisableCollisions(Actor* actor, TESObjectREFR* otherActor);
 	void EnableCollisions(Actor* actor);
 
-
 	void SpringGrow(Actor* actor, float amt, float halfLife, std::string_view naming);
 	void SpringGrow_Free(Actor* actor, float amt, float halfLife, std::string_view naming);
 	void SpringShrink(Actor* actor, float amt, float halfLife, std::string_view naming);
@@ -194,7 +194,7 @@ namespace Gts {
 
 	NiPoint3 GetContainerSpawnLocation(Actor* giant, Actor* tiny);
 
-	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause, bool Reanimated);
+	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause, bool Resurrected);
 
 	bool CanPerformAnimation(Actor* giant, float type);
 	void AdvanceQuestProgression(Actor* actor, float stage, float value);

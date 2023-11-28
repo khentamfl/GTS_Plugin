@@ -40,17 +40,17 @@ namespace Gts {
 			if (!giant) {
 				continue;
 			}
+
 			if (data.state == ShrinkState::Healthy) {
-				
+				KillActor(giant, tiny);
 				data.state = ShrinkState::Shrinking;
 			} else if (data.state == ShrinkState::Shrinking) {
 				if (data.delay.ShouldRun()) {
 					// Do shrink
 					float currentSize = get_visual_scale(tiny);
-					bool Reanimated = IsReanimated(tiny);
-					
-					KillActor(giant, tiny);
-					
+					if (!tiny->IsDead()) {
+						KillActor(giant, tiny);
+					}
 					// Fully shrunk
 					ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
 
@@ -103,9 +103,8 @@ namespace Gts {
 						auto giant = giantHandle.get().get();
 						auto tiny = tinyHandle.get().get();
 						float scale = get_visual_scale(tiny);
-						TransferInventory(tiny, giant, scale, false, true, DamageSource::Crushed, Reanimated);
-						
-						EventDispatcher::DoResetActor(tiny);
+						TransferInventory(tiny, giant, scale, false, true, DamageSource::Crushed);
+						// Actor reset is done within TransferInventory
 					});
 					if (tiny->formID != 0x14) {
 						Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.

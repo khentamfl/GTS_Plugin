@@ -156,7 +156,7 @@ namespace Gts {
 			if (!giant) {
 				continue;
 			}
-			
+
 			auto transient = Transient::GetSingleton().GetData(tiny);
 			if (transient) {
 				if (!transient->can_be_crushed) {
@@ -170,12 +170,10 @@ namespace Gts {
 				if (data.delay.ShouldRun()) {
 					data.state = CrushState::Crushed;
 
-					bool Reanimated = IsReanimated(tiny);
-
 					// Do crush
-					
-					KillActor(giant, tiny);
-					
+					if (!tiny->IsDead()) {
+						KillActor(giant, tiny);
+					}
 					//Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
 					float currentSize = get_visual_scale(tiny);
 
@@ -233,9 +231,7 @@ namespace Gts {
 						auto giant = giantHandle.get().get();
 						auto tiny = tinyHandle.get().get();
 						float scale = get_visual_scale(tiny);
-						TransferInventory(tiny, giant, scale, false, true, DamageSource::Crushed, Reanimated);
-						
-						EventDispatcher::DoResetActor(tiny);
+						TransferInventory(tiny, giant, scale, false, true, DamageSource::Crushed);
 					});
 
 					if (tiny->formID != 0x14) {

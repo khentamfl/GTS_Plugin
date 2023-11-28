@@ -500,8 +500,12 @@ namespace Gts {
 		return IsDraugr;
 	}
 
-	bool IsReanimated(Actor* actor) {
-		bool reanimated = actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kReanimate;
+	bool WasReanimated(Actor* actor) { // must be called while actor is still alive, else it will return false.
+		bool reanimated = false;
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient) {
+			reanimated = transient->WasReanimated;
+		}
 		Cprint("{} reanimated: {}", actor->GetDisplayFullName(), reanimated);
 		return reanimated;
 	}
@@ -649,6 +653,15 @@ namespace Gts {
 		}
 	}
 
+	void SetReanimatedState(Actor* actor) {
+		auto transient = Transient::GetSingleton().GetData(actor);
+		bool reanimated = actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kReanimate;
+		if (transient) {
+			transient->WasReanimated = reanimated;
+			Cprint("Set {} to reanimated", actor->GetDisplayFullName());
+		}
+	}
+
 	void ShutUp(Actor* actor) { // Disallow them to "So anyway i've been fishing today and my dog died" while we do something to them
 		if (!actor) {
 			return;
@@ -668,8 +681,12 @@ namespace Gts {
 		actor->NotifyAnimationGraph(animName);
 	}
 
-	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause, bool Reanimated) {
+	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause) {
 		std::string name = std::format("TransferItems_{}_{}", from->formID, to->formID);
+
+		bool reanimated = WasReanimated(from); // shall we avoid transfering items or not. 
+		// we generally do not want to do that: 2 loot piles will spawn if actor was resurrected
+
 		float Start = Time::WorldTimeElapsed();
 		ActorHandle gianthandle = to->CreateRefHandle();
 		ActorHandle tinyhandle = from->CreateRefHandle();
@@ -684,6 +701,9 @@ namespace Gts {
 			}
 			auto tiny = tinyhandle.get().get();
 			auto giant = gianthandle.get().get();
+
+			EventDispatcher::DoResetActor(tiny); // reset actor data. 
+			// Used to be inside CrushManager/ShrinkToNothingManager
 
 			if (!tiny->IsDead()) {
 				KillActor(giant, tiny); // just to make sure
@@ -706,7 +726,7 @@ namespace Gts {
 					TransferInventory_Normal(to, tiny, removeQuestItems);
 					return false;
 				}
-				TransferInventoryToDropbox(to, tiny, scale, removeQuestItems, Cause, Reanimated);
+				TransferInventoryToDropbox(to, tiny, scale, removeQuestItems, Cause, reanimated);
 				return false; // stop it, we started the looting of the Target.
 			}
 			return true;
@@ -1960,14 +1980,12 @@ namespace Gts {
 
 	// From an actor place a new container at them and transfer
 	// all of their inventory into it
-	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause, bool Reanimated) {
+	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause, bool Resurrected) {
 		bool soul = false;
 		float Scale = std::clamp(scale, 0.40f, 4.4f);
 
-		if (Reanimated) {
-			MessageBox("Is reanimated, canceling task");
-			Cprint("Was reanimated, canceling");
-			return;
+		if (Resurrected) {
+			MessageBox("Task Aborted, target was resurrected");
 		}
 
 		std::string_view container;
