@@ -658,7 +658,7 @@ namespace Gts {
 		if (Reanimated && transient) {
 			auto IsReanimated = transient->WasReanimated;
 			if (!IsReanimated) {
-				IsReanimated = true;
+				transient->WasReanimated = true;
 				Cprint("Setting reanimated to True for {}", actor->GetDisplayFullName());
 			}
 		}
