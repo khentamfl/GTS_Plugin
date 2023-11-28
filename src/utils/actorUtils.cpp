@@ -503,6 +503,10 @@ namespace Gts {
 	bool IsReanimated(Actor* actor) {
 		bool darksouls = Runtime::HasKeyword(actor, "DarkSouls");
 		bool summonundead = Runtime::HasKeyword(actor, "SummonUndead");
+		bool alive = actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kAlive;
+		bool dead = actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kDead;
+		bool reanimated = actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kReanimate;
+		Cprint("{} is alive: {}, dead: {}, reanimated: {}", actor->GetDisplayFullName(), alive, dead, reanimated);
 		if (darksouls || summonundead) {
 			return true;
 		} else {
