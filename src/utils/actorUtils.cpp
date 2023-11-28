@@ -501,10 +501,12 @@ namespace Gts {
 	}
 
 	bool IsReanimated(Actor* actor) {
-		auto& transient = Transient::GetSingleton().GetData(actor);
+		auto transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
+			Cprint("{} Is Reanimated:{}", actor->GetDisplayFullName(), transient->WasReanimated);
 			return transient->WasReanimated;
 		} else {
+			Cprintg("Returning false");
 			return false;
 		}
 	}
@@ -535,7 +537,7 @@ namespace Gts {
 		//auto profiler = Profilers::Profile("ActorUtils: HeadTracking");
 		bool tracking;
 		if (giant->formID == 0x14) {
-			giant->GetGraphVariableBool("TDM_TargetLock", tracking); // update tracking value
+			giant->GetGraphVariableBool("TDM_TargetLock", tracking); // get HT value, requires newest versions of TDM to work properly
 		} else {
 			tracking = false;
 		}
@@ -653,7 +655,7 @@ namespace Gts {
 	}
 
 	void UpdateReanimatedState(Actor* actor) { // needed to manually write WasReanimated state since when we kill actor, IsReanimated returns false.
-		auto& transient = Transient::GetSingleton().GetData(actor);
+		auto transient = Transient::GetSingleton().GetData(actor);
 		bool Reanimated = actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kReanimate;
 		if (Reanimated && transient) {
 			if (!transient->WasReanimated) {
