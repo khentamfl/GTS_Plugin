@@ -2184,7 +2184,7 @@ namespace Gts {
 	}
 
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
-		if (IsReanimated(actor)) {
+		if (IsReanimated(receiver)) {
 			//do nothing, just for test
 		}
 		float resistance = AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth);
