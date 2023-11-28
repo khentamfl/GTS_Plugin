@@ -27,12 +27,7 @@ namespace {
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
     void DeplenishStamina(Actor* giant, float WasteStamina) {
-		if (Runtime::HasPerk(giant, "DestructionBasics")) {
-			WasteStamina *= 0.65;
-		} if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
-			WasteStamina *= 1.0 - GetGtsSkillLevel() * 0.0035;
-		}
-        DamageAV(giant, ActorValue::kStamina, WasteStamina);
+        DamageAV(giant, ActorValue::kStamina, WasteStamina * GetWasteMult(giant));
     }
 
     void DoSounds(Actor* giant, float animspeed, std::string_view feet) {
@@ -71,7 +66,7 @@ namespace {
 
     void GTS_Trample_Cam_End_L(AnimationEventData& data) {
         TrackFeet(&data.giant, 5, false);
-        DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 1.0, 1.8);
+        DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 1.0, 1.2);
 
 		data.animSpeed = 1.0;
 		data.canEditAnimSpeed = false;
@@ -79,7 +74,7 @@ namespace {
     }
     void GTS_Trample_Cam_End_R(AnimationEventData& data) {
         TrackFeet(&data.giant, 6, false);
-        DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 1.0, 1.8);
+        DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 1.0, 1.2);
 
 		data.animSpeed = 1.0;
 		data.canEditAnimSpeed = false;
@@ -101,7 +96,7 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25, 1.0, FootEvent::Left, 0.50);
-		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", true, 1.0, 1.8);
+		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", true, 1.0, 1.2);
 		FootGrindCheck_Left(&data.giant, 1.65, true);
 
 		data.animSpeed = 1.0;
@@ -123,7 +118,7 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.75 * launch * perk, 2.25, 1.0, FootEvent::Right, 0.50);
-		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", true, 1.0, 1.8);
+		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", true, 1.0, 1.2);
         FootGrindCheck_Right(&data.giant, 1.65, true);
 
 		data.animSpeed = 1.0;
@@ -146,7 +141,7 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.95 * launch * perk, 2.50, 1.0, FootEvent::Left, 0.75);
-        DeplenishStamina(&data.giant, 25.0);
+        DeplenishStamina(&data.giant, 30.0);
 
 		data.stage = 1;
 		data.canEditAnimSpeed = false;
@@ -170,7 +165,7 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.95 * launch * perk, 2.50, 1.0, FootEvent::Right, 0.75);
-        DeplenishStamina(&data.giant, 25.0);
+        DeplenishStamina(&data.giant, 30.0);
 
 		data.stage = 1;
 		data.canEditAnimSpeed = false;
@@ -226,10 +221,8 @@ namespace {
 		if (IsCrawling(player) || player->IsSneaking() || IsProning(player)) {
 			return;
 		}
-		float WasteStamina = 35.0;
-		if (Runtime::HasPerk(player, "DestructionBasics")) {
-			WasteStamina *= 0.65;
-		}
+		float WasteStamina = 35.0 * GetWasteMult(player);
+		
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("TrampleL", player);
 		} else {
@@ -245,10 +238,7 @@ namespace {
 		if (IsCrawling(player) || player->IsSneaking() || IsProning(player)) {
 			return;
 		}
-		float WasteStamina = 35.0;
-		if (Runtime::HasPerk(player, "DestructionBasics")) {
-			WasteStamina *= 0.65;
-		} 
+		float WasteStamina = 35.0 * GetWasteMult(player);
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			AnimationManager::StartAnim("TrampleR", player);
 		} else {

@@ -242,14 +242,7 @@ namespace {
 		if (!CanPerformAnimation(player, 1)) {
 			return;
 		}
-		float WasteMult = 1.0;
-		if (Runtime::HasPerk(player, "DestructionBasics")) {
-			WasteMult -= 0.35;
-		}
-		if (Runtime::HasPerkTeam(player, "SkilledGTS")) {
-			WasteMult -= GetGtsSkillLevel() * 0.0035;
-		}
-		float WasteStamina = 70.0 * WasteMult;
+		float WasteStamina = 70.0 * GetWasteMult(player);
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			//BlockFirstPerson(player, true);
 			AnimationManager::StartAnim("StrongStompRight", player);
@@ -263,14 +256,7 @@ namespace {
 		if (!CanPerformAnimation(player, 1)) {
 			return;
 		}
-		float WasteMult = 1.0;
-		if (Runtime::HasPerk(player, "DestructionBasics")) {
-			WasteMult -= 0.35;
-		}
-		if (Runtime::HasPerkTeam(player, "SkilledGTS")) {
-			WasteMult -= GetGtsSkillLevel() * 0.0035;
-		}
-		float WasteStamina = 70.0 * WasteMult;
+		float WasteStamina = 70.0 * GetWasteMult(player);
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 			//BlockFirstPerson(player, true);
 			AnimationManager::StartAnim("StrongStompLeft", player);
