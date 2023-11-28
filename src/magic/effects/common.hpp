@@ -306,7 +306,6 @@ namespace Gts {
 			}
 
 			PrintDeathSource(caster, target, DamageSource::Shrinked);
-			KillActor(caster, target);
 			return true;
 		}
 		return false;

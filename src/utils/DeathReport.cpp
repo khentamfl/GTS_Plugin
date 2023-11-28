@@ -174,15 +174,15 @@ namespace Gts {
 			if (random == 1) {
 				Cprint("{} body exploded because of massive size difference with {}", TinyName, GiantName);
 			} else if (random == 2) {
-				Cprint("{} hit {} with so much force that {} exploded into bloody mist", GiantName, TinyName, TinyName);
+				Cprint("{} hit {} with so much force that {} exploded", GiantName, TinyName, TinyName);
 			} else if (random == 3) {
 				Cprint("{} was pulverized into nothing by {}", TinyName, GiantName);
 			} else if (random == 4) {
-				Cprint("All that's left from {} after being hit bit {} is a bloody mist", TinyName, GiantName);
+				Cprint("All that's left from {} after being hit by {} is a bloody pulp", TinyName, GiantName);
 			} else if (random >= 6) {
 				Cprint("{} couldn't handle enormous hit from {}", TinyName, GiantName);
 			} else if (random >= 7) {
-				Cprint("{} put so much force into attack that {} turned into red mist", GiantName, TinyName);
+				Cprint("{} put so much force into attack that {} turned into red mush", GiantName, TinyName);
 			}
 			return;
 		} else if (cause == DamageSource::HitSteal) { // Hit Growth perk

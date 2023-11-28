@@ -119,9 +119,9 @@ namespace Gts {
 	void HitManager::Overkill(Actor* receiver, Actor* attacker) {
 		bool Reanimated = IsReanimated(receiver);
 
-		if (!receiver->IsDead()) {
-			KillActor(attacker, receiver);
-		}
+		
+		KillActor(attacker, receiver);
+		
 
 		ActorHandle giantHandle = attacker->CreateRefHandle();
 		ActorHandle tinyHandle = receiver->CreateRefHandle();

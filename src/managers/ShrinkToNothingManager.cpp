@@ -41,7 +41,7 @@ namespace Gts {
 				continue;
 			}
 			bool Reanimated = IsReanimated(tiny);
-			
+
 			if (data.state == ShrinkState::Healthy) {
 				KillActor(giant, tiny);
 				data.state = ShrinkState::Shrinking;
@@ -50,9 +50,9 @@ namespace Gts {
 					// Do shrink
 					float currentSize = get_visual_scale(tiny);
 					
-					if (!tiny->IsDead()) {
-						KillActor(giant, tiny);
-					}
+					
+					KillActor(giant, tiny);
+					
 					// Fully shrunk
 					ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
 

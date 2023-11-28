@@ -171,9 +171,9 @@ namespace Gts {
 					data.state = CrushState::Crushed;
 
 					// Do crush
-					if (!tiny->IsDead()) {
-						KillActor(giant, tiny);
-					}
+					
+					KillActor(giant, tiny);
+					
 					//Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
 					float currentSize = get_visual_scale(tiny);
 
