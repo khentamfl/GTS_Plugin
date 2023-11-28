@@ -505,11 +505,7 @@ namespace Gts {
 		auto transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
 			reanimated = transient->WasReanimated;
-			Cprint("Transient returned true");
-		} else {
-			Cprint("Transient returned false");
-		}
-		Cprint("{} reanimated: {}", actor->GetDisplayFullName(), reanimated);
+		} 
 		return reanimated;
 	}
 
@@ -1957,7 +1953,7 @@ namespace Gts {
 		bool success_first = false;
 		bool success_second = false;
 		NiPoint3 ray_start = tiny->GetPosition();
-		ray_start.z = giant->GetPosition().z + 170.0; // overrize .z with giant .z + 170, so ray starts from above
+		//ray_start.z = giant->GetPosition().z + 40.0; // overrize .z with giant .z + 40, so ray starts from above
 		NiPoint3 ray_direction(0.0, 0.0, -1.0);
 
 		float ray_length = 40000;

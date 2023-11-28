@@ -30,6 +30,20 @@ namespace Gts {
 		}
 	}
 
+	inline float GetStealEfficiency(Actor* tiny) {
+		float eff = 1.0;
+		if (IsDragon(target)) {
+			eff *= DRAGON_PEANLTY;
+		} else if (IsMammoth(target)) {
+			eff *= 0.35;
+ 		} else if (IsGiant(target)) {
+			eff *= 0.50;
+		} else if (IsUndead(target)) {
+			eff *= 0.60;
+		}
+		return eff;
+	}
+
 	inline void AdjustGtsSkill(float value, Actor* Caster) { // Adjust Matter Of Size skill
 		if (Caster->formID != 0x14) {
 			return; //Bye
@@ -119,13 +133,8 @@ namespace Gts {
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)*0.01;
 		float GigantismTarget = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)*0.01;  // May go negative needs fixing with a smooth clamp
 		float efficiency = clamp(0.50, 1.0, (casterlevel/targetlevel)) * progression_multiplier;
-		if (IsDragon(target)) {
-			efficiency *= DRAGON_PEANLTY;
-		} if (IsMammoth(target)) {
-			efficiency *= 0.35;
- 		} if (IsGiant(target)) {
-			efficiency *= 0.50;
-		} if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
+		efficiency *= GetStealEfficiency(target);
+		if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
 			efficiency *= 0.25;
 		}
 

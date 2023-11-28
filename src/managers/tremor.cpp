@@ -68,7 +68,7 @@ namespace Gts {
 		float TinyCalamity = 0.0;
 		float Modify = 1.0;
 		if (HasSMT(actor)) {
-			TinyCalamity = 1.8;
+			TinyCalamity = 1.85;
 			Modify = 0.85;
 		}
 
@@ -86,7 +86,7 @@ namespace Gts {
 			}
 			FootEvent foot_kind = impact.kind;
 			if (foot_kind == FootEvent::JumpLand) {
-				scale *= 2.0; // Jumping makes you seem bigger
+				scale *= 1.6 * Modify; // Jumping makes you seem bigger
 			}
 
 			if (HighHeelManager::IsWearingHH(actor) && Runtime::HasPerkTeam(actor, "hhBonus")) {
