@@ -156,7 +156,7 @@ namespace Gts {
 			if (!giant) {
 				continue;
 			}
-
+			bool Reanimated = IsReanimated(tiny);
 			auto transient = Transient::GetSingleton().GetData(tiny);
 			if (transient) {
 				if (!transient->can_be_crushed) {
@@ -169,8 +169,6 @@ namespace Gts {
 			} else if (data.state == CrushState::Crushing) {
 				if (data.delay.ShouldRun()) {
 					data.state = CrushState::Crushed;
-
-					bool Reanimated = IsReanimated(tiny);
 
 					// Do crush
 					if (!tiny->IsDead()) {
