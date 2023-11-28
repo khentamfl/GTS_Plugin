@@ -68,7 +68,6 @@ namespace Gts {
 			bool about_to_be_eaten = false;
 			bool being_foot_grinded = false;
 			bool OverrideCamera = false;
-			bool WasReanimated = false;
 			bool FPCrawling = false;
 
 
@@ -116,7 +115,6 @@ namespace Gts {
 			result.ButtCrushGrowthAmount = ButtCrushGrowthAmount;
 			result.ShrinkWeakness = ShrinkWeakness;
 			result.OverrideCamera = OverrideCamera;
-			result.WasReanimated = WasReanimated;
 			result.FPCrawling = FPCrawling;
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();

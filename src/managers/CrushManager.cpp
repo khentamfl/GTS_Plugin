@@ -170,6 +170,8 @@ namespace Gts {
 				if (data.delay.ShouldRun()) {
 					data.state = CrushState::Crushed;
 
+					bool Reanimated = IsReanimated(tiny);
+
 					// Do crush
 					if (!tiny->IsDead()) {
 						KillActor(giant, tiny);
@@ -231,7 +233,7 @@ namespace Gts {
 						auto giant = giantHandle.get().get();
 						auto tiny = tinyHandle.get().get();
 						float scale = get_visual_scale(tiny);
-						TransferInventory(tiny, giant, scale, false, true, DamageSource::Crushed);
+						TransferInventory(tiny, giant, scale, false, true, DamageSource::Crushed, Reanimated);
 						
 						EventDispatcher::DoResetActor(tiny);
 					});

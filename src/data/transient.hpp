@@ -36,7 +36,6 @@ namespace Gts {
 		bool can_be_vored;
 		bool being_foot_grinded;
 		bool OverrideCamera;
-		bool WasReanimated;
 		bool FPCrawling;
 		TESObjectREFR* disable_collision_with;
 	};

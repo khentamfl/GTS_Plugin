@@ -501,14 +501,7 @@ namespace Gts {
 	}
 
 	bool IsReanimated(Actor* actor) {
-		auto transient = Transient::GetSingleton().GetData(actor);
-		if (transient) {
-			Cprint("{} Is Reanimated:{}", actor->GetDisplayFullName(), transient->WasReanimated);
-			return transient->WasReanimated;
-		} else {
-			Cprint("Returning false");
-			return false;
-		}
+		return receiver->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kReanimate;
 	}
 
 	bool IsEssential(Actor* actor) {
@@ -654,17 +647,6 @@ namespace Gts {
 		}
 	}
 
-	void UpdateReanimatedState(Actor* actor) { // needed to manually write WasReanimated state since when we kill actor, IsReanimated returns false.
-		auto transient = Transient::GetSingleton().GetData(actor);
-		bool Reanimated = actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kReanimate;
-		if (Reanimated && transient) {
-			if (!transient->WasReanimated) {
-				transient->WasReanimated = true;
-				Cprint("Setting reanimated to True for {}", actor->GetDisplayFullName());
-			}
-		}
-	}
-
 	void ShutUp(Actor* actor) { // Disallow them to "So anyway i've been fishing today and my dog died" while we do something to them
 		if (!actor) {
 			return;
@@ -684,7 +666,7 @@ namespace Gts {
 		actor->NotifyAnimationGraph(animName);
 	}
 
-	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause) {
+	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause, bool Reanimated) {
 		std::string name = std::format("TransferItems_{}_{}", from->formID, to->formID);
 		float Start = Time::WorldTimeElapsed();
 		ActorHandle gianthandle = to->CreateRefHandle();
@@ -722,7 +704,7 @@ namespace Gts {
 					TransferInventory_Normal(to, tiny, removeQuestItems);
 					return false;
 				}
-				TransferInventoryToDropbox(to, tiny, scale, removeQuestItems, Cause);
+				TransferInventoryToDropbox(to, tiny, scale, removeQuestItems, Cause, Reanimated);
 				return false; // stop it, we started the looting of the Target.
 			}
 			return true;
@@ -1976,16 +1958,15 @@ namespace Gts {
 
 	// From an actor place a new container at them and transfer
 	// all of their inventory into it
-	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause) {
-		
-		if (IsReanimated(actor)) {
+	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause, bool Reanimated) {
+		bool soul = false;
+		float Scale = std::clamp(scale, 0.40f, 4.4f);
+
+		if (Reanimated) {
 			MessageBox("Is reanimated, canceling task");
 			Cprint("Was reanimated, canceling");
 			return;
 		}
-
-		bool soul = false;
-		float Scale = std::clamp(scale, 0.40f, 4.4f);
 
 		std::string_view container;
 		std::string name = std::format("{} remains", actor->GetDisplayFullName());
@@ -2194,7 +2175,6 @@ namespace Gts {
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
 		float resistance = AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth);
 		DamageAV(receiver, ActorValue::kHealth, value * resistance);
-		UpdateReanimatedState(receiver);
 	}
 
 	void EditDetectionLevel(Actor* actor, Actor* giant) { // Unused and does nothing.

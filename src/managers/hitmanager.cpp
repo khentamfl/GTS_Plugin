@@ -117,6 +117,8 @@ namespace Gts {
 		return;
 	}
 	void HitManager::Overkill(Actor* receiver, Actor* attacker) {
+		bool Reanimated = IsReanimated(receiver);
+
 		if (!receiver->IsDead()) {
 			KillActor(attacker, receiver);
 		}
@@ -136,7 +138,7 @@ namespace Gts {
 			auto giant = giantHandle.get().get();
 			auto tiny = tinyHandle.get().get();
 			float scale = get_visual_scale(tiny);
-			TransferInventory(tiny, giant, scale, false, true, DamageSource::Overkill);
+			TransferInventory(tiny, giant, scale, false, true, DamageSource::Overkill, Reanimated);
 			// ^ transferInventory>TransferInventoryToDropBox also plays crush audio on loot pile
 			// Was done like that because Audio disappears on actors
 		});

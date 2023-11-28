@@ -102,7 +102,7 @@ namespace {
 	}
 
 	void Vore_TransferItems(Actor* pred, Actor* prey) {
-		TransferInventory(prey, pred, 1.0, false, true, DamageSource::Vored);
+		TransferInventory(prey, pred, 1.0, false, true, DamageSource::Vored, false);
 	}
 
 	void VoreMessage_SwallowedAbsorbing(Actor* pred, Actor* prey) {

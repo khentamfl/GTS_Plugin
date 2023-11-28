@@ -48,6 +48,7 @@ namespace Gts {
 				if (data.delay.ShouldRun()) {
 					// Do shrink
 					float currentSize = get_visual_scale(tiny);
+					bool Reanimated = IsReanimated(tiny);
 					if (!tiny->IsDead()) {
 						KillActor(giant, tiny);
 					}
@@ -103,7 +104,7 @@ namespace Gts {
 						auto giant = giantHandle.get().get();
 						auto tiny = tinyHandle.get().get();
 						float scale = get_visual_scale(tiny);
-						TransferInventory(tiny, giant, scale, false, true, DamageSource::Crushed);
+						TransferInventory(tiny, giant, scale, false, true, DamageSource::Crushed, Reanimated);
 						
 						EventDispatcher::DoResetActor(tiny);
 					});
