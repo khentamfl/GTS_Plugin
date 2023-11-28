@@ -501,7 +501,7 @@ namespace Gts {
 	}
 
 	bool IsReanimated(Actor* actor) {
-		auto transient = Transient::GetSingleton().GetData(actor);
+		auto& transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
 			return transient->WasReanimated;
 		} else {
@@ -653,7 +653,7 @@ namespace Gts {
 	}
 
 	void UpdateReanimatedState(Actor* actor) { // needed to manually write WasReanimated state since when we kill actor, IsReanimated returns false.
-		auto transient = Transient::GetSingleton().GetData(actor);
+		auto& transient = Transient::GetSingleton().GetData(actor);
 		bool Reanimated = actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kReanimate;
 		if (Reanimated && transient) {
 			if (!transient->WasReanimated) {
