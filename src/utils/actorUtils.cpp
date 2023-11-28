@@ -504,7 +504,7 @@ namespace Gts {
 		auto ai = actor->GetActorRuntimeData().currentProcess;
 		bool reanimated;
 		if (ai) {
-			reanimated = ai->cachedValues->booleanValues.get(BooleanValue::kOwnerIsUndead);
+			reanimated = ai->cachedValues->flags.get(Flags::kOwnerIsUndead);
 		} else {
 			reanimated = false;
 		}
