@@ -229,7 +229,7 @@ namespace Gts {
 	inline void TransferSize(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smt, ShrinkSource source) {
 		const float BASE_POWER = 0.0005;
 		const float DUAL_CAST_BONUS = 2.0;
-		const float SMT_BONUS = 2.0;
+		const float SMT_BONUS = 1.25;
 		float PERK_BONUS = 1.0;
 
 		if (IsEssential(target)) {

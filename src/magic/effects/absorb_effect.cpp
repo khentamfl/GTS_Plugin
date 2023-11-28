@@ -26,7 +26,7 @@ namespace Gts {
 	}
 
 	void Absorb::OnUpdate() {
-		const float SMT_BONUS = 3.0;
+		const float SMT_BONUS = 1.0;
 		const float TRUE_ABSORB_UPGRADE = 4.0;
 
 		auto caster = GetCaster();

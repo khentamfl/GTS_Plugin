@@ -658,10 +658,12 @@ namespace Gts {
 
 	void SetReanimatedState(Actor* actor) {
 		auto transient = Transient::GetSingleton().GetData(actor);
-		bool reanimated = actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kReanimate;
-		if (transient) {
-			transient->WasReanimated = reanimated;
-			Cprint("Set {} to reanimated: {}", actor->GetDisplayFullName(), reanimated);
+		if (!WasReanimated(actor)) { // disallow to override it again if it returned true a frame before
+			bool reanimated = actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kReanimate;
+			if (transient) {
+				transient->WasReanimated = reanimated;
+				Cprint("Set {} to reanimated: {}", actor->GetDisplayFullName(), reanimated);
+			}
 		}
 	}
 

@@ -519,7 +519,9 @@ namespace Gts {
 							AdvanceQuestProgression(giant, 3, 1);
 						}
 					}
+					
 					SetReanimatedState(tiny);
+					
 					KillActor(giant, tiny);
 					CrushBonuses(giant, tiny);
 					PrintDeathSource(giant, tiny, Cause);

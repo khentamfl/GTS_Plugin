@@ -65,16 +65,18 @@ namespace Gts {
 			return;
 		}
 
-		float Calamity = 0.0;
+		float TinyCalamity = 0.0;
+		float Modify = 1.0;
 		if (HasSMT(actor)) {
-			Calamity = 1.2;
+			TinyCalamity = 1.8;
+			Modify = 0.85;
 		}
 
-		float scale = impact.scale + Calamity;
+		float scale = impact.scale + TinyCalamity;
 
 		if (!actor->AsActorState()->IsSwimming()) {
 			if (actor->AsActorState()->IsSprinting()) {
-				scale *= 1.25; // Sprinting makes you seem bigger
+				scale *= 1.25 * Modify; // Sprinting makes you seem bigger
 			}
 			if (actor->AsActorState()->IsWalking()) {
 				scale *= 0.80; // Walking makes you seem quieter
