@@ -506,7 +506,7 @@ namespace Gts {
 			Cprint("{} Is Reanimated:{}", actor->GetDisplayFullName(), transient->WasReanimated);
 			return transient->WasReanimated;
 		} else {
-			Cprintg("Returning false");
+			Cprint("Returning false");
 			return false;
 		}
 	}
