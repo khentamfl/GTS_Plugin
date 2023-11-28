@@ -501,14 +501,13 @@ namespace Gts {
 	}
 
 	bool IsReanimated(Actor* actor) {
-		auto ai = actor->GetActorRuntimeData().currentProcess;
-		bool reanimated;
-		if (ai) {
-			reanimated = ai->cachedValues->flags.get(Flags::kOwnerIsUndead);
+		bool darksouls = Runtime::HasKeyword(actor, "DarkSouls");
+		bool summonundead = Runtime::HasKeyword(actor, "SummonUndead");
+		if (darksouls || summonundead) {
+			return true;
 		} else {
-			reanimated = false;
+			return false;
 		}
-		return reanimated;
 	}
 
 	bool IsEssential(Actor* actor) {
