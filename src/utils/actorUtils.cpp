@@ -500,6 +500,17 @@ namespace Gts {
 		return IsDraugr;
 	}
 
+	bool IsReanimated(Actor* actor) {
+		auto ai = actor->GetActorRuntimeData().currentProcess;
+		bool reanimated;
+		if (ai) {
+			reanimated = ai->cachedValues->booleanValues(BooleanValue::kUndead);
+		} else {
+			reanimated = false;
+		}
+		return reanimated;
+	}
+
 	bool IsEssential(Actor* actor) {
 		bool essential = actor->IsEssential() && Runtime::GetBool("ProtectEssentials");
 		bool teammate = IsTeammate(actor);
@@ -1956,7 +1967,7 @@ namespace Gts {
 	// all of their inventory into it
 	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause) {
 		
-		if (actor->CalculateCachedOwnerIsUndead()) {
+		if (IsReanimated(actor)) {
 			MessageBox("Is reanimated, canceling task");
 			Cprint("Was reanimated, canceling");
 			return;

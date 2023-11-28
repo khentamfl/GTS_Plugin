@@ -200,6 +200,11 @@ namespace Gts {
 	void DoFootTrample_Left(Actor* giant, Actor* tiny) {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
+
+		if (SMT) {
+			ShrinkUntil(giant, tiny, 3.6);
+		}
+
 		std::string name = std::format("FootTrample_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
 		auto coordinates = AttachToUnderFoot_Left(giant, tiny);
@@ -235,9 +240,14 @@ namespace Gts {
 		});
 		
 	}
-	void DoFootTrample_Right(Actor* giant, Actor* tiny) {
+	void DoFootTrample_Right(Actor* giant, Actor* tiny, bool SMT) {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
+
+		if (SMT) {
+			ShrinkUntil(giant, tiny, 3.6);
+		}
+
 		std::string name = std::format("FootTrample_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
 		auto coordinates = AttachToUnderFoot_Right(giant, tiny);
@@ -273,9 +283,14 @@ namespace Gts {
 		});
 	}
 
-	void DoFootGrind_Left(Actor* giant, Actor* tiny) {
+	void DoFootGrind_Left(Actor* giant, Actor* tiny, bool SMT) {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
+
+		if (SMT) {
+			ShrinkUntil(giant, tiny, 3.6);
+		}
+
 		std::string name = std::format("FootGrind_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
 		auto coordinates = AttachToUnderFoot_Left(giant, tiny);
@@ -315,9 +330,14 @@ namespace Gts {
 		});
 	}
 
-	void DoFootGrind_Right(Actor* giant, Actor* tiny) {
+	void DoFootGrind_Right(Actor* giant, Actor* tiny, bool SMT) {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
+
+		if (SMT) {
+			ShrinkUntil(giant, tiny, 3.6);
+		}
+
 		std::string name = std::format("FootGrind_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
 		auto coordinates = AttachToUnderFoot_Right(giant, tiny);
@@ -365,8 +385,12 @@ namespace Gts {
 		const float BASE_CHECK_DISTANCE = 90.0;
 		const float BASE_DISTANCE = 6.0;
 		const float SCALE_RATIO = 3.0;
+
+		bool SMT = false;
+
 		if (HasSMT(actor)) {
-			giantScale += 0.20;
+			giantScale += 3.5;
+			SMT = true;
 		}
 
 		// Get world HH offset
@@ -428,10 +452,6 @@ namespace Gts {
 			for (auto otherActor: find_actors()) {
 				if (otherActor != actor) {
 					float tinyScale = get_visual_scale(otherActor);
-					if (HasSMT(actor) && strong) {
-						tinyScale = get_target_scale(otherActor); // switch to target scale instead
-						ShrinkUntil(actor, otherActor, 3.0);
-					}
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
 
@@ -455,15 +475,15 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
-								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
+								float aveForce = std::clamp(force, 0.00f, 0.70f);
 								if (aveForce >= 0.00 && !otherActor->IsDead()) {
 									if (!strong) {
-										DoFootGrind_Left(actor, otherActor);
+										DoFootGrind_Left(actor, otherActor, SMT);
 										SetBeingGrinded(otherActor, true);
 										AnimationManager::StartAnim("GrindLeft", actor);
 									} else {
-										AnimationManager::StartAnim("TrampleStartL", actor); // preparation for strong version
-										DoFootTrample_Left(actor, otherActor);
+										AnimationManager::StartAnim("TrampleStartL", actor);
+										DoFootTrample_Left(actor, otherActor, SMT);
 									}
 								}
 							}
@@ -483,8 +503,12 @@ namespace Gts {
 		const float BASE_CHECK_DISTANCE = 90.0;
 		const float BASE_DISTANCE = 6.0;
 		const float SCALE_RATIO = 3.0;
+
+		bool SMT = false;
+
 		if (HasSMT(actor)) {
-			giantScale += 0.20;
+			giantScale += 3.60;
+			SMT = true;
 		}
 
 		// Get world HH offset
@@ -548,10 +572,6 @@ namespace Gts {
 			for (auto otherActor: find_actors()) {
 				if (otherActor != actor) {
 					float tinyScale = get_visual_scale(otherActor);
-					if (HasSMT(actor) && strong) {
-						tinyScale = get_target_scale(otherActor); // switch to target scale instead
-						ShrinkUntil(actor, otherActor, 3.0);
-					}
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
 
@@ -568,22 +588,22 @@ namespace Gts {
 										float distance = (point - a_obj.world.translate).Length();
 										if (distance < maxFootDistance) {
 											nodeCollisions += 1;
-											force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
+											force = 1.0 - distance / maxFootDistance;
 										}
 										return true;
 									});
 								}
 							}
 							if (nodeCollisions > 0) {
-								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
+								float aveForce = std::clamp(force, 0.00f, 0.70f);
 								if (aveForce >= 0.00 && !otherActor->IsDead()) {
 									if (!strong) {
-										DoFootGrind_Right(actor, otherActor);
+										DoFootGrind_Right(actor, otherActor, SMT);
 										SetBeingGrinded(otherActor, true);
 										AnimationManager::StartAnim("GrindRight", actor);
 									} else {
 										AnimationManager::StartAnim("TrampleStartR", actor); // Do Trample instead
-										DoFootTrample_Right(actor, otherActor);
+										DoFootTrample_Right(actor, otherActor, SMT);
 									}
 								}
 							}
