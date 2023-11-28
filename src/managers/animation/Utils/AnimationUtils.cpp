@@ -197,7 +197,7 @@ namespace Gts {
 		}
 	}
 
-	void DoFootTrample_Left(Actor* giant, Actor* tiny) {
+	void DoFootTrample_Left(Actor* giant, Actor* tiny, bool SMT) {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
 
