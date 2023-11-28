@@ -246,17 +246,17 @@ namespace {
 			float resist = AttributeManager::GetSingleton().GetAttributeBonus(grabbedActor, ActorValue::kHealth);
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
-			float damage = (1.400 * sizeDiff) * power * additionaldamage * additionaldamage * multiplier;
+			float damage = (1.600 * sizeDiff) * power * additionaldamage * additionaldamage * multiplier;
 			float experience = std::clamp(damage/800, 0.0f, 0.06f);
 			if (HasSMT(giant)) {
-				damage *= 1.75;
+				damage *= 1.60;
 				bonus = 3.0;
 			}
 			InflictSizeDamage(giant, grabbedActor, damage);
 
 			damage *= resist; // take enemy resistance into account, it is important to do that after damage is done, for next checks
 
-			GRumble::Once("GrabAttack", giant, 6.0 * bonus, 0.05, "NPC L Hand [LHnd]");
+			GRumble::Once("GrabAttack", giant, 5.0 * bonus, 0.05, "NPC L Hand [LHnd]");
 
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1); // don't do damage and just add flat debuff
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1); // do it twice
@@ -268,7 +268,7 @@ namespace {
 				CrushManager::Crush(giant, grabbedActor);
 				AdjustGtsSkill(0.14, giant);
 				SetBeingHeld(grabbedActor, false);
-				GRumble::Once("GrabAttackKill", giant, 16.0 * bonus, 0.15, "NPC L Hand [LHnd]");
+				GRumble::Once("GrabAttackKill", giant, 14.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 				if (!LessGore()) {
 					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
 					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");

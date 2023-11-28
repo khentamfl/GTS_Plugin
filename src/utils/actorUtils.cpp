@@ -506,7 +506,7 @@ namespace Gts {
 		bool alive = actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kAlive;
 		bool dead = actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kDead;
 		bool reanimated = actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kReanimate;
-		Cprint("{} is alive: {}, dead: {}, reanimated: {}", actor->GetDisplayFullName(), alive, dead, reanimated);
+		Cprint("{} is alive: {}, dead: {}, reanimated: {}, darksouls: {}, summonundead: {}", actor->GetDisplayFullName(), alive, dead, reanimated, darksouls, summonundead);
 		if (darksouls || summonundead) {
 			return true;
 		} else {
@@ -2184,6 +2184,9 @@ namespace Gts {
 	}
 
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
+		if (IsReanimated(actor)) {
+			//do nothing, just for test
+		}
 		float resistance = AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth);
 		log::info("Att: {}, Rec: {}, Value: {}, Value * Resistance: {}", attacker->GetDisplayFullName(), receiver->GetDisplayFullName(), value, value * resistance);
 		DamageAV(receiver, ActorValue::kHealth, value * resistance);
