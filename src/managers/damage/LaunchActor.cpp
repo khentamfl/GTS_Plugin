@@ -210,7 +210,7 @@ namespace {
 				Cprint("Object1 Looking for refs");
 			}
 			for (auto object2: data.objectList) {
-				ApplyLaunchTo(giant, footPoints, maxFootDistance, power, object2.get().get());
+				ApplyLaunchTo(giant, footPoints, maxFootDistance, power, object2);
 				Cprint("object2 Looking for refs");
 			}
 			for (auto object3: data.loadedData->activatingRefs) {
