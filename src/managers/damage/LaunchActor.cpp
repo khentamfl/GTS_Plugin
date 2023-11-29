@@ -156,6 +156,7 @@ namespace {
 
 	void ApplyLaunchTo(Actor* giant, std::vector<NiPoint3> footPoints, float maxFootDistance, float power, TESObjectREFR* objectref) {
 		Cprint("Looking for objectrefs");
+		float giantScale = get_visual_scale(giant);
 		if (objectref) {
 			Actor* NonRef = skyrim_cast<Actor*>(objectref);
 			Cprint("Trying non ref");
@@ -198,7 +199,6 @@ namespace {
 			return;
 		}
 		auto cell = giant->GetParentCell();
-		float giantScale = get_visual_scale(giant);
 		float power = 1.0 * bonus;
 		if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
 			power *= 1.5; 
