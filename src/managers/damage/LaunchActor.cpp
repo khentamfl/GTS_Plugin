@@ -168,7 +168,44 @@ namespace {
 		}
 		if (cell) {
 			auto data = cell->GetRuntimeData();
-			for (auto objectref: {data.objectList, data.loadedData->activatingRefs, data.loadedData->unk100, data.loadedData->unk070.second.get()}) {
+			for (auto objectref: data.loadedData->unk070) {
+				objectref.second.get();
+				Cprint("unk70 Looking for refs");
+				if (objectref) {
+					Actor* NonRef = skyrim_cast<Actor*>(objectref);
+					Cprint("unk70 Trying non ref");
+					if (!NonRef) {
+						Cprint("unk70 Non ref found something");
+						NiPoint3 objectlocation = objectref->GetPosition();
+						for (auto point: footPoints) {
+							float distance = (point - objectlocation).Length();
+							Cprint("unk70 Checking distance");
+							if (distance <= maxFootDistance) {
+								Cprint("unk70 Found objects close to us");
+								float force = 1.0 - distance / maxFootDistance;
+								auto Object1 = objectref->Get3D1(false);
+								if (Object1) {
+									Cprint("unk70 Object1 found");
+									auto collision = Object1->GetCollisionObject();
+									if (collision) {
+										Cprint("unk70 Found collision, seeking rigid body");
+										auto rigidbody = collision->GetRigidBody();
+										if (rigidbody) {
+											Cprint("unk70 Rigid body found, looking for body");
+											auto body = rigidbody->AsBhkRigidBody();
+											if (body) {
+												Cprint("unk70 Found body of {}, applying impulse", objectref->GetDisplayFullName());
+												SetLinearImpulse(body, hkVector4(0, 0, 1.2 * GetLaunchPower_Object(giantScale) * force * power, 1.2 * GetLaunchPower_Object(giantScale) * force * power));
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			for (auto objectref: {data.objectList, data.loadedData->activatingRefs, data.loadedData->unk100}) {
 				Cprint("Looking for refs");
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref);
