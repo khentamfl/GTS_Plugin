@@ -154,6 +154,43 @@ namespace {
 		}
 	}
 
+	void ApplyLaunchTo(Actor* giant, std::vector<NiPoint3> footPoints, float maxFootDistance, float power, TESObjectREFR* objectref) {
+		Cprint("Looking for objectrefs");
+		if (objectref) {
+			Actor* NonRef = skyrim_cast<Actor*>(objectref);
+			Cprint("Trying non ref");
+			if (!NonRef) {
+				Cprint("Non ref found something");
+				NiPoint3 objectlocation = objectref->GetPosition();
+				for (auto point: footPoints) {
+					float distance = (point - objectlocation).Length();
+					Cprint("Checking distance");
+					if (distance <= maxFootDistance) {
+						Cprint("Found objects close to us");
+						float force = 1.0 - distance / maxFootDistance;
+						auto Object1 = objectref->Get3D1(false);
+						if (Object1) {
+							Cprint("Object1 found");
+							auto collision = Object1->GetCollisionObject();
+							if (collision) {
+								Cprint("Found collision, seeking rigid body");
+								auto rigidbody = collision->GetRigidBody();
+								if (rigidbody) {
+									Cprint("Rigid body found, looking for body");
+									auto body = rigidbody->AsBhkRigidBody();
+									if (body) {
+										Cprint("Found body of {}, applying impulse", objectref->GetDisplayFullName());
+										SetLinearImpulse(body, hkVector4(0, 0, 1.2 * GetLaunchPower_Object(giantScale) * force * power, 1.2 * GetLaunchPower_Object(giantScale) * force * power));
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	void LaunchMovableStatics(Actor* giant, std::vector<NiPoint3> footPoints, float maxFootDistance, float bonus) {
 		auto profiler = Profilers::Profile("Other: Launch Objects");
 		bool AllowLaunch = Persistent::GetSingleton().launch_objects; // Will add Persistent value later
@@ -168,78 +205,21 @@ namespace {
 		}
 		if (cell) {
 			auto data = cell->GetRuntimeData();
-			for (auto object: data.loadedData->unk070) {
-				auto objectref = object.second.get().get();
-				Cprint("unk70 Looking for refs");
-				if (objectref) {
-					Actor* NonRef = skyrim_cast<Actor*>(objectref);
-					Cprint("unk70 Trying non ref");
-					if (!NonRef) {
-						Cprint("unk70 Non ref found something");
-						NiPoint3 objectlocation = objectref->GetPosition();
-						for (auto point: footPoints) {
-							float distance = (point - objectlocation).Length();
-							Cprint("unk70 Checking distance");
-							if (distance <= maxFootDistance) {
-								Cprint("unk70 Found objects close to us");
-								float force = 1.0 - distance / maxFootDistance;
-								auto Object1 = objectref->Get3D1(false);
-								if (Object1) {
-									Cprint("unk70 Object1 found");
-									auto collision = Object1->GetCollisionObject();
-									if (collision) {
-										Cprint("unk70 Found collision, seeking rigid body");
-										auto rigidbody = collision->GetRigidBody();
-										if (rigidbody) {
-											Cprint("unk70 Rigid body found, looking for body");
-											auto body = rigidbody->AsBhkRigidBody();
-											if (body) {
-												Cprint("unk70 Found body of {}, applying impulse", objectref->GetDisplayFullName());
-												SetLinearImpulse(body, hkVector4(0, 0, 1.2 * GetLaunchPower_Object(giantScale) * force * power, 1.2 * GetLaunchPower_Object(giantScale) * force * power));
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+			for (auto object1: data.loadedData->unk070) {
+				ApplyLaunchTo(giant, footPoints, maxFootDistance, power, object1.second.get().get());
+				Cprint("Object1 Looking for refs");
 			}
-			for (auto objectref: {data.objectList, data.loadedData->activatingRefs.get().get(), data.loadedData->unk100.get().get()}) {
-				Cprint("Looking for refs");
-				if (objectref) {
-					Actor* NonRef = skyrim_cast<Actor*>(objectref);
-					Cprint("Trying non ref");
-					if (!NonRef) {
-						Cprint("Non ref found something");
-						NiPoint3 objectlocation = objectref->GetPosition();
-						for (auto point: footPoints) {
-							float distance = (point - objectlocation).Length();
-							Cprint("Checking distance");
-							if (distance <= maxFootDistance) {
-								Cprint("Found objects close to us");
-								float force = 1.0 - distance / maxFootDistance;
-								auto Object1 = objectref->Get3D1(false);
-								if (Object1) {
-									Cprint("Object1 found");
-									auto collision = Object1->GetCollisionObject();
-									if (collision) {
-										Cprint("Found collision, seeking rigid body");
-										auto rigidbody = collision->GetRigidBody();
-										if (rigidbody) {
-											Cprint("Rigid body found, looking for body");
-											auto body = rigidbody->AsBhkRigidBody();
-											if (body) {
-												Cprint("Found body of {}, applying impulse", objectref->GetDisplayFullName());
-												SetLinearImpulse(body, hkVector4(0, 0, 1.2 * GetLaunchPower_Object(giantScale) * force * power, 1.2 * GetLaunchPower_Object(giantScale) * force * power));
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+			for (auto object2: data.objectList) {
+				ApplyLaunchTo(giant, footPoints, maxFootDistance, power, object2.get().get());
+				Cprint("object2 Looking for refs");
+			}
+			for (auto object3: data.loadedData->activatingRefs) {
+				ApplyLaunchTo(giant, footPoints, maxFootDistance, power, object3.get().get());
+				Cprint("Object3 Looking for refs");
+			}
+			for (auto object4: data.loadedData->unk100) {
+				ApplyLaunchTo(giant, footPoints, maxFootDistance, power, object4.get().get());
+				Cprint("Object4 Looking for refs");
 			}
 		}
 	}
