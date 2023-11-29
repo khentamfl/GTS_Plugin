@@ -72,6 +72,7 @@ namespace Gts {
 	bool IsHeadtracking(Actor* giant);
 	bool IsHostile(Actor* giant, Actor* tiny);
 	bool AllowActionsWithFollowers(Actor* giant, Actor* tiny);
+	bool SizeRaycastEnabled();
 	bool IsDebugEnabled();
 	// Gts Bools end
 

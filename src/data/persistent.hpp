@@ -93,6 +93,7 @@ namespace Gts {
 			bool actors_panic = true;
 			bool launch_objects = true;
 			bool Camera_PermitFovEdits = true;
+			bool SizeRaycast_Enabled = true;
 			bool NPCEffectImmunity = false;
 			bool PCEffectImmunity = false;
 			float tremor_scale = 1.0;

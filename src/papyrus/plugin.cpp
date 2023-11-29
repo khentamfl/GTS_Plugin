@@ -218,6 +218,10 @@ namespace {
 		Persistent::GetSingleton().highheel_correction = enabled;
 	}
 
+	void EnableRaycastSize(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().SizeRaycast_Enabled = enabled;
+	}
+
 	void SetAllowPlayerVore(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().vore_allowplayervore = enabled;
 	}
@@ -471,6 +475,7 @@ namespace Gts {
 		vm->RegisterFunction("Quest_GetProgression", PapyrusClass, Quest_GetProgression);
 		vm->RegisterFunction("GetAspectOfGiantessPower", PapyrusClass, GetAspectOfGiantessPower);
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);
+		vm->RegisterFunction("EnableRaycastSize", PapyrusClass, EnableRaycastSize);
 		vm->RegisterFunction("SetIsHHFurnitureEnabled", PapyrusClass, SetIsHHFurnitureEnabled);
 		vm->RegisterFunction("SetCrawlAnimation", PapyrusClass, SetCrawlAnimation);
 		vm->RegisterFunction("UpdateCrawlAnimations", PapyrusClass, UpdateCrawlAnimations);

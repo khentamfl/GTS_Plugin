@@ -101,7 +101,8 @@ namespace {
 			threshold = 0.8;
 			force += 0.20;
 		}
-		float tinySize = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
+		float Adjustment = GetScaleAdjustment(tiny);
+		float tinySize = get_visual_scale(tiny) * Adjustment;
 		float sizeRatio = giantSize/tinySize;
 
 		float knockBack = LAUNCH_KNOCKBACK * giantSize * force;
@@ -115,9 +116,9 @@ namespace {
 		if (force >= 0.10) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 
-				float power = 1.0;
+				float power = 1.0 / Adjustment;
 				if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
-					power = 1.5;
+					power *= 1.5;
 					damagebonus *= 2.0;
 				}
 
@@ -145,7 +146,7 @@ namespace {
 					if (tinyHandle) {
 						TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyHandle.get().get());
 						if (tiny_is_object) {
-							ApplyHavokImpulse(tiny_is_object, 0, 0, 40 * GetLaunchPower(sizeRatio) * force * power * bonus, 40 * GetLaunchPower(sizeRatio) * force * power * bonus);
+							ApplyHavokImpulse(tiny_is_object, 0, 0, 32 * GetLaunchPower(sizeRatio) * force * power * bonus, 32 * GetLaunchPower(sizeRatio) * force * power * bonus);
 						}
 					}
 				});

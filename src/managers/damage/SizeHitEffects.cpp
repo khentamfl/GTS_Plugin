@@ -290,6 +290,7 @@ namespace Gts {
 		float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(receiver)/100;
 		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(receiver)/100;
 		float SizeDifference = get_visual_scale(receiver)/get_visual_scale(attacker);
+		float DamageReduction = std::clamp(sizemanager.GetAttributeBonus(receiver, ActorValue::kHealth), 0.0001f, 1.0f); // disallow going > than 1
 		float Dragon = 1.0 * GetScaleAdjustment(attacker);
 
 		float resistance = 1.0;
@@ -300,7 +301,7 @@ namespace Gts {
 			resistance = 0.25;
 		}
 
-		if (receiver->formID == 0x14 && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0) {
+		if (receiver->formID == 0x14 && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0) { // if has perk
 			float GrowthValue = std::clamp((-damage/3500) * SizeHunger * Gigantism, 0.0f, 0.25f * Gigantism);
 			mod_target_scale(receiver, GrowthValue);
 			DoHitShake(receiver, GrowthValue * 10);
@@ -308,8 +309,8 @@ namespace Gts {
 				Runtime::PlaySoundAtNode("growthSound", receiver, GrowthValue * 2, 1.0, "NPC Pelvis [Pelv]");
 			}
 			if (ShrinkChance >= 2) {
-				mod_target_scale(attacker, -GrowthValue/(6.0 * Dragon* BalanceMode)); // Shrink Attacker
-				mod_target_scale(receiver, GrowthValue/(2.0 * Dragon * BalanceMode)); // Grow receiver
+				mod_target_scale(attacker, -GrowthValue/(6.0 * Dragon*BalanceMode)); // Shrink Attacker
+				mod_target_scale(receiver, GrowthValue/(2.0 * Dragon*BalanceMode*DamageReduction)); // Grow receiver
 				if (get_visual_scale(attacker) <= 0.12/Dragon) {
 					mod_target_scale(attacker, 0.12/Dragon);
 				}
@@ -321,7 +322,7 @@ namespace Gts {
 		} else if (BalanceMode >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) { // Shrink us
 			if (scale > naturalscale) {
 				float sizebonus = std::clamp(get_visual_scale(attacker), 0.10f, 1.0f);
-				float ShrinkValue = std::clamp(((-damage/850)/SizeHunger/Gigantism * sizebonus) * resistance, 0.0f, 0.25f / Gigantism); // affect limit by decreasing it
+				float ShrinkValue = std::clamp(((-damage/850)/SizeHunger/Gigantism * sizebonus * DamageReduction) * resistance, 0.0f, 0.25f / Gigantism); // affect limit by decreasing it
 
 				if (scale < naturalscale) {
 					set_target_scale(receiver, naturalscale); // reset to normal scale

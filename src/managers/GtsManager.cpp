@@ -65,6 +65,9 @@ namespace {
 		}
 	}*/
 	void Raycast_GetCeilingHeight(Actor* giant) {
+		if (!SizeRaycastEnabled()) {
+			return;
+		}
 		bool debug = IsDebugEnabled();
 		bool success_up = false;
 		bool success_down = false;
@@ -155,7 +158,7 @@ namespace {
 					target_scale,
 					persi_actor_data->half_life,
 					Time::WorldTimeDelta()
-					);
+				);
 			}
 		}
 	}

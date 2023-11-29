@@ -13,6 +13,7 @@ namespace {
 	inline const auto ScaleMethodRecord = _byteswap_ulong('SCMD');
 	inline const auto HighHeelCorrectionRecord = _byteswap_ulong('HHCO');
 	inline const auto HighHeelFurnitureRecord = _byteswap_ulong('HHFO');
+	inline const auto SizeRaycastRecord = _byteswap_ulong('SREB');
 	inline const auto AllowPlayerVoreRecord = _byteswap_ulong('APVR');
 	inline const auto AllowInsectVoreRecord = _byteswap_ulong('AIVR');
 	inline const auto AllowUndeadVoreRecord = _byteswap_ulong('AUVR');
@@ -355,6 +356,10 @@ namespace Gts {
 				bool highheel_correction;
 				serde->ReadRecordData(&highheel_correction, sizeof(highheel_correction));
 				GetSingleton().highheel_correction = highheel_correction;
+			} else if (type == SizeRaycastRecord) {
+				bool SizeRaycast_Enabled;
+				serde->ReadRecordData(&SizeRaycast_Enabled, sizeof(SizeRaycast_Enabled));
+				GetSingleton().SizeRaycast_Enabled = SizeRaycast_Enabled;
 			} else if (type == HighHeelFurnitureRecord) {
 				bool highheel_furniture;
 				serde->ReadRecordData(&highheel_furniture, sizeof(highheel_furniture));
@@ -643,6 +648,13 @@ namespace Gts {
 
 		bool highheel_correction = GetSingleton().highheel_correction;
 		serde->WriteRecordData(&highheel_correction, sizeof(highheel_correction));
+
+		if (!serde->OpenRecord(SizeRaycastRecord, 0)) {
+			log::error("Unable to open size raycast record to write cosave data.");
+			return;
+		}
+		bool SizeRaycast_Enabled = GetSingleton().SizeRaycast_Enabled;
+		serde->WriteRecordData(&SizeRaycast_Enabled, sizeof(SizeRaycast_Enabled));
 
 		if (!serde->OpenRecord(HighHeelFurnitureRecord, 0)) {
 			log::error("Unable to open high heel furniture record to write cosave data.");

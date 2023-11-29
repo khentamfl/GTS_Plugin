@@ -563,6 +563,10 @@ namespace Gts {
 		}
 	}
 
+	bool SizeRaycastEnabled() {
+		return Persistent::GetSingleton().SizeRaycast_Enabled;
+	}
+
 	bool IsDebugEnabled() {
 		return Runtime::GetBool("EnableDebugOverlay"); // used for debug mode of collisions and such
 	}
@@ -609,7 +613,7 @@ namespace Gts {
 			} else if (IsMammoth(tiny)) {
 				sc = 3.0;
 			} else if (IsGiant(tiny)) {
-				sc = 1.9;
+				sc = 2.0;
 			} 
 			return sc;
 		}
@@ -1558,8 +1562,9 @@ namespace Gts {
 
 		float shrinkpower = (shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, tiny, true);
 
+		float Adjustment = GetScaleAdjustment(tiny);
 		float giantScale = get_visual_scale(giant);
-		float tinyScale = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
+		float tinyScale = get_visual_scale(tiny);
 
 		float sizedifference = giantScale/tinyScale;
 		if (DarkArts1) {
@@ -1574,8 +1579,10 @@ namespace Gts {
 
 		AdjustGtsSkill((shrinkpower * gigantism) * 0.80, giant);
 
-		if (get_target_scale(tiny) <= 0.11) {
-			set_target_scale(tiny, 0.11);
+		float MinScale = 0.11/Adjustment;
+
+		if (get_target_scale(tiny) <= MinScale) {
+			set_target_scale(tiny, MinScale);
 		}
 		if (sizedifference <= 4.0) { // Stagger or Push
 			StaggerActor(tiny);
@@ -1800,8 +1807,10 @@ namespace Gts {
 
 	void ShrinkUntil(Actor* giant, Actor* tiny, float expected) {
 		if (HasSMT(giant)) {
+			float Adjustment = GetScaleAdjustment(tiny);
 			float predscale = get_target_scale(giant);
-			float preyscale = get_target_scale(tiny) * GetScaleAdjustment(tiny);
+			float preyscale = get_target_scale(tiny) * Adjustment;
+			expected *= Adjustment;
 			float targetScale = predscale/expected;
 			if (preyscale >= targetScale) { // Apply ONLY if target is bigger than requirement
 				set_target_scale(tiny, targetScale);

@@ -252,6 +252,8 @@ namespace {
 				damage *= 1.60;
 				bonus = 3.0;
 			}
+
+			
 			InflictSizeDamage(giant, grabbedActor, damage);
 
 			damage *= resist; // take enemy resistance into account, it is important to do that after damage is done, for next checks
@@ -293,6 +295,7 @@ namespace {
 				} else {
 					Runtime::PlaySoundAtNode("SoftHandAttack", giant, 1.0, 1.0, "NPC L Hand [LHnd]");
 				}
+				StaggerActor(grabbedActor);
 			}
 		}
 	}
