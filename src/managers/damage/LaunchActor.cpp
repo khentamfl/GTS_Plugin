@@ -184,8 +184,8 @@ namespace {
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref);
 					if (!NonRef) {
-						bool movable_static = objectref->GetOwner()->GetFormType() == FormType::MovableStatic;
-						if (movable_static) {
+						auto formtype = objectref->GetOwner()->GetFormType();
+						if (formtype == FormType::MovableStatic) {
 							start_power *= 10.0;
 						}
 						NiPoint3 objectlocation = objectref->GetPosition();
