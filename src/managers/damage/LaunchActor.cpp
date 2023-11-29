@@ -182,12 +182,12 @@ namespace {
 			for (auto object: data.references) {
 				auto objectref = object.get();
 				if (objectref) {
-					bool movable_static = objectref->GetOwner()->GetFormType() == FormType::MovableStatic;
-					if (movable_static) {
-						start_power *= 10.0;
-					}
 					Actor* NonRef = skyrim_cast<Actor*>(objectref);
 					if (!NonRef) {
+						bool movable_static = objectref->GetOwner()->GetFormType() == FormType::MovableStatic;
+						if (movable_static) {
+							start_power *= 10.0;
+						}
 						NiPoint3 objectlocation = objectref->GetPosition();
 						for (auto point: footPoints) {
 							float distance = (point - objectlocation).Length();
