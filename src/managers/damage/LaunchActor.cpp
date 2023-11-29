@@ -169,7 +169,7 @@ namespace {
 		if (cell) {
 			auto data = cell->GetRuntimeData();
 			for (auto object: data.loadedData->unk070) {
-				auto objectref = object.first->AsReference();
+				auto objectref = object.second.get().get();
 				Cprint("unk70 Looking for refs");
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref);
@@ -205,7 +205,7 @@ namespace {
 					}
 				}
 			}
-			for (auto objectref: {data.objectList, data.loadedData->activatingRefs, data.loadedData->unk100}) {
+			for (auto objectref: {data.objectList, data.loadedData->activatingRefs.get().get(), data.loadedData->unk100.get().get()}) {
 				Cprint("Looking for refs");
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref);
