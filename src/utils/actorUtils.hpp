@@ -162,7 +162,7 @@ namespace Gts {
 	void PushForward(Actor* giantref, Actor* tinyref, float power, FormID id);
 	void PushForward(Actor* giantref, Actor* tinyref, float power);
 	void TinyCalamityExplosion(Actor* giant, float radius);
-	void ShrinkOuburst_Shrink(Actor* giant, Actor* tiny, float shrink, float gigantism);
+	void ShrinkOutburst_Shrink(Actor* giant, Actor* tiny, float shrink, float gigantism);
 	void ShrinkOutburstExplosion(Actor* giant, bool WasHit);
 
 	bool HasSMT(Actor* giant);

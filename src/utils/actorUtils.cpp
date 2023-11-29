@@ -611,9 +611,9 @@ namespace Gts {
 			} else if (IsGiant(tiny)) {
 				sc = 1.9;
 			} 
-			return eff;
+			return sc;
 		}
-		return eff;
+		return sc;
 	}
 
 	float GetRaycastStateScale(Actor* giant) {
@@ -1549,7 +1549,7 @@ namespace Gts {
 		}
 	}
 
-	void ShrinkOuburst_Shrink(Actor* giant, Actor* tiny, float shrink, float gigantism) {
+	void ShrinkOutburst_Shrink(Actor* giant, Actor* tiny, float shrink, float gigantism) {
 		if (IsEssential(tiny)) { // Protect followers/essentials
 			return;
 		}
@@ -1559,7 +1559,7 @@ namespace Gts {
 		float shrinkpower = (shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, tiny, true);
 
 		float giantScale = get_visual_scale(giant);
-		float tinyScale = get_visual_scale(tiny);
+		float tinyScale = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
 
 		float sizedifference = giantScale/tinyScale;
 		if (DarkArts1) {
@@ -1647,7 +1647,7 @@ namespace Gts {
 						});
 					}
 					if (nodeCollisions > 0) {
-						ShrinkOuburst_Shrink(giant, otherActor, shrink, gigantism);
+						ShrinkOutburst_Shrink(giant, otherActor, shrink, gigantism);
 					}
 				}
 			}
