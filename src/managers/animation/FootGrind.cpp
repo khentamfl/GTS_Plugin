@@ -107,7 +107,7 @@ namespace {
 		float perk = GetPerkBonus_Basics(&data.giant);
 		ApplyDustRing(&data.giant, FootEvent::Right, RNode, 1.05);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.75 * perk, 1.1 * perk, FootEvent::Right, 0.80);  // To-do: disallow Launching when actor is being grinded through Transient
+		DoLaunch(&data.giant, 0.75 * perk, 1.1 * perk, FootEvent::Right); 
 		DoDamageEffect(&data.giant, 2.0, 1.70, 20, 0.15, FootEvent::Right, 1.0, DamageSource::FootGrindedRight);
 		GRumble::Once("GrindStompR", &data.giant, 1.25, 0.05, RNode);
 	}
@@ -116,7 +116,7 @@ namespace {
 		float perk = GetPerkBonus_Basics(&data.giant);
 		ApplyDustRing(&data.giant, FootEvent::Left, LNode, 1.05);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.75 * perk, 1.1 * perk, FootEvent::Left, 0.80);  // To-do: disallow Launching when actor is being grinded through Transient
+		DoLaunch(&data.giant, 0.75 * perk, 1.1 * perk, FootEvent::Left); 
 		DoDamageEffect(&data.giant, 2.0, 1.70, 20, 0.15, FootEvent::Left, 1.0, DamageSource::FootGrindedLeft);
 		GRumble::Once("GrindStompL", &data.giant, 1.25, 0.05, LNode);
 	}

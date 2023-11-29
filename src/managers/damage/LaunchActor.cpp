@@ -83,7 +83,7 @@ namespace {
 	}
 
 
-	void LaunchDecide(Actor* giant, Actor* tiny, float force, float damagebonus, float launch_power) {
+	void LaunchDecide(Actor* giant, Actor* tiny, float force, float launch_power) {
 		auto profiler = Profilers::Profile("Other: Launch Actors Decide");
 		if (IsBeingHeld(tiny)) {
 			return;
@@ -93,6 +93,7 @@ namespace {
 		}
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		float DamageSetting = Persistent::GetSingleton().size_related_damage_mult;
+		float DamageMult = 0.6;
 		float giantSize = get_visual_scale(giant);
 
 		float startpower = 32;
@@ -125,7 +126,7 @@ namespace {
 
 				float power = (1.0 * launch_power) / Adjustment;
 				if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
-					HasPerk = true;
+					OwnsPerk = true;
 					power *= 1.5;
 					damagebonus *= 2.0;
 				}
@@ -133,10 +134,10 @@ namespace {
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 
 				if (Runtime::HasPerkTeam(giant, "LaunchDamage") && CanDoDamage(giant, tiny)) {
-					float damage = LAUNCH_DAMAGE * sizeRatio * force * damagebonus;
-					InflictSizeDamage(giant, tiny, damage * DamageSetting);
+					float damage = LAUNCH_DAMAGE * sizeRatio * force * DamageMult * DamageSetting;
+					InflictSizeDamage(giant, tiny, damage);
 					if (OwnsPerk) { // Apply only when we have DisastrousTremor perk
-						mod_target_scale(tiny, -(damage * DamageSetting) / 500);
+						mod_target_scale(tiny, -damage / 500);
 
 						if (get_target_scale(tiny) < 0.12/Adjustment) {
 							set_target_scale(tiny, 0.12/Adjustment);
@@ -170,7 +171,6 @@ namespace {
 
 		auto cell = giant->GetParentCell();
 		float giantScale = get_visual_scale(giant);
-		float startpower = 3.6;
 
 		if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
 			power *= 1.5;
@@ -187,6 +187,7 @@ namespace {
 							float distance = (point - objectlocation).Length();
 							if (distance <= maxFootDistance) {
 								float force = 1.0 - distance / maxFootDistance;
+								float push = 3.6 * GetLaunchPower_Object(giantScale) * force * power;
 								auto Object1 = objectref->Get3D1(false);
 								if (Object1) {
 									auto collision = Object1->GetCollisionObject();
@@ -195,7 +196,7 @@ namespace {
 										if (rigidbody) {
 											auto body = rigidbody->AsBhkRigidBody();
 											if (body) {
-												SetLinearImpulse(body, hkVector4(0, 0, startpower * GetLaunchPower_Object(giantScale) * force * power, startpower * GetLaunchPower_Object(giantScale) * force * power));
+												SetLinearImpulse(body, hkVector4(0, 0, push, push));
 											}
 										}
 									}
@@ -226,10 +227,10 @@ namespace Gts {
 			return;
 		}
 		if (kind == FootEvent::Left) {
-			LaunchActor::GetSingleton().LaunchLeft(giant, radius, damagebonus, power);
+			LaunchActor::GetSingleton().LaunchLeft(giant, radius, power);
 		}
 		if (kind == FootEvent::Right) {
-			LaunchActor::GetSingleton().LaunchRight(giant, radius, damagebonus, power);
+			LaunchActor::GetSingleton().LaunchRight(giant, radius, power);
 		}
 		if (kind == FootEvent::Butt) {
 			auto ThighL = find_node(giant, "NPC L Thigh [LThg]");
@@ -321,7 +322,7 @@ namespace Gts {
 		}
 	}
 
-	void LaunchActor::LaunchLeft(Actor* giant, float radius, float damagebonus, float power) {
+	void LaunchActor::LaunchLeft(Actor* giant, float radius, float power) {
 		auto profiler = Profilers::Profile("Other: Launch Actor Left");
 		if (!giant) {
 			return;
@@ -410,7 +411,7 @@ namespace Gts {
 							float distance = (point - actorLocation).Length();
 							if (distance <= maxFootDistance) {
 								float force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-								LaunchDecide(giant, otherActor, force, damagebonus/6, power);
+								LaunchDecide(giant, otherActor, force, power);
 							}
 						}
 					}
@@ -421,7 +422,7 @@ namespace Gts {
 
 
 
-	void LaunchActor::LaunchRight(Actor* giant, float radius, float damagebonus, float power) {
+	void LaunchActor::LaunchRight(Actor* giant, float radius, float power) {
 		auto profiler = Profilers::Profile("Other: Launch Actor Right");
 		if (!giant) {
 			return;
@@ -513,7 +514,7 @@ namespace Gts {
 							float distance = (point - actorLocation).Length();
 							if (distance <= maxFootDistance) {
 								float force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-								LaunchDecide(giant, otherActor, force, damagebonus/6, power);
+								LaunchDecide(giant, otherActor, force, power);
 							}
 						}
 					}
