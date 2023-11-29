@@ -126,9 +126,9 @@ namespace {
 
 				float power = (1.0 * launch_power) / Adjustment;
 				if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
+					DamageMult *= 2.0;
 					OwnsPerk = true;
 					power *= 1.5;
-					damagebonus *= 2.0;
 				}
 
 				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
@@ -314,7 +314,7 @@ namespace Gts {
 						float distance = (point - actorLocation).Length();
 						if (distance <= maxDistance) {
 							float force = 1.0 - distance / maxDistance;
-							LaunchDecide(giant, otherActor, force, launchdamage, power);
+							LaunchDecide(giant, otherActor, force, power);
 						}
 					}
 				}
