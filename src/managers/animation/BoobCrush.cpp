@@ -222,13 +222,12 @@ namespace {
 	void InflictBodyDamage(Actor* giant) {
 		float damage = GetBoobCrushDamage(giant);
 		float perk = GetPerkBonus_Basics(giant);
-		float launch = 1.0;
 		for (auto Nodes: BODY_NODES) {
 			auto Node = find_node(giant, Nodes);
 			if (Node) {
 				std::string rumbleName = std::format("Node: {}", Nodes);
 				DoDamageAtPoint(giant, 21, 100.0 * damage, Node, 400, 0.10, 0.85, DamageSource::BodyCrush);
-				DoLaunch(giant, 28.00 * launch * perk, 3.20, 1.4, Node, 1.20);
+				DoLaunch(giant, 28.0 * perk, 4.20, Node);
 				GRumble::Once(rumbleName, giant, 1.00 * damage, 0.02, Nodes);
 			}
 		}
@@ -238,7 +237,6 @@ namespace {
 		float damage = GetBoobCrushDamage(giant);
 
 		float perk = GetPerkBonus_Basics(giant);
-		float launch = 1.0;
 		float dust = 1.0;
 
 		InflictBodyDamage(giant);
@@ -260,7 +258,7 @@ namespace {
 			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "R Breast03");
 			DoFootstepSound(giant, 1.25, FootEvent::Right, "R Breast03");
 			DoFootstepSound(giant, 1.25, FootEvent::Left, "L Breast03");
-			DoLaunch(giant, 28.00 * launch * perk, 4.20, 1.4, FootEvent::Breasts, 1.20);
+			DoLaunch(giant, 28.0 * perk, 4.20, FootEvent::Breasts);
 			GRumble::Once("Breast_L", giant, 1.20 * damage, 0.02, "L Breast03");
 			GRumble::Once("Breast_R", giant, 1.20 * damage, 0.02, "R Breast03");
 			ModGrowthCount(giant, 0, true); // Reset limit
@@ -272,7 +270,7 @@ namespace {
 			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC R Breast");
 			DoFootstepSound(giant, 1.25, FootEvent::Right, "NPC R Breast");
 			DoFootstepSound(giant, 1.25, FootEvent::Right, "NPC L Breast");
-			DoLaunch(giant, 28.00 * launch * perk, 4.20, 1.4, FootEvent::Breasts, 1.20);
+			DoLaunch(giant, 28.0 * perk, 4.20, FootEvent::Breasts);
 			GRumble::Once("Breast_L", giant, 1.20 * damage, 0.02, "NPC L Breast");
 			GRumble::Once("Breast_R", giant, 1.20 * damage, 0.02, "NPC R Breast");
 			ModGrowthCount(giant, 0, true); // Reset limit

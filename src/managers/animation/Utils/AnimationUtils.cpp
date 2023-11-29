@@ -69,20 +69,22 @@ namespace Gts {
 		sizemanager.SetActionBool(giant, enable, type);
 	}
 
-	void DoLaunch(Actor* giant, float radius, float damage, float overr, FootEvent kind, float power) {
-		float bonus = 1.0;
+	void DoLaunch(Actor* giant, float radius, float power, FootEvent kind) {
+		float smt_power = 1.0;
+		float smt_launch = 1.0;
 		if (HasSMT(giant)) {
-			bonus = overr;
+			smt_power *= 2.5;
+			smt_launch *= 1.5;
 		}
-		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, kind, power);
+		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * smt_launch, power * smt_power, kind);
 	}
 
-	void DoLaunch(Actor* giant, float radius, float damage, float overr, NiAVObject* node, float power) {
-		float bonus = 1.0;
+	void DoLaunch(Actor* giant, float radius, float power, NiAVObject* node) {
+		float smt = 1.0;
 		if (HasSMT(giant)) {
-			bonus = overr;
+			smt *= 2.5;
 		}
-		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * bonus, damage, node, power);
+		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * smt, power * smt, node);
 	}
 
 	void GrabStaminaDrain(Actor* giant, Actor* tiny, float sizedifference) {

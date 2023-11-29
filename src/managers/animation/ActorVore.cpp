@@ -291,15 +291,11 @@ namespace {
 
 	void GTSvore_impactRS(AnimationEventData& data) {
 		GRumble::Once("StompRS", &data.giant, 0.55, 0.10, RNode);
-		float launch = 1.0;
 		float perk = GetPerkBonus_Basics(&data.giant);
-		if (HasSMT(&data.giant)) {
-			launch = 1.5;
-		}
 		DoFootstepSound(&data.giant, 0.90, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 0.90, FootEvent::Right, RNode);
 		DoDamageEffect(&data.giant, 1.6, 1.3, 30, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
-		DoLaunch(&data.giant, 0.50 * launch * perk, 2.25 * data.animSpeed, 1.4, FootEvent::Right, 0.75);
+		DoLaunch(&data.giant, 0.55 * perk, 0.75 * data.animSpeed, FootEvent::Right);
 	}
 
 	void GTSvore_standup_end(AnimationEventData& data) {

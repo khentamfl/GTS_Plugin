@@ -237,24 +237,22 @@ namespace {
 		DoDamageEffect(&data.giant, 1.4, 1.45, 10, 0.25, FootEvent::Right, 1.0, DamageSource::Booty);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.40 * launch * perk, 2.25 * data.animSpeed, 1.4, FootEvent::Right, 0.95);
+		DoLaunch(&data.giant, 0.65 * perk, 4.2, FootEvent::Right);
 	}
 
 	void GTSButtCrush_FootstepL(AnimationEventData& data) {
 		float shake = 1.0;
-		float launch = 1.0;
 		float dust = 1.00;
 		float perk = GetPerkBonus_Basics(&data.giant);
 		if (HasSMT(&data.giant)) {
 			shake = 4.0;
-			launch = 1.2;
 			dust = 1.25;
 		}
 		GRumble::Once("FS_L", &data.giant, 2.20, 0.0, LNode);
 		DoDamageEffect(&data.giant, 1.4, 1.45, 10, 0.25, FootEvent::Left, 1.0, DamageSource::Booty);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.40 * launch * perk, 2.25 * data.animSpeed, 1.4, FootEvent::Left, 0.95);
+		DoLaunch(&data.giant, 0.65 * perk, 4.2, FootEvent::Left);
 	}
 
 	void GTSButtCrush_HandImpactR(AnimationEventData& data) {
@@ -267,11 +265,9 @@ namespace {
 		auto giant = &data.giant;
 
 		float perk = GetPerkBonus_Basics(&data.giant);
-		float launch = 1.0;
 		float dust = 1.0;
 
 		if (HasSMT(giant)) {
-			launch = 1.25;
 			dust = 1.25;
 		}
 
@@ -289,7 +285,7 @@ namespace {
 				DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC R Butt");
 				DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC L Butt");
 				DoFootstepSound(giant, 1.25, FootEvent::Right, RNode);
-				DoLaunch(&data.giant, 28.00 * launch * perk, 4.20, 1.4, FootEvent::Butt, 1.20);
+				DoLaunch(&data.giant, 28.00 * perk, 4.20, FootEvent::Butt);
 				GRumble::Once("Butt_L", &data.giant, 3.60 * damage, 0.02, "NPC R Butt");
 				GRumble::Once("Butt_R", &data.giant, 3.60 * damage, 0.02, "NPC L Butt");
 			}

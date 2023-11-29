@@ -429,7 +429,7 @@ namespace {
 		DoDamageEffect(&data.giant, 1.1 * launch * data.animSpeed * perk, 1.0 * launch * data.animSpeed, 10, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.75 * launch, 1.75, 1.4, FootEvent::Right, 0.85);
+		DoLaunch(&data.giant, 0.75, 1.25, FootEvent::Right);
 	}
 
 	void GTSGrab_Throw_FS_L(AnimationEventData& data) {
@@ -449,7 +449,7 @@ namespace {
 		DoDamageEffect(&data.giant, 1.1 * launch * data.animSpeed * perk, 1.0 * launch * data.animSpeed, 10, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.75 * launch * perk, 1.75, 1.4, FootEvent::Left, 0.85);
+		DoLaunch(&data.giant, 0.75 * perk, 1.25, FootEvent::Left);
 	}
 
 	void GTSGrab_Throw_Throw_Pre(AnimationEventData& data) {// Throw frame 0

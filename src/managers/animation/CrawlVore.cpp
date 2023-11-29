@@ -99,11 +99,9 @@ namespace {
 		auto giant = &data.giant;
 
 		float perk = GetPerkBonus_Basics(&data.giant);
-		float launch = 1.0;
 		float dust = 1.0;
 
 		if (HasSMT(giant)) {
-			launch = 1.25;
 			dust = 1.25;
 		}
 
@@ -119,7 +117,7 @@ namespace {
 				DoDustExplosion(giant, 1.8 * dust, FootEvent::Left, "NPC L Butt");
 				DoFootstepSound(giant, 1.2, FootEvent::Right, RNode);
 				DoFootstepSound(giant, 1.2, FootEvent::Left, LNode);
-				DoLaunch(&data.giant, 26.00 * launch, 4.20, 1.4, FootEvent::Butt, 1.20);
+				DoLaunch(&data.giant, 26.00, 4.20, FootEvent::Butt, 1.20);
 				GRumble::Once("Butt_L", &data.giant, 3.80, 0.02, "NPC R Butt");
 				GRumble::Once("Butt_R", &data.giant, 3.80, 0.02, "NPC L Butt");
 			}

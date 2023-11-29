@@ -52,6 +52,17 @@ namespace {
 		return func(body, a_impulse);
 	}
 
+	float GetLaunchPower_Object(float sizeRatio) {
+		// https://www.desmos.com/calculator/wh0vwgljfl
+		SoftPotential launch {
+			.k = 1.42,
+			.n = 0.62,
+			.s = 0.6,
+			.a = 0.0,
+		};
+		float power = soft_power(sizeRatio, launch);
+		return power;
+	}
 
 	bool CanDoDamage(Actor* giant, Actor* tiny) {
 		if (IsBeingHeld(tiny)) {
@@ -71,19 +82,8 @@ namespace {
 		return true;
 	}
 
-	float GetLaunchPower_Object(float sizeRatio) {
-		// https://www.desmos.com/calculator/wh0vwgljfl
-		SoftPotential launch {
-			.k = 1.42,
-			.n = 0.62,
-			.s = 0.6,
-			.a = 0.0,
-		};
-		float power = soft_power(sizeRatio, launch);
-		return power;
-	}
 
-	void LaunchDecide(Actor* giant, Actor* tiny, float force, float damagebonus, float bonus) {
+	void LaunchDecide(Actor* giant, Actor* tiny, float force, float damagebonus, float launch_power) {
 		auto profiler = Profilers::Profile("Other: Launch Actors Decide");
 		if (IsBeingHeld(tiny)) {
 			return;
@@ -94,8 +94,15 @@ namespace {
 		auto& accuratedamage = AccurateDamage::GetSingleton();
 		float DamageSetting = Persistent::GetSingleton().size_related_damage_mult;
 		float giantSize = get_visual_scale(giant);
-		float SMT = 1.0;
+
+		float startpower = 32;
+
 		float threshold = 6.0;
+		float SMT = 1.0;
+
+		bool OwnsPerk = false;
+		
+		
 		if (HasSMT(giant)) {
 			giantSize += 4.0;
 			threshold = 0.8;
@@ -116,8 +123,9 @@ namespace {
 		if (force >= 0.10) {
 			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 
-				float power = 1.0 / Adjustment;
+				float power = (1.0 * launch_power) / Adjustment;
 				if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
+					HasPerk = true;
 					power *= 1.5;
 					damagebonus *= 2.0;
 				}
@@ -127,8 +135,7 @@ namespace {
 				if (Runtime::HasPerkTeam(giant, "LaunchDamage") && CanDoDamage(giant, tiny)) {
 					float damage = LAUNCH_DAMAGE * sizeRatio * force * damagebonus;
 					InflictSizeDamage(giant, tiny, damage * DamageSetting);
-					//DamageAV(tiny, ActorValue::kHealth, damage * DamageSetting);
-					if (power >= 1.5) { // Apply only when we have DisastrousTremor perk
+					if (OwnsPerk) { // Apply only when we have DisastrousTremor perk
 						mod_target_scale(tiny, -(damage * DamageSetting) / 500);
 
 						if (get_target_scale(tiny) < 0.12/Adjustment) {
@@ -142,11 +149,11 @@ namespace {
 
 				ActorHandle tinyHandle = tiny->CreateRefHandle();
 
-				TaskManager::RunOnce(name, [=](auto& update){ // Possible to-do: Reverse Engineer ApplyHavokImpulse?
+				TaskManager::RunOnce(name, [=](auto& update){
 					if (tinyHandle) {
 						TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyHandle.get().get());
 						if (tiny_is_object) {
-							ApplyHavokImpulse(tiny_is_object, 0, 0, 32 * GetLaunchPower(sizeRatio) * force * power * bonus, 32 * GetLaunchPower(sizeRatio) * force * power * bonus);
+							ApplyHavokImpulse(tiny_is_object, 0, 0, startpower * GetLaunchPower(sizeRatio) * force * power, startpower * GetLaunchPower(sizeRatio) * force * power);
 						}
 					}
 				});
@@ -154,89 +161,17 @@ namespace {
 		}
 	}
 
-	void ApplyLaunchTo(Actor* giant, std::vector<NiPoint3> footPoints, float maxFootDistance, float power, TESObjectREFR* objectref) {
-		Cprint("Looking for objectrefs");
-		float giantScale = get_visual_scale(giant);
-		if (objectref) {
-			Actor* NonRef = skyrim_cast<Actor*>(objectref);
-			Cprint("Trying non ref");
-			if (!NonRef) {
-				Cprint("Non ref found something");
-				NiPoint3 objectlocation = objectref->GetPosition();
-				for (auto point: footPoints) {
-					float distance = (point - objectlocation).Length();
-					Cprint("Checking distance");
-					if (distance <= maxFootDistance) {
-						Cprint("Found objects close to us");
-						float force = 1.0 - distance / maxFootDistance;
-						auto Object1 = objectref->Get3D1(false);
-						if (Object1) {
-							Cprint("Object1 found");
-							auto collision = Object1->GetCollisionObject();
-							if (collision) {
-								Cprint("Found collision, seeking rigid body");
-								auto rigidbody = collision->GetRigidBody();
-								if (rigidbody) {
-									Cprint("Rigid body found, looking for body");
-									auto body = rigidbody->AsBhkRigidBody();
-									if (body) {
-										Cprint("Found body of {}, applying impulse", objectref->GetDisplayFullName());
-										SetLinearImpulse(body, hkVector4(0, 0, 1.2 * GetLaunchPower_Object(giantScale) * force * power, 1.2 * GetLaunchPower_Object(giantScale) * force * power));
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	void LaunchMovableStatics(Actor* giant, std::vector<NiPoint3> footPoints, float maxFootDistance, float bonus) {
-		auto profiler = Profilers::Profile("Other: Launch Objects");
-		bool AllowLaunch = Persistent::GetSingleton().launch_objects; // Will add Persistent value later
-		if (!AllowLaunch) {
-			return;
-		}
-		auto cell = giant->GetParentCell();
-		float power = 1.0 * bonus;
-		if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
-			power *= 1.5; 
-		}
-		if (cell) {
-			auto data = cell->GetRuntimeData();
-			for (auto object1: data.loadedData->unk070) {
-				ApplyLaunchTo(giant, footPoints, maxFootDistance, power, object1.second.get().get());
-				Cprint("Object1 Looking for refs");
-			}
-			for (auto object2: data.objectList) {
-				ApplyLaunchTo(giant, footPoints, maxFootDistance, power, object2);
-				Cprint("object2 Looking for refs");
-			}
-			for (auto object3: data.loadedData->activatingRefs) {
-				ApplyLaunchTo(giant, footPoints, maxFootDistance, power, object3.get().get());
-				Cprint("Object3 Looking for refs");
-			}
-			for (auto object4: data.loadedData->unk100) {
-				ApplyLaunchTo(giant, footPoints, maxFootDistance, power, object4.get().get());
-				Cprint("Object4 Looking for refs");
-			}
-		}
-	}
-	
-
-	void LaunchObjects(Actor* giant, std::vector<NiPoint3> footPoints, float maxFootDistance, float bonus) {
+	void LaunchObjects(Actor* giant, std::vector<NiPoint3> footPoints, float maxFootDistance, float power) {
 		auto profiler = Profilers::Profile("Other: Launch Objects");
 		bool AllowLaunch = Persistent::GetSingleton().launch_objects;
 		if (!AllowLaunch) {
 			return;
 		}
 
-		LaunchMovableStatics(giant, footPoints, maxFootDistance, bonus); // testing it
-
 		auto cell = giant->GetParentCell();
 		float giantScale = get_visual_scale(giant);
-		float power = 1.0 * bonus;
+		float startpower = 3.6;
+
 		if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
 			power *= 1.5;
 		}
@@ -260,7 +195,7 @@ namespace {
 										if (rigidbody) {
 											auto body = rigidbody->AsBhkRigidBody();
 											if (body) {
-												SetLinearImpulse(body, hkVector4(0, 0, 1.2 * GetLaunchPower_Object(giantScale) * force * power, 1.2 * GetLaunchPower_Object(giantScale) * force * power));
+												SetLinearImpulse(body, hkVector4(0, 0, startpower * GetLaunchPower_Object(giantScale) * force * power, startpower * GetLaunchPower_Object(giantScale) * force * power));
 											}
 										}
 									}
@@ -286,7 +221,7 @@ namespace Gts {
 		return "LaunchActor";
 	}
 
-	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float damagebonus, FootEvent kind, float power) {
+	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float power, FootEvent kind) {
 		if (!Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 			return;
 		}
@@ -300,8 +235,8 @@ namespace Gts {
 			auto ThighL = find_node(giant, "NPC L Thigh [LThg]");
 			auto ThighR = find_node(giant, "NPC R Thigh [RThg]");
 			if (ThighL && ThighR) {
-				LaunchActor::LaunchAtNode(giant, radius, power, ThighL, power);
-				LaunchActor::LaunchAtNode(giant, radius, power, ThighR, power);
+				LaunchActor::LaunchAtNode(giant, radius, power, ThighL);
+				LaunchActor::LaunchAtNode(giant, radius, power, ThighR);
 			}
 		} else if (kind == FootEvent::Breasts) {
 			auto BreastL = find_node(giant, "NPC L Breast");
@@ -309,22 +244,22 @@ namespace Gts {
 			auto BreastL03 = find_node(giant, "L Breast03");
 			auto BreastR03 = find_node(giant, "R Breast03");
 			if (BreastL03 && BreastR03) {
-				LaunchActor::LaunchAtNode(giant, radius, power, BreastL03, power);
-				LaunchActor::LaunchAtNode(giant, radius, power, BreastR03, power);
+				LaunchActor::LaunchAtNode(giant, radius, power, BreastL03);
+				LaunchActor::LaunchAtNode(giant, radius, power, BreastR03);
 			} else if (BreastL && BreastR) {
-				LaunchActor::LaunchAtNode(giant, radius, power, BreastL, power);
-				LaunchActor::LaunchAtNode(giant, radius, power, BreastR, power);
+				LaunchActor::LaunchAtNode(giant, radius, power, BreastL);
+				LaunchActor::LaunchAtNode(giant, radius, power, BreastR);
 			}
 		}
 	}
-	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float damagebonus, NiAVObject* node, float power) {
+	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float power, NiAVObject* node) {
 		if (!Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 			return;
 		}
-		LaunchActor::LaunchAtNode(giant, radius, power, node, power);
+		LaunchActor::LaunchAtNode(giant, radius, power, node);
 	}
 
-	void LaunchActor::LaunchAtNode(Actor* giant, float radius, float power, NiAVObject* node, float damagebonus) {
+	void LaunchActor::LaunchAtNode(Actor* giant, float radius, float power, NiAVObject* node) {
 		auto profiler = Profilers::Profile("Other: Launch Actor Crawl");
 		if (!Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 			return;
@@ -336,6 +271,7 @@ namespace Gts {
 			return;
 		}
 		float giantScale = get_visual_scale(giant);
+		float launchdamage = 1.6;
 
 		float SCALE_RATIO = 6.0;
 		if (HasSMT(giant)) {
@@ -377,7 +313,7 @@ namespace Gts {
 						float distance = (point - actorLocation).Length();
 						if (distance <= maxDistance) {
 							float force = 1.0 - distance / maxDistance;
-							LaunchDecide(giant, otherActor, force, damagebonus/6, power);
+							LaunchDecide(giant, otherActor, force, launchdamage, power);
 						}
 					}
 				}

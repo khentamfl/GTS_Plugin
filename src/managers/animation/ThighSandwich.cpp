@@ -298,8 +298,8 @@ namespace {
 		DoDustExplosion(&data.giant, 2.0, FootEvent::Left, LNode);
 		DoDamageEffect(&data.giant, 4.0 * perk, 1.6, 10, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoDamageEffect(&data.giant, 4.0 * perk, 1.6, 10, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
-		DoLaunch(&data.giant, 0.85 * perk, 2.0, 1.0, FootEvent::Right, 1.15);
-		DoLaunch(&data.giant, 0.85 * perk, 2.0, 1.0, FootEvent::Left, 1.15);
+		DoLaunch(&data.giant, 0.85 * perk, 2.0, FootEvent::Right);
+		DoLaunch(&data.giant, 0.85 * perk, 2.0, FootEvent::Left);
 	}
 
 	void GTSBEH_Exit(AnimationEventData& data) {
