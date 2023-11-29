@@ -168,7 +168,8 @@ namespace {
 		}
 		if (cell) {
 			auto data = cell->GetRuntimeData();
-			for (auto objectref: data.objectList) {
+			for (auto objectref: {data.objectList, data.loadedData->activatingRefs, data.loadedData->unk100, data.loadedData->unk070.second.get()}) {
+				Cprint("Looking for refs");
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref);
 					Cprint("Trying non ref");
@@ -209,7 +210,7 @@ namespace {
 
 	void LaunchObjects(Actor* giant, std::vector<NiPoint3> footPoints, float maxFootDistance, float bonus) {
 		auto profiler = Profilers::Profile("Other: Launch Objects");
-		bool AllowLaunch = Persistent::GetSingleton().launch_objects; // Will add Persistent value later
+		bool AllowLaunch = Persistent::GetSingleton().launch_objects;
 		if (!AllowLaunch) {
 			return;
 		}
