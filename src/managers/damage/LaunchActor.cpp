@@ -96,7 +96,7 @@ namespace {
 		float DamageMult = 0.6;
 		float giantSize = get_visual_scale(giant);
 
-		float startpower = 32;
+		float startpower = 3.2; // determines default power of launching someone
 
 		float threshold = 6.0;
 		float SMT = 1.0;
@@ -172,6 +172,8 @@ namespace {
 		auto cell = giant->GetParentCell();
 		float giantScale = get_visual_scale(giant);
 
+		float start_power = 0.4;
+
 		if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
 			power *= 1.5;
 		}
@@ -179,6 +181,10 @@ namespace {
 			auto data = cell->GetRuntimeData();
 			for (auto object: data.references) {
 				auto objectref = object.get();
+				bool movable_static = objectref->formID->GetFormType() == FormType::MovableStatic;
+				if (movable_static) {
+					start_power *= 10.0;
+				}
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref);
 					if (!NonRef) {
@@ -187,7 +193,7 @@ namespace {
 							float distance = (point - objectlocation).Length();
 							if (distance <= maxFootDistance) {
 								float force = 1.0 - distance / maxFootDistance;
-								float push = 3.6 * GetLaunchPower_Object(giantScale) * force * power;
+								float push = start_power * GetLaunchPower_Object(giantScale) * force * power;
 								auto Object1 = objectref->Get3D1(false);
 								if (Object1) {
 									auto collision = Object1->GetCollisionObject();

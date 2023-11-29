@@ -71,20 +71,22 @@ namespace Gts {
 
 	void DoLaunch(Actor* giant, float radius, float power, FootEvent kind) {
 		float smt_power = 1.0;
-		float smt_launch = 1.0;
+		float smt_radius = 1.0;
 		if (HasSMT(giant)) {
-			smt_power *= 2.5;
-			smt_launch *= 1.5;
+			smt_power *= 2.0;
+			smt_radius *= 1.25;
 		}
-		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * smt_launch, power * smt_power, kind);
+		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * smt_radius, power * smt_power, kind);
 	}
 
 	void DoLaunch(Actor* giant, float radius, float power, NiAVObject* node) {
-		float smt = 1.0;
+		float smt_power = 1.0;
+		float smt_radius = 1.0;
 		if (HasSMT(giant)) {
-			smt *= 2.5;
+			smt_power *= 2.0;
+			smt_radius *= 1.25;
 		}
-		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * smt, power * smt, node);
+		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * smt_radius, power * smt_power, node);
 	}
 
 	void GrabStaminaDrain(Actor* giant, Actor* tiny, float sizedifference) {
