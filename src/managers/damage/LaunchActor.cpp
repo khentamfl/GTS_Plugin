@@ -185,7 +185,7 @@ namespace {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref);
 					if (!NonRef) {
 						auto formtype = objectref->GetOwner();
-						if (formtype->Is(FormType::MovableStatic)) {
+						if (formtype && formtype->Is(FormType::MovableStatic)) {
 							log::info("{} is static", objectref->GetDisplayFullName());
 							start_power *= 10.0;
 						}
