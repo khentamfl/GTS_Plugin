@@ -439,10 +439,7 @@ namespace Gts {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& crushmanager = CrushManager::GetSingleton();
 		float giantsize = get_visual_scale(giant);
-		float tinysize = get_visual_scale(tiny);
-		if (IsDragon(tiny) || IsGiant(tiny)) {
-			tinysize *= 2.0;
-		}
+		float tinysize = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
 
 		float damagebonus = Persistent::GetSingleton().size_related_damage_mult;
 

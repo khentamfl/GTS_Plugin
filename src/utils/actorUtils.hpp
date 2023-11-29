@@ -78,6 +78,7 @@ namespace Gts {
 	// GTS Actor Functions
 	float GetActorWeight(Actor* giant, bool metric);
 	float GetActorHeight(Actor* giant, bool metric);
+	float GetScaleAdjustment(Actor* tiny);
 	float GetRaycastStateScale(Actor* giant);
 	// End
 

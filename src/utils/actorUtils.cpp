@@ -601,6 +601,21 @@ namespace Gts {
 		return height;
 	}
 
+	float GetScaleAdjustment(Actor* tiny) {
+		float sc = 1.0;
+		if (tiny->formID != 0x14) { // for non player actors only, always return 1.0 in player case
+			if (IsDragon(tiny)) {
+				sc = 3.2;
+			} else if (IsMammoth(tiny)) {
+				sc = 3.0;
+			} else if (IsGiant(tiny)) {
+				sc = 1.9;
+			} 
+			return eff;
+		}
+		return eff;
+	}
+
 	float GetRaycastStateScale(Actor* giant) {
 	    // Goal is to make us effectively smaller during these checks, so RayCast won't adjust our height unless we're truly too big
 		if (IsProning(giant)) {
@@ -1786,11 +1801,11 @@ namespace Gts {
 	void ShrinkUntil(Actor* giant, Actor* tiny, float expected) {
 		if (HasSMT(giant)) {
 			float predscale = get_target_scale(giant);
-			float preyscale = get_target_scale(tiny);
+			float preyscale = get_target_scale(tiny) * GetScaleAdjustment(tiny);
 			float targetScale = predscale/expected;
 			if (preyscale >= targetScale) { // Apply ONLY if target is bigger than requirement
 				set_target_scale(tiny, targetScale);
-				AddSMTPenalty(giant, 5.0);
+				AddSMTPenalty(giant, 5.0 * GetScaleAdjustment(tiny));
 			}
 		}
 	}

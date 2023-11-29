@@ -1,3 +1,4 @@
+#include "utils/actorUtils.hpp"
 #include "data/transient.hpp"
 #include "hooks/havok.hpp"
 #include "scale/scale.hpp"
@@ -88,7 +89,9 @@ namespace {
 		Actor* actor_a = skyrim_cast<Actor*>(actor);
 		Actor* actor_b = skyrim_cast<Actor*>(otherActor);
 		if (actor_a && actor_b) {
-			float sizedifference = get_visual_scale(actor_a)/get_visual_scale(actor_b);
+			float Scale_A = get_visual_scale(actor_a);
+			float Scale_B = get_visual_scale(actor_b) * GetScaleAdjustment(actor_b);
+			float sizedifference = Scale_A/Scale_B;
 			if (sizedifference >= 3.0) {
 				return true;
 			}
