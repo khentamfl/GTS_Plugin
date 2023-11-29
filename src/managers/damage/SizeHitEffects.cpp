@@ -297,6 +297,8 @@ namespace Gts {
 		static Timer soundtimer = Timer(1.5);
 		static Timer laughtimer = Timer(4.0);
 
+		damage *= DamageReduction; // Take actor resistance into account
+
 		if (Runtime::HasMagicEffect(receiver, "ResistShrinkPotion")) {
 			resistance = 0.25;
 		}
@@ -310,7 +312,7 @@ namespace Gts {
 			}
 			if (ShrinkChance >= 2) {
 				mod_target_scale(attacker, -GrowthValue/(6.0 * Dragon*BalanceMode)); // Shrink Attacker
-				mod_target_scale(receiver, GrowthValue/(2.0 * Dragon*BalanceMode*DamageReduction)); // Grow receiver
+				mod_target_scale(receiver, GrowthValue/(2.0 * Dragon*BalanceMode)); // Grow receiver
 				if (get_visual_scale(attacker) <= 0.12/Dragon) {
 					mod_target_scale(attacker, 0.12/Dragon);
 				}
@@ -322,7 +324,7 @@ namespace Gts {
 		} else if (BalanceMode >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) { // Shrink us
 			if (scale > naturalscale) {
 				float sizebonus = std::clamp(get_visual_scale(attacker), 0.10f, 1.0f);
-				float ShrinkValue = std::clamp(((-damage/850)/SizeHunger/Gigantism * sizebonus * DamageReduction) * resistance, 0.0f, 0.25f / Gigantism); // affect limit by decreasing it
+				float ShrinkValue = std::clamp(((-damage/850)/SizeHunger/Gigantism * sizebonus) * resistance, 0.0f, 0.25f / Gigantism); // affect limit by decreasing it
 
 				if (scale < naturalscale) {
 					set_target_scale(receiver, naturalscale); // reset to normal scale

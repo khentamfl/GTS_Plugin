@@ -1587,7 +1587,7 @@ namespace Gts {
 		if (sizedifference <= 4.0) { // Stagger or Push
 			StaggerActor(tiny);
 		} else {
-			PushActorAway(giant, tiny, 1.0 * GetLaunchPower(sizedifference));
+			PushActorAway(giant, tiny, 1.0/Adjustment * GetLaunchPower(sizedifference));
 		}
 	}
 
