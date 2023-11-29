@@ -37,7 +37,7 @@ namespace {
 		float scale = get_visual_scale(giant);
 		DoCrawlingFunctions(giant, scale, 1.80, 1.80, CrawlEvent::LeftKnee, "LeftKnee", 26, 24, 1.15, DamageSource::KneeLeft);
 		DoCrawlingFunctions(giant, scale, 1.80, 1.80, CrawlEvent::RightKnee, "RightKnee", 26, 24, 1.15, DamageSource::KneeRight);
-		//                                     damage                                     ^    ^ --- Size Damage Radius
+		//                                     launch power                                   ^    ^ --- Size Damage Radius
 		//                                                                             Launch       ^ -- crush threshold
 		//                                                                             Radius
 	}
