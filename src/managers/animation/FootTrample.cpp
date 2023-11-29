@@ -140,7 +140,7 @@ namespace {
 		DoDamageEffect(&data.giant, 1.1 * launch * perk, 1.65 * launch, 100, 0.10, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.95 * perk, 1.75 * perk, FootEvent::Left);
+		DoLaunch(&data.giant, 0.85 * perk, 1.75 * perk, FootEvent::Left);
         DeplenishStamina(&data.giant, 30.0);
 
 		data.stage = 1;
@@ -164,7 +164,7 @@ namespace {
 		DoDamageEffect(&data.giant, 1.1 * launch * perk, 1.65 * launch, 100, 0.10, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.95 * perk, 1.75 * perk, FootEvent::Right);
+		DoLaunch(&data.giant, 0.85 * perk, 1.75 * perk, FootEvent::Right);
         DeplenishStamina(&data.giant, 30.0);
 
 		data.stage = 1;
@@ -186,7 +186,7 @@ namespace {
 		}
 		GRumble::Once("TrampleL", &data.giant, 3.20 * shake, 0.0, RNode);
 		DoDamageEffect(&data.giant, 5.0 * launch * perk, 1.80 * launch, 10, 0.15, FootEvent::Left, 0.90, DamageSource::CrushedLeft);
-        DoLaunch(&data.giant, 1.60 * perk, 2.60 * perk, FootEvent::Left);
+        DoLaunch(&data.giant, 1.25 * perk, 3.20 * perk, FootEvent::Left);
 		DoFootstepSound(&data.giant, 1.15, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
         DeplenishStamina(&data.giant, 80.0);
@@ -204,7 +204,7 @@ namespace {
 		}
 		GRumble::Once("TrampleR", &data.giant, 3.20 * shake, 0.0, RNode);
 		DoDamageEffect(&data.giant, 5.0 * launch * perk, 1.80 * launch, 10, 0.15, FootEvent::Right, 0.90, DamageSource::CrushedRight);
-        DoLaunch(&data.giant, 1.60 * perk, 2.60 * perk, FootEvent::Right);
+        DoLaunch(&data.giant, 1.25 * perk, 3.20 * perk, FootEvent::Right);
 		DoFootstepSound(&data.giant, 1.15, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
         DeplenishStamina(&data.giant, 80.0);

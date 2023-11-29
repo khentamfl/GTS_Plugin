@@ -145,8 +145,8 @@ namespace Gts {
 				}
 				//                     ^          ^
 				//                 Damage         Radius
-				DoLaunch(actor, 0.75 * bonus, 1.00 * bonus, kind);
-				//             ^ radius        ^ push power
+				DoLaunch(actor, 0.70 * bonus, 1.0 * bonus, kind);
+				//               ^ radius      ^ push power
 			}
 		}
 	}

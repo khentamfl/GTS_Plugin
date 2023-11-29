@@ -96,7 +96,7 @@ namespace {
 		DoDamageEffect(&data.giant, 1.40, 1.6, 10, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, 1.0, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.85, 1.75, FootEvent::Left);
+		DoLaunch(&data.giant, 0.85, 1.45, FootEvent::Left);
 	}
 
 	void GTS_Kick_HitBox_On_R(AnimationEventData& data) {

@@ -237,7 +237,7 @@ namespace {
 		DoDamageEffect(&data.giant, 1.4, 1.45, 10, 0.25, FootEvent::Right, 1.0, DamageSource::Booty);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.65 * perk, 4.2, FootEvent::Right);
+		DoLaunch(&data.giant, 0.65 * perk, 1.3, FootEvent::Right);
 	}
 
 	void GTSButtCrush_FootstepL(AnimationEventData& data) {
@@ -252,7 +252,7 @@ namespace {
 		DoDamageEffect(&data.giant, 1.4, 1.45, 10, 0.25, FootEvent::Left, 1.0, DamageSource::Booty);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.65 * perk, 4.2, FootEvent::Left);
+		DoLaunch(&data.giant, 0.65 * perk, 1.3, FootEvent::Left);
 	}
 
 	void GTSButtCrush_HandImpactR(AnimationEventData& data) {
@@ -285,7 +285,7 @@ namespace {
 				DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC R Butt");
 				DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC L Butt");
 				DoFootstepSound(giant, 1.25, FootEvent::Right, RNode);
-				DoLaunch(&data.giant, 28.00 * perk, 4.20, FootEvent::Butt);
+				DoLaunch(&data.giant, 1.10 * perk, 4.20, FootEvent::Butt);
 				GRumble::Once("Butt_L", &data.giant, 3.60 * damage, 0.02, "NPC R Butt");
 				GRumble::Once("Butt_R", &data.giant, 3.60 * damage, 0.02, "NPC L Butt");
 			}

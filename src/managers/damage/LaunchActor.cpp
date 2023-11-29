@@ -96,7 +96,7 @@ namespace {
 		float DamageMult = 0.6;
 		float giantSize = get_visual_scale(giant);
 
-		float startpower = 3.2; // determines default power of launching someone
+		float startpower = 3.0; // determines default power of launching someone
 
 		float threshold = 6.0;
 		float SMT = 1.0;
@@ -172,7 +172,7 @@ namespace {
 		auto cell = giant->GetParentCell();
 		float giantScale = get_visual_scale(giant);
 
-		float start_power = 0.4;
+		float start_power = 0.6;
 
 		if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
 			power *= 1.5;
@@ -183,12 +183,9 @@ namespace {
 				auto objectref = object.get();
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref);
-					if (!NonRef) {
-						auto formtype = objectref->GetOwner();
-						if (formtype && formtype->Is(FormType::MovableStatic)) {
-							log::info("{} is static", objectref->GetDisplayFullName());
-							start_power *= 10.0;
-						}
+					if (!NonRef) { // we don't want to apply it to actors
+						Cprint("Weight of {} is {}", objectref->GetDisplayFullName(), objectref->GetWeight());
+						power *= objectref->GetWeight();
 						NiPoint3 objectlocation = objectref->GetPosition();
 						for (auto point: footPoints) {
 							float distance = (point - objectlocation).Length();
@@ -278,6 +275,7 @@ namespace Gts {
 		if (!giant) {
 			return;
 		}
+		const float BASE_CHECK_DISTANCE = 34.0;
 		float giantScale = get_visual_scale(giant);
 		float launchdamage = 1.6;
 
@@ -289,7 +287,7 @@ namespace Gts {
 
 		NiPoint3 NodePosition = node->world.translate;
 
-		float maxDistance = radius * giantScale;
+		float maxDistance = BASE_CHECK_DISTANCE * radius * giantScale;
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, 0.0, 0.0), // The standard position

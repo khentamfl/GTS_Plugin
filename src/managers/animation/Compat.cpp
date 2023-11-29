@@ -197,8 +197,8 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 1.0, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.85, 1.25, FootEvent::Right);
-		DoLaunch(&data.giant, 0.85, 1.25, FootEvent::Left);
+		DoLaunch(&data.giant, 0.80, 1.35, FootEvent::Right);
+		DoLaunch(&data.giant, 0.80, 1.35, FootEvent::Left);
 	}
 	void MCO_DodgeSound(AnimationEventData& data) {
 		data.stage = 0;
@@ -210,8 +210,8 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 1.0, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.85, 1.25, FootEvent::Right);
-		DoLaunch(&data.giant, 0.85, 1.25, FootEvent::Left);
+		DoLaunch(&data.giant, 0.80, 1.35, FootEvent::Right);
+		DoLaunch(&data.giant, 0.80, 1.35, FootEvent::Left);
 	}
 
 	void JumpDown(AnimationEventData& data) {
@@ -221,8 +221,8 @@ namespace {
 		float damage = sizemanager.GetSizeAttribute(giant, 2);
 		DoDamageEffect(&data.giant, 0.9 * damage, 6.0, 20, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoDamageEffect(&data.giant, 0.9 * damage, 6.0, 20, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
-		DoLaunch(&data.giant, 1.0 * perk, 1.75, FootEvent::Left);
-		DoLaunch(&data.giant, 1.0 * perk, 1.75, FootEvent::Right);
+		DoLaunch(&data.giant, 0.9 * perk, 1.75, FootEvent::Left);
+		DoLaunch(&data.giant, 0.9 * perk, 1.75, FootEvent::Right);
 	}
 
 	void GTS_DiveSlide_ON(AnimationEventData& data) {

@@ -207,7 +207,7 @@ namespace {
 		DoFootstepSound(&data.giant, 1.05, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 1.1, FootEvent::Right, RNode);
 		DoDamageEffect(&data.giant, 1.6 * perk, 1.4, 25, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
-		DoLaunch(&data.giant, 0.30 * perk, 2.25 * data.animSpeed, FootEvent::Right);
+		DoLaunch(&data.giant, 0.55 * perk, 1.55 * data.animSpeed, FootEvent::Right);
 		data.stage = 9;
 		//Cprint("ThighCrush: GTSstandR");
 	}
@@ -222,7 +222,7 @@ namespace {
 		DoFootstepSound(&data.giant, 1.05, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, 1.1, FootEvent::Left, LNode);
 		DoDamageEffect(&data.giant, 1.6 * perk, 1.4, 25, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
-		DoLaunch(&data.giant, 0.30 * perk, 2.25 * data.animSpeed, FootEvent::Left);
+		DoLaunch(&data.giant, 0.55 * perk, 1.55 * data.animSpeed, FootEvent::Left);
 		data.stage = 9;
 		//Cprint("ThighCrush: GTSstandL");
 	}
@@ -237,7 +237,7 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 1.1, FootEvent::Right, RNode);
 		DoDamageEffect(&data.giant, 1.4 * perk, 1.3, 25, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
-		DoLaunch(&data.giant, 0.30 * perk, 2.25 * data.animSpeed, FootEvent::Right);
+		DoLaunch(&data.giant, 0.45 * perk, 1.55 * data.animSpeed, FootEvent::Right);
 		data.stage = 9;
 	}
 	void GTSBEH_Next(AnimationEventData& data) {
