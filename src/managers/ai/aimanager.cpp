@@ -364,17 +364,11 @@ namespace Gts {
 			return false;
 		}
 		float pred_scale = get_visual_scale(pred);
-		float prey_scale = get_visual_scale(prey);
+		float prey_scale = get_visual_scale(prey) * GetScaleAdjustment(prey);
 
 		float bonus = 1.0;
 		if (IsCrawling(pred)) {
 			bonus = 2.0; // +100% stomp distance
-		}
-
-		if (IsDragon(prey)) {
-			prey_scale *= 3.0;
-		} if (IsGiant(prey)) {
-			prey_scale *= 2.0;
 		}
 		if (prey->IsDead() && pred_scale/prey_scale < 8.0) {
 			return false;

@@ -29,12 +29,7 @@ namespace {
 	void Overkill(Actor* attacker, Actor* receiver, float damage) {
 		if (damage > GetAV(receiver, ActorValue::kHealth) * 1.5) { // Overkill effect
 			float attackerscale = get_visual_scale(attacker);
-			float receiverscale = get_visual_scale(receiver);
-			if (IsDragon(receiver) || IsGiant(receiver)) {
-				receiverscale *= 2.0;
-			} if (IsMammoth(receiver)) {
-				receiverscale *= 3.0;
-			}
+			float receiverscale = get_visual_scale(receiver) * GetScaleAdjustment(receiver);
 			float size_difference = attackerscale/receiverscale;
 			if (size_difference >= 12.0) {
 				HitManager::GetSingleton().Overkill(receiver, attacker);
@@ -295,10 +290,8 @@ namespace Gts {
 		float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(receiver)/100;
 		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(receiver)/100;
 		float SizeDifference = get_visual_scale(receiver)/get_visual_scale(attacker);
-		float Dragon = 1.0;
-		if (IsDragon(attacker) || IsGiant(attacker) || IsMammoth(attacker)) {
-			Dragon = 2.5;
-		}
+		float Dragon = 1.0 * GetScaleAdjustment(attacker);
+
 		float resistance = 1.0;
 		static Timer soundtimer = Timer(1.5);
 		static Timer laughtimer = Timer(4.0);

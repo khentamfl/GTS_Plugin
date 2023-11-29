@@ -83,10 +83,7 @@ namespace Gts {
 		static Timer timer = Timer(0.25);
 
 		float attackerscale = get_visual_scale(attacker);
-		float receiverscale = get_visual_scale(receiver);
-		if (IsDragon(receiver) || IsGiant(receiver) || IsMammoth(receiver)) {
-			receiverscale *= 2.5;
-		}
+		float receiverscale = get_visual_scale(receiver) * GetScaleAdjustment(receiver);
 
 		float size_difference = attackerscale/receiverscale;
 

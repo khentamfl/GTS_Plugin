@@ -101,12 +101,7 @@ namespace {
 			threshold = 0.8;
 			force += 0.20;
 		}
-		float tinySize = get_visual_scale(tiny);
-		if (IsDragon(tiny) || IsGiant(tiny)) {
-			tinySize *= 2.6;
-		} if (IsMammoth(tiny)) {
-			tinySize *= 3.2;
-		}
+		float tinySize = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
 		float sizeRatio = giantSize/tinySize;
 
 		float knockBack = LAUNCH_KNOCKBACK * giantSize * force;
@@ -134,13 +129,9 @@ namespace {
 					//DamageAV(tiny, ActorValue::kHealth, damage * DamageSetting);
 					if (power >= 1.5) { // Apply only when we have DisastrousTremor perk
 						mod_target_scale(tiny, -(damage * DamageSetting) / 500);
-						float modifier = 1.0;
-						if (IsDragon(tiny) || IsGiant(tiny) || IsMammoth(tiny)) {
-							modifier = 3.0;
-						}
 
-						if (get_target_scale(tiny) < 0.12/modifier) {
-							set_target_scale(tiny, 0.12/modifier);
+						if (get_target_scale(tiny) < 0.12) {
+							set_target_scale(tiny, 0.12);
 						}
 					}
 				}
