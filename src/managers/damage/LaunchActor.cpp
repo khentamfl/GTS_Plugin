@@ -181,11 +181,11 @@ namespace {
 			auto data = cell->GetRuntimeData();
 			for (auto object: data.references) {
 				auto objectref = object.get();
-				bool movable_static = objectref->GetOwner()->GetFormType() == FormType::MovableStatic;
-				if (movable_static) {
-					start_power *= 10.0;
-				}
 				if (objectref) {
+					bool movable_static = objectref->GetOwner()->GetFormType() == FormType::MovableStatic;
+					if (movable_static) {
+						start_power *= 10.0;
+					}
 					Actor* NonRef = skyrim_cast<Actor*>(objectref);
 					if (!NonRef) {
 						NiPoint3 objectlocation = objectref->GetPosition();
