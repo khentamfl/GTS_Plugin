@@ -242,7 +242,6 @@ namespace {
 		InflictBodyDamage(giant);
 
 		if (HasSMT(giant)) {
-			launch = 1.25;
 			dust = 1.25;
 		}
 
