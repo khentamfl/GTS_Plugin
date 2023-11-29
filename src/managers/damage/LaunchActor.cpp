@@ -164,7 +164,7 @@ namespace {
 		float giantScale = get_visual_scale(giant);
 		float power = 1.0 * bonus;
 		if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
-			power *= 1.5;
+			power *= 1.5; 
 		}
 		if (cell) {
 			auto data = cell->GetRuntimeData();
