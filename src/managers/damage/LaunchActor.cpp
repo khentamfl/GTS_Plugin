@@ -184,8 +184,6 @@ namespace {
 				if (objectref) {
 					Actor* NonRef = skyrim_cast<Actor*>(objectref);
 					if (!NonRef) { // we don't want to apply it to actors
-						Cprint("Weight of {} is {}", objectref->GetDisplayFullName(), objectref->GetWeight());
-						power *= objectref->GetWeight();
 						NiPoint3 objectlocation = objectref->GetPosition();
 						for (auto point: footPoints) {
 							float distance = (point - objectlocation).Length();
