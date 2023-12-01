@@ -671,7 +671,7 @@ namespace Gts {
 								damage *= 2.25;
 								audio = 3.0;
 							}
-							if (tiny->IsDead()) {
+							if (otherActor->IsDead()) {
 								tinyScale *= 0.6;
 							}
 							AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
