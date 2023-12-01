@@ -39,7 +39,7 @@ namespace Gts {
 		tiny->KillImpl(giant, 1000, true, true);
 		tiny->SetLifeState(ACTOR_LIFE_STATE::kDead);
 		tiny->GetActorRuntimeData().boolBits.set(BOOL_BITS::kDead);
-		//RagdollTask(tiny);
+		//RagdollTask(tiny); 
 	}
 
 	void RagdollTask(Actor* tiny) {
