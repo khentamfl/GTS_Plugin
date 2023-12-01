@@ -177,6 +177,18 @@ namespace {
 			AnimationManager::StartAnim("StompLeft", pred);
 		}
 	}
+
+	void Tramples(Actor* pred, int rng) {
+		if (!Persistent::GetSingleton().Stomp_Ai) {
+			return;
+		}
+		if (rng <= 5) {
+			AnimationManager::StartAnim("GTSBeh_Trample_L", pred);
+		} else {
+			AnimationManager::StartAnim("GTSBeh_Trample_R", pred);
+		} 
+	}
+
 	void Kicks(Actor* pred, int rng) {
 		if (!Persistent::GetSingleton().Kick_Ai) {
 			return;
@@ -216,8 +228,11 @@ namespace {
 				} else if (random <= 6) {
 					LightStomp(pred, actionrng);
 					return;
-				} else if (random <= 9) {
+				} else if (random <= 8) {
 					Kicks(pred, actionrng);
+					return;
+				} else if (random <= 9) {
+					Tramples(pred, actionrng);
 					return;
 				}
 			}
@@ -262,7 +277,7 @@ namespace Gts {
 			for (auto actor: find_actors()) {
 				std::vector<Actor*> AbleToAct = {};
 				for (auto actor: find_actors()) {
-					if (IsTeammate(actor) && actor->formID != 0x14 && IsFemale(actor) || (EffectsForEveryone() && IsFemale(actor))) {
+					if (IsTeammate(actor) && actor->formID != 0x14 && IsFemale(actor) || (EffectsForEveryone(actor) && IsFemale(actor))) {
 						if (actor->IsInCombat() || !persist.vore_combatonly) {
 							AbleToAct.push_back(actor);
 						}

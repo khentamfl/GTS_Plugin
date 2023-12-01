@@ -138,7 +138,6 @@ namespace Gts {
 			if (actor_data) {
 				actor_data->half_life = 0.25; // Faster shrink, less smooth.
 			}
-			//SizeDifference = std::clamp((get_visual_scale(caster)/get_visual_scale(target))/2.0f, 1.0f, 2.5f);
 			SizeDifference = 1.0 / std::clamp((get_visual_scale(target)), 0.25f, 1.0f);
 		} else if (this->power >= 10.0) {
 			if (actor_data) {

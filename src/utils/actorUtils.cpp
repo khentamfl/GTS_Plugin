@@ -1071,9 +1071,13 @@ namespace Gts {
 		return false;
 	}
 
-	bool EffectsForEveryone() { // determines if we want to apply size effects for literally every single actor
+	bool EffectsForEveryone(Actor* giant) { // determines if we want to apply size effects for literally every single actor
+		if (giant->formID == 0x14) { // don't enable for Player
+			return false;
+		}
+		bool dead = giant->IsDead();
 		bool everyone = Runtime::GetBool("PreciseDamageOthers");
-		return everyone;
+		return !dead && everyone;
 	}
 
 	void TrackFeet(Actor* giant, float number, bool enable) {

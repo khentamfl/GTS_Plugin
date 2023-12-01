@@ -558,7 +558,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 			}
-			if (IsDebugEnabled() && (actor->formID == 0x14 || IsTeammate(actor) || EffectsForEveryone())) {
+			if (IsDebugEnabled() && (actor->formID == 0x14 || IsTeammate(actor) || EffectsForEveryone(actor))) {
 				for (auto point: footPoints) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance, 800, {0.0, 1.0, 0.0, 1.0});
 				}

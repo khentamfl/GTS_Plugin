@@ -231,7 +231,7 @@ namespace Gts {
 	}
 
 	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float power, FootEvent kind) {
-		if (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone()) {
+		if (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone(actor)) {
 			if (kind == FootEvent::Left) {
 				LaunchActor::GetSingleton().LaunchLeft(giant, radius, power);
 			}
@@ -266,7 +266,7 @@ namespace Gts {
 
 	void LaunchActor::LaunchAtNode(Actor* giant, float radius, float power, NiAVObject* node) {
 		auto profiler = Profilers::Profile("Other: Launch Actor Crawl");
-		if (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone()) {
+		if (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone(giant)) {
 			if (!node) {
 				return;
 			}
@@ -392,7 +392,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 			}
-			if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone())) {
+			if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone(giant))) {
 				for (auto point: footPoints) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance, 600, {0.0, 0.0, 1.0, 1.0});
 				}
@@ -493,7 +493,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 			}
-			if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone())) {
+			if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone(giant))) {
 				for (auto point: footPoints) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance, 600, {0.0, 0.0, 1.0, 1.0});
 				}

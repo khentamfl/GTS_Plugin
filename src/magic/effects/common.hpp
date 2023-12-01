@@ -132,12 +132,16 @@ namespace Gts {
 		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)*0.01;
 		float GigantismTarget = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)*0.01;  // May go negative needs fixing with a smooth clamp
 		float efficiency = clamp(0.50, 1.0, (casterlevel/targetlevel)) * progression_multiplier;
+
+		float Scale_Resistance = std::clamp(get_giantess_scale(target), 1.0f, 9999.0f); // Calf_power makes shrink effects stronger based on scale, this fixes that.
+
 		efficiency *= GetStealEfficiency(target);
 		if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
 			efficiency *= 0.25;
 		}
 
 		efficiency *= (GigantismCaster / GigantismTarget) * SizeHunger;
+		efficiency /= Scale_Resistance;
 
 		return efficiency;
 	}
