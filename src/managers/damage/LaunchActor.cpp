@@ -43,7 +43,7 @@ namespace {
 
 	const float LAUNCH_DAMAGE = 2.4f;
 	const float LAUNCH_KNOCKBACK = 0.02f;
-	const float BASE_CHECK_DISTANCE = 22.0f;
+	const float BASE_CHECK_DISTANCE = 20.0f;
 
 
 	void SetLinearImpulse(bhkRigidBody* body, const hkVector4& a_impulse)
@@ -114,7 +114,7 @@ namespace {
 		
 		
 		if (HasSMT(giant)) {
-			giantSize += 4.0;
+			giantSize += 12.0;
 			threshold = 0.8;
 			force += 0.20;
 		}
@@ -231,89 +231,93 @@ namespace Gts {
 	}
 
 	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float power, FootEvent kind) {
-		if (kind == FootEvent::Left) {
-			LaunchActor::GetSingleton().LaunchLeft(giant, radius, power);
-		}
-		if (kind == FootEvent::Right) {
-			LaunchActor::GetSingleton().LaunchRight(giant, radius, power);
-		}
-		if (kind == FootEvent::Butt) {
-			auto ThighL = find_node(giant, "NPC L Thigh [LThg]");
-			auto ThighR = find_node(giant, "NPC R Thigh [RThg]");
-			if (ThighL && ThighR) {
-				LaunchActor::LaunchAtNode(giant, radius, power, ThighL);
-				LaunchActor::LaunchAtNode(giant, radius, power, ThighR);
+		if (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone()) {
+			if (kind == FootEvent::Left) {
+				LaunchActor::GetSingleton().LaunchLeft(giant, radius, power);
 			}
-		} else if (kind == FootEvent::Breasts) {
-			auto BreastL = find_node(giant, "NPC L Breast");
-			auto BreastR = find_node(giant, "NPC R Breast");
-			auto BreastL03 = find_node(giant, "L Breast03");
-			auto BreastR03 = find_node(giant, "R Breast03");
-			if (BreastL03 && BreastR03) {
-				LaunchActor::LaunchAtNode(giant, radius, power, BreastL03);
-				LaunchActor::LaunchAtNode(giant, radius, power, BreastR03);
-			} else if (BreastL && BreastR) {
-				LaunchActor::LaunchAtNode(giant, radius, power, BreastL);
-				LaunchActor::LaunchAtNode(giant, radius, power, BreastR);
+			if (kind == FootEvent::Right) {
+				LaunchActor::GetSingleton().LaunchRight(giant, radius, power);
+			}
+			if (kind == FootEvent::Butt) {
+				auto ThighL = find_node(giant, "NPC L Thigh [LThg]");
+				auto ThighR = find_node(giant, "NPC R Thigh [RThg]");
+				if (ThighL && ThighR) {
+					LaunchActor::LaunchAtNode(giant, radius, power, ThighL);
+					LaunchActor::LaunchAtNode(giant, radius, power, ThighR);
+				}
+			} else if (kind == FootEvent::Breasts) {
+				auto BreastL = find_node(giant, "NPC L Breast");
+				auto BreastR = find_node(giant, "NPC R Breast");
+				auto BreastL03 = find_node(giant, "L Breast03");
+				auto BreastR03 = find_node(giant, "R Breast03");
+				if (BreastL03 && BreastR03) {
+					LaunchActor::LaunchAtNode(giant, radius, power, BreastL03);
+					LaunchActor::LaunchAtNode(giant, radius, power, BreastR03);
+				} else if (BreastL && BreastR) {
+					LaunchActor::LaunchAtNode(giant, radius, power, BreastL);
+					LaunchActor::LaunchAtNode(giant, radius, power, BreastR);
+				}
 			}
 		}
 	}
 	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float power, NiAVObject* node) {
-		LaunchActor::LaunchAtNode(giant, radius, power, node);
+		LaunchActor::LaunchAtNode(giant, radius, power, node); // doesn't need a check since function below has it
 	}
 
 	void LaunchActor::LaunchAtNode(Actor* giant, float radius, float power, NiAVObject* node) {
 		auto profiler = Profilers::Profile("Other: Launch Actor Crawl");
-		if (!node) {
-			return;
-		}
-		if (!giant) {
-			return;
-		}
-		float giantScale = get_visual_scale(giant);
-		float launchdamage = 1.6;
-
-		float SCALE_RATIO = GetLaunchThreshold(giant)/GetMovementModifier(giant);
-		if (HasSMT(giant)) {
-			SCALE_RATIO = 1.2;
-			giantScale *= 2.0;
-		}
-
-		NiPoint3 NodePosition = node->world.translate;
-
-		float maxDistance = BASE_CHECK_DISTANCE * radius * giantScale;
-		// Make a list of points to check
-		std::vector<NiPoint3> points = {
-			NiPoint3(0.0, 0.0, 0.0), // The standard position
-		};
-		std::vector<NiPoint3> CrawlPoints = {};
-
-		for (NiPoint3 point: points) {
-			CrawlPoints.push_back(NodePosition);
-		}
-
-		for (auto point: CrawlPoints) {
-			if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant))) {
-				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance, 600, {0.0, 0.0, 1.0, 1.0});
+		if (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone()) {
+			if (!node) {
+				return;
 			}
-		}
+			if (!giant) {
+				return;
+			}
+			float giantScale = get_visual_scale(giant);
+			float launchdamage = 1.6;
 
-		NiPoint3 giantLocation = giant->GetPosition();
-		LaunchObjects(giant, CrawlPoints, maxDistance, power);
+			float SCALE_RATIO = GetLaunchThreshold(giant)/GetMovementModifier(giant);
+			if (HasSMT(giant)) {
+				SCALE_RATIO = 1.0/GetMovementModifier(giant);;
+				giantScale *= 1.5;
+			}
 
-		for (auto otherActor: find_actors()) {
-			if (otherActor != giant) {
-				if (!AllowStagger(giant, otherActor)) {
-					return;
+			NiPoint3 NodePosition = node->world.translate;
+
+			float maxDistance = BASE_CHECK_DISTANCE * radius * giantScale;
+			// Make a list of points to check
+			std::vector<NiPoint3> points = {
+				NiPoint3(0.0, 0.0, 0.0), // The standard position
+			};
+			std::vector<NiPoint3> CrawlPoints = {};
+
+			for (NiPoint3 point: points) {
+				CrawlPoints.push_back(NodePosition);
+			}
+
+			for (auto point: CrawlPoints) {
+				if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone())) {
+					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance, 600, {0.0, 0.0, 1.0, 1.0});
 				}
-				float tinyScale = get_visual_scale(otherActor);
-				if (giantScale / tinyScale > SCALE_RATIO) {
-					NiPoint3 actorLocation = otherActor->GetPosition();
-					for (auto point: CrawlPoints) {
-						float distance = (point - actorLocation).Length();
-						if (distance <= maxDistance) {
-							float force = 1.0 - distance / maxDistance;
-							LaunchDecide(giant, otherActor, force, power);
+			}
+
+			NiPoint3 giantLocation = giant->GetPosition();
+			LaunchObjects(giant, CrawlPoints, maxDistance, power);
+
+			for (auto otherActor: find_actors()) {
+				if (otherActor != giant) {
+					if (!AllowStagger(giant, otherActor)) {
+						return;
+					}
+					float tinyScale = get_visual_scale(otherActor);
+					if (giantScale / tinyScale > SCALE_RATIO) {
+						NiPoint3 actorLocation = otherActor->GetPosition();
+						for (auto point: CrawlPoints) {
+							float distance = (point - actorLocation).Length();
+							if (distance <= maxDistance) {
+								float force = 1.0 - distance / maxDistance;
+								LaunchDecide(giant, otherActor, force, power);
+							}
 						}
 					}
 				}
@@ -329,8 +333,8 @@ namespace Gts {
 		float giantScale = get_visual_scale(giant);
 		float SCALE_RATIO = GetLaunchThreshold(giant)/GetMovementModifier(giant);
 		if (HasSMT(giant)) {
-			SCALE_RATIO = 1.2 / GetMovementModifier(giant);
-			giantScale *= 2.0;
+			SCALE_RATIO = 1.0 / GetMovementModifier(giant);
+			giantScale *= 1.5;
 		}
 
 		radius *= 1.0 + GetHighHeelsBonusDamage(giant) * 2.5;
@@ -388,7 +392,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 			}
-			if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant))) {
+			if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone())) {
 				for (auto point: footPoints) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance, 600, {0.0, 0.0, 1.0, 1.0});
 				}
@@ -428,8 +432,8 @@ namespace Gts {
 		float giantScale = get_visual_scale(giant);
 		float SCALE_RATIO = GetLaunchThreshold(giant)/GetMovementModifier(giant);
 		if (HasSMT(giant)) {
-			SCALE_RATIO = 1.2 / GetMovementModifier(giant);
-			giantScale *= 2.0;
+			SCALE_RATIO = 1.0 / GetMovementModifier(giant);
+			giantScale *= 1.5;
 		}
 		radius *= 1.0 + GetHighHeelsBonusDamage(giant) * 2.5;
 
@@ -489,7 +493,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 			}
-			if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant))) {
+			if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone())) {
 				for (auto point: footPoints) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance, 600, {0.0, 0.0, 1.0, 1.0});
 				}

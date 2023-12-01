@@ -241,7 +241,7 @@ namespace Gts {
 	void Headtracking::Update() {
 		for (auto actor: find_actors()) {
 			this->data.try_emplace(actor->formID);
-			if (actor->formID == 0x14 || IsTeammate(actor)) {
+			if (actor->formID == 0x14 || IsTeammate(actor) || EffectsForEveryone()) {
 				ScareActors(actor);
 				SpineUpdate(actor);
 			}

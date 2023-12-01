@@ -160,7 +160,7 @@ namespace Gts {
 		uint32_t addedCount = 0;
 		for (auto actor: find_actors()) {
 			// Player or teammate are always updated
-			if (actor->formID == 0x14 || IsTeammate(actor)) {
+			if (actor->formID == 0x14 || IsTeammate(actor) || EffectsForEveryone()) {
 				finalActors.push_back(actor);
 				//log::info(" - Adding: {}", actor->GetDisplayFullName());
 			} else if ((data.previousActors.count(actor->formID) == 0) && (addedCount < howMany)) {

@@ -1071,6 +1071,11 @@ namespace Gts {
 		return false;
 	}
 
+	bool EffectsForEveryone() { // determines if we want to apply size effects for literally every single actor
+		bool everyone = Runtime::GetBool("PreciseDamageOthers");
+		return everyone;
+	}
+
 	void TrackFeet(Actor* giant, float number, bool enable) {
 		if (giant->formID == 0x14) {
 			if (AllowFeetTracking()) {
@@ -1979,20 +1984,21 @@ namespace Gts {
 		bool success_first = false;
 		bool success_second = false;
 		NiPoint3 ray_start = tiny->GetPosition();
-		//ray_start.z = giant->GetPosition().z + 40.0; // overrize .z with giant .z + 40, so ray starts from above
+		ray_start.z += 40.0; // overrize .z with giant .z + 40, so ray starts from above
 		NiPoint3 ray_direction(0.0, 0.0, -1.0);
 
 		float ray_length = 40000;
+
 		NiPoint3 pos = NiPoint3(0, 0, 0); // default pos
 		NiPoint3 endpos = CastRayStatics(tiny, ray_start, ray_direction, ray_length, success_first);
 		if (success_first) {
 			// attempt 1, spawn at actor ray cast.
-		// Obtain actor coords, shift Z by 170 and cast ray down. That way we always do ray at around ground level.
+			// Obtain actor coords, shift Z by 40 and cast ray down. That way we always do ray at around ground level.
 			log::info("Cast 1 success");
 			return endpos;
 		} else if (!success_first) { 
 			NiPoint3 ray_start_second = giant->GetPosition();
-			ray_start_second.z += 170.0;
+			ray_start_second.z += 40.0;
 			pos = CastRayStatics(giant, ray_start_second, ray_direction, ray_length, success_second);
 			log::info("Cast 1 fail, trying again");
 			if (!success_second) {
@@ -2014,7 +2020,8 @@ namespace Gts {
 		float Scale = std::clamp(scale, 0.40f, 4.4f);
 
 		if (Resurrected) {
-			MessageBox("Task Aborted, target was resurrected");
+			Cprint("Task Aborted, target was resurrected");
+			return;
 		}
 
 		std::string_view container;

@@ -132,6 +132,7 @@ namespace Gts {
 	bool LessGore();
 
 	bool IsTeammate(Actor* actor);
+	bool EffectsForEveryone();
 
 	void TrackFeet(Actor* giant, float number, bool enable);
 	void CallDevourment(Actor* giant, Actor* tiny);
