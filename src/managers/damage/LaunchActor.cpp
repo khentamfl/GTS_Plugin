@@ -43,13 +43,20 @@ namespace {
 
 	const float LAUNCH_DAMAGE = 2.4f;
 	const float LAUNCH_KNOCKBACK = 0.02f;
-	const float UNDERFOOT_POWER = 0.70;
+
 
 	void SetLinearImpulse(bhkRigidBody* body, const hkVector4& a_impulse)
 	{
 		using func_t = decltype(&SetLinearImpulse);
 		REL::Relocation<func_t> func{ RELOCATION_ID(76261, 78091) };
 		return func(body, a_impulse);
+	}
+
+	float GetLaunchThreshold(Actor* giant) {
+		float threshold = 8.0;
+		if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
+			threshold = 5.2;
+		}
 	}
 
 	float GetLaunchPower_Object(float sizeRatio) {
@@ -122,43 +129,40 @@ namespace {
 		}
 
 		if (force >= 0.10) {
-			if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
-
-				float power = (1.0 * launch_power) / Adjustment;
-				if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
-					DamageMult *= 2.0;
-					OwnsPerk = true;
-					power *= 1.5;
-				}
-
-				sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
-
-				if (Runtime::HasPerkTeam(giant, "LaunchDamage") && CanDoDamage(giant, tiny)) {
-					float damage = LAUNCH_DAMAGE * sizeRatio * force * DamageMult * DamageSetting;
-					InflictSizeDamage(giant, tiny, damage);
-					if (OwnsPerk) { // Apply only when we have DisastrousTremor perk
-						mod_target_scale(tiny, -damage / 500);
-
-						if (get_target_scale(tiny) < 0.12/Adjustment) {
-							set_target_scale(tiny, 0.12/Adjustment);
-						}
-					}
-				}
-				PushActorAway(giant, tiny, 1.0);
-
-				std::string name = std::format("PushOther_{}", tiny->formID);
-
-				ActorHandle tinyHandle = tiny->CreateRefHandle();
-
-				TaskManager::RunOnce(name, [=](auto& update){
-					if (tinyHandle) {
-						TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyHandle.get().get());
-						if (tiny_is_object) {
-							ApplyHavokImpulse(tiny_is_object, 0, 0, startpower * GetLaunchPower(sizeRatio) * force * power, startpower * GetLaunchPower(sizeRatio) * force * power);
-						}
-					}
-				});
+			float power = (1.0 * launch_power) / Adjustment;
+			if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
+				DamageMult *= 2.0;
+				OwnsPerk = true;
+				power *= 1.5;
 			}
+
+			sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
+
+			if (Runtime::HasPerkTeam(giant, "LaunchDamage") && CanDoDamage(giant, tiny)) {
+				float damage = LAUNCH_DAMAGE * sizeRatio * force * DamageMult * DamageSetting;
+				InflictSizeDamage(giant, tiny, damage);
+				if (OwnsPerk) { // Apply only when we have DisastrousTremor perk
+					mod_target_scale(tiny, -damage / 500);
+
+					if (get_target_scale(tiny) < 0.12/Adjustment) {
+						set_target_scale(tiny, 0.12/Adjustment);
+					}
+				}
+			}
+			PushActorAway(giant, tiny, 1.0);
+
+			std::string name = std::format("PushOther_{}", tiny->formID);
+
+			ActorHandle tinyHandle = tiny->CreateRefHandle();
+
+			TaskManager::RunOnce(name, [=](auto& update){
+				if (tinyHandle) {
+					TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyHandle.get().get());
+					if (tiny_is_object) {
+						ApplyHavokImpulse(tiny_is_object, 0, 0, startpower * GetLaunchPower(sizeRatio) * force * power, startpower * GetLaunchPower(sizeRatio) * force * power);
+					}
+				}
+			});
 		}
 	}
 
@@ -172,7 +176,7 @@ namespace {
 		auto cell = giant->GetParentCell();
 		float giantScale = get_visual_scale(giant);
 
-		float start_power = 0.6;
+		float start_power = 0.4;
 
 		if (Runtime::HasPerkTeam(giant, "DisastrousTremor")) {
 			power *= 1.5;
@@ -225,9 +229,6 @@ namespace Gts {
 	}
 
 	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float power, FootEvent kind) {
-		if (!Runtime::HasPerkTeam(giant, "LaunchPerk")) {
-			return;
-		}
 		if (kind == FootEvent::Left) {
 			LaunchActor::GetSingleton().LaunchLeft(giant, radius, power);
 		}
@@ -256,28 +257,22 @@ namespace Gts {
 		}
 	}
 	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float power, NiAVObject* node) {
-		if (!Runtime::HasPerkTeam(giant, "LaunchPerk")) {
-			return;
-		}
 		LaunchActor::LaunchAtNode(giant, radius, power, node);
 	}
 
 	void LaunchActor::LaunchAtNode(Actor* giant, float radius, float power, NiAVObject* node) {
 		auto profiler = Profilers::Profile("Other: Launch Actor Crawl");
-		if (!Runtime::HasPerkTeam(giant, "LaunchPerk")) {
-			return;
-		}
 		if (!node) {
 			return;
 		}
 		if (!giant) {
 			return;
 		}
-		const float BASE_CHECK_DISTANCE = 34.0;
+		const float BASE_CHECK_DISTANCE = 18.0;
 		float giantScale = get_visual_scale(giant);
 		float launchdamage = 1.6;
 
-		float SCALE_RATIO = 6.0;
+		float SCALE_RATIO = GetLaunchThreshold(giant)/GetMovementModifier(giant);
 		if (HasSMT(giant)) {
 			SCALE_RATIO = 1.2;
 			giantScale *= 2.0;
@@ -331,8 +326,8 @@ namespace Gts {
 			return;
 		}
 		float giantScale = get_visual_scale(giant);
-		const float BASE_CHECK_DISTANCE = 34.0;
-		float SCALE_RATIO = 6.0 / GetMovementModifier(giant);
+		const float BASE_CHECK_DISTANCE = 18.0;
+		float SCALE_RATIO = GetLaunchThreshold(giant)/GetMovementModifier(giant);
 		if (HasSMT(giant)) {
 			SCALE_RATIO = 1.2 / GetMovementModifier(giant);
 			giantScale *= 2.0;
@@ -408,7 +403,7 @@ namespace Gts {
 						return;
 					}
 					float tinyScale = get_visual_scale(otherActor);
-					if (giantScale / tinyScale > SCALE_RATIO/GetMovementModifier(giant)) {
+					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
 						for (auto point: footPoints) {
 							float distance = (point - actorLocation).Length();
@@ -431,8 +426,8 @@ namespace Gts {
 			return;
 		}
 		float giantScale = get_visual_scale(giant);
-		const float BASE_CHECK_DISTANCE = 34.0;
-		float SCALE_RATIO = 6.0 / GetMovementModifier(giant);
+		const float BASE_CHECK_DISTANCE = 18.0;
+		float SCALE_RATIO = GetLaunchThreshold(giant)/GetMovementModifier(giant);
 		if (HasSMT(giant)) {
 			SCALE_RATIO = 1.2 / GetMovementModifier(giant);
 			giantScale *= 2.0;
@@ -511,7 +506,7 @@ namespace Gts {
 						return;
 					}
 					float tinyScale = get_visual_scale(otherActor);
-					if (giantScale / tinyScale > SCALE_RATIO/GetMovementModifier(giant)) {
+					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
 						for (auto point: footPoints) {
 							float distance = (point - actorLocation).Length();

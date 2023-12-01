@@ -1748,13 +1748,15 @@ namespace Gts {
 	}
 
 	float GetMovementModifier(Actor* giant) {
+		float modifier = 1.0;
 		if (giant->AsActorState()->IsSprinting()) {
-			return 1.5;
-		} else if (giant->AsActorState()->IsSneaking()) {
-			return 0.6;
-		} else {
-			return 1.0;
+			modifier *= 1.33;
+		} if (giant->AsActorState()->IsWalking()) {
+			modifier *= 0.75;
+		} if (giant->AsActorState()->IsSneaking()) {
+			modifier *= 0.75;
 		}
+		return modifier;
 	}
 
 	float GetGtsSkillLevel() {
