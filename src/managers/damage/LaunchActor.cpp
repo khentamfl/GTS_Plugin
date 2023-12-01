@@ -43,6 +43,7 @@ namespace {
 
 	const float LAUNCH_DAMAGE = 2.4f;
 	const float LAUNCH_KNOCKBACK = 0.02f;
+	const float BASE_CHECK_DISTANCE = 22.0f;
 
 
 	void SetLinearImpulse(bhkRigidBody* body, const hkVector4& a_impulse)
@@ -269,7 +270,6 @@ namespace Gts {
 		if (!giant) {
 			return;
 		}
-		const float BASE_CHECK_DISTANCE = 18.0;
 		float giantScale = get_visual_scale(giant);
 		float launchdamage = 1.6;
 
@@ -327,7 +327,6 @@ namespace Gts {
 			return;
 		}
 		float giantScale = get_visual_scale(giant);
-		const float BASE_CHECK_DISTANCE = 18.0;
 		float SCALE_RATIO = GetLaunchThreshold(giant)/GetMovementModifier(giant);
 		if (HasSMT(giant)) {
 			SCALE_RATIO = 1.2 / GetMovementModifier(giant);
@@ -427,7 +426,6 @@ namespace Gts {
 			return;
 		}
 		float giantScale = get_visual_scale(giant);
-		const float BASE_CHECK_DISTANCE = 18.0;
 		float SCALE_RATIO = GetLaunchThreshold(giant)/GetMovementModifier(giant);
 		if (HasSMT(giant)) {
 			SCALE_RATIO = 1.2 / GetMovementModifier(giant);
