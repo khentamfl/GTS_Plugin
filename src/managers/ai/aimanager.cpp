@@ -122,7 +122,7 @@ namespace {
 		if (!hugging.CanHug(pred, prey)) {
 			return;
 		}
-		if (!IsHostile(pred, prey) && persist.vore_combatonly) {
+		if (!IsHostile(pred, prey) || !IsTeammate(pred) || (!pred->IsInCombat() && persist.vore_combatonly)) {
 			return;
 		}
 		if (prey->formID == 0x14 && !persist.vore_allowplayervore || !AllowActionsWithFollowers(pred, prey)) {
