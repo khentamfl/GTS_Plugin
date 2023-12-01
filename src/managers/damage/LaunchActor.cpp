@@ -231,7 +231,7 @@ namespace Gts {
 	}
 
 	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float power, FootEvent kind) {
-		if (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone(actor)) {
+		if (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone(giant)) {
 			if (kind == FootEvent::Left) {
 				LaunchActor::GetSingleton().LaunchLeft(giant, radius, power);
 			}
