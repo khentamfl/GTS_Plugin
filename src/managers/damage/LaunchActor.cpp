@@ -57,6 +57,7 @@ namespace {
 		if (Runtime::HasPerkTeam(giant, "LaunchPerk")) {
 			threshold = 5.2;
 		}
+		return threshold;
 	}
 
 	float GetLaunchPower_Object(float sizeRatio) {
