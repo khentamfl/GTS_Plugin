@@ -1,3 +1,4 @@
+#include "UI/DebugAPI.hpp"
 #include "raycast.hpp"
 
 using namespace Gts;
@@ -78,7 +79,7 @@ namespace {
 		NiPoint3 delta = end - origin;
 		pick_data.ray = delta; // Length in each axis to travel
 
-		pick_data.rayHitCollectorA8 = &collector;
+		//pick_data.rayHitCollectorA8 = &collector;
 
 		pick_data.rayInput.enableShapeCollectionFilter = false;
 		pick_data.rayInput.filterInfo = bhkCollisionFilter::GetSingleton()->GetNewSystemGroup() << 16 | stl::to_underlying(COL_LAYER::kLOS);
@@ -87,7 +88,21 @@ namespace {
 		bool hit = pick_data.rayOutput.HasHit();
 
 		float min_fraction = 1.0;
-		if (collector.results.size() > 0 && hit) {
+
+		if (collision_world->PickObject(pickData); pick_data.rayOutput.HasHit()) {
+			auto Object = static_cast<COL_LAYER>(pick_data.rayOutput.rootCollidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
+			log::info(" Hit Layer True:  {}", Object);
+			for (auto ray_result: collector.results) {
+				if (ray_result.fraction < min_fraction) {
+					min_fraction = ray_result.fraction;
+				}
+				NiPoint3 hitdata = meter_to_unit(origin + normed * length * min_fraction);
+				DebugAPI::DrawSphere(glm::vec3(hitdata.x, hitdata.y, hitdata.z), 8.0, 800, {1.0, 1.0, 0.0, 1.0});
+			}
+		}
+
+		success = !collector.results.empty();
+		if (collector.results.size() > 0) {
 			success = true;
 			for (auto ray_result: collector.results) {
 				if (ray_result.fraction < min_fraction) {
