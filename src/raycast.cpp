@@ -98,7 +98,7 @@ namespace {
 					min_fraction = fraction;
 				}
 
-				const hkpShape* shape = pick_data.rayOutput.rootCollidable->boundingVolumeData.childShapeKeys.GetShape(); // Shape that was collided with
+				const hkpShape* shape = pick_data.rayOutput.rootCollidable->boundingVolumeData.childShapeKeys->GetShape(); // Shape that was collided with
 				if (shape) {
 					if (shape->type == hkpShapeType::kCapsule) {
 						return HitData; // avoid colliding with capsules
