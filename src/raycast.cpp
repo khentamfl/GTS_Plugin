@@ -90,27 +90,26 @@ namespace {
 
 		if (collision_world->PickObject(pick_data); pick_data.rayOutput.HasHit()) {
 			auto Object = static_cast<COL_LAYER>(pick_data.rayOutput.rootCollidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
-			std::vector<COL_LAYER> blacklist = {COL_LAYER::kCharController, COL_LAYER::kBiped, COL_LAYER::kDeadBip, COL_LAYER::kBipedNoCC};
+			//std::vector<COL_LAYER> blacklist = {COL_LAYER::kCharController, COL_LAYER::kBiped, COL_LAYER::kDeadBip, COL_LAYER::kBipedNoCC};
 			log::info(" Hit Layer True:  {}", Object);
-			for (auto& disallow: blacklist) {
-				if (Object != disallow) {
-					float fraction = pick_data.rayOutput.hitFraction;
-					if (fraction < min_fraction) {
-						min_fraction = fraction;
-					}
-
-					const hkpShape* shape = Object.GetShape(); // Shape that was collided with
-					if (shape) {
-						if (shape->type == hkpShapeType::kCapsule) {
-							return HitData; // avoid colliding with capsules
-						}
-					}
-
-					HitData = meter_to_unit(origin + normed * length * min_fraction);
-					success = true; // we hit something, make it true so effect is applied 
+			if (Object != COL_LAYER::kCharController) {
+				float fraction = pick_data.rayOutput.hitFraction;
+				if (fraction < min_fraction) {
+					min_fraction = fraction;
 				}
-			} 
-		}
+
+				const hkpShape* shape = pick_data.rayOutput.rootCollidable.boundingVolumeData.childShapeKeys.GetShape(); // Shape that was collided with
+				if (shape) {
+					if (shape->type == hkpShapeType::kCapsule) {
+						return HitData; // avoid colliding with capsules
+					}
+				}
+
+				HitData = meter_to_unit(origin + normed * length * min_fraction);
+				success = true; // we hit something, make it true so effect is applied 
+			}
+		} 
+		
 		return HitData;
 	}
 }
