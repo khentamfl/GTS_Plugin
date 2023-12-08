@@ -1459,52 +1459,13 @@ namespace Gts {
 		});
 	}
 
-	void PushForward(Actor* giantref, Actor* tinyref, float power, FormID id) {
-		double startTime = Time::WorldTimeElapsed();
-		ActorHandle tinyHandle = tinyref->CreateRefHandle();
-		ActorHandle gianthandle = giantref->CreateRefHandle();
-		std::string taskname = std::format("PushOther {}, {}", tinyref->formID, id);
-		PushActorAway(giantref, tinyref, 1);
-		// Do this next frame (or rather until some world time has elapsed)
-		TaskManager::Run(taskname, [=](auto& update){
-			Actor* giant = gianthandle.get().get();
-			Actor* tiny = tinyHandle.get().get();
-			if (!giant) {
-				return false;
-			}
-			if (!tiny) {
-				return false;
-			}
-
-      		auto playerRotation = giant->GetCurrent3D()->world.rotate;
-			RE::NiPoint3 localForwardVector{ 0.f, 1.f, 0.f };
-      		RE::NiPoint3 globalForwardVector = playerRotation * localForwardVector;
-
-			RE::NiPoint3 direction = globalForwardVector;
-			log::info("{} direction: {}", giant->GetDisplayFullName(), Vector2Str(direction));
-			double endTime = Time::WorldTimeElapsed();
-
-			if ((endTime - startTime) > 1e-4) {
-				// Time has elapsed
-				TESObjectREFR* tiny_as_object = skyrim_cast<TESObjectREFR*>(tiny);
-				if (tiny_as_object) {
-					ApplyHavokImpulse(tiny_as_object, direction.x, direction.y, direction.z, power);
-				}
-				return false;
-			} else {
-				return true;
-			}
-		});
-	}
-
 	void PushForward(Actor* giantref, Actor* tinyref, float power) {
 		double startTime = Time::WorldTimeElapsed();
 		ActorHandle tinyHandle = tinyref->CreateRefHandle();
 		ActorHandle gianthandle = giantref->CreateRefHandle();
 		std::string taskname = std::format("PushOther {}", tinyref->formID);
 		PushActorAway(giantref, tinyref, 1);
-		// Do this next frame (or rather until some world time has elapsed)
-		TaskManager::Run(taskname, [=](auto& update){
+		TaskManager::Run(taskname, [=](auto& update) {
 			Actor* giant = gianthandle.get().get();
 			Actor* tiny = tinyHandle.get().get();
 			if (!giant) {
@@ -1522,7 +1483,7 @@ namespace Gts {
 			log::info("{} direction: {}", giant->GetDisplayFullName(), Vector2Str(direction));
 			double endTime = Time::WorldTimeElapsed();
 
-			if ((endTime - startTime) > 1e-4) {
+			if ((endTime - startTime) > 0.08) {
 				// Time has elapsed
 				TESObjectREFR* tiny_as_object = skyrim_cast<TESObjectREFR*>(tiny);
 				if (tiny_as_object) {

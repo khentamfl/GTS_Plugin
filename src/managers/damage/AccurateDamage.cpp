@@ -115,7 +115,7 @@ namespace {
 					PushForward(Caster, Target, 100);
 					AddSMTDuration(Caster, 2.5);
 					StaggerActor(Caster);
-					Caster->ApplyCurrent(0.5 * target_scale, 0.5 * target_scale); Target->ApplyCurrent(0.5 * caster_scale, 0.5 * caster_scale);  // Else simulate collision
+					Caster->ApplyCurrent(0.5 * target_scale, 0.5 * target_scale);
 					Target->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.75);
 					Caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.25);
 					shake_camera(Caster, 4.35, 0.5);

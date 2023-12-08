@@ -153,7 +153,7 @@ namespace {
 			}
 			PushActorAway(giant, tiny, 1.0);
 
-			std::string name = std::format("PushOther_{}", tiny->formID);
+			std::string name = std::format("LaunchOther_{}", tiny->formID);
 
 			ActorHandle tinyHandle = tiny->CreateRefHandle();
 
