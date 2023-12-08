@@ -281,9 +281,10 @@ namespace {
 	}
 
 	void ThighCrushSpareEvent(const InputEventData& data) {
-		auto player = PlayerCharacter::GetSingleton();
-		//BlockFirstPerson(player, false);
-		AnimationManager::StartAnim("ThighLoopExit", player);
+		if (!IsFreeCameraEnabled()) {
+			auto player = PlayerCharacter::GetSingleton();
+			AnimationManager::StartAnim("ThighLoopExit", player);
+		}
 	}
 }
 

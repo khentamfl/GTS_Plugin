@@ -53,7 +53,7 @@ namespace {
 	}
 
 
-	NiPoint3 CastRay_Experimental(TESObjectREFR* ref, const NiPoint3& in_origin, const NiPoint3& direction, const float& unit_length, bool& success) {
+	NiPoint3 CastRay_StaticsOnly(TESObjectREFR* ref, const NiPoint3& in_origin, const NiPoint3& direction, const float& unit_length, bool& success) {
 		float length = unit_to_meter(unit_length);
 		success = false;
 		if (!ref) {
@@ -79,8 +79,6 @@ namespace {
 		NiPoint3 delta = end - origin;
 		pick_data.ray = delta; // Length in each axis to travel
 
-		//pick_data.rayHitCollectorA8 = &collector;
-
 		pick_data.rayInput.enableShapeCollectionFilter = false;
 		pick_data.rayInput.filterInfo = bhkCollisionFilter::GetSingleton()->GetNewSystemGroup() << 16 | stl::to_underlying(COL_LAYER::kLOS);
 
@@ -90,7 +88,6 @@ namespace {
 
 		if (collision_world->PickObject(pick_data); pick_data.rayOutput.HasHit()) {
 			auto Object = static_cast<COL_LAYER>(pick_data.rayOutput.rootCollidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
-			//std::vector<COL_LAYER> blacklist = {COL_LAYER::kCharController, COL_LAYER::kBiped, COL_LAYER::kDeadBip, COL_LAYER::kBipedNoCC};
 			log::info(" Hit Layer True:  {}", Object);
 			if (Object != COL_LAYER::kCharController) {
 				float fraction = pick_data.rayOutput.hitFraction;
@@ -242,7 +239,7 @@ namespace Gts {
 	for (auto& group: groups) {
 		collector.add_group_filter(group);
 	}*/
-    return CastRay_Experimental(ref, origin, direction, length, success);
+    return CastRay_StaticsOnly(ref, origin, direction, length, success);
   }
 }
 

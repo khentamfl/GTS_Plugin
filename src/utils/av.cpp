@@ -1,3 +1,4 @@
+#include "utils/actorUtils.hpp"
 #include "utils/av.hpp"
 #include "profiler.hpp"
 
@@ -28,6 +29,9 @@ namespace Gts {
 	}
 
 	void DamageAV(Actor* actor, ActorValue av, float amount) {
+		if (IsInGodMode(actor) && amount > 0) { // do nothing if TGM is on and value is > 0
+			return;
+		}
 		actor->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, av, -amount);
 	}
 

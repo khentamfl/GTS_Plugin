@@ -563,6 +563,29 @@ namespace Gts {
 		}
 	}
 
+	bool IsInGodMode(Actor* giant) {
+		bool tgm = false;
+		if (actor->formID != 0x14) {
+			return false;
+		} 
+		auto player = PlayerCharacter::GetSingleton();
+		if (player) {
+			tgm = player->IsGodMode();
+		}
+		return tgm;
+	}
+
+	bool IsFreeCameraEnabled() {
+		bool tfc = false;
+		auto camera = PlayerCamera::GetSingleton();
+		if (camera) {
+			if (camera->IsInFreeCameraMode()) {
+				tfc = true;
+			}
+		}
+		return tfc;
+	}
+
 	bool SizeRaycastEnabled() {
 		return Persistent::GetSingleton().SizeRaycast_Enabled;
 	}

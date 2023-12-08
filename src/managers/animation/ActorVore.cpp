@@ -307,8 +307,6 @@ namespace {
 		}
 		GRumble::Stop("BodyRumble", &data.giant);
 		ToggleEmotionEdit(giant, false);
-		//BlockFirstPerson(giant, false);
-		//AllowToDoVore(giant, true); // Allow to do Vore again
 	}
 }
 

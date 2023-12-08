@@ -72,8 +72,12 @@ namespace Gts {
 	bool IsHeadtracking(Actor* giant);
 	bool IsHostile(Actor* giant, Actor* tiny);
 	bool AllowActionsWithFollowers(Actor* giant, Actor* tiny);
+	bool IsInGodMode(Actor* giant);
+	bool IsFreeCameraEnabled();
 	bool SizeRaycastEnabled();
 	bool IsDebugEnabled();
+	
+	
 	// Gts Bools end
 
 	// GTS Actor Functions

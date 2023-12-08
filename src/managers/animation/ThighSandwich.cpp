@@ -365,9 +365,10 @@ namespace {
 	}
 
 	void ThighSandwichExitEvent(const InputEventData& data) {
-		auto player = PlayerCharacter::GetSingleton();
-		//BlockFirstPerson(player, false);
-		AnimationManager::StartAnim("ThighExit", player);
+		if (!IsFreeCameraEnabled()) {
+			auto player = PlayerCharacter::GetSingleton();
+			AnimationManager::StartAnim("ThighExit", player);
+		}
 	}
 }
 

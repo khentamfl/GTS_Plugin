@@ -130,7 +130,7 @@ exclusive = false
 
 [[InputEvent]]
 name = "ThighCrushSpare"
-keys = ["LSHIFT", "W"]
+keys = ["W"]
 exclusive = true
 
 # ^ Ways to Exit Thigh Crush animation.
@@ -173,8 +173,9 @@ duration = 0.5
 
 [[InputEvent]]
 name = "ThighSandwichExit"
-keys = ["LSHIFT", "W"]
+keys = ["W"]
 exclusive = true
+
 
 # ^ Ways to exit Thigh Sandwich. 
 
