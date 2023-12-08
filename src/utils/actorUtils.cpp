@@ -568,10 +568,7 @@ namespace Gts {
 		if (giant->formID != 0x14) {
 			return false;
 		} 
-		auto player = PlayerCharacter::GetSingleton();
-		if (player) {
-			GodMode = RE::IsGodMode();
-		}
+		auto GodMode = PlayerCharacter::IsGodMode();
 		return GodMode;
 	}
 
