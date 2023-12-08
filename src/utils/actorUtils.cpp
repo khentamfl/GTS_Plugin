@@ -564,12 +564,11 @@ namespace Gts {
 	}
 
 	bool IsInGodMode(Actor* giant) {
-		bool GodMode = false;
 		if (giant->formID != 0x14) {
 			return false;
-		} 
-		auto GodMode = PlayerCharacter::IsGodMode();
-		return GodMode;
+		}
+		REL::Relocation<bool*> singleton{ RELOCATION_ID(517711, 404238) };
+		return *singleton;
 	}
 
 	bool IsFreeCameraEnabled() {
