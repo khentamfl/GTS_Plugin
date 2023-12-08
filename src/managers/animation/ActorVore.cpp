@@ -295,7 +295,7 @@ namespace {
 		DoFootstepSound(&data.giant, 0.90, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 0.90, FootEvent::Right, RNode);
 		DoDamageEffect(&data.giant, 1.6, 1.3, 30, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
-		DoLaunch(&data.giant, 0.50 * perk, 0.80 * data.animSpeed, FootEvent::Right);
+		DoLaunch(&data.giant, 0.60 * perk, 0.80 * data.animSpeed, FootEvent::Right);
 	}
 
 	void GTSvore_standup_end(AnimationEventData& data) {

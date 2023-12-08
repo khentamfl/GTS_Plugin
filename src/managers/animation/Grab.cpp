@@ -253,10 +253,7 @@ namespace {
 				bonus = 3.0;
 			}
 
-			
 			InflictSizeDamage(giant, grabbedActor, damage);
-
-			damage *= resist; // take enemy resistance into account, it is important to do that after damage is done, for next checks
 
 			GRumble::Once("GrabAttack", giant, 5.0 * bonus, 0.05, "NPC L Hand [LHnd]");
 

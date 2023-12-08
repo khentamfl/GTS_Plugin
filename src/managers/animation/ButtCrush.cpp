@@ -285,7 +285,7 @@ namespace {
 				DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC R Butt");
 				DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC L Butt");
 				DoFootstepSound(giant, 1.25, FootEvent::Right, RNode);
-				DoLaunch(&data.giant, 1.10 * perk, 4.20, FootEvent::Butt);
+				DoLaunch(&data.giant, 1.30 * perk, 4.20, FootEvent::Butt);
 				GRumble::Once("Butt_L", &data.giant, 3.60 * damage, 0.02, "NPC R Butt");
 				GRumble::Once("Butt_R", &data.giant, 3.60 * damage, 0.02, "NPC L Butt");
 			}

@@ -141,8 +141,8 @@ namespace Gts {
 
 		float SCALE_RATIO = 1.25;
 		if (HasSMT(giant)) {
-			SCALE_RATIO = 1.10;
-			giantScale *= 2.0;
+			SCALE_RATIO = 0.9;
+			giantScale *= 1.3;
 		}
 
 		NiPoint3 NodePosition = node->world.translate;

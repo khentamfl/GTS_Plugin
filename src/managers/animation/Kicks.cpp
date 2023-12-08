@@ -90,13 +90,13 @@ namespace {
 		DoDamageEffect(&data.giant, 1.40, 1.6, 10, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 1.0, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.85, 1.45, FootEvent::Right);
+		DoLaunch(&data.giant, 0.8, 1.45, FootEvent::Right);
 	}
 	void GTS_Kick_Stomp_L(AnimationEventData& data) {
 		DoDamageEffect(&data.giant, 1.40, 1.6, 10, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, 1.0, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.85, 1.45, FootEvent::Left);
+		DoLaunch(&data.giant, 0.8, 1.45, FootEvent::Left);
 	}
 
 	void GTS_Kick_HitBox_On_R(AnimationEventData& data) {

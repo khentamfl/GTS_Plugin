@@ -1077,7 +1077,11 @@ namespace Gts {
 		}
 		bool dead = giant->IsDead();
 		bool everyone = Runtime::GetBool("PreciseDamageOthers");
-		return !dead && everyone;
+		if (!dead && everyone) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	void TrackFeet(Actor* giant, float number, bool enable) {
@@ -2233,8 +2237,8 @@ namespace Gts {
 	}
 
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
-		float resistance = AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth);
-		DamageAV(receiver, ActorValue::kHealth, value * resistance);
+		//float resistance = AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth);
+		DamageAV(receiver, ActorValue::kHealth, value);
 	}
 
 	void EditDetectionLevel(Actor* actor, Actor* giant) { // Unused and does nothing.

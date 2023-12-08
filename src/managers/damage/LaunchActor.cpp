@@ -105,7 +105,7 @@ namespace {
 		float DamageMult = 0.6;
 		float giantSize = get_visual_scale(giant);
 
-		float startpower = 3.0; // determines default power of launching someone
+		float startpower = 9.0; // determines default power of launching someone
 
 		float threshold = 6.0;
 		float SMT = 1.0;
@@ -114,7 +114,7 @@ namespace {
 		
 		
 		if (HasSMT(giant)) {
-			giantSize += 12.0;
+			giantSize += 4.0;
 			threshold = 0.8;
 			force += 0.20;
 		}

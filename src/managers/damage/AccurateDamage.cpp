@@ -103,10 +103,7 @@ namespace {
 					CrushBonuses(Caster, Target);
 
 					Runtime::PlaySound("GtsCrushSound", Caster, 1.0, 1.0);
-					Runtime::PlaySound("GtsCrushSound", Caster, 1.0, 1.0);
-					Runtime::PlaySound("GtsCrushSound", Caster, 1.0, 1.0);
 
-					PrintDeathSource(Caster, Target, DamageSource::Collision); // Report Death
 					shake_camera(Caster, 0.75 * caster_scale, 0.45);
 					Cprint("{} was instantly turned into mush by the body of {}", Target->GetDisplayFullName(), Caster->GetDisplayFullName());
 					if (Runtime::HasPerk(Caster, "NoSpeedLoss")) {
@@ -115,14 +112,14 @@ namespace {
 						AttributeManager::GetSingleton().OverrideSMTBonus(0.35); // Reduce more speed after crush
 					}
 				} else if (CasterHp < (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
-					PushForward(Caster, Target, 16.8);
+					PushForward(Caster, Target, 100);
 					AddSMTDuration(Caster, 2.5);
 					StaggerActor(Caster);
 					Caster->ApplyCurrent(0.5 * target_scale, 0.5 * target_scale); Target->ApplyCurrent(0.5 * caster_scale, 0.5 * caster_scale);  // Else simulate collision
 					Target->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.75);
 					Caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.25);
 					shake_camera(Caster, 4.35, 0.5);
-					Runtime::PlaySound("lJumpLand", Caster, 0.5, 1.0);
+					Runtime::PlaySound("lJumpLand", Caster, 1.0, 1.0);
 
 					std::string text_a = Target->GetDisplayFullName();
 					std::string text_b = " is too tough to be crushed";
