@@ -564,15 +564,15 @@ namespace Gts {
 	}
 
 	bool IsInGodMode(Actor* giant) {
-		bool tgm = false;
-		if (actor->formID != 0x14) {
+		bool GodMode = false;
+		if (giant->formID != 0x14) {
 			return false;
 		} 
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
-			tgm = player->IsGodMode();
+			GodMode = player->IsGodMode();
 		}
-		return tgm;
+		return GodMode;
 	}
 
 	bool IsFreeCameraEnabled() {
