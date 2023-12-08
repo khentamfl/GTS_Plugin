@@ -91,13 +91,15 @@ namespace {
 
 		if (collision_world->PickObject(pick_data); pick_data.rayOutput.HasHit()) {
 			auto Object = static_cast<COL_LAYER>(pick_data.rayOutput.rootCollidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
-			log::info(" Hit Layer True:  {}", Object);
+			log::info(" Hit Layer True:  {}, result count: {}", Object, collector.results.size());
 			for (auto ray_result: collector.results) {
-				if (ray_result.fraction < min_fraction) {
+				float fraction = ray_result.fraction;
+				if (fraction < min_fraction) {
 					min_fraction = ray_result.fraction;
 				}
 				NiPoint3 hitdata = meter_to_unit(origin + normed * length * min_fraction);
 				DebugAPI::DrawSphere(glm::vec3(hitdata.x, hitdata.y, hitdata.z), 8.0, 800, {1.0, 1.0, 0.0, 1.0});
+				log::info(" Hit Layer Coords:  {}, result true", Vector2Str(hitdata));
 			}
 		}
 
