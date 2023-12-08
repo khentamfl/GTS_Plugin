@@ -80,7 +80,7 @@ namespace {
 		NiPoint3 ray_dn(0.0, 0.0, -1.0);
 
 		if (debug) {
-			DebugAPI::DrawSphere(glm::vec3(ray_start.x, ray_start.y, ray_start.z), 8.0, {0.0, 1.0, 0.0, 1.0});
+			DebugAPI::DrawSphere(glm::vec3(ray_start.x, ray_start.y, ray_start.z), 8.0, 100, {0.0, 1.0, 0.0, 1.0});
 		}
 
 		float ray_length = 720;
@@ -101,8 +101,8 @@ namespace {
 		}
 
 		if (debug) {
-			DebugAPI::DrawSphere(glm::vec3(endpos_up.x, endpos_up.y, endpos_up.z), 5.0, {1.0, 0.0, 0.0, 1.0});
-			DebugAPI::DrawSphere(glm::vec3(endpos_dn.x, endpos_dn.y, endpos_dn.z), 5.0, {0.0, 0.0, 1.0, 1.0});
+			DebugAPI::DrawSphere(glm::vec3(endpos_up.x, endpos_up.y, endpos_up.z), 5.0, 100, {1.0, 0.0, 0.0, 1.0});
+			DebugAPI::DrawSphere(glm::vec3(endpos_dn.x, endpos_dn.y, endpos_dn.z), 5.0, 100, {0.0, 0.0, 1.0, 1.0});
 		}
 	}
 
