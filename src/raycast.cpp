@@ -84,40 +84,21 @@ namespace {
 		pick_data.rayInput.enableShapeCollectionFilter = false;
 		pick_data.rayInput.filterInfo = bhkCollisionFilter::GetSingleton()->GetNewSystemGroup() << 16 | stl::to_underlying(COL_LAYER::kLOS);
 
-		collision_world->PickObject(pick_data);
-		bool hit = pick_data.rayOutput.HasHit();
-
 		float min_fraction = 1.0;
 
 		if (collision_world->PickObject(pick_data); pick_data.rayOutput.HasHit()) {
 			auto Object = static_cast<COL_LAYER>(pick_data.rayOutput.rootCollidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
 			log::info(" Hit Layer True:  {}, result count: {}", Object, collector.results.size());
-			for (auto ray_result: collector.results) {
-				float fraction = ray_result.fraction;
-				if (fraction < min_fraction) {
-					min_fraction = ray_result.fraction;
-				}
-				NiPoint3 hitdata = meter_to_unit(origin + normed * length * min_fraction);
-				DebugAPI::DrawSphere(glm::vec3(hitdata.x, hitdata.y, hitdata.z), 8.0, 800, {1.0, 1.0, 0.0, 1.0});
-				log::info(" Hit Layer Coords:  {}, result true", Vector2Str(hitdata));
+			float fraction = pick_data.rayOutput.hitFraction;
+			if (fraction < min_fraction) {
+				min_fraction = fraction;
 			}
-		}
-
-		success = !collector.results.empty();
-		if (collector.results.size() > 0) {
-			success = true;
-			for (auto ray_result: collector.results) {
-				if (ray_result.fraction < min_fraction) {
-					min_fraction = ray_result.fraction;
-				}
-			}
-			auto Object = static_cast<COL_LAYER>(pick_data.rayOutput.rootCollidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
-			log::info(" Hit Layer {}", Object);
-
-			return meter_to_unit(origin + normed * length * min_fraction);
-		} else {
-			return NiPoint3();
-		}
+			NiPoint3 hitdata = meter_to_unit(origin + normed * length * min_fraction);
+			DebugAPI::DrawSphere(glm::vec3(hitdata.x, hitdata.y, hitdata.z), 8.0, 800, {1.0, 1.0, 0.0, 1.0});
+			return hitdata;
+			log::info(" Hit Layer Coords:  {}, result true", Vector2Str(hitdata));
+		} 
+		return NiPoint3();
 	}
 }
 
