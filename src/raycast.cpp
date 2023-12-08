@@ -53,7 +53,7 @@ namespace {
 	}
 
 
-	NiPoint3 CastRay_Experimental(TESObjectREFR* ref, const NiPoint3& in_origin, const NiPoint3& direction, const float& unit_length, RayCollector& collector, bool& success) {
+	NiPoint3 CastRay_Experimental(TESObjectREFR* ref, const NiPoint3& in_origin, const NiPoint3& direction, const float& unit_length, bool& success) {
 		float length = unit_to_meter(unit_length);
 		success = false;
 		if (!ref) {
@@ -87,16 +87,15 @@ namespace {
 		float min_fraction = 1.0;
 
 		if (collision_world->PickObject(pick_data); pick_data.rayOutput.HasHit()) {
-			auto Object = static_cast<COL_LAYER>(pick_data.rayOutput.rootCollidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
-			log::info(" Hit Layer True:  {}, result count: {}", Object, collector.results.size());
+			//auto Object = static_cast<COL_LAYER>(pick_data.rayOutput.rootCollidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
+			//log::info(" Hit Layer True:  {},", Object);
 			float fraction = pick_data.rayOutput.hitFraction;
 			if (fraction < min_fraction) {
 				min_fraction = fraction;
 			}
 			NiPoint3 hitdata = meter_to_unit(origin + normed * length * min_fraction);
-			DebugAPI::DrawSphere(glm::vec3(hitdata.x, hitdata.y, hitdata.z), 8.0, 800, {1.0, 1.0, 0.0, 1.0});
+			success = true; // we hit something
 			return hitdata;
-			log::info(" Hit Layer Coords:  {}, result true", Vector2Str(hitdata));
 		} 
 		return NiPoint3();
 	}
@@ -229,15 +228,15 @@ namespace Gts {
   }
 
   NiPoint3 CastRayStatics(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success) {
-    RayCollector collector = RayCollector();
+    /*RayCollector collector = RayCollector();
 	collector.add_filter(ref->Get3D1(false));
 	collector.add_filter(ref->Get3D1(true));
 	collector.skip_capsules = true;
 	std::vector<COL_LAYER> groups = {COL_LAYER::kUnidentified, COL_LAYER::kProps, COL_LAYER::kStatic, COL_LAYER::kTerrain, COL_LAYER::kGround, COL_LAYER::kInvisibleWall, COL_LAYER::kTransparentWall};
 	for (auto& group: groups) {
 		collector.add_group_filter(group);
-	}
-    return CastRay_Experimental(ref, origin, direction, length, collector, success);
+	}*/
+    return CastRay_Experimental(ref, origin, direction, length, success);
   }
 }
 
