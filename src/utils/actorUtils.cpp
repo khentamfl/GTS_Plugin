@@ -570,7 +570,7 @@ namespace Gts {
 		} 
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
-			GodMode = player->IsGodMode();
+			GodMode = IsGodMode();
 		}
 		return GodMode;
 	}
