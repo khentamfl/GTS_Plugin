@@ -50,6 +50,58 @@ namespace {
 			return NiPoint3();
 		}
 	}
+
+
+	NiPoint3 CastRay_Experimental(TESObjectREFR* ref, const NiPoint3& in_origin, const NiPoint3& direction, const float& unit_length, RayCollector& collector, bool& success) {
+		float length = unit_to_meter(unit_length);
+		success = false;
+		if (!ref) {
+			return NiPoint3();
+		}
+		auto cell = ref->GetParentCell();
+		if (!cell) {
+			return NiPoint3();
+		}
+		auto collision_world = cell->GetbhkWorld();
+		if (!collision_world) {
+			return NiPoint3();
+		}
+		bhkPickData pick_data;
+
+		NiPoint3 origin = unit_to_meter(in_origin);
+		pick_data.rayInput.from = origin;
+
+		NiPoint3 normed = direction / direction.Length();
+		NiPoint3 end = origin + normed * length;
+		pick_data.rayInput.to = end;
+
+		NiPoint3 delta = end - origin;
+		pick_data.ray = delta; // Length in each axis to travel
+
+		pick_data.rayHitCollectorA8 = &collector;
+
+		pick_data.rayInput.enableShapeCollectionFilter = false;
+		pick_data.rayInput.filterInfo = bhkCollisionFilter::GetSingleton()->GetNewSystemGroup() << 16 | stl::to_underlying(COL_LAYER::kLOS);
+
+		collision_world->PickObject(pick_data);
+		bool hit = pick_data.rayOutput.HasHit();
+
+		float min_fraction = 1.0;
+		if (collector.results.size() > 0 && hit) {
+			success = true;
+			for (auto ray_result: collector.results) {
+				if (ray_result.fraction < min_fraction) {
+					min_fraction = ray_result.fraction;
+				}
+			}
+			auto Object = static_cast<COL_LAYER>(pick_data.rayOutput.rootCollidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
+			log::info(" Hit Layer {}", Object);
+
+			return meter_to_unit(origin + normed * length * min_fraction);
+		} else {
+			return NiPoint3();
+		}
+	}
 }
 
 namespace Gts {
@@ -81,17 +133,17 @@ namespace Gts {
 	}
 
 	void RayCollector::AddRayHit(const hkpCdBody& a_body, const hkpShapeRayCastCollectorOutput& a_hitInfo) {
-    log::info("New hit:");
-		const hkpShape* shape = a_body.GetShape(); // Shape that was collided with
-    if (shape) {
-      auto ni_shape = shape->userData;
-			if (ni_shape) {
-        auto filter_info = ni_shape->filterInfo;
-        log::info("  - First Shape: {}", filter_info);
-        COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
-        log::info("  - Layer {}", collision_layer);
-        log::info("  - Group {}", filter_info >> 16);
-      }
+		log::info("New hit:");
+			const hkpShape* shape = a_body.GetShape(); // Shape that was collided with
+		if (shape) {
+		auto ni_shape = shape->userData;
+				if (ni_shape) {
+			auto filter_info = ni_shape->filterInfo;
+			log::info("  - First Shape: {}", filter_info);
+			COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
+			log::info("  - Layer {}", collision_layer);
+			log::info("  - Group {}", filter_info >> 16);
+		}
     }
 		// Search for top level shape
 		const hkpCdBody* top_body = a_body.parent;
@@ -172,22 +224,22 @@ namespace Gts {
 
   NiPoint3 CastRay(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success) {
     RayCollector collector = RayCollector();
-		collector.add_filter(ref->Get3D1(false));
-		collector.add_filter(ref->Get3D1(true));
+	collector.add_filter(ref->Get3D1(false));
+	collector.add_filter(ref->Get3D1(true));
     collector.skip_capsules = false;
     return CastRayImpl(ref, origin, direction, length, collector, success);
   }
 
   NiPoint3 CastRayStatics(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success) {
     RayCollector collector = RayCollector();
-		collector.add_filter(ref->Get3D1(false));
-		collector.add_filter(ref->Get3D1(true));
-    collector.skip_capsules = true;
-    std::vector<COL_LAYER> groups = {COL_LAYER::kUnidentified, COL_LAYER::kProps, COL_LAYER::kStatic, COL_LAYER::kTerrain, COL_LAYER::kGround, COL_LAYER::kInvisibleWall, COL_LAYER::kTransparentWall};
-    for (auto& group: groups) {
-      collector.add_group_filter(group);
-    }
-    return CastRayImpl(ref, origin, direction, length, collector, success);
+	collector.add_filter(ref->Get3D1(false));
+	collector.add_filter(ref->Get3D1(true));
+	collector.skip_capsules = true;
+	std::vector<COL_LAYER> groups = {COL_LAYER::kUnidentified, COL_LAYER::kProps, COL_LAYER::kStatic, COL_LAYER::kTerrain, COL_LAYER::kGround, COL_LAYER::kInvisibleWall, COL_LAYER::kTransparentWall};
+	for (auto& group: groups) {
+		collector.add_group_filter(group);
+	}
+    return CastRay_Experimental(ref, origin, direction, length, collector, success);
   }
 }
 
