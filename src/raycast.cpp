@@ -99,6 +99,13 @@ namespace {
 						min_fraction = fraction;
 					}
 
+					const hkpShape* shape = Object.GetShape(); // Shape that was collided with
+					if (shape) {
+						if (shape->type == hkpShapeType::kCapsule) {
+							return HitData; // avoid colliding with capsules
+						}
+					}
+
 					HitData = meter_to_unit(origin + normed * length * min_fraction);
 					success = true; // we hit something, make it true so effect is applied 
 				}
