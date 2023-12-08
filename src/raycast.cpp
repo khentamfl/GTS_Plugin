@@ -89,7 +89,7 @@ namespace {
 
 		float min_fraction = 1.0;
 
-		if (collision_world->PickObject(pickData); pick_data.rayOutput.HasHit()) {
+		if (collision_world->PickObject(pick_data); pick_data.rayOutput.HasHit()) {
 			auto Object = static_cast<COL_LAYER>(pick_data.rayOutput.rootCollidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
 			log::info(" Hit Layer True:  {}", Object);
 			for (auto ray_result: collector.results) {
