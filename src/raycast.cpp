@@ -84,20 +84,27 @@ namespace {
 		pick_data.rayInput.enableShapeCollectionFilter = false;
 		pick_data.rayInput.filterInfo = bhkCollisionFilter::GetSingleton()->GetNewSystemGroup() << 16 | stl::to_underlying(COL_LAYER::kLOS);
 
+		NiPoint3 HitData;
+
 		float min_fraction = 1.0;
 
 		if (collision_world->PickObject(pick_data); pick_data.rayOutput.HasHit()) {
-			//auto Object = static_cast<COL_LAYER>(pick_data.rayOutput.rootCollidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
-			//log::info(" Hit Layer True:  {},", Object);
-			float fraction = pick_data.rayOutput.hitFraction;
-			if (fraction < min_fraction) {
-				min_fraction = fraction;
-			}
-			NiPoint3 hitdata = meter_to_unit(origin + normed * length * min_fraction);
-			success = true; // we hit something
-			return hitdata;
-		} 
-		return NiPoint3();
+			auto Object = static_cast<COL_LAYER>(pick_data.rayOutput.rootCollidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
+			std::vector<COL_LAYER> blacklist = {COL_LAYER::kCharController, COL_LAYER::kBiped, COL_LAYER::kDeadBip, COL_LAYER::kBipedNoCC};
+			log::info(" Hit Layer True:  {}", Object);
+			for (auto& disallow: blacklist) {
+				if (Object != disallow) {
+					float fraction = pick_data.rayOutput.hitFraction;
+					if (fraction < min_fraction) {
+						min_fraction = fraction;
+					}
+
+					HitData = meter_to_unit(origin + normed * length * min_fraction);
+					success = true; // we hit something, make it true so effect is applied 
+				}
+			} 
+		}
+		return HitData;
 	}
 }
 
