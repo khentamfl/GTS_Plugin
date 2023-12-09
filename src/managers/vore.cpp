@@ -259,58 +259,8 @@ namespace Gts {
 				AttachToObjectA(giant, tiny);
 			}
 		}
-		// Hide Actor
-		if (this->killZoneEnabled) {
-			auto headNodeName = "NPC Head [Head]";
-			auto headNode = find_node_any(giant, headNodeName);
-			if (headNode) {
-				NiPoint3 headCenter = headNode->world.translate;
-				float headKillRadius = 10.0 * giantScale;
-				for (auto& [key, tinyref]: this->tinies) {
-					auto tiny = tinyref.get().get();
-					// Get all nodes in range
-					std::vector<NiAVObject*> nodes_inrange = {};
-					std::vector<std::string> names_inrange = {};
-					auto root = tiny->GetCurrent3D();
-					VisitNodes(root, [&nodes_inrange, &headCenter, &headKillRadius, &names_inrange](NiAVObject& node) {
-						float distance = (node.world.translate - headCenter).Length();
-						if (distance < headKillRadius) {
-							nodes_inrange.push_back(&node);
-							names_inrange.push_back(node.name.c_str());
-						}
-						return true;
-					});
-
-					// Check all children of the nodes
-					std::vector<NiAVObject*> excludedChildren = {};
-					excludedChildren.push_back(find_node(tiny, "NPC ROOT [ROOT]", false));
-					excludedChildren.push_back(find_node(tiny, "NPC COM [COM]", false));
-					excludedChildren.push_back(find_node(tiny, "NPC Pelvis [Pelv]", false));
-					excludedChildren.push_back(find_node(tiny, "NPC Spine [Spn0]", false));
-					excludedChildren.push_back(find_node(tiny, "Camera Control", false));
-					excludedChildren.push_back(find_node(tiny, "NPC Translate", false));
-					for (auto& node: nodes_inrange) {
-						bool anyInvalid = false;
-						VisitNodes(node, [&anyInvalid, &excludedChildren](NiAVObject& node_child) {
-							for (auto excludedNode: excludedChildren) {
-								if (excludedNode == &node_child) {
-									anyInvalid = true;
-									return false;
-								}
-							}
-							return true;
-						});
-						if (!anyInvalid) {
-
-							tiny->SetAlpha(0.0);//node->local.scale = 0.50;
-							update_node(node);
-						} else {
-						}
-					}
-				}
-			}
-		}
 	}
+	
 
 	VoreBuff::VoreBuff(Actor* giant, Actor* tiny) : factor(Spring(0.0, 1.0)), giant(giant ? giant->CreateRefHandle() : ActorHandle()), tiny(tiny ? tiny->CreateRefHandle() : ActorHandle()) {
 		this->duration = 40.0;
@@ -364,6 +314,8 @@ namespace Gts {
 				this->factor.halflife = this->duration * 0.5;
 				this->state = VoreBuffState::Running;
 
+				log::info("Vore halflife: {}", this->factor.halflife);
+
 				Vore_AdvanceQuest(giant, this->WasDragon, this->WasGiant); // advance quest
 				break;
 			}
@@ -376,12 +328,17 @@ namespace Gts {
 
 				mod_target_scale(giant, sizeToApply);
 				AddStolenAttributes(giant, sizeToApply);
+
+				log::info("Vore factor value: {}", this->factor.value);
+
 				if (this->factor.value >= 0.99) {
+					log::info("Vore factor value > 0.99");
 					this->state = VoreBuffState::Finishing;
 				}
 				break;
 			}
 			case VoreBuffState::Finishing: {
+				log::info("Vore is finishing");
 				if (!AllowDevourment()) {
 					if (this->giant) {
 						AdjustGiantessSkill(giant, this->tinySize);
@@ -402,6 +359,8 @@ namespace Gts {
 						}
 					}
 				}
+
+				log::info("Vore is done");
 
 				this->state = VoreBuffState::Done;
 				break;

@@ -175,7 +175,6 @@ namespace Gts {
 					if (!tiny->IsDead()) {
 						KillActor(giant, tiny);
 					}
-					//Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
 					float currentSize = get_visual_scale(tiny);
 
 					std::string taskname = std::format("CrushTiny {}", tiny->formID);
