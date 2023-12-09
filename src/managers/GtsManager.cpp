@@ -52,6 +52,12 @@ namespace {
 					}
 				}
 			}
+
+			auto charCont = actor->GetCharController();
+			if (charCont) {
+				log::info("Lod distance of {} is {}", actor->GetDisplayFullName(), charCont->lodDistance);
+				//charCont->lodDistance = 76.0 + (76.0 * power);
+			}
 		}
 	}
 

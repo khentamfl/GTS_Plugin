@@ -29,6 +29,13 @@ namespace Hooks
 					}
 				}
 			}
+			
+			if (actor->formID == 0x14) {
+				auto charInstance = animGraphManager->characterInstance;
+				if (charInstance) {
+					log::info("Current lod of {} is {}", actor->GetDisplayFullName(), charInstance->currentLOD);
+				}
+			}
 		}
 		_Update(a_this, a_context, a_timestep * anim_speed);
 	}
