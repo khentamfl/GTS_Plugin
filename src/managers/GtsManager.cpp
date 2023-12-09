@@ -53,20 +53,8 @@ namespace {
 					}
 				}
 			}
-
-			auto Camera = GetNiCamera();
-			if (Camera && actor->formID == 0x14) {
-				auto data = Camera->GetRuntimeData2();
-				float minDist = data.minNearPlaneDist;
-				float maxDist = data.maxFarNearRatio;
-				float LOD = data.lodAdjust;
-				log::info("MinDist: {}, maxDist: {}, LOD: {}", minDist, maxDist, LOD);
-				data.maxFarNearRatio = 23589.9 * get_visual_scale(actor);
-				data.lodAdjust = 1.0625 * get_visual_scale(actor);
-			}
 		}
 	}
-
 	/*void WaterExperiments(Actor* giant) {
 		auto shaders = BSShaderManager::State& GetSingleton();
 		if (shaders) {
@@ -106,11 +94,15 @@ namespace {
 		float room_height = fabs(endpos_dn.z - endpos_up.z);
 		float room_height_m = unit_to_meter(room_height);
 		float meter_to_scale = room_height_m/1.82; // / height by 1.82 (default character height)
+		float expected = meter_to_scale * 0.82;
 
-
-		if (scale > meter_to_scale * 0.82) {
+		if (scale > expected) {
 			float adjust = std::clamp(meter_to_scale/stateScale * 0.82f, 1.0f, 8.0f); // Min is x1.0 (disallow to go below that), max is x8.0
-			set_target_scale(giant, adjust);
+			float target = get_target_scale(giant);
+			mod_target_scale(giant, (-adjust * 0.0025) * scale);
+			if (target < get_natural_scale(giant)) {
+				set_target_scale(giant, adjust);
+			}
 		}
 
 		if (debug) {
