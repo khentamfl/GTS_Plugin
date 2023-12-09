@@ -157,8 +157,9 @@ namespace {
 			size_difference += 4.0;
 
 			if (Runtime::HasPerk(giant, "SmallMassiveThreatSizeSteal")) {
-				float HpRegen = GetMaxAV(giant, ActorValue::kHealth) * 0.005 * size_difference;
+				float HpRegen = GetMaxAV(giant, ActorValue::kHealth) * 0.0001 * (size_difference - 4.0);
 				giant->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, (HpRegen * TimeScale()) * size_difference);
+				log::info("Hp regen: {}, Regen * Time * Difference: {}, maxHP: {}", HpRegen, (HpRegen * TimeScale()) * size_difference, GetMaxAV(giant, ActorValue::kHealth));
 				if (get_target_scale(tiny) > 0.12) {
 					ShrinkActor(tiny, 0.0015 * BonusShrink, 0.0);
 					Grow(giant, 0.00045 * tinyscale * BonusShrink, 0.0);

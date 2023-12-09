@@ -142,14 +142,14 @@ namespace Gts {
 			}
 			float SelectedFormula = Runtime::GetInt("SelectedSizeFormula");
 
-			float FollowerLimit = Runtime::GetFloat("FollowersSizeLimit");
-			float NPCLimit = Runtime::GetFloat("NPCSizeLimit");
+			float FollowerLimit = Runtime::GetFloat("FollowersSizeLimit"); // 0 by default
+			float NPCLimit = Runtime::GetFloat("NPCSizeLimit"); // 0 by default
 
 			if (SelectedFormula >= 1.0 && actor->formID == 0x14) { // Apply Player Mass-Based max size
 				GetLimit = clamp(NaturalScale, 99999999.0, NaturalScale + (Runtime::GetFloat("GtsMassBasedSize") * NaturalScale));
-			} else if (QuestStage > 100 && FollowerLimit != 1.0 && actor->formID != 0x14 && IsTeammate(actor)) { // Apply Follower Max Size
+			} else if (QuestStage > 100 && FollowerLimit > 0.0 && FollowerLimit != 1.0 && actor->formID != 0x14 && IsTeammate(actor)) { // Apply Follower Max Size
 				GetLimit = clamp(NaturalScale * FollowerLimit, 99999999.0, NaturalScale + ((Runtime::GetFloat("FollowersSizeLimit") - 1.0) * NaturalScale)); // Apply only if Quest is done.
-			} else if (QuestStage > 100 && NPCLimit != 1.0 && actor->formID != 0x14 && !IsTeammate(actor)) { // Apply Other NPC's max size
+			} else if (QuestStage > 100 && NPCLimit > 0.0 && NPCLimit != 1.0 && actor->formID != 0x14 && !IsTeammate(actor)) { // Apply Other NPC's max size
 				GetLimit = clamp(NaturalScale * NPCLimit, 99999999.0, NaturalScale + ((Runtime::GetFloat("NPCSizeLimit") - 1.0) * NaturalScale));       // Apply only if Quest is done.
 			}
 

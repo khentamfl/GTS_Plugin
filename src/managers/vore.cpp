@@ -285,7 +285,7 @@ namespace Gts {
 			// Amount of health we apply depends on their vitality
 			// and their size
 			if (Runtime::HasPerkTeam(giant, "Gluttony")) {
-				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * mealEffiency;
+				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * 2 * mealEffiency;
 			} else {
 				this->restorePower = 0.0;
 			}
@@ -316,7 +316,8 @@ namespace Gts {
 				break;
 			}
 			case VoreBuffState::Running: {
-				float healthToApply = this->restorePower/4000;
+				float regenlimit = GetMaxAV(giant, ActorValue::kHealth) * 0.001; // Limit it per frame
+				float healthToApply = std::clamp(this->restorePower/4000.f, 0.0f, regenlimit);
 				float sizeToApply = this->sizePower/5500;
 
 				DamageAV(giant, ActorValue::kHealth, -healthToApply);
