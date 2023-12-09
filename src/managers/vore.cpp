@@ -318,7 +318,7 @@ namespace Gts {
 			case VoreBuffState::Running: {
 				float regenlimit = GetMaxAV(giant, ActorValue::kHealth) * 0.0014; // Limit it per frame
 				float healthToApply = std::clamp(this->restorePower/4000.f, 0.0f, regenlimit);
-				float sizeToApply = this->sizePower/5200;
+				float sizeToApply = this->sizePower/5500;
 
 				DamageAV(giant, ActorValue::kHealth, -healthToApply * TimeScale());
 				DamageAV(giant, ActorValue::kStamina, -healthToApply * TimeScale());
@@ -337,7 +337,7 @@ namespace Gts {
 						VoreMessage_Absorbed(giant, this->tiny_name, this->WasDragon, this->WasGiant);
 						CallGainWeight(giant, 3.0 * this->tinySize);
 						BuffAttributes(giant, this->tinySize);
-						mod_target_scale(giant, this->sizePower * 0.5);
+						mod_target_scale(giant, this->sizePower * 0.4);
 						AdjustSizeReserve(giant, this->sizePower);
 						if (giant->formID == 0x14) {
 							AdjustSizeLimit(0.0260, giant);

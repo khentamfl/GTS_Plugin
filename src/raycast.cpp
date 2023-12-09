@@ -88,7 +88,7 @@ namespace {
 
 		if (collision_world->PickObject(pick_data); pick_data.rayOutput.HasHit()) {
 			auto Object = static_cast<COL_LAYER>(pick_data.rayOutput.rootCollidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
-			log::info(" Hit Layer True:  {}", Object);
+			//log::info(" Hit Layer True:  {}", Object);
 			if (Object != COL_LAYER::kCharController) {
 				float fraction = pick_data.rayOutput.hitFraction;
 				if (fraction < min_fraction) {
@@ -133,16 +133,16 @@ namespace Gts {
 	}
 
 	void RayCollector::AddRayHit(const hkpCdBody& a_body, const hkpShapeRayCastCollectorOutput& a_hitInfo) {
-		log::info("New hit:");
+		//log::info("New hit:");
 			const hkpShape* shape = a_body.GetShape(); // Shape that was collided with
 		if (shape) {
 		auto ni_shape = shape->userData;
 				if (ni_shape) {
 			auto filter_info = ni_shape->filterInfo;
-			log::info("  - First Shape: {}", filter_info);
+			//log::info("  - First Shape: {}", filter_info);
 			COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
-			log::info("  - Layer {}", collision_layer);
-			log::info("  - Group {}", filter_info >> 16);
+			//log::info("  - Layer {}", collision_layer);
+			//log::info("  - Group {}", filter_info >> 16);
 		}
     }
 		// Search for top level shape
@@ -154,10 +154,10 @@ namespace Gts {
           auto ni_shape = shape->userData;
     			if (ni_shape) {
             auto filter_info = ni_shape->filterInfo;
-            log::info("  - Parent Shape: {}", filter_info);
+           // log::info("  - Parent Shape: {}", filter_info);
             COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
-            log::info("  - Layer {}", collision_layer);
-            log::info("  - Group {}", filter_info >> 16);
+           // log::info("  - Layer {}", collision_layer);
+            //log::info("  - Group {}", filter_info >> 16);
           }
         }
 			}
@@ -169,16 +169,16 @@ namespace Gts {
 			if (ni_shape) {
         auto filter_info = ni_shape->filterInfo;
 
-        log::info("  - Final Shape: {}", filter_info);
+        //log::info("  - Final Shape: {}", filter_info);
         if (this->skip_capsules && shape->type == hkpShapeType::kCapsule) {
-          log::info("  - Skip capsual");
+         // log::info("  - Skip capsual");
           // Skip capsules
           return;
         }
 
         COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
-        log::info("  - Layer {}", collision_layer);
-        log::info("  - Group {}", filter_info >> 16);
+        //log::info("  - Layer {}", collision_layer);
+        //log::info("  - Group {}", filter_info >> 16);
 
         if (! groups.empty()) {
           bool found = false;
@@ -189,7 +189,7 @@ namespace Gts {
             }
           }
           if (!found) {
-            log::info("  - Collision layer not in allowed group");
+           // log::info("  - Collision layer not in allowed group");
             return;
           }
         }
