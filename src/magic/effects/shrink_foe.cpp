@@ -161,19 +161,19 @@ namespace Gts {
 		}
 
 		float weakness = 1.0;//std::clamp(GetShrinkWeakness(target), 1.0f, 10.0f);
-		//log::info("Weakness of {} is {}", target->GetDisplayFullName(), weakness);
 
-		bool has_smt = HasSMT(caster);
 		if (IsEssential(target)) {
 			return; // Disallow shrinking Essentials
 		}
-		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus * weakness, gainpower * balancemodebonus, has_smt, ShrinkSource::magic);
+		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus * weakness, gainpower * balancemodebonus, false, ShrinkSource::magic);
 		
 		// 20.11.2023: TO-DO: 
+		
 		// 1) Power * 2, cost * 2 too, decreasing time to shrink.
 		// 2) Remove stacking debuff thing
 		// 3) Reduce shrink penalty at low scales to be 0.5 as a max, instead of being penalty = scale
-
+		
+		// 09.12.2023: Done.
 		if (ShrinkToNothing(caster, target)) {
 		}
 	}

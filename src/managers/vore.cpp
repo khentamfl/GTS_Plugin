@@ -275,7 +275,7 @@ namespace Gts {
 		if (IsDragon(tiny) || IsMammoth(tiny)) {
 			mealEffiency *= 6.0;
 		} if (IsGiant(tiny)) {
-			mealEffiency *= 2.4;
+			mealEffiency *= 2.6;
 		}
 		this->appliedFactor = 0.0;
 		this->state = VoreBuffState::Starting;
@@ -285,7 +285,7 @@ namespace Gts {
 			// Amount of health we apply depends on their vitality
 			// and their size
 			if (Runtime::HasPerkTeam(giant, "Gluttony")) {
-				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * 2 * mealEffiency;
+				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * 4 * mealEffiency;
 			} else {
 				this->restorePower = 0.0;
 			}
@@ -316,15 +316,15 @@ namespace Gts {
 				break;
 			}
 			case VoreBuffState::Running: {
-				float regenlimit = GetMaxAV(giant, ActorValue::kHealth) * 0.001; // Limit it per frame
+				float regenlimit = GetMaxAV(giant, ActorValue::kHealth) * 0.0014; // Limit it per frame
 				float healthToApply = std::clamp(this->restorePower/4000.f, 0.0f, regenlimit);
-				float sizeToApply = this->sizePower/5500;
+				float sizeToApply = this->sizePower/5200;
 
-				DamageAV(giant, ActorValue::kHealth, -healthToApply);
-				DamageAV(giant, ActorValue::kStamina, -healthToApply);
+				DamageAV(giant, ActorValue::kHealth, -healthToApply * TimeScale());
+				DamageAV(giant, ActorValue::kStamina, -healthToApply * TimeScale());
 
-				mod_target_scale(giant, sizeToApply);
-				AddStolenAttributes(giant, sizeToApply);
+				mod_target_scale(giant, sizeToApply * TimeScale());
+				AddStolenAttributes(giant, sizeToApply * TimeScale());
 				if (this->factor.value >= 0.99) {
 					this->state = VoreBuffState::Finishing;
 				}
