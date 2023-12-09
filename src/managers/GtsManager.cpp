@@ -56,7 +56,7 @@ namespace {
 
 			auto Camera = GetNiCamera();
 			if (Camera) {
-				auto data = Camera.GetRuntimeData2();
+				auto data = Camera->GetRuntimeData2();
 				float minDist = data.minNearPlaneDist;
 				float maxDist = data.maxFarNearRatio;
 				float LOD = data.lodAdjust;
