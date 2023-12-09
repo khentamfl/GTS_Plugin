@@ -102,7 +102,7 @@ namespace {
 	}
 
 	void Vore_TransferItems(Actor* pred, Actor* prey) {
-		TransferInventory(prey, pred, 1.0, false, true, DamageSource::Vored);
+		TransferInventory(prey, pred, 1.0, false, true, DamageSource::Vored, false);
 	}
 
 	void VoreMessage_SwallowedAbsorbing(Actor* pred, Actor* prey) {
@@ -260,7 +260,6 @@ namespace Gts {
 			}
 		}
 	}
-	
 
 	VoreBuff::VoreBuff(Actor* giant, Actor* tiny) : factor(Spring(0.0, 1.0)), giant(giant ? giant->CreateRefHandle() : ActorHandle()), tiny(tiny ? tiny->CreateRefHandle() : ActorHandle()) {
 		this->duration = 40.0;
@@ -314,8 +313,6 @@ namespace Gts {
 				this->factor.halflife = this->duration * 0.5;
 				this->state = VoreBuffState::Running;
 
-				log::info("Vore halflife: {}", this->factor.halflife);
-
 				Vore_AdvanceQuest(giant, this->WasDragon, this->WasGiant); // advance quest
 				break;
 			}
@@ -328,17 +325,12 @@ namespace Gts {
 
 				mod_target_scale(giant, sizeToApply);
 				AddStolenAttributes(giant, sizeToApply);
-
-				log::info("Vore factor value: {}", this->factor.value);
-
 				if (this->factor.value >= 0.99) {
-					log::info("Vore factor value > 0.99");
 					this->state = VoreBuffState::Finishing;
 				}
 				break;
 			}
 			case VoreBuffState::Finishing: {
-				log::info("Vore is finishing");
 				if (!AllowDevourment()) {
 					if (this->giant) {
 						AdjustGiantessSkill(giant, this->tinySize);
@@ -359,8 +351,6 @@ namespace Gts {
 						}
 					}
 				}
-
-				log::info("Vore is done");
 
 				this->state = VoreBuffState::Done;
 				break;

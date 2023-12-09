@@ -231,7 +231,7 @@ namespace Gts {
 						auto giant = giantHandle.get().get();
 						auto tiny = tinyHandle.get().get();
 						float scale = get_visual_scale(tiny);
-						TransferInventory(tiny, giant, scale, false, true, DamageSource::Crushed);
+						TransferInventory(tiny, giant, scale, false, true, DamageSource::Crushed, true);
 					});
 
 					if (tiny->formID != 0x14) {

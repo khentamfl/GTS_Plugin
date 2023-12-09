@@ -133,7 +133,7 @@ namespace Gts {
 			auto giant = giantHandle.get().get();
 			auto tiny = tinyHandle.get().get();
 			float scale = get_visual_scale(tiny);
-			TransferInventory(tiny, giant, scale, false, true, DamageSource::Overkill);
+			TransferInventory(tiny, giant, scale, false, true, DamageSource::Overkill, true);
 			// ^ transferInventory>TransferInventoryToDropBox also plays crush audio on loot pile
 			// Was done like that because Audio disappears on actors
 		});

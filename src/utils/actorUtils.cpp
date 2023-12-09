@@ -720,7 +720,7 @@ namespace Gts {
 		actor->NotifyAnimationGraph(animName);
 	}
 
-	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause) {
+	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause, bool reset) {
 		std::string name = std::format("TransferItems_{}_{}", from->formID, to->formID);
 
 		bool reanimated = false; // shall we avoid transfering items or not. 
@@ -743,8 +743,9 @@ namespace Gts {
 			}
 			auto tiny = tinyhandle.get().get();
 			auto giant = gianthandle.get().get();
-
-			EventDispatcher::DoResetActor(tiny); // reset actor data. 
+			if (reset) {
+				EventDispatcher::DoResetActor(tiny); // reset actor data. 
+			}
 			// Used to be inside CrushManager/ShrinkToNothingManager
 
 			if (!tiny->IsDead()) {
