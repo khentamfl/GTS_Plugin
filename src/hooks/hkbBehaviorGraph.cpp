@@ -26,10 +26,6 @@ namespace Hooks
 							float multi = AnimationManager::GetAnimSpeed(actor);
 							anim_speed *= multi;
 						}
-						auto CharInstance = graph->characterInstance;
-						if (actor->formID == 0x14) {
-							log::info("Current lod of {} is {}", actor->GetDisplayFullName(), CharInstance.currentLOD);
-						}
 					}
 				}
 			}
