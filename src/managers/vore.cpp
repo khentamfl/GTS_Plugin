@@ -264,19 +264,18 @@ namespace Gts {
 	VoreBuff::VoreBuff(Actor* giant, Actor* tiny) : factor(Spring(0.0, 1.0)), giant(giant ? giant->CreateRefHandle() : ActorHandle()), tiny(tiny ? tiny->CreateRefHandle() : ActorHandle()) {
 		this->duration = 40.0;
 		float mealEffiency = 0.2; // Normal pred has 20% efficent stomach
-		float perkbonus = 1.20;
+		float growth = 2.0;
 		if (Runtime::HasPerkTeam(giant, "Gluttony")) {
 			this->duration = 20.0;
-			mealEffiency += 0.30;
-			perkbonus += 1.0;
+			mealEffiency += 0.2;
 		}
 		if (Runtime::HasPerkTeam(giant, "AdditionalGrowth")) {
-			perkbonus *= 1.25;
+			growth *= 1.25;
 		}
 		if (IsDragon(tiny) || IsMammoth(tiny)) {
 			mealEffiency *= 6.0;
 		} if (IsGiant(tiny)) {
-			mealEffiency *= 2.6;
+			mealEffiency *= 2.4;
 		}
 		this->appliedFactor = 0.0;
 		this->state = VoreBuffState::Starting;
@@ -286,14 +285,14 @@ namespace Gts {
 			// Amount of health we apply depends on their vitality
 			// and their size
 			if (Runtime::HasPerkTeam(giant, "Gluttony")) {
-				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * 6 * mealEffiency;
+				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * mealEffiency;
 			} else {
 				this->restorePower = 0.0;
 			}
 			this->WasGiant = IsGiant(tiny);
 			this->WasDragon = IsDragon(tiny);
 			this->WasLiving = IsLiving(tiny);
-			this->sizePower = tiny_scale * mealEffiency * perkbonus;
+			this->sizePower = tiny_scale * mealEffiency * growth;
 			this->tinySize = tiny_scale;
 			this->naturalsize = Get_Other_Scale(tiny);
 			this->tiny_name = tiny->GetDisplayFullName();
