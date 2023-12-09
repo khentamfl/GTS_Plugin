@@ -3,6 +3,7 @@
 #include "managers/gamemode/GameModeManager.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
 #include "managers/damage/AccurateDamage.hpp"
+#include "managers/cameras/camutil.hpp"
 #include "managers/ai/headtracking.hpp"
 #include "managers/RipClothManager.hpp"
 #include "managers/GtsSizeManager.hpp"
@@ -53,10 +54,13 @@ namespace {
 				}
 			}
 
-			auto charCont = actor->GetCharController();
-			if (charCont) {
-				log::info("Lod distance of {} is {}", actor->GetDisplayFullName(), charCont->lodDistance);
-				//charCont->lodDistance = 76.0 + (76.0 * power);
+			auto Camera = GetNiCamera();
+			if (Camera) {
+				auto data = Camera.GetRuntimeData2();
+				float minDist = data.minNearPlaneDist;
+				float maxDist = data.maxFarNearRatio;
+				float LOD = data.lodAdjust;
+				log::info("MinDist: {}, maxDist: {}, LOD: {}", minDist, maxDist, LOD);
 			}
 		}
 	}
