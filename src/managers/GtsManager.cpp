@@ -98,9 +98,9 @@ namespace {
 
 		if (scale > expected) {
 			float adjust = std::clamp(meter_to_scale/stateScale * 0.82f, 1.0f, 8.0f); // Min is x1.0 (disallow to go below that), max is x8.0
-			float target = get_target_scale(giant);
-			mod_target_scale(giant, (-adjust * 0.0025) * scale);
-			if (target < get_natural_scale(giant)) {
+			float targetscale = get_target_scale(giant);
+			mod_target_scale(giant, -0.0020 * scale);
+			if (targetscale < get_natural_scale(giant)) {
 				set_target_scale(giant, adjust);
 			}
 		}
