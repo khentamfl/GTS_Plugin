@@ -149,7 +149,7 @@ namespace Gts {
 				GetLimit = clamp(NaturalScale, 99999999.0, NaturalScale + (Runtime::GetFloat("GtsMassBasedSize") * NaturalScale));
 			} else if (QuestStage > 100 && FollowerLimit > 1 && actor->formID != 0x14 && IsTeammate(actor)) { // Apply Follower Max Size
 				GetLimit = clamp(NaturalScale, 99999999.0, NaturalScale + ((Runtime::GetFloat("FollowersSizeLimit") - 1.0) * NaturalScale)); // Apply only if Quest is done.
-			} else if (QuestStage > 100 && NPCLimit > 1 && actor->formID != 0x14 && !IsTeammate(actor)) { // Apply Other NPC's max size
+			} else if (QuestStage > 100 && NPCLimit != 1 && actor->formID != 0x14 && !IsTeammate(actor)) { // Apply Other NPC's max size
 				GetLimit = clamp(0.10, 99999999.0, NaturalScale + ((Runtime::GetFloat("NPCSizeLimit") - 1.0) * NaturalScale));       // Apply only if Quest is done.
 			}
 
