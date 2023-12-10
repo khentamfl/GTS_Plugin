@@ -81,7 +81,7 @@ namespace {
 				scale = data->scaleOverride;
 			}
 		}
-		log::info("Raycast scale of {}: {}", giant->GetDisplayFullName(), scale);
+		//log::info("Raycast scale of {}: {}", giant->GetDisplayFullName(), scale);
 		ray_start.z += 70;
 
 		NiPoint3 ray_up(0.0, 0.0, 1.0);

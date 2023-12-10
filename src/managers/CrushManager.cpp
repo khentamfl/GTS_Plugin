@@ -182,7 +182,7 @@ namespace Gts {
 					MoanOrLaugh(giant, tiny);
 					GrowAfterTheKill(giant, tiny);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
-						CompleteDragonQuest();
+						CompleteDragonQuest(tiny, false);
 					}
 					GRumble::Once("CrushRumble", tiny, 1.4, 0.15);
 					if (giant->formID == 0x14) {

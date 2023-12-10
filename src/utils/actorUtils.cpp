@@ -970,7 +970,7 @@ namespace Gts {
 		CallFunctionOn(target, "ObjectReference", "ApplyHavokImpulse", afX, afY, afZ, afMagnitude);
 	}
 
-	void CompleteDragonQuest() {
+	void CompleteDragonQuest(Actor* tiny, bool vore) {
 		auto pc = PlayerCharacter::GetSingleton();
 		auto progressionQuest = Runtime::GetQuest("MainQuest");
 		if (progressionQuest) {
@@ -980,6 +980,7 @@ namespace Gts {
 				if (transient) {
 					Cprint("Quest is Completed");
 					transient->dragon_was_eaten = true;
+					SpawnProgressionParticle(tiny, vore);
 				}
 			}
 		}
@@ -2206,7 +2207,7 @@ namespace Gts {
 		}
 	}
 
-	void AdvanceQuestProgression(Actor* giant, Actor* tiny, float stage, float value) {
+	void AdvanceQuestProgression(Actor* giant, Actor* tiny, float stage, float value, bool vore) {
 		if (giant->formID == 0x14) { // Player Only
 			auto progressionQuest = Runtime::GetQuest("MainQuest");
 			if (progressionQuest) {
@@ -2232,19 +2233,19 @@ namespace Gts {
 					SpawnProgressionParticle(tiny, true);
 				} else if (stage == 7) {
 					Persistent::GetSingleton().GiantCount += value;
-					SpawnProgressionParticle(tiny, false);
+					SpawnProgressionParticle(tiny, vore);
 				}
 			}
 		}
 	}
 
-	void SpawnProgressionParticle(Actor* tiny, bool soul) {
+	void SpawnProgressionParticle(Actor* tiny, bool vore) {
 		float scale = 1.0 * GetScaleAdjustment(tiny);
 		auto node = find_node(tiny, "NPC Root [Root]");
 		log::info("Spawning particle");
 		if (node) {
 			NiPoint3 pos = node->world.translate;
-			if (!soul) {
+			if (!vore) {
 				SpawnParticle(tiny, 4.60, "GTS/Magic/Life_Drain.nif", NiMatrix3(), pos, scale, 7, nullptr);
 				log::info("Soul false, spawning particle");
 			} else {

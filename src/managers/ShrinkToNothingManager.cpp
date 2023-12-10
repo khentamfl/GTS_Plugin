@@ -87,7 +87,7 @@ namespace Gts {
 
 					ApplyShakeAtNode(tiny, 20, "NPC Root [Root]", 20.0);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
-						CompleteDragonQuest();
+						CompleteDragonQuest(tiny, false);
 					}
 					ActorHandle giantHandle = giant->CreateRefHandle();
 					ActorHandle tinyHandle = tiny->CreateRefHandle();

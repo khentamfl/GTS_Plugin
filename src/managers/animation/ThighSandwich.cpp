@@ -111,7 +111,7 @@ namespace {
 		if (damage > hp || hp <= 0) {
 			CrushManager::GetSingleton().Crush(giant, tiny);
 			PrintDeathSource(giant, tiny, DamageSource::ThighSandwiched);
-			AdvanceQuestProgression(giant, tiny, 5, 1.0);
+			AdvanceQuestProgression(giant, tiny, 5, 1.0, false);
 			auto node = find_node(giant, "NPC R FrontThigh");
 			if (node) {
 				Runtime::PlaySoundAtNode("GtsCrushSound", giant, 1.0, 1.0, node);

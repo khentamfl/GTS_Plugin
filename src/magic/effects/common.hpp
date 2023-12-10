@@ -311,9 +311,9 @@ namespace Gts {
 
 			if (!target->IsDead()) {
 				if (IsGiant(target)) {
-					AdvanceQuestProgression(caster, target, 7, 1);
+					AdvanceQuestProgression(caster, target, 7, 1, false);
 				} else {
-					AdvanceQuestProgression(caster, target, 4, 1);
+					AdvanceQuestProgression(caster, target, 4, 1, false);
 				}
 			}
 

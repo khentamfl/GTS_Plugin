@@ -122,7 +122,7 @@ namespace Gts {
 	void ApplyHavokImpulse_Manual(Actor* target, float afX, float afY, float afZ, float afMagnitude);
 	void ApplyHavokImpulse(TESObjectREFR* target, float afX, float afY, float afZ, float afMagnitude);
 
-	void CompleteDragonQuest();
+	void CompleteDragonQuest(Actor* tiny, bool vore);
 
 	float get_distance_to_actor(Actor* receiver, Actor* target);
 	float GetHighHeelsBonusDamage(Actor* actor);
@@ -206,8 +206,8 @@ namespace Gts {
 
 	bool CanPerformAnimation(Actor* giant, float type);
 	void AdvanceQuestProgression(Actor* giant, float stage, float value);
-	void AdvanceQuestProgression(Actor* giant, Actor* tiny, float stage, float value);
-	void SpawnProgressionParticle(Actor* tiny, bool soul);
+	void AdvanceQuestProgression(Actor* giant, Actor* tiny, float stage, float value, bool vore);
+	void SpawnProgressionParticle(Actor* tiny, bool vore);
 	float GetQuestProgression(float stage);
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value);
 	void EditDetectionLevel(Actor* actor, Actor* giant);

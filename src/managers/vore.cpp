@@ -135,13 +135,13 @@ namespace {
 		}
 	}
 
-	void Vore_AdvanceQuest(Actor* pred, bool WasDragon, bool WasGiant) {
+	void Vore_AdvanceQuest(Actor* pred, Actor* tiny, bool WasDragon, bool WasGiant) {
 		if (!AllowDevourment() && pred->formID == 0x14 && WasDragon) {
-			CompleteDragonQuest();
+			CompleteDragonQuest(tiny, true);
 		} if (WasGiant) {
-			AdvanceQuestProgression(pred, 7, 1);
+			AdvanceQuestProgression(pred, tiny, 7, 1, true);
 		} else {
-			AdvanceQuestProgression(pred, 6, 1);
+			AdvanceQuestProgression(pred, tiny, 6, 1, true);
 		}
 	}
 }
@@ -312,7 +312,7 @@ namespace Gts {
 				this->factor.halflife = this->duration * 0.5;
 				this->state = VoreBuffState::Running;
 
-				Vore_AdvanceQuest(giant, this->WasDragon, this->WasGiant); // advance quest
+				Vore_AdvanceQuest(giant, this->tiny, this->WasDragon, this->WasGiant); // advance quest
 				break;
 			}
 			case VoreBuffState::Running: {
