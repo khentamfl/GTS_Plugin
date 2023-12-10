@@ -2245,10 +2245,10 @@ namespace Gts {
 		if (node) {
 			NiPoint3 pos = node->world.translate;
 			if (!soul) {
-				SpawnParticle(tiny, 4.60, "GTS/Effects/Magic/Life_Drain.nif", NiMatrix3(), pos, scale, 7, nullptr);
+				SpawnParticle(tiny, 4.60, "GTS/Magic/Life_Drain.nif", NiMatrix3(), pos, scale, 7, nullptr);
 				log::info("Soul false, spawning particle");
 			} else {
-				SpawnParticle(tiny, 4.60, "GTS/Effects/Magic/Soul_Drain.nif", NiMatrix3(), pos, scale, 7, nullptr);
+				SpawnParticle(tiny, 4.60, "GTS/Magic/Soul_Drain.nif", NiMatrix3(), pos, scale, 7, nullptr);
 				log::info("Soul true, spawning particle");
 			}
 		}
