@@ -19,6 +19,7 @@
 #include "scale/modscale.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
+#include "utils/camera.hpp"
 #include "utils/debug.hpp"
 #include "UI/DebugAPI.hpp"
 #include "scale/scale.hpp"
@@ -74,8 +75,8 @@ namespace {
 		NiPoint3 ray_start = giant->GetPosition();
 		float stateScale = GetRaycastStateScale(giant);
 		float scale = get_visual_scale(giant) * stateScale;
-		if (IsFirstPerson(giant)) {
-			auto data = Transient::GetSingleton().GetData(giant);
+		if (giant->formID == 0x14 && IsFirstPerson()) {
+			auto data = Persistent::GetSingleton().GetData(giant);
 			if (data) {
 				scale = data->scaleOverride;
 			}
