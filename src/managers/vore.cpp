@@ -312,7 +312,7 @@ namespace Gts {
 				this->factor.halflife = this->duration * 0.5;
 				this->state = VoreBuffState::Running;
 
-				Vore_AdvanceQuest(giant, this->tiny, this->WasDragon, this->WasGiant); // advance quest
+				Vore_AdvanceQuest(giant, this->tiny.get().get(), this->WasDragon, this->WasGiant); // advance quest
 				break;
 			}
 			case VoreBuffState::Running: {
