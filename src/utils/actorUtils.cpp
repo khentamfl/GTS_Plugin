@@ -2239,14 +2239,17 @@ namespace Gts {
 	}
 
 	void SpawnProgressionParticle(Actor* tiny, bool soul) {
-		float scale = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
+		float scale = 1.0 * GetScaleAdjustment(tiny);
 		auto node = find_node(tiny, "NPC Root [Root]");
+		log::info("Spawning particle");
 		if (node) {
 			NiPoint3 pos = node->world.translate;
 			if (!soul) {
-				SpawnParticle(tiny, 4.60, "GTS/Effects/Magic/Life_Drain.nif", NiMatrix3(), pos, scale, 7, node);
+				SpawnParticle(tiny, 4.60, "GTS/Effects/Magic/Life_Drain.nif", NiMatrix3(), pos, scale, 7, nullptr);
+				log::info("Soul false, spawning particle");
 			} else {
-				SpawnParticle(tiny, 4.60, "GTS/Effects/Magic/Soul_Drain.nif", NiMatrix3(), pos, scale, 7, node);
+				SpawnParticle(tiny, 4.60, "GTS/Effects/Magic/Soul_Drain.nif", NiMatrix3(), pos, scale, 7, nullptr);
+				log::info("Soul true, spawning particle");
 			}
 		}
 	}

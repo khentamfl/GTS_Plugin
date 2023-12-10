@@ -282,15 +282,15 @@ namespace Gts {
 	}
 
 	inline bool ShrinkToNothing(Actor* caster, Actor* target) {
-		float SHRINK_TO_NOTHING_SCALE = 0.10;
+		float SHRINK_TO_NOTHING_SCALE = 0.08;
 		float target_scale = get_visual_scale(target);
 		if (!caster) {
 			return false;
 		}
 		if (IsDragon(target) || IsMammoth(target)) {
-			SHRINK_TO_NOTHING_SCALE = 0.026;
+			SHRINK_TO_NOTHING_SCALE = 0.024;
 		} if (IsGiant(target)) {
-			SHRINK_TO_NOTHING_SCALE = 0.046;
+			SHRINK_TO_NOTHING_SCALE = 0.044;
 		}
 
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !Runtime::HasMagicEffect(target,"ShrinkToNothing") && !target->IsPlayerTeammate()) {
