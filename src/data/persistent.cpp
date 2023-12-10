@@ -1062,8 +1062,10 @@ namespace Gts {
 		//  actor values etc when the cell resets
 		auto data = this->GetData(actor);
 		if (data) {
-			data->visual_scale = data->native_scale;
-			data->target_scale = data->native_scale;
+			// 10.12.2023: changed visual and target scale to 1.0 instead of data->native... stuff
+			// Attempt to fix actors spawning with their old size basically
+			data->visual_scale = 1.0; //data->native_scale;
+			data->target_scale = 1.0; //data->native_scale;
 			data->max_scale = DEFAULT_MAX_SCALE;
 			data->visual_scale_v = 0.0;
 			data->half_life = DEFAULT_HALF_LIFE;

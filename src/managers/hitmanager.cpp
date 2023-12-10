@@ -146,6 +146,16 @@ namespace Gts {
 		if (!IsLiving(receiver)) {
 			SpawnDustParticle(receiver, attacker, "NPC Root [Root]", 3.0);
 		} else {
+			if (!LessGore()) {
+				auto root = find_node(receiver, "NPC Root [Root]");
+				if (root) {
+					SpawnParticle(receiver, 0.60, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, currentSize * 2.5, 7, root);
+					SpawnParticle(receiver, 0.60, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, currentSize * 2.5, 7, root);
+					SpawnParticle(receiver, 0.60, "GTS/Damage/Crush.nif", root->world.rotate, root->world.translate, currentSize * 2.5, 7, root);
+					SpawnParticle(receiver, 0.60, "GTS/Damage/Crush.nif", root->world.rotate, root->world.translate, currentSize * 2.5, 7, root);
+					SpawnParticle(receiver, 1.20, "GTS/Damage/ShrinkOrCrush.nif", NiMatrix3(), root->world.translate, currentSize * 25, 7, root);
+				}
+			}
 			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
 			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);

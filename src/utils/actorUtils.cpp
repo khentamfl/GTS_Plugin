@@ -747,6 +747,7 @@ namespace Gts {
 				EventDispatcher::DoResetActor(tiny); // reset actor data. 
 			}
 			// Used to be inside CrushManager/ShrinkToNothingManager
+			// 09.12.2023: TODO: Fix actors respawning in shrunken state if actor was shrunken
 
 			if (!tiny->IsDead()) {
 				KillActor(giant, tiny); // just to make sure

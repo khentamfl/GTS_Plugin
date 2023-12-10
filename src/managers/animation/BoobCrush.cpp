@@ -169,19 +169,19 @@ namespace {
 				if (Node) {
 					std::string rumbleName = std::format("Node: {}", Nodes);
 					DoDamageAtPoint(giant, 15, 0.45 * damage, Node, 400, 0.10, 1.33, DamageSource::BodyCrush);
-					GRumble::Once(rumbleName, giant, 0.10 * damage, 0.02, Nodes);
+					GRumble::Once(rumbleName, giant, 0.06, 0.02, Nodes);
 				}
 			}
 
 			if (BreastL03 && BreastR03) {
-				GRumble::Once("BreastDot_L", giantref, 0.15, 0.025, "L Breast03");
-				GRumble::Once("BreastDot_R", giantref, 0.15, 0.025, "R Breast03");
+				GRumble::Once("BreastDot_L", giantref, 0.06, 0.025, "L Breast03");
+				GRumble::Once("BreastDot_R", giantref, 0.06, 0.025, "R Breast03");
 				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastL03, 400, 0.10, 1.33, DamageSource::BreastImpact);
 				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastR03, 400, 0.10, 1.33, DamageSource::BreastImpact);
 				return true;
 			} else if (BreastL && BreastR) {
-				GRumble::Once("BreastDot_L", giantref, 0.15, 0.025, "NPC L Breast");
-				GRumble::Once("BreastDot_R", giantref, 0.15, 0.025, "NPC R Breast");
+				GRumble::Once("BreastDot_L", giantref, 0.06, 0.025, "NPC L Breast");
+				GRumble::Once("BreastDot_R", giantref, 0.06, 0.025, "NPC R Breast");
 				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastL, 400, 0.10, 1.33, DamageSource::BreastImpact);
 				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastR, 400, 0.10, 1.33, DamageSource::BreastImpact);
 				return true;
@@ -348,7 +348,7 @@ namespace {
 		Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
 		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 
-		StartRumble("CleavageRumble", data.giant, 0.2, 0.60);
+		StartRumble("CleavageRumble", data.giant, 0.06, 0.60);
 	}
 	void GTS_BoobCrush_Grow_Stop(AnimationEventData& data) {
 		StopRumble("CleavageRumble", data.giant);
