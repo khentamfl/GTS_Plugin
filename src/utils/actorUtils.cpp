@@ -803,7 +803,7 @@ namespace Gts {
 	}
 
 	void Disintegrate(Actor* actor) {
-		actor->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
+		actor->GetActorRuntimeData().criticalStage.set(4);
 		actor->Disable();
 		//actor->Update(0.5);
 		//actor->Update3DModel();
