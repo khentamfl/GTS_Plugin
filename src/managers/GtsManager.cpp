@@ -74,6 +74,13 @@ namespace {
 		NiPoint3 ray_start = giant->GetPosition();
 		float stateScale = GetRaycastStateScale(giant);
 		float scale = get_visual_scale(giant) * stateScale;
+		if (IsFirstPerson(giant)) {
+			auto data = Transient::GetSingleton().GetData(giant);
+			if (data) {
+				scale = data->scaleOverride;
+			}
+		}
+		log::info("Raycast scale of {}: {}", giant->GetDisplayFullName(), scale);
 		ray_start.z += 70;
 
 		NiPoint3 ray_up(0.0, 0.0, 1.0);
