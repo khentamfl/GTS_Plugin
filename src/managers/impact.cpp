@@ -154,13 +154,29 @@ namespace Gts {
 			else if (kind == FootEvent::JumpLand) {
 				float perk = GetPerkBonus_Basics(actor);
 				auto& sizemanager = SizeManager::GetSingleton();
-				float damage = sizemanager.GetSizeAttribute(actor, 2);
+				float damage = sizemanager.GetSizeAttribute(actor, 2); // get jump damage boost
 
-				DoDamageEffect(actor, 1.80 * damage, 6.6, 20, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
-				DoDamageEffect(actor, 1.80 * damage, 6.6, 20, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+				ActorHandle gianthandle = actor->CreateRefHandle();
+				std::string name = std::format("JumpLandT_{}", actor->formID);
+				float Start = Time::WorldTimeElapsed();
 
-				DoLaunch(actor, 0.9 * perk, 1.75, FootEvent::Left);
-				DoLaunch(actor, 0.9 * perk, 1.75, FootEvent::Right);
+				TaskManager::Run(name, [=](auto& progressData) { // Delay it a bit since it often happens in air
+					if (!gianthandle) {
+						return false; // end task
+					}
+					auto giant = gianthandle.get().get();
+					float timepassed = Time::WorldTimeElapsed() - Start;
+					
+					if (timepassed >= 0.18) { 
+						DoDamageEffect(giant, 1.60 * damage, 6.6, 20, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+						DoDamageEffect(giant, 1.60 * damage, 6.6, 20, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+
+						DoLaunch(giant, 0.9 * perk, 1.75, FootEvent::Left);
+						DoLaunch(giant, 0.9 * perk, 1.75, FootEvent::Right);
+						return false;
+					}
+					return true;
+				});
 			}
 		}
 	}
