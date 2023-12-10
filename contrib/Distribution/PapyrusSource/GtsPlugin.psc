@@ -143,7 +143,7 @@ String function SigFig(Float number, Int sf) global native
 
 
 ;==========================================
-;===================H I G H H E E L S     |
+;===================H I G H  H E E L S     |
 ;==========================================
 
 ; Controls if the HH correction method is enabled or not
@@ -226,7 +226,10 @@ function IncreaseMassLimit(float value, Actor caster) global native
 Function AllowActorDeletion(Bool enabled) global native    
 Bool function WasDragonEaten() global native 
 
-Bool function DragonCheck(Actor target) global native    
+Bool function DragonCheck(Actor target) global native   
+
+; Returns true/false based on GTS_Installed behavior variable
+Bool function GtsBehaviorsInstalled(Actor giant) global native 
 
 ; Allow/Get precise damage toggle
 Bool Function GetPreciseDamage() global native

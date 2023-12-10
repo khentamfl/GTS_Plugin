@@ -563,6 +563,12 @@ namespace Gts {
 		}
 	}
 
+	bool AnimationsInstalled(Actor* giant) {
+		bool installed;
+		giant->GetGraphVariableBool("GTS_Installed", installed);
+		return installed;
+	}
+
 	bool IsInGodMode(Actor* giant) {
 		if (giant->formID != 0x14) {
 			return false;
@@ -589,6 +595,8 @@ namespace Gts {
 	bool IsDebugEnabled() {
 		return Runtime::GetBool("EnableDebugOverlay"); // used for debug mode of collisions and such
 	}
+
+	
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                                 G T S   A C T O R   F U N C T I O N S                                                              //

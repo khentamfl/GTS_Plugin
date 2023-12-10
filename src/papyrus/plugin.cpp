@@ -214,6 +214,10 @@ namespace {
 		return Persistent::GetSingleton().highheel_correction;
 	}
 
+	bool GtsBehaviorsInstalled(StaticFunctionTag*, Actor* giant) {
+		return AnimationsInstalled(giant);
+	}
+
 	void SetIsHighHeelEnabled(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().highheel_correction = enabled;
 	}
@@ -465,6 +469,7 @@ namespace Gts {
 		vm->RegisterFunction("SetAnimSpeed", PapyrusClass, SetAnimSpeed);
 		vm->RegisterFunction("SigFig", PapyrusClass, SigFig);
 		vm->RegisterFunction("GetIsHighHeelEnabled", PapyrusClass, GetIsHighHeelEnabled);
+		vm->RegisterFunction("GtsBehaviorsInstalled", PapyrusClass, GtsBehaviorsInstalled);
 		vm->RegisterFunction("SetFeetTracking", PapyrusClass, SetFeetTracking);
 		vm->RegisterFunction("AllowCameraFOVEdits", PapyrusClass, AllowCameraFOVEdits);
 		vm->RegisterFunction("SetLessGore", PapyrusClass, SetLessGore);
