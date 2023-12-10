@@ -2239,15 +2239,15 @@ namespace Gts {
 	}
 
 	void SpawnProgressionParticle(Actor* tiny, bool soul) {
-		std::string_view Path = "GTS/Effects/Magic/Life_Drain.nif";
-		if (soul) {
-			Path = "GTS/Effects/Magic/Soul_Drain.nif";
-		}
 		float scale = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
 		auto node = find_node(tiny, "NPC Root [Root]");
 		if (node) {
 			NiPoint3 pos = node->world.translate;
-			SpawnParticle(tiny, 4.60, Path, NiMatrix3(), pos, scale, 7, node);
+			if (!soul) {
+				SpawnParticle(tiny, 4.60, "GTS/Effects/Magic/Life_Drain.nif", NiMatrix3(), pos, scale, 7, node);
+			} else {
+				SpawnParticle(tiny, 4.60, "GTS/Effects/Magic/Soul_Drain.nif", NiMatrix3(), pos, scale, 7, node);
+			}
 		}
 	}
 
