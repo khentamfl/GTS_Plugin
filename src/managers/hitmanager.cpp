@@ -149,6 +149,7 @@ namespace Gts {
 			if (!LessGore()) {
 				auto root = find_node(receiver, "NPC Root [Root]");
 				if (root) {
+					float currentSize = get_visual_scale(receiver); 
 					SpawnParticle(receiver, 0.60, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, currentSize * 2.5, 7, root);
 					SpawnParticle(receiver, 0.60, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, currentSize * 2.5, 7, root);
 					SpawnParticle(receiver, 0.60, "GTS/Damage/Crush.nif", root->world.rotate, root->world.translate, currentSize * 2.5, 7, root);
