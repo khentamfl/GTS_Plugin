@@ -506,9 +506,9 @@ namespace Gts {
 					crushmanager.Crush(giant, tiny);
 					if (!tiny->IsDead()) {
 						if (IsGiant(tiny)) {
-							AdvanceQuestProgression(giant, 7, 1);
+							AdvanceQuestProgression(giant, tiny, 7, 1);
 						} else {
-							AdvanceQuestProgression(giant, 3, 1);
+							AdvanceQuestProgression(giant, tiny, 3, 1);
 						}
 					}
 					

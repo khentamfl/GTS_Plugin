@@ -205,7 +205,9 @@ namespace Gts {
 	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause, bool Resurrected);
 
 	bool CanPerformAnimation(Actor* giant, float type);
-	void AdvanceQuestProgression(Actor* actor, float stage, float value);
+	void AdvanceQuestProgression(Actor* giant, float stage, float value);
+	void AdvanceQuestProgression(Actor* giant, Actor* tiny, float stage, float value);
+	void SpawnProgressionParticle(Actor* tiny, bool soul);
 	float GetQuestProgression(float stage);
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value);
 	void EditDetectionLevel(Actor* actor, Actor* giant);

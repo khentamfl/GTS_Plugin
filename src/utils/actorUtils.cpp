@@ -2179,8 +2179,8 @@ namespace Gts {
 		}
 	}
 
-	void AdvanceQuestProgression(Actor* actor, float stage, float value) {
-		if (actor->formID == 0x14) { // Player Only
+	void AdvanceQuestProgression(Actor* giant, float stage, float value) {
+		if (giant->formID == 0x14) { // Player Only
 			auto progressionQuest = Runtime::GetQuest("MainQuest");
 			if (progressionQuest) {
 				auto queststage = progressionQuest->GetCurrentStageID();
@@ -2203,6 +2203,51 @@ namespace Gts {
 					Persistent::GetSingleton().GiantCount += value;
 				}
 			}
+		}
+	}
+
+	void AdvanceQuestProgression(Actor* giant, Actor* tiny, float stage, float value) {
+		if (giant->formID == 0x14) { // Player Only
+			auto progressionQuest = Runtime::GetQuest("MainQuest");
+			if (progressionQuest) {
+				auto queststage = progressionQuest->GetCurrentStageID();
+				if (queststage < 10 || queststage >= 100) {
+					return;
+				}
+				if (stage == 1) {
+					Persistent::GetSingleton().HugStealCount += value;
+				} else if (stage == 2) {
+					Persistent::GetSingleton().StolenSize += value;
+				} else if (stage == 3 && queststage >= 30) {
+					Persistent::GetSingleton().CrushCount += value;
+					SpawnProgressionParticle(tiny, false);
+				} else if (stage == 4 && queststage >= 40) {
+					Persistent::GetSingleton().STNCount += value;
+					SpawnProgressionParticle(tiny, false);
+				} else if (stage == 5) {
+					Persistent::GetSingleton().HandCrushed += value;
+					SpawnProgressionParticle(tiny, false);
+				} else if (stage == 6) {
+					Persistent::GetSingleton().VoreCount += value;
+					SpawnProgressionParticle(tiny, true);
+				} else if (stage == 7) {
+					Persistent::GetSingleton().GiantCount += value;
+					SpawnProgressionParticle(tiny, false);
+				}
+			}
+		}
+	}
+
+	void SpawnProgressionParticle(Actor* tiny, bool soul) {
+		std::string_view Path = "GTS/Effects/Magic/Life_Drain.nif";
+		if (soul) {
+			Path = "GTS/Effects/Magic/Soul_Drain.nif";
+		}
+		float scale = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
+		auto node = find_node(tiny, "NPC Root [Root]");
+		if (node) {
+			NiPoint3 pos = node->world.translate;
+			SpawnParticle(tiny, 4.60, Path, NiMatrix3(), pos, scale, 7, node);
 		}
 	}
 
