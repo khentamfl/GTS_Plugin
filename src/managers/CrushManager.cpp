@@ -235,12 +235,12 @@ namespace Gts {
 					});
 
 					if (tiny->formID != 0x14) {
-						Disintegrate(tiny); // Player can't be disintegrated: simply nothing happens.
+						Disintegrate(tiny, true); // Set critical stage 4 on actors
 					} else if (tiny->formID == 0x14) {
 						if (IsLiving(tiny)) {
 							TriggerScreenBlood(50);
 						}
-						tiny->SetAlpha(0.0); // Fake crush effect, just make player invisible
+						tiny->SetAlpha(0.0); // Player can't be disintegrated, so we make player Invisible
 					}
 
 					AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill

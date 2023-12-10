@@ -104,7 +104,7 @@ namespace Gts {
 	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause, bool reset);
 	void TransferInventory_Normal(Actor* giant, Actor* tiny, bool removeQuestItems);
 
-	void Disintegrate(Actor* actor);
+	void Disintegrate(Actor* actor, bool script);
 	void UnDisintegrate(Actor* actor);
 
 	void SetRestrained(Actor* actor);

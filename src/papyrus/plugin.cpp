@@ -350,7 +350,7 @@ namespace {
 
 	void DisintegrateTarget(StaticFunctionTag*, Actor* actor) {
 		if (actor) {
-			Disintegrate(actor);
+			Disintegrate(actor, true);
 		}
 	}
 

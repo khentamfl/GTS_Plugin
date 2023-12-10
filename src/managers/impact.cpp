@@ -167,7 +167,7 @@ namespace Gts {
 					auto giant = gianthandle.get().get();
 					float timepassed = Time::WorldTimeElapsed() - Start;
 					
-					if (timepassed >= 0.18) { 
+					if (timepassed >= 0.15) { 
 						DoDamageEffect(giant, 1.60 * damage, 6.6, 20, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 						DoDamageEffect(giant, 1.60 * damage, 6.6, 20, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 

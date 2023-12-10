@@ -184,7 +184,7 @@ namespace Gts {
 				AddSMTDuration(giantref.get().get(), 6.0);
 				if (tiny->formID != 0x14) {
 					KillActor(giantref.get().get(), tiny);
-					Disintegrate(tiny);
+					Disintegrate(tiny, true);
 				} else if (tiny->formID == 0x14) {
 					InflictSizeDamage(giantref.get().get(), tiny, 900000);
 					KillActor(giantref.get().get(), tiny);

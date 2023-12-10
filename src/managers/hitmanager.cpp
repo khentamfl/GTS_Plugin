@@ -167,10 +167,10 @@ namespace Gts {
 		PrintDeathSource(attacker, receiver, DamageSource::Overkill);
 
 		if (receiver->formID != 0x14) {
-			Disintegrate(receiver); // Player can't be disintegrated: simply nothing happens.
+			Disintegrate(receiver, true); // Set critical stage 4 on actors
 		} else if (receiver->formID == 0x14) {
 			TriggerScreenBlood(50);
-			receiver->SetAlpha(0.0); // Just make player Invisible
+			receiver->SetAlpha(0.0); // Player can't be disintegrated, so we make player Invisible
 		}
 	}
 }

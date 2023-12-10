@@ -802,12 +802,16 @@ namespace Gts {
 		}
 	}
 
-	void Disintegrate(Actor* actor) {
-		actor->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
-		actor->Disable();
-		//actor->Update(0.5);
-		//actor->Update3DModel();
-		
+	void Disintegrate(Actor* actor, bool script) {
+		if (!script) { // do it .dll way
+			actor->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
+			actor->Disable();
+		} else { // else use script hacks
+			auto progressionQuest = Runtime::GetQuest("MainQuest");
+			if (progressionQuest) {
+				CallFunctionOn(progressionQuest, "gtsProgressionQuest", "Disintegrate", actor);
+			}
+		}
 	}
 
 	void UnDisintegrate(Actor* actor) {
@@ -1197,7 +1201,6 @@ namespace Gts {
 			float &health = Persistent::GetSingleton().stolen_health;
 			float &magick = Persistent::GetSingleton().stolen_magick;
 			float &stamin = Persistent::GetSingleton().stolen_stamin;
-			//value *= 1000;
 			float limit = 2.0 * giant->GetLevel();
 			if (type == ActorValue::kHealth) {
 				health += value;
@@ -1251,8 +1254,6 @@ namespace Gts {
 			float &health = Persistent::GetSingleton().stolen_health;
 			float &magick = Persistent::GetSingleton().stolen_magick;
 			float &stamin = Persistent::GetSingleton().stolen_stamin;
-
-			//value *= 1000;
 
 			if (Storage > 0.0) {
 				int Boost = rand() % 3;
