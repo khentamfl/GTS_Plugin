@@ -38,6 +38,7 @@ namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
 		tiny->KillImpl(giant, 1000, true, true);
 		tiny->SetLifeState(ACTOR_LIFE_STATE::kDead);
+		tiny->KillDying();
 		//tiny->GetActorRuntimeData().boolBits.set(BOOL_BITS::kDead);
 		//RagdollTask(tiny); 
 	}

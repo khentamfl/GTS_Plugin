@@ -804,11 +804,12 @@ namespace Gts {
 
 	void Disintegrate(Actor* actor) {
 		actor->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
-		actor->Disable();
+		actor->Update(0.5);
+		//actor->Disable();
 	}
 
 	void UnDisintegrate(Actor* actor) {
-		actor->GetActorRuntimeData().criticalStage.reset(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
+		//actor->GetActorRuntimeData().criticalStage.reset(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
 	}
 
 	void SetRestrained(Actor* actor) {
