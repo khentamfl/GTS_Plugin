@@ -704,7 +704,7 @@ namespace Gts {
 			bool reanimated = actor->AsActorState()->GetLifeState() == ACTOR_LIFE_STATE::kReanimate;
 			if (transient) {
 				transient->WasReanimated = reanimated;
-				Cprint("Set {} to reanimated: {}", actor->GetDisplayFullName(), reanimated);
+				//Cprint("Set {} to reanimated: {}", actor->GetDisplayFullName(), reanimated);
 			}
 		}
 	}
@@ -1387,7 +1387,7 @@ namespace Gts {
 			return;
 		}
 		float giantSize = get_visual_scale(giant);
-		float tinySize = get_visual_scale(tiny);
+		float tinySize = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
 		if (HasSMT(giant)) {
 			giantSize *= 4.0;
 		}
@@ -2218,21 +2218,22 @@ namespace Gts {
 				if (queststage < 10 || queststage >= 100) {
 					return;
 				}
+				float bonus = GetScaleAdjustment(tiny);
 				if (stage == 1) {
 					Persistent::GetSingleton().HugStealCount += value;
 				} else if (stage == 2) {
 					Persistent::GetSingleton().StolenSize += value;
 				} else if (stage == 3 && queststage >= 30) {
-					Persistent::GetSingleton().CrushCount += value;
+					Persistent::GetSingleton().CrushCount += value * bonus;
 					SpawnProgressionParticle(tiny, false);
 				} else if (stage == 4 && queststage >= 40) {
-					Persistent::GetSingleton().STNCount += value;
+					Persistent::GetSingleton().STNCount += value * bonus;
 					SpawnProgressionParticle(tiny, false);
 				} else if (stage == 5) {
-					Persistent::GetSingleton().HandCrushed += value;
+					Persistent::GetSingleton().HandCrushed += value * bonus;
 					SpawnProgressionParticle(tiny, false);
 				} else if (stage == 6) {
-					Persistent::GetSingleton().VoreCount += value;
+					Persistent::GetSingleton().VoreCount += value * bonus;
 					SpawnProgressionParticle(tiny, true);
 				} else if (stage == 7) {
 					Persistent::GetSingleton().GiantCount += value;

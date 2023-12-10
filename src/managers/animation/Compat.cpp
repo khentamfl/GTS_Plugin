@@ -214,17 +214,6 @@ namespace {
 		DoLaunch(&data.giant, 0.80, 1.35, FootEvent::Left);
 	}
 
-	void JumpDown(AnimationEventData& data) {
-		auto giant = &data.giant;
-		float perk = GetPerkBonus_Basics(giant);
-		auto& sizemanager = SizeManager::GetSingleton();
-		float damage = sizemanager.GetSizeAttribute(giant, 2);
-		DoDamageEffect(&data.giant, 0.9 * damage, 6.0, 20, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
-		DoDamageEffect(&data.giant, 0.9 * damage, 6.0, 20, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
-		DoLaunch(&data.giant, 0.9 * perk, 1.75, FootEvent::Left);
-		DoLaunch(&data.giant, 0.9 * perk, 1.75, FootEvent::Right);
-	}
-
 	void GTS_DiveSlide_ON(AnimationEventData& data) {
 		auto giant = &data.giant;
 		StartBodyDamage_Slide(giant);
@@ -275,7 +264,6 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTS_DiveSlide_OFF", "Body", GTS_DiveSlide_OFF);
 		AnimationManager::RegisterEvent("GTS_BodyDamage_ON", "Body", GTS_BodyDamage_ON);
 		AnimationManager::RegisterEvent("GTS_BodyDamage_OFF", "Body", GTS_BodyDamage_OFF);
-		AnimationManager::RegisterEvent("JumpDown", "JumpCompat1", JumpDown);
 
 		AnimationManager::RegisterEvent("GTS_DisableHH", "HHPatch", GTS_DisableHH);
 		AnimationManager::RegisterEvent("GTS_EnableHH", "HHPatch", GTS_EnableHH);

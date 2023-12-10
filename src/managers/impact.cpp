@@ -1,4 +1,5 @@
 #include "managers/animation/Utils/AnimationUtils.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "managers/explosion.hpp"
 #include "managers/modevent.hpp"
 #include "managers/footstep.hpp"
@@ -137,7 +138,7 @@ namespace Gts {
 				}
 			}
 
-			if (kind != FootEvent::JumpLand) { // We already do it for Jump Land inside Compat.cpp. We do NOT want to apply it for Jump Land because of it!
+			if (kind != FootEvent::JumpLand) {
 				if (kind == FootEvent::Left) {
 					DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedLeft);
 				} if (kind == FootEvent::Right) {
@@ -147,6 +148,19 @@ namespace Gts {
 				//                 Damage         Radius
 				DoLaunch(actor, 0.70 * bonus, 1.0 * bonus, kind);
 				//               ^ radius      ^ push power
+				return; // don't check further
+			} 
+			
+			else if (kind == FootEvent::JumpLand) {
+				float perk = GetPerkBonus_Basics(actor);
+				auto& sizemanager = SizeManager::GetSingleton();
+				float damage = sizemanager.GetSizeAttribute(actor, 2);
+
+				DoDamageEffect(actor, 1.80 * damage, 6.6, 20, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+				DoDamageEffect(actor, 1.80 * damage, 6.6, 20, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+
+				DoLaunch(actor, 0.9 * perk, 1.75, FootEvent::Left);
+				DoLaunch(actor, 0.9 * perk, 1.75, FootEvent::Right);
 			}
 		}
 	}
