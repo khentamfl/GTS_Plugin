@@ -803,6 +803,8 @@ namespace Gts {
 	}
 
 	void Disintegrate(Actor* actor, bool script) {
+		// Optional TO-DO: 11.12.2023: 
+		// RE SetCriticalStage function since it isn't working in dll and we have to use script hacks.
 		if (!script) { // do it .dll way
 			actor->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
 			actor->Disable();

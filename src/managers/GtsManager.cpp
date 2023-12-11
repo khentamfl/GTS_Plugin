@@ -76,10 +76,7 @@ namespace {
 		float stateScale = GetRaycastStateScale(giant);
 		float scale = get_visual_scale(giant) * stateScale;
 		if (giant->formID == 0x14 && IsFirstPerson()) {
-			auto data = Persistent::GetSingleton().GetData(giant);
-			if (data) {
-				scale = data->scaleOverride;
-			}
+			scale = get_fp_scale(giant);
 		}
 		//log::info("Raycast scale of {}: {}", giant->GetDisplayFullName(), scale);
 		ray_start.z += 70;
@@ -191,10 +188,11 @@ namespace {
 			return;
 		}
 		float visual_scale = persi_actor_data->visual_scale;
-
-		float scaleOverride = persi_actor_data->scaleOverride;
-		if (scaleOverride >= 1e-4) {
-			visual_scale = scaleOverride;
+		if (actor->formID == 0x14) {
+			float scaleOverride = get_fp_scale(giant);
+			if (IsFirstPerson() && scaleOverride >= 1e-4) {
+				visual_scale = scaleOverride;
+			}
 		}
 
 
