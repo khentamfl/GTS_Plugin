@@ -9,7 +9,7 @@ namespace Gts {
 	NiPoint3 Alt::GetOffset(const NiPoint3& cameraPos) {
 		return NiPoint3(
 			Runtime::GetFloat("cameraAlternateX"),
-			Alt::ZOffset,
+			0, //Alt::ZOffset,
 			Runtime::GetFloat("cameraAlternateY")
 			);
 	}
@@ -17,7 +17,7 @@ namespace Gts {
 	NiPoint3 Alt::GetCombatOffset(const NiPoint3& cameraPos) {
 		return NiPoint3(
 			Runtime::GetFloat("combatCameraAlternateX"),
-			Alt::ZOffset,
+			0, //Alt::ZOffset,
 			Runtime::GetFloat("combatCameraAlternateY")
 			);
 	}
@@ -25,7 +25,7 @@ namespace Gts {
 	NiPoint3 Alt::GetOffsetProne(const NiPoint3& cameraPos) {
 		return NiPoint3(
 			Runtime::GetFloat("proneCameraAlternateX"),
-			Alt::ZOffset,
+			0, //Alt::ZOffset,
 			Runtime::GetFloat("proneCameraAlternateY")
 			);
 	}
@@ -33,7 +33,7 @@ namespace Gts {
 	NiPoint3 Alt::GetCombatOffsetProne(const NiPoint3& cameraPos) {
 		return NiPoint3(
 			Runtime::GetFloat("proneCombatCameraAlternateX"),
-			Alt::ZOffset,
+			0, //Alt::ZOffset,
 			Runtime::GetFloat("proneCombatCameraAlternateY")
 			);
 	}
