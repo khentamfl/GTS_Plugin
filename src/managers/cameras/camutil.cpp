@@ -139,8 +139,11 @@ namespace Gts {
 			auto cameraState = reinterpret_cast<ThirdPersonState*>(camera->currentState.get());
 			NiPoint3 collPos = cameraState->collisionPos;
 			NiPoint3 offsetEx = cameraState->posOffsetExpected;
+			offsetEx.y = Runtime::GetFloat("EnableDebugOverlay");
 			NiPoint3 offsetAc = cameraState->posOffsetActual;
-			offsetAc.y = Runtime::GetFloat("EnableDebugOverlay");
+			
+			offsetAc = offsetEx;
+
 			//collPos = camLoc;
 			log::info("Camera Coll pos: {}, offsetExpected:{}", Vector2Str(collPos), Vector2Str(offsetEx));
 			log::info("offsetActual: {}", Vector2Str(offsetAc));
