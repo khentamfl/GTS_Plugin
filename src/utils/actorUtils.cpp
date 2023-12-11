@@ -42,6 +42,27 @@ namespace {
 		return Result;
 	}
 
+	void StartResetTask(Actor* tiny) {
+		std::string name = std::format("ResetActor_{}", tiny->formID);
+		float Start = Time::WorldTimeElapsed();
+		ActorHandle tinyhandle = tiny->CreateRefHandle();
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!tinyhandle) {
+				return false;
+			}
+			auto tiny = tinyhandle.get().get();
+			float Finish = Time::WorldTimeElapsed();
+			float timepassed = Finish - Start;
+			if (timepassed < 1.0) {
+				return true; // not enough time has passed yet
+			}
+			log::info("{} was reset", tiny->GetDisplayFullName());
+			EventDispatcher::DoResetActor(tiny);
+			return false; // stop task, we reset the actor
+		});
+		
+	}
+
 	ExtraDataList* CreateExDataList() {
 		size_t a_size;
 		if (SKYRIM_REL_CONSTEXPR (REL::Module::IsAE()) && (REL::Module::get().version() >= SKSE::RUNTIME_SSE_1_6_629)) {
@@ -742,6 +763,12 @@ namespace Gts {
 		ActorHandle tinyhandle = from->CreateRefHandle();
 		bool PCLoot = Runtime::GetBool("GtsEnableLooting");
 		bool NPCLoot = Runtime::GetBool("GtsNPCEnableLooting");
+
+		if (reset) {
+			StartResetTask(from); // reset actor data. 
+			// Used to be inside CrushManager/ShrinkToNothingManager
+		}
+
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!tinyhandle) {
 				return false;
@@ -751,11 +778,7 @@ namespace Gts {
 			}
 			auto tiny = tinyhandle.get().get();
 			auto giant = gianthandle.get().get();
-			if (reset) {
-				EventDispatcher::DoResetActor(tiny); // reset actor data. 
-			}
-			// Used to be inside CrushManager/ShrinkToNothingManager
-			// 09.12.2023: TODO: Fix actors respawning in shrunken state if actor was shrunken
+			
 
 			if (!tiny->IsDead()) {
 				KillActor(giant, tiny); // just to make sure

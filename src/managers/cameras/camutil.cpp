@@ -133,32 +133,6 @@ namespace Gts {
 		}
 	}
 
-	void UpdateCameraOffset() {
-		auto camera = PlayerCamera::GetSingleton();
-		if (camera) {
-			auto cameraState = reinterpret_cast<ThirdPersonState*>(camera->cameraStates[CameraState::kThirdPerson].get());
-			if (cameraState) {
-				NiPoint3 collPos = cameraState->collisionPos;
-				NiPoint3 offsetEx = cameraState->posOffsetExpected;
-				offsetEx.y = Runtime::GetFloat("EnableDebugOverlay");
-				NiPoint3 offsetAc = cameraState->posOffsetActual;
-				
-				offsetAc = offsetEx;
-
-				//collPos = camLoc;
-				log::info("Camera Coll pos: {}, offsetExpected:{}", Vector2Str(collPos), Vector2Str(offsetEx));
-				log::info("offsetActual: {}", Vector2Str(offsetAc));
-
-				const auto freeRot = cameraState->freeRotationEnabled;
-				cameraState->freeRotationEnabled = true;
-				cameraState->UpdateRotation();
-
-				cameraState->freeRotationEnabled = freeRot;
-				cameraState->UpdateRotation();
-			}
-		}
-	}
-
 	void UpdateNiCamera(NiPoint3 camLoc) {
 		auto niCamera = GetNiCamera();
 		if (niCamera) {
@@ -194,8 +168,6 @@ namespace Gts {
 				auto cameraState = reinterpret_cast<ThirdPersonState*>(camera->currentState.get());
 				cameraRoot->local.translate = camLoc;
 				cameraRoot->world.translate = camLoc;
-				cameraState->translation = camLoc;
-				UpdateCameraOffset();
 				update_node(cameraRoot.get());
 			}
 		}
