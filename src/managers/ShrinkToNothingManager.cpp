@@ -14,6 +14,17 @@ using namespace SKSE;
 using namespace RE;
 using namespace REL;
 using namespace Gts;
+namespace {
+	void ProgressQuest(Actor* caster, Actor* target) {
+		if (!target->IsDead()) {
+			if (IsGiant(target)) {
+				AdvanceQuestProgression(caster, target, 7, 1, false);
+			} else {
+				AdvanceQuestProgression(caster, target, 4, 1, false);
+			}
+		}
+	}
+}
 
 namespace Gts {
 	ShrinkToNothingManager& ShrinkToNothingManager::GetSingleton() noexcept {
@@ -49,11 +60,11 @@ namespace Gts {
 					// Do shrink
 					float currentSize = get_visual_scale(tiny);
 					
-					KillActor(giant, tiny);
+					ProgressQuest(giant, tiny);
 					
 					// Fully shrunk
 					ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
-
+					KillActor(giant, tiny); 
 
 					if (!IsLiving(tiny)) {
 						SpawnDustParticle(tiny, tiny, "NPC Root [Root]", 3.6);

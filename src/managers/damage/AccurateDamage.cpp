@@ -504,13 +504,6 @@ namespace Gts {
 			if (multiplier >= 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
 					crushmanager.Crush(giant, tiny);
-					if (!tiny->IsDead()) {
-						if (IsGiant(tiny)) {
-							AdvanceQuestProgression(giant, tiny, 7, 1, false);
-						} else {
-							AdvanceQuestProgression(giant, tiny, 3, 1, false);
-						}
-					}
 					
 					SetReanimatedState(tiny);
 					

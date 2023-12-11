@@ -32,6 +32,16 @@ namespace {
 		}
 	}
 
+	void ProgressQuest(Actor* giant, Actor* tiny) {
+		if (!tiny->IsDead()) {
+			if (IsGiant(tiny)) {
+				AdvanceQuestProgression(giant, tiny, 7, 1, false);
+			} else {
+				AdvanceQuestProgression(giant, tiny, 3, 1, false);
+			}
+		}
+	}
+
 	void FearChance(Actor* giant)  {
 		float size = get_visual_scale(giant);
 		int MaxValue = (20 - (1.6 * size));
@@ -170,7 +180,7 @@ namespace Gts {
 			} else if (data.state == CrushState::Crushing) {
 				if (data.delay.ShouldRun()) {
 					data.state = CrushState::Crushed;
-
+					ProgressQuest(giant, tiny);
 					// Do crush
 					if (!tiny->IsDead()) {
 						KillActor(giant, tiny);
