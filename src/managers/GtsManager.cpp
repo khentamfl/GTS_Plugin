@@ -189,7 +189,7 @@ namespace {
 		}
 		float visual_scale = persi_actor_data->visual_scale;
 		if (actor->formID == 0x14) {
-			float scaleOverride = get_fp_scale(giant);
+			float scaleOverride = get_fp_scale(actor);
 			if (IsFirstPerson() && scaleOverride >= 1e-4) {
 				visual_scale = scaleOverride;
 			}
