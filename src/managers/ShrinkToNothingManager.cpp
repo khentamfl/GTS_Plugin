@@ -54,14 +54,13 @@ namespace Gts {
 
 			if (data.state == ShrinkState::Healthy) {
 				SetReanimatedState(tiny);
+				ProgressQuest(giant, tiny);
 				data.state = ShrinkState::Shrinking;
 			} else if (data.state == ShrinkState::Shrinking) {
 				if (data.delay.ShouldRun()) {
 					// Do shrink
 					float currentSize = get_visual_scale(tiny);
-					
-					ProgressQuest(giant, tiny);
-					
+
 					// Fully shrunk
 					ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
 					KillActor(giant, tiny); 

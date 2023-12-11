@@ -149,7 +149,7 @@ namespace Gts {
 				log::info("Camera Coll pos: {}, offsetExpected:{}", Vector2Str(collPos), Vector2Str(offsetEx));
 				log::info("offsetActual: {}", Vector2Str(offsetAc));
 
-				const auto freeRot = tps->freeRotationEnabled;
+				const auto freeRot = cameraState->freeRotationEnabled;
 				cameraState->freeRotationEnabled = true;
 				cameraState->UpdateRotation();
 

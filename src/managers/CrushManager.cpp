@@ -176,11 +176,11 @@ namespace Gts {
 
 			if (data.state == CrushState::Healthy) {
 				SetReanimatedState(tiny);
+				ProgressQuest(giant, tiny);
 				data.state = CrushState::Crushing;
 			} else if (data.state == CrushState::Crushing) {
 				if (data.delay.ShouldRun()) {
 					data.state = CrushState::Crushed;
-					ProgressQuest(giant, tiny);
 					// Do crush
 					if (!tiny->IsDead()) {
 						KillActor(giant, tiny);
