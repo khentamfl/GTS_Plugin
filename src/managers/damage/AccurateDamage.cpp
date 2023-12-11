@@ -503,8 +503,14 @@ namespace Gts {
 			ReportCrime(giant, tiny, 1000, true);
 			if (multiplier >= 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
+					if (!tiny->IsDead()) {
+						if (IsGiant(tiny)) {
+							AdvanceQuestProgression(giant, tiny, 7, 1, false);
+						} else {
+							AdvanceQuestProgression(giant, tiny, 3, 1, false);
+						}
+					}
 					crushmanager.Crush(giant, tiny);
-					
 					SetReanimatedState(tiny);
 					
 					KillActor(giant, tiny);

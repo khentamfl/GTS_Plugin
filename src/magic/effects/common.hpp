@@ -298,8 +298,14 @@ namespace Gts {
 				return false;
 			}
 
-			ShrinkToNothingManager::Shrink(caster, target);
-			
+			if (!target->IsDead()) {
+				if (IsGiant(target)) {
+					AdvanceQuestProgression(caster, target, 7, 1, false);
+				} else {
+					AdvanceQuestProgression(caster, target, 4, 1, false);
+				}
+			}
+
 			AdjustSizeLimit(0.0060, caster);
 			AdjustMassLimit(0.0060, caster);
 
@@ -311,7 +317,7 @@ namespace Gts {
 
 			AdjustSizeReserve(caster, target_scale/25);
 			PrintDeathSource(caster, target, DamageSource::Shrinked);
-			
+			ShrinkToNothingManager::Shrink(caster, target);
 			return true;
 		}
 		return false;

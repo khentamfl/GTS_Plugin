@@ -14,17 +14,6 @@ using namespace SKSE;
 using namespace RE;
 using namespace REL;
 using namespace Gts;
-namespace {
-	void ProgressQuest(Actor* caster, Actor* target) {
-		if (!target->IsDead()) {
-			if (IsGiant(target)) {
-				AdvanceQuestProgression(caster, target, 7, 1, false);
-			} else {
-				AdvanceQuestProgression(caster, target, 4, 1, false);
-			}
-		}
-	}
-}
 
 namespace Gts {
 	ShrinkToNothingManager& ShrinkToNothingManager::GetSingleton() noexcept {
@@ -54,7 +43,6 @@ namespace Gts {
 
 			if (data.state == ShrinkState::Healthy) {
 				SetReanimatedState(tiny);
-				ProgressQuest(giant, tiny);
 				data.state = ShrinkState::Shrinking;
 			} else if (data.state == ShrinkState::Shrinking) {
 				if (data.delay.ShouldRun()) {
