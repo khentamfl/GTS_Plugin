@@ -163,7 +163,7 @@ namespace Gts {
 		auto camera = PlayerCamera::GetSingleton();
 		if (camera) {
 			auto cameraRoot = camera->cameraRoot;
-			auto cameraState = camera->currentState.get();
+			auto cameraState = reinterpret_cast<ThirdPersonState*>(camera->currentState.get());
 			if (cameraRoot) {
 				cameraRoot->local.translate = camLoc;
 				cameraRoot->world.translate = camLoc;
