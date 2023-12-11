@@ -136,17 +136,19 @@ namespace Gts {
 	void UpdateCameraOffset() {
 		auto camera = PlayerCamera::GetSingleton();
 		if (camera) {
-			auto cameraState = reinterpret_cast<ThirdPersonState*>(camera->currentState.get());
-			NiPoint3 collPos = cameraState->collisionPos;
-			NiPoint3 offsetEx = cameraState->posOffsetExpected;
-			offsetEx.y = Runtime::GetFloat("EnableDebugOverlay");
-			NiPoint3 offsetAc = cameraState->posOffsetActual;
-			
-			offsetAc = offsetEx;
+			auto cameraState = reinterpret_cast<ThirdPersonState*>(camera->cameraStates[CameraState::kThirdPerson].get());
+			if (cameraState) {
+				NiPoint3 collPos = cameraState->collisionPos;
+				NiPoint3 offsetEx = cameraState->posOffsetExpected;
+				offsetEx.y = Runtime::GetFloat("EnableDebugOverlay");
+				NiPoint3 offsetAc = cameraState->posOffsetActual;
+				
+				offsetAc = offsetEx;
 
-			//collPos = camLoc;
-			log::info("Camera Coll pos: {}, offsetExpected:{}", Vector2Str(collPos), Vector2Str(offsetEx));
-			log::info("offsetActual: {}", Vector2Str(offsetAc));
+				//collPos = camLoc;
+				log::info("Camera Coll pos: {}, offsetExpected:{}", Vector2Str(collPos), Vector2Str(offsetEx));
+				log::info("offsetActual: {}", Vector2Str(offsetAc));
+			}
 		}
 	}
 
