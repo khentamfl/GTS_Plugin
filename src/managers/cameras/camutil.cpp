@@ -163,9 +163,17 @@ namespace Gts {
 		auto camera = PlayerCamera::GetSingleton();
 		if (camera) {
 			auto cameraRoot = camera->cameraRoot;
+			auto cameraState = camera->currentState.get();
 			if (cameraRoot) {
 				cameraRoot->local.translate = camLoc;
 				cameraRoot->world.translate = camLoc;
+				cameraState->translation = cameraRoot->local.translate;
+				
+				NiPoint3 collPos = cameraState->collisionPos;//
+				NiPoint3 offsetEx = cameraState->posOffsetExpected;
+				NiPoint3 offsetAc = cameraState->posOffsetActual;
+				log::info("Camera Coll pos: {}, offsetExpected:{}", Vector2Str(collPos), Vector2Str(offsetEx));
+				log::info("offsetActual: {}", Vector2Str(offsetAc));
 				update_node(cameraRoot.get());
 			}
 		}
