@@ -148,6 +148,13 @@ namespace Gts {
 				//collPos = camLoc;
 				log::info("Camera Coll pos: {}, offsetExpected:{}", Vector2Str(collPos), Vector2Str(offsetEx));
 				log::info("offsetActual: {}", Vector2Str(offsetAc));
+
+				const auto freeRot = tps->freeRotationEnabled;
+				cameraState->freeRotationEnabled = true;
+				cameraState->UpdateRotation();
+
+				cameraState->freeRotationEnabled = freeRot;
+				cameraState->UpdateRotation();
 			}
 		}
 	}
