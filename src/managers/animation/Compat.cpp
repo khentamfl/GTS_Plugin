@@ -224,10 +224,12 @@ namespace {
 	}
 	void GTS_BodyDamage_ON(AnimationEventData& data) {
 		auto giant = &data.giant;
+		SetProneState(giant, true);
 		StartBodyDamage_DOT(giant);
 	}
 	void GTS_BodyDamage_OFF(AnimationEventData& data) {
 		auto giant = &data.giant;
+		SetProneState(giant, false);
 		StopBodyDamage_DOT(giant);
 	}
 

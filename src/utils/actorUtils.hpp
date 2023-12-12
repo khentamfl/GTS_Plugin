@@ -87,10 +87,12 @@ namespace Gts {
 	float GetActorHeight(Actor* giant, bool metric);
 	float GetScaleAdjustment(Actor* tiny);
 	float GetRaycastStateScale(Actor* giant);
+	float GetProneAdjustment();
 	// End
 
 	// GTS State Controllers
 	void SetBeingHeld(Actor* tiny, bool decide);
+	void SetProneState(Actor* giant, bool enable);
 	void SetBetweenBreasts(Actor* actor, bool decide);
 	void SetBeingEaten(Actor* tiny, bool decide);
 	void SetBeingGrinded(Actor* tiny, bool decide);

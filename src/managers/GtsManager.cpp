@@ -76,7 +76,7 @@ namespace {
 		float stateScale = GetRaycastStateScale(giant);
 		float scale = get_visual_scale(giant) * stateScale;
 		if (giant->formID == 0x14 && IsFirstPerson()) {
-			scale = get_fp_scale(giant);
+			//scale = get_fp_scale(giant);
 		}
 		log::info("scale of {}: {}", giant->GetDisplayFullName(), scale);
 		ray_start.z += 70;
@@ -197,7 +197,11 @@ namespace {
 		if (actor->formID == 0x14) {
 			float scaleOverride = get_fp_scale(actor);
 			if (IsFirstPerson() && scaleOverride >= 1e-4) {
-				visual_scale = scaleOverride;
+				if (scaleOverride > 1.0) {
+					visual_scale *= GetProneAdjustment(); // In normal case we * it for compatibility with crawling/proning.
+				} else {
+					visual_scale = scaleOverride; // In Loot/Combat mode case, we override it with flat value (such as 0.6).
+				}
 			}
 		}
 

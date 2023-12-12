@@ -70,6 +70,7 @@ namespace Gts {
 			bool OverrideCamera = false;
 			bool WasReanimated = false;
 			bool FPCrawling = false;
+			bool FPProning = false;
 
 
 			TESObjectREFR* disable_collision_with = nullptr;
@@ -118,6 +119,7 @@ namespace Gts {
 			result.OverrideCamera = OverrideCamera;
 			result.WasReanimated = WasReanimated;
 			result.FPCrawling = FPCrawling;
+			result.FPProning = FPProning;
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 

@@ -8,11 +8,9 @@ using namespace RE;
 
 namespace Gts {
 	float FirstPerson::GetScaleOverride(bool IsCrawling) {
-		float proneFactor = 1.0;
+		float proneFactor = 1.001;
 		if (IsCrawling) {
-			auto player = GetCameraActor();
-			float scale = get_visual_scale(player);
-			return scale * this->ProneAdjustment();
+			return proneFactor; // 1.0 only if we crawl
 		} else {
 			return -1.0;
 		}

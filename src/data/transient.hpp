@@ -38,6 +38,7 @@ namespace Gts {
 		bool OverrideCamera;
 		bool WasReanimated;
 		bool FPCrawling;
+		bool FPProning;
 		TESObjectREFR* disable_collision_with;
 	};
 

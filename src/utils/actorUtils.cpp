@@ -191,8 +191,12 @@ namespace Gts {
 
 	bool IsProning(Actor* actor) {
 		bool prone;
+		auto transient = Transient::GetSingleton().GetData(actor);
 		actor->GetGraphVariableBool("GTS_IsProne", prone);
-		return prone;
+		if (actor->formID == 0x14 && actor->IsSneaking() && IsFirstPerson() && transient) {
+			return transient->FPProning; // Needed to fix crawling being applied to FP even when Prone is off
+		}
+		return actor!= nullptr && actor->IsSneaking() && prone;
 	}
 
 	bool IsCrawling(Actor* actor) {
@@ -202,7 +206,7 @@ namespace Gts {
 		if (actor->formID == 0x14 && actor->IsSneaking() && IsFirstPerson() && transient) {
 			return transient->FPCrawling; // Needed to fix crawling being applied to FP even when Prone is off
 		}
-		return actor!= nullptr && actor->formID == 0x14 && actor->IsSneaking() && crawl;
+		return actor!= nullptr && actor->IsSneaking() && crawl;
 	}
 
 	bool IsTransitioning(Actor* actor) { // reports sneak transition to crawl
@@ -680,6 +684,17 @@ namespace Gts {
 		}
 	}
 
+	float GetProneAdjustment() {
+		auto player = PlayerCharacter::GetSingleton();
+		float value = 1.0;
+		if (IsCrawling(player)) {
+			value = std::clamp(Runtime::GetFloat("ProneOffsetFP"), 0.10f, 1.0f);
+		} if (IsProning(player)) {
+			value *= 0.6;
+		}
+		return value;
+	}
+
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                                 G T S   S T A T E S  S E T S                                                                       //
@@ -688,6 +703,14 @@ namespace Gts {
 		auto transient = Transient::GetSingleton().GetData(tiny);
 		if (transient) {
 			transient->being_held = decide;
+		}
+	}
+	void SetProneState(Actor* giant, bool enable) {
+		if (actor->formID == 0x14) {
+			auto transient = Transient::GetSingleton().GetData(actor);
+			if (transient) {
+				transient->FPProning = enable;
+			}
 		}
 	}
 	void SetBetweenBreasts(Actor* actor, bool decide) {
