@@ -1232,7 +1232,7 @@ namespace Gts {
 
 	void AddStolenAttributes(Actor* giant, float value) {
 		if (giant->formID == 0x14 && Runtime::HasPerk(giant, "SizeAbsorption")) {
-			float &attributes = Persistent::GetSingleton().GetData(giant);
+			auto attributes = Persistent::GetSingleton().GetData(giant);
 			if (attributes) {
 				log::info("Adding {} to stolen attributes", value);
 				attributes->stolen_attributes += value;
