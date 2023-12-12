@@ -41,7 +41,7 @@ namespace {
 	}
 
 	float GetStolenAttribute(StaticFunctionTag*, float value) {
-		auto Player = PlayerCharacter::GetSingleton();
+		auto player = PlayerCharacter::GetSingleton();
 		auto Persistent = Persistent::GetSingleton().GetData(player);
 		if (Persistent) {
 			if (value == 0) {
