@@ -75,9 +75,7 @@ namespace {
 		NiPoint3 ray_start = giant->GetPosition();
 		float stateScale = GetRaycastStateScale(giant);
 		float scale = get_visual_scale(giant) * stateScale;
-		if (giant->formID == 0x14 && IsFirstPerson()) {
-			//scale = get_fp_scale(giant);
-		}
+
 		log::info("scale of {}: {}", giant->GetDisplayFullName(), scale);
 		ray_start.z += 70;
 

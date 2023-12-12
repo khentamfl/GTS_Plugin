@@ -153,7 +153,7 @@ namespace Gts {
 	void AddStolenAttributes(Actor* giant, float value);
 	void AddStolenAttributesTowards(Actor* giant, ActorValue type, float value);
 	float GetStolenAttributes_Values(Actor* giant, ActorValue type);
-	float GetStolenAttributes();
+	float GetStolenAttributes(Actor* giant);
 	void DistributeStolenAttributes(Actor* giant, float value);
 
 	float GetRandomBoost();
@@ -210,6 +210,7 @@ namespace Gts {
 	void AdvanceQuestProgression(Actor* giant, float stage, float value);
 	void AdvanceQuestProgression(Actor* giant, Actor* tiny, float stage, float value, bool vore);
 	void SpawnProgressionParticle(Actor* tiny, bool vore);
+	void ResetQuest();
 	float GetQuestProgression(float stage);
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value);
 	void EditDetectionLevel(Actor* actor, Actor* giant);

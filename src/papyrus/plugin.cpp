@@ -201,6 +201,10 @@ namespace {
 		current3D->SetCollisionLayer(COL_LAYER::kNonCollidable);
 	}
 
+	void ResetQuestProgression(StaticFunctionTag*) {
+		ResetQuest();
+	}
+
 	float Quest_GetProgression(StaticFunctionTag*, float stage) {
 		return GetQuestProgression(stage);
 	}
@@ -477,6 +481,7 @@ namespace Gts {
 		vm->RegisterFunction("SetNPCProtection", PapyrusClass, SetNPCProtection);
 		vm->RegisterFunction("SetPCProtection", PapyrusClass, SetPCProtection);
 		vm->RegisterFunction("DisableCollisionLayerAndMotion", PapyrusClass, DisableCollisionLayerAndMotion);
+		vm->RegisterFunction("ResetQuestProgression", PapyrusClass, ResetQuestProgression);
 		vm->RegisterFunction("Quest_GetProgression", PapyrusClass, Quest_GetProgression);
 		vm->RegisterFunction("GetAspectOfGiantessPower", PapyrusClass, GetAspectOfGiantessPower);
 		vm->RegisterFunction("SetIsHighHeelEnabled", PapyrusClass, SetIsHighHeelEnabled);

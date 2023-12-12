@@ -59,6 +59,8 @@ Function SetNPCProtection(Bool enabled) global native ; Protect friendly NPC's f
 Function SetPCProtection(Bool enabled) global native  ; Protect Player from friendly size-related effects 
 Function DisableCollisionLayerAndMotion(ObjectReference ref) global native
 Function EnableRaycastSize(Bool enabled) global native
+    
+Function ResetQuestProgression() global native
 Float function Quest_GetProgression(float stage) global native    
 Float function GetAspectOfGiantessPower() global native
     

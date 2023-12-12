@@ -690,7 +690,7 @@ namespace Gts {
 		if (IsCrawling(player)) {
 			value = std::clamp(Runtime::GetFloat("ProneOffsetFP"), 0.10f, 1.0f);
 		} if (IsProning(player)) {
-			value *= 0.6;
+			value *= 0.5;
 		}
 		return value;
 	}
@@ -1232,75 +1232,91 @@ namespace Gts {
 
 	void AddStolenAttributes(Actor* giant, float value) {
 		if (giant->formID == 0x14 && Runtime::HasPerk(giant, "SizeAbsorption")) {
-			float &attributes = Persistent::GetSingleton().stolen_attributes;
-			//log::info("Adding {} to stolen attributes", value);
-			attributes += value;
-		
-			if (attributes <= 0.0) {
-				attributes = 0.0; // Cap it just in case
-			}
+			float &attributes = Persistent::GetSingleton().GetData(giant)->stolen_attributes;
+			if (attributes) {
+				//log::info("Adding {} to stolen attributes", value);
+				attributes += value;
+			
+				if (attributes <= 0.0) {
+					attributes = 0.0; // Cap it just in case
+				}
 			//log::info("Stolen AV value: {}", attributes);
+			}
 		}
 	}
 
 	void AddStolenAttributesTowards(Actor* giant, ActorValue type, float value) {
 		if (giant->formID == 0x14) {
-			float &health = Persistent::GetSingleton().stolen_health;
-			float &magick = Persistent::GetSingleton().stolen_magick;
-			float &stamin = Persistent::GetSingleton().stolen_stamin;
-			float limit = 2.0 * giant->GetLevel();
-			if (type == ActorValue::kHealth) {
-				health += value;
-				if (health >= limit) {
-					health = limit;
-				} 
-				//log::info("Adding {} to health, health: {}", value, health);
-			} else if (type == ActorValue::kMagicka) {
-				magick += value;
-				if (magick >= limit) {
-					magick = limit;
-				} 
-				//log::info("Adding {} to magick, magicka: {}", value, magick);
-			} else if (type == ActorValue::kStamina) {
-				stamin += value;
-				if (stamin >= limit) {
-					stamin = limit;
-				} 
-				//log::info("Adding {} to stamina, stamina: {}", value, stamin);
+			auto& Persistent = Persistent::GetSingleton().GetData(actor);
+			if (Persistent) {
+				float health = Persistent->stolen_health;
+				float magick = Persistent->stolen_magick;
+				float stamin = Persistent->stolen_stamin;
+				float limit = 2.0 * giant->GetLevel();
+				if (type == ActorValue::kHealth) {
+					health += value;
+					if (health >= limit) {
+						health = limit;
+					} 
+					//log::info("Adding {} to health, health: {}", value, health);
+				} else if (type == ActorValue::kMagicka) {
+					magick += value;
+					if (magick >= limit) {
+						magick = limit;
+					} 
+					//log::info("Adding {} to magick, magicka: {}", value, magick);
+				} else if (type == ActorValue::kStamina) {
+					stamin += value;
+					if (stamin >= limit) {
+						stamin = limit;
+					} 
+					//log::info("Adding {} to stamina, stamina: {}", value, stamin);
+				}
 			}
 		}
 	}
 
 	float GetStolenAttributes_Values(Actor* giant, ActorValue type) {
 		if (giant->formID == 0x14) {
-			if (type == ActorValue::kHealth) {
-				return Persistent::GetSingleton().stolen_health;
-			} else if (type == ActorValue::kMagicka) {
-				return Persistent::GetSingleton().stolen_magick;
-			} else if (type == ActorValue::kStamina) {
-				return Persistent::GetSingleton().stolen_stamin;
-			} else {
-				return 0.0;
+			auto& Persistent = Persistent::GetSingleton().GetData(actor);
+			if (Persistent) {
+				if (type == ActorValue::kHealth) {
+					return Persistent->stolen_health;
+				} else if (type == ActorValue::kMagicka) {
+					return Persistent->stolen_magick;
+				} else if (type == ActorValue::kStamina) {
+					return Persistent->stolen_stamin;
+				} else {
+					return 0.0;
+				}
 			}
+			return 0.0;
 		}
 		return 0.0;
 	}
 
-	float GetStolenAttributes() {
-		return Persistent::GetSingleton().stolen_attributes;
+	float GetStolenAttributes(Actor* giant) {
+		auto& persist = Persistent::GetSingleton().GetData(giant);
+		if (persist) {
+			return persist->stolen_attributes;
+		}
+		return 0.0;
 	}
 
 	void DistributeStolenAttributes(Actor* giant, float value) {
 		if (value > 0 && giant->formID == 0x14 && Runtime::HasPerk(giant, "SizeAbsorption")) { // Permamently increases random AV after shrinking and stuff
 			float scale = std::clamp(get_visual_scale(giant), 0.01f, 999999.0f);
-			float Storage = GetStolenAttributes();
+			float Storage = GetStolenAttributes(giant);
 			float limit = 2.0 * giant->GetLevel();
 
 			//log::info("Adding {} to attributes", value);
-
-			float &health = Persistent::GetSingleton().stolen_health;
-			float &magick = Persistent::GetSingleton().stolen_magick;
-			float &stamin = Persistent::GetSingleton().stolen_stamin;
+			auto& Persistent = Persistent::GetSingleton().GetData(actor);
+			if (!Persistent) {
+				return;
+			}
+			float health = Persistent->stolen_health;
+			float magick = Persistent->stolen_magick;
+			float stamin = Persistent->stolen_stamin;
 
 			if (Storage > 0.0) {
 				int Boost = rand() % 3;
@@ -2290,6 +2306,17 @@ namespace Gts {
 			}
 		}
 	}
+
+	void ResetQuest() {
+		Persistent::GetSingleton().HugStealCount = 0.0;
+		Persistent::GetSingleton().StolenSize = 0.0;
+		Persistent::GetSingleton().CrushCount = 0.0;
+		Persistent::GetSingleton().STNCount = 0.0;
+		Persistent::GetSingleton().HandCrushed = 0.0;
+		Persistent::GetSingleton().VoreCount = 0.0;
+		Persistent::GetSingleton().GiantCount = 0.0;
+	}
+
 
 	void SpawnProgressionParticle(Actor* tiny, bool vore) {
 		float scale = 1.0 * GetScaleAdjustment(tiny);

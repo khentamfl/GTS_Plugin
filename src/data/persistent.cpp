@@ -42,13 +42,8 @@ namespace {
 	inline const auto ActorsPanic = _byteswap_ulong('ACTP');
 	inline const auto LaunchObjects = _byteswap_ulong('LOBj');
 	inline const auto CameraFovEdits = _byteswap_ulong('CFET');
-	inline const auto StolenAttributes = _byteswap_ulong('STAT');
 	inline const auto NPC_EffectImmunity = _byteswap_ulong('NPER');
 	inline const auto PC_EffectImmunity = _byteswap_ulong('PCER');
-
-	inline const auto Att_HealthStorage = _byteswap_ulong('HTSG');
-	inline const auto Att_StaminStorage = _byteswap_ulong('STSG');
-	inline const auto Att_MagickStorage = _byteswap_ulong('MTSG');
 
 	// Quest
     inline const auto Record_StolenSize = _byteswap_ulong('QSSR');
@@ -297,6 +292,48 @@ namespace Gts {
 							scaleOverride = -1.0;
 						}
 
+                        float stolen_attributes;
+						if (version >= 8) {
+							serde->ReadRecordData(&stolen_attributes, sizeof(stolen_attributes));
+						} else {
+							stolen_attributes = 0.0;
+						}
+						if (std::isnan(stolen_attributes)) {
+							stolen_attributes = 0.0;
+						}
+
+						float stolen_health;
+						if (version >= 8) {
+							serde->ReadRecordData(&stolen_health, sizeof(stolen_health));
+						} else {
+							stolen_health = 0.0;
+						}
+						if (std::isnan(stolen_health)) {
+							stolen_health = 0.0;
+						}
+
+						float stolen_magick;
+						if (version >= 8) {
+							serde->ReadRecordData(&stolen_magick, sizeof(stolen_magick));
+						} else {
+							stolen_magick = 0.0;
+						}
+						if (std::isnan(stolen_magick)) {
+							stolen_magick = 0.0;
+						}
+
+
+						float stolen_stamin;
+						if (version >= 8) {
+							serde->ReadRecordData(&stolen_stamin, sizeof(stolen_stamin));
+						} else {
+							stolen_stamin = 0.0;
+						}
+						if (std::isnan(stolen_stamin)) {
+							stolen_stamin = 0.0;
+						}
+
+
 						ActorData data = ActorData();
 						log::info("Loading Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, bonus_hp: {}, bonus_carry: {}", newActorFormID, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, bonus_hp, bonus_carry);
 						data.native_scale = native_scale;
@@ -320,6 +357,12 @@ namespace Gts {
 						data.SizeReserve = SizeReserve;
 						data.target_scale_v = target_scale_v;
 						data.scaleOverride = scaleOverride;
+
+						data.stolen_attributes = stolen_attributes;
+						data.stolen_health = stolen_health;
+						data.stolen_magick = stolen_magick;
+						data.stolen_stamin = stolen_stamin;
+
 						TESForm* actor_form = TESForm::LookupByID<Actor>(newActorFormID);
 						if (actor_form) {
 							Actor* actor = skyrim_cast<Actor*>(actor_form);
@@ -428,22 +471,6 @@ namespace Gts {
 				bool Camera_PermitFovEdits;
 				serde->ReadRecordData(&Camera_PermitFovEdits, sizeof(Camera_PermitFovEdits));
 				GetSingleton().Camera_PermitFovEdits = Camera_PermitFovEdits;
-			} else if (type == StolenAttributes) {
-				float stolen_attributes;
-				serde->ReadRecordData(&stolen_attributes, sizeof(stolen_attributes));
-				GetSingleton().stolen_attributes = stolen_attributes;
-			} else if (type == Att_HealthStorage) {
-				float stolen_health;
-				serde->ReadRecordData(&stolen_health, sizeof(stolen_health));
-				GetSingleton().stolen_health = stolen_health;
-			} else if (type == Att_MagickStorage) {
-				float stolen_magick;
-				serde->ReadRecordData(&stolen_magick, sizeof(stolen_magick));
-				GetSingleton().stolen_magick = stolen_magick;
-			} else if (type == Att_StaminStorage) {
-				float stolen_stamin;
-				serde->ReadRecordData(&stolen_stamin, sizeof(stolen_stamin));
-				GetSingleton().stolen_stamin = stolen_stamin;
 			} 
 			/////////////////////////////////////////////////////////////////////////// Quest
 			else if (type == Record_StolenSize) { // stage 1
@@ -631,6 +658,11 @@ namespace Gts {
 
 			serde->WriteRecordData(&target_scale_v, sizeof(target_scale_v));
 			serde->WriteRecordData(&scaleOverride, sizeof(scaleOverride));
+
+			serde->WriteRecordData(&stolen_attributes, sizeof(stolen_attributes));
+			serde->WriteRecordData(&stolen_health, sizeof(stolen_health));
+			serde->WriteRecordData(&stolen_magick, sizeof(stolen_magick));
+			serde->WriteRecordData(&stolen_stamin, sizeof(stolen_stamin));
 		}
 
 		if (!serde->OpenRecord(ScaleMethodRecord, 0)) {
@@ -760,34 +792,6 @@ namespace Gts {
 		bool Camera_PermitFovEdits = GetSingleton().Camera_PermitFovEdits;
 		serde->WriteRecordData(&Camera_PermitFovEdits, sizeof(Camera_PermitFovEdits));
 
-		if (!serde->OpenRecord(StolenAttributes, 1)) {
-			log::error("Unable to open Stolen Attributes record to write cosave data");
-			return;
-		}
-		float stolen_attributes = GetSingleton().stolen_attributes;
-		serde->WriteRecordData(&stolen_attributes, sizeof(stolen_attributes));
-
-
-		if (!serde->OpenRecord(Att_HealthStorage, 1)) {
-			log::error("Unable to open Stolen Health Attributes record to write cosave data");
-			return;
-		}
-		float stolen_health = GetSingleton().stolen_health;
-		serde->WriteRecordData(&stolen_health, sizeof(stolen_health));
-
-		if (!serde->OpenRecord(Att_StaminStorage, 1)) {
-			log::error("Unable to open Stolen Stamina Attributes record to write cosave data");
-			return;
-		}
-		float stolen_stamin = GetSingleton().stolen_stamin;
-		serde->WriteRecordData(&stolen_stamin, sizeof(stolen_stamin));
-
-		if (!serde->OpenRecord(Att_MagickStorage, 1)) {
-			log::error("Unable to open Stolen Stamina Attributes record to write cosave data");
-			return;
-		}
-		float stolen_magick = GetSingleton().stolen_magick;
-		serde->WriteRecordData(&stolen_magick, sizeof(stolen_magick));
 		/////////////////////////////////////////////////////////////////////////////////////////// Quest
 
 		if (!serde->OpenRecord(Record_StolenSize, 1)) { // Stage 1
@@ -1010,6 +1014,11 @@ namespace Gts {
 		this->AllowHitGrowth = 1.0;
 		this->SizeReserve = 0.0;
 		this->scaleOverride = -1.0;
+
+		this->stolen_attributes = 0.0;
+		this->stolen_health = 0.0;
+		this->stolen_magick = 0.0;
+		this->stolen_stamin = 0.0;
 	}
 
 	ActorData* Persistent::GetActorData(Actor* actor) {
@@ -1082,6 +1091,11 @@ namespace Gts {
 			data->AllowHitGrowth = 1.0;
 			data->SizeReserve = 0.0;
 			data->scaleOverride = -1.0;
+
+			data->stolen_attributes = 0.0;
+			data->stolen_health = 0.0;
+			data->stolen_magick = 0.0;
+			data->stolen_stamin = 0.0;
 		}
 	}
 }
