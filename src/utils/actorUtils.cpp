@@ -1240,7 +1240,7 @@ namespace Gts {
 				if (attributes->stolen_attributes <= 0.0) {
 					attributes->stolen_attributes = 0.0; // Cap it just in case
 				}
-			log::info("Stolen AV value: {}", attributes);
+			log::info("Stolen AV value: {}", attributes->stolen_attributes);
 			}
 		}
 	}
