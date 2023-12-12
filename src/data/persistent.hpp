@@ -107,11 +107,6 @@ namespace Gts {
 			float size_related_damage_mult = 1.0;
 			float experience_mult = 1.0;
 			float progression_multiplier = 0.55;
-			float stolen_attributes = 0.0;
-
-			float stolen_health = 0.0;
-			float stolen_magick = 0.0;
-			float stolen_stamin = 0.0;
 
 			////Quest Progression
 			float HugStealCount = 0.0; // Stage 1, Hugs

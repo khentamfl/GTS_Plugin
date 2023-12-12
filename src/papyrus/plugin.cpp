@@ -41,16 +41,20 @@ namespace {
 	}
 
 	float GetStolenAttribute(StaticFunctionTag*, float value) {
-		if (value == 0) {
-			return Persistent::GetSingleton().stolen_health;
-		} else if (value == 1) {
-			return Persistent::GetSingleton().stolen_stamin;
-		} else if (value == 2) {
-			return Persistent::GetSingleton().stolen_magick;
-		} else if (value == 3) {
-			return Persistent::GetSingleton().stolen_attributes * 4;
-		} else {
-			return 0.0;
+		auto Player = PlayerCharacter::GetSingleton();
+		auto Persistent = Persistent::GetSingleton().GetData(player);
+		if (Persistent) {
+			if (value == 0) {
+				return Persistent->stolen_health;
+			} else if (value == 1) {
+				return Persistent->stolen_stamin;
+			} else if (value == 2) {
+				return Persistent->stolen_magick;
+			} else if (value == 3) {
+				return Persistent->stolen_attributes * 4;
+			} else {
+				return 0.0;
+			}
 		}
 	}
 
