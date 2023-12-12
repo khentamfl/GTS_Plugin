@@ -78,7 +78,7 @@ namespace {
 		if (giant->formID == 0x14 && IsFirstPerson()) {
 			scale = get_fp_scale(giant);
 		}
-		//log::info("Raycast scale of {}: {}", giant->GetDisplayFullName(), scale);
+		log::info("Raycast scale of {}: {}", giant->GetDisplayFullName(), scale);
 		ray_start.z += 70;
 
 		NiPoint3 ray_up(0.0, 0.0, 1.0);
@@ -102,9 +102,11 @@ namespace {
 		float expected = meter_to_scale * 0.82;
 
 		if (scale > expected) {
+			log::info("Scale {} > {}", scale, expected);
 			float adjust = std::clamp(meter_to_scale/stateScale * 0.82f, 1.0f, 8.0f); // Min is x1.0 (disallow to go below that), max is x8.0
 			float targetscale = get_target_scale(giant);
 			mod_target_scale(giant, -0.0080 * scale);
+			log::info("Adjust {}, Target: {}, Natural: {}", adjust, targetscale, get_natural_scale(giant));
 			if (targetscale < get_natural_scale(giant)) { 
 				set_target_scale(giant, adjust); // just to be safe
 			}
