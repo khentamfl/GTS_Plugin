@@ -106,11 +106,12 @@ namespace {
 			log::info("Scale {} > {}", scale, expected);
 			float adjust = std::clamp(meter_to_scale/stateScale * 0.82f, 1.0f, 8.0f); // Min is x1.0 (disallow to go below that), max is x8.0
 			float targetscale = get_visual_scale(giant);
+			mod_target_scale(giant, -0.0080 * scale);
+
 			if (scale < adjust) { 
 				set_target_scale(giant, adjust); // just to be safe
-				return;
 			}
-			mod_target_scale(giant, -0.0080 * scale);
+
 			log::info("Adjust {}, Target: {}, Natural: {}", adjust, targetscale, get_natural_scale(giant));
 			
 		}
