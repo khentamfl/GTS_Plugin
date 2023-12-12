@@ -112,7 +112,7 @@ namespace {
 						AttributeManager::GetSingleton().OverrideSMTBonus(0.35); // Reduce more speed after crush
 					}
 				} else if (CasterHp < (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
-					PushForward(Caster, Target, 100);
+					PushForward(Caster, Target, 800);
 					AddSMTDuration(Caster, 2.5);
 					StaggerActor(Caster);
 					Caster->ApplyCurrent(0.5 * target_scale, 0.5 * target_scale);

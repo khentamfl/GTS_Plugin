@@ -69,9 +69,9 @@ namespace Gts {
 		if (hitName == "Stagger" || hitName == "SizeEffect" || hitName == "SprintingSizeEffect" || hitName == "GtsTastyFoe") {
 			return;
 		}
-		if (attacker->formID == 0x14) {
+		/*if (attacker->formID == 0x14) {
 			log::info("Hit Name: {}, HitForm: {}", HitId->GetName(), HitIdForm);
-		}
+		}*/
 		auto ProjectileIDForm = a_event->projectile;
 		auto ProjectileID = TESForm::LookupByID(ProjectileIDForm);
 		auto player = PlayerCharacter::GetSingleton();
@@ -106,7 +106,7 @@ namespace Gts {
 				shake_camera(attacker, size_difference * 0.20, 0.35);
 			}
 			PushForward(attacker, receiver, pushpower * 25);
-			log::info("Size difference is met, pushing actor away");
+			//log::info("Size difference is met, pushing actor away");
 		}
 	}
 
