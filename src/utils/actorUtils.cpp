@@ -706,8 +706,8 @@ namespace Gts {
 		}
 	}
 	void SetProneState(Actor* giant, bool enable) {
-		if (actor->formID == 0x14) {
-			auto transient = Transient::GetSingleton().GetData(actor);
+		if (giant->formID == 0x14) {
+			auto transient = Transient::GetSingleton().GetData(giant);
 			if (transient) {
 				transient->FPProning = enable;
 			}
