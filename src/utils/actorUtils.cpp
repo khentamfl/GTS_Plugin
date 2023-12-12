@@ -1258,19 +1258,19 @@ namespace Gts {
 					if (health >= limit) {
 						health = limit;
 					} 
-					log::info("Adding {} to health, health: {}", value, health);
+					//log::info("Adding {} to health, health: {}", value, health);
 				} else if (type == ActorValue::kMagicka) {
 					magick += value;
 					if (magick >= limit) {
 						magick = limit;
 					} 
-					log::info("Adding {} to magick, magicka: {}", value, magick);
+					//log::info("Adding {} to magick, magicka: {}", value, magick);
 				} else if (type == ActorValue::kStamina) {
 					stamin += value;
 					if (stamin >= limit) {
 						stamin = limit;
 					} 
-					log::info("Adding {} to stamina, stamina: {}", value, stamin);
+					//log::info("Adding {} to stamina, stamina: {}", value, stamin);
 				}
 			}
 		}
@@ -1326,19 +1326,19 @@ namespace Gts {
 					if (health >= limit) {
 						health = limit;
 					} 
-					log::info("Adding {} to HP, HP {}", value * 4, health);
+					//log::info("Adding {} to HP, HP {}", value * 4, health);
 				} else if (Boost == 1) {
 					magick += (value * 4);
 					if (magick >= limit) {
 						magick = limit;
 					} 
-					log::info("Adding {} to MP, MP {}", value * 4, magick);
+					//log::info("Adding {} to MP, MP {}", value * 4, magick);
 				} else if (Boost >= 2) {
 					stamin += (value * 4);
 					if (stamin >= limit) {
 						stamin = limit;
 					}
-					log::info("Adding {} to SP, SP {}", value * 4, stamin);
+					//log::info("Adding {} to SP, SP {}", value * 4, stamin);
 				}
 				AddStolenAttributes(giant, -value); // reduce it
 			}
@@ -2213,7 +2213,7 @@ namespace Gts {
 						quantity = ref->GetInventoryChanges()->GetItemCount(a_object); // obtain item count
 					}
 
-					log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
+					//log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
 
 					actor->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
 				}
