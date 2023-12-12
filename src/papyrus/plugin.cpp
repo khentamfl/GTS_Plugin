@@ -55,7 +55,9 @@ namespace {
 			} else {
 				return 0.0;
 			}
+			return 0.0;
 		}
+		return 0.0;
 	}
 
 	float GetAttributeBonus(StaticFunctionTag*, Actor* actor, float value) {
