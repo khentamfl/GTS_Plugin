@@ -37,6 +37,12 @@ namespace Gts {
 
 		float scaleOverride;
 
+		float stolen_attributes;
+
+		float stolen_health;
+		float stolen_magick;
+		float stolen_stamin;
+
 		ActorData();
 		ActorData(Actor* actor);
 	};
