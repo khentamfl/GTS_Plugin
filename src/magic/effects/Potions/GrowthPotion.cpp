@@ -21,7 +21,7 @@ namespace Gts {
 
 		GRumble::Once("GrowthPotion", caster, 2.0, 0.05);
 
-		float Volume = clamp(0.15, 2.0, get_visual_scale(caster)/8);
+		float Volume = clamp(0.20, 2.0, get_visual_scale(caster)/8);
 		Runtime::PlaySoundAtNode("growthSound", caster, Volume, 1.0, "NPC Pelvis [Pelv]");
 		log::info("Growth Potion start actor: {}", caster->GetDisplayFullName());
 	}
@@ -40,7 +40,7 @@ namespace Gts {
 		}
 
 		if (this->timer.ShouldRun()) {
-			float Volume = clamp(0.15, 1.0, get_visual_scale(caster)/4);
+			float Volume = clamp(0.20, 1.0, get_visual_scale(caster)/4);
 			Runtime::PlaySoundAtNode("growthSound", caster, Volume, 1.0,  "NPC Pelvis [Pelv]");
 			log::info("Growth Potion Loop caster: {}", caster->GetDisplayFullName());
 		}

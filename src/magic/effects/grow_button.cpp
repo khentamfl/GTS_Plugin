@@ -20,7 +20,7 @@ namespace Gts {
 			return;
 		}
 		float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
-		float Volume = clamp(0.10, 2.0, stamina * get_visual_scale(caster)/8);
+		float Volume = clamp(0.20, 2.0, stamina * get_visual_scale(caster)/8);
 		Runtime::PlaySoundAtNode("growthSound", caster, Volume, 1.0, "NPC Pelvis [Pelv]");
 		//AnimationManager::StartAnim("TriggerGrowth", caster);
 

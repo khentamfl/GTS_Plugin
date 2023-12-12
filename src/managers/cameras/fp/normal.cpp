@@ -8,6 +8,7 @@ using namespace RE;
 
 namespace Gts {
 	float FirstPerson::GetScaleOverride(bool IsCrawling) {
+		float proneFactor = 1.0;
 		if (IsCrawling) {
 			auto player = GetCameraActor();
 			float scale = get_visual_scale(player);

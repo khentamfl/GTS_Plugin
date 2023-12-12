@@ -25,7 +25,7 @@ namespace Gts {
 		float power = BASE_POWER * AlterBonus;
 
 		if (this->timer.ShouldRun()) {
-			float Volume = clamp(0.15, 1.0, get_visual_scale(caster)/8);
+			float Volume = clamp(0.20, 1.0, get_visual_scale(caster)/8);
 			Runtime::PlaySoundAtNode("growthSound", caster, Volume, 1.0,  "NPC Pelvis [Pelv]");
 		}
 		if (this->MoanTimer.ShouldRun() && Runtime::GetFloat("AllowMoanSounds") == 1.0) {

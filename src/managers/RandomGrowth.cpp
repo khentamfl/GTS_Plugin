@@ -82,7 +82,7 @@ namespace Gts {
 					ActorHandle gianthandle = actor->CreateRefHandle();
 					std::string name = std::format("RandomGrowth_{}", actor->formID);
 					// Sounds
-					float Volume = clamp(0.15, 2.0, scale/4);
+					float Volume = clamp(0.20, 2.0, scale/4);
 					Runtime::PlaySoundAtNode("MoanSound", actor, 1.0, 0.0, "NPC Head [Head]");
 					Runtime::PlaySoundAtNode("xlRumbleL", actor, base_power, 0.0, "NPC COM [COM ]");
 					Runtime::PlaySoundAtNode("growthSound", actor, Volume, 1.0, "NPC Pelvis [Pelv]");
