@@ -1247,7 +1247,7 @@ namespace Gts {
 
 	void AddStolenAttributesTowards(Actor* giant, ActorValue type, float value) {
 		if (giant->formID == 0x14) {
-			auto& Persistent = Persistent::GetSingleton().GetData(actor);
+			auto& Persistent = Persistent::GetSingleton().GetData(giant);
 			if (Persistent) {
 				float health = Persistent->stolen_health;
 				float magick = Persistent->stolen_magick;
@@ -1278,7 +1278,7 @@ namespace Gts {
 
 	float GetStolenAttributes_Values(Actor* giant, ActorValue type) {
 		if (giant->formID == 0x14) {
-			auto& Persistent = Persistent::GetSingleton().GetData(actor);
+			auto& Persistent = Persistent::GetSingleton().GetData(giant);
 			if (Persistent) {
 				if (type == ActorValue::kHealth) {
 					return Persistent->stolen_health;
@@ -1310,7 +1310,7 @@ namespace Gts {
 			float limit = 2.0 * giant->GetLevel();
 
 			//log::info("Adding {} to attributes", value);
-			auto& Persistent = Persistent::GetSingleton().GetData(actor);
+			auto& Persistent = Persistent::GetSingleton().GetData(giant);
 			if (!Persistent) {
 				return;
 			}
