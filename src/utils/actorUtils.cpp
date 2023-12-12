@@ -1249,9 +1249,9 @@ namespace Gts {
 		if (giant->formID == 0x14) {
 			auto Persistent = Persistent::GetSingleton().GetData(giant);
 			if (Persistent) {
-				float health = Persistent->stolen_health;
-				float magick = Persistent->stolen_magick;
-				float stamin = Persistent->stolen_stamin;
+				float& health = Persistent->stolen_health;
+				float& magick = Persistent->stolen_magick;
+				float& stamin = Persistent->stolen_stamin;
 				float limit = 2.0 * giant->GetLevel();
 				if (type == ActorValue::kHealth) {
 					health += value;
@@ -1315,9 +1315,9 @@ namespace Gts {
 				return;
 			}
 			//log::info("Adding {} to attributes", value);
-			float health = Persistent->stolen_health;
-			float magick = Persistent->stolen_magick;
-			float stamin = Persistent->stolen_stamin;
+			float& health = Persistent->stolen_health;
+			float& magick = Persistent->stolen_magick;
+			float& stamin = Persistent->stolen_stamin;
 
 			if (Storage > 0.0) {
 				int Boost = rand() % 3;
@@ -1326,19 +1326,19 @@ namespace Gts {
 					if (health >= limit) {
 						health = limit;
 					} 
-					log::info("Adding {} to HP, HP {}", value, health);
+					log::info("Adding {} to HP, HP {}", value * 4, health);
 				} else if (Boost == 1) {
 					magick += (value * 4);
 					if (magick >= limit) {
 						magick = limit;
 					} 
-					log::info("Adding {} to MP, MP {}", value, magick);
+					log::info("Adding {} to MP, MP {}", value * 4, magick);
 				} else if (Boost >= 2) {
 					stamin += (value * 4);
 					if (stamin >= limit) {
 						stamin = limit;
 					}
-					log::info("Adding {} to SP, SP {}", value, stamin);
+					log::info("Adding {} to SP, SP {}", value * 4, stamin);
 				}
 				AddStolenAttributes(giant, -value); // reduce it
 			}
