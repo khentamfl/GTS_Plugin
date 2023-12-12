@@ -100,16 +100,19 @@ namespace {
 		float room_height_m = unit_to_meter(room_height);
 		float meter_to_scale = room_height_m/1.82; // / height by 1.82 (default character height)
 		float expected = meter_to_scale * 0.82;
+		float natural = get_natural_scale(giant);
 
 		if (scale > expected) {
 			log::info("Scale {} > {}", scale, expected);
 			float adjust = std::clamp(meter_to_scale/stateScale * 0.82f, 1.0f, 8.0f); // Min is x1.0 (disallow to go below that), max is x8.0
-			float targetscale = get_target_scale(giant);
+			float targetscale = get_visual_scale(giant);
+			if (scale < adjust) { 
+				set_target_scale(giant, adjust); // just to be safe
+				return;
+			}
 			mod_target_scale(giant, -0.0080 * scale);
 			log::info("Adjust {}, Target: {}, Natural: {}", adjust, targetscale, get_natural_scale(giant));
-			if (targetscale < get_natural_scale(giant)) { 
-				set_target_scale(giant, adjust); // just to be safe
-			}
+			
 		}
 
 		if (debug) {
