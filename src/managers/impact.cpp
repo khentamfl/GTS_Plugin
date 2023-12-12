@@ -168,8 +168,8 @@ namespace Gts {
 					float timepassed = Time::WorldTimeElapsed() - Start;
 					
 					if (timepassed >= 0.15) { 
-						DoDamageEffect(giant, 1.60 * damage, 6.6, 20, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
-						DoDamageEffect(giant, 1.60 * damage, 6.6, 20, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+						DoDamageEffect(giant, 1.10 * damage, 6.6, 20, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+						DoDamageEffect(giant, 1.10 * damage, 6.6, 20, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 
 						DoLaunch(giant, 0.9 * perk, 1.75, FootEvent::Left);
 						DoLaunch(giant, 0.9 * perk, 1.75, FootEvent::Right);
