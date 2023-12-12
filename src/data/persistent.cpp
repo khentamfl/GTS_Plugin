@@ -634,11 +634,11 @@ namespace Gts {
 			float target_scale_v = data.target_scale_v;
 			float scaleOverride = data.scaleOverride;
 
-			float stolen_attributes;
-			float stolen_health;
-			float stolen_magick;
-			float stolen_stamin;
-			
+			float stolen_attributes = data.stolen_attributes;
+			float stolen_health = data.stolen_health;
+			float stolen_magick = data.stolen_magick;
+			float stolen_stamin = data.stolen_stamin;
+
 			log::info("Saving Actor {:X} with data, native_scale: {}, visual_scale: {}, visual_scale_v: {}, target_scale: {}, max_scale: {}, half_life: {}, anim_speed: {}, effective_multi: {}, effective_multi: {}, bonus_hp: {}, bonus_carry: {}, bonus_max_size: {}", form_id, native_scale, visual_scale, visual_scale_v, target_scale, max_scale, half_life, anim_speed, effective_multi, effective_multi, bonus_hp, bonus_carry, bonus_max_size);
 			serde->WriteRecordData(&form_id, sizeof(form_id));
 			serde->WriteRecordData(&native_scale, sizeof(native_scale));
