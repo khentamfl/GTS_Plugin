@@ -1309,11 +1309,12 @@ namespace Gts {
 			float Storage = GetStolenAttributes(giant);
 			float limit = 2.0 * giant->GetLevel();
 
-			log::info("Adding {} to attributes", value);
+			
 			auto Persistent = Persistent::GetSingleton().GetData(giant);
 			if (!Persistent) {
 				return;
 			}
+			//log::info("Adding {} to attributes", value);
 			float health = Persistent->stolen_health;
 			float magick = Persistent->stolen_magick;
 			float stamin = Persistent->stolen_stamin;
@@ -1325,16 +1326,19 @@ namespace Gts {
 					if (health >= limit) {
 						health = limit;
 					} 
+					log::info("Adding {} to HP, HP {}", value, health);
 				} else if (Boost == 1) {
 					magick += (value * 4);
 					if (magick >= limit) {
 						magick = limit;
 					} 
+					log::info("Adding {} to MP, MP {}", value, magick);
 				} else if (Boost >= 2) {
 					stamin += (value * 4);
 					if (stamin >= limit) {
 						stamin = limit;
 					}
+					log::info("Adding {} to SP, SP {}", value, stamin);
 				}
 				AddStolenAttributes(giant, -value); // reduce it
 			}
