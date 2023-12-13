@@ -854,10 +854,11 @@ namespace Gts {
 			actor->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
 			actor->Disable();
 		} else { // else use script hacks
-			auto progressionQuest = Runtime::GetQuest("MainQuest");
+			/*auto progressionQuest = Runtime::GetQuest("MainQuest");
 			if (progressionQuest) {
 				CallFunctionOn(progressionQuest, "gtsProgressionQuest", "Disintegrate", actor);
-			}
+			}*/
+			SetCriticalStage(actor, 4);
 		}
 	}
 
