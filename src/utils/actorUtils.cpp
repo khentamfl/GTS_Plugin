@@ -838,8 +838,15 @@ namespace Gts {
 
 					TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(tiny);
 					if (ref) {
-						quantity = ref->GetInventoryChanges()->GetItemCount(a_object); // obtain item count
+						log::info("Transfering item: {}, looking for count", a_object->GetName());
+						auto changes = ref->GetInventoryChanges();
+						if (changes) {
+							log::info("Found amount for {}", a_object->GetName());
+							quantity = changes->GetItemCount(a_object); // obtain item count
+						}
 					}
+
+					log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
 
 					tiny->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, giant, nullptr, nullptr);
 				}
