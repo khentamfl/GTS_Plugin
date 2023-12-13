@@ -851,7 +851,7 @@ namespace Gts {
 		// Optional TO-DO: 11.12.2023:
 		// RE SetCriticalStage function since it isn't working in dll and we have to use script hacks.
 		// ^ Done!
-		std::string taskname = std::format("Disintegrate {}", tiny->formID);
+		std::string taskname = std::format("Disintegrate_{}", actor->formID);
 		auto tinyref = actor->CreateRefHandle();
 		TaskManager::RunOnce(taskname, [=](auto& update) {
 			if (!tinyref) {
