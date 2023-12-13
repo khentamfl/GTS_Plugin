@@ -353,7 +353,7 @@ duration = 0.0
 
 [[InputEvent]]
 name = "SBO_ToggleDive"
-keys = ["LSHIFT, "W"]
+keys = ["LSHIFT", "W"]
 exclusive = false
 trigger = "continuous"
 duration = 0.20
