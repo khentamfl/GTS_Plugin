@@ -1652,7 +1652,8 @@ namespace Gts {
 		}
 
 		mod_target_scale(tiny, -(shrinkpower * gigantism));
-		StartCombat(giant, tiny, true);
+		Attacker(giant, tiny);
+		//StartCombat(giant, tiny, true);
 
 		AdjustGtsSkill((shrinkpower * gigantism) * 0.80, giant);
 
