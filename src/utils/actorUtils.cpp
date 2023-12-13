@@ -841,7 +841,7 @@ namespace Gts {
 						log::info("Transfering item: {}, looking for quantity", a_object->GetName());
 						auto changes = ref->GetInventoryChanges();
 						if (changes) {
-							quantity = GetItemCount(a_object); // obtain item count
+							quantity = GetItemCount(changes, a_object); // obtain item count
 							log::info("Found quantity for {}, quantity: {}", a_object->GetName(), quantity);
 							if (quantity < 1.0) {
 								quantity = 1.0;
@@ -2220,7 +2220,7 @@ namespace Gts {
 						log::info("Transfering item: {}, looking for quantity", a_object->GetName());
 						auto changes = ref->GetInventoryChanges();
 						if (changes) {
-							quantity = GetItemCount(a_object); // obtain item count
+							quantity = GetItemCount(changes, a_object); // obtain item count
 							log::info("Found quantity for {}, quantity: {}", a_object->GetName(), quantity);
 							if (quantity < 1.0) {
 								quantity = 1.0;
@@ -2393,10 +2393,10 @@ namespace Gts {
 		SkyrimAttacked(victim, agressor);
 	}
 
-	std::int16_t GetItemCount(RE::TESBoundObject* a_obj)
+	std::int16_t GetItemCount(InventoryChanges* changes, RE::TESBoundObject* a_obj)
 	{
 		using func_t = decltype(&GetItemCount);
 		REL::Relocation<func_t> func{ RELOCATION_ID(15868, 16108) };
-		return func(this, a_obj);
+		return func(changes, a_obj);
 	}
 }
