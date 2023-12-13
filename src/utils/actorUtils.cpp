@@ -830,7 +830,7 @@ namespace Gts {
 	}
 
 	void TransferInventory_Normal(Actor* giant, Actor* tiny, bool removeQuestItems) {
-		float quantity = 1.0;
+		int32_t quantity = 1.0;
 
 		for (auto &[a_object, invData]: tiny->GetInventory()) { // transfer loot
 			if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) {
@@ -2204,7 +2204,7 @@ namespace Gts {
 				});
 			}
 		for (auto &[a_object, invData]: actor->GetInventory()) { // transfer loot
-			float quantity = 1.0;
+			int32_t quantity = 1.0;
 			if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) { // We don't want to move Leveled Items
 				if ((!invData.second->IsQuestObject() || removeQuestItems)) {
 
