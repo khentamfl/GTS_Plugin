@@ -60,7 +60,7 @@ namespace {
 			EventDispatcher::DoResetActor(tiny);
 			return false; // stop task, we reset the actor
 		});
-		
+
 	}
 
 	ExtraDataList* CreateExDataList() {
@@ -529,7 +529,7 @@ namespace Gts {
 		auto transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
 			reanimated = transient->WasReanimated;
-		} 
+		}
 		return reanimated;
 	}
 
@@ -620,7 +620,7 @@ namespace Gts {
 		return Runtime::GetBool("EnableDebugOverlay"); // used for debug mode of collisions and such
 	}
 
-	
+
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                                 G T S   A C T O R   F U N C T I O N S                                                              //
@@ -665,7 +665,7 @@ namespace Gts {
 				sc = 3.0;
 			} else if (IsGiant(tiny)) {
 				sc = 2.0;
-			} 
+			}
 			return sc;
 		}
 		return sc;
@@ -774,7 +774,7 @@ namespace Gts {
 	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause, bool reset) {
 		std::string name = std::format("TransferItems_{}_{}", from->formID, to->formID);
 
-		bool reanimated = false; // shall we avoid transfering items or not. 
+		bool reanimated = false; // shall we avoid transfering items or not.
 		if (Cause != DamageSource::Vored) {
 			reanimated = WasReanimated(from);
 		}
@@ -787,7 +787,7 @@ namespace Gts {
 		bool NPCLoot = Runtime::GetBool("GtsNPCEnableLooting");
 
 		if (reset) {
-			StartResetTask(from); // reset actor data. 
+			StartResetTask(from); // reset actor data.
 			// Used to be inside CrushManager/ShrinkToNothingManager
 		}
 
@@ -800,7 +800,7 @@ namespace Gts {
 			}
 			auto tiny = tinyhandle.get().get();
 			auto giant = gianthandle.get().get();
-			
+
 
 			if (!tiny->IsDead()) {
 				KillActor(giant, tiny); // just to make sure
@@ -848,7 +848,7 @@ namespace Gts {
 	}
 
 	void Disintegrate(Actor* actor, bool script) {
-		// Optional TO-DO: 11.12.2023: 
+		// Optional TO-DO: 11.12.2023:
 		// RE SetCriticalStage function since it isn't working in dll and we have to use script hacks.
 		if (!script) { // do it .dll way
 			actor->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
@@ -1236,7 +1236,7 @@ namespace Gts {
 			if (attributes) {
 				log::info("Adding {} to stolen attributes", value);
 				attributes->stolen_attributes += value;
-			
+
 				if (attributes->stolen_attributes <= 0.0) {
 					attributes->stolen_attributes = 0.0; // Cap it just in case
 				}
@@ -1257,19 +1257,19 @@ namespace Gts {
 					health += value;
 					if (health >= limit) {
 						health = limit;
-					} 
+					}
 					//log::info("Adding {} to health, health: {}", value, health);
 				} else if (type == ActorValue::kMagicka) {
 					magick += value;
 					if (magick >= limit) {
 						magick = limit;
-					} 
+					}
 					//log::info("Adding {} to magick, magicka: {}", value, magick);
 				} else if (type == ActorValue::kStamina) {
 					stamin += value;
 					if (stamin >= limit) {
 						stamin = limit;
-					} 
+					}
 					//log::info("Adding {} to stamina, stamina: {}", value, stamin);
 				}
 			}
@@ -1309,7 +1309,7 @@ namespace Gts {
 			float Storage = GetStolenAttributes(giant);
 			float limit = 2.0 * giant->GetLevel();
 
-			
+
 			auto Persistent = Persistent::GetSingleton().GetData(giant);
 			if (!Persistent) {
 				return;
@@ -1325,13 +1325,13 @@ namespace Gts {
 					health += (value * 4);
 					if (health >= limit) {
 						health = limit;
-					} 
+					}
 					//log::info("Adding {} to HP, HP {}", value * 4, health);
 				} else if (Boost == 1) {
 					magick += (value * 4);
 					if (magick >= limit) {
 						magick = limit;
-					} 
+					}
 					//log::info("Adding {} to MP, MP {}", value * 4, magick);
 				} else if (Boost >= 2) {
 					stamin += (value * 4);
@@ -2066,7 +2066,7 @@ namespace Gts {
 			// Obtain actor coords, shift Z by 40 and cast ray down. That way we always do ray at around ground level.
 			log::info("Cast 1 success");
 			return endpos;
-		} else if (!success_first) { 
+		} else if (!success_first) {
 			NiPoint3 ray_start_second = giant->GetPosition();
 			ray_start_second.z += 40.0;
 			pos = CastRayStatics(giant, ray_start_second, ray_direction, ray_length, success_second);
@@ -2078,7 +2078,7 @@ namespace Gts {
 				return pos;
 			}
 			return pos;
-		} 
+		}
 		log::info("Everything failed, spawning nowhere");
 		return pos;
 	}
@@ -2387,4 +2387,13 @@ namespace Gts {
 			}
 		}
 	}
+
+  // RE Fun
+  void SetCriticalStage(Actor* actor, int stage) {
+    if (stage < 5 && stage >= 0) {
+      typedef void (*DefSetCriticalStage)(Actor* actor, int stage);
+      REL::Relocation<DefSetCriticalStage> SkyrimSetCriticalStage{ RELOCATION_ID(36607, 37615) };
+      SkyrimSetCriticalStage(actor, stage);
+    }
+  }
 }

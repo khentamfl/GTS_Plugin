@@ -77,9 +77,9 @@ namespace Gts {
 	bool IsFreeCameraEnabled();
 	bool SizeRaycastEnabled();
 	bool IsDebugEnabled();
-	
-	
-	
+
+
+
 	// Gts Bools end
 
 	// GTS Actor Functions
@@ -214,4 +214,8 @@ namespace Gts {
 	float GetQuestProgression(float stage);
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value);
 	void EditDetectionLevel(Actor* actor, Actor* giant);
+
+
+  // RE Fun:
+  void SetCriticalStage(Actor* actor, int stage);
 }
