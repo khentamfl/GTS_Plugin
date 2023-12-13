@@ -279,7 +279,6 @@ namespace {
 				SetBetweenBreasts(giant, false);
 				AdjustSizeReserve(giant, get_visual_scale(grabbedActor)/10);
 				AdvanceQuestProgression(giant, grabbedActor, 5, 1.0, false);
-				// ReportCrime(giant, grabbedActor, 1000.0, true); // Report Crime since we killed someone
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
 				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
 				PrintDeathSource(giant, grabbedActor, DamageSource::HandCrushed);
