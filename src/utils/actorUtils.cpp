@@ -776,6 +776,7 @@ namespace Gts {
 
 		if (from->formID == 0x14) {
 			log::info("Victim is Player, aborting.");
+			return;
 		}
 
 		bool reanimated = false; // shall we avoid transfering items or not.
@@ -845,10 +846,10 @@ namespace Gts {
 						log::info("Transfering item: {}, looking for quantity", a_object->GetName());
 						auto changes = ref->GetInventoryChanges();
 						if (changes) {
-							log::info("Found quantity for {}", a_object->GetName());
 							quantity = changes->GetItemCount(a_object); // obtain item count
-							if (quantity < 1) {
-								quantity = 1;
+							log::info("Found quantity for {}, quantity: {}", a_object->GetName(), quantity);
+							if (quantity < 1.0) {
+								quantity = 1.0;
 								log::info("Error: weird quantity for {}. New quantity: {}", a_object->GetName(), quantity);
 							}
 						}
@@ -2224,10 +2225,10 @@ namespace Gts {
 						log::info("Transfering item: {}, looking for quantity", a_object->GetName());
 						auto changes = ref->GetInventoryChanges();
 						if (changes) {
-							log::info("Found quantity for {}", a_object->GetName());
 							quantity = changes->GetItemCount(a_object); // obtain item count
-							if (quantity < 1) {
-								quantity = 1;
+							log::info("Found quantity for {}, quantity: {}", a_object->GetName(), quantity);
+							if (quantity < 1.0) {
+								quantity = 1.0;
 								log::info("Error: weird quantity for {}. New quantity: {}", a_object->GetName(), quantity);
 							}
 						}

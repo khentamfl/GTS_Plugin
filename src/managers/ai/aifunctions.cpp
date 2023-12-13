@@ -64,7 +64,7 @@ namespace Gts {
 		if (tiny->IsDead()) {
 			return;
 		}
-		if (Forced == true || GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.90) {
+		if (Forced == true || GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.75) {
 			Attacked(tiny, giant);
 		}
 	}
