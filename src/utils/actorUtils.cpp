@@ -774,6 +774,10 @@ namespace Gts {
 	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause, bool reset) {
 		std::string name = std::format("TransferItems_{}_{}", from->formID, to->formID);
 
+		if (from->formID == 0x14) {
+			log::info("Victim is Player, aborting.");
+		}
+
 		bool reanimated = false; // shall we avoid transfering items or not.
 		if (Cause != DamageSource::Vored) {
 			reanimated = WasReanimated(from);
@@ -838,10 +842,10 @@ namespace Gts {
 
 					TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(tiny);
 					if (ref) {
-						log::info("Transfering item: {}, looking for count", a_object->GetName());
+						log::info("Transfering item: {}, looking for quantity", a_object->GetName());
 						auto changes = ref->GetInventoryChanges();
 						if (changes) {
-							log::info("Found amount for {}", a_object->GetName());
+							log::info("Found quantity for {}", a_object->GetName());
 							quantity = changes->GetItemCount(a_object); // obtain item count
 							if (quantity < 1) {
 								quantity = 1;
@@ -2136,10 +2140,6 @@ namespace Gts {
 		} else if (IsMammoth(actor)) {
 			Scale *= 5.0;
 		}
-		/*NiPoint3 TinyPos = actor->GetPosition();
-		NiPoint3 GiantPos = giant->GetPosition();
-		NiPoint3 TotalPos = NiPoint3(TinyPos.x, TinyPos.y, GiantPos.z + 170);
-		*/
 
 		NiPoint3 TotalPos = GetContainerSpawnLocation(giant, actor); // obtain goal of container position by doing ray-cast
 		if (IsDebugEnabled()) {
@@ -2191,8 +2191,6 @@ namespace Gts {
 						update_node(trigger);
 					}
 					if (node && node->local.scale >= Scale) { // disable collision once it is scaled enough
-						//dropbox3D->SetMotionType(4, true, true, true);
-						//dropbox3D->SetCollisionLayer(COL_LAYER::kNonCollidable);
 						return false; // End task
 					}
 					return true;
@@ -2223,10 +2221,10 @@ namespace Gts {
 
 					TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
 					if (ref) {
-						log::info("Transfering item: {}, looking for count", a_object->GetName());
+						log::info("Transfering item: {}, looking for quantity", a_object->GetName());
 						auto changes = ref->GetInventoryChanges();
 						if (changes) {
-							log::info("Found amount for {}", a_object->GetName());
+							log::info("Found quantity for {}", a_object->GetName());
 							quantity = changes->GetItemCount(a_object); // obtain item count
 							if (quantity < 1) {
 								quantity = 1;
