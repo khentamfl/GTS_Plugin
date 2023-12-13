@@ -846,17 +846,17 @@ namespace Gts {
 						log::info("Transfering item: {}, looking for quantity", a_object->GetName());
 						auto changes = ref->GetInventoryChanges();
 						if (changes) {
-							quantity = changes->GetItemCount(a_object); // obtain item count
+							//quantity = changes->GetItemCount(a_object); // obtain item count
 							log::info("Found quantity for {}, quantity: {}", a_object->GetName(), quantity);
 							if (quantity < 1.0) {
-								quantity = 1.0;
+								//quantity = 1.0;
 								log::info("Error: weird quantity for {}. New quantity: {}", a_object->GetName(), quantity);
 							}
 						}
 					}
 
 					log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
-
+					// CRASHES HERE, LINE 589
 					tiny->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, giant, nullptr, nullptr);
 				}
 			}
@@ -2225,10 +2225,10 @@ namespace Gts {
 						log::info("Transfering item: {}, looking for quantity", a_object->GetName());
 						auto changes = ref->GetInventoryChanges();
 						if (changes) {
-							quantity = changes->GetItemCount(a_object); // obtain item count
+							//quantity = changes->GetItemCount(a_object); // obtain item count
 							log::info("Found quantity for {}, quantity: {}", a_object->GetName(), quantity);
 							if (quantity < 1.0) {
-								quantity = 1.0;
+								//quantity = 1.0;
 								log::info("Error: weird quantity for {}. New quantity: {}", a_object->GetName(), quantity);
 							}
 						}
