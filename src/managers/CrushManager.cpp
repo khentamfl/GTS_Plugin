@@ -188,7 +188,7 @@ namespace Gts {
 					float currentSize = get_visual_scale(tiny);
 
 					std::string taskname = std::format("CrushTiny {}", tiny->formID);
-					
+
 					MoanOrLaugh(giant, tiny);
 					GrowAfterTheKill(giant, tiny);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
@@ -205,8 +205,9 @@ namespace Gts {
 					std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
 					AddSMTDuration(giant, 5.0);
-					ReportCrime(giant, tiny, 1000.0, true);
-					StartCombat(giant, tiny, false);
+          Attacked(tiny, giant);
+					// ReportCrime(giant, tiny, 1000.0, true);
+					// StartCombat(giant, tiny, false);
 
 					ScareChance(giant);
 
@@ -237,7 +238,7 @@ namespace Gts {
 						if (!giantHandle) {
 							return;
 						}
-						
+
 						auto giant = giantHandle.get().get();
 						auto tiny = tinyHandle.get().get();
 						float scale = get_visual_scale(tiny);

@@ -51,7 +51,7 @@ namespace Gts {
 
 					// Fully shrunk
 					ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
-					KillActor(giant, tiny); 
+					KillActor(giant, tiny);
 
 					if (!IsLiving(tiny)) {
 						SpawnDustParticle(tiny, tiny, "NPC Root [Root]", 3.6);
@@ -78,8 +78,9 @@ namespace Gts {
 						}
 					}
 
-					ReportCrime(giant, tiny, 1000.0, true);
-					StartCombat(giant, tiny, false);
+          Attacked(tiny, giant);
+					// ReportCrime(giant, tiny, 1000.0, true);
+					// StartCombat(giant, tiny, false);
 
 					AddSMTDuration(giant, 5.0);
 

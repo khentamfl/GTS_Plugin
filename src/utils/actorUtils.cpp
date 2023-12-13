@@ -861,7 +861,7 @@ namespace Gts {
 			SetCriticalStage(tiny, 4);
 		});
 	}
-	
+
 
 	void UnDisintegrate(Actor* actor) {
 		//actor->GetActorRuntimeData().criticalStage.reset(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
@@ -2363,6 +2363,7 @@ namespace Gts {
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
 		//float resistance = AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth);
 		DamageAV(receiver, ActorValue::kHealth, value);
+    Attacked(receiver, attacker);
 	}
 
 	void EditDetectionLevel(Actor* actor, Actor* giant) { // Unused and does nothing.
@@ -2397,5 +2398,10 @@ namespace Gts {
       REL::Relocation<DefSetCriticalStage> SkyrimSetCriticalStage{ RELOCATION_ID(36607, 37615) };
       SkyrimSetCriticalStage(actor, stage);
     }
+  }
+  void Attacked(Actor* victim, Actor* agressor) {
+    typedef void (*DefAttacked)(Actor* victim, Actor* agressor);
+    REL::Relocation<DefAttacked> SkyrimAttacked{ RELOCATION_ID(37672, 38626) };
+    SkyrimAttacked(victim, agressor);
   }
 }

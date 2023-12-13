@@ -500,7 +500,8 @@ namespace Gts {
 		}
 
 		if (GetAV(tiny, ActorValue::kHealth) <= 0 || tiny->IsDead()) {
-			ReportCrime(giant, tiny, 1000, true);
+      Attacked(tiny, giant);
+			// ReportCrime(giant, tiny, 1000, true);
 			if (multiplier >= 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
 					if (!tiny->IsDead()) {
@@ -512,7 +513,7 @@ namespace Gts {
 					}
 					crushmanager.Crush(giant, tiny);
 					SetReanimatedState(tiny);
-					
+
 					KillActor(giant, tiny);
 					CrushBonuses(giant, tiny);
 					PrintDeathSource(giant, tiny, Cause);

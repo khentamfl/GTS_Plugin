@@ -224,7 +224,8 @@ namespace {
 		GRumble::Once("ThighImpact", &data.giant, 0.75, 0.15, "AnimObjectA");
 		for (auto tiny: sandwichdata.GetActors()) {
 			DoThighDamage(&data.giant, tiny, data.animSpeed, 2.2, 0.75);
-			ReportCrime(&data.giant, tiny, 25.0, false);
+      Attacked(tiny, &data.giant);
+			// ReportCrime(&data.giant, tiny, 25.0, false);
 			tiny->NotifyAnimationGraph("ragdoll");
 			AllowToBeCrushed(tiny, true);
 		}
