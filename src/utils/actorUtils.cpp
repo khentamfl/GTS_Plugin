@@ -816,13 +816,13 @@ namespace Gts {
 					//ref->GetInventoryChanges()->InitLeveledItems();
 				}
 				if (giant->formID == 0x14 && !PCLoot) {
-					TransferInventory_Normal(to, tiny, removeQuestItems);
+					TransferInventory_Normal(giant, tiny, removeQuestItems);
 					return false;
 				} if (giant->formID != 0x14 && !NPCLoot) {
-					TransferInventory_Normal(to, tiny, removeQuestItems);
+					TransferInventory_Normal(giant, tiny, removeQuestItems);
 					return false;
 				}
-				TransferInventoryToDropbox(to, tiny, scale, removeQuestItems, Cause, reanimated);
+				TransferInventoryToDropbox(giant, tiny, scale, removeQuestItems, Cause, reanimated);
 				return false; // stop it, we started the looting of the Target.
 			}
 			return true;
