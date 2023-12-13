@@ -58,17 +58,14 @@ namespace Gts {
 	}
 
 	void StartCombat(Actor* giant, Actor* tiny, bool Forced) {
-		if (!Persistent::GetSingleton().hostile_toggle) {
+		/*if (!Persistent::GetSingleton().hostile_toggle) {
+			return;
+		}*/
+		if (tiny->IsDead()) {
 			return;
 		}
-		static Timer tick = Timer(0.25);
-		if (tick.ShouldRunFrame() || Forced == true) {
-			if (tiny->IsInCombat() || tiny->IsDead()) {
-				return;
-			}
-			if (Forced == true || GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.90) {
-				CallFunctionOn(tiny, "Actor", "StartCombat", giant);
-			}
+		if (Forced == true || GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.90) {
+			Attacked(tiny, giant);
 		}
 	}
 

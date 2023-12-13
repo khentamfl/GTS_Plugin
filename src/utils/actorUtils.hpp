@@ -213,10 +213,9 @@ namespace Gts {
 	void ResetQuest();
 	float GetQuestProgression(float stage);
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value);
-	void EditDetectionLevel(Actor* actor, Actor* giant);
 
 
-  // RE Fun:
-  void SetCriticalStage(Actor* actor, int stage);
-  void Attacked(Actor* victim, Actor* agressor);
+	// RE Fun:
+	void SetCriticalStage(Actor* actor, int stage);
+	void Attacked(Actor* victim, Actor* agressor);
 }

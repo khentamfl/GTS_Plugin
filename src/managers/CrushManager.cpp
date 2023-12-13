@@ -205,9 +205,7 @@ namespace Gts {
 					std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
 					AddSMTDuration(giant, 5.0);
-          Attacked(tiny, giant);
-					// ReportCrime(giant, tiny, 1000.0, true);
-					// StartCombat(giant, tiny, false);
+					StartCombat(giant, tiny, false);
 
 					ScareChance(giant);
 

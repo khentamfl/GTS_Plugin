@@ -1652,8 +1652,7 @@ namespace Gts {
 		}
 
 		mod_target_scale(tiny, -(shrinkpower * gigantism));
-		Attacked(giant, tiny);
-		//StartCombat(giant, tiny, true);
+		StartCombat(giant, tiny, true);
 
 		AdjustGtsSkill((shrinkpower * gigantism) * 0.80, giant);
 
@@ -2213,10 +2212,15 @@ namespace Gts {
 
 					TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
 					if (ref) {
-						quantity = ref->GetInventoryChanges()->GetItemCount(a_object); // obtain item count
+						log::info("Transfering item: {}, looking for count", a_object->GetName());
+						auto changes = ref->GetInventoryChanges();
+						if (changes) {
+							log::info("Found amount for {}", a_object->GetName());
+							quantity = changes->GetItemCount(a_object); // obtain item count
+						}
 					}
 
-					//log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
+					log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
 
 					actor->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
 				}
@@ -2364,45 +2368,19 @@ namespace Gts {
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
 		//float resistance = AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth);
 		DamageAV(receiver, ActorValue::kHealth, value);
-    Attacked(receiver, attacker);
 	}
 
-	void EditDetectionLevel(Actor* actor, Actor* giant) { // Unused and does nothing.
-		giant = PlayerCharacter::GetSingleton();
-		float scale = get_visual_scale(actor);
-		auto ai = actor->GetActorRuntimeData().currentProcess;
-		if (ai) {
-			if (ai->high) {
-				auto Array = ai->high->knowledgeArray;
-				for (auto references: Array) { // Do array stuff
-					auto Find = references.second; // Obtain BSTTuple.second member (first/second)
-					auto DetectionStage = Find->detectionState.get(); // get detection stage of actor
-					if (DetectionStage) { // Do nothing since it does nothing. Sigh.
-						std::int32_t level = DetectionStage->level = 0;
-						std::int32_t unk14 = DetectionStage->unk14 = 0;
-						std::int32_t unk15 = DetectionStage->unk15 = 0;
-						std::int32_t unk16 = DetectionStage->unk16 = 0;
-						std::int32_t pad17 = DetectionStage->pad17 = 0;
-						std::int32_t unk18 = DetectionStage->unk18 = 0;
-						std::int32_t unk28 = DetectionStage->unk28 = 0;
-						std::int32_t unk38 = DetectionStage->unk38 = 0;
-					}
-				}
-			}
+	// RE Fun
+	void SetCriticalStage(Actor* actor, int stage) {
+		if (stage < 5 && stage >= 0) {
+		typedef void (*DefSetCriticalStage)(Actor* actor, int stage);
+		REL::Relocation<DefSetCriticalStage> SkyrimSetCriticalStage{ RELOCATION_ID(36607, 37615) };
+		SkyrimSetCriticalStage(actor, stage);
 		}
 	}
-
-  // RE Fun
-  void SetCriticalStage(Actor* actor, int stage) {
-    if (stage < 5 && stage >= 0) {
-      typedef void (*DefSetCriticalStage)(Actor* actor, int stage);
-      REL::Relocation<DefSetCriticalStage> SkyrimSetCriticalStage{ RELOCATION_ID(36607, 37615) };
-      SkyrimSetCriticalStage(actor, stage);
-    }
-  }
-  void Attacked(Actor* victim, Actor* agressor) {
-    typedef void (*DefAttacked)(Actor* victim, Actor* agressor);
-    REL::Relocation<DefAttacked> SkyrimAttacked{ RELOCATION_ID(37672, 38626) };
-    SkyrimAttacked(victim, agressor);
-  }
+	void Attacked(Actor* victim, Actor* agressor) {
+		typedef void (*DefAttacked)(Actor* victim, Actor* agressor);
+		REL::Relocation<DefAttacked> SkyrimAttacked{ RELOCATION_ID(37672, 38626) };
+		SkyrimAttacked(victim, agressor);
+	}
 }
