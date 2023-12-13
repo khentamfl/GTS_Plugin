@@ -843,6 +843,10 @@ namespace Gts {
 						if (changes) {
 							log::info("Found amount for {}", a_object->GetName());
 							quantity = changes->GetItemCount(a_object); // obtain item count
+							if (quantity < 1) {
+								quantity = 1;
+								log::info("Error: weird quantity for {}. New quantity: {}", a_object->GetName(), quantity);
+							}
 						}
 					}
 
@@ -2224,6 +2228,10 @@ namespace Gts {
 						if (changes) {
 							log::info("Found amount for {}", a_object->GetName());
 							quantity = changes->GetItemCount(a_object); // obtain item count
+							if (quantity < 1) {
+								quantity = 1;
+								log::info("Error: weird quantity for {}. New quantity: {}", a_object->GetName(), quantity);
+							}
 						}
 					}
 
