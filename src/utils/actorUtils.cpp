@@ -774,11 +774,6 @@ namespace Gts {
 	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause, bool reset) {
 		std::string name = std::format("TransferItems_{}_{}", from->formID, to->formID);
 
-		if (from->formID == 0x14) {
-			log::info("Victim is Player, aborting.");
-			return;
-		}
-
 		bool reanimated = false; // shall we avoid transfering items or not.
 		if (Cause != DamageSource::Vored) {
 			reanimated = WasReanimated(from);
@@ -846,17 +841,17 @@ namespace Gts {
 						log::info("Transfering item: {}, looking for quantity", a_object->GetName());
 						auto changes = ref->GetInventoryChanges();
 						if (changes) {
-							//quantity = changes->GetItemCount(a_object); // obtain item count
+							quantity = GetItemCount(a_object); // obtain item count
 							log::info("Found quantity for {}, quantity: {}", a_object->GetName(), quantity);
 							if (quantity < 1.0) {
-								//quantity = 1.0;
+								quantity = 1.0;
 								log::info("Error: weird quantity for {}. New quantity: {}", a_object->GetName(), quantity);
 							}
 						}
 					}
 
 					log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
-					// CRASHES HERE, LINE 589
+
 					tiny->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, giant, nullptr, nullptr);
 				}
 			}
@@ -2225,10 +2220,10 @@ namespace Gts {
 						log::info("Transfering item: {}, looking for quantity", a_object->GetName());
 						auto changes = ref->GetInventoryChanges();
 						if (changes) {
-							//quantity = changes->GetItemCount(a_object); // obtain item count
+							quantity = GetItemCount(a_object); // obtain item count
 							log::info("Found quantity for {}, quantity: {}", a_object->GetName(), quantity);
 							if (quantity < 1.0) {
-								//quantity = 1.0;
+								quantity = 1.0;
 								log::info("Error: weird quantity for {}. New quantity: {}", a_object->GetName(), quantity);
 							}
 						}
@@ -2387,14 +2382,21 @@ namespace Gts {
 	// RE Fun
 	void SetCriticalStage(Actor* actor, int stage) {
 		if (stage < 5 && stage >= 0) {
-		typedef void (*DefSetCriticalStage)(Actor* actor, int stage);
-		REL::Relocation<DefSetCriticalStage> SkyrimSetCriticalStage{ RELOCATION_ID(36607, 37615) };
-		SkyrimSetCriticalStage(actor, stage);
+			typedef void (*DefSetCriticalStage)(Actor* actor, int stage);
+			REL::Relocation<DefSetCriticalStage> SkyrimSetCriticalStage{ RELOCATION_ID(36607, 37615) };
+			SkyrimSetCriticalStage(actor, stage);
 		}
 	}
 	void Attacked(Actor* victim, Actor* agressor) {
 		typedef void (*DefAttacked)(Actor* victim, Actor* agressor);
 		REL::Relocation<DefAttacked> SkyrimAttacked{ RELOCATION_ID(37672, 38626) };
 		SkyrimAttacked(victim, agressor);
+	}
+
+	std::int16_t GetItemCount(RE::TESBoundObject* a_obj)
+	{
+		using func_t = decltype(&GetItemCount);
+		REL::Relocation<func_t> func{ RELOCATION_ID(15868, 16108) };
+		return func(this, a_obj);
 	}
 }
