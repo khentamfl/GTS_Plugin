@@ -1,3 +1,11 @@
+-DLL_Beta_2.0.0-PreRelease 4 - HotFix1
+======================================DLL
+-Fixed NPC's not performing Trample anims when they're supposed to
+-RE'd SetCriticalStage function, enemies disappear without delay now (no longer using script hacks)
+-RE'd SetAlarm function, actors should now aggro properly without bounty hacks when you damage them
+-Fixed AE CTD when crushing/shrinking actors to nothing by passing proper AE offset into GetItemCount() function
+
+
 -DLL_Beta_2.0.0-PreRelease 4 - Nexus Release
 -Since the changelog is too huge, Changelog is here for this update.
 
