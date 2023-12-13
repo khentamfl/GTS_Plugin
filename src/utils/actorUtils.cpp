@@ -850,17 +850,18 @@ namespace Gts {
 	void Disintegrate(Actor* actor, bool script) {
 		// Optional TO-DO: 11.12.2023:
 		// RE SetCriticalStage function since it isn't working in dll and we have to use script hacks.
-		if (!script) { // do it .dll way
-			actor->GetActorRuntimeData().criticalStage.set(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
-			actor->Disable();
-		} else { // else use script hacks
-			/*auto progressionQuest = Runtime::GetQuest("MainQuest");
-			if (progressionQuest) {
-				CallFunctionOn(progressionQuest, "gtsProgressionQuest", "Disintegrate", actor);
-			}*/
-			SetCriticalStage(actor, 4);
-		}
+		// ^ Done!
+		std::string taskname = std::format("Disintegrate {}", tiny->formID);
+		auto tinyref = actor->CreateRefHandle();
+		TaskManager::RunOnce(taskname, [=](auto& update) {
+			if (!tinyref) {
+				return;
+			}
+			auto tiny = tinyref.get().get();
+			SetCriticalStage(tiny, 4);
+		});
 	}
+	
 
 	void UnDisintegrate(Actor* actor) {
 		//actor->GetActorRuntimeData().criticalStage.reset(ACTOR_CRITICAL_STAGE::kDisintegrateEnd);
