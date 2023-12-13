@@ -625,6 +625,12 @@ namespace Gts {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                                 G T S   A C T O R   F U N C T I O N S                                                              //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	float GetSizeDifference(Actor* giant, Actor* tiny) {
+		float GiantScale = get_visual_scale(giant);
+		float TinyScale = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
+		float Difference = GiantScale/TinyScale;
+		return Difference;
+	}
 
 	float GetActorWeight(Actor* giant, bool metric) {
 		float hh = HighHeelManager::GetBaseHHOffset(giant)[2]/100;
@@ -694,6 +700,58 @@ namespace Gts {
 		}
 		return value;
 	}
+
+	void SpawnActionIcon(Actor* giant) {
+		if (!giant) {
+			return;
+		}
+		static Timer EffectTimer = Timer(3.0);
+		if (giant->formID == 0x14 && EffectTimer.ShouldRunFrame()) {
+			NiPoint3 NodePosition = giant->GetPosition();
+
+			float giantScale = get_visual_scale(giant);
+
+			const float BASE_DISTANCE = 1600.0;
+			float CheckDistance = BASE_DISTANCE;
+
+			if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant))) {
+				DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), CheckDistance, 60, {0.5, 1.0, 0.0, 0.5});
+			}
+
+			NiPoint3 giantLocation = giant->GetPosition();
+			for (auto otherActor: find_actors()) {
+				if (otherActor != giant) {
+					float tinyScale = get_visual_scale(otherActor);
+					NiPoint3 actorLocation = otherActor->GetPosition();
+					if ((actorLocation - giantLocation).Length() < CheckDistance) {
+						int nodeCollisions = 0;
+						float force = 0.0;
+
+						auto model = otherActor->GetCurrent3D();
+
+						if (model) {
+							VisitNodes(model, [&nodeCollisions, &force, NodePosition, CheckDistance](NiAVObject& a_obj) {
+								float distance = (NodePosition - a_obj.world.translate).Length();
+								if (distance < CheckDistance) {
+									nodeCollisions += 1;
+									force = 1.0 - distance / CheckDistance;
+									return false;
+								}
+								return true;
+							});
+						}
+						if (nodeCollisions > 0) {
+							auto node = find_node(otherActor, "NPC Root [Root]");
+							if (node) {
+								SpawnParticle(otherActor, 3.00, "GTS/UI/Icon.nif", NiMatrix3(), otherActor->GetPosition(), 3.0, 7, node); // Spawn effect
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

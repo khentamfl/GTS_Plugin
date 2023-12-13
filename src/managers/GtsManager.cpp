@@ -315,7 +315,7 @@ void GtsManager::Update() {
 
 			ClothManager::GetSingleton().CheckRip();
 			Raycast_GetCeilingHeight(actor);
-			//WaterExperiments(actor);
+			SpawnActionIcon(actor);
 
 			if (IsCrawling(actor)) {
 				ApplyAllCrawlingDamage(actor, 1.0, 1000, 0.25);
