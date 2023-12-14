@@ -2234,7 +2234,7 @@ namespace Gts {
 			container = "Dropbox_Undead_Physics";
 		}
 
-		Scale *+ GetScaleAdjustment(actor);
+		Scale *= GetScaleAdjustment(actor);
 
 		NiPoint3 TotalPos = GetContainerSpawnLocation(giant, actor); // obtain goal of container position by doing ray-cast
 		if (IsDebugEnabled()) {
