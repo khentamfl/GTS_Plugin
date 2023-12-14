@@ -179,7 +179,7 @@ namespace {
 	void ApplyToTinies(Actor* attacker, Actor* receiver, float damage) {
 		float sizedifference = GetSizeDifference(receiver, attacker);
 		DropTinyChance(receiver, -damage, sizedifference);
-		TinyAsShield(attacker, receiver, -damage);
+		TinyAsShield(receiver, -damage);
 	}
 }
 
