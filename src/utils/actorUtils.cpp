@@ -640,10 +640,10 @@ namespace Gts {
 	float GetSizeDifference(Actor* giant, Actor* tiny) {
 		float GiantScale = get_visual_scale(giant);
 		float TinyScale = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
-		if (HasSMT(giant) {
+		if (HasSMT(giant)) {
 			TinyScale *= 0.8;
 			TinyScale /= 4.8;
-		})
+		}
 		float Difference = GiantScale/TinyScale;
 		return Difference;
 	}
@@ -2472,7 +2472,6 @@ namespace Gts {
 	}
 
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
-		//float resistance = AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth);
 		DamageAV(receiver, ActorValue::kHealth, value);
 	}
 
