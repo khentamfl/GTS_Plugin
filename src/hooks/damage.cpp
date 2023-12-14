@@ -24,12 +24,13 @@ namespace {
       return;
     }
     if (actor->formID == 0x14) {
-      auto tranData = Transient::GetSingleton().GetData(actor);
+      auto& tranData = Transient::GetSingleton().GetData(actor);
       bool TP = camera->IsInThirdPerson();
       bool FP = camera->IsInFirstPerson();
       if (tranData) {
         tranData->WorldFov_Default = camera->worldFOV;
         tranData->FpFov_Default = camera->firstPersonFOV;
+        tranData->Immunity = 0.0;
         float DefaultTP = tranData->WorldFov_Default;
         float DefaultFP = tranData->FpFov_Default;
         if (DefaultTP > 0) {
@@ -44,6 +45,7 @@ namespace {
             camera->worldFOV += DefaultTP * 0.003;
             if (camera->worldFOV >= DefaultTP) {
               camera->worldFOV = DefaultTP;
+              tranData->Immunity = 1.0;
               return false; // stop it
             }
             return true;
@@ -60,6 +62,7 @@ namespace {
             camera->firstPersonFOV += DefaultFP * 0.003;
             if (camera->firstPersonFOV >= DefaultFP) {
               camera->firstPersonFOV = DefaultFP;
+              tranData->Immunity = 1.0;
               return false; // stop it
             }
             return true;
@@ -68,17 +71,18 @@ namespace {
       }
     }
   }
-  float TinyShied(Actor* receiver) {
+  float TinyShield(Actor* receiver) {
     float protection = 1.0;
     if (receiver->formID == 0x14) {
       auto grabbedActor = Grab::GetHeldActor(receiver);
       if (grabbedActor) {
-        protection = 0.75;
+        protection = 0.75; // 25% damage reduction
       } 
     }
-    return protection; // 25% damage reduction
+    return protection; 
   }
-  float HealthGate(Actor* receiver, Actor* attacker, float a_damage) {
+
+  float HealthGate(Actor* receiver, float a_damage) {
     float protection = 1.0;
 		if (receiver->formID == 0x14 && a_damage > GetAV(receiver, ActorValue::kHealth)) {
       if (Runtime::HasPerk(receiver, "HealthGate")) {
@@ -86,12 +90,6 @@ namespace {
         if (protect.ShouldRunFrame()) {
             float maxhp = GetMaxAV(receiver, ActorValue::kHealth);
             float scale = get_visual_scale(receiver);
-            if (attacker) {
-              attacker->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
-              attacker->NotifyAnimationGraph("staggerStart");
-            } else {
-              log::info("ATTACKER IS NONE");
-            }
 
             mod_target_scale(receiver, -0.35 * scale);
             GRumble::For("CheatDeath", receiver, 240.0, 0.10, "NPC COM [COM ]", 1.50);
@@ -117,12 +115,11 @@ namespace {
 		}
     return protection;
 	}
-  void ApplyHitGrowth(Actor* receiver, Actor* attacker, float damage) {
-      SizeHitEffects::GetSingleton().DoHitGrowth(receiver, attacker, damage);
-  }
+
   float GetDamageMultiplier(Actor* attacker) {
       return AttributeManager::GetSingleton().GetAttributeBonus(attacker, ActorValue::kAttackDamageMult);
   }
+
   float GetDamageResistance(Actor* receiver) {
       return AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth);
   }
@@ -143,21 +140,30 @@ namespace {
 
 namespace Hooks
 {
-	void Hook_Damage::Hook(Trampoline& trampoline) {
+	void Hook_Damage::Hook(Trampoline& trampoline) { 
 		static FunctionHook<void(Actor* a_this, float dmg, uintptr_t maybe_hit_data, Actor* aggressor,TESObjectREFR* damageSrc)> SkyrimTakeDamage(
       RELOCATION_ID(36345, 37335),
       [](auto* a_this, auto dmg, auto maybe_hit_data,auto* aggressor,auto* damageSrc) {
         log::info("{}: Taking {} damage", a_this->GetDisplayFullName(), dmg); 
-        /*float resistance = GetDamageResistance(a_this) * HugDamageResistance(a_this);
-        float healthgate = HealthGate(a_this, aggressor, dmg * 4);
-        float multiplier = GetDamageMultiplier(aggressor);
-        float tiny = TinyShied(a_this);*/
+        float IsNotImmune = 1.0;
+        float resistance = GetDamageResistance(a_this) * HugDamageResistance(a_this);
+        float healthgate = HealthGate(a_this, dmg * 4);
+        float tiny = TinyShield(a_this);
+
+        if (a_this->formID == 0x14) {
+            auto& transient = Transient::GetSingleton().GetData(a_this);
+            if (transient) {
+              IsNotImmune = transient->Immunity;
+            }
+        }
+        // float multiplier = GetDamageMultiplier(aggressor);
         
-        //dmg *= (resistance * multiplier * tiny);
-        //dmg *= healthgate;
-        //log::info("    - Reducing damage to {}, resistance: {}, multiplier: {}, shield: {}", dmg, resistance, multiplier, tiny);
+        //^ Multiplier will CTD since aggressor is none
+        // TO-DO: Repair Overkill. Currently disabled
+        
+        dmg *= (resistance * tiny * healthgate * IsNotImmune);
+        log::info("    - Reducing damage to {}, resistance: {}, shield: {}", dmg, resistance, tiny);
         SkyrimTakeDamage(a_this, dmg, maybe_hit_data, aggressor, damageSrc);
-        //ApplyHitGrowth(a_this, aggressor, dmg);
         return;
 			}
     );

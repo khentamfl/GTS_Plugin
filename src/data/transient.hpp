@@ -39,6 +39,9 @@ namespace Gts {
 		bool WasReanimated;
 		bool FPCrawling;
 		bool FPProning;
+
+		float Immunity;
+
 		TESObjectREFR* disable_collision_with;
 	};
 

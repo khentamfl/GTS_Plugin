@@ -72,6 +72,7 @@ namespace Gts {
 			bool FPCrawling = false;
 			bool FPProning = false;
 
+			float Immunity = 1.0;
 
 			TESObjectREFR* disable_collision_with = nullptr;
 			float otherScales = 1.0;
@@ -120,6 +121,8 @@ namespace Gts {
 			result.WasReanimated = WasReanimated;
 			result.FPCrawling = FPCrawling;
 			result.FPProning = FPProning;
+
+			result.Immunity = Immunity;
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 
