@@ -741,9 +741,12 @@ namespace Gts {
 							});
 						}
 						if (nodeCollisions > 0) {
-							auto node = find_node(otherActor, "NPC Root [Root]");
+							auto node = find_node(otherActor, "NPC Head [Head]");
 							if (node) {
-								SpawnParticle(otherActor, 3.00, "GTS/UI/Icon.nif", NiMatrix3(), otherActor->GetPosition(), 3.0, 7, node); // Spawn effect
+								float correction = (70.0 / scale) - 70.0;
+								NiPoint3 Position = otherActor->GetPosition();
+								Position.z -= correction;
+								SpawnParticle(otherActor, 3.00, "GTS/UI/Icon.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect
 							}
 						}
 					}
