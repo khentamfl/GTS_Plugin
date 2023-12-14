@@ -1,4 +1,4 @@
-#include "hooks/damage.hpp
+#include "hooks/damage.hpp"
 
 using namespace RE;
 using namespace SKSE;
