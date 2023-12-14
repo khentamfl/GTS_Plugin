@@ -154,7 +154,7 @@ namespace Hooks
         if (attacker) {
           log::info("Aggressor Name: {}", attacker->GetDisplayFullName());
         } 
-        log::info("Aggressor numbers: {}", aggressor);
+        //log::info("Aggressor numbers: {}", aggressor);
         
         
         /*float resistance = GetDamageResistance(a_this) * HugDamageResistance(a_this);
