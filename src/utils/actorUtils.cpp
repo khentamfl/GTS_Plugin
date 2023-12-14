@@ -625,6 +625,17 @@ namespace Gts {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                                 G T S   A C T O R   F U N C T I O N S                                                              //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	float GetHPThreshold(Actor* actor) {
+		float hp = 0.20;
+		if (Runtime::HasPerkTeam(actor, "HugCrush_MightyCuddles")) {
+			hp += 0.10; // 0.30
+		}
+		if (Runtime::HasPerkTeam(actor, "HugCrush_HugsOfDeath")) {
+			hp += 0.20; // 0.50
+		}
+		return hp;
+	}
+
 	float GetSizeDifference(Actor* giant, Actor* tiny) {
 		float GiantScale = get_visual_scale(giant);
 		float TinyScale = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
@@ -710,20 +721,32 @@ namespace Gts {
 			NiPoint3 NodePosition = giant->GetPosition();
 
 			float giantScale = get_visual_scale(giant);
+			auto huggedActor = HugShrink::GetHuggiesActor(giant);
 
-			const float BASE_DISTANCE = 1600.0;
+			const float BASE_DISTANCE = 160.0;
 			float CheckDistance = BASE_DISTANCE;
+
+			if (IsCrawling(giant)) {
+				CheckDistance *= 1.5;
+			}
 
 			if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant))) {
 				DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), CheckDistance, 60, {0.5, 1.0, 0.0, 0.5});
 			}
 
+			// TO-DO:
+			// Disallow it to work on actors that are vored or being interracted with
+
 			NiPoint3 giantLocation = giant->GetPosition();
 			for (auto otherActor: find_actors()) {
 				if (otherActor != giant && !otherActor->IsDead()) {
 					float tinyScale = get_visual_scale(otherActor);
+					float difference = GetSizeDifference(giant, otherActor);
+					if (difference < 6.0) {
+						return;
+					}
 					NiPoint3 actorLocation = otherActor->GetPosition();
-					if ((actorLocation - giantLocation).Length() < CheckDistance) {
+					if ((actorLocation - giantLocation).Length() < CheckDistance * giantScale) {
 						int nodeCollisions = 0;
 						float force = 0.0;
 
@@ -746,7 +769,15 @@ namespace Gts {
 								float correction = (18.0 / tinyScale) - 18.0;
 								NiPoint3 Position = node->world.translate;
 								Position.z -= correction;
-								SpawnParticle(otherActor, 3.00, "GTS/UI/Icon.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect
+								if (!IsGtsBusy(giant) && difference >= 8.0) {
+									SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush_All.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect
+								} else if (!IsGtsBusy(giant) && difference >= 6.0) {
+									SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Grab.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect
+								} else if (huggedActor && GetHealthPercentage(huggedActor) < GetHPThreshold(giant)) {
+									if (otherActor == huggedActor) {
+										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Hug_Crush.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect
+									}
+								}
 							}
 						}
 					}

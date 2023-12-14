@@ -35,16 +35,6 @@ using namespace std;
 
 namespace {
 
-	float GetHPThreshold(Actor* actor) {
-		float hp = 0.20;
-		if (Runtime::HasPerkTeam(actor, "HugCrush_MightyCuddles")) {
-			hp += 0.10; // 0.30
-		}
-		if (Runtime::HasPerkTeam(actor, "HugCrush_HugsOfDeath")) {
-			hp += 0.20; // 0.50
-		}
-		return hp;
-	}
 	float GetStealRate(Actor* actor) {
 		float steal = 0.18;
 		if (Runtime::HasPerkTeam(actor, "HugCrush_ToughGrip")) {

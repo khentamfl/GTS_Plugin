@@ -27,7 +27,7 @@ using namespace std;
 
 namespace {
 	void Overkill(Actor* attacker, Actor* receiver, float damage) {
-		if (damage > GetAV(receiver, ActorValue::kHealth) * 1.5) { // Overkill effect
+		if (damage > GetAV(receiver, ActorValue::kHealth) * 1) { // Overkill effect
 			float attackerscale = get_visual_scale(attacker);
 			float receiverscale = get_visual_scale(receiver) * GetScaleAdjustment(receiver);
 			float size_difference = attackerscale/receiverscale;
@@ -57,7 +57,6 @@ namespace {
 		if (grabbedActor == attacker) {
 			return; // Don't allow actor to do self-damage
 		}
-		receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, a_damage * 0.25);
 		DamageAV(grabbedActor, ActorValue::kHealth, a_damage * 0.25);
 		if (grabbedActor->IsDead() || GetAV(grabbedActor, ActorValue::kHealth) < a_damage * 0.25) {
 			if (!IsBetweenBreasts(receiver)) {
@@ -90,112 +89,6 @@ namespace {
 		}
 	}
 
-	void CameraFOVTask(Actor* actor) {
-		auto camera = PlayerCamera::GetSingleton();
-		if (!camera) {
-			return;
-		}
-		auto AllowEdits = Persistent::GetSingleton().Camera_PermitFovEdits;
-		if (!AllowEdits) {
-			return;
-		}
-		if (actor->formID == 0x14) {
-			auto tranData = Transient::GetSingleton().GetData(actor);
-			bool TP = camera->IsInThirdPerson();
-			bool FP = camera->IsInFirstPerson();
-			if (tranData) {
-				tranData->WorldFov_Default = camera->worldFOV;
-				tranData->FpFov_Default = camera->firstPersonFOV;
-				float DefaultTP = tranData->WorldFov_Default;
-				float DefaultFP = tranData->FpFov_Default;
-				if (DefaultTP > 0) {
-					std::string name = std::format("RandomGrowth_TP_{}", actor->formID);
-					ActorHandle gianthandle = actor->CreateRefHandle();
-					camera->worldFOV *= 0.35;
-					TaskManager::Run(name, [=](auto& progressData) {
-						if (!gianthandle) {
-							return false;
-						}
-						auto giantref = gianthandle.get().get();
-						camera->worldFOV += DefaultTP * 0.003;
-						if (camera->worldFOV >= DefaultTP) {
-							camera->worldFOV = DefaultTP;
-							return false; // stop it
-						}
-						return true;
-					});
-				} else if (FP && DefaultFP > 99999) {
-					std::string name = std::format("RandomGrowth_FP_{}", actor->formID);
-					ActorHandle gianthandle = actor->CreateRefHandle();
-					camera->firstPersonFOV *= 0.35;
-					TaskManager::Run(name,[=](auto& progressData) {
-						if (!gianthandle) {
-							return false;
-						}
-						auto giantref = gianthandle.get().get();
-						camera->firstPersonFOV += DefaultFP * 0.003;
-						if (camera->firstPersonFOV >= DefaultFP) {
-							camera->firstPersonFOV = DefaultFP;
-							return false; // stop it
-						}
-						return true;
-					});
-				}
-			}
-		}
-	}
-
-	void HealthGate(Actor* attacker, Actor* receiver, float a_damage) {
-		if (a_damage > GetAV(receiver, ActorValue::kHealth)) {
-			if (Runtime::HasPerk(receiver, "HealthGate")) {
-				static Timer protect = Timer(60.00);
-				if (protect.ShouldRunFrame()) {
-					float maxhp = GetMaxAV(receiver, ActorValue::kHealth);
-					float scale = get_visual_scale(receiver);
-					attacker->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
-					attacker->NotifyAnimationGraph("staggerStart");
-
-					mod_target_scale(receiver, -0.35 * scale);
-					GRumble::For("CheatDeath", receiver, 240.0, 0.10, "NPC COM [COM ]", 1.50);
-					Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.5);
-					receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
-					receiver->NotifyAnimationGraph("staggerStart");
-
-					float overkill = a_damage + maxhp/5;
-
-					receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, overkill); // Restore to full
-
-					CameraFOVTask(receiver);
-
-					Cprint("Health Gate triggered, death avoided");
-					Cprint("Damage: {:.2f}, Lost Size: {:.2f}", a_damage, -0.35 * scale);
-					Notify("Health Gate triggered, death avoided");
-					Notify("Damage: {:.2f}, Lost Size: {:.2f}", a_damage, -0.35 * scale);
-				}
-			}
-		}
-		if (Runtime::HasPerk(receiver, "DarkArts_Max") && GetHealthPercentage(receiver) <= 0.40) {
-			static Timer Shrink = Timer(180.00);
-			if (Shrink.ShouldRunFrame()) {
-				ShrinkOutburstExplosion(receiver, true);
-			}
-		}
-	}
-
-	void HugDamageResistance(Actor* receiver, float damage) {
-		if (!Runtime::HasPerk(receiver, "HugCrush_ToughGrip")) {
-			return;
-		}
-		if (HugShrink::GetHuggiesActor(receiver)) {
-			float reduction = 0.25; // 25% resistance
-			if (Runtime::HasPerk(receiver, "HugCrush_HugsOfDeath")) {
-				reduction += 0.35; // 35% additional resistance
-			}
-			receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, damage * reduction);
-			// ^ Restore % hp, fake damage resistance
-		}
-	}
-
 	void DropTinyChance(Actor* receiver, float damage, float scale) {
 		static Timer DropTimer = Timer(0.33); // Check once per .33 sec
 		float bonus = 1.0;
@@ -217,35 +110,10 @@ namespace {
 		HugShrink::CallRelease(receiver); // Else release
 	}
 
-	float GetAttackBonus(Actor* giant) {
-		return AttributeManager::GetSingleton().GetAttributeBonus(giant, ActorValue::kAttackDamageMult);
-	}
-
-	void InflictDamage(Actor* attacker, Actor* receiver, float a_damage) { // function receives negative number first (-6.0 for example)
-		log::info("Attacker: {}, Reciever: {}, a_damage: {}", attacker->GetDisplayFullName(), receiver->GetDisplayFullName(), a_damage);
-		float damagemult_att = GetAttackBonus(attacker);
-		float damageresist = AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth); // get damage resistance
-		float damage = (a_damage * damagemult_att * damageresist) - a_damage; // damage is used to restore health if > 0, if < = deal more damage
-		// We * damage by damage mult (actor damage bonus) and reduce damage by original damage. (-6.0 * 0.8) - 6.0
-		// as a result, -4.8 - 6.0 
-		// We restore 1.2 points of health based on that.
-		log::info("a_damage * mult: {}, damage result: {}", a_damage * damagemult_att, damage);
-		log::info("Resistance of {} is {}", receiver->GetDisplayFullName(), damageresist);
+	void InflictDamage(Actor* attacker, Actor* receiver, float damage) {
 		float sizedifference = get_visual_scale(receiver)/get_visual_scale(attacker);
-		// apply other functions
-		HealthGate(attacker, receiver, -(a_damage + damage));
-		TinyAsShield(attacker, receiver, -(a_damage + damage));
-		HugDamageResistance(receiver, -(a_damage + damage));
-		DropTinyChance(receiver, -(a_damage + damage), sizedifference);
-
-		if (damage < 0) {
-			Overkill(attacker, receiver, -(a_damage + damage));
-			InflictSizeDamage(attacker, receiver, -damage); // damage hp
-			return;
-		}
-		if (damage > 0) {
-			receiver->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, damage); // Restore hp
-		}
+		TinyAsShield(attacker, receiver, -damage);
+		DropTinyChance(receiver, -damage, sizedifference);
 	}
 
 	void DoHitShake(Actor* receiver, float value) {
@@ -270,7 +138,6 @@ namespace Gts {
 	void SizeHitEffects::ApplyEverything(Actor* attacker, Actor* receiver, float damage) {
 		InflictDamage(attacker, receiver, damage);
 		StaggerImmunity(attacker, receiver);
-		SizeHitEffects::GetSingleton().DoHitGrowth(receiver, attacker, damage);
 	}
 
 
@@ -297,14 +164,12 @@ namespace Gts {
 		static Timer soundtimer = Timer(1.5);
 		static Timer laughtimer = Timer(4.0);
 
-		damage *= DamageReduction; // Take actor resistance into account
-
 		if (Runtime::HasMagicEffect(receiver, "ResistShrinkPotion")) {
 			resistance = 0.25;
 		}
 
 		if (receiver->formID == 0x14 && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0) { // if has perk
-			float GrowthValue = std::clamp((-damage/3500) * SizeHunger * Gigantism, 0.0f, 0.25f * Gigantism);
+			float GrowthValue = std::clamp((damage/3500) * SizeHunger * Gigantism, 0.0f, 0.25f * Gigantism);
 			mod_target_scale(receiver, GrowthValue);
 			DoHitShake(receiver, GrowthValue * 10);
 			if (soundtimer.ShouldRunFrame()) {
@@ -324,7 +189,7 @@ namespace Gts {
 		} else if (BalanceMode >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) { // Shrink us
 			if (scale > naturalscale) {
 				float sizebonus = std::clamp(get_visual_scale(attacker), 0.10f, 1.0f);
-				float ShrinkValue = std::clamp(((-damage/850)/SizeHunger/Gigantism * sizebonus) * resistance, 0.0f, 0.25f / Gigantism); // affect limit by decreasing it
+				float ShrinkValue = std::clamp(((damage/850)/SizeHunger/Gigantism * sizebonus) * resistance, 0.0f, 0.25f / Gigantism); // affect limit by decreasing it
 
 				if (scale < naturalscale) {
 					set_target_scale(receiver, naturalscale); // reset to normal scale

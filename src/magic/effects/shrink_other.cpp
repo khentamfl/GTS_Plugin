@@ -48,6 +48,8 @@ namespace Gts {
 
 		if (target_scale > 0.12) {
 			ShrinkActor(target, power*0.10, 0);
+		} else {
+			set_target_scale(target, 0.12);
 		}
 	}
 }

@@ -33,12 +33,15 @@ namespace Gts {
 		}
 
 		float caster_scale = get_visual_scale(caster);
+		float target_scale = get_target_scale(caster);
 		float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 
-		if (caster_scale > 0.10) {
+		if (target_scale > 0.12) {
 			DamageAV(caster, ActorValue::kStamina, 0.25 * (caster_scale * 0.5 + 0.5) * stamina * TimeScale());
 			ShrinkActor(caster, 0.0030* stamina, 0.0);
 			GRumble::Once("ShrinkButton", caster, 0.60, 0.05);
+		} else {
+			set_target_scale(caster, 0.12);
 		}
 	}
 }

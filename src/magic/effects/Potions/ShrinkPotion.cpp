@@ -40,7 +40,11 @@ namespace Gts {
 
 		float Power = BASE_POWER * get_visual_scale(caster) * AlchemyLevel;
 
-		ShrinkActor(caster, Power, 0.0);
+		if (get_target_scale(caster) > 0.12) {
+			ShrinkActor(caster, Power, 0.0);
+		} else {
+			set_target_scale(caster, 0.12);
+		}
 	}
 
 	void ShrinkPotion::OnFinish() {

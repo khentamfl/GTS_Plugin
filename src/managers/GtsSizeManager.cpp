@@ -50,8 +50,14 @@ namespace {
 		if (Runtime::HasPerk(player, "TotalControl")) {
 			float scale = get_visual_scale(player);
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
-			DamageAV(player, ActorValue::kStamina, 0.10 * (scale * 0.5 + 0.5) * stamina * TimeScale());
-			ShrinkActor(player, 0.0010 * stamina, 0.0);
+			
+			if (get_target_scale(player) > 0.12) {
+				DamageAV(player, ActorValue::kStamina, 0.10 * (scale * 0.5 + 0.5) * stamina * TimeScale());
+				ShrinkActor(player, 0.0010 * stamina, 0.0);
+			} else {
+				set_target_scale(player, 0.12);
+			}
+			
 			float Volume = clamp(0.05, 2.0, get_visual_scale(player)/16);
 			GRumble::Once("TotalControl", player, scale/14, 0.05);
 			static Timer timergrowth = Timer(2.00);
