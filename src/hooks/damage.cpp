@@ -144,18 +144,18 @@ namespace {
 namespace Hooks
 {
 	void Hook_Damage::Hook(Trampoline& trampoline) {
-		static FunctionHook<void(Actor* a_this, float dmg, uintptr_t maybe_hit_data, Actor* aggressor,TESObjectREFR* damageSrc)> SkyrimTakeDamage(
+		static FunctionHook<void(Actor* a_this, float dmg, uintptr_t maybe_hit_data, uintptr_t aggressor,TESObjectREFR* damageSrc)> SkyrimTakeDamage(
       RELOCATION_ID(36345, 37335),
       [](auto* a_this, auto dmg, auto maybe_hit_data,auto* aggressor,auto* damageSrc) {
         log::info("{}: Taking {} damage", a_this->GetDisplayFullName(), dmg);
 
-        if (aggressor) {
-          log::info("Aggressor found");
-          Actor* attacker = skyrim_cast<Actor*>(aggressor);
-          if (attacker) {
-            log::info("Aggressor Name: {}", attacker->GetDisplayFullName());
-          }
-        }
+        log::info("Looking for Aggressor");
+        Actor* attacker = skyrim_cast<Actor*>(aggressor);
+        if (attacker) {
+          log::info("Aggressor Name: {}", attacker->GetDisplayFullName());
+        } 
+        log::info("Aggressor numbers: {}", aggressor);
+        
         
         float resistance = GetDamageResistance(a_this) * HugDamageResistance(a_this);
         float healthgate = HealthGate(a_this, aggressor, dmg * 4);
