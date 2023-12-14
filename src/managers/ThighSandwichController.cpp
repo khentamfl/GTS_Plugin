@@ -22,7 +22,7 @@
 namespace {
 
 	const float MINIMUM_SANDWICH_DISTANCE = 70.0;
-	const float MINIMUM_SANDWICH_SCALE_RATIO = 6.0;
+	const float MINIMUM_SANDWICH_SCALE_RATIO = 8.0;
 	const float SANDWICH_ANGLE = 60;
 	const float PI = 3.14159;
 }
@@ -321,7 +321,7 @@ namespace Gts {
 			return;
 		}
 		if (HasSMT(pred)) {
-			ShrinkUntil(pred, prey, 6.0);
+			ShrinkUntil(pred, prey, 8.0);
 		}
 		auto& data = sandwiching.GetSandwichingData(pred);
 		data.AddTiny(prey);

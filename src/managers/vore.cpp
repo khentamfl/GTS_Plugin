@@ -24,7 +24,7 @@ using namespace Gts;
 
 namespace {
 	const float MINIMUM_VORE_DISTANCE = 94.0;
-	const float MINIMUM_VORE_SCALE_RATIO = 6.0;
+	const float MINIMUM_VORE_SCALE_RATIO = 8.0;
 	const float VORE_ANGLE = 76;
 	const float PI = 3.14159;
 
@@ -102,7 +102,7 @@ namespace {
 	}
 
 	void Vore_TransferItems(Actor* pred, Actor* prey) {
-		TransferInventory(prey, pred, 1.0, false, true, DamageSource::Vored, false);
+		TransferInventory(prey, pred, 1.0, false, true, DamageSource::Vored, true);
 	}
 
 	void VoreMessage_SwallowedAbsorbing(Actor* pred, Actor* prey) {

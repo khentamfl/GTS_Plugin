@@ -683,9 +683,9 @@ namespace Gts {
 		float sc = 1.0;
 		if (tiny->formID != 0x14) { // for non player actors only, always return 1.0 in player case
 			if (IsDragon(tiny)) {
-				sc = 3.2;
+				sc = 6.0;
 			} else if (IsMammoth(tiny)) {
-				sc = 3.0;
+				sc = 5.0;
 			} else if (IsGiant(tiny)) {
 				sc = 2.0;
 			}
@@ -782,9 +782,9 @@ namespace Gts {
 								float correction = (18.0 / tinyScale) - 18.0;
 								NiPoint3 Position = node->world.translate;
 								Position.z -= correction;
-								if (!IsGtsBusy(giant) && difference >= 8.0) {
+								if (!IsGtsBusy(giant) && difference >= 10.0) {
 									SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush_All.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect
-								} else if (!IsGtsBusy(giant) && difference >= 6.0) {
+								} else if (!IsGtsBusy(giant) && difference >= 8.0) {
 									SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Grab.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect
 								} else if (huggedActor && GetHealthPercentage(huggedActor) < GetHPThreshold(giant)) {
 									if (otherActor == huggedActor && !IsHugCrushing) {
@@ -963,10 +963,169 @@ namespace Gts {
 		}
 	}
 
+	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause, bool Resurrected) {
+		bool soul = false;
+		float Scale = std::clamp(scale, 0.40f, 4.4f);
+
+		if (Resurrected) {
+			Cprint("Task Aborted, target was resurrected");
+			return;
+		}
+
+		std::string_view container;
+		std::string name = std::format("{} remains", actor->GetDisplayFullName());
+
+		if (IsMechanical(actor)) {
+			container = "Dropbox_Mechanical";
+		} else if (Cause == DamageSource::Vored) { // Always spawn soul on vore
+			container = "Dropbox_Soul";
+			name = std::format("{} Soul Remains", actor->GetDisplayFullName());
+			soul = true;
+		} else if (LessGore()) { // Spawn soul if Less Gore is on
+			container = "Dropbox_Soul";
+			name = std::format("Crushed Soul of {} ", actor->GetDisplayFullName());
+			soul = true;
+		} else if (IsInsect(actor, false)) {
+			container = "Dropbox_Bug";
+			name = std::format("Remains of {}", actor->GetDisplayFullName());
+		} else if (IsLiving(actor)) {
+			container = "Dropbox_Physics";
+		} else {
+			container = "Dropbox_Undead_Physics";
+		}
+
+		Scale *= GetScaleAdjustment(actor);
+
+		NiPoint3 TotalPos = GetContainerSpawnLocation(giant, actor); // obtain goal of container position by doing ray-cast
+		if (IsDebugEnabled()) {
+			DebugAPI::DrawSphere(glm::vec3(TotalPos.x, TotalPos.y, TotalPos.z), 8.0, 6000, {1.0, 1.0, 0.0, 1.0});
+		}
+		auto dropbox = Runtime::PlaceContainerAtPos(actor, TotalPos, container); // Place chosen container
+
+		std::string taskname = std::format("Dropbox {}", actor->formID); // create task name for main task
+		std::string taskname_sound = std::format("DropboxAudio {}", actor->formID); // create task name for Audio play
+		if (!dropbox) {
+			return;
+		}
+		float Start = Time::WorldTimeElapsed();
+		dropbox->SetDisplayName(name, false); // Rename container to match chosen name
+
+		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
+			TaskManager::RunFor(taskname, 16, [=](auto& progressData) { // Spawn loot piles
+				float Finish = Time::WorldTimeElapsed();
+				auto dropboxPtr = dropboxHandle.get().get();
+				if (!dropboxPtr) {
+					return false;
+				} if (!dropboxPtr->Is3DLoaded()) {
+					return true;
+				} if (!victimref->IsDead()) {
+					log::info("Victim isn't dead yet");
+					return true; // try again
+				}
+				auto dropbox3D = dropboxPtr->GetCurrent3D();
+				if (!dropbox3D) {
+					return true; // Retry next frame
+				} else {
+					float timepassed = Finish - Start;
+					if (soul) {
+						timepassed *= 1.33; // faster soul scale
+					}
+					auto node = find_object_node(dropboxPtr, "GorePile_Obj");
+					auto trigger = find_object_node(dropboxPtr, "Trigger_Obj");
+					if (node) {
+						node->local.scale = (Scale * 0.33) + (timepassed*0.18);
+						if (!soul) {
+							node->world.translate.z = TotalPos.z;
+						}
+						update_node(node);
+					}
+					if (trigger) {
+						trigger->local.scale = (Scale * 0.33) + (timepassed*0.18);
+						if (!soul) {
+							trigger->world.translate.z = TotalPos.z;
+						}
+						update_node(trigger);
+					}
+					if (node && node->local.scale >= Scale) { // disable collision once it is scaled enough
+						return false; // End task
+					}
+					return true;
+				}
+    		});
+			if (Cause == DamageSource::Overkill) { // Play audio that won't disappear if source of loot transfer is Overkill
+				TaskManager::RunFor(taskname_sound, 6, [=](auto& progressData) {
+					auto dropboxPtr = dropboxHandle.get().get();
+					if (!dropboxPtr) {
+						return false; // cancel
+					}
+					if (!dropboxPtr->Is3DLoaded()) {
+						return true; // retry
+					}
+					auto dropbox3D = dropboxPtr->GetCurrent3D();
+					if (!dropbox3D) {
+						return true; // Retry next frame
+					} else {
+						Runtime::PlaySound("GtsCrushSound", dropboxPtr, 1.0, 1.0);
+						return false;
+					}
+				});
+			}
+
+		int32_t quantity = 1.0;	
+		float Start = Time::WorldTimeElapsed();
+		auto victimhandle = actor->CreateRefHandle();
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!dropboxHandle) {
+				return false;
+			}
+			if (!victimhandle) {
+				return false;
+			} 
+			auto dropboxPtr = dropboxHandle.get().get();
+			if (dropboxPtr) {
+				return false;
+			}
+			auto dropbox3D = dropboxPtr->GetCurrent3D();
+			if (!dropbox3D) {
+				return true; // Retry next frame
+			}
+			auto victim = victimhandle.get().get();
+			float Finish = Time::WorldTimeElapsed();
+			float timepassed = Finish - Start;
+			if (timepassed > 0.25) {
+				for (auto &[a_object, invData]: actor->GetInventory()) { // transfer loot
+					if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) { // We don't want to move Leveled Items
+						if ((!invData.second->IsQuestObject() || removeQuestItems)) {
+
+							TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
+							if (ref) {
+								log::info("Transfering item: {}, looking for quantity", a_object->GetName());
+								auto changes = ref->GetInventoryChanges();
+								if (changes) {
+									quantity = GetItemCount(changes, a_object); // obtain item count
+									log::info("Found quantity for {}, quantity: {}", a_object->GetName(), quantity);
+									if (quantity < 1.0) {
+										quantity = 1.0;
+										log::info("Error: weird quantity for {}. New quantity: {}", a_object->GetName(), quantity);
+									}
+								}
+							}
+
+							log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
+
+							victim->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, dropboxPtr, nullptr, nullptr);
+						}
+					}
+				}
+				return false; // complete task
+			}
+			
+			return true; // retry
+			
+		});
+	}
+
 	void Disintegrate(Actor* actor, bool script) {
-		// Optional TO-DO: 11.12.2023:
-		// RE SetCriticalStage function since it isn't working in dll and we have to use script hacks.
-		// ^ Done!
 		std::string taskname = std::format("Disintegrate_{}", actor->formID);
 		auto tinyref = actor->CreateRefHandle();
 		TaskManager::RunOnce(taskname, [=](auto& update) {
@@ -2168,180 +2327,7 @@ namespace Gts {
 		}
 	}
 
-	NiPoint3 GetContainerSpawnLocation(Actor* giant, Actor* tiny) {
-		bool success_first = false;
-		bool success_second = false;
-		NiPoint3 ray_start = tiny->GetPosition();
-		ray_start.z += 40.0; // overrize .z with giant .z + 40, so ray starts from above
-		NiPoint3 ray_direction(0.0, 0.0, -1.0);
-
-		float ray_length = 40000;
-
-		NiPoint3 pos = NiPoint3(0, 0, 0); // default pos
-		NiPoint3 endpos = CastRayStatics(tiny, ray_start, ray_direction, ray_length, success_first);
-		if (success_first) {
-			// attempt 1, spawn at actor ray cast.
-			// Obtain actor coords, shift Z by 40 and cast ray down. That way we always do ray at around ground level.
-			log::info("Cast 1 success");
-			return endpos;
-		} else if (!success_first) {
-			NiPoint3 ray_start_second = giant->GetPosition();
-			ray_start_second.z += 40.0;
-			pos = CastRayStatics(giant, ray_start_second, ray_direction, ray_length, success_second);
-			log::info("Cast 1 fail, trying again");
-			if (!success_second) {
-				// failed, spawn at giant location directly.
-				log::info("Cast 2 failed, spawning on default GTS location");
-				pos = giant->GetPosition();
-				return pos;
-			}
-			return pos;
-		}
-		log::info("Everything failed, spawning nowhere");
-		return pos;
-	}
-
-	// From an actor place a new container at them and transfer
-	// all of their inventory into it
-	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause, bool Resurrected) {
-		bool soul = false;
-		float Scale = std::clamp(scale, 0.40f, 4.4f);
-
-		if (Resurrected) {
-			Cprint("Task Aborted, target was resurrected");
-			return;
-		}
-
-		std::string_view container;
-		std::string name = std::format("{} remains", actor->GetDisplayFullName());
-
-		if (IsMechanical(actor)) {
-			container = "Dropbox_Mechanical";
-		} else if (Cause == DamageSource::Vored) { // Always spawn soul on vore
-			container = "Dropbox_Soul";
-			name = std::format("{} Soul Remains", actor->GetDisplayFullName());
-			soul = true;
-		} else if (LessGore()) { // Spawn soul if Less Gore is on
-			container = "Dropbox_Soul";
-			name = std::format("Crushed Soul of {} ", actor->GetDisplayFullName());
-			soul = true;
-		} else if (IsInsect(actor, false)) {
-			container = "Dropbox_Bug";
-			name = std::format("Remains of {}", actor->GetDisplayFullName());
-		} else if (IsLiving(actor)) {
-			container = "Dropbox_Physics";
-		} else {
-			container = "Dropbox_Undead_Physics";
-		}
-
-		Scale *= GetScaleAdjustment(actor);
-
-		NiPoint3 TotalPos = GetContainerSpawnLocation(giant, actor); // obtain goal of container position by doing ray-cast
-		if (IsDebugEnabled()) {
-			DebugAPI::DrawSphere(glm::vec3(TotalPos.x, TotalPos.y, TotalPos.z), 8.0, 6000, {1.0, 1.0, 0.0, 1.0});
-		}
-		auto victim = actor->CreateRefHandle();
-		auto dropbox = Runtime::PlaceContainerAtPos(actor, TotalPos, container); // Place chosen container
-
-		std::string taskname = std::format("Dropbox {}", actor->formID); // create task name for main task
-		std::string taskname_sound = std::format("DropboxAudio {}", actor->formID); // create task name for Audio play
-		if (!dropbox) {
-			return;
-		}
-		float Start = Time::WorldTimeElapsed();
-		dropbox->SetDisplayName(name, false); // Rename container to match chosen name
-
-		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
-			TaskManager::RunFor(taskname, 16, [=](auto& progressData) { // Spawn loot piles
-				float Finish = Time::WorldTimeElapsed();
-				auto dropboxPtr = dropboxHandle.get().get();
-				auto victimref = victim.get().get();
-				if (!victim) {
-					log::info("Victim is false");
-					return false;
-				} if (!dropboxPtr) {
-					return false;
-				} if (!dropboxPtr->Is3DLoaded()) {
-					return true;
-				} if (!victimref->IsDead()) {
-					log::info("Victim isn't dead yet");
-					return true; // try again
-				}
-				auto dropbox3D = dropboxPtr->GetCurrent3D();
-				if (!dropbox3D) {
-					return true; // Retry next frame
-				} else {
-					float timepassed = Finish - Start;
-					if (soul) {
-						timepassed *= 1.33; // faster soul scale
-					}
-					auto node = find_object_node(dropboxPtr, "GorePile_Obj");
-					auto trigger = find_object_node(dropboxPtr, "Trigger_Obj");
-					if (node) {
-						node->local.scale = (Scale * 0.33) + (timepassed*0.18);
-						if (!soul) {
-							node->world.translate.z = TotalPos.z;
-						}
-						update_node(node);
-					}
-					if (trigger) {
-						trigger->local.scale = (Scale * 0.33) + (timepassed*0.18);
-						if (!soul) {
-							trigger->world.translate.z = TotalPos.z;
-						}
-						update_node(trigger);
-					}
-					if (node && node->local.scale >= Scale) { // disable collision once it is scaled enough
-						return false; // End task
-					}
-					return true;
-				}
-    		});
-			if (Cause == DamageSource::Overkill) { // Play audio that won't disappear if source of loot transfer is Overkill
-				TaskManager::RunFor(taskname_sound, 6, [=](auto& progressData) {
-					auto dropboxPtr = dropboxHandle.get().get();
-					if (!dropboxPtr) {
-						return false; // cancel
-					}
-					if (!dropboxPtr->Is3DLoaded()) {
-						return true; // retry
-					}
-					auto dropbox3D = dropboxPtr->GetCurrent3D();
-					if (!dropbox3D) {
-						return true; // Retry next frame
-					} else {
-						Runtime::PlaySound("GtsCrushSound", dropboxPtr, 1.0, 1.0);
-						return false;
-					}
-				});
-			}
-		int32_t quantity = 1.0;	
-		for (auto &[a_object, invData]: actor->GetInventory()) { // transfer loot
-			if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) { // We don't want to move Leveled Items
-				if ((!invData.second->IsQuestObject() || removeQuestItems)) {
-
-					TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
-					if (ref) {
-						log::info("Transfering item: {}, looking for quantity", a_object->GetName());
-						auto changes = ref->GetInventoryChanges();
-						if (changes) {
-							quantity = GetItemCount(changes, a_object); // obtain item count
-							log::info("Found quantity for {}, quantity: {}", a_object->GetName(), quantity);
-							if (quantity < 1.0) {
-								quantity = 1.0;
-								log::info("Error: weird quantity for {}. New quantity: {}", a_object->GetName(), quantity);
-							}
-						}
-					}
-
-					log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
-
-					actor->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
-				}
-			}
-		}
-	}
-
+	
 	bool CanPerformAnimation(Actor* giant, float type) { // Needed for smooth animation unlocks during quest progression
 		// 0 = Hugs
 		// 1 = stomps and kicks

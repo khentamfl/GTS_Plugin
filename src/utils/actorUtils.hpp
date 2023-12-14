@@ -107,8 +107,10 @@ namespace Gts {
 	// GTS State Controllers end
 	void PlayAnimation(Actor* actor, std::string_view animName);
 
+	NiPoint3 GetContainerSpawnLocation(Actor* giant, Actor* tiny);
 	void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause, bool reset);
 	void TransferInventory_Normal(Actor* giant, Actor* tiny, bool removeQuestItems);
+	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause, bool Resurrected);
 
 	void Disintegrate(Actor* actor, bool script);
 	void UnDisintegrate(Actor* actor);
@@ -205,10 +207,6 @@ namespace Gts {
 
 	void ResetGrab(Actor* giant);
 	void FixAnimations();
-
-	NiPoint3 GetContainerSpawnLocation(Actor* giant, Actor* tiny);
-
-	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause, bool Resurrected);
 
 	bool CanPerformAnimation(Actor* giant, float type);
 	void AdvanceQuestProgression(Actor* giant, float stage, float value);
