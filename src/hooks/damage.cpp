@@ -101,7 +101,7 @@ namespace {
             Cprint("Damage: {:.2f}, Lost Size: {:.2f}", a_damage, -0.35 * scale);
             Notify("Health Gate triggered, death avoided");
             Notify("Damage: {:.2f}, Lost Size: {:.2f}", a_damage, -0.35 * scale);
-            protection = 0.0;
+            protection = 0.05;
             }
         }
 		}
@@ -150,12 +150,10 @@ namespace Hooks
         float multiplier = GetDamageMultiplier(aggressor);
         float tiny = TinyShied(a_this);
         
-        dmg *= resistance * multiplier * tiny;
-        if (healthgate > 0) {
-          log::info("    - Reducing damage to {}, resistance: {}, multiplier: {}, shield: {}", dmg, resistance, multiplier, tiny);
-          SkyrimTakeDamage(a_this, dmg, maybe_hit_data, aggressor, damageSrc);
-          ApplyHitGrowth(a_this, aggressor, dmg);
-        }
+        dmg *= (resistance * multiplier * tiny * healthgate);
+        log::info("    - Reducing damage to {}, resistance: {}, multiplier: {}, shield: {}", dmg, resistance, multiplier, tiny);
+        SkyrimTakeDamage(a_this, dmg, maybe_hit_data, aggressor, damageSrc);
+        ApplyHitGrowth(a_this, aggressor, dmg);
         return;
 			}
     );
