@@ -24,7 +24,7 @@ namespace {
       return;
     }
     if (actor->formID == 0x14) {
-      auto& tranData = Transient::GetSingleton().GetData(actor);
+      auto tranData = Transient::GetSingleton().GetData(actor);
       bool TP = camera->IsInThirdPerson();
       bool FP = camera->IsInFirstPerson();
       if (tranData) {
@@ -151,7 +151,7 @@ namespace Hooks
         float tiny = TinyShield(a_this);
 
         if (a_this->formID == 0x14) {
-            auto& transient = Transient::GetSingleton().GetData(a_this);
+            auto transient = Transient::GetSingleton().GetData(a_this);
             if (transient) {
               IsNotImmune = transient->Immunity;
             }

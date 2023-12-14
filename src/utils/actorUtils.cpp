@@ -1352,13 +1352,13 @@ namespace Gts {
 		if (giant->formID == 0x14 && Runtime::HasPerk(giant, "SizeAbsorption")) {
 			auto attributes = Persistent::GetSingleton().GetData(giant);
 			if (attributes) {
-				log::info("Adding {} to stolen attributes", value);
+				//log::info("Adding {} to stolen attributes", value);
 				attributes->stolen_attributes += value;
 
 				if (attributes->stolen_attributes <= 0.0) {
 					attributes->stolen_attributes = 0.0; // Cap it just in case
 				}
-			log::info("Stolen AV value: {}", attributes->stolen_attributes);
+			//log::info("Stolen AV value: {}", attributes->stolen_attributes);
 			}
 		}
 	}
@@ -2246,7 +2246,7 @@ namespace Gts {
 		if (IsDebugEnabled()) {
 			DebugAPI::DrawSphere(glm::vec3(TotalPos.x, TotalPos.y, TotalPos.z), 8.0, 6000, {1.0, 1.0, 0.0, 1.0});
 		}
-
+		auto victim = actor->CreateRefHandle();
 		auto dropbox = Runtime::PlaceContainerAtPos(actor, TotalPos, container); // Place chosen container
 
 		std::string taskname = std::format("Dropbox {}", actor->formID); // create task name for main task
@@ -2261,11 +2261,17 @@ namespace Gts {
 			TaskManager::RunFor(taskname, 16, [=](auto& progressData) { // Spawn loot piles
 				float Finish = Time::WorldTimeElapsed();
 				auto dropboxPtr = dropboxHandle.get().get();
-				if (!dropboxPtr) {
+				auto victimref = victim.get().get();
+				if (!victim) {
+					log::info("Victim is false");
 					return false;
-				}
-				if (!dropboxPtr->Is3DLoaded()) {
+				} if (!dropboxPtr) {
+					return false;
+				} if (!dropboxPtr->Is3DLoaded()) {
 					return true;
+				} if (!victimref->IsDead()) {
+					log::info("Victim isn't dead yet");
+					return true; // try again
 				}
 				auto dropbox3D = dropboxPtr->GetCurrent3D();
 				if (!dropbox3D) {
