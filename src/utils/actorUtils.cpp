@@ -728,7 +728,10 @@ namespace Gts {
 			float giantScale = get_visual_scale(giant);
 			auto huggedActor = HugShrink::GetHuggiesActor(giant);
 
-			const float BASE_DISTANCE = 160.0;
+			bool IsHugCrushing;
+			giantref->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
+
+			const float BASE_DISTANCE = 240.0;
 			float CheckDistance = BASE_DISTANCE;
 
 			if (IsCrawling(giant)) {
@@ -747,7 +750,7 @@ namespace Gts {
 				if (otherActor != giant && !otherActor->IsDead()) {
 					float tinyScale = get_visual_scale(otherActor);
 					float difference = GetSizeDifference(giant, otherActor);
-					if (difference < 6.0) {
+					if (difference < 6.0 && !huggedActor) {
 						return;
 					}
 					NiPoint3 actorLocation = otherActor->GetPosition();
@@ -779,7 +782,7 @@ namespace Gts {
 								} else if (!IsGtsBusy(giant) && difference >= 6.0) {
 									SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Grab.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect
 								} else if (huggedActor && GetHealthPercentage(huggedActor) < GetHPThreshold(giant)) {
-									if (otherActor == huggedActor) {
+									if (otherActor == huggedActor && !IsHugCrushing) {
 										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Hug_Crush.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect
 									}
 								}
