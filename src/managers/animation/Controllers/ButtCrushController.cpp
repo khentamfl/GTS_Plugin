@@ -189,7 +189,7 @@ namespace Gts {
 			return false;
 		}
 		float pred_scale = get_visual_scale(pred);
-		float sizedifference = GetSizeAttribute(pred, prey);
+		float sizedifference = GetSizeDifference(pred, prey);
 
 		float MINIMUM_BUTTCRUSH_SCALE = MINIMUM_BUTTCRUSH_SCALE_RATIO;
 		float MINIMUM_DISTANCE = MINIMUM_BUTTCRUSH_DISTANCE;
