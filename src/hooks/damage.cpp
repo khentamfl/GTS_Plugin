@@ -86,8 +86,12 @@ namespace {
         if (protect.ShouldRunFrame()) {
             float maxhp = GetMaxAV(receiver, ActorValue::kHealth);
             float scale = get_visual_scale(receiver);
-            attacker->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
-            attacker->NotifyAnimationGraph("staggerStart");
+            if (attacker) {
+              attacker->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
+              attacker->NotifyAnimationGraph("staggerStart");
+            } else {
+              log::info("ATTACKER IS NONE");
+            }
 
             mod_target_scale(receiver, -0.35 * scale);
             GRumble::For("CheatDeath", receiver, 240.0, 0.10, "NPC COM [COM ]", 1.50);
@@ -101,7 +105,7 @@ namespace {
             Cprint("Damage: {:.2f}, Lost Size: {:.2f}", a_damage, -0.35 * scale);
             Notify("Health Gate triggered, death avoided");
             Notify("Damage: {:.2f}, Lost Size: {:.2f}", a_damage, -0.35 * scale);
-            protection = 0.05;
+            protection = 0.0;
             }
         }
 		}
@@ -143,14 +147,23 @@ namespace Hooks
 		static FunctionHook<void(Actor* a_this, float dmg, uintptr_t maybe_hit_data, Actor* aggressor,TESObjectREFR* damageSrc)> SkyrimTakeDamage(
       RELOCATION_ID(36345, 37335),
       [](auto* a_this, auto dmg, auto maybe_hit_data,auto* aggressor,auto* damageSrc) {
-        log::info("{}: Taking {} damage from {}", a_this->GetDisplayFullName(), dmg, aggressor->GetDisplayFullName());
+        log::info("{}: Taking {} damage", a_this->GetDisplayFullName(), dmg);
+
+        if (aggressor) {
+          log::info("Aggressor found");
+          Actor* attacker = skyrim_cast<Actor*>(aggressor);
+          if (attacker) {
+            log::info("Aggressor Name: {}", attacker->GetDisplayFullName());
+          }
+        }
         
         float resistance = GetDamageResistance(a_this) * HugDamageResistance(a_this);
         float healthgate = HealthGate(a_this, aggressor, dmg * 4);
         float multiplier = GetDamageMultiplier(aggressor);
         float tiny = TinyShied(a_this);
         
-        dmg *= (resistance * multiplier * tiny * healthgate);
+        dmg *= (resistance * multiplier * tiny);
+        dmg *= healthgate;
         log::info("    - Reducing damage to {}, resistance: {}, multiplier: {}, shield: {}", dmg, resistance, multiplier, tiny);
         SkyrimTakeDamage(a_this, dmg, maybe_hit_data, aggressor, damageSrc);
         ApplyHitGrowth(a_this, aggressor, dmg);
