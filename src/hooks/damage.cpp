@@ -124,7 +124,7 @@ namespace {
   }
 
   float HugDamageResistance(Actor* receiver) {
-    float reduction = 1.0
+    float reduction = 1.0;
     if (HugShrink::GetHuggiesActor(receiver)) {
         if (Runtime::HasPerk(receiver, "HugCrush_ToughGrip")) {
           reduction -= 0.25; // 25% resistance
