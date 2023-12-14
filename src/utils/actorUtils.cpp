@@ -642,7 +642,7 @@ namespace Gts {
 		float TinyScale = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
 		if (HasSMT(giant)) {
 			TinyScale *= 0.8;
-			TinyScale /= 4.8;
+			TinyScale /= 6.0;
 		}
 		float Difference = GiantScale/TinyScale;
 		return Difference;
@@ -750,7 +750,7 @@ namespace Gts {
 				if (otherActor != giant && !otherActor->IsDead()) {
 					float tinyScale = get_visual_scale(otherActor);
 					float difference = GetSizeDifference(giant, otherActor);
-					if (difference < 6.0 && !huggedActor) {
+					if (difference < 5.8 && !huggedActor) {
 						return;
 					}
 					NiPoint3 actorLocation = otherActor->GetPosition();
@@ -774,6 +774,10 @@ namespace Gts {
 						if (nodeCollisions > 0) {
 							auto node = find_node(otherActor, "NPC Root [Root]");
 							if (node) {
+								auto grabbedActor = Grab::GetHeldActor(giant);
+								if (grabbedActor && otherActor == grabbedActor) {
+									return;
+								}
 								float correction = (18.0 / tinyScale) - 18.0;
 								NiPoint3 Position = node->world.translate;
 								Position.z -= correction;
