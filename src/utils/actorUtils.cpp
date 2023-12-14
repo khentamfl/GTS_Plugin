@@ -744,7 +744,7 @@ namespace Gts {
 							auto node = find_node(otherActor, "NPC Root [Root]");
 							if (node) {
 								float correction = (18.0 / tinyScale) - 18.0;
-								NiPoint3 Position = otherActor->GetPosition();
+								NiPoint3 Position = node->world.translate;
 								Position.z -= correction;
 								SpawnParticle(otherActor, 3.00, "GTS/UI/Icon.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect
 							}
