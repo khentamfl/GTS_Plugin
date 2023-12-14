@@ -729,7 +729,7 @@ namespace Gts {
 			auto huggedActor = HugShrink::GetHuggiesActor(giant);
 
 			bool IsHugCrushing;
-			giantref->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
+			giant->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
 
 			const float BASE_DISTANCE = 240.0;
 			float CheckDistance = BASE_DISTANCE;
