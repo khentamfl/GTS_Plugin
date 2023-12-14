@@ -159,11 +159,9 @@ namespace Gts {
 			}
 
 			float tinyScale = get_visual_scale(tiny);
-			float sizedifference = giantScale/tinyScale;
+			float sizedifference = GetSizeDifference(giant, tiny);
 			float threshold = 6.0;
-			if (HasSMT(giant)) {
-				threshold = 0.8;
-			}
+
 			if (giant->IsDead() || sizedifference < threshold) {
 				EnableCollisions(tiny);
 				SetBeingHeld(tiny, false);
@@ -286,26 +284,24 @@ namespace Gts {
 		}
 
 		float pred_scale = get_visual_scale(pred);
-		float prey_scale = get_visual_scale(prey) * GetScaleAdjustment(prey);
 
-		float sizedifference = pred_scale/prey_scale;
+		float sizedifference = GetSizeDifference(pred, prey);
 
 		float MINIMUM_SANDWICH_SCALE = MINIMUM_SANDWICH_SCALE_RATIO;
 		float MINIMUM_DISTANCE = MINIMUM_SANDWICH_DISTANCE;
 
 		if (HasSMT(pred)) {
-			MINIMUM_SANDWICH_SCALE = 0.8;
 			MINIMUM_DISTANCE *= 1.75;
 		}
 
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
-		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_SANDWICH_SCALE) {
+		if (pred->formID == 0x14 && prey_distance <= (MINIMUM_DISTANCE * pred_scale) && sizedifference < MINIMUM_SANDWICH_SCALE) {
 			Notify("{} is too big to be smothered between thighs.", prey->GetDisplayFullName());
 			return false;
 		}
-		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_SANDWICH_SCALE) {
+		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && sizedifference > MINIMUM_SANDWICH_SCALE) {
 			if ((prey->formID != 0x14 && IsEssential(prey))) {
 				return false;
 			} else {

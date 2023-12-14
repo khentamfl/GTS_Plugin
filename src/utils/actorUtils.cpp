@@ -642,10 +642,10 @@ namespace Gts {
 		float GiantScale = get_visual_scale(giant);
 		float TinyScale = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
 		if (HasSMT(giant)) {
-			TinyScale *= 0.8;
-			TinyScale /= 6.0;
+			GiantScale += 7.8;
 		}
 		float Difference = GiantScale/TinyScale;
+
 		return Difference;
 	}
 

@@ -433,15 +433,12 @@ namespace Gts {
 		}
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& crushmanager = CrushManager::GetSingleton();
-		float giantsize = get_visual_scale(giant);
-		float tinysize = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
 
 		float damagebonus = Persistent::GetSingleton().size_related_damage_mult;
 
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
-		float multiplier = (giantsize/tinysize) * highheels;
+		float multiplier = GetSizeDifference(giant, tiny) * highheels;
 		if (HasSMT(giant)) {
-			multiplier += 7.8;
 			damagebonus *= 0.25; // A lot less damage to compensate it
 		}
 		if (multiplier < 1.4) {

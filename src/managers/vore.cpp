@@ -673,14 +673,10 @@ namespace Gts {
 		float MINIMUM_DISTANCE = MINIMUM_VORE_DISTANCE;
 
 		if (HasSMT(pred)) {
-			MINIMUM_VORE_SCALE = 0.8;
 			MINIMUM_DISTANCE *= 1.75;
 		}
-
 		float pred_scale = get_visual_scale(pred);
-		float prey_scale = get_visual_scale(prey) * GetScaleAdjustment(prey);
-
-		float sizedifference = pred_scale/prey_scale;
+		float sizedifference = GetSizeDifference(pred, prey);
 
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
@@ -694,13 +690,13 @@ namespace Gts {
 		if (balancemode == 2.0) { // This is checked only if Balance Mode is enabled. Size requirement is bigger with it.
 			MINIMUM_VORE_SCALE *= 1.15;
 		}
-		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale < MINIMUM_VORE_SCALE) {
+		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && sizedifference < MINIMUM_VORE_SCALE) {
 			if (pred->formID == 0x14) {
 				Notify("{} is too big to be eaten.", prey->GetDisplayFullName());
 			}
 			return false;
 		}
-		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale > MINIMUM_VORE_SCALE) {
+		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && sizedifference > MINIMUM_VORE_SCALE) {
 			if ((prey->formID != 0x14 && IsEssential(prey) && !AllowActionsWithFollowers(pred, prey))) {
 				Notify("{} is important and shouldn't be eaten.", prey->GetDisplayFullName());
 				return false;

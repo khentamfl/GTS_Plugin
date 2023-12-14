@@ -188,14 +188,8 @@ namespace Gts {
 		if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
 			return false;
 		}
-
 		float pred_scale = get_visual_scale(pred);
-		float prey_scale = get_visual_scale(prey);
-		if (HasSMT(pred)) {
-			pred_scale += 2.25;
-		}
-
-		float sizedifference = pred_scale/prey_scale;
+		float sizedifference = GetSizeAttribute(pred, prey);
 
 		float MINIMUM_BUTTCRUSH_SCALE = MINIMUM_BUTTCRUSH_SCALE_RATIO;
 		float MINIMUM_DISTANCE = MINIMUM_BUTTCRUSH_DISTANCE;
@@ -204,7 +198,7 @@ namespace Gts {
 		}
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
-		if (pred->formID == 0x14 && prey_distance <= MINIMUM_DISTANCE * pred_scale && pred_scale/prey_scale < MINIMUM_BUTTCRUSH_SCALE) {
+		if (pred->formID == 0x14 && prey_distance <= MINIMUM_DISTANCE * pred_scale && sizedifference < MINIMUM_BUTTCRUSH_SCALE) {
 			std::string_view message = std::format("{} is too big for Butt Crush", prey->GetDisplayFullName());
 			if (IsCrawling(pred)) {
 				message = std::format("{} is too big for Breast Crush", prey->GetDisplayFullName());
@@ -212,7 +206,7 @@ namespace Gts {
 			TiredSound(pred, message);
 			return false;
 		}
-		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale >= MINIMUM_BUTTCRUSH_SCALE) {
+		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && sizedifference >= MINIMUM_BUTTCRUSH_SCALE) {
 			if ((prey->formID != 0x14 && IsEssential(prey) && !AllowActionsWithFollowers(pred, prey))) {
 				std::string_view message = std::format("{} is Essential", prey->GetDisplayFullName());
 				TiredSound(pred, message);
