@@ -12,5 +12,5 @@ namespace Gts {
     void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause, bool reset);
 	void TransferInventory_Normal(Actor* giant, Actor* tiny, bool removeQuestItems);
 	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause, bool Resurrected);
-    void MoveItemsTowardsDropbox(Actor* actor, TESObjectREFR* dropbox);
+    void MoveItemsTowardsDropbox(Actor* actor, TESObjectREFR* dropbox, bool removeQuestItems);
 }

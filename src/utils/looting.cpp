@@ -38,7 +38,7 @@ using namespace Gts;
 
 namespace Gts {
 
-NiPoint3 GetContainerSpawnLocation(Actor* giant, Actor* tiny) {
+    NiPoint3 GetContainerSpawnLocation(Actor* giant, Actor* tiny) {
 		bool success_first = false;
 		bool success_second = false;
 		NiPoint3 ray_start = tiny->GetPosition();
@@ -50,25 +50,21 @@ NiPoint3 GetContainerSpawnLocation(Actor* giant, Actor* tiny) {
 		NiPoint3 pos = NiPoint3(0, 0, 0); // default pos
 		NiPoint3 endpos = CastRayStatics(tiny, ray_start, ray_direction, ray_length, success_first);
 		if (success_first) {
-			log::info("Cast 1 success");
 			return endpos;
 		} else if (!success_first) {
 			NiPoint3 ray_start_second = giant->GetPosition();
 			ray_start_second.z += 40.0;
 			pos = CastRayStatics(giant, ray_start_second, ray_direction, ray_length, success_second);
-			log::info("Cast 1 fail, trying again");
 			if (!success_second) {
-				log::info("Cast 2 failed, spawning on default GTS location");
 				pos = giant->GetPosition();
 				return pos;
 			}
 			return pos;
 		}
-		log::info("Everything failed, spawning nowhere");
 		return pos;
 	}
 
-void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause, bool reset) {
+    void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwnership, bool removeQuestItems, DamageSource Cause, bool reset) {
 		std::string name = std::format("TransferItems_{}_{}", from->formID, to->formID);
 
 		bool reanimated = false; // shall we avoid transfering items or not.
@@ -85,7 +81,6 @@ void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwner
 
 		if (reset) {
 			StartResetTask(from); // reset actor data.
-			// Used to be inside CrushManager/ShrinkToNothingManager
 		}
 
 		TaskManager::Run(name, [=](auto& progressData) {
@@ -152,7 +147,7 @@ void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwner
 		}
 	}
 
-    
+
 
 	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause, bool Resurrected) {
 		bool soul = false;
@@ -279,7 +274,7 @@ void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwner
 			float Finish = Time::WorldTimeElapsed();
 			float timepassed = Finish - Start;
 			if (timepassed > 0.25) {
-                MoveItemsTowardsDropbox(victim, dropboxPtr);
+                MoveItemsTowardsDropbox(victim, dropboxPtr, removeQuestItems);
 				return false; // complete task
 			}
 			
@@ -288,7 +283,7 @@ void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwner
 		});
 	}
 
-    void MoveItemsTowardsDropbox(Actor* actor, TESObjectREFR* dropbox) {
+    void MoveItemsTowardsDropbox(Actor* actor, TESObjectREFR* dropbox, bool removeQuestItems) {
         int32_t quantity = 1.0;
         for (auto &[a_object, invData]: actor->GetInventory()) { // transfer loot
             if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) { // We don't want to move Leveled Items
@@ -310,7 +305,7 @@ void TransferInventory(Actor* from, Actor* to, const float scale, bool keepOwner
 
                     log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
 
-                    actor->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, dropboxPtr, nullptr, nullptr);
+                    actor->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
                 }
             }
         }

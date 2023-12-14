@@ -10,6 +10,7 @@
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "scale/modscale.hpp"
+#include "utils/looting.hpp"
 #include "managers/vore.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
