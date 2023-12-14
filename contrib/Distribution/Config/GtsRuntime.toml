@@ -399,8 +399,10 @@ DLC1_BF_ChaurusRace = "Dawnguard.esm|015136"
 DLC2ExpSpiderBaseRace = "Dragonborn.esm|014449"
 DLC2ExpSpiderPackmuleRace = "Dragonborn.esm|027483"
 DLC2AshHopperRace = "Dragonborn.esm|01B658"
+IcewraithRace = "Skyrim.esm|0131FE"
 MammothRace = "Skyrim.esm|0131FF"
 GiantRace = "Skyrim.esm|0131F9"
+
 
 [keywords]
 UndeadKeyword = "Skyrim.esm|013796"

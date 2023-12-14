@@ -70,7 +70,9 @@ namespace Gts {
 		bool reanimated = false; // shall we avoid transfering items or not.
 		if (Cause != DamageSource::Vored) {
 			reanimated = WasReanimated(from);
-		}
+		} if (Runtime::IsRace(from, "IcewraithRace")) {
+            reanimated = true;
+        }
 		// ^ we generally do not want to transfer loot in that case: 2 loot piles will spawn if actor was resurrected
 
 		float Start = Time::WorldTimeElapsed();
@@ -255,15 +257,18 @@ namespace Gts {
 			}
 
 		auto victimhandle = actor->CreateRefHandle();
-		TaskManager::Run(name, [=](auto& progressData) {
+        std::string transfername = std::format("LootTransfer_{}", actor->formID); // create task name for main task
+		TaskManager::Run(transfername, [=](auto& progressData) {
 			if (!dropboxHandle) {
 				return false;
 			}
 			if (!victimhandle) {
+                log::info("No victim");
 				return false;
 			} 
 			auto dropboxPtr = dropboxHandle.get().get();
 			if (dropboxPtr) {
+                log::info("No Dropboxhandle");
 				return false;
 			}
 			auto dropbox3D = dropboxPtr->GetCurrent3D();
@@ -273,18 +278,22 @@ namespace Gts {
 			auto victim = victimhandle.get().get();
 			float Finish = Time::WorldTimeElapsed();
 			float timepassed = Finish - Start;
-			if (timepassed > 0.25) {
-                MoveItemsTowardsDropbox(victim, dropboxPtr, removeQuestItems);
-				return false; // complete task
+			if (timepassed < 0.25) {
+                log::info("Time passing");
+				return true; // try again
 			}
+
+            log::info("Time passed");
+            MoveItemsTowardsDropbox(victim, dropboxPtr, removeQuestItems);
 			
-			return true; // retry
+			return false; // retry
 			
 		});
 	}
 
     void MoveItemsTowardsDropbox(Actor* actor, TESObjectREFR* dropbox, bool removeQuestItems) {
         int32_t quantity = 1.0;
+         log::info("Launching item transfer");
         for (auto &[a_object, invData]: actor->GetInventory()) { // transfer loot
             if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) { // We don't want to move Leveled Items
                 if ((!invData.second->IsQuestObject() || removeQuestItems)) {
