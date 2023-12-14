@@ -1018,10 +1018,7 @@ namespace Gts {
 					return false;
 				} if (!dropboxPtr->Is3DLoaded()) {
 					return true;
-				} if (!victimref->IsDead()) {
-					log::info("Victim isn't dead yet");
-					return true; // try again
-				}
+				} 
 				auto dropbox3D = dropboxPtr->GetCurrent3D();
 				if (!dropbox3D) {
 					return true; // Retry next frame
@@ -1071,8 +1068,6 @@ namespace Gts {
 				});
 			}
 
-		int32_t quantity = 1.0;	
-		float Start = Time::WorldTimeElapsed();
 		auto victimhandle = actor->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!dropboxHandle) {
@@ -1093,6 +1088,7 @@ namespace Gts {
 			float Finish = Time::WorldTimeElapsed();
 			float timepassed = Finish - Start;
 			if (timepassed > 0.25) {
+				int32_t quantity = 1.0;
 				for (auto &[a_object, invData]: actor->GetInventory()) { // transfer loot
 					if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) { // We don't want to move Leveled Items
 						if ((!invData.second->IsQuestObject() || removeQuestItems)) {
