@@ -87,9 +87,7 @@ namespace {
 			tiny->NotifyAnimationGraph("JumpFall");
 
 			SetBeingHeld(tiny, true);
-      Attacked(tiny, &data.giant);
-      // ReportCrime(&data.giant, tiny, 1000.0, true);
-			// StartCombat(giant, tiny, true);
+			StartCombat(giant, tiny, true);
 		}
 		if (AllowFeetTracking() && giant->formID == 0x14) {
 			ManageCamera(giant, false, 4.0);

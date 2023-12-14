@@ -625,6 +625,12 @@ namespace Gts {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                                 G T S   A C T O R   F U N C T I O N S                                                              //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	float GetSizeDifference(Actor* giant, Actor* tiny) {
+		float GiantScale = get_visual_scale(giant);
+		float TinyScale = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
+		float Difference = GiantScale/TinyScale;
+		return Difference;
+	}
 
 	float GetActorWeight(Actor* giant, bool metric) {
 		float hh = HighHeelManager::GetBaseHHOffset(giant)[2]/100;
@@ -694,6 +700,61 @@ namespace Gts {
 		}
 		return value;
 	}
+
+	void SpawnActionIcon(Actor* giant) {
+		if (!giant) {
+			return;
+		}
+		static Timer EffectTimer = Timer(3.0);
+		if (giant->formID == 0x14 && EffectTimer.ShouldRunFrame()) {
+			NiPoint3 NodePosition = giant->GetPosition();
+
+			float giantScale = get_visual_scale(giant);
+
+			const float BASE_DISTANCE = 1600.0;
+			float CheckDistance = BASE_DISTANCE;
+
+			if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant))) {
+				DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), CheckDistance, 60, {0.5, 1.0, 0.0, 0.5});
+			}
+
+			NiPoint3 giantLocation = giant->GetPosition();
+			for (auto otherActor: find_actors()) {
+				if (otherActor != giant && !otherActor->IsDead()) {
+					float tinyScale = get_visual_scale(otherActor);
+					NiPoint3 actorLocation = otherActor->GetPosition();
+					if ((actorLocation - giantLocation).Length() < CheckDistance) {
+						int nodeCollisions = 0;
+						float force = 0.0;
+
+						auto model = otherActor->GetCurrent3D();
+
+						if (model) {
+							VisitNodes(model, [&nodeCollisions, &force, NodePosition, CheckDistance](NiAVObject& a_obj) {
+								float distance = (NodePosition - a_obj.world.translate).Length();
+								if (distance < CheckDistance) {
+									nodeCollisions += 1;
+									force = 1.0 - distance / CheckDistance;
+									return false;
+								}
+								return true;
+							});
+						}
+						if (nodeCollisions > 0) {
+							auto node = find_node(otherActor, "NPC Root [Root]");
+							if (node) {
+								float correction = (18.0 / tinyScale) - 18.0;
+								NiPoint3 Position = node->world.translate;
+								Position.z -= correction;
+								SpawnParticle(otherActor, 3.00, "GTS/UI/Icon.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -838,8 +899,19 @@ namespace Gts {
 
 					TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(tiny);
 					if (ref) {
-						quantity = ref->GetInventoryChanges()->GetItemCount(a_object); // obtain item count
+						log::info("Transfering item: {}, looking for quantity", a_object->GetName());
+						auto changes = ref->GetInventoryChanges();
+						if (changes) {
+							quantity = GetItemCount(changes, a_object); // obtain item count
+							log::info("Found quantity for {}, quantity: {}", a_object->GetName(), quantity);
+							if (quantity < 1.0) {
+								quantity = 1.0;
+								log::info("Error: weird quantity for {}. New quantity: {}", a_object->GetName(), quantity);
+							}
+						}
 					}
+
+					log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
 
 					tiny->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, giant, nullptr, nullptr);
 				}
@@ -1652,8 +1724,7 @@ namespace Gts {
 		}
 
 		mod_target_scale(tiny, -(shrinkpower * gigantism));
-		Attacker(giant, tiny);
-		//StartCombat(giant, tiny, true);
+		StartCombat(giant, tiny, true);
 
 		AdjustGtsSkill((shrinkpower * gigantism) * 0.80, giant);
 
@@ -2126,10 +2197,6 @@ namespace Gts {
 		} else if (IsMammoth(actor)) {
 			Scale *= 5.0;
 		}
-		/*NiPoint3 TinyPos = actor->GetPosition();
-		NiPoint3 GiantPos = giant->GetPosition();
-		NiPoint3 TotalPos = NiPoint3(TinyPos.x, TinyPos.y, GiantPos.z + 170);
-		*/
 
 		NiPoint3 TotalPos = GetContainerSpawnLocation(giant, actor); // obtain goal of container position by doing ray-cast
 		if (IsDebugEnabled()) {
@@ -2181,8 +2248,6 @@ namespace Gts {
 						update_node(trigger);
 					}
 					if (node && node->local.scale >= Scale) { // disable collision once it is scaled enough
-						//dropbox3D->SetMotionType(4, true, true, true);
-						//dropbox3D->SetCollisionLayer(COL_LAYER::kNonCollidable);
 						return false; // End task
 					}
 					return true;
@@ -2213,10 +2278,19 @@ namespace Gts {
 
 					TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
 					if (ref) {
-						quantity = ref->GetInventoryChanges()->GetItemCount(a_object); // obtain item count
+						log::info("Transfering item: {}, looking for quantity", a_object->GetName());
+						auto changes = ref->GetInventoryChanges();
+						if (changes) {
+							quantity = GetItemCount(changes, a_object); // obtain item count
+							log::info("Found quantity for {}, quantity: {}", a_object->GetName(), quantity);
+							if (quantity < 1.0) {
+								quantity = 1.0;
+								log::info("Error: weird quantity for {}. New quantity: {}", a_object->GetName(), quantity);
+							}
+						}
 					}
 
-					//log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
+					log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
 
 					actor->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
 				}
@@ -2364,45 +2438,26 @@ namespace Gts {
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
 		//float resistance = AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth);
 		DamageAV(receiver, ActorValue::kHealth, value);
-    Attacked(receiver, attacker);
 	}
 
-	void EditDetectionLevel(Actor* actor, Actor* giant) { // Unused and does nothing.
-		giant = PlayerCharacter::GetSingleton();
-		float scale = get_visual_scale(actor);
-		auto ai = actor->GetActorRuntimeData().currentProcess;
-		if (ai) {
-			if (ai->high) {
-				auto Array = ai->high->knowledgeArray;
-				for (auto references: Array) { // Do array stuff
-					auto Find = references.second; // Obtain BSTTuple.second member (first/second)
-					auto DetectionStage = Find->detectionState.get(); // get detection stage of actor
-					if (DetectionStage) { // Do nothing since it does nothing. Sigh.
-						std::int32_t level = DetectionStage->level = 0;
-						std::int32_t unk14 = DetectionStage->unk14 = 0;
-						std::int32_t unk15 = DetectionStage->unk15 = 0;
-						std::int32_t unk16 = DetectionStage->unk16 = 0;
-						std::int32_t pad17 = DetectionStage->pad17 = 0;
-						std::int32_t unk18 = DetectionStage->unk18 = 0;
-						std::int32_t unk28 = DetectionStage->unk28 = 0;
-						std::int32_t unk38 = DetectionStage->unk38 = 0;
-					}
-				}
-			}
+	// RE Fun
+	void SetCriticalStage(Actor* actor, int stage) {
+		if (stage < 5 && stage >= 0) {
+			typedef void (*DefSetCriticalStage)(Actor* actor, int stage);
+			REL::Relocation<DefSetCriticalStage> SkyrimSetCriticalStage{ RELOCATION_ID(36607, 37615) };
+			SkyrimSetCriticalStage(actor, stage);
 		}
 	}
+	void Attacked(Actor* victim, Actor* agressor) {
+		typedef void (*DefAttacked)(Actor* victim, Actor* agressor);
+		REL::Relocation<DefAttacked> SkyrimAttacked{ RELOCATION_ID(37672, 38626) };
+		SkyrimAttacked(victim, agressor);
+	}
 
-  // RE Fun
-  void SetCriticalStage(Actor* actor, int stage) {
-    if (stage < 5 && stage >= 0) {
-      typedef void (*DefSetCriticalStage)(Actor* actor, int stage);
-      REL::Relocation<DefSetCriticalStage> SkyrimSetCriticalStage{ RELOCATION_ID(36607, 37615) };
-      SkyrimSetCriticalStage(actor, stage);
-    }
-  }
-  void Attacked(Actor* victim, Actor* agressor) {
-    typedef void (*DefAttacked)(Actor* victim, Actor* agressor);
-    REL::Relocation<DefAttacked> SkyrimAttacked{ RELOCATION_ID(37672, 38626) };
-    SkyrimAttacked(victim, agressor);
-  }
+	std::int16_t GetItemCount(InventoryChanges* changes, RE::TESBoundObject* a_obj)
+	{
+		using func_t = decltype(&GetItemCount);
+		REL::Relocation<func_t> func{ RELOCATION_ID(15868, 16108) };
+		return func(changes, a_obj);
+	}
 }

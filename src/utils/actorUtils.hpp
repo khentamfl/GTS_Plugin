@@ -83,11 +83,14 @@ namespace Gts {
 	// Gts Bools end
 
 	// GTS Actor Functions
+	float GetSizeDifference(Actor* giant, Actor* tiny);
 	float GetActorWeight(Actor* giant, bool metric);
 	float GetActorHeight(Actor* giant, bool metric);
 	float GetScaleAdjustment(Actor* tiny);
 	float GetRaycastStateScale(Actor* giant);
 	float GetProneAdjustment();
+
+	void SpawnActionIcon(Actor* giant);
 	// End
 
 	// GTS State Controllers
@@ -213,10 +216,10 @@ namespace Gts {
 	void ResetQuest();
 	float GetQuestProgression(float stage);
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value);
-	void EditDetectionLevel(Actor* actor, Actor* giant);
 
 
-  // RE Fun:
-  void SetCriticalStage(Actor* actor, int stage);
-  void Attacked(Actor* victim, Actor* agressor);
+	// RE Fun:
+	void SetCriticalStage(Actor* actor, int stage);
+	void Attacked(Actor* victim, Actor* agressor);
+	std::int16_t GetItemCount(InventoryChanges* changes, RE::TESBoundObject* a_obj);
 }

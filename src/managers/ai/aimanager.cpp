@@ -183,9 +183,9 @@ namespace {
 			return;
 		}
 		if (rng <= 5) {
-			AnimationManager::StartAnim("GTSBeh_Trample_L", pred);
+			AnimationManager::StartAnim("TrampleL", pred);
 		} else {
-			AnimationManager::StartAnim("GTSBeh_Trample_R", pred);
+			AnimationManager::StartAnim("TrampleR", pred);
 		} 
 	}
 
