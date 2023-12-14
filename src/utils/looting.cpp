@@ -118,7 +118,7 @@ namespace Gts {
 		});
 	}
 
-	void TransferInventory_Normal(Actor* giant, Actor* tiny, const float scale, bool removeQuestItems, DamageSource Cause, bool Resurrected) {
+	void TransferInventory_Normal(Actor* giant, Actor* tiny, bool removeQuestItems) {
 		int32_t quantity = 1.0;
 
 		for (auto &[a_object, invData]: tiny->GetInventory()) { // transfer loot
