@@ -144,7 +144,7 @@ namespace {
 namespace Hooks
 {
 	void Hook_Damage::Hook(Trampoline& trampoline) {
-		static FunctionHook<void(Actor* a_this, float dmg, uintptr_t maybe_hit_data, uintptr_t aggressor,TESObjectREFR* damageSrc)> SkyrimTakeDamage(
+		static FunctionHook<void(Actor* a_this, float dmg, uintptr_t maybe_hit_data, Actor* aggressor,TESObjectREFR* damageSrc)> SkyrimTakeDamage(
       RELOCATION_ID(36345, 37335),
       [](auto* a_this, auto dmg, auto maybe_hit_data,auto* aggressor,auto* damageSrc) {
         log::info("{}: Taking {} damage", a_this->GetDisplayFullName(), dmg);
@@ -157,16 +157,16 @@ namespace Hooks
         log::info("Aggressor numbers: {}", aggressor);
         
         
-        float resistance = GetDamageResistance(a_this) * HugDamageResistance(a_this);
+        /*float resistance = GetDamageResistance(a_this) * HugDamageResistance(a_this);
         float healthgate = HealthGate(a_this, aggressor, dmg * 4);
         float multiplier = GetDamageMultiplier(aggressor);
-        float tiny = TinyShied(a_this);
+        float tiny = TinyShied(a_this);*/
         
         dmg *= (resistance * multiplier * tiny);
         dmg *= healthgate;
-        log::info("    - Reducing damage to {}, resistance: {}, multiplier: {}, shield: {}", dmg, resistance, multiplier, tiny);
+        //log::info("    - Reducing damage to {}, resistance: {}, multiplier: {}, shield: {}", dmg, resistance, multiplier, tiny);
         SkyrimTakeDamage(a_this, dmg, maybe_hit_data, aggressor, damageSrc);
-        ApplyHitGrowth(a_this, aggressor, dmg);
+        //ApplyHitGrowth(a_this, aggressor, dmg);
         return;
 			}
     );
