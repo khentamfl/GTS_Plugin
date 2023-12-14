@@ -671,24 +671,14 @@ namespace Gts {
 		}
 		float MINIMUM_VORE_SCALE = MINIMUM_VORE_SCALE_RATIO;
 		float MINIMUM_DISTANCE = MINIMUM_VORE_DISTANCE;
-		if (Runtime::HasPerkTeam(pred, "VorePerk")) {
-			MINIMUM_VORE_SCALE = 6.0;
-		}
 
 		if (HasSMT(pred)) {
-			MINIMUM_VORE_SCALE = 0.7;
+			MINIMUM_VORE_SCALE = 0.8;
 			MINIMUM_DISTANCE *= 1.75;
 		}
 
 		float pred_scale = get_visual_scale(pred);
-		float prey_scale = get_visual_scale(prey);
-		if (IsDragon(prey)) {
-			prey_scale *= 3.0;
-		} if (IsGiant(prey)) {
-			prey_scale *= 2.2;
-		}if (IsMammoth(prey)) {
-			prey_scale *= 4.0;
-		}
+		float prey_scale = get_visual_scale(prey) * GetScaleAdjustment(prey);
 
 		float sizedifference = pred_scale/prey_scale;
 

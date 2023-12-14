@@ -1,5 +1,6 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/AccurateDamage.hpp"
+#include "managers/animation/HugShrink.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "magic/effects/common.hpp"
@@ -639,6 +640,10 @@ namespace Gts {
 	float GetSizeDifference(Actor* giant, Actor* tiny) {
 		float GiantScale = get_visual_scale(giant);
 		float TinyScale = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
+		if (HasSMT(giant) {
+			TinyScale *= 0.8;
+			TinyScale /= 4.8;
+		})
 		float Difference = GiantScale/TinyScale;
 		return Difference;
 	}
