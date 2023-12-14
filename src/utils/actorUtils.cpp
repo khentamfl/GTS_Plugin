@@ -720,7 +720,7 @@ namespace Gts {
 
 			NiPoint3 giantLocation = giant->GetPosition();
 			for (auto otherActor: find_actors()) {
-				if (otherActor != giant) {
+				if (otherActor != giant && !otherActor->IsDead()) {
 					float tinyScale = get_visual_scale(otherActor);
 					NiPoint3 actorLocation = otherActor->GetPosition();
 					if ((actorLocation - giantLocation).Length() < CheckDistance) {
@@ -741,9 +741,9 @@ namespace Gts {
 							});
 						}
 						if (nodeCollisions > 0) {
-							auto node = find_node(otherActor, "NPC Head [Head]");
+							auto node = find_node(otherActor, "NPC Root [Root]");
 							if (node) {
-								float correction = (70.0 / tinyScale) - 70.0;
+								float correction = (18.0 / tinyScale) - 18.0;
 								NiPoint3 Position = otherActor->GetPosition();
 								Position.z -= correction;
 								SpawnParticle(otherActor, 3.00, "GTS/UI/Icon.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect
