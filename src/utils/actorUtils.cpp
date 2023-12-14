@@ -3,6 +3,7 @@
 #include "managers/animation/HugShrink.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "managers/animation/Grab.hpp"
 #include "magic/effects/common.hpp"
 #include "managers/Attributes.hpp"
 #include "utils/papyrusUtils.hpp"
