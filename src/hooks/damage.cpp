@@ -2,11 +2,13 @@
 #include "managers/animation/HugShrink.hpp"
 #include "managers/animation/Grab.hpp"
 #include "managers/Attributes.hpp"
+#include "managers/Rumble.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "hooks/damage.hpp"
 #include "scale/scale.hpp"
+#include "timer.hpp"
 
 using namespace RE;
 using namespace SKSE;
