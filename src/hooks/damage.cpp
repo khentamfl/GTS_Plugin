@@ -1,5 +1,8 @@
 #include "managers/damage/SizeHitEffects.hpp"
+#include "managers/animation/HugShrink.hpp"
+#include "managers/animation/Grab.hpp"
 #include "managers/Attributes.hpp"
+#include "data/persistent.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
 #include "hooks/damage.hpp"
