@@ -733,7 +733,7 @@ namespace Gts {
 			giant->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
 
 			const float BASE_DISTANCE = 240.0;
-			float CheckDistance = BASE_DISTANCE;
+			float CheckDistance = BASE_DISTANCE * giantScale;
 
 			if (IsCrawling(giant)) {
 				CheckDistance *= 1.5;
@@ -755,7 +755,7 @@ namespace Gts {
 						return;
 					}
 					NiPoint3 actorLocation = otherActor->GetPosition();
-					if ((actorLocation - giantLocation).Length() < CheckDistance * giantScale) {
+					if ((actorLocation - giantLocation).Length() < CheckDistance) {
 						int nodeCollisions = 0;
 						float force = 0.0;
 
@@ -2234,13 +2234,7 @@ namespace Gts {
 			container = "Dropbox_Undead_Physics";
 		}
 
-		if (IsDragon(actor)) { // These affect the scale of dropbox visuals
-			Scale *= 3.2;
-		} else if (IsGiant(actor)) {
-			Scale *= 2.0;
-		} else if (IsMammoth(actor)) {
-			Scale *= 5.0;
-		}
+		Scale *+ GetScaleAdjustment(actor);
 
 		NiPoint3 TotalPos = GetContainerSpawnLocation(giant, actor); // obtain goal of container position by doing ray-cast
 		if (IsDebugEnabled()) {
@@ -2321,8 +2315,8 @@ namespace Gts {
 					}
 				});
 			}
+		int32_t quantity = 1.0;	
 		for (auto &[a_object, invData]: actor->GetInventory()) { // transfer loot
-			int32_t quantity = 1.0;
 			if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) { // We don't want to move Leveled Items
 				if ((!invData.second->IsQuestObject() || removeQuestItems)) {
 
