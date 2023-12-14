@@ -45,27 +45,6 @@ namespace {
 		return Result;
 	}
 
-	void StartResetTask(Actor* tiny) {
-		std::string name = std::format("ResetActor_{}", tiny->formID);
-		float Start = Time::WorldTimeElapsed();
-		ActorHandle tinyhandle = tiny->CreateRefHandle();
-		TaskManager::Run(name, [=](auto& progressData) {
-			if (!tinyhandle) {
-				return false;
-			}
-			auto tiny = tinyhandle.get().get();
-			float Finish = Time::WorldTimeElapsed();
-			float timepassed = Finish - Start;
-			if (timepassed < 1.0) {
-				return true; // not enough time has passed yet
-			}
-			log::info("{} was reset", tiny->GetDisplayFullName());
-			EventDispatcher::DoResetActor(tiny);
-			return false; // stop task, we reset the actor
-		});
-
-	}
-
 	ExtraDataList* CreateExDataList() {
 		size_t a_size;
 		if (SKYRIM_REL_CONSTEXPR (REL::Module::IsAE()) && (REL::Module::get().version() >= SKSE::RUNTIME_SSE_1_6_629)) {
@@ -177,6 +156,27 @@ namespace Gts {
 		};
 		float power = soft_power(sizeRatio, launch);
 		return power;
+	}
+
+	void StartResetTask(Actor* tiny) {
+		std::string name = std::format("ResetActor_{}", tiny->formID);
+		float Start = Time::WorldTimeElapsed();
+		ActorHandle tinyhandle = tiny->CreateRefHandle();
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!tinyhandle) {
+				return false;
+			}
+			auto tiny = tinyhandle.get().get();
+			float Finish = Time::WorldTimeElapsed();
+			float timepassed = Finish - Start;
+			if (timepassed < 1.0) {
+				return true; // not enough time has passed yet
+			}
+			log::info("{} was reset", tiny->GetDisplayFullName());
+			EventDispatcher::DoResetActor(tiny);
+			return false; // stop task, we reset the actor
+		});
+
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -97,14 +97,8 @@ namespace {
 		if (power <= 0) {
 			power = 0;
 		}
-		/*auto charCont = actor->GetCharController();
-		   if (charCont) {
-		        log::info("JumpHeight is {}, acrobatics: {}", charCont->jumpHeight, charCont->acrobatics);
-		        charCont->jumpHeight = 76.0 + (76.0 * power);
-		   }*/
 
 		SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
-		//SetINIFloat("fJumpFallHeightMin", 600.0 + (600.0 * power));
 	}
 
 	void Augmentation(Actor* Player, bool& BlockMessage) { // Manages SMT bonus speed
@@ -204,9 +198,6 @@ namespace Gts {
 		}
 		switch (av) {
 			case ActorValue::kHealth: {
-				//float bonusHPMultiplier = Runtime::GetFloatOr("bonusHPMultiplier", 1.0);
-				//float power = (bonusHPMultiplier/BalancedMode); // not used anymore
-
 				if (actor->formID == 0x14 && HasSMT(actor)) {
 					scale += 1.0;
 				}
@@ -215,14 +206,6 @@ namespace Gts {
 
 				return resistance;
 				
-
-				// 23.11.2023: Used to multiply health, now provides damage resistance instead.
-				
-				/*if (scale > 1.0) {
-					return power*scale + 1.0 - power;
-				} else {
-					return scale;
-				}*/
 			}
 			case ActorValue::kCarryWeight: {
 				float bonusCarryWeightMultiplier = Runtime::GetFloatOr("bonusCarryWeightMultiplier", 1.0);
@@ -393,22 +376,11 @@ namespace Gts {
 	}
 
 	float AttributeManager::AlterMovementSpeed(Actor* actor, const NiPoint3& direction) {
-		// if (IsBeingHeld(actor)) {
-		//   return 0.0;
-		// }
-
 		float bonus = 1.0;
 		if (actor) {
 			auto& attributes = AttributeManager::GetSingleton();
 			bonus = attributes.GetAttributeBonus(actor, ActorValue::kSpeedMult);
 			float volume = 0.0;
-			/*float origSpeed = direction.Length();
-			   if (actor->formID != 0x14) {
-			        float sizedifference = get_giantess_scale(actor)/get_giantess_scale(PlayerCharacter::GetSingleton());
-			        volume = bonus * origSpeed * sizedifference / 250;
-			   } else {
-			        volume = bonus * origSpeed / 250;
-			   }*/
 		}
 		return bonus;
 	}

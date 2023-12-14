@@ -22,6 +22,8 @@ namespace Gts {
 
 	float GetLaunchPower(float sizeRatio);
 
+	void StartResetTask(Actor* tiny);
+
 
 	// GTS State Bools
 	bool IsEquipBusy(Actor* actor);

@@ -105,10 +105,10 @@ namespace Gts {
 				TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(tiny);
 				
 				if (giant->formID == 0x14 && !PCLoot) {
-					TransferInventory_Normal(giant, tinyscale, removeQuestItems, Cause, reanimated);
+					TransferInventory_Normal(giant, tiny, removeQuestItems);
 					return false;
 				} if (giant->formID != 0x14 && !NPCLoot) {
-					TransferInventory_Normal(giant, tinyscale, removeQuestItems, Cause, reanimated);
+					TransferInventory_Normal(giant, tiny, removeQuestItems);
 					return false;
 				}
 				TransferInventoryToDropbox(giant, tiny, scale, removeQuestItems, Cause, reanimated);
