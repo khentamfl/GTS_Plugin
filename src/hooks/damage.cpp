@@ -162,8 +162,8 @@ namespace Hooks
         float multiplier = GetDamageMultiplier(aggressor);
         float tiny = TinyShied(a_this);*/
         
-        dmg *= (resistance * multiplier * tiny);
-        dmg *= healthgate;
+        //dmg *= (resistance * multiplier * tiny);
+        //dmg *= healthgate;
         //log::info("    - Reducing damage to {}, resistance: {}, multiplier: {}, shield: {}", dmg, resistance, multiplier, tiny);
         SkyrimTakeDamage(a_this, dmg, maybe_hit_data, aggressor, damageSrc);
         //ApplyHitGrowth(a_this, aggressor, dmg);
