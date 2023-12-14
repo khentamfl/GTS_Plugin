@@ -148,13 +148,6 @@ namespace Hooks
       RELOCATION_ID(36345, 37335),
       [](auto* a_this, auto dmg, auto maybe_hit_data,auto* aggressor,auto* damageSrc) {
         log::info("{}: Taking {} damage", a_this->GetDisplayFullName(), dmg); 
-
-        Actor* attacker = skyrim_cast<Actor*>(damageSrc);
-        if (attacker) {
-          log::info("Aggressor name: {}", attacker->GetDisplayFullName());
-        }
-        
-        
         /*float resistance = GetDamageResistance(a_this) * HugDamageResistance(a_this);
         float healthgate = HealthGate(a_this, aggressor, dmg * 4);
         float multiplier = GetDamageMultiplier(aggressor);
