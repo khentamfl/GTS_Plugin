@@ -148,8 +148,11 @@ namespace Hooks
       RELOCATION_ID(36345, 37335),
       [](auto* a_this, auto dmg, auto maybe_hit_data,auto* aggressor,auto* damageSrc) {
         log::info("{}: Taking {} damage", a_this->GetDisplayFullName(), dmg); 
-        log::info("ObjectREFR: {}", damageSrc->GetDisplayFullName());
-        //log::info("Aggressor numbers: {}", aggressor);
+
+        Actor* attacker = skyrim_cast<Actor*>(damageSrc);
+        if (attacker) {
+          log::info("Aggressor name: {}", attacker->GetDisplayFullName());
+        }
         
         
         /*float resistance = GetDamageResistance(a_this) * HugDamageResistance(a_this);
