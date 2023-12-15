@@ -83,6 +83,7 @@ namespace Gts {
 					this->initRun = true;
 				}
 				this->lastRunTime = currentTime;
+				log::info("Running task {}", this->name);
 				return this->tasking(update);
 			}
 
@@ -133,6 +134,7 @@ namespace Gts {
 					}
 				this->lastRunTime = currentTime;
 				this->lastProgress = currentProgress;
+				log::info("Running task {}", this->name);
 				if (!this->tasking(update)) {
 					return false;
 				} else {
@@ -169,7 +171,6 @@ namespace Gts {
 						}
 					}
 				}
-				log::info("running task {}", name);
 				for (auto task: toRemove) {
 					this->taskings.erase(task);
 				}
