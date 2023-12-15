@@ -37,7 +37,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-    void RunScaleTask(ObjectRefHandle dropboxHandle, Actor* actor, const float Start, const float Scale, const bool soul, const NiPoint3 TotalPos) {
+    void RunScaleTask(ObjectRefHandle dropboxHandle, Actor* actor, const float Start, float Scale, const bool soul, const NiPoint3 TotalPos) {
         std::string taskname = std::format("Dropbox {}", actor->formID); // create task name for main task
         TaskManager::RunFor(taskname, 16, [=](auto& progressData) { // Spawn loot piles
             float Finish = Time::WorldTimeElapsed();
@@ -160,7 +160,7 @@ namespace Gts {
 			} if (tiny->IsDead()) {
 				float Finish = Time::WorldTimeElapsed();
 				float timepassed = Finish - Start;
-				if (timepassed < 0.10) {
+				if (timepassed < 0.20) {
 					return true; // retry, not enough time has passed yet
 				}
 				TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(tiny);
