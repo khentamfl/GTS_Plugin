@@ -36,13 +36,13 @@ namespace {
 
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
-		if (!tiny->AsActorState()->IsFlying()) {
+		
 			tiny->KillImpl(giant, 1000, true, true);
 			//tiny->SetLifeState(ACTOR_LIFE_STATE::kDead);
 			//tiny->KillImmediate();
 			//tiny->KillDying();
 			RagdollTask(tiny); 
-		}
+		
 		//tiny->GetActorRuntimeData().boolBits.set(BOOL_BITS::kDead);
 		
 	}
