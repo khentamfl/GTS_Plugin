@@ -37,7 +37,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-    void RunScaleTask(ObjectRefHandle dropboxHandle, Actor* actor, float Start, float Scale, bool soul, NiPoint3 TotalPos) {
+    void RunScaleTask(ObjectRefHandle dropboxHandle, Actor* actor, const float Start, const float Scale, const bool soul, const NiPoint3 TotalPos) {
         std::string taskname = std::format("Dropbox {}", actor->formID); // create task name for main task
         TaskManager::RunFor(taskname, 16, [=](auto& progressData) { // Spawn loot piles
             float Finish = Time::WorldTimeElapsed();
@@ -212,6 +212,7 @@ namespace Gts {
 
 	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause, bool Resurrected) {
 		bool soul = false;
+		scale *= GetScaleAdjustment(actor);
 		float Scale = std::clamp(scale, 0.40f, 4.4f);
 
 		if (Resurrected) {
@@ -241,7 +242,7 @@ namespace Gts {
 			container = "Dropbox_Undead_Physics";
 		}
 
-		Scale *= GetScaleAdjustment(actor);
+		
 
 		NiPoint3 TotalPos = GetContainerSpawnLocation(giant, actor); // obtain goal of container position by doing ray-cast
 		if (IsDebugEnabled()) {
@@ -265,8 +266,9 @@ namespace Gts {
         if (Cause == DamageSource::Overkill) { // Play audio that won't disappear if source of loot transfer is Overkill
             RunAudioTask(dropboxHandle, actor); // play sound
         }
-
-		RunScaleTask(dropboxHandle, actor, Start, Scale, soul, TotalPos); // Scale our pile over time
+		if (dropboxHandle) {
+			RunScaleTask(dropboxHandle, actor, Start, Scale, soul, TotalPos); // Scale our pile over time
+		}
         MoveItemsTowardsDropbox(actor, dropbox, removeQuestItems); // Launch transfer items task with a bit of delay
 	}
 
