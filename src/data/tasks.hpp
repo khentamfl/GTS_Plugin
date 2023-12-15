@@ -83,7 +83,7 @@ namespace Gts {
 					this->initRun = true;
 				}
 				this->lastRunTime = currentTime;
-				log::info("Running task {}", this->name);
+				log::info("Running task {}", this->tasking->name);
 				return this->tasking(update);
 			}
 
@@ -134,7 +134,7 @@ namespace Gts {
 					}
 				this->lastRunTime = currentTime;
 				this->lastProgress = currentProgress;
-				log::info("Running task {}", this->name);
+				log::info("Running task {}", this->tasking->name);
 				if (!this->tasking(update)) {
 					return false;
 				} else {
