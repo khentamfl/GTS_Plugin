@@ -144,6 +144,7 @@ namespace Hooks
 		static FunctionHook<void(Actor* a_this, float dmg, uintptr_t maybe_hit_data, Actor* aggressor,TESObjectREFR* damageSrc)> SkyrimTakeDamage(
       RELOCATION_ID(36345, 37335),
       [](auto* a_this, auto dmg, auto maybe_hit_data,auto* aggressor,auto* damageSrc) {
+        log::info("Someone taking damage");
         log::info("{}: Taking {} damage", a_this->GetDisplayFullName(), dmg); 
         float IsNotImmune = 1.0;
         float resistance = GetDamageResistance(a_this) * HugDamageResistance(a_this);

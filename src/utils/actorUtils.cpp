@@ -777,18 +777,16 @@ namespace Gts {
 								auto node = find_node(otherActor, "NPC Root [Root]");
 								if (node) {
 									auto grabbedActor = Grab::GetHeldActor(giant);
-									if (grabbedActor && otherActor == grabbedActor) {
-										return;
-									}
+									
 									float correction = (18.0 / tinyScale) - 18.0;
 									NiPoint3 Position = node->world.translate;
 									Position.z -= correction;
-									if (!IsGtsBusy(giant) && difference >= 10.0) {
-										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush_All.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect
+									if (grabbedActor && otherActor == grabbedActor) {
 										return;
+									} else if (!IsGtsBusy(giant) && difference >= 10.0) {
+										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush_All.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect
 									} else if (!IsGtsBusy(giant) && difference >= 8.0) {
 										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Grab.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect
-										return;
 									} else if (huggedActor && GetHealthPercentage(huggedActor) < GetHPThreshold(giant)) {
 										if (otherActor == huggedActor && !IsHugCrushing) {
 											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Hug_Crush.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect

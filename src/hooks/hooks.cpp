@@ -40,7 +40,7 @@ namespace Hooks
 		Hook_Sinking::Hook(trampoline);
 		Hook_Jumping::Hook(trampoline);
 		Hook_Scale::Hook(trampoline);
-    Hook_Damage::Hook(trampoline);
+    	Hook_Damage::Hook(trampoline);
 		HookCameraStates();
 
 		log::info("Gts finished applying hooks...");
