@@ -842,6 +842,9 @@ namespace Gts {
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 
+			if (!tinyref) {
+				return false; // end task in that case
+			}
 
 			// Exit on death
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
