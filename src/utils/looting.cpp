@@ -69,7 +69,7 @@ namespace {
 		});
     }
 
-    void RunScaleTask(ObjectRefHandle dropboxHandle, Actor* actor, float Start, bool soul) {
+    void RunScaleTask(ObjectRefHandle dropboxHandle, Actor* actor, float Start, float Scale, bool soul, NiPoint3 TotalPos) {
         std::string taskname = std::format("Dropbox {}", actor->formID); // create task name for main task
         TaskManager::RunFor(taskname, 16, [=](auto& progressData) { // Spawn loot piles
             float Finish = Time::WorldTimeElapsed();
@@ -288,8 +288,8 @@ namespace Gts {
 		dropbox->SetDisplayName(name, false); // Rename container to match chosen name
 
 		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
-        RunScaleTask(dropboxHandle, actor, start, soul); // Scale our pile over time
-        RunTransferTask(dropboxHandle, actor, start, removeQuestItems); // Launch transfer items task with a bit of delay
+        RunScaleTask(dropboxHandle, actor, Start, Scale, soul, TotalPos); // Scale our pile over time
+        RunTransferTask(dropboxHandle, actor, Start, removeQuestItems); // Launch transfer items task with a bit of delay
         if (Cause == DamageSource::Overkill) { // Play audio that won't disappear if source of loot transfer is Overkill
             RunAudioTask(dropboxHandle, actor); // play sound
         }
