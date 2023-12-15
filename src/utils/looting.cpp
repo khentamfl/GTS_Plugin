@@ -37,7 +37,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-    void RunScaleTask(ObjectRefHandle dropboxHandle, Actor* actor, const float Start, float Scale, const bool soul, const NiPoint3 TotalPos) {
+    void RunScaleTask(ObjectRefHandle dropboxHandle, Actor* actor, const float Start, const float Scale, const bool soul, const NiPoint3 TotalPos) {
         std::string taskname = std::format("Dropbox {}", actor->formID); // create task name for main task
         TaskManager::RunFor(taskname, 16, [=](auto& progressData) { // Spawn loot piles
             float Finish = Time::WorldTimeElapsed();
@@ -212,8 +212,7 @@ namespace Gts {
 
 	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause, bool Resurrected) {
 		bool soul = false;
-		scale *= GetScaleAdjustment(actor);
-		float Scale = std::clamp(scale, 0.40f, 4.4f);
+		float Scale = std::clamp(scale * GetScaleAdjustment(actor), 0.40f, 4.4f);
 
 		if (Resurrected) {
 			Cprint("Task Aborted, target was resurrected");
