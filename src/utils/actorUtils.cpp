@@ -684,9 +684,9 @@ namespace Gts {
 		float sc = 1.0;
 		if (tiny->formID != 0x14) { // for non player actors only, always return 1.0 in player case
 			if (IsDragon(tiny)) {
-				sc = 0.05;
+				sc = 6.0;
 			} else if (IsMammoth(tiny)) {
-				sc = 5.0;
+				sc = 6.0;
 			} else if (IsGiant(tiny)) {
 				sc = 2.0;
 			}

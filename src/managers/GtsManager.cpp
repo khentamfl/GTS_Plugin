@@ -92,8 +92,9 @@ namespace {
 			return;
 		}
 		NiPoint3 endpos_dn = CastRayStatics(giant, ray_start, ray_dn, ray_length, success_down);
-
-		
+		if (!success_down) {
+			return;
+		}
 
 		float room_height = fabs(endpos_dn.z - endpos_up.z);
 		float room_height_m = unit_to_meter(room_height);
@@ -102,7 +103,6 @@ namespace {
 		float natural = get_natural_scale(giant);
 
 		if (scale > expected) {
-			//log::info("Scale {} > {}", scale, expected);
 			float adjust = std::clamp(meter_to_scale/stateScale * 0.82f, 1.0f, 8.0f); // Min is x1.0 (disallow to go below that), max is x8.0
 			float targetscale = get_target_scale(giant);
 			mod_target_scale(giant, -0.0080 * scale);
@@ -110,9 +110,6 @@ namespace {
 			if (targetscale < adjust) { 
 				set_target_scale(giant, adjust); // just to be safe
 			}
-
-			//log::info("Adjust {}, Target: {}, Natural: {}", adjust, targetscale, get_natural_scale(giant));
-			
 		}
 
 		if (debug) {

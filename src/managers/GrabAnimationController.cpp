@@ -21,7 +21,7 @@
 namespace {
 
 	const float MINIMUM_GRAB_DISTANCE = 85.0;
-	const float MINIMUM_GRAB_SCALE_RATIO = 8.0;
+	const float MINIMUM_GRAB_SCALE_RATIO = 6.0;
 	const float GRAB_ANGLE = 70;
 	const float PI = 3.14159;
 }

@@ -498,7 +498,7 @@ namespace Gts {
 
 		if (GetAV(tiny, ActorValue::kHealth) <= 0 || tiny->IsDead()) {
       		Attacked(tiny, giant);
-			if (multiplier >= 10.0 * crushmult) {
+			if (multiplier >= 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
 					if (!tiny->IsDead()) {
 						if (IsGiant(tiny)) {
