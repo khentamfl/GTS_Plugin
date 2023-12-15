@@ -38,9 +38,7 @@ namespace Gts {
 			return;
 		}
 
-		float caster_scale = get_visual_scale(caster);
-		float target_scale = get_visual_scale(target);
-		float size_difference = caster_scale/target_scale;
+		float size_difference = GetSizeDifference(caster, target);
 		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
 		if (IsEssential(target)) {
 			return; // Disallow shrinking Essentials
@@ -53,8 +51,8 @@ namespace Gts {
 			// Upgrade to true absorb
 			this->true_absorb = true;
 		}
-		if (size_difference >= 6.0) {
-			size_difference = 6.0;
+		if (size_difference >= 4.0) {
+			size_difference = 4.0;
 		} // Cap Size Difference
 
 		if (this->true_absorb) {

@@ -887,7 +887,8 @@ namespace Gts {
 			auto tiny = tinyref.get().get();
 			SetCriticalStage(tiny, 4);
 		});
-	}
+	} 
+	
 
 
 	void UnDisintegrate(Actor* actor) {

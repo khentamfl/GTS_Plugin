@@ -37,38 +37,6 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-    void RunTransferTask(ObjectRefHandle dropboxHandle, Actor* actor, float Start, bool removeQuestItems) {
-        auto victimhandle = actor->CreateRefHandle();
-        std::string transfername = std::format("LootTransfer_{}", actor->formID); // create task name for main task
-		TaskManager::Run(transfername, [=](auto& progressData) {
-			if (!dropboxHandle) {
-				return false;
-			}
-			if (!victimhandle) {
-                log::info("No victim");
-				return false;
-			} 
-			auto dropboxPtr = dropboxHandle.get().get();
-			auto dropbox3D = dropboxPtr->GetCurrent3D();
-			if (!dropbox3D) {
-				return true; // Retry next frame
-			}
-			auto victim = victimhandle.get().get();
-			float Finish = Time::WorldTimeElapsed();
-			float timepassed = Finish - Start;
-			if (timepassed < 0.25) {
-                log::info("Time passing");
-				return true; // try again
-			}
-
-            log::info("Time passed");
-            MoveItemsTowardsDropbox(victim, dropboxPtr, removeQuestItems);
-			
-			return false; // end task
-			
-		});
-    }
-
     void RunScaleTask(ObjectRefHandle dropboxHandle, Actor* actor, float Start, float Scale, bool soul, NiPoint3 TotalPos) {
         std::string taskname = std::format("Dropbox {}", actor->formID); // create task name for main task
         TaskManager::RunFor(taskname, 16, [=](auto& progressData) { // Spawn loot piles
@@ -286,18 +254,25 @@ namespace Gts {
 		}
 		float Start = Time::WorldTimeElapsed();
 		dropbox->SetDisplayName(name, false); // Rename container to match chosen name
+		if (IsDragon(actor) && !actor->IsDead()) {
+			TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
+			ref->GetInventoryChanges()->InitLeveledItems();
+			log::info("{} Isn't dead, initiating leveled items", actor->GetDisplayFullName());
+		}
 
 		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
-        RunScaleTask(dropboxHandle, actor, Start, Scale, soul, TotalPos); // Scale our pile over time
-        RunTransferTask(dropboxHandle, actor, Start, removeQuestItems); // Launch transfer items task with a bit of delay
+
         if (Cause == DamageSource::Overkill) { // Play audio that won't disappear if source of loot transfer is Overkill
             RunAudioTask(dropboxHandle, actor); // play sound
         }
+
+		RunScaleTask(dropboxHandle, actor, Start, Scale, soul, TotalPos); // Scale our pile over time
+        MoveItemsTowardsDropbox(actor, dropbox, removeQuestItems); // Launch transfer items task with a bit of delay
 	}
 
     void MoveItemsTowardsDropbox(Actor* actor, TESObjectREFR* dropbox, bool removeQuestItems) {
         int32_t quantity = 1.0;
-         log::info("Launching item transfer");
+        log::info("Launching item transfer");
         for (auto &[a_object, invData]: actor->GetInventory()) { // transfer loot
             if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) { // We don't want to move Leveled Items
                 if ((!invData.second->IsQuestObject() || removeQuestItems)) {
