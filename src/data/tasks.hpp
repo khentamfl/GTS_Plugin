@@ -169,7 +169,7 @@ namespace Gts {
 						}
 					}
 				}
-
+				log::info("running task {}", name);
 				for (auto task: toRemove) {
 					this->taskings.erase(task);
 				}

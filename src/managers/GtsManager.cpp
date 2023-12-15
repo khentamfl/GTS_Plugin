@@ -88,11 +88,12 @@ namespace {
 
 		float ray_length = 720;
 		NiPoint3 endpos_up = CastRayStatics(giant, ray_start, ray_up, ray_length, success_up);
-		NiPoint3 endpos_dn = CastRayStatics(giant, ray_start, ray_dn, ray_length, success_down);
-
 		if (!success_up) {
 			return;
 		}
+		NiPoint3 endpos_dn = CastRayStatics(giant, ray_start, ray_dn, ray_length, success_down);
+
+		
 
 		float room_height = fabs(endpos_dn.z - endpos_up.z);
 		float room_height_m = unit_to_meter(room_height);

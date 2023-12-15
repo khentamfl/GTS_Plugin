@@ -881,10 +881,10 @@ namespace Gts {
 		std::string taskname = std::format("Disintegrate_{}", actor->formID);
 		auto tinyref = actor->CreateRefHandle();
 		bool dragon = IsDragon(actor);
-		/*if (dragon) {
+		if (dragon) {
 			actor->Disable();
 			return;
-		}*/
+		}
 		TaskManager::RunOnce(taskname, [=](auto& update) {
 			if (!tinyref) {
 				return;

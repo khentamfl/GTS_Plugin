@@ -140,6 +140,11 @@ namespace Gts {
 		bool PCLoot = Runtime::GetBool("GtsEnableLooting");
 		bool NPCLoot = Runtime::GetBool("GtsNPCEnableLooting");
 
+		float expectedtime = 0.1;
+		if (IsDragon(from)) {
+			expectedtime = 0.25; // Because dragons don't spawn loot right away...sigh...
+		}
+
 		if (reset) {
 			StartResetTask(from); // reset actor data.
 		}
@@ -153,14 +158,13 @@ namespace Gts {
 			}
 			auto tiny = tinyhandle.get().get();
 			auto giant = gianthandle.get().get();
-
 			if (!tiny->IsDead()) {
 				KillActor(giant, tiny); // just to make sure
 				return true; // try again
 			} if (tiny->IsDead()) {
 				float Finish = Time::WorldTimeElapsed();
 				float timepassed = Finish - Start;
-				if (timepassed < 0.20) {
+				if (timepassed < expectedtime) {
 					return true; // retry, not enough time has passed yet
 				}
 				TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(tiny);
