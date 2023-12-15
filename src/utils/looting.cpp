@@ -36,6 +36,97 @@
 using namespace RE;
 using namespace Gts;
 
+namespace {
+    void RunTransferTask(ObjectRefHandle* dropboxHandle, Actor* actor, float start) {
+        auto victimhandle = actor->CreateRefHandle();
+        std::string transfername = std::format("LootTransfer_{}", actor->formID); // create task name for main task
+		TaskManager::Run(transfername, [=](auto& progressData) {
+			if (!dropboxHandle) {
+				return false;
+			}
+			if (!victimhandle) {
+                log::info("No victim");
+				return false;
+			} 
+			auto dropboxPtr = dropboxHandle.get().get();
+			auto dropbox3D = dropboxPtr->GetCurrent3D();
+			if (!dropbox3D) {
+				return true; // Retry next frame
+			}
+			auto victim = victimhandle.get().get();
+			float Finish = Time::WorldTimeElapsed();
+			float timepassed = Finish - Start;
+			if (timepassed < 0.25) {
+                log::info("Time passing");
+				return true; // try again
+			}
+
+            log::info("Time passed");
+            MoveItemsTowardsDropbox(victim, dropboxPtr, removeQuestItems);
+			
+			return false; // end task
+			
+		});
+    }
+
+    void RunScaleTask(ObjectRefHandle* dropboxHandle, Actor* actor, float start) {
+        std::string taskname = std::format("Dropbox {}", actor->formID); // create task name for main task
+        TaskManager::RunFor(taskname, 16, [=](auto& progressData) { // Spawn loot piles
+            float Finish = Time::WorldTimeElapsed();
+            auto dropboxPtr = dropboxHandle.get().get();
+            if (!dropboxPtr->Is3DLoaded()) {
+                return true;
+            } 
+            auto dropbox3D = dropboxPtr->GetCurrent3D();
+            if (!dropbox3D) {
+                return true; // Retry next frame
+            } else {
+                float timepassed = Finish - Start;
+                if (soul) {
+                    timepassed *= 1.33; // faster soul scale
+                }
+                auto node = find_object_node(dropboxPtr, "GorePile_Obj");
+                auto trigger = find_object_node(dropboxPtr, "Trigger_Obj");
+                if (node) {
+                    node->local.scale = (Scale * 0.33) + (timepassed*0.18);
+                    if (!soul) {
+                        node->world.translate.z = TotalPos.z;
+                    }
+                    update_node(node);
+                }
+                if (trigger) {
+                    trigger->local.scale = (Scale * 0.33) + (timepassed*0.18);
+                    if (!soul) {
+                        trigger->world.translate.z = TotalPos.z;
+                    }
+                    update_node(trigger);
+                }
+                if (node && node->local.scale >= Scale) { // disable collision once it is scaled enough
+                    return false; // End task
+                }
+                return true;
+            }
+        });
+    }
+
+    void RunAudioTask(ObjectRefHandle* dropboxHandle, Actor* actor) {
+        std::string taskname_sound = std::format("DropboxAudio {}", actor->formID);
+        TaskManager::RunFor(taskname_sound, 6, [=](auto& progressData) {
+            auto dropboxPtr = dropboxHandle.get().get();
+            if (!dropboxPtr->Is3DLoaded()) {
+                return true; // retry
+            }
+            auto dropbox3D = dropboxPtr->GetCurrent3D();
+            if (!dropbox3D) {
+                return true; // Retry next frame
+            } else {
+                Runtime::PlaySound("GtsCrushSound", dropboxPtr, 1.0, 1.0);
+                return false;
+            }
+        });
+    }
+}
+
 namespace Gts {
 
     NiPoint3 GetContainerSpawnLocation(Actor* giant, Actor* tiny) {
@@ -190,8 +281,6 @@ namespace Gts {
 		}
 		auto dropbox = Runtime::PlaceContainerAtPos(actor, TotalPos, container); // Place chosen container
 
-		std::string taskname = std::format("Dropbox {}", actor->formID); // create task name for main task
-		std::string taskname_sound = std::format("DropboxAudio {}", actor->formID); // create task name for Audio play
 		if (!dropbox) {
 			return;
 		}
@@ -199,96 +288,11 @@ namespace Gts {
 		dropbox->SetDisplayName(name, false); // Rename container to match chosen name
 
 		ObjectRefHandle dropboxHandle = dropbox->CreateRefHandle();
-			TaskManager::RunFor(taskname, 16, [=](auto& progressData) { // Spawn loot piles
-				float Finish = Time::WorldTimeElapsed();
-				auto dropboxPtr = dropboxHandle.get().get();
-				if (!dropboxPtr) {
-					return false;
-				} if (!dropboxPtr->Is3DLoaded()) {
-					return true;
-				} 
-				auto dropbox3D = dropboxPtr->GetCurrent3D();
-				if (!dropbox3D) {
-					return true; // Retry next frame
-				} else {
-					float timepassed = Finish - Start;
-					if (soul) {
-						timepassed *= 1.33; // faster soul scale
-					}
-					auto node = find_object_node(dropboxPtr, "GorePile_Obj");
-					auto trigger = find_object_node(dropboxPtr, "Trigger_Obj");
-					if (node) {
-						node->local.scale = (Scale * 0.33) + (timepassed*0.18);
-						if (!soul) {
-							node->world.translate.z = TotalPos.z;
-						}
-						update_node(node);
-					}
-					if (trigger) {
-						trigger->local.scale = (Scale * 0.33) + (timepassed*0.18);
-						if (!soul) {
-							trigger->world.translate.z = TotalPos.z;
-						}
-						update_node(trigger);
-					}
-					if (node && node->local.scale >= Scale) { // disable collision once it is scaled enough
-						return false; // End task
-					}
-					return true;
-				}
-    		});
-			if (Cause == DamageSource::Overkill) { // Play audio that won't disappear if source of loot transfer is Overkill
-				TaskManager::RunFor(taskname_sound, 6, [=](auto& progressData) {
-					auto dropboxPtr = dropboxHandle.get().get();
-					if (!dropboxPtr) {
-						return false; // cancel
-					}
-					if (!dropboxPtr->Is3DLoaded()) {
-						return true; // retry
-					}
-					auto dropbox3D = dropboxPtr->GetCurrent3D();
-					if (!dropbox3D) {
-						return true; // Retry next frame
-					} else {
-						Runtime::PlaySound("GtsCrushSound", dropboxPtr, 1.0, 1.0);
-						return false;
-					}
-				});
-			}
-
-		auto victimhandle = actor->CreateRefHandle();
-        std::string transfername = std::format("LootTransfer_{}", actor->formID); // create task name for main task
-		TaskManager::Run(transfername, [=](auto& progressData) {
-			if (!dropboxHandle) {
-				return false;
-			}
-			if (!victimhandle) {
-                log::info("No victim");
-				return false;
-			} 
-			auto dropboxPtr = dropboxHandle.get().get();
-			if (dropboxPtr) {
-                log::info("No Dropboxhandle");
-				return false;
-			}
-			auto dropbox3D = dropboxPtr->GetCurrent3D();
-			if (!dropbox3D) {
-				return true; // Retry next frame
-			}
-			auto victim = victimhandle.get().get();
-			float Finish = Time::WorldTimeElapsed();
-			float timepassed = Finish - Start;
-			if (timepassed < 0.25) {
-                log::info("Time passing");
-				return true; // try again
-			}
-
-            log::info("Time passed");
-            MoveItemsTowardsDropbox(victim, dropboxPtr, removeQuestItems);
-			
-			return false; // retry
-			
-		});
+        RunScaleTask(dropboxHandle, actor, start); // Scale our pile over time
+        RunTransferTask(dropboxHandle, actor, start); // Launch transfer items task with a bit of delay
+        if (Cause == DamageSource::Overkill) { // Play audio that won't disappear if source of loot transfer is Overkill
+            RunAudioTask(dropboxHandle, actor); // play sound
+        }
 	}
 
     void MoveItemsTowardsDropbox(Actor* actor, TESObjectREFR* dropbox, bool removeQuestItems) {
