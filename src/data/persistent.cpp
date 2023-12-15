@@ -940,7 +940,7 @@ namespace Gts {
 		}
 
 		bool EnableIcons = GetSingleton().EnableIcons;
-		serde->WriteRecordData(&EnableIcons, sizeof(EnableIcons);)
+		serde->WriteRecordData(&EnableIcons, sizeof(EnableIcons));
 
 		if (!serde->OpenRecord(HostileToggle, 1)) {
 			log::error("Unable to open Hostile Toggle Actors record to write cosave data");
