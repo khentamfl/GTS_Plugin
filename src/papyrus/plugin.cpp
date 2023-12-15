@@ -195,6 +195,10 @@ namespace {
 		Persistent::GetSingleton().PCEffectImmunity = enabled;
 	}
 
+	void SetToggleIcons(StaticFunctionTag*, bool enabled) {
+		Persistent::GetSingleton().EnableIcons = enabled;
+	}
+
 	void DisableCollisionLayerAndMotion(StaticFunctionTag*, TESObjectREFR* ref) {
 		if (!ref) {
 			return;

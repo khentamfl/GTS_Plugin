@@ -26,10 +26,10 @@ namespace Hooks
 		//_ProcessTracking = (Vtbl.write_vfunc(REL::Relocate(0x122, 0x122, 0x124), ProcessTracking));
 
 		REL::Relocation<std::uintptr_t> Vtbl5{ RE::VTABLE_Character[5] };
-		/*_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
+		_GetActorValue = Vtbl5.write_vfunc(0x01, GetActorValue);
 		_GetPermanentActorValue = Vtbl5.write_vfunc(0x02, GetPermanentActorValue);
 		_GetBaseActorValue = Vtbl5.write_vfunc(0x03, GetBaseActorValue);
-		_SetBaseActorValue = Vtbl5.write_vfunc(0x04, SetBaseActorValue);*/
+		_SetBaseActorValue = Vtbl5.write_vfunc(0x04, SetBaseActorValue);
 
 		REL::Relocation<std::uintptr_t> AnimVtbl{ RE::VTABLE_Character[2] };
 		_NPCAnimEvents = AnimVtbl.write_vfunc(0x1, &NPCAnimEvents);
@@ -67,12 +67,14 @@ namespace Hooks
 		_RemovePerk(a_this, a_perk);
 	}
 
-	/*float Hook_Character::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Carry Weight and Damage
+	float Hook_Character::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Carry Weight and Damage
 		float value = _GetActorValue(a_owner, a_akValue);
 		if (Plugin::InGame()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			if (a_this) {
-				value = AttributeManager::AlterGetAv(a_this, a_akValue, value);
+				if (a_akValue == ActorValue::kCarryWeight) {
+					value = AttributeManager::AlterGetAv(a_this, a_akValue, value);
+				}
 			}
 		}
 		return value;
@@ -84,7 +86,9 @@ namespace Hooks
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			float bonus = 1.0;
 			if (a_this) {
-				value = AttributeManager::AlterGetBaseAv(a_this, a_akValue, value);
+				if (a_akValue == ActorValue::kCarryWeight) {
+					value = AttributeManager::AlterGetBaseAv(a_this, a_akValue, value);
+				}
 			}
 		}
 		return value;
@@ -94,7 +98,9 @@ namespace Hooks
 		if (Plugin::InGame()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			if (a_this) {
-				value = AttributeManager::AlterSetBaseAv(a_this, a_akValue, value);
+				if (a_akValue == ActorValue::kCarryWeight) {
+					value = AttributeManager::AlterSetBaseAv(a_this, a_akValue, value);
+				}
 			}
 		}
 		_SetBaseActorValue(a_owner, a_akValue, value);
@@ -105,11 +111,13 @@ namespace Hooks
 		if (Plugin::InGame()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);
 			if (a_this) {
-				value = AttributeManager::AlterGetPermenantAv(a_this, a_akValue, value);
+				if (a_akValue == ActorValue::kCarryWeight) {
+					value = AttributeManager::AlterGetPermenantAv(a_this, a_akValue, value);
+				}
 			}
 		}
 		return value;
-	}*/
+	}
 
 	void Hook_Character::Move(Character* a_this, float a_arg2, const NiPoint3& a_position) { // Override Movement Speed
 		if (a_this->IsInKillMove()) {

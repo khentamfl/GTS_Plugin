@@ -45,6 +45,8 @@ namespace {
 	inline const auto NPC_EffectImmunity = _byteswap_ulong('NPER');
 	inline const auto PC_EffectImmunity = _byteswap_ulong('PCER');
 
+	inline const auto EnableIconsRecord = _byteswap_ulong('EIRC');
+
 	inline const auto StolenAttributes = _byteswap_ulong('STAT');
 	inline const auto Att_HealthStorage = _byteswap_ulong('HTSG');
 	inline const auto Att_StaminStorage = _byteswap_ulong('STSG');
@@ -557,6 +559,10 @@ namespace Gts {
 				bool PCEffectImmunity;
 				serde->ReadRecordData(&PCEffectImmunity, sizeof(PCEffectImmunity));
 				GetSingleton().PCEffectImmunity = PCEffectImmunity;
+			} else if (type == EnableIconsRecord) {
+				bool EnableIcons;
+				serde->ReadRecordData(&EnableIcons, sizeof(EnableIcons));
+				GetSingleton().EnableIcons = EnableIcons;
 			} else if (type == IsSpeedAdjustedRecord) {
 				bool is_speed_adjusted;
 				serde->ReadRecordData(&is_speed_adjusted, sizeof(is_speed_adjusted));
@@ -927,6 +933,14 @@ namespace Gts {
 		}
 		bool PCEffectImmunity = GetSingleton().PCEffectImmunity;
 		serde->WriteRecordData(&PCEffectImmunity, sizeof(PCEffectImmunity));
+		
+		if (!serde->OpenRecord(EnableIconsRecord, 1)) {
+			log::error("Unable to open Toggle Icons record to write cosave data");
+			return;
+		}
+
+		bool EnableIcons = GetSingleton().EnableIcons;
+		serde->WriteRecordData(&EnableIcons, sizeof(EnableIcons);)
 
 		if (!serde->OpenRecord(HostileToggle, 1)) {
 			log::error("Unable to open Hostile Toggle Actors record to write cosave data");

@@ -723,6 +723,10 @@ namespace Gts {
 		if (!giant) {
 			return;
 		}
+		bool enabled = Persistent::GetSingleton().EnableIcons;
+		if (!enabled) {
+			return;
+		}
 		static Timer EffectTimer = Timer(3.0);
 		if (giant->formID == 0x14 && EffectTimer.ShouldRunFrame()) {
 			NiPoint3 NodePosition = giant->GetPosition();
@@ -800,6 +804,7 @@ namespace Gts {
 			}
 		}
 	}
+	
 	
 
 
