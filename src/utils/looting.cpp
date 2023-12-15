@@ -37,7 +37,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-    void RunTransferTask(ObjectRefHandle* dropboxHandle, Actor* actor, float start) {
+    void RunTransferTask(ObjectRefHandle dropboxHandle, Actor* actor, float Start) {
         auto victimhandle = actor->CreateRefHandle();
         std::string transfername = std::format("LootTransfer_{}", actor->formID); // create task name for main task
 		TaskManager::Run(transfername, [=](auto& progressData) {
@@ -69,7 +69,7 @@ namespace {
 		});
     }
 
-    void RunScaleTask(ObjectRefHandle* dropboxHandle, Actor* actor, float start) {
+    void RunScaleTask(ObjectRefHandle dropboxHandle, Actor* actor, float Start) {
         std::string taskname = std::format("Dropbox {}", actor->formID); // create task name for main task
         TaskManager::RunFor(taskname, 16, [=](auto& progressData) { // Spawn loot piles
             float Finish = Time::WorldTimeElapsed();
@@ -109,7 +109,7 @@ namespace {
         });
     }
 
-    void RunAudioTask(ObjectRefHandle* dropboxHandle, Actor* actor) {
+    void RunAudioTask(ObjectRefHandle dropboxHandle, Actor* actor) {
         std::string taskname_sound = std::format("DropboxAudio {}", actor->formID);
         TaskManager::RunFor(taskname_sound, 6, [=](auto& progressData) {
             auto dropboxPtr = dropboxHandle.get().get();
