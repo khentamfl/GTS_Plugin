@@ -55,7 +55,9 @@ namespace {
 		auto handle = GetHandle(Dying.get().get()->GetOwner());
 		BSFixedString EventName = "TESDeathEvent";
 		
-		VM->RelayEvent(handle, &EventName, (&Dying, &Killer), nullptr);
+		auto args = RE::MakeFunctionArguments(std::forward<Args>(Dying, Killer, dead, pad11, pad12, pad14)...);
+
+		VM->RelayEvent(handle, &EventName, args, nullptr);
 		//SkyrimVM::RelayEvent(VMHandle a_handle, BSFixedString* a_event, BSScript::IFunctionArguments* a_args, SkyrimVM::ISendEventFilter* a_optionalFilter)
 	}
 }
