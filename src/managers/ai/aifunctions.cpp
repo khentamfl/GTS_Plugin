@@ -67,7 +67,7 @@ namespace {
 			}
 		}*/
 
-		void KillProperly_5d4700(Actor* dying, Actor* killer, uintptr_t param_2, uintptr_t silent, uint8_t param_4, uint8_t param_5) { 
+		void KillProperly_5d4700(Actor* dying, Actor* killer, uintptr_t param_2, uintptr_t silent, uintptr_t param_4, uintptr_t param_5) { 
 			// SE Address: 5d4700   AE: ??????
 			// ---Works like this based on RE:---
 			// 1) papyrus__Actor::KillSilent_14094B760 (No event?)
@@ -76,7 +76,7 @@ namespace {
 			// 2) Actor::Kill_Papyrus_impl_14095D0E0 -> 3)
 			// 3) void Actor::Kill_impl2_1405D4700 (Current function that i'm trying to RE)
 			// Actor *param_1,undefined param_2,undefined silent?,uint8 param_4,uint8 param_5
-			typedef void (*DefKillProperly)(Actor* dying, Actor* killer, uintptr_t param_2, uintptr_t silent, uint8_t param_4, uint8_t param_5);
+			typedef void (*DefKillProperly)(Actor* dying, Actor* killer, uintptr_t param_2, uintptr_t silent, uintptr_t param_4, uintptr_t param_5);
 			REL::Relocation<DefKillProperly> SkyrimKillProperly{ RELOCATION_ID(36607, 37615) };
 			SkyrimKillProperly(dying, killer, param_2, silent, param_4, param_5);
 		}
@@ -84,7 +84,7 @@ namespace {
 		void KillProperly_Papyrus(Actor* dying, Actor* killer) { 
             // 94B790 = 53902
 			// param 1 = damage?
-			typedef void (*DefKill_Papyrus)(Actor* dying, Actor* killer);
+			typedef void (*DefKill_Papyrus)(Actor* dying, Actor* killer, uintptr_t );
 			REL::Relocation<DefKill_Papyrus> SkyrimKill_Papyrus{ RELOCATION_ID(53902, 37615) };
 			SkyrimKill_Papyrus(dying, killer);
 		}
@@ -93,7 +93,7 @@ namespace {
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
 		
-		KillProperly_Papyrus(tiny, giant);
+		KillProperly_5d4700(tiny, giant, 1, 1, true, true);
 		//tiny->KillImpl(giant, 1000, true, true);
 		//tiny->SetLifeState(ACTOR_LIFE_STATE::kDead);
 		//tiny->KillImmediate();
