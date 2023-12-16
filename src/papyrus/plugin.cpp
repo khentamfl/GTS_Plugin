@@ -490,6 +490,7 @@ namespace Gts {
 		vm->RegisterFunction("SetPlayerStagger", PapyrusClass, SetPlayerStagger);
 		vm->RegisterFunction("SetNPCProtection", PapyrusClass, SetNPCProtection);
 		vm->RegisterFunction("SetPCProtection", PapyrusClass, SetPCProtection);
+		vm->RegisterFunction("SetToggleIcons", PapyrusClass, SetToggleIcons);
 		vm->RegisterFunction("DisableCollisionLayerAndMotion", PapyrusClass, DisableCollisionLayerAndMotion);
 		vm->RegisterFunction("ResetQuestProgression", PapyrusClass, ResetQuestProgression);
 		vm->RegisterFunction("Quest_GetProgression", PapyrusClass, Quest_GetProgression);
