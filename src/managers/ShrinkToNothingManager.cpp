@@ -47,6 +47,9 @@ namespace Gts {
 				data.state = ShrinkState::Shrinking;
 			} else if (data.state == ShrinkState::Shrinking) {
 				if (data.delay.ShouldRun()) {
+					if (giant->formID == 0x14 && IsDragon(tiny)) {
+						CompleteDragonQuest(tiny, false, tiny->IsDead());
+					}
 					// Do shrink
 					float currentSize = get_visual_scale(tiny);
 
@@ -84,9 +87,7 @@ namespace Gts {
 					AddSMTDuration(giant, 5.0);
 
 					ApplyShakeAtNode(tiny, 20, "NPC Root [Root]", 20.0);
-					if (giant->formID == 0x14 && IsDragon(tiny)) {
-						CompleteDragonQuest(tiny, false);
-					}
+					
 					ActorHandle giantHandle = giant->CreateRefHandle();
 					ActorHandle tinyHandle = tiny->CreateRefHandle();
 					std::string taskname = std::format("STN {}", tiny->formID);

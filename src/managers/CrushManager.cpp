@@ -182,6 +182,9 @@ namespace Gts {
 			} else if (data.state == CrushState::Crushing) {
 				if (data.delay.ShouldRun()) {
 					data.state = CrushState::Crushed;
+					if (giant->formID == 0x14 && IsDragon(tiny)) {
+						CompleteDragonQuest(tiny, false, tiny->IsDead());
+					}
 					// Do crush
 					if (!tiny->IsDead()) {
 						KillActor(giant, tiny);
@@ -192,9 +195,7 @@ namespace Gts {
 
 					MoanOrLaugh(giant, tiny);
 					GrowAfterTheKill(giant, tiny);
-					if (giant->formID == 0x14 && IsDragon(tiny)) {
-						CompleteDragonQuest(tiny, false);
-					}
+					
 					GRumble::Once("CrushRumble", tiny, 1.4, 0.15);
 					if (giant->formID == 0x14) {
 						if (IsLiving(tiny)) {

@@ -1065,7 +1065,7 @@ namespace Gts {
 		CallFunctionOn(target, "ObjectReference", "ApplyHavokImpulse", afX, afY, afZ, afMagnitude);
 	}
 
-	void CompleteDragonQuest(Actor* tiny, bool vore) {
+	void CompleteDragonQuest(Actor* tiny, bool vore, bool dead) {
 		auto pc = PlayerCharacter::GetSingleton();
 		auto progressionQuest = Runtime::GetQuest("MainQuest");
 		if (progressionQuest) {

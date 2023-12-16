@@ -127,7 +127,7 @@ namespace Gts {
 	void ApplyHavokImpulse_Manual(Actor* target, float afX, float afY, float afZ, float afMagnitude);
 	void ApplyHavokImpulse(TESObjectREFR* target, float afX, float afY, float afZ, float afMagnitude);
 
-	void CompleteDragonQuest(Actor* tiny, bool vore);
+	void CompleteDragonQuest(Actor* tiny, bool vore, bool dead);
 
 	float get_distance_to_actor(Actor* receiver, Actor* target);
 	float GetHighHeelsBonusDamage(Actor* actor);

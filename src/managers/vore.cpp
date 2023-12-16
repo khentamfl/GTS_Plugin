@@ -138,7 +138,7 @@ namespace {
 
 	void Vore_AdvanceQuest(Actor* pred, Actor* tiny, bool WasDragon, bool WasGiant) {
 		if (!AllowDevourment() && pred->formID == 0x14 && WasDragon) {
-			CompleteDragonQuest(tiny, true);
+			CompleteDragonQuest(tiny, true, false);
 		} if (WasGiant) {
 			AdvanceQuestProgression(pred, tiny, 7, 1, true);
 		} else {

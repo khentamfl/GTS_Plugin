@@ -35,6 +35,9 @@ namespace {
 	}
 
 	void SendDeathEvent(Actor* giant, Actor* tiny, bool dead) {
+		if (!tiny->IsDead()) {
+			return; // apply to dead actors only
+		}
 		auto VM = SkyrimVM::GetSingleton();
 		
 		auto Dying = skyrim_cast<TESObjectREFR*>(tiny)->CreateRefHandle();
@@ -49,10 +52,10 @@ namespace {
 		std::uint8_t pad11;
 		std::uint16_t pad12;
 		std::uint32_t pad14;
-		BSFixedString* EventName = "TESDeathEvent";
+		RE::BSFixedString * EventName = "TESDeathEvent";
 		auto handle = GetHandle(Dying.get().get()->GetOwner());
 		
-		VM->RelayEvent(handle, EventName, (Dying, Killer, dead, pad11, pad12, pad14), nullptr);
+		VM->RelayEvent(handle, EventName, (Dying, Killer, dead), nullptr);
 		//SkyrimVM::RelayEvent(VMHandle a_handle, BSFixedString* a_event, BSScript::IFunctionArguments* a_args, SkyrimVM::ISendEventFilter* a_optionalFilter)
 	}
 }
