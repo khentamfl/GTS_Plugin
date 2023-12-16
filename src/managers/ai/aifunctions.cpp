@@ -41,14 +41,17 @@ namespace {
 		}
 		auto VM = SkyrimVM::GetSingleton();
 		
-		auto Dying = skyrim_cast<TESObjectREFR*>(tiny)->CreateRefHandle();
-		auto Killer = skyrim_cast<TESObjectREFR*>(giant)->CreateRefHandle();
+		TESObjectREFR* DyingCast = skyrim_cast<TESObjectREFR*>(tiny);
+		TESObjectREFR* KillerCast = skyrim_cast<TESObjectREFR*>(giant);
+		
+		auto Dying = DyingCast->CreateRefHandle();
+		auto Killer = KillerCast->CreateRefHandle();
+
 		if (!Dying) {
 			return;
 		} if (!Killer) {
 			return;
 		}
-		
 
 		std::uint8_t pad11;
 		std::uint16_t pad12;
