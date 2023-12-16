@@ -431,6 +431,9 @@ namespace Gts {
 		if (!CanDoDamage(giant, tiny) && !IsBetweenBreasts(giant)) {
 			return;
 		}
+
+		KillActor(giant, tiny);
+
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& crushmanager = CrushManager::GetSingleton();
 

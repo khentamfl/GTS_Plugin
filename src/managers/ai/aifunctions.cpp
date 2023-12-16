@@ -34,50 +34,74 @@ namespace {
 		return threshold;
 	}
 
-	template <class ... Args>
+	/*template <class ... Args>
 	void SendDeathEvent(Actor* giant, Actor* tiny, bool dead) {
 		if (!tiny->IsDead()) {
 			return; // apply to dead actors only
 		}
-		auto VM = SkyrimVM::GetSingleton();
-		
-		TESObjectREFR* DyingCast = skyrim_cast<TESObjectREFR*>(tiny);
-		TESObjectREFR* KillerCast = skyrim_cast<TESObjectREFR*>(giant);
-		
-		auto Dying = DyingCast->CreateRefHandle();
-		auto Killer = KillerCast->CreateRefHandle();
+		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+		auto VM = skyrimVM ? skyrimVM->impl : nullptr;
+		if (VM) {
+			TESObjectREFR* DyingCast = skyrim_cast<TESObjectREFR*>(tiny);
+			TESObjectREFR* KillerCast = skyrim_cast<TESObjectREFR*>(giant);
+			
+			auto Dying = DyingCast->CreateRefHandle();
+			auto Killer = KillerCast->CreateRefHandle();
 
-		if (!Dying) {
-			return;
-		} if (!Killer) {
-			return;
+			if (!Dying) {
+				return;
+			} if (!Killer) {
+				return;
+			}
+
+			std::uint8_t pad11;
+			std::uint16_t pad12;
+			std::uint32_t pad14;
+			auto handle = Dying.get().get();
+			BSFixedString EventName = "TESDeathEvent";
+			
+			auto args = RE::MakeFunctionArguments(std::forward<Args>(Dying, Killer, dead, pad11, pad12, pad14)...);
+
+			VM->RelayEvent(handle, &EventName, args, nullptr);
+			//SkyrimVM::RelayEvent(VMHandle a_handle, BSFixedString* a_event, BSScript::IFunctionArguments* a_args, SkyrimVM::ISendEventFilter* a_optionalFilter)
+			}
+		}*/
+
+		void KillProperly_5d4700(Actor* dying, Actor* killer, uintptr_t param_2, uintptr_t silent, uint8_t formID, uint8_t param_5) { 
+			// SE Address: 5d4700   AE: ??????
+			// ---Works like this based on RE:---
+			// 1) papyrus__Actor::KillSilent_14094B760 (No event?)
+			// 1) papyrus__Actor::Kill_14094B790 (Alarm?)
+			// -> call 2)
+			// 2) Actor::Kill_Papyrus_impl_14095D0E0 -> 3)
+			// 3) void Actor::Kill_impl2_1405D4700 (Current function that i'm trying to RE)
+			// Actor *param_1,undefined param_2,undefined silent?,uint8 param_4,uint8 param_5
+			typedef void (*DefKillProperly)(Actor* dying, Actor* killer, uintptr_t param_2, uintptr_t silent, uint8_t formID, uint8_t param_5);
+			REL::Relocation<DefKillProperly> SkyrimKillProperly{ RELOCATION_ID(36607, 37615) };
+			SkyrimKillProperly(dying, killer, param_2, silent, param_4, param_5);
 		}
 
-		std::uint8_t pad11;
-		std::uint16_t pad12;
-		std::uint32_t pad14;
-		auto handle = Dying.get().get();
-		BSFixedString EventName = "TESDeathEvent";
-		
-		auto args = RE::MakeFunctionArguments(std::forward<Args>(Dying, Killer, dead, pad11, pad12, pad14)...);
-
-		VM->RelayEvent(handle, &EventName, args, nullptr);
-		//SkyrimVM::RelayEvent(VMHandle a_handle, BSFixedString* a_event, BSScript::IFunctionArguments* a_args, SkyrimVM::ISendEventFilter* a_optionalFilter)
+		void KillProperly_Papyrus(Actor* dying, Actor* killer, uint64_t value) { 
+            // 94B790 = 53902
+			// param 1 = damage?
+			typedef void (*DefKill_Papyrus)(Actor* dying, Actor* killer, uint64_t value);
+			REL::Relocation<DefKill_Papyrus> SkyrimKill_Papyrus{ RELOCATION_ID(53902, 37615) };
+			SkyrimKill_Papyrus(dying, killer, value);
+		}
 	}
-}
 
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
 		
-		tiny->KillImpl(giant, 1000, true, true);
+		KillProperly_Papyrus(tiny, giant, 1000);
+		//tiny->KillImpl(giant, 1000, true, true);
 		//tiny->SetLifeState(ACTOR_LIFE_STATE::kDead);
 		//tiny->KillImmediate();
 		//tiny->KillDying();
 		//RagdollTask(tiny); 
-		SendDeathEvent(giant, tiny, true);
+		//SendDeathEvent(giant, tiny, true);
 		
 		//tiny->GetActorRuntimeData().boolBits.set(BOOL_BITS::kDead);
-		
 	}
 
 	void RagdollTask(Actor* tiny) {
