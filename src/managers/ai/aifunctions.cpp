@@ -53,7 +53,7 @@ namespace {
 		std::uint16_t pad12;
 		std::uint32_t pad14;
 		auto handle = GetHandle(Dying.get().get()->GetOwner());
-		std::string_view event = "TESDeathEvent";
+		std::string event = "TESDeathEvent";
 		BSFixedString* EventName = *reinterpret_cast<BSFixedString*>(event); 
 		
 		VM->RelayEvent(handle, EventName, (Dying, Killer), nullptr);
