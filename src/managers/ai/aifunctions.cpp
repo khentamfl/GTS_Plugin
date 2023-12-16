@@ -34,6 +34,7 @@ namespace {
 		return threshold;
 	}
 
+	template <class ... Args>
 	void SendDeathEvent(Actor* giant, Actor* tiny, bool dead) {
 		if (!tiny->IsDead()) {
 			return; // apply to dead actors only
