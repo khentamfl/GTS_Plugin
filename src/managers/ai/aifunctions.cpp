@@ -67,7 +67,7 @@ namespace {
 			}
 		}*/
 
-		void KillProperly_5d4700(Actor* dying, Actor* killer, uintptr_t param_2, uintptr_t silent, uint8_t formID, uint8_t param_5) { 
+		void KillProperly_5d4700(Actor* dying, Actor* killer, uintptr_t param_2, uintptr_t silent, uint8_t param_4, uint8_t param_5) { 
 			// SE Address: 5d4700   AE: ??????
 			// ---Works like this based on RE:---
 			// 1) papyrus__Actor::KillSilent_14094B760 (No event?)
@@ -76,7 +76,7 @@ namespace {
 			// 2) Actor::Kill_Papyrus_impl_14095D0E0 -> 3)
 			// 3) void Actor::Kill_impl2_1405D4700 (Current function that i'm trying to RE)
 			// Actor *param_1,undefined param_2,undefined silent?,uint8 param_4,uint8 param_5
-			typedef void (*DefKillProperly)(Actor* dying, Actor* killer, uintptr_t param_2, uintptr_t silent, uint8_t formID, uint8_t param_5);
+			typedef void (*DefKillProperly)(Actor* dying, Actor* killer, uintptr_t param_2, uintptr_t silent, uint8_t param_4, uint8_t param_5);
 			REL::Relocation<DefKillProperly> SkyrimKillProperly{ RELOCATION_ID(36607, 37615) };
 			SkyrimKillProperly(dying, killer, param_2, silent, param_4, param_5);
 		}
