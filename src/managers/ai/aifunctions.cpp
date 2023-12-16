@@ -93,8 +93,8 @@ namespace {
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
 		
-		KillProperly_5d4700(tiny, giant, 1, 1, true, true);
-		//tiny->KillImpl(giant, 1000, true, true);
+		//KillProperly_5d4700(tiny, giant, 1, 1, true, 0);
+		tiny->KillImpl(giant, 1, true, true);
 		//tiny->SetLifeState(ACTOR_LIFE_STATE::kDead);
 		//tiny->KillImmediate();
 		//tiny->KillDying();
