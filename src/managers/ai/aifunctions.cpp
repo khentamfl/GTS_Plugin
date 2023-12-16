@@ -53,10 +53,10 @@ namespace {
 		std::uint16_t pad12;
 		std::uint32_t pad14;
 		auto handle = GetHandle(Dying.get().get()->GetOwner());
-		BSFixedString* EventName = new string("TESDeathEvent");
+		std::string name = "TESDeathEvent";
+		BSFixedString* EventName = &name;
 		
 		VM->RelayEvent(handle, EventName, (Dying, Killer), nullptr);
-		delete EventName;
 		//SkyrimVM::RelayEvent(VMHandle a_handle, BSFixedString* a_event, BSScript::IFunctionArguments* a_args, SkyrimVM::ISendEventFilter* a_optionalFilter)
 	}
 }
