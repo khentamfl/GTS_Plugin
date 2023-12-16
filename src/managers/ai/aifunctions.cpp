@@ -56,7 +56,7 @@ namespace {
 		std::uint8_t pad11;
 		std::uint16_t pad12;
 		std::uint32_t pad14;
-		auto handle = GetHandle(Dying.get().get()->GetOwner());
+		auto handle = Dying.get().get();
 		BSFixedString EventName = "TESDeathEvent";
 		
 		auto args = RE::MakeFunctionArguments(std::forward<Args>(Dying, Killer, dead, pad11, pad12, pad14)...);
