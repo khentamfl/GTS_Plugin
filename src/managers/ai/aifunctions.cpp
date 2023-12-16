@@ -81,19 +81,19 @@ namespace {
 			SkyrimKillProperly(dying, killer, param_2, silent, param_4, param_5);
 		}
 
-		void KillProperly_Papyrus(Actor* dying, Actor* killer, uint64_t value) { 
+		void KillProperly_Papyrus(Actor* dying, Actor* killer) { 
             // 94B790 = 53902
 			// param 1 = damage?
-			typedef void (*DefKill_Papyrus)(Actor* dying, Actor* killer, uint64_t value);
+			typedef void (*DefKill_Papyrus)(Actor* dying, Actor* killer);
 			REL::Relocation<DefKill_Papyrus> SkyrimKill_Papyrus{ RELOCATION_ID(53902, 37615) };
-			SkyrimKill_Papyrus(dying, killer, value);
+			SkyrimKill_Papyrus(dying, killer);
 		}
 	}
 
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
 		
-		KillProperly_Papyrus(tiny, giant, 1000);
+		KillProperly_Papyrus(tiny, giant);
 		//tiny->KillImpl(giant, 1000, true, true);
 		//tiny->SetLifeState(ACTOR_LIFE_STATE::kDead);
 		//tiny->KillImmediate();
