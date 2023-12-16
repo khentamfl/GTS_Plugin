@@ -37,11 +37,18 @@ namespace {
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
 		
-			tiny->KillImpl(giant, 1000, true, true);
-			//tiny->SetLifeState(ACTOR_LIFE_STATE::kDead);
-			//tiny->KillImmediate();
-			//tiny->KillDying();
-			RagdollTask(tiny); 
+		tiny->KillImpl(giant, 1000, true, true);
+		//tiny->SetLifeState(ACTOR_LIFE_STATE::kDead);
+		//tiny->KillImmediate();
+		//tiny->KillDying();
+		//RagdollTask(tiny); 
+		Event* TESDeathEvent = {
+			actorDying = skyrim_cast<TESObjectREFR*>(tiny)->CreateRefHandle();
+			actorKiller = skyrim_cast<TESObjectREFR*>(giant)->CreateRefHandle();
+			dead = true;
+		}
+		RE::BTSEventSource* source;
+		source->SendEvent(TESDeathEvent);
 		
 		//tiny->GetActorRuntimeData().boolBits.set(BOOL_BITS::kDead);
 		
