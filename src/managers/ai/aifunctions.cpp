@@ -4,6 +4,7 @@
 #include "utils/papyrusUtils.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
+#include "utils/papyrusUtils.hpp"
 #include "utils/actorUtils.hpp"
 #include "utils/findActor.hpp"
 #include "data/persistent.hpp"
@@ -32,6 +33,24 @@ namespace {
 		}
 		return threshold;
 	}
+
+	void SendDeathEvent(Actor* giant, Actor* tiny, bool dead) {
+		auto VM = SkyrimVM::GetSingleton();
+		auto handle = GetHandle(tiny->formID);
+		auto Dying = skyrim_cast<TESObjectREFR*>(tiny)->CreateRefHandle();
+		auto Killer = skyrim_cast<TESObjectREFR*>(giant)->CreateRefHandle();
+		if (!Dying) {
+			return;
+		} if (!Killer) {
+			return;
+		}
+		std::uint8_t pad11 = 0;
+		std::uint8_t pad12 = 0;
+		std::uint8_t pad14 = 0;
+		auto arguments = RegistrationSet<Dying, Killer, dead, pad11, pad12, pad14>;
+		VM->RelayEvent(handle,"TESDeathEvent", arguments, nullptr);
+		//SkyrimVM::RelayEvent(VMHandle a_handle, BSFixedString* a_event, BSScript::IFunctionArguments* a_args, SkyrimVM::ISendEventFilter* a_optionalFilter)
+	}
 }
 
 namespace Gts {
@@ -42,14 +61,7 @@ namespace Gts {
 		//tiny->KillImmediate();
 		//tiny->KillDying();
 		//RagdollTask(tiny); 
-		TESDeathEvent* KillEvent;
-		Event* DeathEvent = {
-			KillEvent->actorDying = skyrim_cast<TESObjectREFR*>(tiny)->CreateRefHandle();
-			KillEvent->actorKiller = skyrim_cast<TESObjectREFR*>(giant)->CreateRefHandle();
-			KillEvent->dead = true;
-		}
-		RE::BTSEventSource* source;
-		source->SendEvent(DeathEvent);
+		SendDeathEvent(giant, tiny, true);
 		
 		//tiny->GetActorRuntimeData().boolBits.set(BOOL_BITS::kDead);
 		
