@@ -84,9 +84,9 @@ namespace {
 		void KillProperly_Papyrus(Actor* dying, Actor* killer) { 
             // 94B790 = 53902
 			// param 1 = damage?
-			typedef void (*DefKill_Papyrus)(Actor* dying, Actor* killer, uintptr_t );
+			typedef void (*DefKill_Papyrus)(Actor* dying, Actor* killer, uintptr_t value);
 			REL::Relocation<DefKill_Papyrus> SkyrimKill_Papyrus{ RELOCATION_ID(53902, 37615) };
-			SkyrimKill_Papyrus(dying, killer);
+			SkyrimKill_Papyrus(dying, killer, value);
 		}
 	}
 
