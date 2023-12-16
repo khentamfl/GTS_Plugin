@@ -47,11 +47,11 @@ namespace {
 		
 
 		std::uint8_t pad11;
-		std::uint8_t pad12;
-		std::uint8_t pad14 = 0;
+		std::uint16_t pad12;
+		std::uint32_t pad14;
 		BSFixedString EventName = "TESDeathEvent";
 		auto handle = GetHandle(Dying.get().get()->GetOwner());
-		using arguments = RegistrationSet<Dying, Killer, dead, pad11, pad12, pad14>;
+		auto arguments = <Dying, Killer, dead, pad11, pad12, pad14>;
 		
 		VM->RelayEvent(handle, EventName, arguments, nullptr);
 		//SkyrimVM::RelayEvent(VMHandle a_handle, BSFixedString* a_event, BSScript::IFunctionArguments* a_args, SkyrimVM::ISendEventFilter* a_optionalFilter)
