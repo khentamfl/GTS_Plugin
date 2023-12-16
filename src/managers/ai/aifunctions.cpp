@@ -81,7 +81,7 @@ namespace {
 			SkyrimKillProperly(dying, killer, param_2, silent, param_4, param_5);
 		}
 
-		void KillProperly_Papyrus(Actor* dying, Actor* killer) { 
+		void KillProperly_Papyrus(Actor* dying, Actor* killer, uintptr_t value) { 
             // 94B790 = 53902
 			// param 1 = damage?
 			typedef void (*DefKill_Papyrus)(Actor* dying, Actor* killer, uintptr_t value);
