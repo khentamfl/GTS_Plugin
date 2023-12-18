@@ -65,58 +65,125 @@ namespace {
 			log::info("Intersect: {}, bound: {}, center: {}", intersect, bound, Vector2Str(center));
 		}
 	}*/
-	void Raycast_GetCeilingHeight(Actor* giant) {
-		if (!SizeRaycastEnabled()) {
-			return;
+	float GetCeilingHeight(Actor* giant) {
+    if (!giant) {
+      return return std::numeric_limits<float>::infinity;
+    }
+
+    auto charCont = giant->GetCharController();
+    if (!charCont) {
+      return return std::numeric_limits<float>::infinity;
+    }
+    auto root_node = giant->GetCurrent3D();
+    if (!root_node) {
+      return return std::numeric_limits<float>::infinity;
+    }
+
+    // Calculation of ray directions
+    auto transform = root_node->world;
+    auto giantPos = giant->GetPosition();
+    auto bumperPos = charCont->bumperCollisionBound.center * transform;
+
+    auto bumperDirForwardUp = (
+      charCont->bumperCollisionBound.center
+      + NiPoint3(0.0, 0.25 * charCont->bumperCollisionBound.extents.y, 0.0)
+      + NiPoint3(0.0, 0.0, charCont->bumperCollisionBound.extents.z)
+    );
+    bumperDirForwardUp = bumperDirForwardUp * transform;
+    bumperDirForwardUp = bumperDirForwardUp - bumperPos;
+    bumperDirForwardUp.Unitize();
+
+    auto bumperDirBackUp = (
+      charCont->bumperCollisionBound.center
+       + NiPoint3(0.0, -0.25 * charCont->bumperCollisionBound.extents.y, 0.0)
+       + NiPoint3(0.0, 0.0, charCont->bumperCollisionBound.extents.z)
+    );
+    bumperDirBackUp = bumperDirBackUp * transform;
+    bumperDirBackUp = bumperDirBackUp - bumperPos;
+    bumperDirBackUp.Unitize();
+
+    // List of ray positions and directions for the ceiling
+    // Don't add a down here, down is made automatically as -dir
+    std::vector<std::pair<NiPoint3, NiPoint3>> rays = {
+      {giantPos, NiPoint3(0.0, 0.0, 1.0)},
+      {bumperPos, NiPoint3(0.0, 0.0, 1.0)},
+      {bumperPos, bumperDirForwardUp},
+      {bumperPos, bumperDirBackUp}
+    };
+
+    const float RAY_LENGTH = 720;
+    bool debug = IsDebugEnabled();
+
+    // Ceiling
+    std::std::vector<float>  ceiling_heights = {};
+    for (const auto& ray: rays) {
+      NiPoint3 ray_start = ray[0];
+      NiPoint3 ray_dir = ray[1];
+      if (debug) {
+        NiPoint3 ray_end = ray_start + ray_dir*RAY_LENGTH;
+  			DebugAPI::DrawSphere(glm::vec3(ray_start.x, ray_start.y, ray_start.z), 8.0, 10, {0.0, 1.0, 0.0, 1.0});
+        DebugAPI::DrawLineForMS(glm::vec3(ray_start.x, ray_start.y, ray_start.z), glm::vec3(ray_end.x, ray_end.y, ray_end.z), 10, {1.0, 0.0, 0.0, 1.0})
+  		}
+      bool success = false;
+      NiPoint3 endpos_up = CastRayStatics(giant, ray_start, ray_dir, RAY_LENGTH, success);
+      if (success) {
+        DebugAPI::DrawSphere(glm::vec3(endpos_up.x, endpos_up.y, endpos_up.z), 5.0, 30, {1.0, 0.0, 0.0, 1.0});
+        ceiling_heights.push_back(endpos_up.z);
+      }
+    }
+
+		if (ceiling_heights.empty()) {
+			return std::numeric_limits<float>::infinity;
 		}
-		bool debug = IsDebugEnabled();
-		bool success_up = false;
-		bool success_down = false;
-		NiPoint3 ray_start = giant->GetPosition();
-		float stateScale = GetRaycastStateScale(giant);
-		float scale = get_visual_scale(giant) * stateScale;
+    NiPoint3 ceiling = std::min(ceiling_heights);
 
-		//log::info("scale of {}: {}", giant->GetDisplayFullName(), scale);
-		ray_start.z += 70;
 
-		NiPoint3 ray_up(0.0, 0.0, 1.0);
-		NiPoint3 ray_dn(0.0, 0.0, -1.0);
+    // Floor
+    std::std::vector<float>  floor_heights = {};
+    for (const auto& ray: rays) {
+      NiPoint3 ray_start = ray[0];
+      NiPoint3 ray_dir = ray[1] * -1.0;
+      if (debug) {
+        NiPoint3 ray_end = ray_start + ray_dir*RAY_LENGTH;
+  			DebugAPI::DrawSphere(glm::vec3(ray_start.x, ray_start.y, ray_start.z), 8.0, 10, {0.0, 1.0, 0.0, 1.0});
+        DebugAPI::DrawLineForMS(glm::vec3(ray_start.x, ray_start.y, ray_start.z), glm::vec3(ray_end.x, ray_end.y, ray_end.z), 10, {1.0, 0.0, 0.0, 1.0})
+  		}
+      bool success = false;
+      NiPoint3 endpos_up = CastRayStatics(giant, ray_start, ray_dir, RAY_LENGTH, success);
+      if (success) {
+        DebugAPI::DrawSphere(glm::vec3(endpos_up.x, endpos_up.y, endpos_up.z), 5.0, 30, {1.0, 0.0, 0.0, 1.0});
+        floor_heights.push_back(endpos_up.z);
+      }
+    }
 
-		if (debug) {
-			DebugAPI::DrawSphere(glm::vec3(ray_start.x, ray_start.y, ray_start.z), 8.0, 30, {0.0, 1.0, 0.0, 1.0});
+		if (floor_heights.empty()) {
+			return std::numeric_limits<float>::infinity;
 		}
+    NiPoint3 floor = std::max(floor_heights);
 
-		float ray_length = 720;
-		NiPoint3 endpos_up = CastRayStatics(giant, ray_start, ray_up, ray_length, success_up);
-		if (!success_up) {
-			return;
-		}
-		NiPoint3 endpos_dn = CastRayStatics(giant, ray_start, ray_dn, ray_length, success_down);
-		if (!success_down) {
-			return;
-		}
-
-		float room_height = fabs(endpos_dn.z - endpos_up.z);
+    // Room height
+		float room_height = fabs(ceiling - floor);
 		float room_height_m = unit_to_meter(room_height);
-		float meter_to_scale = room_height_m/1.82; // / height by 1.82 (default character height)
-		float expected = meter_to_scale * 0.82;
-		float natural = get_natural_scale(giant);
 
-		if (scale > expected) {
-			float adjust = std::clamp(meter_to_scale/stateScale * 0.82f, 1.0f, 8.0f); // Min is x1.0 (disallow to go below that), max is x8.0
-			float targetscale = get_target_scale(giant);
-			mod_target_scale(giant, -0.0080 * scale);
-
-			if (targetscale < adjust) { 
-				set_target_scale(giant, adjust); // just to be safe
-			}
-		}
-
-		if (debug) {
-			DebugAPI::DrawSphere(glm::vec3(endpos_up.x, endpos_up.y, endpos_up.z), 5.0, 30, {1.0, 0.0, 0.0, 1.0});
-			DebugAPI::DrawSphere(glm::vec3(endpos_dn.x, endpos_dn.y, endpos_dn.z), 5.0, 30, {0.0, 0.0, 1.0, 1.0});
-		}
+    return room_height_m;
 	}
+
+  float GetMaxRoomScale(Actor* giant) {
+    float stateScale = GetRaycastStateScale(giant);
+    // We adjust based on target_scale since there is no point
+    // in chasing visual scale as it moves towards target
+		float scale = get_target_scale(giant);
+
+    float room_height_m = GetCeilingHeight(giant);
+    float room_height_s = room_height_m/1.82; // / height by 1.82 (default character height)
+		float max_scale = room_height_s * 0.82;
+
+		if ((scale * stateScale) > max_scale && scale > 1.0 && (scale * stateScale) > 1.0) {
+			return max_scale;
+		} else {
+      return scale;
+    }
+  }
 
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		auto profiler = Profilers::Profile("Manager: update_height");
@@ -153,6 +220,11 @@ namespace {
 			}
 		} else {
 			persi_actor_data->target_scale_v = 0.0;
+		}
+
+    if (SizeRaycastEnabled()) {
+			// Room Size adjustments
+      target_scale = GetMaxRoomScale(actor);
 		}
 
 		if (fabs(target_scale - persi_actor_data->visual_scale) > 1e-5) {
@@ -312,7 +384,6 @@ void GtsManager::Update() {
 			accuratedamage.DoAccurateCollisionRight(actor, 0.4 * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedRight);
 
 			ClothManager::GetSingleton().CheckRip();
-			Raycast_GetCeilingHeight(actor);
 			SpawnActionIcon(actor);
 
 			if (IsCrawling(actor)) {
