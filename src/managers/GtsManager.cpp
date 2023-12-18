@@ -81,7 +81,7 @@ namespace {
 
     // Calculation of ray directions
     auto transform = root_node->world;
-    auto giantPos = giant->GetPosition();
+    auto giantPos = giant->GetPosition() + NiPoint3(0.0, 0.0, 70.0);
     auto bumperPos = transform * charCont->bumperCollisionBound.center;
 
     auto bumperDirForwardUp = (
@@ -145,13 +145,13 @@ namespace {
       NiPoint3 ray_dir = ray.second * -1.0;
       if (debug) {
         NiPoint3 ray_end = ray_start + ray_dir*RAY_LENGTH;
-  			DebugAPI::DrawSphere(glm::vec3(ray_start.x, ray_start.y, ray_start.z), 8.0, 10, {0.0, 1.0, 0.0, 1.0});
-        DebugAPI::DrawLineForMS(glm::vec3(ray_start.x, ray_start.y, ray_start.z), glm::vec3(ray_end.x, ray_end.y, ray_end.z), 10, {1.0, 0.0, 0.0, 1.0});
+  			DebugAPI::DrawSphere(glm::vec3(ray_start.x, ray_start.y, ray_start.z), 8.0, 10, {0.0, 1.0, 1.0, 1.0});
+        DebugAPI::DrawLineForMS(glm::vec3(ray_start.x, ray_start.y, ray_start.z), glm::vec3(ray_end.x, ray_end.y, ray_end.z), 10, {1.0, 0.0, 1.0, 1.0});
   		}
       bool success = false;
       NiPoint3 endpos_up = CastRayStatics(giant, ray_start, ray_dir, RAY_LENGTH, success);
       if (success) {
-        DebugAPI::DrawSphere(glm::vec3(endpos_up.x, endpos_up.y, endpos_up.z), 5.0, 30, {1.0, 0.0, 0.0, 1.0});
+        DebugAPI::DrawSphere(glm::vec3(endpos_up.x, endpos_up.y, endpos_up.z), 5.0, 30, {1.0, 0.0, 1.0, 1.0});
         floor_heights.push_back(endpos_up.z);
       }
     }
@@ -173,15 +173,20 @@ namespace {
     // We adjust based on target_scale since there is no point
     // in chasing visual scale as it moves towards target
 		float scale = get_target_scale(giant);
+    float other_scale = get_natural_scale(giant);
 
     float room_height_m = GetCeilingHeight(giant);
     float room_height_s = room_height_m/1.82; // / height by 1.82 (default character height)
 		float max_scale = room_height_s * 0.82;
+    if (giant->formId == 0x14) {
+      log::info("room_height_m: {}", room_height_m);
+      log::info("max_scale: {}", max_scale);
+    }
 
-		if ((scale * stateScale) > max_scale && scale > 1.0 && (scale * stateScale) > 1.0) {
+		if ((scale * stateScale) > max_scale && scale > other_scale && (scale * stateScale) > other_scale) {
 			return max_scale;
 		} else {
-      return scale;
+      return std::numeric_limits<float>::infinity();
     }
   }
 
@@ -226,7 +231,17 @@ namespace {
     // We only do this if they are bigger than 1.5x their natural scale (currentOtherScale)
     // and if enabled in the mcm
     if (SizeRaycastEnabled() && target_scale > currentOtherScale * 1.05) {
-      target_scale = GetMaxRoomScale(actor);
+      if (giant->formId == 0x14) {
+        log::info("old target_scale: {}", target_scale);
+      }
+      float room_scale = GetMaxRoomScale(actor);
+      if (giant->formId == 0x14) {
+        log::info("room_scale: {}", room_scale);
+      }
+      target_scale = min(room_scale, room_scale);
+      if (giant->formId == 0x14) {
+        log::info("new target_scale: {}", target_scale);
+      }
 		}
 
 		if (fabs(target_scale - persi_actor_data->visual_scale) > 1e-5) {
