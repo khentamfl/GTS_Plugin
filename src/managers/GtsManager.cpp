@@ -178,6 +178,7 @@ namespace {
     float room_height_m = GetCeilingHeight(giant);
     float room_height_s = room_height_m/1.82; // / height by 1.82 (default character height)
 		float max_scale = room_height_s * 0.82;
+    max_scale /= stateScale; // Make avalibale space seem bigger when prone etc
     if (giant->formID == 0x14) {
       log::info("room_height_m: {}", room_height_m);
       log::info("max_scale: {}", max_scale);
@@ -185,10 +186,8 @@ namespace {
 
     if (max_scale < other_scale) {
       return std::numeric_limits<float>::infinity(); // no adjustments if room is smaller then normal scale
-    }
-
-		if ((scale * stateScale) > max_scale && scale > other_scale && (scale * stateScale) > other_scale) {
-			return max_scale / stateScale; // Make it look like we have more height
+    }else if (scale > max_scale && scale > other_scale) {
+			return max_scale;
 		} else {
       return std::numeric_limits<float>::infinity();
     }
