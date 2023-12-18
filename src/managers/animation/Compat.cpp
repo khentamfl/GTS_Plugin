@@ -227,7 +227,7 @@ namespace {
 		SetProneState(giant, true);
 		StartBodyDamage_DOT(giant);
 	}
-	void GTS_BodyDamage_OFF(AnimationEventData& data) {
+	void GTS_BodyDamage_Off(AnimationEventData& data) {
 		auto giant = &data.giant;
 		SetProneState(giant, false);
 		StopBodyDamage_DOT(giant);
@@ -265,7 +265,7 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTS_DiveSlide_ON", "Body", GTS_DiveSlide_ON);
 		AnimationManager::RegisterEvent("GTS_DiveSlide_OFF", "Body", GTS_DiveSlide_OFF);
 		AnimationManager::RegisterEvent("GTS_BodyDamage_ON", "Body", GTS_BodyDamage_ON);
-		AnimationManager::RegisterEvent("GTS_BodyDamage_OFF", "Body", GTS_BodyDamage_OFF);
+		AnimationManager::RegisterEvent("GTS_BodyDamage_Off", "Body", GTS_BodyDamage_Off);
 
 		AnimationManager::RegisterEvent("GTS_DisableHH", "HHPatch", GTS_DisableHH);
 		AnimationManager::RegisterEvent("GTS_EnableHH", "HHPatch", GTS_EnableHH);

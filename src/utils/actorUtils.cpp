@@ -197,7 +197,7 @@ namespace Gts {
 		auto transient = Transient::GetSingleton().GetData(actor);
 		actor->GetGraphVariableBool("GTS_IsProne", prone);
 		if (actor->formID == 0x14 && actor->IsSneaking() && IsFirstPerson() && transient) {
-			return transient->FPProning; // Needed to fix crawling being applied to FP even when Prone is off
+			return transient->FPProning; // Needed to fix proning being applied to FP even when Prone is off
 		}
 		return actor!= nullptr && actor->IsSneaking() && prone;
 	}
