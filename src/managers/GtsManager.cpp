@@ -170,10 +170,6 @@ namespace {
 
   float GetMaxRoomScale(Actor* giant) {
     float stateScale = GetRaycastStateScale(giant);
-    // We adjust based on target_scale since there is no point
-    // in chasing visual scale as it moves towards target
-		float scale = get_target_scale(giant);
-    float other_scale = get_natural_scale(giant);
 
     float room_height_m = GetCeilingHeight(giant);
     float room_height_s = room_height_m/1.82; // / height by 1.82 (default character height)
@@ -184,13 +180,7 @@ namespace {
       log::info("max_scale: {}", max_scale);
     }
 
-    if (max_scale < other_scale) {
-      return std::numeric_limits<float>::infinity(); // no adjustments if room is smaller then normal scale
-    }else if (scale > max_scale && scale > other_scale) {
-			return max_scale;
-		} else {
-      return std::numeric_limits<float>::infinity();
-    }
+    return max_scale;
   }
 
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
@@ -234,17 +224,19 @@ namespace {
     // We only do this if they are bigger than 1.05x their natural scale (currentOtherScale)
     // and if enabled in the mcm
     if (SizeRaycastEnabled() && target_scale > currentOtherScale * 1.05) {
-      if (actor->formID == 0x14) {
-        log::info("old target_scale: {}", target_scale);
-      }
       float room_scale = GetMaxRoomScale(actor);
-      if (actor->formID == 0x14) {
-        log::info("room_scale: {}", room_scale);
-      }
-      target_scale = min(target_scale, room_scale);
-      if (actor->formID == 0x14) {
-        log::info("new target_scale: {}", target_scale);
-      }
+      if (room_scale > currentOtherScale) {
+        // Only apply room scale if room_scale > natural_scale
+        //   This stops it from working when room_scale < 1.0
+        if (actor->formID == 0x14) {
+          log::info("old target_scale: {}", target_scale);
+          log::info("room_scale: {}", room_scale);
+        }
+        target_scale = min(target_scale, room_scale);
+        if (actor->formID == 0x14) {
+          log::info("new target_scale: {}", target_scale);
+        }
+  		}
 		}
 
 		if (fabs(target_scale - persi_actor_data->visual_scale) > 1e-5) {
