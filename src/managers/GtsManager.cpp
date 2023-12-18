@@ -135,7 +135,7 @@ namespace {
 		if (ceiling_heights.empty()) {
 			return std::numeric_limits<float>::infinity();
 		}
-    float ceiling = std::min_element(ceiling_heights.begin(), ceiling_heights.end());
+    float ceiling = *std::min_element(ceiling_heights.begin(), ceiling_heights.end());
 
 
     // Floor
@@ -159,7 +159,7 @@ namespace {
 		if (floor_heights.empty()) {
 			return std::numeric_limits<float>::infinity();
 		}
-    float floor = std::max_element(floor_heights.begin(), floor_heights.end());
+    float floor = *std::max_element(floor_heights.begin(), floor_heights.end());
 
     // Room height
 		float room_height = fabs(ceiling - floor);
