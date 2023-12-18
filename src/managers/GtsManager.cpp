@@ -67,29 +67,29 @@ namespace {
 	}*/
 	float GetCeilingHeight(Actor* giant) {
     if (!giant) {
-      return return std::numeric_limits<float>::infinity;
+      return std::numeric_limits<float>::infinity;
     }
 
     auto charCont = giant->GetCharController();
     if (!charCont) {
-      return return std::numeric_limits<float>::infinity;
+      return std::numeric_limits<float>::infinity;
     }
     auto root_node = giant->GetCurrent3D();
     if (!root_node) {
-      return return std::numeric_limits<float>::infinity;
+      return std::numeric_limits<float>::infinity;
     }
 
     // Calculation of ray directions
     auto transform = root_node->world;
     auto giantPos = giant->GetPosition();
-    auto bumperPos = charCont->bumperCollisionBound.center * transform;
+    auto bumperPos = transform * charCont->bumperCollisionBound.center;
 
     auto bumperDirForwardUp = (
       charCont->bumperCollisionBound.center
       + NiPoint3(0.0, 0.25 * charCont->bumperCollisionBound.extents.y, 0.0)
       + NiPoint3(0.0, 0.0, charCont->bumperCollisionBound.extents.z)
     );
-    bumperDirForwardUp = bumperDirForwardUp * transform;
+    bumperDirForwardUp = transform * bumperDirForwardUp;
     bumperDirForwardUp = bumperDirForwardUp - bumperPos;
     bumperDirForwardUp.Unitize();
 
@@ -98,7 +98,7 @@ namespace {
        + NiPoint3(0.0, -0.25 * charCont->bumperCollisionBound.extents.y, 0.0)
        + NiPoint3(0.0, 0.0, charCont->bumperCollisionBound.extents.z)
     );
-    bumperDirBackUp = bumperDirBackUp * transform;
+    bumperDirBackUp = transform * bumperDirBackUp;
     bumperDirBackUp = bumperDirBackUp - bumperPos;
     bumperDirBackUp.Unitize();
 
