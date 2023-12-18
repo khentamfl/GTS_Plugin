@@ -183,6 +183,10 @@ namespace {
       log::info("max_scale: {}", max_scale);
     }
 
+    if (max_scale < other_scale) {
+      return std::numeric_limits<float>::infinity(); // no adjustments if room is smaller then normal scale
+    }
+
 		if ((scale * stateScale) > max_scale && scale > other_scale && (scale * stateScale) > other_scale) {
 			return max_scale;
 		} else {
@@ -228,7 +232,7 @@ namespace {
 		}
 
     // Room Size adjustments
-    // We only do this if they are bigger than 1.5x their natural scale (currentOtherScale)
+    // We only do this if they are bigger than 1.05x their natural scale (currentOtherScale)
     // and if enabled in the mcm
     if (SizeRaycastEnabled() && target_scale > currentOtherScale * 1.05) {
       if (actor->formID == 0x14) {
