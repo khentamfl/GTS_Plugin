@@ -178,7 +178,7 @@ namespace {
     float room_height_m = GetCeilingHeight(giant);
     float room_height_s = room_height_m/1.82; // / height by 1.82 (default character height)
 		float max_scale = room_height_s * 0.82;
-    if (giant->formId == 0x14) {
+    if (giant->formID == 0x14) {
       log::info("room_height_m: {}", room_height_m);
       log::info("max_scale: {}", max_scale);
     }
@@ -231,15 +231,15 @@ namespace {
     // We only do this if they are bigger than 1.5x their natural scale (currentOtherScale)
     // and if enabled in the mcm
     if (SizeRaycastEnabled() && target_scale > currentOtherScale * 1.05) {
-      if (giant->formId == 0x14) {
+      if (actor->formID == 0x14) {
         log::info("old target_scale: {}", target_scale);
       }
       float room_scale = GetMaxRoomScale(actor);
-      if (giant->formId == 0x14) {
+      if (actor->formID == 0x14) {
         log::info("room_scale: {}", room_scale);
       }
       target_scale = min(room_scale, room_scale);
-      if (giant->formId == 0x14) {
+      if (actor->formID == 0x14) {
         log::info("new target_scale: {}", target_scale);
       }
 		}
