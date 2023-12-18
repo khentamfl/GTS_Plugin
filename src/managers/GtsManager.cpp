@@ -115,10 +115,10 @@ namespace {
     bool debug = IsDebugEnabled();
 
     // Ceiling
-    std::std::vector<float>  ceiling_heights = {};
+    std::vector<float>  ceiling_heights = {};
     for (const auto& ray: rays) {
-      NiPoint3 ray_start = ray[0];
-      NiPoint3 ray_dir = ray[1];
+      NiPoint3 ray_start = ray.first;
+      NiPoint3 ray_dir = ray.second;
       if (debug) {
         NiPoint3 ray_end = ray_start + ray_dir*RAY_LENGTH;
   			DebugAPI::DrawSphere(glm::vec3(ray_start.x, ray_start.y, ray_start.z), 8.0, 10, {0.0, 1.0, 0.0, 1.0});
@@ -139,10 +139,10 @@ namespace {
 
 
     // Floor
-    std::std::vector<float>  floor_heights = {};
+    std::vector<float>  floor_heights = {};
     for (const auto& ray: rays) {
-      NiPoint3 ray_start = ray[0];
-      NiPoint3 ray_dir = ray[1] * -1.0;
+      NiPoint3 ray_start = ray.first;
+      NiPoint3 ray_dir = ray.second * -1.0;
       if (debug) {
         NiPoint3 ray_end = ray_start + ray_dir*RAY_LENGTH;
   			DebugAPI::DrawSphere(glm::vec3(ray_start.x, ray_start.y, ray_start.z), 8.0, 10, {0.0, 1.0, 0.0, 1.0});
@@ -222,8 +222,10 @@ namespace {
 			persi_actor_data->target_scale_v = 0.0;
 		}
 
-    if (SizeRaycastEnabled()) {
-			// Room Size adjustments
+    // Room Size adjustments
+    // We only do this if they are bigger than 1.5x their natural scale (currentOtherScale)
+    // and if enabled in the mcm
+    if (SizeRaycastEnabled() && targetScale > currentOtherScale * 1.5) {
       target_scale = GetMaxRoomScale(actor);
 		}
 
