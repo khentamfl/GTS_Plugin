@@ -242,7 +242,7 @@ namespace {
       if (actor->formID == 0x14) {
         log::info("room_scale: {}", room_scale);
       }
-      target_scale = min(room_scale, room_scale);
+      target_scale = min(target_scale, room_scale);
       if (actor->formID == 0x14) {
         log::info("new target_scale: {}", target_scale);
       }
