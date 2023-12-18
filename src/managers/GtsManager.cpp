@@ -188,7 +188,7 @@ namespace {
     }
 
 		if ((scale * stateScale) > max_scale && scale > other_scale && (scale * stateScale) > other_scale) {
-			return max_scale;
+			return max_scale / stateScale; // Make it look like we have more height
 		} else {
       return std::numeric_limits<float>::infinity();
     }
