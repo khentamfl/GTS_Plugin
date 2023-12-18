@@ -42,16 +42,16 @@ using namespace std;
 namespace Gts {
     float GetCeilingHeight(Actor* giant) {
         if (!giant) {
-        return std::numeric_limits<float>::infinity();
+            return std::numeric_limits<float>::infinity();
         }
 
         auto charCont = giant->GetCharController();
         if (!charCont) {
-        return std::numeric_limits<float>::infinity();
+            return std::numeric_limits<float>::infinity();
         }
         auto root_node = giant->GetCurrent3D();
         if (!root_node) {
-        return std::numeric_limits<float>::infinity();
+            return std::numeric_limits<float>::infinity();
         }
 
         // Calculation of ray directions
@@ -61,7 +61,7 @@ namespace Gts {
 
         auto bumperDirForwardUp = (
         charCont->bumperCollisionBound.center
-        + NiPoint3(0.0, 0.35 * charCont->bumperCollisionBound.extents.y, 0.0)
+        + NiPoint3(0.0, 0.25 * charCont->bumperCollisionBound.extents.y, 0.0)
         + NiPoint3(0.0, 0.0, charCont->bumperCollisionBound.extents.z)
         );
         bumperDirForwardUp = transform * bumperDirForwardUp;
@@ -97,7 +97,7 @@ namespace Gts {
             if (debug) {
                 NiPoint3 ray_end = ray_start + ray_dir*RAY_LENGTH;
                     DebugAPI::DrawSphere(glm::vec3(ray_start.x, ray_start.y, ray_start.z), 8.0, 10, {0.0, 1.0, 0.0, 1.0});
-                DebugAPI::DrawLineForMS(glm::vec3(ray_start.x, ray_start.y, ray_start.z), glm::vec3(ray_end.x, ray_end.y, ray_end.z), 10, {1.0, 0.0, 0.0, 1.0});
+                    DebugAPI::DrawLineForMS(glm::vec3(ray_start.x, ray_start.y, ray_start.z), glm::vec3(ray_end.x, ray_end.y, ray_end.z), 10, {1.0, 0.0, 0.0, 1.0});
                 }
             bool success = false;
             NiPoint3 endpos_up = CastRayStatics(giant, ray_start, ray_dir, RAY_LENGTH, success);
@@ -120,7 +120,7 @@ namespace Gts {
             if (debug) {
                 NiPoint3 ray_end = ray_start + ray_dir*RAY_LENGTH;
                     DebugAPI::DrawSphere(glm::vec3(ray_start.x, ray_start.y, ray_start.z), 8.0, 10, {0.0, 1.0, 1.0, 1.0});
-                DebugAPI::DrawLineForMS(glm::vec3(ray_start.x, ray_start.y, ray_start.z), glm::vec3(ray_end.x, ray_end.y, ray_end.z), 10, {1.0, 0.0, 1.0, 1.0});
+                    DebugAPI::DrawLineForMS(glm::vec3(ray_start.x, ray_start.y, ray_start.z), glm::vec3(ray_end.x, ray_end.y, ray_end.z), 10, {1.0, 0.0, 1.0, 1.0});
                 }
             bool success = false;
             NiPoint3 endpos_up = CastRayStatics(giant, ray_start, ray_dir, RAY_LENGTH, success);
@@ -147,7 +147,7 @@ namespace Gts {
 
         float room_height_m = GetCeilingHeight(giant);
         float room_height_s = room_height_m/1.82; // / height by 1.82 (default character height)
-        float max_scale = (room_height_s * 0.82) / stateScale; // Define max scale, make avalibale space seem bigger when prone etc
+        float max_scale = (room_height_s * 0.82); // Define max scale, make avalibale space seem bigger when prone etc
         if (giant->formID == 0x14) {
             log::info("State scale: {}", stateScale);
             log::info("room_height_m: {}", room_height_m);

@@ -98,7 +98,7 @@ namespace {
 		// Room Size adjustments
 		// We only do this if they are bigger than 1.05x their natural scale (currentOtherScale)
 		// and if enabled in the mcm
-		if (SizeRaycastEnabled() && target_scale > currentOtherScale * 1.05) {
+		if (SizeRaycastEnabled() && !actor->IsDead() && target_scale > currentOtherScale * 1.05) {
 			float room_scale = GetMaxRoomScale(actor);
 			if (room_scale > currentOtherScale) {
 				// Only apply room scale if room_scale > natural_scale
