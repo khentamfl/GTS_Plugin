@@ -219,7 +219,7 @@ namespace Gts {
 		float Scale = std::clamp(scale * GetScaleAdjustment(actor), 0.40f, 4.4f);
 
 		if (Resurrected) {
-			Cprint("Task Aborted, target was resurrected");
+			//Cprint("Task Aborted, target was resurrected");
 			return;
 		}
 
@@ -232,7 +232,7 @@ namespace Gts {
 			container = "Dropbox_Soul";
 			name = std::format("{} Soul Remains", actor->GetDisplayFullName());
 			soul = true;
-		} else if (LessGore()) { // Spawn soul if Less Gore is on
+		} else if (LessGore()) { // Always Spawn soul if Less Gore is on
 			container = "Dropbox_Soul";
 			name = std::format("Crushed Soul of {} ", actor->GetDisplayFullName());
 			soul = true;
@@ -240,9 +240,9 @@ namespace Gts {
 			container = "Dropbox_Bug";
 			name = std::format("Remains of {}", actor->GetDisplayFullName());
 		} else if (IsLiving(actor)) {
-			container = "Dropbox_Physics";
+			container = "Dropbox"; // spawn normal dropbox
 		} else {
-			container = "Dropbox_Undead_Physics";
+			container = "Dropbox_Undead";
 		}
 
 		
