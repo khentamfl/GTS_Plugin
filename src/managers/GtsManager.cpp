@@ -67,16 +67,16 @@ namespace {
 	}*/
 	float GetCeilingHeight(Actor* giant) {
     if (!giant) {
-      return std::numeric_limits<float>::infinity;
+      return std::numeric_limits<float>::infinity();
     }
 
     auto charCont = giant->GetCharController();
     if (!charCont) {
-      return std::numeric_limits<float>::infinity;
+      return std::numeric_limits<float>::infinity();
     }
     auto root_node = giant->GetCurrent3D();
     if (!root_node) {
-      return std::numeric_limits<float>::infinity;
+      return std::numeric_limits<float>::infinity();
     }
 
     // Calculation of ray directions
@@ -133,9 +133,9 @@ namespace {
     }
 
 		if (ceiling_heights.empty()) {
-			return std::numeric_limits<float>::infinity;
+			return std::numeric_limits<float>::infinity();
 		}
-    NiPoint3 ceiling = std::min_element(ceiling_heights.begin(), ceiling_heights.end());
+    float ceiling = std::min_element(ceiling_heights.begin(), ceiling_heights.end());
 
 
     // Floor
@@ -157,9 +157,9 @@ namespace {
     }
 
 		if (floor_heights.empty()) {
-			return std::numeric_limits<float>::infinity;
+			return std::numeric_limits<float>::infinity();
 		}
-    NiPoint3 floor = std::max_element(floor_heights.begin(), floor_heights.end());
+    float floor = std::max_element(floor_heights.begin(), floor_heights.end());
 
     // Room height
 		float room_height = fabs(ceiling - floor);
@@ -225,7 +225,7 @@ namespace {
     // Room Size adjustments
     // We only do this if they are bigger than 1.5x their natural scale (currentOtherScale)
     // and if enabled in the mcm
-    if (SizeRaycastEnabled() && targetScale > currentOtherScale * 1.05) {
+    if (SizeRaycastEnabled() && target_scale > currentOtherScale * 1.05) {
       target_scale = GetMaxRoomScale(actor);
 		}
 
