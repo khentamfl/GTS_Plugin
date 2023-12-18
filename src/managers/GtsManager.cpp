@@ -122,7 +122,7 @@ namespace {
       if (debug) {
         NiPoint3 ray_end = ray_start + ray_dir*RAY_LENGTH;
   			DebugAPI::DrawSphere(glm::vec3(ray_start.x, ray_start.y, ray_start.z), 8.0, 10, {0.0, 1.0, 0.0, 1.0});
-        DebugAPI::DrawLineForMS(glm::vec3(ray_start.x, ray_start.y, ray_start.z), glm::vec3(ray_end.x, ray_end.y, ray_end.z), 10, {1.0, 0.0, 0.0, 1.0})
+        DebugAPI::DrawLineForMS(glm::vec3(ray_start.x, ray_start.y, ray_start.z), glm::vec3(ray_end.x, ray_end.y, ray_end.z), 10, {1.0, 0.0, 0.0, 1.0});
   		}
       bool success = false;
       NiPoint3 endpos_up = CastRayStatics(giant, ray_start, ray_dir, RAY_LENGTH, success);
@@ -135,7 +135,7 @@ namespace {
 		if (ceiling_heights.empty()) {
 			return std::numeric_limits<float>::infinity;
 		}
-    NiPoint3 ceiling = std::min(ceiling_heights);
+    NiPoint3 ceiling = std::min_element(ceiling_heights.begin(), ceiling_heights.end());
 
 
     // Floor
@@ -146,7 +146,7 @@ namespace {
       if (debug) {
         NiPoint3 ray_end = ray_start + ray_dir*RAY_LENGTH;
   			DebugAPI::DrawSphere(glm::vec3(ray_start.x, ray_start.y, ray_start.z), 8.0, 10, {0.0, 1.0, 0.0, 1.0});
-        DebugAPI::DrawLineForMS(glm::vec3(ray_start.x, ray_start.y, ray_start.z), glm::vec3(ray_end.x, ray_end.y, ray_end.z), 10, {1.0, 0.0, 0.0, 1.0})
+        DebugAPI::DrawLineForMS(glm::vec3(ray_start.x, ray_start.y, ray_start.z), glm::vec3(ray_end.x, ray_end.y, ray_end.z), 10, {1.0, 0.0, 0.0, 1.0});
   		}
       bool success = false;
       NiPoint3 endpos_up = CastRayStatics(giant, ray_start, ray_dir, RAY_LENGTH, success);
@@ -159,7 +159,7 @@ namespace {
 		if (floor_heights.empty()) {
 			return std::numeric_limits<float>::infinity;
 		}
-    NiPoint3 floor = std::max(floor_heights);
+    NiPoint3 floor = std::max_element(floor_heights.begin(), floor_heights.end());
 
     // Room height
 		float room_height = fabs(ceiling - floor);
@@ -225,7 +225,7 @@ namespace {
     // Room Size adjustments
     // We only do this if they are bigger than 1.5x their natural scale (currentOtherScale)
     // and if enabled in the mcm
-    if (SizeRaycastEnabled() && targetScale > currentOtherScale * 1.5) {
+    if (SizeRaycastEnabled() && targetScale > currentOtherScale * 1.05) {
       target_scale = GetMaxRoomScale(actor);
 		}
 
