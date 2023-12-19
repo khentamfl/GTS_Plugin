@@ -697,15 +697,23 @@ namespace Gts {
 
 	float GetRaycastStateScale(Actor* giant) {
 	    // Goal is to make us effectively smaller during these checks, so RayCast won't adjust our height unless we're truly too big
+		float Normal = 1.0;
+		float Reduction = 1.0;
+		float HH = 0.0;
+		
 		if (IsProning(giant)) {
-			return 0.20;
+			Reduction = 0.20;
 		} else if (IsCrawling(giant)) {
-			return 0.35;
+			Reduction = 0.35;
 		} else if (giant->IsSneaking()) {
-			return 0.65;
+			HH = (HighHeelManager::GetBaseHHOffset(giant).lenght()/100)/1.82;
+			Reduction = 0.65;
 		} else {
-			return 1.0;
+			HH = (HighHeelManager::GetBaseHHOffset(giant).lenght()/100)/1.82;
+			Reduction 1.0;
 		}
+		log::info("HH of {} is {}", giant->GetDisplayFullName(), HH);
+		return (Normal - HH) * Reduction;
 	}
 
 	float GetProneAdjustment() {
