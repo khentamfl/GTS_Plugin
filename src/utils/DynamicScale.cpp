@@ -58,6 +58,7 @@ namespace Gts {
         auto transform = root_node->world;
         auto giantPos = giant->GetPosition() + NiPoint3(0.0, 0.0, 70.0);
         auto bumperPos = transform * charCont->bumperCollisionBound.center;
+		bumperPos.z = 70.0;
 
         auto bumperDirForwardUp = (
         charCont->bumperCollisionBound.center
