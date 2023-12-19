@@ -699,21 +699,21 @@ namespace Gts {
 	    // Goal is to make us effectively smaller during these checks, so RayCast won't adjust our height unless we're truly too big
 		float Normal = 1.0;
 		float Reduction = 1.0;
-		float HH = 0.0;
 		
 		if (IsProning(giant)) {
-			Reduction = 0.20;
+			return 0.20;
 		} else if (IsCrawling(giant)) {
-			Reduction = 0.35;
+			return 0.35;
 		} else if (giant->IsSneaking()) {
-			HH = (HighHeelManager::GetBaseHHOffset(giant).Length()/100)/1.82;
 			Reduction = 0.65;
 		} else {
-			HH = (HighHeelManager::GetBaseHHOffset(giant).Length()/100)/1.82;
 			Reduction = 1.0;
 		}
-		log::info("HH of {} is {}", giant->GetDisplayFullName(), HH);
-		return (Normal - HH) * Reduction;
+		float HH = HighHeelManager::GetBaseHHOffset(giant).Length()/100; // Get HH value
+		if (giant->formID == 0x14 || IsTeammate(giant)) {
+			log::info("HH of {} is {}", giant->GetDisplayFullName(), HH);
+		}
+		return (Normal + HH) * Reduction;
 	}
 
 	float GetProneAdjustment() {
