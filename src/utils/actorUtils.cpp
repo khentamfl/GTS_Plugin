@@ -706,10 +706,10 @@ namespace Gts {
 		} else if (IsCrawling(giant)) {
 			Reduction = 0.35;
 		} else if (giant->IsSneaking()) {
-			HH = (HighHeelManager::GetBaseHHOffset(giant).lenght()/100)/1.82;
+			HH = (HighHeelManager::GetBaseHHOffset(giant).Length()/100)/1.82;
 			Reduction = 0.65;
 		} else {
-			HH = (HighHeelManager::GetBaseHHOffset(giant).lenght()/100)/1.82;
+			HH = (HighHeelManager::GetBaseHHOffset(giant).Length()/100)/1.82;
 			Reduction 1.0;
 		}
 		log::info("HH of {} is {}", giant->GetDisplayFullName(), HH);
