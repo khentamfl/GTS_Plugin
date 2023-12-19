@@ -82,7 +82,7 @@ namespace {
 		pick_data.rayInput.enableShapeCollectionFilter = false;
 		pick_data.rayInput.filterInfo = bhkCollisionFilter::GetSingleton()->GetNewSystemGroup() << 16 | stl::to_underlying(COL_LAYER::kLOS);
 
-		picks_data.rayHitCollectorA8 = &collector;
+		pick_data.rayHitCollectorA8 = &collector;
 		
 
 		collision_world->PickObject(pick_data);
@@ -91,7 +91,7 @@ namespace {
 		if (collector.results.size() > 0) {
 			for (auto ray_result: collector.results) {
 				if (ray_result.fraction < min_fraction) {
-					auto shape = pick_data.shape;
+					auto shape = ray_result.shape;
 					if (shape) {
 						auto ni_shape = shape->userData;
 						if (ni_shape) {
@@ -249,7 +249,7 @@ namespace Gts {
 	collector.add_filter(ref->Get3D1(false));
 	collector.add_filter(ref->Get3D1(true));
     collector.skip_capsules = false;
-    return CastRay_StaticsOnly(ref, origin, direction, collector, length, success);
+    return CastRay_StaticsOnly(ref, origin, direction, length, collector, success);
   }
 }
 
