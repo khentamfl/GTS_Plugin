@@ -91,6 +91,7 @@ namespace Gts {
 
         // Ceiling
         std::vector<float>  ceiling_heights = {};
+        log::info("Casting ceiling rays");
         for (const auto& ray: rays) {
             NiPoint3 ray_start = ray.first;
             NiPoint3 ray_dir = ray.second;
@@ -113,6 +114,7 @@ namespace Gts {
         float ceiling = *std::min_element(ceiling_heights.begin(), ceiling_heights.end());
 
         // Floor
+        log::info("Casting floor rays");
         std::vector<float>  floor_heights = {};
         for (const auto& ray: rays) {
             NiPoint3 ray_start = ray.first;

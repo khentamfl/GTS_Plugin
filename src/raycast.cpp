@@ -40,7 +40,6 @@ namespace {
 		float min_fraction = 1.0;
 		success = !collector.results.empty();
 		if (collector.results.size() > 0) {
-			success = true;
 			for (auto ray_result: collector.results) {
 				if (ray_result.fraction < min_fraction) {
 					min_fraction = ray_result.fraction;
@@ -83,12 +82,13 @@ namespace {
 		pick_data.rayInput.filterInfo = bhkCollisionFilter::GetSingleton()->GetNewSystemGroup() << 16 | stl::to_underlying(COL_LAYER::kLOS);
 
 		pick_data.rayHitCollectorA8 = &collector;
-		
+
 
 		collision_world->PickObject(pick_data);
 		float min_fraction = 1.0;
 		success = false;
 		if (collector.results.size() > 0) {
+      log::info("Ray has results");
 			for (auto ray_result: collector.results) {
 				if (ray_result.fraction < min_fraction) {
 					auto shape = ray_result.shape;
@@ -96,11 +96,12 @@ namespace {
 						auto ni_shape = shape->userData;
 						if (ni_shape) {
 							auto filter_info = ni_shape->filterInfo;
-							
+
 							COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
 							if (collision_layer != COL_LAYER::kCharController) {
 								min_fraction = ray_result.fraction;
 								success = true;
+                log::info("  - Collided with {}", collision_layer);
 							}
 						} else {
 							min_fraction = ray_result.fraction;
@@ -244,7 +245,7 @@ namespace Gts {
   }
 
   NiPoint3 CastRayStatics(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success) {
-	 
+
 	RayCollector collector = RayCollector();
 	collector.add_filter(ref->Get3D1(false));
 	collector.add_filter(ref->Get3D1(true));
