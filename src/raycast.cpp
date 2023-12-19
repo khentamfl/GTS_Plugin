@@ -32,7 +32,7 @@ namespace {
 		pick_data.ray = delta; // Length in each axis to travel
 
 		// pick_data.rayHitCollectorA0 = &collector;
-		picks_data.rayHitCollectorA8 = &collector;
+		pick_data.rayHitCollectorA8 = &collector;
 		// pick_data.rayHitCollectorB0 = &collector;
 		// pick_data.rayHitCollectorB8 = &collector;
 
