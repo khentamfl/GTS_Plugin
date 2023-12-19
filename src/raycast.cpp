@@ -32,7 +32,7 @@ namespace {
 		pick_data.ray = delta; // Length in each axis to travel
 
 		// pick_data.rayHitCollectorA0 = &collector;
-		pick_data.rayHitCollectorA8 = &collector;
+		picks_data.rayHitCollectorA8 = &collector;
 		// pick_data.rayHitCollectorB0 = &collector;
 		// pick_data.rayHitCollectorB8 = &collector;
 
@@ -53,7 +53,7 @@ namespace {
 	}
 
 
-	NiPoint3 CastRay_StaticsOnly(TESObjectREFR* ref, const NiPoint3& in_origin, const NiPoint3& direction, const float& unit_length, bool& success) {
+	NiPoint3 CastRay_StaticsOnly(TESObjectREFR* ref, const NiPoint3& in_origin, const NiPoint3& direction, const float& unit_length, RayCollector& collector, bool& success) {
 		float length = unit_to_meter(unit_length);
 		success = false;
 		if (!ref) {
@@ -82,25 +82,38 @@ namespace {
 		pick_data.rayInput.enableShapeCollectionFilter = false;
 		pick_data.rayInput.filterInfo = bhkCollisionFilter::GetSingleton()->GetNewSystemGroup() << 16 | stl::to_underlying(COL_LAYER::kLOS);
 
-		NiPoint3 HitData;
-
-		float min_fraction = 1.0;
-
-		if (collision_world->PickObject(pick_data); pick_data.rayOutput.HasHit()) {
-			auto Object = static_cast<COL_LAYER>(pick_data.rayOutput.rootCollidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
-			//log::info(" Hit Layer True:  {}", Object);
-			//if (Object != COL_LAYER::kCharController) {
-				float fraction = pick_data.rayOutput.hitFraction;
-				if (fraction < min_fraction) {
-					min_fraction = fraction;
-				}
-
-				HitData = meter_to_unit(origin + normed * length * min_fraction);
-				success = true; // we hit something, make it true so effect is applied 
-			//}
-		} 
+		picks_data.rayHitCollectorA8 = &collector;
 		
-		return HitData;
+
+		collision_world->PickObject(pick_data);
+		float min_fraction = 1.0;
+		success = false;
+		if (collector.results.size() > 0) {
+			for (auto ray_result: collector.results) {
+				if (ray_result.fraction < min_fraction) {
+					auto shape = pick_data.shape;
+					if (shape) {
+						auto ni_shape = shape->userData;
+						if (ni_shape) {
+							auto filter_info = ni_shape->filterInfo;
+							
+							COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
+							if (collision_layer != COL_LAYER::kCharController) {
+								min_fraction = ray_result.fraction;
+								success = true;
+							}
+						} else {
+							min_fraction = ray_result.fraction;
+						}
+					} else {
+						min_fraction = ray_result.fraction;
+					}
+				}
+			}
+			return meter_to_unit(origin + normed * length * min_fraction);
+		} else {
+			return NiPoint3();
+		}
 	}
 }
 
@@ -231,15 +244,12 @@ namespace Gts {
   }
 
   NiPoint3 CastRayStatics(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success) {
-    /*RayCollector collector = RayCollector();
+	 
+	RayCollector collector = RayCollector();
 	collector.add_filter(ref->Get3D1(false));
 	collector.add_filter(ref->Get3D1(true));
-	collector.skip_capsules = true;
-	std::vector<COL_LAYER> groups = {COL_LAYER::kUnidentified, COL_LAYER::kProps, COL_LAYER::kStatic, COL_LAYER::kTerrain, COL_LAYER::kGround, COL_LAYER::kInvisibleWall, COL_LAYER::kTransparentWall};
-	for (auto& group: groups) {
-		collector.add_group_filter(group);
-	}*/
-    return CastRay_StaticsOnly(ref, origin, direction, length, success);
+    collector.skip_capsules = false;
+    return CastRay_StaticsOnly(ref, origin, direction, collector, length, success);
   }
 }
 
