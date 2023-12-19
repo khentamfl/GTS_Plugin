@@ -711,7 +711,7 @@ namespace Gts {
 		}
 		float HH = (HighHeelManager::GetBaseHHOffset(giant).Length()/100)/1.82; // Get HH value and convert it to meters
 		if (giant->formID == 0x14 || IsTeammate(giant)) {
-			log::info("HH of {} is {}", giant->GetDisplayFullName(), HH);
+			//log::info("HH of {} is {}", giant->GetDisplayFullName(), HH);
 		}
 		return (Normal + HH) * Reduction;
 	}

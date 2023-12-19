@@ -89,7 +89,7 @@ namespace {
 		if (collision_world->PickObject(pick_data); pick_data.rayOutput.HasHit()) {
 			auto Object = static_cast<COL_LAYER>(pick_data.rayOutput.rootCollidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
 			//log::info(" Hit Layer True:  {}", Object);
-			if (Object != COL_LAYER::kCharController) {
+			//if (Object != COL_LAYER::kCharController) {
 				float fraction = pick_data.rayOutput.hitFraction;
 				if (fraction < min_fraction) {
 					min_fraction = fraction;
@@ -97,7 +97,7 @@ namespace {
 
 				HitData = meter_to_unit(origin + normed * length * min_fraction);
 				success = true; // we hit something, make it true so effect is applied 
-			}
+			//}
 		} 
 		
 		return HitData;

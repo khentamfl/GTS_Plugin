@@ -98,18 +98,18 @@ namespace {
 		// Room Size adjustments
 		// We only do this if they are bigger than 1.05x their natural scale (currentOtherScale)
 		// and if enabled in the mcm
-		if (SizeRaycastEnabled() && !actor->IsDead() && target_scale > currentOtherScale * 1.05) {
+		if (SizeRaycastEnabled() && !actor->IsDead() && target_scale > 1.025) {
 			float room_scale = GetMaxRoomScale(actor);
 			if (room_scale > currentOtherScale) {
 				// Only apply room scale if room_scale > natural_scale
 				//   This stops it from working when room_scale < 1.0
 				if (actor->formID == 0x14) {
-					log::info("old target_scale: {}", target_scale);
-					log::info("room_scale: {}", room_scale);
+					//log::info("old target_scale: {}", target_scale);
+					//log::info("room_scale: {}", room_scale);
 				}
 				target_scale = min(target_scale, room_scale);
 				if (actor->formID == 0x14) {
-					log::info("new target_scale: {}", target_scale);
+					//log::info("new target_scale: {}", target_scale);
 					}
 				}
 			}
