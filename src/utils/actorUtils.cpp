@@ -710,7 +710,7 @@ namespace Gts {
 			Reduction = 0.65;
 		} else {
 			HH = (HighHeelManager::GetBaseHHOffset(giant).Length()/100)/1.82;
-			Reduction 1.0;
+			Reduction = 1.0;
 		}
 		log::info("HH of {} is {}", giant->GetDisplayFullName(), HH);
 		return (Normal - HH) * Reduction;
