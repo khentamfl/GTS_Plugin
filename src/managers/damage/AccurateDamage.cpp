@@ -467,8 +467,6 @@ namespace Gts {
 		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result * bbmult, random);
 		// ^ Chance to break bonues and inflict additional damage, as well as making target more vulerable to size damage
 
-		StartCombat(giant, tiny, false);
-
 		result *= damagebonus;
 
 		if ((Cause == DamageSource::CrushedLeft || Cause == DamageSource::CrushedRight) && Runtime::HasPerkTeam(giant, "hhBonus")) {
@@ -493,6 +491,7 @@ namespace Gts {
 		if (DoDamage) {
 			ModVulnerability(giant, tiny, result);
 			InflictSizeDamage(giant, tiny, result);
+			StartCombat(giant, tiny, false);
 		}
 
 		if (GetAV(tiny, ActorValue::kHealth) <= 0 || tiny->IsDead()) {
