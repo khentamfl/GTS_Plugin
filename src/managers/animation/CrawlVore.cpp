@@ -85,9 +85,8 @@ namespace {
 		VoreData.GrabAll();
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("JumpFall");
-
 			SetBeingHeld(tiny, true);
-			StartCombat(giant, tiny, true);
+			Attacked(tiny, giant);
 		}
 		if (AllowFeetTracking() && giant->formID == 0x14) {
 			ManageCamera(giant, false, 4.0);

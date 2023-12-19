@@ -210,8 +210,6 @@ namespace {
 			if (!IsTeammate(grabbedActor)) {
 				StartCombat(giant, grabbedActor, true);
 			}
-			//std::string message = std::format("While you have actor grabbed, you constantly lose stamina over time. You transfer 50% received damage to the actor in your hand. Press E to damage the actor, RMB to release, V to eat, X to throw, B to put between breasts. You can have only one actor in hand and can't pick up other actor if you have actor between your breasts.");
-			//TutorialMessage(message, "Grab");
 		}
 		GRumble::Once("GrabCatch", giant, 2.0, 0.15);
 	}
@@ -239,7 +237,7 @@ namespace {
 		auto grabbedActor = Grab::GetHeldActor(giant);
 
 		if (grabbedActor) {
-			StartCombat(giant, grabbedActor, true); // force combat
+			Attacked(grabbedActor, giant); // force combat
 			float sizeDiff = get_visual_scale(giant)/get_visual_scale(grabbedActor);
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
 			float multiplier = Persistent::GetSingleton().size_related_damage_mult;

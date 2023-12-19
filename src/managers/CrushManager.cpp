@@ -207,8 +207,6 @@ namespace Gts {
 					std::uniform_real_distribution<float> dis(-0.2, 0.2);
 
 					AddSMTDuration(giant, 5.0);
-					StartCombat(giant, tiny, false);
-
 					ScareChance(giant);
 
 					if (!IsLiving(tiny) || LessGore()) {
@@ -248,9 +246,7 @@ namespace Gts {
 					if (tiny->formID != 0x14) {
 						Disintegrate(tiny, true); // Set critical stage 4 on actors
 					} else if (tiny->formID == 0x14) {
-						if (IsLiving(tiny)) {
-							TriggerScreenBlood(50);
-						}
+						TriggerScreenBlood(50);
 						tiny->SetAlpha(0.0); // Player can't be disintegrated, so we make player Invisible
 					}
 

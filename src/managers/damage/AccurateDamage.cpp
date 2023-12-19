@@ -432,8 +432,6 @@ namespace Gts {
 			return;
 		}
 
-		KillActor(giant, tiny);
-
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& crushmanager = CrushManager::GetSingleton();
 
@@ -469,9 +467,7 @@ namespace Gts {
 		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result * bbmult, random);
 		// ^ Chance to break bonues and inflict additional damage, as well as making target more vulerable to size damage
 
-
 		StartCombat(giant, tiny, false);
-
 
 		result *= damagebonus;
 

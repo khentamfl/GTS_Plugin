@@ -119,13 +119,13 @@ namespace Gts {
 	}
 
 	void StartCombat(Actor* giant, Actor* tiny, bool Forced) {
-		/*if (!Persistent::GetSingleton().hostile_toggle) {
+		if (!Persistent::GetSingleton().hostile_toggle && !Forced) {
 			return;
-		}*/
+		}
 		if (tiny->IsDead()) {
 			return;
 		}
-		if (Forced == true || GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.75) {
+		if (Forced == true || GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.65) {
 			Attacked(tiny, giant);
 		}
 	}

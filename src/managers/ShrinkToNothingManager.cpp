@@ -47,12 +47,13 @@ namespace Gts {
 				data.state = ShrinkState::Shrinking;
 			} else if (data.state == ShrinkState::Shrinking) {
 				if (data.delay.ShouldRun()) {
+					Attacked(tiny, giant);
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						CompleteDragonQuest(tiny, false, tiny->IsDead());
 					}
 					// Do shrink
 					float currentSize = get_visual_scale(tiny);
-
+					
 					// Fully shrunk
 					ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
 					KillActor(giant, tiny);
@@ -70,7 +71,6 @@ namespace Gts {
 								SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
 								SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
 								SpawnParticle(tiny, 1.20, "GTS/Damage/ShrinkOrCrush.nif", NiMatrix3(), root->world.translate, get_visual_scale(tiny) * 10, 7, root);
-
 							}
 							Runtime::CreateExplosion(tiny, get_visual_scale(tiny)/4, "BloodExplosion");
 							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
@@ -81,8 +81,6 @@ namespace Gts {
 							Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
 						}
 					}
-
-					StartCombat(giant, tiny, false);
 
 					AddSMTDuration(giant, 5.0);
 
