@@ -32,6 +32,10 @@ namespace Gts {
   std::vector<AllRayCollectorOutput>& AllRayCollector::GetHits() {
     return this->hits;
   }
+
+  bool AllRayCollector::HasHit() {
+    return !this->hits.empty();
+  }
 }
 
 
