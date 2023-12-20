@@ -57,8 +57,9 @@ namespace Gts {
 		// Calculation of ray directions
 		auto transform = root_node->world;
 		auto giantPos = giant->GetPosition() + NiPoint3(0.0, 0.0, 70.0);
-		auto bumperPos = transform * charCont->bumperCollisionBound.center;
+		auto bumperPos = charCont->bumperCollisionBound.center;
 		bumperPos.z = 70.0;
+    bumperPos = transform * bumperPos;
 
 		auto bumperDirForwardUp = (
 			charCont->bumperCollisionBound.center
