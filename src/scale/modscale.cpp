@@ -3,6 +3,7 @@
 #include "managers/GtsManager.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
+#include "scale/scale.hpp"
 
 using namespace Gts;
 
@@ -62,6 +63,9 @@ namespace Gts {
 			return false;
 		}
 		bool result = false;
+		float natural_scale = get_natural_scale(actor);
+		
+		target_scale *= natural_scale; // take natural scale into account when setting it
 
 		auto model = actor->Get3D(false);
 		if (model) {
@@ -174,7 +178,6 @@ namespace Gts {
 				return get_ref_scale(actor);
 				break;
 			case SizeMethod::Hybrid:
-				//set_ref_scale(actor, scale/(get_npcnode_scale(actor)*get_model_scale(actor)));
 				if (actor->formID == 0x14) {
 					return get_npcnode_scale(actor);
 				} else {
@@ -199,7 +202,6 @@ namespace Gts {
 				return true;
 				break;
 			case SizeMethod::Hybrid:
-				//set_ref_scale(actor, scale/(get_npcnode_scale(actor)*get_model_scale(actor)));
 				if (actor->formID == 0x14) {
 					return set_npcnode_scale(actor, scale);
 				} else {

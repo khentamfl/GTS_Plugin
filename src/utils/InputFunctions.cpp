@@ -94,7 +94,7 @@ namespace {
 				Cprint("{} Height: {:.2f} m / {:.2f} ft; Weight: {:.2f} kg / {:.2f} lb;", actor->GetDisplayFullName(), GetActorHeight(actor, true), GetActorHeight(actor, false), GetActorWeight(actor, true), GetActorWeight(actor, false));
 				Cprint("{} Scale: {:.2f}  (Natural Scale: {:.2f}; Size Limit: {:.2f}; Aspect Of Giantess: {:.2f})", actor->GetDisplayFullName(), scale, naturalscale, maxscale, gigantism);
 				if (hh > 0.0) { // if HH is > 0, print HH info
-					Cprint("{} High Heels: {:.2f} ( +{:.2f} m / +{:.2f} ft )", actor->GetDisplayFullName(), hh, hh/1.82, (hh/1.82)*3.28);
+					Cprint("{} High Heels: {:.2f} (+{:.2f} cm / +{:.2f} ft)", actor->GetDisplayFullName(), hh, hh, hh*3.28);
 				}
 			}
 		}
