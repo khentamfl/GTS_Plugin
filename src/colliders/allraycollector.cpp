@@ -29,7 +29,7 @@ namespace RE {
     return static_cast<hkpAllRayHitCollector*>(memory);
   }
 
-  std::unique_ptr<hkpAllRayHitCollector> CreatePtr() {
+  std::unique_ptr<hkpAllRayHitCollector> hkpAllRayHitCollector::CreatePtr() {
     return std::unique_ptr<hkpAllRayHitCollector>(hkpAllRayHitCollector::Create());
   }
 }
