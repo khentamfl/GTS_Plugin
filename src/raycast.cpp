@@ -1,5 +1,6 @@
 #include "UI/DebugAPI.hpp"
 #include "raycast.hpp"
+#include "colliders/allraycollector.hpp"
 
 using namespace Gts;
 using namespace RE;
@@ -52,7 +53,7 @@ namespace {
 	}
 
 
-	NiPoint3 CastRay_StaticsOnly(TESObjectREFR* ref, const NiPoint3& in_origin, const NiPoint3& direction, const float& unit_length, RayCollector& collector, bool& success) {
+	NiPoint3 CastRay_StaticsOnly(TESObjectREFR* ref, const NiPoint3& in_origin, const NiPoint3& direction, const float& unit_length, bool& success) {
 		float length = unit_to_meter(unit_length);
 		success = false;
 		if (!ref) {
@@ -81,6 +82,7 @@ namespace {
 		pick_data.rayInput.enableShapeCollectionFilter = false;
 		pick_data.rayInput.filterInfo = bhkCollisionFilter::GetSingleton()->GetNewSystemGroup() << 16 | stl::to_underlying(COL_LAYER::kLOS);
 
+    hkpAllRayHitCollector collector = hkpAllRayHitCollector();
 		pick_data.rayHitCollectorA8 = &collector;
 
 
@@ -89,26 +91,15 @@ namespace {
 		success = false;
 		if (collector.results.size() > 0) {
 			log::info("Ray has results");
-			for (auto ray_result: collector.results) {
-				if (ray_result.fraction < min_fraction) {
-					auto shape = ray_result.shape;
-					if (shape) {
-						auto ni_shape = shape->userData;
-						if (ni_shape) {
-							auto filter_info = ni_shape->filterInfo;
-
-							COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
-							if (collision_layer != COL_LAYER::kCharController) {
-								min_fraction = ray_result.fraction;
-								success = true;
-								log::info("  - Collided with {}", collision_layer);
-							}
-						} else {
-							min_fraction = ray_result.fraction;
-						}
-					} else {
+			for (auto ray_result: collector.GetHits()) {
+				if (ray_result.hitFraction < min_fraction) {
+          auto filter_info = ray_result.rootCollidable->broadPhaseHandle.collisionFilterInfo;
+					COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
+					if (collision_layer != COL_LAYER::kCharController) {
 						min_fraction = ray_result.fraction;
-					}
+						success = true;
+						log::info("  - Collided with {}", collision_layer);
+          }
 				}
 			}
 			return meter_to_unit(origin + normed * length * min_fraction);
