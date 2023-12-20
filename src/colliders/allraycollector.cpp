@@ -7,7 +7,7 @@ namespace RE {
 		const auto a_idx = 0x01;
 		const auto addr = vtable.address() + (sizeof(void *) * a_idx);
 		const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
-		REL::Relocation<void(hkpCapsuleShape*)> func(result);
+		REL::Relocation<void(hkpAllRayHitCollector*)> func(result);
 		func(this);
   }
 
@@ -16,7 +16,7 @@ namespace RE {
 		const auto a_idx = 0x00;
 		const auto addr = vtable.address() + (sizeof(void *) * a_idx);
 		const auto result = *reinterpret_cast<std::uintptr_t *>(addr);
-		REL::Relocation<void(hkpCapsuleShape*)> func(result);
+		REL::Relocation<void(hkpAllRayHitCollector*)> func(result);
 		func(this);
   }
 }
