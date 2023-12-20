@@ -79,7 +79,7 @@ namespace {
 		NiPoint3 delta = end - origin;
 		pick_data.ray = delta; // Length in each axis to travel
 
-		pick_data.rayInput.enableShapeCollectionFilter = false;
+		pick_data.rayInput.enableShapeCollectionFilter = true;
 		pick_data.rayInput.filterInfo = bhkCollisionFilter::GetSingleton()->GetNewSystemGroup() << 16 | stl::to_underlying(COL_LAYER::kLOS);
 
     auto collector = hkpAllRayHitCollector::CreatePtr();
