@@ -11,7 +11,7 @@ namespace RE
 		// override (hkpRayHitCollector)
 		void AddRayHit(const hkpCdBody& a_body, const hkpShapeRayCastCollectorOutput& a_hitInfo) override;  // 01
 
-		~hkpClosestRayHitCollector() override;  // 00
+		~hkpAllRayHitCollector() override;  // 00
 
     constexpr hkArray<hkpWorldRayCastOutput>& GetHits() noexcept
     {
@@ -20,7 +20,7 @@ namespace RE
 
 		constexpr void Reset() noexcept
 		{
-      m_hits.clear();
+      m_hits = hkInplaceArray<hkpWorldRayCastOutput,8>();
 			hkpRayHitCollector::Reset();
 		}
 

@@ -83,7 +83,7 @@ namespace {
 		pick_data.rayInput.filterInfo = bhkCollisionFilter::GetSingleton()->GetNewSystemGroup() << 16 | stl::to_underlying(COL_LAYER::kLOS);
 
     hkpAllRayHitCollector collector = hkpAllRayHitCollector();
-		pick_data.rayHitCollectorA8 = &collector;
+		pick_data.rayHitCollectorA8 = reinterpret_cast<hkpClosestRayHitCollector*>(&collector);
 
 
 		collision_world->PickObject(pick_data);
