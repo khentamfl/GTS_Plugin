@@ -38,7 +38,7 @@ namespace {
 
 		collision_world->PickObject(pick_data);
 
-		for (auto ray_result: collector->GetHits()) {
+		for (auto& ray_result: collector->GetHits()) {
       ray_result.position = meter_to_unit(origin + normed * length * ray_result.hitFraction);
 		}
     std::ranges::sort(collector->GetHits(), [](const AllRayCollectorOutput &a, const AllRayCollectorOutput &b)
@@ -57,7 +57,7 @@ namespace Gts {
 		CastRayImpl(ref, origin, direction, length, collector.get());
 
     if (collector->HasHit()) {
-      for (auto hit: collector->GetHits()) {
+      for (auto& hit: collector->GetHits()) {
         // This varient just returns the first result
         success = true;
         return hit.position;
@@ -75,7 +75,7 @@ namespace Gts {
 		CastRayImpl(ref, origin, direction, length, collector.get());
 
     if (collector->HasHit()) {
-      for (auto hit: collector->GetHits()) {
+      for (auto& hit: collector->GetHits()) {
         // This varient filters out the char ones
         auto collision_layer = static_cast<COL_LAYER>(hit.rootCollidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
         if (collision_layer != COL_LAYER::kCharController) {
