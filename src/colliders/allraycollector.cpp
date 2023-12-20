@@ -21,7 +21,7 @@ namespace RE {
   }
 
   hkpAllRayHitCollector* hkpAllRayHitCollector::Create() {
-    std::size_t a_size = sizeof(hkpAllRayHitCollector)
+    std::size_t a_size = sizeof(hkpAllRayHitCollector);
     std::uintptr_t a_vtbl = hkpAllRayHitCollector::VTABLE[0].address();
     auto memory = malloc(a_size);
     std::memset(memory, 0, a_size);
