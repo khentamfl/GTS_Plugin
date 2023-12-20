@@ -70,10 +70,10 @@ namespace Gts {
     ray2_p.y += charCont->bumperCollisionBound.extents.y * 0.25;
     ray2_p = transform * ray2_p;
     // straight up
-    ray2_d = NiPoint3(0.0, 0.0, 1.0);
+    auto ray2_d = NiPoint3(0.0, 0.0, 1.0);
 
     // At ray2 but tilting forward a bit
-    auto ray3_p = ray2_p
+    auto ray3_p = ray2_p;
 		auto ray3_d = (
 			charCont->bumperCollisionBound.center
 			+ NiPoint3(0.0, 0.25 * charCont->bumperCollisionBound.extents.y, 0.0)
@@ -84,7 +84,7 @@ namespace Gts {
 		ray3_d.Unitize();
 
     // At ray2 but tilting backwards a bit
-    auto ray4_p = ray2_p
+    auto ray4_p = ray2_p;
 		auto ray4_d = (
       charCont->bumperCollisionBound.center
 			+ NiPoint3(0.0, -0.25 * charCont->bumperCollisionBound.extents.y, 0.0)
