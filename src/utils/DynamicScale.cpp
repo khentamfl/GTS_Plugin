@@ -67,7 +67,7 @@ namespace Gts {
     	//  but with only 70u up from giant root
 		ray2_p.z = 70.0;
 		// more forwards
-		ray2_p.y += (charCont->bumperCollisionBound.extents.y * 0.50) * scale;
+		ray2_p.y += (charCont->bumperCollisionBound.extents.y * 0.75) * scale;
 		ray2_p = transform * ray2_p;
 		// straight up
 		auto ray2_d = NiPoint3(0.0, 0.0, 1.0);
