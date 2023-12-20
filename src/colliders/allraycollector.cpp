@@ -23,8 +23,8 @@ namespace RE {
   hkpAllRayHitCollector* hkpAllRayHitCollector::Create() {
     std::uintptr_t a_vtbl = hkpAllRayHitCollector::VTABLE[0].address();
     hkpAllRayHitCollector* memory = new hkpAllRayHitCollector();
-    reinterpret_cast<std::uintptr_t*>(memory)[0] = a_vtbl;
-    auto result =  static_cast<hkpAllRayHitCollector*>(memory)
+    reinterpret_cast<std::uintptr_t*>(memory)[0] = a_vtbl; // HERE BE DRAGONS
+    auto result =  static_cast<hkpAllRayHitCollector*>(memory);
     result->Reset();
     return result;
   }
