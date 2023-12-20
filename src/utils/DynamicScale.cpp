@@ -56,24 +56,24 @@ namespace Gts {
 
 		// === Calculation of ray directions ===
 		auto transform = root_node->world;
-    // ray 1 center on giant + 70
+   		// ray 1 center on giant + 70
 		auto ray1_p = NiPoint3(0.0, 0.0, 70.0); // in local space
-    ray1_p = transform * ray1_p; // in global space
-    // straight up
-    auto ray1_d = NiPoint3(0.0, 0.0, 1.0); // direction
+		ray1_p = transform * ray1_p; // in global space
+		// straight up
+		auto ray1_d = NiPoint3(0.0, 0.0, 1.0); // direction
 
-    // ray 2 at bumper center
+    	// ray 2 at bumper center
 		auto ray2_p = charCont->bumperCollisionBound.center;
-    //  but with only 70u up from giant root
+    	//  but with only 70u up from giant root
 		ray2_p.z = 70.0;
-    // more forwards
-    ray2_p.y += charCont->bumperCollisionBound.extents.y * 0.25;
-    ray2_p = transform * ray2_p;
-    // straight up
-    auto ray2_d = NiPoint3(0.0, 0.0, 1.0);
+		// more forwards
+		ray2_p.y += charCont->bumperCollisionBound.extents.y * 0.50;
+		ray2_p = transform * ray2_p;
+		// straight up
+		auto ray2_d = NiPoint3(0.0, 0.0, 1.0);
 
-    // At ray2 but tilting forward a bit
-    auto ray3_p = ray2_p;
+		// At ray2 but tilting forward a bit
+		auto ray3_p = ray2_p;
 		auto ray3_d = (
 			charCont->bumperCollisionBound.center
 			+ NiPoint3(0.0, 0.25 * charCont->bumperCollisionBound.extents.y, 0.0)
@@ -83,10 +83,10 @@ namespace Gts {
 		ray3_d = ray3_d - ray3_p;
 		ray3_d.Unitize();
 
-    // At ray2 but tilting backwards a bit
-    auto ray4_p = ray2_p;
+		// At ray2 but tilting backwards a bit
+		auto ray4_p = ray2_p;
 		auto ray4_d = (
-      charCont->bumperCollisionBound.center
+      	charCont->bumperCollisionBound.center
 			+ NiPoint3(0.0, -0.25 * charCont->bumperCollisionBound.extents.y, 0.0)
 			+ NiPoint3(0.0, 0.0, charCont->bumperCollisionBound.extents.z)
 			);
@@ -120,7 +120,9 @@ namespace Gts {
 			bool success = false;
 			NiPoint3 endpos_up = CastRayStatics(giant, ray_start, ray_dir, RAY_LENGTH, success);
 			if (success) {
-				DebugAPI::DrawSphere(glm::vec3(endpos_up.x, endpos_up.y, endpos_up.z), 5.0, 30, {1.0, 0.0, 0.0, 1.0});
+				if (debug) {
+					DebugAPI::DrawSphere(glm::vec3(endpos_up.x, endpos_up.y, endpos_up.z), 5.0, 30, {1.0, 0.0, 0.0, 1.0});
+				}
 				ceiling_heights.push_back(endpos_up.z);
 			}
 		}
@@ -144,7 +146,9 @@ namespace Gts {
 			bool success = false;
 			NiPoint3 endpos_up = CastRayStatics(giant, ray_start, ray_dir, RAY_LENGTH, success);
 			if (success) {
-				DebugAPI::DrawSphere(glm::vec3(endpos_up.x, endpos_up.y, endpos_up.z), 5.0, 30, {1.0, 0.0, 1.0, 1.0});
+				if (debug) {
+					DebugAPI::DrawSphere(glm::vec3(endpos_up.x, endpos_up.y, endpos_up.z), 5.0, 30, {1.0, 0.0, 1.0, 1.0});
+				}
 				floor_heights.push_back(endpos_up.z);
 			}
 		}
