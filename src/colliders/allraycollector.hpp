@@ -24,6 +24,10 @@ namespace RE
 			hkpRayHitCollector::Reset();
 		}
 
+    static hkpAllRayHitCollector* Create();
+
+    static std::unique_ptr<hkpAllRayHitCollector> CreatePtr();
+
 		// members
 		hkInplaceArray<hkpWorldRayCastOutput,8> m_hits;
 	};
