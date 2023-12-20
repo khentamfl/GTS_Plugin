@@ -65,7 +65,7 @@ namespace Gts {
     }
 
     success = false;
-    return result;
+    return NiPoint3();
 	}
 
 	NiPoint3 CastRayStatics(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success) {
