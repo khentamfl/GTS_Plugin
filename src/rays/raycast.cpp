@@ -8,17 +8,16 @@ using namespace RE;
 namespace {
 	void CastRayImpl(TESObjectREFR* ref, const NiPoint3& in_origin, const NiPoint3& direction, const float& unit_length, AllRayCollector* collector) {
 		float length = unit_to_meter(unit_length);
-		success = false;
 		if (!ref) {
-			return NiPoint3();
+			return;
 		}
 		auto cell = ref->GetParentCell();
 		if (!cell) {
-			return NiPoint3();
+			return;
 		}
 		auto collision_world = cell->GetbhkWorld();
 		if (!collision_world) {
-			return NiPoint3();
+			return;
 		}
 		bhkPickData pick_data;
 
@@ -56,9 +55,6 @@ namespace Gts {
     collector->Reset();
     collector->filterInfo = bhkCollisionFilter::GetSingleton()->GetNewSystemGroup() << 16 | stl::to_underlying(COL_LAYER::kLOS);
 		CastRayImpl(ref, origin, direction, length, collector.get());
-    success = false;
-
-    NiPoint3 result();
 
     if (collector->HasHit()) {
       for (auto hit: collector->GetHits()) {
@@ -68,6 +64,7 @@ namespace Gts {
       }
     }
 
+    success = false;
     return result;
 	}
 
@@ -76,9 +73,6 @@ namespace Gts {
     collector->Reset();
     collector->filterInfo = bhkCollisionFilter::GetSingleton()->GetNewSystemGroup() << 16 | stl::to_underlying(COL_LAYER::kLOS);
 		CastRayImpl(ref, origin, direction, length, collector.get());
-    success = false;
-
-    NiPoint3 result();
 
     if (collector->HasHit()) {
       for (auto hit: collector->GetHits()) {
@@ -91,6 +85,7 @@ namespace Gts {
       }
     }
 
-    return result;
+    success = false;
+    return NiPoint3();
 	}
 }
