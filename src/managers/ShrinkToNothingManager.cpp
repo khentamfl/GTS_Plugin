@@ -53,7 +53,7 @@ namespace Gts {
 					}
 					// Do shrink
 					float currentSize = get_visual_scale(tiny);
-					
+
 					// Fully shrunk
 					ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
 					KillActor(giant, tiny);
@@ -85,7 +85,7 @@ namespace Gts {
 					AddSMTDuration(giant, 5.0);
 
 					ApplyShakeAtNode(tiny, 20, "NPC Root [Root]", 20.0);
-					
+
 					ActorHandle giantHandle = giant->CreateRefHandle();
 					ActorHandle tinyHandle = tiny->CreateRefHandle();
 					std::string taskname = std::format("STN {}", tiny->formID);

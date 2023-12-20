@@ -53,7 +53,7 @@ namespace {
 	inline const auto Att_MagickStorage = _byteswap_ulong('MTSG');
 
 	// Quest
-    inline const auto Record_StolenSize = _byteswap_ulong('QSSR');
+	inline const auto Record_StolenSize = _byteswap_ulong('QSSR');
 	inline const auto Record_CrushCount = _byteswap_ulong('QCCR');
 	inline const auto Record_STNCount = _byteswap_ulong('QSTR');
 	inline const auto Record_HugStealCount = _byteswap_ulong('QHSR');
@@ -299,7 +299,7 @@ namespace Gts {
 							scaleOverride = -1.0;
 						}
 
-                        float stolen_attributes;
+						float stolen_attributes;
 						if (version >= 8) {
 							serde->ReadRecordData(&stolen_attributes, sizeof(stolen_attributes));
 						} else {
@@ -525,7 +525,6 @@ namespace Gts {
 				serde->ReadRecordData(&GiantCount, sizeof(GiantCount));
 				GetSingleton().GiantCount = GiantCount;
 			}
-			
 			///////////////////////////////////////////////////////////////////////////
 			else if (type == HostileToggle) {
 				bool hostile_toggle;
@@ -933,7 +932,7 @@ namespace Gts {
 		}
 		bool PCEffectImmunity = GetSingleton().PCEffectImmunity;
 		serde->WriteRecordData(&PCEffectImmunity, sizeof(PCEffectImmunity));
-		
+
 		if (!serde->OpenRecord(EnableIconsRecord, 1)) {
 			log::error("Unable to open Toggle Icons record to write cosave data");
 			return;

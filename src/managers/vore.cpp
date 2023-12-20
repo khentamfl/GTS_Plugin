@@ -139,7 +139,8 @@ namespace {
 	void Vore_AdvanceQuest(Actor* pred, Actor* tiny, bool WasDragon, bool WasGiant) {
 		if (!AllowDevourment() && pred->formID == 0x14 && WasDragon) {
 			CompleteDragonQuest(tiny, true, false);
-		} if (WasGiant) {
+		}
+		if (WasGiant) {
 			AdvanceQuestProgression(pred, tiny, 7, 1, true);
 		} else {
 			AdvanceQuestProgression(pred, tiny, 6, 1, true);
@@ -165,7 +166,7 @@ namespace Gts {
 			auto giant = this->giant.get().get();
 			Vore::GetSingleton().AddVoreBuff(this->giant, tinyref);
 			VoreMessage_SwallowedAbsorbing(giant, tiny);
-			
+
 			if (giant->formID == 0x14) {
 				CallVampire();
 
@@ -275,7 +276,8 @@ namespace Gts {
 		}
 		if (IsDragon(tiny) || IsMammoth(tiny)) {
 			mealEffiency *= 6.0;
-		} if (IsGiant(tiny)) {
+		}
+		if (IsGiant(tiny)) {
 			mealEffiency *= 2.6;
 		}
 		this->appliedFactor = 0.0;

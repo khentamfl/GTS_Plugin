@@ -14,8 +14,8 @@ namespace Gts {
 	float FirstPersonCombat::GetScaleOverride(bool IsCrawling) {
 		float proneFactor = 1.0;
 		/*if (IsCrawling) {
-			proneFactor = GetProneAdjustment();
-		}*/
+		        proneFactor = GetProneAdjustment();
+		   }*/
 		//return BASE_OVERRIDE * proneFactor;
 		return proneFactor;
 	}

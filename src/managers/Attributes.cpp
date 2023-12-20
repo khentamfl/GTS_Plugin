@@ -52,7 +52,7 @@ namespace {
 		}
 		if (IsGrowthSpurtActive(actor)) {
 			ExpectedGlobalDamage *= (1.0 + (0.35/BalancedMode));
-		} 
+		}
 		if (Runtime::HasPerkTeam(actor, "MightOfGiants")) {
 			ExpectedGlobalDamage *= 1.15; // +15% damage
 		}
@@ -205,7 +205,7 @@ namespace Gts {
 				float resistance = std::clamp(1.0f / scale, 0.001f, 3.0f); // 0.001% as max resistance, -300% is a max vulnerability.
 
 				return resistance;
-				
+
 			}
 			case ActorValue::kCarryWeight: {
 				float bonusCarryWeightMultiplier = Runtime::GetFloatOr("bonusCarryWeightMultiplier", 1.0);

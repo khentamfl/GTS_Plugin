@@ -115,7 +115,7 @@ namespace Gts {
 			float HugStealCount = 0.0; // Stage 1, Hugs
 			float CrushCount = 0.0; // Stage 2
 			float STNCount = 0.0; // Stage 3, Shrink to nothing
-			float StolenSize = 0.0; // Stage 4, 
+			float StolenSize = 0.0; // Stage 4,
 			float HandCrushed = 0.0; // Stage 5, Crushed with hand
 			float VoreCount = 0.0; // Stage 6, Fully Vored
 			float GiantCount = 0.0; // Stage 7, Giant Count

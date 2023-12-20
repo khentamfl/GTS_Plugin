@@ -321,7 +321,8 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		if (IsFirstPerson()) {
 			return;
-		} if (!CanPerformAnimation(player, 2)) {
+		}
+		if (!CanPerformAnimation(player, 2)) {
 			return;
 		}
 		auto grabbedActor = Grab::GetHeldActor(player);
@@ -356,7 +357,8 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		if (IsFirstPerson()) {
 			return;
-		} if (!CanPerformAnimation(player, 2)) {
+		}
+		if (!CanPerformAnimation(player, 2)) {
 			return;
 		}
 		auto grabbedActor = Grab::GetHeldActor(player);

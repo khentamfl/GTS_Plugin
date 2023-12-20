@@ -71,8 +71,8 @@ namespace Gts {
 			return;
 		}
 		/*if (attacker->formID == 0x14) {
-			log::info("Hit Name: {}, HitForm: {}", HitId->GetName(), HitIdForm);
-		}*/
+		        log::info("Hit Name: {}, HitForm: {}", HitId->GetName(), HitIdForm);
+		   }*/
 		auto ProjectileIDForm = a_event->projectile;
 		auto ProjectileID = TESForm::LookupByID(ProjectileIDForm);
 		auto player = PlayerCharacter::GetSingleton();
@@ -150,7 +150,7 @@ namespace Gts {
 			if (!LessGore()) {
 				auto root = find_node(receiver, "NPC Root [Root]");
 				if (root) {
-					float currentSize = get_visual_scale(receiver); 
+					float currentSize = get_visual_scale(receiver);
 					SpawnParticle(receiver, 0.60, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, currentSize * 2.5, 7, root);
 					SpawnParticle(receiver, 0.60, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, currentSize * 2.5, 7, root);
 					SpawnParticle(receiver, 0.60, "GTS/Damage/Crush.nif", root->world.rotate, root->world.translate, currentSize * 2.5, 7, root);
@@ -162,9 +162,9 @@ namespace Gts {
 			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
 		}
-        
+
 		// We don't want to call CrushManager::crush here because it will double-transfer the loot
-		 
+
 		PrintDeathSource(attacker, receiver, DamageSource::Overkill);
 
 		if (receiver->formID != 0x14) {

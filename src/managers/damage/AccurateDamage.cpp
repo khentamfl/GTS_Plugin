@@ -166,7 +166,7 @@ namespace {
 				} else {
 					set_target_scale(tiny, 0.12);
 				}
-                // ^ Tiny calamity augmentation, deals pretty much the same as the one above, but a bit stronger
+				// ^ Tiny calamity augmentation, deals pretty much the same as the one above, but a bit stronger
 			}
 		}
 	}
@@ -495,7 +495,7 @@ namespace Gts {
 		}
 
 		if (GetAV(tiny, ActorValue::kHealth) <= 0 || tiny->IsDead()) {
-      		Attacked(tiny, giant);
+			Attacked(tiny, giant);
 			if (multiplier >= 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
 					if (!tiny->IsDead()) {

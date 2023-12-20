@@ -37,7 +37,7 @@ namespace {
 		std::unordered_map<std::string, std::string> keywords;
 		std::unordered_map<std::string, std::string> containers;
 
-    RuntimeConfig(const toml::value& data) {
+		RuntimeConfig(const toml::value& data) {
 			this->sounds = toml::find_or(data, "sounds", std::unordered_map<std::string, std::string>());
 			this->spellEffects = toml::find_or(data, "spellEffects", std::unordered_map<std::string, std::string>());
 			this->spells = toml::find_or(data, "spells", std::unordered_map<std::string, std::string>());
@@ -671,7 +671,7 @@ namespace Gts {
 	}
 
 	void Runtime::DataReady() {
-    const auto data = toml::parse(R"(Data\SKSE\Plugins\GtsRuntime.toml)");
+		const auto data = toml::parse(R"(Data\SKSE\Plugins\GtsRuntime.toml)");
 		RuntimeConfig config(data);
 
 		for (auto &[key, value]: config.sounds) {

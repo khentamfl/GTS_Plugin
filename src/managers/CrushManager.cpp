@@ -195,7 +195,7 @@ namespace Gts {
 
 					MoanOrLaugh(giant, tiny);
 					GrowAfterTheKill(giant, tiny);
-					
+
 					GRumble::Once("CrushRumble", tiny, 1.4, 0.15);
 					if (giant->formID == 0x14) {
 						if (IsLiving(tiny)) {

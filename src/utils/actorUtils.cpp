@@ -115,7 +115,7 @@ namespace Gts {
 			(OMC * XX + C) * vec.x + (OMC * XY - ZS) * vec.y + (OMC * ZX + YS) * vec.z,
 			(OMC * XY + ZS) * vec.x + (OMC * YY + C) * vec.y + (OMC * YZ - XS) * vec.z,
 			(OMC * ZX - YS) * vec.x + (OMC * YZ + XS) * vec.y + (OMC * ZZ + C) * vec.z
-		);
+			);
 	}
 
 	Actor* GetActorPtr(Actor* actor) {
@@ -471,9 +471,9 @@ namespace Gts {
 
 	bool IsFemale(Actor* actor) {
 		/*bool FemaleCheck = false;
-		if (!FemaleCheck) {
-			return true; // Always return true if we don't check for male/female
-		}*/
+		   if (!FemaleCheck) {
+		        return true; // Always return true if we don't check for male/female
+		   }*/
 		auto base = actor->GetActorBase();
 		int sex = 0;
 		if (base) {
@@ -558,7 +558,7 @@ namespace Gts {
 	}
 
 	bool IsHeadtracking(Actor* giant) { // Used to report True when we lock onto something, should be Player Exclusive.
-	    //Currently used to fix TDM mesh issues when we lock on someone.
+		//Currently used to fix TDM mesh issues when we lock on someone.
 		//auto profiler = Profilers::Profile("ActorUtils: HeadTracking");
 		bool tracking;
 		if (giant->formID == 0x14) {
@@ -696,10 +696,10 @@ namespace Gts {
 	}
 
 	float GetRaycastStateScale(Actor* giant) {
-	    // Goal is to make us effectively smaller during these checks, so RayCast won't adjust our height unless we're truly too big
+		// Goal is to make us effectively smaller during these checks, so RayCast won't adjust our height unless we're truly too big
 		float Normal = 1.0;
 		float Reduction = 1.0;
-		
+
 		if (IsProning(giant)) {
 			return 0.20;
 		} else if (IsCrawling(giant)) {
@@ -721,7 +721,8 @@ namespace Gts {
 		float value = 1.0;
 		if (IsCrawling(player)) {
 			value = std::clamp(Runtime::GetFloat("ProneOffsetFP"), 0.10f, 1.0f);
-		} if (IsProning(player)) {
+		}
+		if (IsProning(player)) {
 			value *= 0.5;
 		}
 		return value;
@@ -789,7 +790,7 @@ namespace Gts {
 								auto node = find_node(otherActor, "NPC Root [Root]");
 								if (node) {
 									auto grabbedActor = Grab::GetHeldActor(giant);
-									
+
 									float correction = (18.0 / tinyScale) - 18.0;
 									NiPoint3 Position = node->world.translate;
 									Position.z -= correction;
@@ -812,8 +813,8 @@ namespace Gts {
 			}
 		}
 	}
-	
-	
+
+
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -906,8 +907,8 @@ namespace Gts {
 			auto tiny = tinyref.get().get();
 			SetCriticalStage(tiny, 4);
 		});
-	} 
-	
+	}
+
 
 
 	void UnDisintegrate(Actor* actor) {
@@ -1289,7 +1290,7 @@ namespace Gts {
 				if (attributes->stolen_attributes <= 0.0) {
 					attributes->stolen_attributes = 0.0; // Cap it just in case
 				}
-			//log::info("Stolen AV value: {}", attributes->stolen_attributes);
+				//log::info("Stolen AV value: {}", attributes->stolen_attributes);
 			}
 		}
 	}
@@ -1606,9 +1607,9 @@ namespace Gts {
 				return false;
 			}
 
-      		auto playerRotation = giant->GetCurrent3D()->world.rotate;
+			auto playerRotation = giant->GetCurrent3D()->world.rotate;
 			RE::NiPoint3 localForwardVector{ 0.f, 1.f, 0.f };
-      		RE::NiPoint3 globalForwardVector = playerRotation * localForwardVector;
+			RE::NiPoint3 globalForwardVector = playerRotation * localForwardVector;
 
 			RE::NiPoint3 direction = globalForwardVector;
 			log::info("{} direction: {}", giant->GetDisplayFullName(), Vector2Str(direction));
@@ -1875,9 +1876,11 @@ namespace Gts {
 		float modifier = 1.0;
 		if (giant->AsActorState()->IsSprinting()) {
 			modifier *= 1.33;
-		} if (giant->AsActorState()->IsWalking()) {
+		}
+		if (giant->AsActorState()->IsWalking()) {
 			modifier *= 0.75;
-		} if (giant->AsActorState()->IsSneaking()) {
+		}
+		if (giant->AsActorState()->IsSneaking()) {
 			modifier *= 0.75;
 		}
 		return modifier;
@@ -2099,7 +2102,7 @@ namespace Gts {
 		}
 	}
 
-	
+
 	bool CanPerformAnimation(Actor* giant, float type) { // Needed for smooth animation unlocks during quest progression
 		// 0 = Hugs
 		// 1 = stomps and kicks

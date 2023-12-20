@@ -111,8 +111,8 @@ namespace {
 		float SMT = 1.0;
 
 		bool OwnsPerk = false;
-		
-		
+
+
 		if (HasSMT(giant)) {
 			giantSize += 4.0;
 			threshold = 0.8;

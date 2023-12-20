@@ -141,7 +141,8 @@ namespace Gts {
 			if (kind != FootEvent::JumpLand) {
 				if (kind == FootEvent::Left) {
 					DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedLeft);
-				} if (kind == FootEvent::Right) {
+				}
+				if (kind == FootEvent::Right) {
 					DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedRight);
 				}
 				//                     ^          ^
@@ -149,9 +150,7 @@ namespace Gts {
 				DoLaunch(actor, 0.70 * bonus, 1.0 * bonus, kind);
 				//               ^ radius      ^ push power
 				return; // don't check further
-			} 
-			
-			else if (kind == FootEvent::JumpLand) {
+			} else if (kind == FootEvent::JumpLand) {
 				float perk = GetPerkBonus_Basics(actor);
 				auto& sizemanager = SizeManager::GetSingleton();
 				float damage = sizemanager.GetSizeAttribute(actor, 2); // get jump damage boost
@@ -166,8 +165,8 @@ namespace Gts {
 					}
 					auto giant = gianthandle.get().get();
 					float timepassed = Time::WorldTimeElapsed() - Start;
-					
-					if (timepassed >= 0.15) { 
+
+					if (timepassed >= 0.15) {
 						DoDamageEffect(giant, 1.10 * damage, 6.6, 20, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 						DoDamageEffect(giant, 1.10 * damage, 6.6, 20, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 

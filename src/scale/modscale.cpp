@@ -64,7 +64,7 @@ namespace Gts {
 		}
 		bool result = false;
 		float natural_scale = get_natural_scale(actor);
-		
+
 		target_scale *= natural_scale; // take natural scale into account when setting it
 
 		auto model = actor->Get3D(false);

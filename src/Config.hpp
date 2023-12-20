@@ -19,7 +19,7 @@ namespace Gts {
 				return _shouldProfile;
 			}
 
-      Debug(const toml::value& data);
+			Debug(const toml::value& data);
 
 			spdlog::level::level_enum _logLevel{spdlog::level::level_enum::info};
 			spdlog::level::level_enum _flushLevel{spdlog::level::level_enum::trace};
@@ -38,7 +38,7 @@ namespace Gts {
 				return _step;
 			}
 
-      Frame(const toml::value& data);
+			Frame(const toml::value& data);
 
 		private:
 			int _step = 0;
@@ -69,7 +69,7 @@ namespace Gts {
 				return _minScale;
 			}
 
-      Tremor(const toml::value& data);
+			Tremor(const toml::value& data);
 
 		private:
 			std::string _method;
@@ -99,7 +99,7 @@ namespace Gts {
 
 			[[nodiscard]] static const Config& GetSingleton() noexcept;
 
-      Config(const toml::value& data);
+			Config(const toml::value& data);
 
 		private:
 			Debug _debug;

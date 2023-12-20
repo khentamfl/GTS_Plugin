@@ -85,7 +85,7 @@ namespace Gts {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
 			return NiPoint3(0,0,0);
-		} 
+		}
 		Actor* tiny = GetActorPtr(anyTiny);
 		if (!tiny) {
 			return NiPoint3(0,0,0);
@@ -128,7 +128,7 @@ namespace Gts {
 		// Make a list of points to check
 		float Forward = 8 - (hh * 0.6); //Runtime::GetFloat("cameraAlternateX"); // 8 is ok, 5 with HH
 		float UpDown = 9; //Runtime::GetFloat("cameraAlternateY"); // 8 too
-		
+
 
 		std::vector<NiPoint3> points = {
 			NiPoint3(0, Forward - hh/45, -(UpDown + hh * 0.65)),
@@ -154,7 +154,7 @@ namespace Gts {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
 			return NiPoint3(0,0,0);
-		} 
+		}
 		Actor* tiny = GetActorPtr(anyTiny);
 		if (!tiny) {
 			return NiPoint3(0,0,0);
@@ -199,7 +199,7 @@ namespace Gts {
 		// Make a list of points to check
 		float Forward = 8 - (hh * 0.6); //Runtime::GetFloat("cameraAlternateX"); // 8 is ok, 5 with HH
 		float UpDown = 9; //Runtime::GetFloat("cameraAlternateY"); // 8 too
-		
+
 
 		std::vector<NiPoint3> points = {
 			NiPoint3(0, Forward, -(UpDown + hh * 0.65)),

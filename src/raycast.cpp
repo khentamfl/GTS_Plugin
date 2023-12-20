@@ -5,7 +5,7 @@ using namespace Gts;
 using namespace RE;
 
 namespace {
-  NiPoint3 CastRayImpl(TESObjectREFR* ref, const NiPoint3& in_origin, const NiPoint3& direction, const float& unit_length, RayCollector& collector, bool& success) {
+	NiPoint3 CastRayImpl(TESObjectREFR* ref, const NiPoint3& in_origin, const NiPoint3& direction, const float& unit_length, RayCollector& collector, bool& success) {
 		float length = unit_to_meter(unit_length);
 		success = false;
 		if (!ref) {
@@ -88,7 +88,7 @@ namespace {
 		float min_fraction = 1.0;
 		success = false;
 		if (collector.results.size() > 0) {
-      log::info("Ray has results");
+			log::info("Ray has results");
 			for (auto ray_result: collector.results) {
 				if (ray_result.fraction < min_fraction) {
 					auto shape = ray_result.shape;
@@ -101,7 +101,7 @@ namespace {
 							if (collision_layer != COL_LAYER::kCharController) {
 								min_fraction = ray_result.fraction;
 								success = true;
-                log::info("  - Collided with {}", collision_layer);
+								log::info("  - Collided with {}", collision_layer);
 							}
 						} else {
 							min_fraction = ray_result.fraction;
@@ -120,9 +120,9 @@ namespace {
 
 namespace Gts {
 
-  void RayCollector::add_group_filter(COL_LAYER group) noexcept {
-    groups.push_back(group);
-  }
+	void RayCollector::add_group_filter(COL_LAYER group) noexcept {
+		groups.push_back(group);
+	}
 
 	void RayCollector::add_filter(NiObject* obj) noexcept {
 		object_filter.push_back(obj);
@@ -148,32 +148,32 @@ namespace Gts {
 
 	void RayCollector::AddRayHit(const hkpCdBody& a_body, const hkpShapeRayCastCollectorOutput& a_hitInfo) {
 		//log::info("New hit:");
-			const hkpShape* shape = a_body.GetShape(); // Shape that was collided with
+		const hkpShape* shape = a_body.GetShape(); // Shape that was collided with
 		if (shape) {
-		auto ni_shape = shape->userData;
-				if (ni_shape) {
-			auto filter_info = ni_shape->filterInfo;
-			//log::info("  - First Shape: {}", filter_info);
-			COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
-			//log::info("  - Layer {}", collision_layer);
-			//log::info("  - Group {}", filter_info >> 16);
+			auto ni_shape = shape->userData;
+			if (ni_shape) {
+				auto filter_info = ni_shape->filterInfo;
+				//log::info("  - First Shape: {}", filter_info);
+				COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
+				//log::info("  - Layer {}", collision_layer);
+				//log::info("  - Group {}", filter_info >> 16);
+			}
 		}
-    }
 		// Search for top level shape
 		const hkpCdBody* top_body = a_body.parent;
 		while (top_body) {
 			if (top_body->shape) {
 				shape = top_body->shape;
-        if (shape) {
-          auto ni_shape = shape->userData;
-    			if (ni_shape) {
-            auto filter_info = ni_shape->filterInfo;
-           // log::info("  - Parent Shape: {}", filter_info);
-            COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
-           // log::info("  - Layer {}", collision_layer);
-            //log::info("  - Group {}", filter_info >> 16);
-          }
-        }
+				if (shape) {
+					auto ni_shape = shape->userData;
+					if (ni_shape) {
+						auto filter_info = ni_shape->filterInfo;
+						// log::info("  - Parent Shape: {}", filter_info);
+						COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
+						// log::info("  - Layer {}", collision_layer);
+						//log::info("  - Group {}", filter_info >> 16);
+					}
+				}
 			}
 			top_body = top_body->parent;
 		}
@@ -181,32 +181,32 @@ namespace Gts {
 		if (shape) {
 			auto ni_shape = shape->userData;
 			if (ni_shape) {
-        auto filter_info = ni_shape->filterInfo;
+				auto filter_info = ni_shape->filterInfo;
 
-        //log::info("  - Final Shape: {}", filter_info);
-        if (this->skip_capsules && shape->type == hkpShapeType::kCapsule) {
-         // log::info("  - Skip capsual");
-          // Skip capsules
-          return;
-        }
+				//log::info("  - Final Shape: {}", filter_info);
+				if (this->skip_capsules && shape->type == hkpShapeType::kCapsule) {
+					// log::info("  - Skip capsual");
+					// Skip capsules
+					return;
+				}
 
-        COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
-        //log::info("  - Layer {}", collision_layer);
-        //log::info("  - Group {}", filter_info >> 16);
+				COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
+				//log::info("  - Layer {}", collision_layer);
+				//log::info("  - Group {}", filter_info >> 16);
 
-        if (! groups.empty()) {
-          bool found = false;
-          for (auto group: groups) {
-            if (group == collision_layer) {
-              found = true;
-              break;
-            }
-          }
-          if (!found) {
-           // log::info("  - Collision layer not in allowed group");
-            return;
-          }
-        }
+				if (!groups.empty()) {
+					bool found = false;
+					for (auto group: groups) {
+						if (group == collision_layer) {
+							found = true;
+							break;
+						}
+					}
+					if (!found) {
+						// log::info("  - Collision layer not in allowed group");
+						return;
+					}
+				}
 				if (is_filtered(ni_shape)) {
 					return;
 				}
@@ -236,22 +236,22 @@ namespace Gts {
 		}
 	}
 
-  NiPoint3 CastRay(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success) {
-    RayCollector collector = RayCollector();
-	collector.add_filter(ref->Get3D1(false));
-	collector.add_filter(ref->Get3D1(true));
-    collector.skip_capsules = false;
-    return CastRayImpl(ref, origin, direction, length, collector, success);
-  }
+	NiPoint3 CastRay(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success) {
+		RayCollector collector = RayCollector();
+		collector.add_filter(ref->Get3D1(false));
+		collector.add_filter(ref->Get3D1(true));
+		collector.skip_capsules = false;
+		return CastRayImpl(ref, origin, direction, length, collector, success);
+	}
 
-  NiPoint3 CastRayStatics(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success) {
+	NiPoint3 CastRayStatics(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success) {
 
-	RayCollector collector = RayCollector();
-	collector.add_filter(ref->Get3D1(false));
-	collector.add_filter(ref->Get3D1(true));
-    collector.skip_capsules = false;
-    return CastRay_StaticsOnly(ref, origin, direction, length, collector, success);
-  }
+		RayCollector collector = RayCollector();
+		collector.add_filter(ref->Get3D1(false));
+		collector.add_filter(ref->Get3D1(true));
+		collector.skip_capsules = false;
+		return CastRay_StaticsOnly(ref, origin, direction, length, collector, success);
+	}
 }
 
 

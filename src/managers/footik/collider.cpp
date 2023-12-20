@@ -20,7 +20,7 @@ namespace Gts {
 		return instance;
 	}
 
-    std::string ColliderManager::DebugName() {
+	std::string ColliderManager::DebugName() {
 		return "ColliderManager";
 	}
 

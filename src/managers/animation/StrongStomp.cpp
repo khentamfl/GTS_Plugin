@@ -170,7 +170,7 @@ namespace {
 		DoSounds(&data.giant, 1.15 + data.animSpeed/20, RNode);
 		DoDamageEffect(&data.giant, damage * (4.8 + data.animSpeed/2) * perk, (1.80 + data.animSpeed/4) * damage, 5, 0.35, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, SMT + (data.animSpeed/10), FootEvent::Right, RNode);
-		DoDustExplosion(&data.giant, 0.25 + SMT + (data.animSpeed * 0.05), FootEvent::Right, RNode); 
+		DoDustExplosion(&data.giant, 0.25 + SMT + (data.animSpeed * 0.05), FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 1.05 * perk, 2.4 + data.animSpeed/2, FootEvent::Right);
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 2.8);
 		data.stage = 0;

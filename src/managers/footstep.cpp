@@ -288,11 +288,11 @@ namespace Gts {
 			auto player = PlayerCharacter::GetSingleton();
 			auto actor = impact.actor;
 			float scale = impact.scale;
-			
+
 			if (actor->formID == 0x14 && HasSMT(actor)) {
 				scale *= 2.5;
 			}
-			
+
 			float sprint_factor = 1.0;
 			bool LegacySounds = Persistent::GetSingleton().legacy_sounds;  // Determine if we should play old pre 2.00 update sounds
 			// ^ Currently forced to true: there's no sounds yet.

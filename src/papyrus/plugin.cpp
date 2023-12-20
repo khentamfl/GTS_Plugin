@@ -206,7 +206,7 @@ namespace {
 		auto current3D = ref->GetCurrent3D();
 		if (!current3D) {
 			return; // Retry next frame
-		} 
+		}
 		current3D->SetMotionType(4, true, true, true);
 		current3D->SetCollisionLayer(COL_LAYER::kNonCollidable);
 	}

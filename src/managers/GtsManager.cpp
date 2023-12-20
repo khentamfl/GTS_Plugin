@@ -110,9 +110,9 @@ namespace {
 				target_scale = min(target_scale, room_scale);
 				if (actor->formID == 0x14) {
 					//log::info("new target_scale: {}", target_scale);
-					}
 				}
 			}
+		}
 
 		if (fabs(target_scale - persi_actor_data->visual_scale) > 1e-5) {
 			float minimum_scale_delta = 0.000005; // 0.00005%
@@ -126,7 +126,7 @@ namespace {
 					target_scale,
 					persi_actor_data->half_life,
 					Time::WorldTimeDelta()
-				);
+					);
 			}
 		}
 	}

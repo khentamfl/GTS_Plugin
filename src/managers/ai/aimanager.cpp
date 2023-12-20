@@ -186,7 +186,7 @@ namespace {
 			AnimationManager::StartAnim("TrampleL", pred);
 		} else {
 			AnimationManager::StartAnim("TrampleR", pred);
-		} 
+		}
 	}
 
 	void Kicks(Actor* pred, int rng) {

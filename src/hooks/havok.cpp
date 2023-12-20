@@ -96,7 +96,7 @@ namespace {
 				return true;
 			}
 		}
-		
+
 
 		return false;
 	}

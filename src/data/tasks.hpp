@@ -113,24 +113,24 @@ namespace Gts {
 				double currentTime = Time::WorldTimeElapsed();
 				double currentRuntime = currentTime - this->startTime;
 				double currentProgress = std::clamp(currentRuntime / this->duration, 0.0, 1.0);
-				
+
 				TaskForUpdate update;
 				if (this->initRun) {
-					update	= TaskForUpdate {
-							.runtime = currentRuntime,
-							.delta = currentTime - this->lastRunTime,
-							.progress = currentProgress,
-							.progressDelta = currentProgress - this->lastProgress,
-						};
-					} else {
-						update = TaskForUpdate {
-							.runtime = 0.0,
-							.delta = 0.0,
-							.progress = 0.0,
-							.progressDelta = 0.0,
-						};
-						this->initRun = true;
-					}
+					update  = TaskForUpdate {
+						.runtime = currentRuntime,
+						.delta = currentTime - this->lastRunTime,
+						.progress = currentProgress,
+						.progressDelta = currentProgress - this->lastProgress,
+					};
+				} else {
+					update = TaskForUpdate {
+						.runtime = 0.0,
+						.delta = 0.0,
+						.progress = 0.0,
+						.progressDelta = 0.0,
+					};
+					this->initRun = true;
+				}
 				this->lastRunTime = currentTime;
 				this->lastProgress = currentProgress;
 				if (!this->tasking(update)) {

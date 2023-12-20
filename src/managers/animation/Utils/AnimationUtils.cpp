@@ -242,7 +242,7 @@ namespace Gts {
 			}
 			return true;
 		});
-		
+
 	}
 	void DoFootTrample_Right(Actor* giant, Actor* tiny, bool SMT) {
 		auto gianthandle = giant->CreateRefHandle();
@@ -351,7 +351,7 @@ namespace Gts {
 			if (!tinyhandle) {
 				return false;
 			}
-			
+
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 			auto FrameB = Time::FramesElapsed() - FrameA;
@@ -614,7 +614,8 @@ namespace Gts {
 		auto profiler = Profilers::Profile("Other: CrawlDamage");
 		if (!node) {
 			return;
-		} if (!giant) {
+		}
+		if (!giant) {
 			return;
 		}
 		auto& sizemanager = SizeManager::GetSingleton();
@@ -622,7 +623,7 @@ namespace Gts {
 
 		float SCALE_RATIO = 1.0;
 		bool SMT = false;
-		
+
 
 		if (HasSMT(giant)) {
 			giantScale += 1.75; // enough to push giants around, but not mammoths/dragons

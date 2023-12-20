@@ -36,7 +36,7 @@ namespace Gts {
 			eff *= 0.20;
 		} else if (IsMammoth(tiny)) {
 			eff *= 0.35;
- 		} else if (IsGiant(tiny)) {
+		} else if (IsGiant(tiny)) {
 			eff *= 0.50;
 		} else if (IsUndead(tiny)) {
 			eff *= 0.60;
@@ -289,7 +289,8 @@ namespace Gts {
 		}
 		if (IsDragon(target) || IsMammoth(target)) {
 			SHRINK_TO_NOTHING_SCALE = 0.024;
-		} if (IsGiant(target)) {
+		}
+		if (IsGiant(target)) {
 			SHRINK_TO_NOTHING_SCALE = 0.044;
 		}
 

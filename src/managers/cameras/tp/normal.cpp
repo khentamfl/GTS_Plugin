@@ -38,8 +38,8 @@ namespace Gts {
 			);
 	}
 
-	 // fVanityModeMaxDist:Camera Changes The Offset Value We Need So we need to take this value into account;
-	void Normal::SetZOff(float Offset) { 
+	// fVanityModeMaxDist:Camera Changes The Offset Value We Need So we need to take this value into account;
+	void Normal::SetZOff(float Offset) {
 		//The 0.15 was found through testing different fVanityModeMaxDist values
 		Normal::ZOffset = Offset - (0.15 * Gts::MaxZoom());
 	}
@@ -49,7 +49,7 @@ namespace Gts {
 		auto& sizemanager = SizeManager::GetSingleton();
 		int altMode = Runtime::GetInt("NormalCameraTarget");
 
-		float offset = -45;	
+		float offset = -45;
 
 		if (sizemanager.GetActionBool(player, 3)) {
 			altMode = 8; // Thigh Sandwich

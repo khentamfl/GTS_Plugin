@@ -8,6 +8,6 @@ using namespace RE;
 using namespace Gts;
 
 namespace Gts {
-    float GetCeilingHeight(Actor* giant);
-    float GetMaxRoomScale(Actor* giant);
+	float GetCeilingHeight(Actor* giant);
+	float GetMaxRoomScale(Actor* giant);
 }

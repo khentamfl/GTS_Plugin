@@ -39,17 +39,17 @@ namespace Gts {
 	}
 
 	// fVanityModeMaxDist:Camera Changes The Offset Value We Need So we need to take this value into account;
-    void Alt::SetZOff(float Offset) {
-        // The 0.15 was found through testing different fVanityModeMaxDist values
-        Alt::ZOffset = Offset - (0.15 * Gts::MaxZoom());
-    }
+	void Alt::SetZOff(float Offset) {
+		// The 0.15 was found through testing different fVanityModeMaxDist values
+		Alt::ZOffset = Offset - (0.15 * Gts::MaxZoom());
+	}
 
 	BoneTarget Alt::GetBoneTarget() {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 		int altMode = Runtime::GetInt("AltCameraTarget");
 
-		float offset = -45;		
+		float offset = -45;
 
 		if (sizemanager.GetActionBool(player, 3)) {
 			altMode = 8; // Thigh Sandwich

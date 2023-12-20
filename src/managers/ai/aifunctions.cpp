@@ -20,87 +20,91 @@ using namespace Gts;
 namespace {
 	float GetScareThreshold(Actor* giant) {
 		float threshold = 2.5;
-		 if (giant->IsSneaking()) { // If we sneak/prone/crawl = make threshold bigger so it's harder to scare actors
+		if (giant->IsSneaking()) { // If we sneak/prone/crawl = make threshold bigger so it's harder to scare actors
 			threshold += 0.8;
-		} if (IsCrawling(giant)) {
+		}
+		if (IsCrawling(giant)) {
 			threshold += 1.45;
-		} if (IsProning(giant)) {
+		}
+		if (IsProning(giant)) {
 			threshold += 1.45;
-		} if (giant->AsActorState()->IsWalking()) { // harder to scare if we're approaching slowly
+		}
+		if (giant->AsActorState()->IsWalking()) { // harder to scare if we're approaching slowly
 			threshold *= 1.35;
-		} if (giant->IsRunning()) { // easier to scare 
+		}
+		if (giant->IsRunning()) { // easier to scare
 			threshold *= 0.75;
 		}
 		return threshold;
 	}
 
 	/*template <class ... Args>
-	void SendDeathEvent(Actor* giant, Actor* tiny, bool dead) {
-		if (!tiny->IsDead()) {
-			return; // apply to dead actors only
-		}
-		const auto skyrimVM = RE::SkyrimVM::GetSingleton();
-		auto VM = skyrimVM ? skyrimVM->impl : nullptr;
-		if (VM) {
-			TESObjectREFR* DyingCast = skyrim_cast<TESObjectREFR*>(tiny);
-			TESObjectREFR* KillerCast = skyrim_cast<TESObjectREFR*>(giant);
-			
-			auto Dying = DyingCast->CreateRefHandle();
-			auto Killer = KillerCast->CreateRefHandle();
+	   void SendDeathEvent(Actor* giant, Actor* tiny, bool dead) {
+	        if (!tiny->IsDead()) {
+	                return; // apply to dead actors only
+	        }
+	        const auto skyrimVM = RE::SkyrimVM::GetSingleton();
+	        auto VM = skyrimVM ? skyrimVM->impl : nullptr;
+	        if (VM) {
+	                TESObjectREFR* DyingCast = skyrim_cast<TESObjectREFR*>(tiny);
+	                TESObjectREFR* KillerCast = skyrim_cast<TESObjectREFR*>(giant);
 
-			if (!Dying) {
-				return;
-			} if (!Killer) {
-				return;
-			}
+	                auto Dying = DyingCast->CreateRefHandle();
+	                auto Killer = KillerCast->CreateRefHandle();
 
-			std::uint8_t pad11;
-			std::uint16_t pad12;
-			std::uint32_t pad14;
-			auto handle = Dying.get().get();
-			BSFixedString EventName = "TESDeathEvent";
-			
-			auto args = RE::MakeFunctionArguments(std::forward<Args>(Dying, Killer, dead, pad11, pad12, pad14)...);
+	                if (!Dying) {
+	                        return;
+	                } if (!Killer) {
+	                        return;
+	                }
 
-			VM->RelayEvent(handle, &EventName, args, nullptr);
-			//SkyrimVM::RelayEvent(VMHandle a_handle, BSFixedString* a_event, BSScript::IFunctionArguments* a_args, SkyrimVM::ISendEventFilter* a_optionalFilter)
-			}
-		}*/
+	                std::uint8_t pad11;
+	                std::uint16_t pad12;
+	                std::uint32_t pad14;
+	                auto handle = Dying.get().get();
+	                BSFixedString EventName = "TESDeathEvent";
 
-		void KillProperly_5d4700(Actor* dying, Actor* killer, uintptr_t param_2, uintptr_t silent, uintptr_t param_4, uintptr_t param_5) { 
-			// SE Address: 5d4700   AE: ??????
-			// ---Works like this based on RE:---
-			// 1) papyrus__Actor::KillSilent_14094B760 (No event?)
-			// 1) papyrus__Actor::Kill_14094B790 (Alarm?)
-			// -> call 2)
-			// 2) Actor::Kill_Papyrus_impl_14095D0E0 -> 3)
-			// 3) void Actor::Kill_impl2_1405D4700 (Current function that i'm trying to RE)
-			// Actor *param_1,undefined param_2,undefined silent?,uint8 param_4,uint8 param_5
-			typedef void (*DefKillProperly)(Actor* dying, Actor* killer, uintptr_t param_2, uintptr_t silent, uintptr_t param_4, uintptr_t param_5);
-			REL::Relocation<DefKillProperly> SkyrimKillProperly{ RELOCATION_ID(36607, 37615) };
-			SkyrimKillProperly(dying, killer, param_2, silent, param_4, param_5);
-		}
+	                auto args = RE::MakeFunctionArguments(std::forward<Args>(Dying, Killer, dead, pad11, pad12, pad14)...);
 
-		void KillProperly_Papyrus(Actor* dying, Actor* killer, uintptr_t value) { 
-            // 94B790 = 53902
-			// param 1 = damage?
-			typedef void (*DefKill_Papyrus)(Actor* dying, Actor* killer, uintptr_t value);
-			REL::Relocation<DefKill_Papyrus> SkyrimKill_Papyrus{ RELOCATION_ID(53902, 37615) };
-			SkyrimKill_Papyrus(dying, killer, value);
-		}
+	                VM->RelayEvent(handle, &EventName, args, nullptr);
+	                //SkyrimVM::RelayEvent(VMHandle a_handle, BSFixedString* a_event, BSScript::IFunctionArguments* a_args, SkyrimVM::ISendEventFilter* a_optionalFilter)
+	                }
+	        }*/
+
+	void KillProperly_5d4700(Actor* dying, Actor* killer, uintptr_t param_2, uintptr_t silent, uintptr_t param_4, uintptr_t param_5) {
+		// SE Address: 5d4700   AE: ??????
+		// ---Works like this based on RE:---
+		// 1) papyrus__Actor::KillSilent_14094B760 (No event?)
+		// 1) papyrus__Actor::Kill_14094B790 (Alarm?)
+		// -> call 2)
+		// 2) Actor::Kill_Papyrus_impl_14095D0E0 -> 3)
+		// 3) void Actor::Kill_impl2_1405D4700 (Current function that i'm trying to RE)
+		// Actor *param_1,undefined param_2,undefined silent?,uint8 param_4,uint8 param_5
+		typedef void (*DefKillProperly)(Actor* dying, Actor* killer, uintptr_t param_2, uintptr_t silent, uintptr_t param_4, uintptr_t param_5);
+		REL::Relocation<DefKillProperly> SkyrimKillProperly{ RELOCATION_ID(36607, 37615) };
+		SkyrimKillProperly(dying, killer, param_2, silent, param_4, param_5);
 	}
+
+	void KillProperly_Papyrus(Actor* dying, Actor* killer, uintptr_t value) {
+		// 94B790 = 53902
+		// param 1 = damage?
+		typedef void (*DefKill_Papyrus)(Actor* dying, Actor* killer, uintptr_t value);
+		REL::Relocation<DefKill_Papyrus> SkyrimKill_Papyrus{ RELOCATION_ID(53902, 37615) };
+		SkyrimKill_Papyrus(dying, killer, value);
+	}
+}
 
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
-		
+
 		//KillProperly_5d4700(tiny, giant, 1, 1, true, 0);
 		tiny->KillImpl(giant, 1, true, true);
 		//tiny->SetLifeState(ACTOR_LIFE_STATE::kDead);
 		//tiny->KillImmediate();
 		//tiny->KillDying();
-		//RagdollTask(tiny); 
+		//RagdollTask(tiny);
 		//SendDeathEvent(giant, tiny, true);
-		
+
 		//tiny->GetActorRuntimeData().boolBits.set(BOOL_BITS::kDead);
 	}
 
@@ -155,7 +159,7 @@ namespace Gts {
 
 					if (distance <= distancecheck * sizedifference) {
 						auto combat = tiny->GetActorRuntimeData().combatController;
-						
+
 						tiny->GetActorRuntimeData().currentCombatTarget = giant->CreateRefHandle();
 						auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
 

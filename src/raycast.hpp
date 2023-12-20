@@ -16,8 +16,8 @@ namespace Gts {
 	class RayCollector : public hkpClosestRayHitCollector
 	{
 		public:
-      // Must be a member of one of these groups
-      void add_group_filter(COL_LAYER group) noexcept;
+			// Must be a member of one of these groups
+			void add_group_filter(COL_LAYER group) noexcept;
 
 			void add_filter(NiObject* obj) noexcept;
 			bool is_filtered(NiObject* obj);
@@ -25,11 +25,11 @@ namespace Gts {
 			void AddRayHit(const hkpCdBody& a_body, const hkpShapeRayCastCollectorOutput& a_hitInfo) override;
 
 			std::vector<NiObject*> object_filter;
-      std::vector<HitResult> results;
+			std::vector<HitResult> results;
 			std::vector<COL_LAYER> groups;
-      bool skip_capsules = false;
+			bool skip_capsules = false;
 	};
 
-  NiPoint3 CastRay(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success);
+	NiPoint3 CastRay(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success);
 	NiPoint3 CastRayStatics(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success);
 }
