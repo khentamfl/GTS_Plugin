@@ -20,11 +20,11 @@ namespace Gts {
 
     this->hits.push_back(output);
 
-    this.earlyOutHitFraction = 1.0;
+    this->earlyOutHitFraction = 1.0;
 	}
 
   unique_ptr<AllRayCollector> AllRayCollector::Create() {
-    return make_unique::<AllRayCollector>();
+    return make_unique<AllRayCollector>();
   }
 
   std::vector<AllRayCollectorOutput>& AllRayCollector::GetHits() {
