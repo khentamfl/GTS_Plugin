@@ -1,6 +1,6 @@
 #include "UI/DebugAPI.hpp"
 #include "rays/raycast.hpp"
-#include "colliders/allraycollector.hpp"
+#include "rays/allcollector.hpp"
 
 using namespace Gts;
 using namespace RE;
