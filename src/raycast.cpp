@@ -236,12 +236,7 @@ namespace Gts {
 	}
 
 	NiPoint3 CastRayStatics(TESObjectREFR* ref, const NiPoint3& origin, const NiPoint3& direction, const float& length, bool& success) {
-
-		RayCollector collector = RayCollector();
-		collector.add_filter(ref->Get3D1(false));
-		collector.add_filter(ref->Get3D1(true));
-		collector.skip_capsules = false;
-		return CastRay_StaticsOnly(ref, origin, direction, length, collector, success);
+		return CastRay_StaticsOnly(ref, origin, direction, length, success);
 	}
 }
 
