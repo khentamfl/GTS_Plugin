@@ -27,7 +27,7 @@
 #include "scale/scale.hpp"
 #include "data/time.hpp"
 #include "profiler.hpp"
-#include "raycast.hpp"
+#include "rays/raycast.hpp"
 #include "Config.hpp"
 #include "timer.hpp"
 #include "node.hpp"

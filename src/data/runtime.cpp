@@ -1,6 +1,6 @@
 #include "data/runtime.hpp"
 #include "Config.hpp"
-#include "raycast.hpp"
+#include "rays/raycast.hpp"
 #include "node.hpp"
 
 using namespace SKSE;

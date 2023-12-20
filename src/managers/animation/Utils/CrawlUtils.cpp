@@ -12,7 +12,7 @@
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
-#include "raycast.hpp"
+#include "rays/raycast.hpp"
 
 namespace {
 	void SpawnCrawlParticle(Actor* actor, float scale, NiPoint3 position) {
