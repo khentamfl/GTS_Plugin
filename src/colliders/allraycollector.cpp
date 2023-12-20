@@ -23,10 +23,15 @@ namespace RE {
   hkpAllRayHitCollector* hkpAllRayHitCollector::Create() {
     std::size_t a_size = sizeof(hkpAllRayHitCollector);
     std::uintptr_t a_vtbl = hkpAllRayHitCollector::VTABLE[0].address();
+    log::info("Allocating {}", a_size);
     auto memory = malloc(a_size);
     std::memset(memory, 0, a_size);
+    log::info("Hacking Vtable");
     reinterpret_cast<std::uintptr_t*>(memory)[0] = a_vtbl;
-    return static_cast<hkpAllRayHitCollector*>(memory);
+    auto result =  static_cast<hkpAllRayHitCollector*>(memory);
+    log::info("Resetting data");
+    result->Reset();
+    return result;
   }
 
   std::unique_ptr<hkpAllRayHitCollector> hkpAllRayHitCollector::CreatePtr() {
