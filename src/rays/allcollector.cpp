@@ -1,6 +1,4 @@
-#include "UI/DebugAPI.hpp"
-#include "rays/raycast.hpp"
-#include "colliders/allraycollector.hpp"
+#include "rays/allcollector.hpp"
 
 using namespace Gts;
 using namespace RE;
@@ -11,9 +9,9 @@ namespace Gts {
     AllRayCollectorOutput output;
 
     const hkpCdBody* body = &a_body;
-  	while( body->m_parent )
+  	while( body->parent )
   	{
-  		body = body->m_parent;
+  		body = body->parent;
   	}
   	auto root = reinterpret_cast<const hkpCollidable*>(body);
 
