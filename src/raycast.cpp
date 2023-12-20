@@ -89,14 +89,14 @@ namespace {
 		collision_world->PickObject(pick_data);
 		float min_fraction = 1.0;
 		success = false;
-		if (collector.results.size() > 0) {
+		if (collector.GetHits().size() > 0) {
 			log::info("Ray has results");
 			for (auto ray_result: collector.GetHits()) {
 				if (ray_result.hitFraction < min_fraction) {
           auto filter_info = ray_result.rootCollidable->broadPhaseHandle.collisionFilterInfo;
 					COL_LAYER collision_layer = static_cast<COL_LAYER>(filter_info & 0x7F);
 					if (collision_layer != COL_LAYER::kCharController) {
-						min_fraction = ray_result.fraction;
+						min_fraction = ray_result.hitFraction;
 						success = true;
 						log::info("  - Collided with {}", collision_layer);
           }
