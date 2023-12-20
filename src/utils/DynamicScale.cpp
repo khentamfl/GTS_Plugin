@@ -54,38 +54,53 @@ namespace Gts {
 			return std::numeric_limits<float>::infinity();
 		}
 
-		// Calculation of ray directions
+		// === Calculation of ray directions ===
 		auto transform = root_node->world;
-		auto giantPos = giant->GetPosition() + NiPoint3(0.0, 0.0, 70.0);
-		auto bumperPos = charCont->bumperCollisionBound.center;
-		bumperPos.z = 70.0;
-    bumperPos = transform * bumperPos;
+    // ray 1 center on giant + 70
+		auto ray1_p = NiPoint3(0.0, 0.0, 70.0); // in local space
+    ray1_p = transform * ray1_p; // in global space
+    // straight up
+    auto ray1_d = NiPoint3(0.0, 0.0, 1.0); // direction
 
-		auto bumperDirForwardUp = (
+    // ray 2 at bumper center
+		auto ray2_p = charCont->bumperCollisionBound.center;
+    //  but with only 70u up from giant root
+		ray2_p.z = 70.0;
+    // more forwards
+    ray2_p.y += charCont->bumperCollisionBound.extents.y * 0.25;
+    ray2_p = transform * ray2_p;
+    // straight up
+    ray2_d = NiPoint3(0.0, 0.0, 1.0);
+
+    // At ray2 but tilting forward a bit
+    auto ray3_p = ray2_p
+		auto ray3_d = (
 			charCont->bumperCollisionBound.center
 			+ NiPoint3(0.0, 0.25 * charCont->bumperCollisionBound.extents.y, 0.0)
 			+ NiPoint3(0.0, 0.0, charCont->bumperCollisionBound.extents.z)
 			);
-		bumperDirForwardUp = transform * bumperDirForwardUp;
-		bumperDirForwardUp = bumperDirForwardUp - bumperPos;
-		bumperDirForwardUp.Unitize();
+		ray3_d = transform * ray3_d;
+		ray3_d = ray3_d - ray3_p;
+		ray3_d.Unitize();
 
-		auto bumperDirBackUp = (
-			charCont->bumperCollisionBound.center
+    // At ray2 but tilting backwards a bit
+    auto ray4_p = ray2_p
+		auto ray4_d = (
+      charCont->bumperCollisionBound.center
 			+ NiPoint3(0.0, -0.25 * charCont->bumperCollisionBound.extents.y, 0.0)
 			+ NiPoint3(0.0, 0.0, charCont->bumperCollisionBound.extents.z)
 			);
-		bumperDirBackUp = transform * bumperDirBackUp;
-		bumperDirBackUp = bumperDirBackUp - bumperPos;
-		bumperDirBackUp.Unitize();
+		ray4_d = transform * ray4_d;
+		ray4_d = ray4_d - ray3_p;
+		ray4_d.Unitize();
 
 		// List of ray positions and directions for the ceiling
 		// Don't add a down here, down is made automatically as -dir
 		std::vector<std::pair<NiPoint3, NiPoint3> > rays = {
-			{giantPos, NiPoint3(0.0, 0.0, 1.0)},
-			{bumperPos, NiPoint3(0.0, 0.0, 1.0)},
-			{bumperPos, bumperDirForwardUp},
-			{bumperPos, bumperDirBackUp}
+			{ray1_p, ray1_d},
+			{ray2_p, ray2_d},
+			{ray3_p, ray3_d},
+			{ray4_p, ray4_d}
 		};
 
 		const float RAY_LENGTH = 720;
