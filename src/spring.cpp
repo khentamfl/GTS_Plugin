@@ -21,6 +21,12 @@ namespace {
 namespace Gts {
 
 	void SpringBase::UpdateValues(float& value, const float& target, float & velocity, const float& halflife, const float& dt) {
+    if (std::isinf(target)) {
+      return;
+    }
+    if (fabs(target - value) < 1e-4 && velocity < 1e-4) {
+      return;
+    }
 		float y = halflife_to_damping(halflife) / 2.0f;
 		float j0 = value - target;
 		float j1 = velocity + j0*y;
