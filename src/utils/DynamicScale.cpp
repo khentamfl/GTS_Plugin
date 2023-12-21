@@ -217,7 +217,7 @@ namespace Gts {
     if (trans_data) {
       if (giant->formID == 0x14) {
         log::info(
-          "Spring State: taget: {}, value: {}, velocity: {}, hl: {}",
+          "Spring State: taget: {}, value: {}, velocity: {:.16f}, hl: {}",
           trans_data->roomHeight.target,
           trans_data->roomHeight.value,
           trans_data->roomHeight.velocity,
