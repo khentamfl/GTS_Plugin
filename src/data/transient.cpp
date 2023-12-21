@@ -1,7 +1,10 @@
+#include "scale/modscale.hpp"
 #include "data/transient.hpp"
 #include "data/runtime.hpp"
+#include "spring.hpp"
 #include "node.hpp"
-#include "scale/modscale.hpp"
+
+
 
 using namespace SKSE;
 using namespace RE;
@@ -123,7 +126,7 @@ namespace Gts {
 
 			result.Immunity = Immunity;
 
-      result.roomHeight = Spring(1.81, 1.0);
+      		result.roomHeight = Spring(1.81, 1.0);
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 

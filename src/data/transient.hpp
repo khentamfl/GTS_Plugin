@@ -1,6 +1,7 @@
 #pragma once
 // Module that holds data that is not persistent across saves
 #include "events.hpp"
+#include "spring.hpp"
 
 using namespace std;
 using namespace SKSE;
@@ -38,7 +39,7 @@ namespace Gts {
 		bool WasReanimated;
 		bool FPCrawling;
 		bool FPProning;
-    Spring roomHeight;
+    	Spring roomHeight;
 
 		float Immunity;
 
