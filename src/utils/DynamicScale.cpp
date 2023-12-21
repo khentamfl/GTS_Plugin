@@ -92,12 +92,12 @@ namespace Gts {
     // At ray2 but tilting forward a bit
     float tilt_degrees = 10.0;
     auto ray3_p = ray2_p;
-		auto ray3_d = NiPoint3(0.0, tan(tilt_degrees*3.141/180.0)*1.0, 1.0);
+		auto ray3_d = transform.rotate * NiPoint3(0.0, tan(tilt_degrees*3.141/180.0)*1.0, 1.0);
 		ray3_d.Unitize();
 
     // At ray2 but tilting backwards a bit
     auto ray4_p = ray2_p;
-		auto ray4_d = NiPoint3(0.0, tan(-tilt_degrees*3.141/180.0)*1.0, 1.0);
+		auto ray4_d = transform.rotate * NiPoint3(0.0, tan(-tilt_degrees*3.141/180.0)*1.0, 1.0);
 		ray4_d.Unitize();
 
 		// List of ray positions and directions for the ceiling
