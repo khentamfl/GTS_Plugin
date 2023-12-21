@@ -187,7 +187,9 @@ namespace Gts {
         if (std::isinf(trans_data->roomHeight.target)) {
           // Last check was infinity so we just went under a roof
           // Snap current value to new roof
-          log::info("Entered roof");
+          if (giant->formID == 0x14) {
+            log::info("Entered roof");
+          }
           trans_data->roomHeight.value = room_height_m;
           trans_data->roomHeight.velocity = 0.0;
         }
@@ -198,7 +200,9 @@ namespace Gts {
         // No roof, set roomHeight to infinity so we know that we left the roof
         // then continue as normal
         if (!std::isinf(trans_data->roomHeight.target)) {
-          log::info("Left roof");
+          if (giant->formID == 0x14) {
+            log::info("Left roof");
+          }
           trans_data->roomHeight.target = room_height_m;
           trans_data->roomHeight.value = room_height_m;
           trans_data->roomHeight.velocity = 0.0;
