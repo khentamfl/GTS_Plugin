@@ -177,7 +177,7 @@ namespace Gts {
 		float room_height_m = GetCeilingHeight(giant);
 
     // Spring
-    auto trans_data = Transient::GetData(giant);
+    auto trans_data = Transient::GetSingleton().GetData(giant);
     if (trans_data) {
       if (!std::isinf(room_height_m)) {
         // Under roof
