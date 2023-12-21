@@ -175,6 +175,28 @@ namespace Gts {
 		float stateScale = GetRaycastStateScale(giant);
 
 		float room_height_m = GetCeilingHeight(giant);
+
+    // Spring
+    auto& trans_data = Transient::GetData(giant);
+    if (trans_data) {
+      if (!std::isinf(room_height_m)) {
+        // Under roof
+        if (std::isinf(trans_data.roomHeight.target)) {
+          // Last check was infinity so we just went under a roof
+          // Snap current value to new roof
+          trans_data.roomHeight.value = room_height_m;
+          trans_data.roomHeight.velocity = 0.0;
+        }
+
+        trans_data.roomHeight.target = room_height_m;
+        room_height_m = trans_data.roomHeight.value;
+      } else {
+        // No roof, set roomHeight to infinity so we know that we left the roof
+        // then continue as normal
+        trans_data.roomHeight.target = room_height_m;
+      }
+    }
+
 		float room_height_s = room_height_m/1.82; // / height by 1.82 (default character height)
 		float max_scale = (room_height_s * 0.82) / stateScale; // Define max scale, make avalibale space seem bigger when prone etc
 		if (giant->formID == 0x14) {

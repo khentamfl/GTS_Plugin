@@ -123,6 +123,8 @@ namespace Gts {
 
 			result.Immunity = Immunity;
 
+      result.roomHeight = Spring(1.81, 1.0);
+
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 
 			this->_actor_data.try_emplace(key, result);

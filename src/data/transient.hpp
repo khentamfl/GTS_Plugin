@@ -38,6 +38,7 @@ namespace Gts {
 		bool WasReanimated;
 		bool FPCrawling;
 		bool FPProning;
+    Spring roomHeight;
 
 		float Immunity;
 
