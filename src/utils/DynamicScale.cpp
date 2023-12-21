@@ -175,6 +175,9 @@ namespace Gts {
 		float stateScale = GetRaycastStateScale(giant);
 
 		float room_height_m = GetCeilingHeight(giant);
+    if (giant->formID == 0x14) {
+      log::info("room_height_m (pre spring): {}", room_height_m);
+    }
 
     // Spring
     auto trans_data = Transient::GetSingleton().GetData(giant);
@@ -184,6 +187,7 @@ namespace Gts {
         if (std::isinf(trans_data->roomHeight.target)) {
           // Last check was infinity so we just went under a roof
           // Snap current value to new roof
+          log::info("Entered roof");
           trans_data->roomHeight.value = room_height_m;
           trans_data->roomHeight.velocity = 0.0;
         }
@@ -193,8 +197,17 @@ namespace Gts {
       } else {
         // No roof, set roomHeight to infinity so we know that we left the roof
         // then continue as normal
-        trans_data->roomHeight.target = room_height_m;
+        if (!std::isinf(trans_data->roomHeight.target)) {
+          log::info("Left roof");
+          trans_data->roomHeight.target = room_height_m;
+          trans_data->roomHeight.value = room_height_m;
+          trans_data->roomHeight.velocity = 0.0;
+        }
       }
+    }
+
+    if (giant->formID == 0x14) {
+      log::info("room_height_m (post spring): {}", room_height_m);
     }
 
 		float room_height_s = room_height_m/1.82; // / height by 1.82 (default character height)
