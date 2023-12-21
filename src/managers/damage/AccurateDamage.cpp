@@ -432,10 +432,6 @@ namespace Gts {
 			return;
 		}
 
-
-    // Debug INSTA-KILL!
-    KillActor(giant, tiny);
-
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& crushmanager = CrushManager::GetSingleton();
 
