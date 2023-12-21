@@ -108,10 +108,10 @@ namespace Gts {
 		auto* eventsource = ScriptEventSourceHolder::GetSingleton();
     if (eventsource) {
       auto event = TESDeathEvent();
-      event.actorDying = skyrim_cast<TESObjectREFR>(tiny)->CreateRefHandle().get();
-      event.actorKiller = skyrim_cast<TESObjectREFR>(giant)->CreateRefHandle().get();
+      event.actorDying = skyrim_cast<TESObjectREFR*>(tiny)->CreateRefHandle().get();
+      event.actorKiller = skyrim_cast<TESObjectREFR*>(giant)->CreateRefHandle().get();
       event.dead = true;
-      eventsource->SendEvent(event);
+      eventsource->SendEvent(&event);
     }
 
 		//tiny->GetActorRuntimeData().boolBits.set(BOOL_BITS::kDead);
