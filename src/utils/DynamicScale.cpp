@@ -215,6 +215,15 @@ namespace Gts {
     // Spring
     auto trans_data = Transient::GetSingleton().GetData(giant);
     if (trans_data) {
+      if (giant->formID == 0x14) {
+        log::info(
+          "Spring State: taget: {}, value: {}, velocity: {}, hl: {}",
+          trans_data->roomHeight.target,
+          trans_data->roomHeight.value,
+          trans_data->roomHeight.velocity,
+          trans_data->roomHeight.halflife
+        );
+      }
       if (!std::isinf(room_height_m)) {
         // Under roof
         if (std::isinf(trans_data->roomHeight.target)) {
