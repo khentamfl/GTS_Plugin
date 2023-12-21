@@ -72,26 +72,32 @@ namespace Gts {
 		// straight up
 		auto ray2_d = NiPoint3(0.0, 0.0, 1.0);
 
-		// At ray2 but tilting forward a bit
-		auto ray3_p = ray2_p;
-		auto ray3_d = (
-			charCont->bumperCollisionBound.center
-			+ NiPoint3(0.0, 0.25 * charCont->bumperCollisionBound.extents.y, 0.0)
-			+ NiPoint3(0.0, 0.0, charCont->bumperCollisionBound.extents.z)
-			);
-		ray3_d = transform * ray3_d;
-		ray3_d = ray3_d - ray3_p;
+
+    // Math for tilting forwards
+    //     a
+    //  _______
+    //  |    /
+    // o|   /
+    //  |  /
+    //  |A/
+    //  |/
+    //
+    //  tan(A)*o=a
+    //
+    //  If z = o = 1.0
+    //  then y = a = tan(A)*z
+    //
+    //  Convert from degrees to radian with radians=degrees*3.141/180.0
+    //
+    // At ray2 but tilting forward a bit
+    float tilt_degrees = 10.0;
+    auto ray3_p = ray2_p;
+		auto ray3_d = NiPoint3(0.0, tan(tilt_degrees*3.141/180.0)*1.0, 1.0)
 		ray3_d.Unitize();
 
-		// At ray2 but tilting backwards a bit
-		auto ray4_p = ray2_p;
-		auto ray4_d = (
-      	charCont->bumperCollisionBound.center
-			+ NiPoint3(0.0, -0.25 * charCont->bumperCollisionBound.extents.y, 0.0)
-			+ NiPoint3(0.0, 0.0, charCont->bumperCollisionBound.extents.z)
-			);
-		ray4_d = transform * ray4_d;
-		ray4_d = ray4_d - ray3_p;
+    // At ray2 but tilting backwards a bit
+    auto ray4_p = ray2_p;
+		auto ray3_d = NiPoint3(0.0, tan(-tilt_degrees*3.141/180.0)*1.0, 1.0)
 		ray4_d.Unitize();
 
 		// List of ray positions and directions for the ceiling
