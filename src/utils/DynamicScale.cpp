@@ -62,12 +62,8 @@ namespace Gts {
 		// straight up
 		auto ray1_d = NiPoint3(0.0, 0.0, 1.0); // direction
 
-    	// ray 2 at bumper center
-		auto ray2_p = charCont->bumperCollisionBound.center;
-    	//  but with only 70u up from giant root
-		ray2_p.z = 70.0;
-		// more forwards
-		ray2_p.y += (charCont->bumperCollisionBound.extents.y * 0.75) * scale;
+    	// ray 2 slightly in front of the player
+		auto ray2_p = NiPoint3(0.0, 40.0*scale, 70.0)
 		ray2_p = transform * ray2_p;
 		// straight up
 		auto ray2_d = NiPoint3(0.0, 0.0, 1.0);
@@ -90,7 +86,7 @@ namespace Gts {
     //  Convert from degrees to radian with radians=degrees*3.141/180.0
     //
     // At ray2 but tilting forward a bit
-    float tilt_degrees = 10.0;
+    float tilt_degrees = 5.0;
     auto ray3_p = ray2_p;
 		auto ray3_d = transform.rotate * NiPoint3(0.0, tan(tilt_degrees*3.141/180.0)*1.0, 1.0);
 		ray3_d.Unitize();
@@ -108,6 +104,43 @@ namespace Gts {
 			{ray3_p, ray3_d},
 			{ray4_p, ray4_d}
 		};
+
+    if (scale > 3.0) {
+      int sides = 6;
+      float degrees = 380.0 / sides;
+      float rads = degrees * 3.141 / 180.0;
+      for (int i; i<sides;  i++) {
+        auto mat = NiMatrix3(0.0, 0.0, rads * i);
+        auto vert = mat * NiPoint3(0.0, 40.0, 0.0);
+        vert = transform.rotate * (vert * scale);
+        vert = ray2_p + vert;
+        rays.push_back(
+          {
+            vert,
+            NiPoint3(0.0, 0.0, 1.0)
+          }
+        );
+
+      }
+    }
+
+    if (scale > 5.0) {
+      int sides = 6;
+      float degrees = 380.0 / sides;
+      float rads = degrees * 3.141 / 180.0;
+      for (int i; i<sides;  i++) {
+        auto mat = NiMatrix3(0.0, 0.0, rads * i);
+        auto vert = mat * NiPoint3(0.0, 20.0, 0.0);
+        vert = transform.rotate * (vert * scale);
+        vert = ray2_p + vert;
+        rays.push_back(
+          {
+            vert,
+            NiPoint3(0.0, 0.0, 1.0)
+          }
+        );
+      }
+    }
 
 		const float RAY_LENGTH = 720;
 		bool debug = IsDebugEnabled();
