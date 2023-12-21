@@ -181,19 +181,19 @@ namespace Gts {
     if (trans_data) {
       if (!std::isinf(room_height_m)) {
         // Under roof
-        if (std::isinf(trans_data.roomHeight.target)) {
+        if (std::isinf(trans_data->roomHeight.target)) {
           // Last check was infinity so we just went under a roof
           // Snap current value to new roof
-          trans_data.roomHeight.value = room_height_m;
-          trans_data.roomHeight.velocity = 0.0;
+          trans_data->roomHeight.value = room_height_m;
+          trans_data->roomHeight.velocity = 0.0;
         }
 
-        trans_data.roomHeight.target = room_height_m;
-        room_height_m = trans_data.roomHeight.value;
+        trans_data->roomHeight.target = room_height_m;
+        room_height_m = trans_data->roomHeight.value;
       } else {
         // No roof, set roomHeight to infinity so we know that we left the roof
         // then continue as normal
-        trans_data.roomHeight.target = room_height_m;
+        trans_data->roomHeight.target = room_height_m;
       }
     }
 
