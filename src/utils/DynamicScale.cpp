@@ -56,6 +56,7 @@ namespace Gts {
 		float scale = get_visual_scale(giant);
 		// === Calculation of ray directions ===
 		auto transform = root_node->world;
+		transform.scale = 1.0;
    		// ray 1 center on giant + 70
 		auto ray1_p = NiPoint3(0.0, 0.0, 70.0); // in local space
 		ray1_p = transform * ray1_p; // in global space
@@ -63,7 +64,7 @@ namespace Gts {
 		auto ray1_d = NiPoint3(0.0, 0.0, 1.0); // direction
 
     	// ray 2 slightly in front of the player
-		auto ray2_p = NiPoint3(0.0, 40.0, 70.0);
+		auto ray2_p = NiPoint3(0.0, 25 * scale, 70.0);
 		ray2_p = transform * ray2_p;
 		// straight up
 		auto ray2_d = NiPoint3(0.0, 0.0, 1.0);
