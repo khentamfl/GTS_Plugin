@@ -63,7 +63,7 @@ namespace Gts {
 		auto ray1_d = NiPoint3(0.0, 0.0, 1.0); // direction
 
     	// ray 2 slightly in front of the player
-		auto ray2_p = NiPoint3(0.0, 40.0*scale, 70.0);
+		auto ray2_p = NiPoint3(0.0, 40.0, 70.0);
 		ray2_p = transform * ray2_p;
 		// straight up
 		auto ray2_d = NiPoint3(0.0, 0.0, 1.0);
