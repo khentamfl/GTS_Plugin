@@ -57,13 +57,13 @@ namespace Gts {
 		// === Calculation of ray directions ===
 		auto transform = root_node->world;
 		transform.scale = 1.0;
-   		// ray 1 center on giant + 70
+   	// ray 1 center on giant + 70
 		auto ray1_p = NiPoint3(0.0, 0.0, 70.0); // in local space
 		ray1_p = transform * ray1_p; // in global space
 		// straight up
 		auto ray1_d = NiPoint3(0.0, 0.0, 1.0); // direction
 
-    	// ray 2 slightly in front of the player
+    // ray 2 slightly in front of the player
 		auto ray2_p = NiPoint3(0.0, 25 * scale, 70.0);
 		ray2_p = transform * ray2_p;
 		// straight up
@@ -110,11 +110,14 @@ namespace Gts {
       int sides = 6;
       float degrees = 380.0 / sides;
       float rads = degrees * 3.141 / 180.0;
-      for (int i; i<sides;  i++) {
+      for (int i=0; i<sides;  i++) {
         auto mat = NiMatrix3(0.0, 0.0, rads * i);
-        auto vert = mat * NiPoint3(0.0, 40.0, 0.0);
+        auto vert = mat * NiPoint3(0.0, 4.0, 0.0);
+        log::info("Extra rays A: {}", Vector2Str(vert));
         vert = transform.rotate * (vert * scale);
+        log::info("Extra rays B: {}", Vector2Str(vert));
         vert = ray2_p + vert;
+        log::info("Extra rays C: {}", Vector2Str(vert));
         rays.push_back(
           {
             vert,
@@ -129,7 +132,7 @@ namespace Gts {
       int sides = 6;
       float degrees = 380.0 / sides;
       float rads = degrees * 3.141 / 180.0;
-      for (int i; i<sides;  i++) {
+      for (int i=0; i<sides;  i++) {
         auto mat = NiMatrix3(0.0, 0.0, rads * i);
         auto vert = mat * NiPoint3(0.0, 20.0, 0.0);
         vert = transform.rotate * (vert * scale);
