@@ -36,6 +36,8 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
+	const float EPS = 1e-4;
+
 	float GetShrinkPenalty(float size) {
 		// https://www.desmos.com/calculator/pqgliwxzi2
 		SoftPotential cut {
