@@ -112,12 +112,9 @@ namespace Gts {
       float rads = degrees * 3.141 / 180.0;
       for (int i=0; i<sides;  i++) {
         auto mat = NiMatrix3(0.0, 0.0, rads * i);
-        auto vert = mat * NiPoint3(0.0, 4.0, 0.0);
-        log::info("Extra rays A: {}", Vector2Str(vert));
+        auto vert = mat * NiPoint3(0.0, 12.0, 0.0);
         vert = transform.rotate * (vert * scale);
-        log::info("Extra rays B: {}", Vector2Str(vert));
         vert = ray2_p + vert;
-        log::info("Extra rays C: {}", Vector2Str(vert));
         rays.push_back(
           {
             vert,
@@ -128,13 +125,13 @@ namespace Gts {
       }
     }
 
-    if (scale > 5.0) {
+    if (scale > 9.0) {
       int sides = 6;
       float degrees = 380.0 / sides;
       float rads = degrees * 3.141 / 180.0;
       for (int i=0; i<sides;  i++) {
         auto mat = NiMatrix3(0.0, 0.0, rads * i);
-        auto vert = mat * NiPoint3(0.0, 20.0, 0.0);
+        auto vert = mat * NiPoint3(0.0, 4.0, 0.0);
         vert = transform.rotate * (vert * scale);
         vert = ray2_p + vert;
         rays.push_back(
