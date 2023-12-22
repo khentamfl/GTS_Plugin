@@ -100,7 +100,7 @@ namespace {
 		// and if enabled in the mcm
 		if (SizeRaycastEnabled() && !actor->IsDead() && target_scale > 1.025) {
 			float room_scale = GetMaxRoomScale(actor);
-			if (room_scale > currentOtherScale) {
+			if (room_scale > (currentOtherScale - 0.05)) {
 				// Only apply room scale if room_scale > natural_scale
 				//   This stops it from working when room_scale < 1.0
 				if (actor->formID == 0x14) {
@@ -111,7 +111,10 @@ namespace {
 				if (actor->formID == 0x14) {
 					//log::info("new target_scale: {}", target_scale);
 				}
-			}
+			} else {
+        // Else we just scale to natural
+        target_scale = 1.0;
+      }
 		}
 
 		if (fabs(target_scale - persi_actor_data->visual_scale) > 1e-5) {
