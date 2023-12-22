@@ -326,7 +326,7 @@ namespace Gts {
 				DamageAV(giant, ActorValue::kHealth, -healthToApply * TimeScale());
 				DamageAV(giant, ActorValue::kStamina, -healthToApply * TimeScale());
 
-				mod_target_scale(giant, sizeToApply * TimeScale());
+				update_target_scale(giant, sizeToApply * TimeScale());
 				AddStolenAttributes(giant, sizeToApply * TimeScale());
 				if (this->factor.value >= 0.99) {
 					this->state = VoreBuffState::Finishing;
@@ -340,7 +340,7 @@ namespace Gts {
 						VoreMessage_Absorbed(giant, this->tiny_name, this->WasDragon, this->WasGiant);
 						CallGainWeight(giant, 3.0 * this->tinySize);
 						BuffAttributes(giant, this->tinySize);
-						mod_target_scale(giant, this->sizePower * 0.4);
+						update_target_scale(giant, this->sizePower * 0.4);
 						AdjustSizeReserve(giant, this->sizePower);
 						if (giant->formID == 0x14) {
 							AdjustSizeLimit(0.0260, giant);

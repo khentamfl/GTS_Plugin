@@ -85,6 +85,7 @@ namespace Gts {
 	// Gts Bools end
 
 	// GTS Actor Functions
+	
 	float GetHPThreshold(Actor* actor);
 	float GetSizeDifference(Actor* giant, Actor* tiny);
 	float GetActorWeight(Actor* giant, bool metric);
@@ -92,6 +93,9 @@ namespace Gts {
 	float GetScaleAdjustment(Actor* tiny);
 	float GetRaycastStateScale(Actor* giant);
 	float GetProneAdjustment();
+
+	void update_target_scale(Actor* giant, float value);
+	
 
 	void SpawnActionIcon(Actor* giant);
 	// End

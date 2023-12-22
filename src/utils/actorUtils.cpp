@@ -36,6 +36,36 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
+	float GetShrinkPenalty(float size) {
+		// https://www.desmos.com/calculator/pqgliwxzi2
+		SoftPotential cut {
+			.k = 1.08,
+			.n = 0.90,
+			.s = 3.00,
+			.a = 0.0,
+		};
+		float power = soft_power(size, cut);
+		if (SizeManager::GetSingleton().BalancedMode() >= 2.0) {
+			return std::clamp(power, 1.0f, 99999.0f); // So it never reports values below 1.0. Just to make sure.
+		} else {
+			return 1.0;
+		}
+	}
+
+	float GetPerkBonus_OnTheEdge(Actor* giant, float amt) {
+		float bonus = 1.0;
+		bool perk = Runtime::HasPerkTeam(giant, "OnTheEdge");
+		if (perk) { 
+			float GetHP = clamp(0.5, 1.0, GetHealthPercentage(giant) + 0.4); // Bonus Size Gain if Actor has perk
+			if (amt > 0) {
+				bonus /= GetHP;
+			} else if (amt < 0) {
+				bonus *= GetHP;
+			} // When health is < 60%, empower growth by up to 50%. Max value at 10% health.
+		}
+		return bonus;	
+	}
+	
 	float ShakeStrength(Actor* Source) {
 		float Size = get_visual_scale(Source);
 		float k = 0.065;
@@ -812,6 +842,27 @@ namespace Gts {
 				}
 			}
 		}
+	}
+
+	void update_target_scale(Actor* giant, float amt) { // used to mod scale with perk bonuses taken into account
+		float scale = get_visual_scale(giant);
+		bool perk = Runtime::HasPerkTeam(giant, "OnTheEdge");
+		if (amt > 0 && (giant->formID == 0x14 || IsTeammate(giant))) {
+			if (scale >= 1.0) {
+				amt /= GetShrinkPenalty(scale); 
+				// Enabled if BalanceMode is True. Decreases Grow Efficiency.
+			}
+		} else if (amt - EPS < 0.0) {
+			// If neative change: add stolen attributes
+			DistributeStolenAttributes(giant, -amt * GetShrinkPenalty(scale)); // Adjust max attributes
+		}
+
+		float OTE = GetPerkBonus_OnTheEdge(giant, amt);
+		if (actor->formID == 0x14) {
+			log::info("OnTheEdge: {}, Shrink Penalty: {}", OTE, GetShrinkPenalty(scale));
+		}
+
+		mod_target_scale(giant, amt * OTE); // set target scale value
 	}
 
 
@@ -1699,7 +1750,7 @@ namespace Gts {
 			shrinkpower *= 1.40;
 		}
 
-		mod_target_scale(tiny, -(shrinkpower * gigantism));
+		update_target_scale(tiny, -(shrinkpower * gigantism));
 		StartCombat(giant, tiny, true);
 
 		AdjustGtsSkill((shrinkpower * gigantism) * 0.80, giant);

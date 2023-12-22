@@ -144,7 +144,7 @@ namespace {
 				float damage = LAUNCH_DAMAGE * sizeRatio * force * DamageMult * DamageSetting;
 				InflictSizeDamage(giant, tiny, damage);
 				if (OwnsPerk) { // Apply only when we have DisastrousTremor perk
-					mod_target_scale(tiny, -damage / 500);
+					update_target_scale(tiny, -damage / 500);
 
 					if (get_target_scale(tiny) < 0.12/Adjustment) {
 						set_target_scale(tiny, 0.12/Adjustment);

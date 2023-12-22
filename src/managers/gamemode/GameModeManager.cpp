@@ -77,7 +77,7 @@ namespace Gts {
 						return;
 					}
 					if ((targetScale + modAmount) < maxScale) {
-						mod_target_scale(actor, modAmount);
+						update_target_scale(actor, modAmount);
 					} else if (targetScale < maxScale) {
 						set_target_scale(actor, maxScale);
 					} // else let spring handle it
@@ -89,7 +89,7 @@ namespace Gts {
 						return;
 					}
 					if ((targetScale + modAmount) > natural_scale) {
-						mod_target_scale(actor, modAmount);
+						update_target_scale(actor, modAmount);
 					} else if (targetScale > natural_scale || targetScale < natural_scale) {
 						set_target_scale(actor, natural_scale);
 					} // Need to have size restored by someone
@@ -102,7 +102,7 @@ namespace Gts {
 							return;
 						}
 						if ((targetScale + modAmount) < maxScale) {
-							mod_target_scale(actor, modAmount);
+							update_target_scale(actor, modAmount);
 						} else if (targetScale < maxScale) {
 							set_target_scale(actor, maxScale);
 						} // else let spring handle it
@@ -112,7 +112,7 @@ namespace Gts {
 							return;
 						}
 						if ((targetScale + modAmount) > natural_scale) {
-							mod_target_scale(actor, modAmount);
+							update_target_scale(actor, modAmount);
 						} else if (targetScale > natural_scale) {
 							set_target_scale(actor, natural_scale);
 						} // Need to have size restored by someone
@@ -126,7 +126,7 @@ namespace Gts {
 							return;
 						}
 						if ((targetScale + modAmount) < maxScale) {
-							mod_target_scale(actor, modAmount * 0.33);
+							update_target_scale(actor, modAmount * 0.33);
 						} else if (targetScale < maxScale) {
 							set_target_scale(actor, maxScale);
 						} // else let spring handle it
@@ -161,7 +161,7 @@ namespace Gts {
 							Runtime::PlaySound("MoanSound", actor, targetScale/4, 1.0);
 						}
 						if (targetScale < maxScale) {
-							mod_target_scale(actor, GrowthPower);
+							update_target_scale(actor, GrowthPower);
 							GRumble::Once("CurseOfGrowth", actor, GrowthPower * 20, 0.10);
 							Runtime::PlaySoundAtNode("growthSound", actor, GrowthPower * 6, 1.0, "NPC Pelvis [Pelv]");
 						}
@@ -174,7 +174,7 @@ namespace Gts {
 						return;
 					}
 					if ((targetScale + modAmount) > natural_scale) {
-						mod_target_scale(actor, modAmount);
+						update_target_scale(actor, modAmount);
 					} else if (targetScale > natural_scale) {
 						set_target_scale(actor, natural_scale);
 					} // Need to have size restored by something

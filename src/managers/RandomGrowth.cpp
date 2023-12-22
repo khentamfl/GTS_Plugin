@@ -94,7 +94,7 @@ namespace Gts {
 						auto giantref = gianthandle.get().get();
 						// Grow
 						float delta_time = Time::WorldTimeDelta();
-						mod_target_scale(giantref, base_power * delta_time * Gigantism);
+						update_target_scale(giantref, base_power * delta_time * Gigantism);
 
 						// Play sound
 						GRumble::Once("RandomGrowth", giantref, 6.0, 0.05);

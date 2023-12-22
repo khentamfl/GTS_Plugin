@@ -105,7 +105,7 @@ namespace Gts {
 	}
 
 	void ExplosiveGrowth::DoGrowth(Actor* actor, float value) {
-		mod_target_scale(actor, value); // Grow
+		update_target_scale(actor, value); // Grow
 		if (SizeManager::GetSingleton().BalancedMode() >= 2.0) {
 			float scale = get_visual_scale(actor);
 			if (scale >= 1.0) {
@@ -132,7 +132,7 @@ namespace Gts {
 
 	void ExplosiveGrowth::DoShrink(Actor* actor) {
 		float value = SizeManager::GetSingleton().GetGrowthSpurt(actor);
-		mod_target_scale(actor, -value); // Do Shrink
+		update_target_scale(actor, -value); // Do Shrink
 		if (get_target_scale(actor) <= get_natural_scale(actor)) {
 			set_target_scale(actor, get_natural_scale(actor));
 		}

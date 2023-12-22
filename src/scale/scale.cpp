@@ -11,22 +11,6 @@ using namespace Gts;
 
 namespace {
 	const float EPS = 1e-4;
-
-	float GetShrinkPenalty(float size) {
-		// https://www.desmos.com/calculator/pqgliwxzi2
-		SoftPotential cut {
-			.k = 1.08,
-			.n = 0.90,
-			.s = 3.00,
-			.a = 0.0,
-		};
-		float power = soft_power(size, cut);
-		if (SizeManager::GetSingleton().BalancedMode() >= 2.0) {
-			return std::clamp(power, 1.0f, 99999.0f); // So it never reports values below 1.0. Just to make sure.
-		} else {
-			return 1.0;
-		}
-	}
 }
 
 namespace Gts {
@@ -72,46 +56,9 @@ namespace Gts {
 	void mod_target_scale(Actor& actor, float amt) {
 		auto profiler = Profilers::Profile("Scale: ModTargetScale");
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
-		// TODO: Fix this
-		//
-		// Semit, these functions should be RAW and make actual unscaled adjustments
-		// some of the math will do odd things if not.
-		//
-		// In this case it means that a setscale and a modscale can produce
-		// different scales
-		//
-		// If you want to adjust these I receommend we instead create a more
-		// general function called Grow() and Shrink() (as is done in the magic)
-		// that handles these modifier effects
-		//
-		// This way we have to sets of function Grow which we accept can be modify and may not
-		// actually mod by the request amount and mod_target_scale which
-		// represents real final absolute adjustments
-		//
-		// By altering this we now have NO way to make an absolute adjustment
-		//
-		// At this point in the CODE amt should NOT be altered, ALTER IT BEFORE THIS FUNCTION
-		//
-		if (amt > 0 && (actor.formID == 0x14 || IsTeammate(&actor))) {
-			float scale = actor_data->visual_scale; // Enabled if BalanceMode is True. Decreases Grow Efficiency.
-			if (scale >= 1.0) {
-				amt /= GetShrinkPenalty(scale);
-			}
-		}
-		if (Runtime::HasPerkTeam(&actor, "OnTheEdge")) {
-			float GetHP = clamp(0.5, 1.0, GetHealthPercentage(&actor) + 0.4); // Bonus Size Gain if Actor has perk
-			// How it should work: when health is < 60%, empower growth by up to 50%. Max value at 10% health.
-			if (amt > 0) {
-				amt /= GetHP;
-			} else if (amt < 0) {
-				amt *= GetHP;
-			}
-		}
 		if (actor_data) {
 			if (amt - EPS < 0.0) {
 				// If neative change always: allow
-				float scale = actor_data->visual_scale;
-				DistributeStolenAttributes(&actor, -amt * GetShrinkPenalty(scale)); // Adjust max attributes
 				actor_data->target_scale += amt;
 			} else if (actor_data->target_scale + amt < (actor_data->max_scale + EPS)) {
 				// If change results is below max: allow it

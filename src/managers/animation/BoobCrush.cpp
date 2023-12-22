@@ -136,7 +136,7 @@ namespace {
 		if (saved_data) {
 			saved_data->bonus_max_size += value;
 			if (reset) {
-				mod_target_scale(giant, -saved_data->bonus_max_size);
+				update_target_scale(giant, -saved_data->bonus_max_size);
 				if (get_target_scale(giant) < get_natural_scale(giant)) {
 					set_target_scale(giant, get_natural_scale(giant)); // Protect against going into negatives
 				}
