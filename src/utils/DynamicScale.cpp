@@ -253,7 +253,7 @@ namespace Gts {
       }
 
       if (giant->formID == 0x14) {
-        let dt = Time::WorldTimeDelta();
+        auto dt = Time::WorldTimeDelta();
         log::info("Manually updating player spring wit dt: {}", dt);
         trans_data->roomHeight.Update(dt);
       }
