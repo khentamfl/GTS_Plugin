@@ -215,6 +215,7 @@ namespace Gts {
 
     // Spring
     auto& dynamicData = DynamicScale::GetData(giant);
+	dynamicData.roomHeight.halflife = 0.33;
     if (giant->formID == 0x14) {
       log::info(
         "Spring State: taget: {}, value: {}, velocity: {:.16f}, hl: {}",
