@@ -24,6 +24,6 @@ namespace Gts {
 
       static DynamicScaleData& GetData(Actor* actor);
 
-      std::unordered_map<formID, DynamicScaleData> data;
+      std::unordered_map<FormID, DynamicScaleData> data;
   };
 }
