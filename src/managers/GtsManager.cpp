@@ -172,8 +172,13 @@ namespace {
 		if (visual_scale <= 1e-5) {
 			return;
 		}
+    // Before the first edit ensure we cache the original value
+    // this is to fix the child mods that scale our node
+    if (trans_actor_data->initialScale < 0.0) {
+      trans_actor_data->initialScale = get_scale(actor); // Get raw scale from avnode now
+    }
 		//log::info("Setting {} scale to {}, visual scale: {}", actor->GetDisplayFullName(), visual_scale, vs);
-		set_scale(actor, visual_scale);
+		set_scale(actor, visual_scale * trans_actor_data->initialScale);
 	}
 
 	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {

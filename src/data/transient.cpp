@@ -79,6 +79,7 @@ namespace Gts {
 
 			TESObjectREFR* disable_collision_with = nullptr;
 			float otherScales = 1.0;
+      float initialScale = -1.0;
 			float WorldFov_Default = 0;
 			float FpFov_Default = 0;
 			float ButtCrushGrowthAmount = 0;

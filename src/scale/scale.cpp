@@ -73,6 +73,25 @@ namespace Gts {
 		auto profiler = Profilers::Profile("Scale: ModTargetScale");
 		auto actor_data = Persistent::GetSingleton().GetData(&actor);
 		// TODO: Fix this
+		//
+		// Semit, these functions should be RAW and make actual unscaled adjustments
+		// some of the math will do odd things if not.
+		//
+		// In this case it means that a setscale and a modscale can produce
+		// different scales
+		//
+		// If you want to adjust these I receommend we instead create a more
+		// general function called Grow() and Shrink() (as is done in the magic)
+		// that handles these modifier effects
+		//
+		// This way we have to sets of function Grow which we accept can be modify and may not
+		// actually mod by the request amount and mod_target_scale which
+		// represents real final absolute adjustments
+		//
+		// By altering this we now have NO way to make an absolute adjustment
+		//
+		// At this point in the CODE amt should NOT be altered, ALTER IT BEFORE THIS FUNCTION
+		//
 		if (amt > 0 && (actor.formID == 0x14 || IsTeammate(&actor))) {
 			float scale = actor_data->visual_scale; // Enabled if BalanceMode is True. Decreases Grow Efficiency.
 			if (scale >= 1.0) {
@@ -166,7 +185,12 @@ namespace Gts {
 	float get_natural_scale(Actor& actor) {
 		auto actor_data = Transient::GetSingleton().GetData(&actor);
 		if (actor_data) {
-			return actor_data->otherScales;
+      if (actor_data->initialScale > 0.0) {
+        return actor_data->otherScales * actor_data->initialScale;
+      } else {
+        // initialScale has not be found yet (actor not loaded)
+        return actor_data->otherScales;
+      }
 		}
 		return 1.0;
 	}
