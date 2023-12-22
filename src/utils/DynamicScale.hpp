@@ -20,7 +20,9 @@ namespace Gts {
 
   class DynamicScale : public EventListener {
 		public:
-			static DynamicScale& GetSingleton();
+			[[nodiscard]] static DynamicScale& GetSingleton();
+
+      virtual std::string DebugName() override;
 
       static DynamicScaleData& GetData(Actor* actor);
 

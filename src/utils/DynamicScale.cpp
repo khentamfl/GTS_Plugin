@@ -266,27 +266,32 @@ namespace Gts {
 		return max_scale;
 	}
 
-  DynamicScaleData::DynamicScaleData() : roomHeight(
-    Spring(std::numeric_limits<float>::infinity(), 1.0)
-  ) {}
+  	DynamicScaleData::DynamicScaleData() : roomHeight(
+    	Spring(std::numeric_limits<float>::infinity(), 1.0)
+  	) {}
 
 	DynamicScale& DynamicScale::GetSingleton() {
-    static DynamicScale instance;
+    	static DynamicScale instance;
 		return instance;
-  }
-  DynamicScaleData& DynamicScale::GetData(Actor* actor) {
-    if (!actor) {
-      throw std::exception("DynamicScale::GetData: Actor must exist");
-    }
-    auto id = actor->formID;
+  	}
 
-    auto& manager = DynamicScale::GetSingleton();
-    manager.data.try_emplace(id);
+	std::string DynamicScale::DebugName() {
+		return "DynamicScale";
+	}
 
-    try {
-      return manager.data.at(id);
-    } catch (const std::out_of_range& oor) {
-      throw std::exception("DynamicScale::GetData: Unable to find actor data");
-    }
-  }
+  	DynamicScaleData& DynamicScale::GetData(Actor* actor) {
+		if (!actor) {
+			throw std::exception("DynamicScale::GetData: Actor must exist");
+		}
+		auto id = actor->formID;
+
+		auto& manager = DynamicScale::GetSingleton();
+		manager.data.try_emplace(id);
+
+		try {
+		return manager.data.at(id);
+		} catch (const std::out_of_range& oor) {
+		throw std::exception("DynamicScale::GetData: Unable to find actor data");
+		}
+	}
 }
