@@ -214,48 +214,40 @@ namespace Gts {
     }
 
     // Spring
-    auto trans_data = Transient::GetSingleton().GetData(giant);
-    if (trans_data) {
-      if (giant->formID == 0x14) {
-        log::info(
-          "Spring State: taget: {}, value: {}, velocity: {:.16f}, hl: {}",
-          trans_data->roomHeight.target,
-          trans_data->roomHeight.value,
-          trans_data->roomHeight.velocity,
-          trans_data->roomHeight.halflife
-        );
-      }
-      if (!std::isinf(room_height_m)) {
-        // Under roof
-        if (std::isinf(trans_data->roomHeight.target)) {
-          // Last check was infinity so we just went under a roof
-          // Snap current value to new roof
-          if (giant->formID == 0x14) {
-            log::info("Entered roof");
-          }
-          trans_data->roomHeight.value = room_height_m;
-          trans_data->roomHeight.velocity = 0.0;
+    auto& dynamicData = DynamicScale::GetData(giant);
+    if (giant->formID == 0x14) {
+      log::info(
+        "Spring State: taget: {}, value: {}, velocity: {:.16f}, hl: {}",
+        dynamicData.roomHeight.target,
+        dynamicData.roomHeight.value,
+        dynamicData.roomHeight.velocity,
+        dynamicData.roomHeight.halflife
+      );
+    }
+    if (!std::isinf(room_height_m)) {
+      // Under roof
+      if (std::isinf(dynamicData.roomHeight.target)) {
+        // Last check was infinity so we just went under a roof
+        // Snap current value to new roof
+        if (giant->formID == 0x14) {
+          log::info("Entered roof");
         }
-
-        trans_data->roomHeight.target = room_height_m;
-        room_height_m = trans_data->roomHeight.value;
-      } else {
-        // No roof, set roomHeight to infinity so we know that we left the roof
-        // then continue as normal
-        if (!std::isinf(trans_data->roomHeight.target)) {
-          if (giant->formID == 0x14) {
-            log::info("Left roof");
-          }
-          trans_data->roomHeight.target = room_height_m;
-          trans_data->roomHeight.value = room_height_m;
-          trans_data->roomHeight.velocity = 0.0;
-        }
+        dynamicData.roomHeight.value = room_height_m;
+        dynamicData.roomHeight.velocity = 0.0;
       }
 
-      if (giant->formID == 0x14) {
-        auto dt = Time::WorldTimeDelta();
-        log::info("Manually updating player spring wit dt: {}", dt);
-        trans_data->roomHeight.Update(dt);
+      dynamicData.roomHeight.target = room_height_m;
+      room_height_m = dynamicData.roomHeight.value;
+    } else {
+      // No roof, set roomHeight to infinity so we know that we left the roof
+      // then continue as normal
+      if (!std::isinf(dynamicData.roomHeight.target)) {
+        if (giant->formID == 0x14) {
+          log::info("Left roof");
+        }
+        dynamicData.roomHeight.target = room_height_m;
+        dynamicData.roomHeight.value = room_height_m;
+        dynamicData.roomHeight.velocity = 0.0;
       }
     }
 
@@ -273,4 +265,28 @@ namespace Gts {
 
 		return max_scale;
 	}
+
+  DynamicScaleData::DynamicScaleData() : roomHeight(
+    Spring(std::numeric_limits<float>::infinity(), 1.0)
+  ) {}
+
+	DynamicScale& DynamicScale::GetSingleton() {
+    static DynamicScale instance;
+		return instance;
+  }
+  DynamicScaleData& DynamicScale::GetData(Actor* actor) {
+    if (!actor) {
+      throw std::exception("DynamicScale::GetData: Actor must exist");
+    }
+    auto id = actor->formID;
+
+    auto& manager = DynamicScale::GetSingleton();
+    manager.data.try_emplace(id);
+
+    try {
+      return manager.data.at(id);
+    } catch (const std::out_of_range& oor) {
+      throw std::exception("DynamicScale::GetData: Unable to find actor data");
+    }
+  }
 }
