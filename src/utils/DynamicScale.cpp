@@ -251,12 +251,12 @@ namespace Gts {
           trans_data->roomHeight.velocity = 0.0;
         }
       }
-    }
 
-    if (giant->formID == 0x14) {
-      let dt = Time::WorldTimeDelta();
-      log::info("Manually updating player spring wit dt: {}", dt);
-      trans_data->roomHeight.Update(dt);
+      if (giant->formID == 0x14) {
+        let dt = Time::WorldTimeDelta();
+        log::info("Manually updating player spring wit dt: {}", dt);
+        trans_data->roomHeight.Update(dt);
+      }
     }
 
     if (giant->formID == 0x14) {
