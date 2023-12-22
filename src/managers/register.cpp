@@ -26,6 +26,7 @@
 #include "managers/tremor.hpp"
 #include "managers/rumble.hpp"
 #include "managers/vore.hpp"
+#include "utils/DynamicScale.hpp"
 #include "magic/magic.hpp"
 #include "events.hpp"
 
@@ -67,6 +68,8 @@ namespace Gts {
 
 		EventDispatcher::AddListener(&ContactManager::GetSingleton()); // Manages collisions
 		EventDispatcher::AddListener(&InputManager::GetSingleton()); // Manages keyboard and mouse input
+
+    EventDispatcher::AddListener(&DynamicScale::GetSingleton()); // Handles room heights
 		log::info("Managers Registered");
 	}
 }
