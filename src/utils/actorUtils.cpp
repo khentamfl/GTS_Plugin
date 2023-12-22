@@ -860,7 +860,7 @@ namespace Gts {
 		}
 
 		float OTE = GetPerkBonus_OnTheEdge(giant, amt);
-		if (actor->formID == 0x14) {
+		if (giant->formID == 0x14) {
 			log::info("OnTheEdge: {}, Shrink Penalty: {}", OTE, GetShrinkPenalty(scale));
 		}
 
