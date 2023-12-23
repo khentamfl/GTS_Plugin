@@ -77,7 +77,7 @@ namespace Gts {
 						return;
 					}
 					if ((targetScale + modAmount) < maxScale) {
-						update_target_scale(actor, modAmount, SizeEffectType::Growing);
+						update_target_scale(actor, modAmount, SizeEffectType::kGrow);
 					} else if (targetScale < maxScale) {
 						set_target_scale(actor, maxScale);
 					} // else let spring handle it
@@ -89,7 +89,7 @@ namespace Gts {
 						return;
 					}
 					if ((targetScale + modAmount) > natural_scale) {
-						update_target_scale(actor, modAmount, SizeEffectType::Shrinking);
+						update_target_scale(actor, modAmount, SizeEffectType::kShrink);
 					} else if (targetScale > natural_scale || targetScale < natural_scale) {
 						set_target_scale(actor, natural_scale);
 					} // Need to have size restored by someone
@@ -102,7 +102,7 @@ namespace Gts {
 							return;
 						}
 						if ((targetScale + modAmount) < maxScale) {
-							update_target_scale(actor, modAmount, SizeEffectType::Growing);
+							update_target_scale(actor, modAmount, SizeEffectType::kGrow);
 						} else if (targetScale < maxScale) {
 							set_target_scale(actor, maxScale);
 						} // else let spring handle it
@@ -112,7 +112,7 @@ namespace Gts {
 							return;
 						}
 						if ((targetScale + modAmount) > natural_scale) {
-							update_target_scale(actor, modAmount, SizeEffectType::Shrinking);
+							update_target_scale(actor, modAmount, SizeEffectType::kShrink);
 						} else if (targetScale > natural_scale) {
 							set_target_scale(actor, natural_scale);
 						} // Need to have size restored by someone
@@ -126,7 +126,7 @@ namespace Gts {
 							return;
 						}
 						if ((targetScale + modAmount) < maxScale) {
-							update_target_scale(actor, modAmount * 0.33, SizeEffectType::Growing);
+							update_target_scale(actor, modAmount * 0.33, SizeEffectType::kGrow);
 						} else if (targetScale < maxScale) {
 							set_target_scale(actor, maxScale);
 						} // else let spring handle it
@@ -161,7 +161,7 @@ namespace Gts {
 							Runtime::PlaySound("MoanSound", actor, targetScale/4, 1.0);
 						}
 						if (targetScale < maxScale) {
-							update_target_scale(actor, GrowthPower, SizeEffectType::Growing);
+							update_target_scale(actor, GrowthPower, SizeEffectType::kGrow);
 							GRumble::Once("CurseOfGrowth", actor, GrowthPower * 20, 0.10);
 							Runtime::PlaySoundAtNode("growthSound", actor, GrowthPower * 6, 1.0, "NPC Pelvis [Pelv]");
 						}
@@ -174,7 +174,7 @@ namespace Gts {
 						return;
 					}
 					if ((targetScale + modAmount) > natural_scale) {
-						update_target_scale(actor, modAmount, SizeEffectType::Shrinking);
+						update_target_scale(actor, modAmount, SizeEffectType::kShrink);
 					} else if (targetScale > natural_scale) {
 						set_target_scale(actor, natural_scale);
 					} // Need to have size restored by something

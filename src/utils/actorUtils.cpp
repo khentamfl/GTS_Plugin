@@ -859,7 +859,7 @@ namespace Gts {
 			// If neative change: add stolen attributes
 			DistributeStolenAttributes(giant, -amt * GetGrowthReduction(scale)); // Adjust max attributes
 		}
-		if (type == SizeEffectType::Shrinking) {
+		if (type == SizeEffectType::kShrink) {
 			OTE = GetPerkBonus_OnTheEdge(giant, amt);
 		}
 		if (giant->formID == 0x14) {
@@ -1754,7 +1754,7 @@ namespace Gts {
 			shrinkpower *= 1.40;
 		}
 
-		update_target_scale(tiny, -(shrinkpower * gigantism), SizeEffectType::Shrinking);
+		update_target_scale(tiny, -(shrinkpower * gigantism), SizeEffectType::kShrink);
 		StartCombat(giant, tiny, true);
 
 		ModSizeExperience((shrinkpower * gigantism) * 0.80, giant);

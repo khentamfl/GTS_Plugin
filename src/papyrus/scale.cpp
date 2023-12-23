@@ -152,19 +152,21 @@ namespace {
 	// Configurable scale
 	void SetScaleMethod(StaticFunctionTag*, int size_method) {
 		switch (size_method) {
-			ResetActorScale();
 			case 0:
 				Persistent::GetSingleton().size_method = SizeMethod::ModelScale;
-				
+				ResetActorScale();
 				break;
 			case 1:
 				Persistent::GetSingleton().size_method = SizeMethod::RootScale;
+				ResetActorScale();
 				break;
 			case 2:
 				Persistent::GetSingleton().size_method = SizeMethod::Hybrid;
+				ResetActorScale();
 				break;
 			case 3:
 				Persistent::GetSingleton().size_method = SizeMethod::RefScale;
+				ResetActorScale();
 				break;
 		}
 	}

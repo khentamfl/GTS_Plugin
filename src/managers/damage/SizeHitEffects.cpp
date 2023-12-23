@@ -147,14 +147,14 @@ namespace {
 
 		if (receiver->formID == 0x14 && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0) { // if has perk
 			float GrowthValue = std::clamp((-damage/3500) * SizeHunger * Gigantism, 0.0f, 0.25f * Gigantism);
-			update_target_scale(receiver, GrowthValue, SizeEffectType::Shrinking);
+			update_target_scale(receiver, GrowthValue, SizeEffectType::kShrink);
 			DoHitShake(receiver, GrowthValue * 10);
 			if (soundtimer.ShouldRunFrame()) {
 				Runtime::PlaySoundAtNode("growthSound", receiver, GrowthValue * 2, 1.0, "NPC Pelvis [Pelv]");
 			}
 			if (ShrinkChance >= 2) {
-				update_target_scale(attacker, -GrowthValue/(6.0 * Dragon*BalanceMode), SizeEffectType::Shrinking); // Shrink Attacker
-				update_target_scale(receiver, GrowthValue/(2.0 * Dragon*BalanceMode), SizeEffectType::Growing); // Grow receiver
+				update_target_scale(attacker, -GrowthValue/(6.0 * Dragon*BalanceMode), SizeEffectType::kShrink); // Shrink Attacker
+				update_target_scale(receiver, GrowthValue/(2.0 * Dragon*BalanceMode), SizeEffectType::kGrow); // Grow receiver
 				if (get_target_scale(attacker) <= 0.12/Dragon) {
 					set_target_scale(attacker, 0.12/Dragon);
 				}
@@ -172,7 +172,7 @@ namespace {
 					set_target_scale(receiver, naturalscale); // reset to normal scale
 					return;
 				}
-				update_target_scale(receiver, -ShrinkValue, SizeEffectType::Shrinking);
+				update_target_scale(receiver, -ShrinkValue, SizeEffectType::kShrink);
 			}
 		}
 	}

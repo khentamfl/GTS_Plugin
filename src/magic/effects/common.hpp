@@ -159,7 +159,7 @@ namespace Gts {
 
 	inline void Grow(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		update_target_scale(actor, CalcPower(actor, scale_factor, bonus, true), SizeEffectType::Growing);
+		update_target_scale(actor, CalcPower(actor, scale_factor, bonus, true), SizeEffectType::kGrow);
 	}
 
 	inline void CrushGrow(Actor* actor, float scale_factor, float bonus) {
@@ -167,13 +167,13 @@ namespace Gts {
 		float modifier = SizeManager::GetSingleton().BalancedMode();
 		scale_factor /= modifier;
 		bonus /= modifier;
-		update_target_scale(actor, CalcPower(actor, scale_factor, bonus, true), SizeEffectType::Growing);
+		update_target_scale(actor, CalcPower(actor, scale_factor, bonus, true), SizeEffectType::kGrow);
 		AddStolenAttributes(actor, CalcPower(actor, scale_factor, bonus, true));
 	}
 
 	inline void ShrinkActor(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		update_target_scale(actor, -CalcPower(actor, scale_factor, bonus, true), SizeEffectType::Shrinking);
+		update_target_scale(actor, -CalcPower(actor, scale_factor, bonus, true), SizeEffectType::kShrink);
 	}
 
 	inline bool Revert(Actor* actor, float scale_factor, float bonus) {
@@ -186,9 +186,9 @@ namespace Gts {
 			set_target_scale(actor, natural_scale);
 			return false;
 		} else if (target_scale < natural_scale) { // NOLINT
-			update_target_scale(actor, amount, SizeEffectType::Neutral);
+			update_target_scale(actor, amount, SizeEffectType::kNeutral);
 		} else {
-			update_target_scale(actor, -amount, SizeEffectType::Neutral);
+			update_target_scale(actor, -amount, SizeEffectType::kNeutral);
 		}
 		return true;
 	}
@@ -201,8 +201,8 @@ namespace Gts {
 		float amountnomult = CalcPower(from, scale_factor, bonus, false);
 		float target_scale = get_visual_scale(from);
 		ModSizeExperience(0.52 * scale_factor * target_scale, to);
-		update_target_scale(from, -amountnomult * 0.55 * effeciency_noscale, SizeEffectType::Shrinking);
-		update_target_scale(to, amount*effeciency, SizeEffectType::Growing);
+		update_target_scale(from, -amountnomult * 0.55 * effeciency_noscale, SizeEffectType::kShrink);
+		update_target_scale(to, amount*effeciency, SizeEffectType::kGrow);
 
 		if (source == ShrinkSource::hugs) {
 			AdvanceQuestProgression(to, 1.0, amountnomult * 0.55 * effeciency_noscale);
@@ -220,8 +220,8 @@ namespace Gts {
 		AdjustSizeLimit(0.0012 * scale_factor * target_scale, to);
 		AdjustMassLimit(0.0012 * scale_factor* target_scale, to);
 		ModSizeExperience(0.52 * scale_factor * target_scale, to);
-		update_target_scale(from, -amount, SizeEffectType::Shrinking);
-		update_target_scale(to, amount*effeciency/10, SizeEffectType::Growing); // < 10 times weaker size steal towards caster. Absorb exclusive.
+		update_target_scale(from, -amount, SizeEffectType::kShrink);
+		update_target_scale(to, amount*effeciency/10, SizeEffectType::kGrow); // < 10 times weaker size steal towards caster. Absorb exclusive.
 	}
 
 	inline void Transfer(Actor* from, Actor* to, float scale_factor, float bonus) {
@@ -233,9 +233,9 @@ namespace Gts {
 		float lose = CalcPower(from, receiver, 0, true);
 		float CasterScale = get_target_scale(from);
 		if (CasterScale > 1.0) { // We don't want to scale the caster below this limit!
-			update_target_scale(from, -lose, SizeEffectType::Shrinking);
+			update_target_scale(from, -lose, SizeEffectType::kShrink);
 		}
-		update_target_scale(to, receive, SizeEffectType::Growing);
+		update_target_scale(to, receive, SizeEffectType::kGrow);
 	}
 
 	inline void TransferSize(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smt, ShrinkSource source) {

@@ -62,7 +62,7 @@ namespace {
 					Runtime::PlaySoundAtNode("MoanSound", player, Volume, 0.0, "NPC Head [Head]");
 				}
 
-				update_target_scale(player, SizeCalculation/80 * gigantism, SizeEffectType::Neutral);
+				update_target_scale(player, SizeCalculation/80 * gigantism, SizeEffectType::kNeutral);
 				Cache->SizeReserve -= SizeCalculation/80;
 				if (Cache->SizeReserve <= 0) {
 					Cache->SizeReserve = 0.0; // Protect against negative values.

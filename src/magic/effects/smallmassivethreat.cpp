@@ -79,9 +79,9 @@ namespace Gts {
 			NullifySMTDuration(caster);
 		}
 		if (CasterScale < get_natural_scale(caster)) {// Disallow to be smaller than natural scale to avoid weird interactions with others
-			update_target_scale(caster, 0.0030, SizeEffectType::Growing);
+			update_target_scale(caster, 0.0030, SizeEffectType::kGrow);
 		} else if (CasterScale >= 1.50) {
-			update_target_scale(caster, -0.0300, SizeEffectType::Neutral);
+			update_target_scale(caster, -0.0300, SizeEffectType::kNeutral);
 			if (warningtimer.ShouldRun() && caster->formID == 0x14) {
 				Notify("Im getting too big, it becomes hard to handle such power.");
 			}
