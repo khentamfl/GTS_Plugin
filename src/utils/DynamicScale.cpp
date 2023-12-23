@@ -57,14 +57,14 @@ namespace Gts {
 		// === Calculation of ray directions ===
 		auto transform = root_node->world;
 		transform.scale = 1.0;
-   	// ray 1 center on giant + 70
-		auto ray1_p = NiPoint3(0.0, 0.0, 70.0); // in local space
+   	// ray 1 center on giant + 70 (default), +100 now
+		auto ray1_p = NiPoint3(0.0, 0.0, 100.0); // in local space
 		ray1_p = transform * ray1_p; // in global space
 		// straight up
 		auto ray1_d = NiPoint3(0.0, 0.0, 1.0); // direction
 
     // ray 2 slightly in front of the player
-		auto ray2_p = NiPoint3(0.0, 16.0 * scale, 70.0);
+		auto ray2_p = NiPoint3(0.0, 18.0 * scale, 100.0);
 		ray2_p = transform * ray2_p;
 		// straight up
 		auto ray2_d = NiPoint3(0.0, 0.0, 1.0);
@@ -143,7 +143,7 @@ namespace Gts {
       }
     }
 
-		const float RAY_LENGTH = 720;
+		const float RAY_LENGTH = 1000;
 		bool debug = IsDebugEnabled();
 
 		// Ceiling
