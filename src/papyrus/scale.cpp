@@ -2,6 +2,7 @@
 #include "scale/scale.hpp"
 #include "scale/modscale.hpp"
 #include "data/persistent.hpp"
+#include "data/transient.hpp"
 #include "managers/GtsManager.hpp"
 
 
