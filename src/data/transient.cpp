@@ -134,6 +134,15 @@ namespace Gts {
 		return &this->_actor_data[key];
 	}
 
+  std::vector<formID> Transient::GetForms() {
+    std::vector<formID> keys;
+    keys.reserve(this->_actor_data.size());
+    for(auto kv : this->_actor_data) {
+        keys.push_back(kv.first);
+    }
+    return keys;
+  }
+
 
 	std::string Transient::DebugName() {
 		return "Transient";

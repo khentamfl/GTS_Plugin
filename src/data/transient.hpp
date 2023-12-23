@@ -52,6 +52,7 @@ namespace Gts {
 
 			TempActorData* GetData(TESObjectREFR* object);
 			TempActorData* GetActorData(Actor* actor);
+      std::vector<formID> GetForms();
 
 			virtual std::string DebugName() override;
 			virtual void Update() override;
