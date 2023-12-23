@@ -1754,7 +1754,7 @@ namespace Gts {
 			shrinkpower *= 1.40;
 		}
 
-		update_target_scale(tiny, -(shrinkpower * gigantism));
+		update_target_scale(tiny, -(shrinkpower * gigantism), SizeEffectType::Shrinking);
 		StartCombat(giant, tiny, true);
 
 		ModSizeExperience((shrinkpower * gigantism) * 0.80, giant);
