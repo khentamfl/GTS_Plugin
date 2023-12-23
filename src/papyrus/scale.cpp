@@ -15,7 +15,6 @@ namespace {
 	constexpr std::string_view PapyrusClass = "GtsScale";
 
 	void ResetActorScale() {
-		auto Transient = Transient::GetSingleton();
 		log::info("Resetting actor scale");
 		for (auto actor: find_actors()) {
 			if (!actor) {
