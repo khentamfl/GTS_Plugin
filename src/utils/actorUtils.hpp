@@ -94,7 +94,7 @@ namespace Gts {
 	float GetRaycastStateScale(Actor* giant);
 	float GetProneAdjustment();
 
-	void update_target_scale(Actor* giant, float amt, bool shrinkresistance)
+	void update_target_scale(Actor* giant, float amt, SizeEffectType type);
 	
 
 	void SpawnActionIcon(Actor* giant);
