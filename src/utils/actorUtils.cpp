@@ -859,7 +859,7 @@ namespace Gts {
 			// If neative change: add stolen attributes
 			DistributeStolenAttributes(giant, -amt * GetGrowthReduction(scale)); // Adjust max attributes
 		}
-		if (type == SizeEffectType::Shrink) {
+		if (type == SizeEffectType::Shrinking) {
 			OTE = GetPerkBonus_OnTheEdge(giant, amt);
 		}
 		if (giant->formID == 0x14) {

@@ -25,10 +25,10 @@ namespace Gts {
 	};
 
 	enum SizeEffectType {
-		Shrink,
-		Grow,
-		Steal,
-		Gift,
+		Shrinking,
+		Growing,
+		Stealing,
+		Gifting,
 		Neutral,
 	};
 

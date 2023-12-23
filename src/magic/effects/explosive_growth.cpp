@@ -105,7 +105,7 @@ namespace Gts {
 	}
 
 	void ExplosiveGrowth::DoGrowth(Actor* actor, float value) {
-		update_target_scale(actor, value, SizeEffectType::Grow); // Grow
+		update_target_scale(actor, value, SizeEffectType::Growing); // Grow
 		if (SizeManager::GetSingleton().BalancedMode() >= 2.0) {
 			float scale = get_visual_scale(actor);
 			if (scale >= 1.0) {

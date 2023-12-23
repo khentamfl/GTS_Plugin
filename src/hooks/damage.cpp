@@ -91,7 +91,7 @@ namespace {
 					float maxhp = GetMaxAV(receiver, ActorValue::kHealth);
 					float scale = get_visual_scale(receiver);
 
-					update_target_scale(receiver, -0.35 * scale, SizeEffectType::Shrink);
+					update_target_scale(receiver, -0.35 * scale, SizeEffectType::Shrinking);
 					GRumble::For("CheatDeath", receiver, 240.0, 0.10, "NPC COM [COM ]", 1.50);
 					Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.5);
 					receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor

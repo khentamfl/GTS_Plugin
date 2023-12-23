@@ -79,7 +79,7 @@ namespace Gts {
 			NullifySMTDuration(caster);
 		}
 		if (CasterScale < get_natural_scale(caster)) {// Disallow to be smaller than natural scale to avoid weird interactions with others
-			update_target_scale(caster, 0.0030, SizeEffectType::Grow);
+			update_target_scale(caster, 0.0030, SizeEffectType::Growing);
 		} else if (CasterScale >= 1.50) {
 			update_target_scale(caster, -0.0300, SizeEffectType::Neutral);
 			if (warningtimer.ShouldRun() && caster->formID == 0x14) {
