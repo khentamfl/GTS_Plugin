@@ -13,6 +13,26 @@ using namespace RE::BSScript;
 namespace {
 	constexpr std::string_view PapyrusClass = "GtsScale";
 
+	void ResetActorScale() {
+		auto Transient = Transient::GetSingleton();
+		if (Transient) {
+			for (auto actor: find_actors()) {
+				if (!actor) {
+					return;
+				}
+				if (actor->Is3DLoaded()) {
+					auto data = Transient::GetSingleton().GetData(actor);
+					if (data) {
+						float ns = get_natural_scale(actor);
+						set_npcnode_scale(actor, ns);
+						set_model_scale(actor, ns);	
+						data->initialScale = -1.0;
+					}
+				}
+			}
+		}
+	}
+
 	// Model Scale
 	bool SetModelScale(StaticFunctionTag*, Actor* actor, float scale) {
 		bool result = false;
@@ -133,15 +153,19 @@ namespace {
 		switch (size_method) {
 			case 0:
 				Persistent::GetSingleton().size_method = SizeMethod::ModelScale;
+				ResetActorScale();
 				break;
 			case 1:
 				Persistent::GetSingleton().size_method = SizeMethod::RootScale;
+				ResetActorScale()
 				break;
 			case 2:
 				Persistent::GetSingleton().size_method = SizeMethod::Hybrid;
+				ResetActorScale()
 				break;
 			case 3:
 				Persistent::GetSingleton().size_method = SizeMethod::RefScale;
+				ResetActorScale()
 				break;
 		}
 	}

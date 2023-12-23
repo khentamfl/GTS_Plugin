@@ -158,7 +158,7 @@ namespace Gts {
 
 	inline void Grow(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		update_target_scale(actor, CalcPower(actor, scale_factor, bonus, SizeEffectType::Growing), true);
+		update_target_scale(actor, CalcPower(actor, scale_factor, bonus), SizeEffectType::Growing);
 	}
 
 	inline void CrushGrow(Actor* actor, float scale_factor, float bonus) {
@@ -166,13 +166,13 @@ namespace Gts {
 		float modifier = SizeManager::GetSingleton().BalancedMode();
 		scale_factor /= modifier;
 		bonus /= modifier;
-		update_target_scale(actor, CalcPower(actor, scale_factor, bonus, SizeEffectType::Growing), false);
+		update_target_scale(actor, CalcPower(actor, scale_factor, bonus), SizeEffectType::Growing);
 		AddStolenAttributes(actor, CalcPower(actor, scale_factor, bonus));
 	}
 
 	inline void ShrinkActor(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		update_target_scale(actor, -CalcPower(actor, scale_factor, bonus, SizeEffectType::Shrinking), true);
+		update_target_scale(actor, -CalcPower(actor, scale_factor, bonus), SizeEffectType::Shrinking);
 	}
 
 	inline bool Revert(Actor* actor, float scale_factor, float bonus) {
