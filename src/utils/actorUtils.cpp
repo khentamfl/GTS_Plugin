@@ -57,12 +57,16 @@ namespace {
 	float GetPerkBonus_OnTheEdge(Actor* giant, float amt) {
 		float bonus = 1.0;
 		bool perk = Runtime::HasPerkTeam(giant, "OnTheEdge");
+		log::info("Perk: {}", perk);
 		if (perk) { 
 			float GetHP = clamp(0.5, 1.0, GetHealthPercentage(giant) + 0.4); // Bonus Size Gain if Actor has perk
+			log::info("GetHP of {}: {}", giant->GetDisplayFullName(), GetHP);
 			if (amt > 0) {
 				bonus /= GetHP;
+				log::info("Bonus Alter >: {}", bonus);
 			} else if (amt < 0) {
 				bonus *= GetHP;
+				log::info("Bonus Alter <: {}", bonus);
 			} // When health is < 60%, empower growth by up to 50%. Max value at 10% health.
 		}
 		return bonus;	
