@@ -15,19 +15,20 @@ namespace {
 
 	void ResetActorScale() {
 		auto Transient = Transient::GetSingleton();
+		log::info("Resetting actor scale");
 		if (Transient) {
 			for (auto actor: find_actors()) {
 				if (!actor) {
 					return;
 				}
-				if (actor->Is3DLoaded()) {
-					auto data = Transient::GetSingleton().GetData(actor);
-					if (data) {
+				auto data = Transient::GetSingleton().GetData(actor);
+				if (data) {
+					if (actor->Is3DLoaded()) {
 						float ns = get_natural_scale(actor);
 						set_npcnode_scale(actor, ns);
 						set_model_scale(actor, ns);	
-						data->initialScale = -1.0;
 					}
+					data->initialScale = -1.0;
 				}
 			}
 		}
@@ -151,21 +152,19 @@ namespace {
 	// Configurable scale
 	void SetScaleMethod(StaticFunctionTag*, int size_method) {
 		switch (size_method) {
+			ResetActorScale();
 			case 0:
 				Persistent::GetSingleton().size_method = SizeMethod::ModelScale;
-				ResetActorScale();
+				
 				break;
 			case 1:
 				Persistent::GetSingleton().size_method = SizeMethod::RootScale;
-				ResetActorScale()
 				break;
 			case 2:
 				Persistent::GetSingleton().size_method = SizeMethod::Hybrid;
-				ResetActorScale()
 				break;
 			case 3:
 				Persistent::GetSingleton().size_method = SizeMethod::RefScale;
-				ResetActorScale()
 				break;
 		}
 	}
