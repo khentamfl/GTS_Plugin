@@ -15,29 +15,29 @@ namespace {
 	constexpr std::string_view PapyrusClass = "GtsScale";
 
   void ResetScales(Actor* actor) {
-    log::info("Resetting all actor scale");
-    auto forms = Transient::GetSingleton().GetForms();
-    for (auto id: forms) {
-      Actor* actor = TESForm::LookupByID<Actor>(tinyId);
-      if (actor) {
-        ResetActorScale(actor);
-      }
+		log::info("Resetting all actor scale");
+		auto forms = Transient::GetSingleton().GetForms();
+		for (auto id: forms) {
+			Actor* actor = TESForm::LookupByID<Actor>(id);
+			if (actor) {
+				ResetActorScale(actor);
+			}
 		}
-  }
+  	}
   
 	void ResetActorScale(Actor* actor) {
-    if (!actor) {
-      return;
-    }
-    auto data = Transient::GetSingleton().GetData(actor);
-    if (data) {
-      if (data->initialScale > 0) {
-        if (actor->Is3DLoaded()) {
-          set_scale(actor, data->initialScale);
-        }
-        data->initialScale = -1.0;
-      }
-    }
+		if (!actor) {
+			return;
+		}
+		auto data = Transient::GetSingleton().GetData(actor);
+		if (data) {
+			if (data->initialScale > 0) {
+				if (actor->Is3DLoaded()) {
+					set_scale(actor, data->initialScale);
+				}
+				data->initialScale = -1.0;
+			}
+		}
 	}
 
 	// Model Scale
