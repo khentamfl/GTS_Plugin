@@ -13,18 +13,6 @@ using namespace RE::BSScript;
 
 namespace {
 	constexpr std::string_view PapyrusClass = "GtsScale";
-
-  void ResetScales(Actor* actor) {
-		log::info("Resetting all actor scale");
-		auto forms = Transient::GetSingleton().GetForms();
-		for (auto id: forms) {
-			Actor* actor = TESForm::LookupByID<Actor>(id);
-			if (actor) {
-				ResetActorScale(actor);
-			}
-		}
-  	}
-  
 	void ResetActorScale(Actor* actor) {
 		if (!actor) {
 			return;
@@ -39,6 +27,18 @@ namespace {
 			}
 		}
 	}
+ 	void ResetScales() {
+		log::info("Resetting all actor scale");
+		auto forms = Transient::GetSingleton().GetForms();
+		for (auto id: forms) {
+			Actor* actor = TESForm::LookupByID<Actor>(id);
+			if (actor) {
+				ResetActorScale(actor);
+			}
+		}
+  	}
+  
+	
 
 	// Model Scale
 	bool SetModelScale(StaticFunctionTag*, Actor* actor, float scale) {
@@ -157,7 +157,7 @@ namespace {
 
 	// Configurable scale
 	void SetScaleMethod(StaticFunctionTag*, int size_method) {
-    ResetScales(); // Must reset first
+    	ResetScales(); // Must reset first
 		switch (size_method) {
 			case 0:
 				Persistent::GetSingleton().size_method = SizeMethod::ModelScale;
