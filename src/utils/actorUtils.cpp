@@ -38,7 +38,7 @@ using namespace Gts;
 namespace {
 	const float EPS = 1e-4;
 
-	float GetShrinkPenalty(float size) {
+	float GetGrowthReduction(float size) {
 		// https://www.desmos.com/calculator/pqgliwxzi2
 		SoftPotential cut {
 			.k = 1.08,
@@ -851,17 +851,17 @@ namespace Gts {
 		bool perk = Runtime::HasPerkTeam(giant, "OnTheEdge");
 		if (amt > 0 && (giant->formID == 0x14 || IsTeammate(giant))) {
 			if (scale >= 1.0) {
-				amt /= GetShrinkPenalty(scale); 
+				amt /= GetGrowthReduction(scale); 
 				// Enabled if BalanceMode is True. Decreases Grow Efficiency.
 			}
 		} else if (amt - EPS < 0.0) {
 			// If neative change: add stolen attributes
-			DistributeStolenAttributes(giant, -amt * GetShrinkPenalty(scale)); // Adjust max attributes
+			DistributeStolenAttributes(giant, -amt * GetGrowthReduction(scale)); // Adjust max attributes
 		}
 
 		float OTE = GetPerkBonus_OnTheEdge(giant, amt);
 		if (giant->formID == 0x14) {
-			log::info("OnTheEdge: {}, Shrink Penalty: {}", OTE, GetShrinkPenalty(scale));
+			log::info("OnTheEdge: {}, Growth Penalty: {}", OTE, GetGrowthReduction(scale));
 		}
 
 		mod_target_scale(giant, amt * OTE); // set target scale value

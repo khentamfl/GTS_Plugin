@@ -94,6 +94,6 @@ namespace Gts {
 		for (auto spring: this->springs) {
 			spring->Update(dt);
 		}
-    log::info("Spring manager updated: {} spring", this->springs.size());
+   // log::info("Spring manager updated: {} spring", this->springs.size());
 	}
 }
