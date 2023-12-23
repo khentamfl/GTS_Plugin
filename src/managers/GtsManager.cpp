@@ -293,14 +293,8 @@ void GtsManager::Update() {
 				accuratedamage.DoAccurateCollisionRight(actor, 0.4 * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedRight);
 			}
 		}
-
-		float current_health_percentage = GetHealthPercentage(actor);
-
 		update_actor(actor);
 		apply_actor(actor);
-
-		SetHealthPercentage(actor, current_health_percentage);
-
 	}
 }
 

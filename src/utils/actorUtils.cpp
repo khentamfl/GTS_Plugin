@@ -62,7 +62,7 @@ namespace {
 		float maxhp = GetMaxAV(giant, ActorValue::kHealth);
 		log::info("Current HP: {}, Max HP: {}, percentage: {}", currenthp, maxhp, GetHealthPercentage(giant));
 		if (perk) { 
-			float GetHP = clamp(0.5, 1.0, GetHealthPercentage(giant) + 0.4); // Bonus Size Gain if Actor has perk
+			float GetHP = std::clamp(GetHealthPercentage(giant) + 0.4f, 0.5f, 1.0f); // Bonus Size Gain if Actor has perk
 			log::info("GetHP {}", GetHP);
 			if (amt > 0) {
 				bonus /= GetHP;
