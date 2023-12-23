@@ -17,21 +17,19 @@ namespace {
 	void ResetActorScale() {
 		auto Transient = Transient::GetSingleton();
 		log::info("Resetting actor scale");
-		if (Transient) {
-			for (auto actor: find_actors()) {
-				if (!actor) {
-					return;
+		for (auto actor: find_actors()) {
+			if (!actor) {
+				return;
+			}
+			auto data = Transient::GetSingleton().GetData(actor);
+			if (data) {
+				if (actor->Is3DLoaded()) {
+					float ns = get_natural_scale(actor);
+					set_npcnode_scale(actor, ns);
+					set_model_scale(actor, ns);	
 				}
-				auto data = Transient::GetSingleton().GetData(actor);
-				if (data) {
-					if (actor->Is3DLoaded()) {
-						float ns = get_natural_scale(actor);
-						set_npcnode_scale(actor, ns);
-						set_model_scale(actor, ns);	
-					}
-					if (data->initialScale > 0) {
-						data->initialScale = -1.0;
-					}
+				if (data->initialScale > 0) {
+					data->initialScale = -1.0;
 				}
 			}
 		}
