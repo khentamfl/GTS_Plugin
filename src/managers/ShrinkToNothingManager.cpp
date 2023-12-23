@@ -1,5 +1,6 @@
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/ai/aifunctions.hpp"
+#include "magic/effects/common.hpp"
 #include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
 #include "utils/looting.hpp"
