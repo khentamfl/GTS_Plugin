@@ -137,7 +137,7 @@ namespace {
 		auto scale = get_visual_scale(huggedActor);
 		float sizedifference = get_visual_scale(giant)/scale;
 		set_target_scale(huggedActor, scale*0.60);
-		AdjustGtsSkill(scale/6, giant);
+		ModSizeExperience(scale/6, giant);
 		GRumble::For("ShrinkPulse", giant, 18.0 * sizedifference, 0.10, "NPC COM [COM ]", 0.35);
 	}
 
@@ -352,7 +352,7 @@ namespace Gts {
 			DamageAV(giantref, ActorValue::kStamina, 0.50 * stamina * TimeScale()); // Damage GTS Stamina
 
 			TransferSize(giantref, tinyref, false, shrink, steal, false, ShrinkSource::hugs); // Shrink foe, enlarge gts
-			AdjustGtsSkill(0.00020, giantref);
+			ModSizeExperience(0.00020, giantref);
 			if (giantref->formID == 0x14) {
 				shake_camera(giantref, 0.70 * sizedifference, 0.05);
 			} else {
@@ -394,7 +394,7 @@ namespace Gts {
 			if (giantref->formID == 0x14) {
 				GrabStaminaDrain(giantref, tinyref, sizedifference * 2.6);
 			}
-			AdjustGtsSkill(0.00005, giantref);
+			ModSizeExperience(0.00005, giantref);
 
 			DamageAV(tinyref, ActorValue::kStamina, 0.125 * TimeScale()); // Drain Tiny Stamina
 

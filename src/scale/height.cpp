@@ -47,7 +47,7 @@ namespace Gts {
 		float target_height = (current_height + amt);
 		float target_scale = height_to_scale(actor, target_height);
 		float scale_delta = target_scale - current_scale;
-		update_target_scale(actor, scale_delta);
+		mod_target_scale(actor, scale_delta);
 	}
 
 	void set_max_height(Actor* actor, float height) {

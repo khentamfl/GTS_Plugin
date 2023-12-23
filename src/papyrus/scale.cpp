@@ -204,7 +204,7 @@ namespace {
 	}
 
 	void ModTargetScale(StaticFunctionTag*, Actor* actor, float amt) {
-		update_target_scale(actor, amt);
+		mod_target_scale(actor, amt);
 	}
 
 	void SetMaxScale(StaticFunctionTag*, Actor* actor, float scale) {
@@ -232,7 +232,7 @@ namespace {
 				continue;
 			}
 			if (actor->IsPlayerTeammate()) {
-				update_target_scale(actor, amt);
+				mod_target_scale(actor, amt);
 			}
 		}
 	}

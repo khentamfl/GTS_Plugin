@@ -55,7 +55,7 @@ namespace Gts {
 					float currentSize = get_visual_scale(tiny);
 
 					// Fully shrunk
-					ShrinkToNothingManager::AdjustGiantessSkill(giant, tiny); // Adjust Size Matter skill
+					ModSizeExperience(0.24, giant); // Adjust Size Matter skill
 					KillActor(giant, tiny);
 
 					if (!IsLiving(tiny)) {
@@ -160,46 +160,6 @@ namespace Gts {
 		}
 
 		return true;
-	}
-
-	void ShrinkToNothingManager::AdjustGiantessSkill(Actor* Caster, Actor* Target) { // Adjust Matter Of Size skill on Shrink To Nothing
-		if (Caster->formID != 0x14) {
-			return; //Bye
-		}
-
-		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
-		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
-		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
-
-
-		int random = (100 + (rand()% 24 + 1)) / 100;
-
-		if (GtsSkillLevel->value >= 100.0) {
-			GtsSkillLevel->value = 100.0;
-			GtsSkillRatio->value = 0.0;
-			return;
-		}
-
-		float skill_level = GtsSkillLevel->value;
-
-		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
-
-		float absorbedSize = (get_visual_scale(Target));
-		if (Target->IsDead()) {
-			absorbedSize *= 0.1; // Less effective on dead actors
-			log::info("Is Dead {}", Target->GetDisplayFullName());
-		}
-		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
-		float Total = (((0.24 * random) + absorbedSize/50) * ValueEffectiveness);
-		GtsSkillRatio->value += Total * GetXpBonus();
-
-		if (GtsSkillRatio->value >= 1.0) {
-			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
-			GtsSkillRatio->value = transfer;
-			GtsSkillLevel->value = skill_level + 1.0;
-			GtsSkillProgress->value = GtsSkillLevel->value;
-			AddPerkPoints(GtsSkillLevel->value);
-		}
 	}
 
 	ShrinkData::ShrinkData(Actor* giant) :

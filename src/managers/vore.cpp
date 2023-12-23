@@ -49,42 +49,6 @@ namespace {
 		}
 	}
 
-	void AdjustGiantessSkill(Actor* Caster, float tinysize) { // Adjust Matter Of Size skill
-		if (Caster->formID != 0x14) {
-			return; //Bye
-		}
-		auto GtsSkillLevel = Runtime::GetGlobal("GtsSkillLevel");
-		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
-		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
-
-
-		int random = (100 + (rand()% 25 + 1)) / 100;
-
-		if (GtsSkillLevel->value >= 100.0) {
-			GtsSkillLevel->value = 100.0;
-			GtsSkillRatio->value = 0.0;
-			return;
-		}
-
-		float skill_level = GtsSkillLevel->value;
-
-		float ValueEffectiveness = std::clamp(1.0 - GtsSkillLevel->value/100, 0.10, 1.0);
-
-		float absorbedSize = tinysize/50;
-
-		float oldvaluecalc = 1.0 - GtsSkillRatio->value; //Attempt to keep progress on the next level
-		float Total = (((0.30 * random) + absorbedSize) * ValueEffectiveness);
-		GtsSkillRatio->value += Total * GetXpBonus();
-
-		if (GtsSkillRatio->value >= 1.0) {
-			float transfer = clamp(0.0, 1.0, Total - oldvaluecalc);
-			GtsSkillRatio->value = transfer;
-			GtsSkillLevel->value = skill_level + 1.0;
-			GtsSkillProgress->value = GtsSkillLevel->value;
-			AddPerkPoints(GtsSkillLevel->value);
-		}
-	}
-
 	void BuffAttributes(Actor* giant, float tinyscale) {
 		if (!giant) {
 			return;
@@ -326,7 +290,7 @@ namespace Gts {
 				DamageAV(giant, ActorValue::kHealth, -healthToApply * TimeScale());
 				DamageAV(giant, ActorValue::kStamina, -healthToApply * TimeScale());
 
-				update_target_scale(giant, sizeToApply * TimeScale());
+				update_target_scale(giant, sizeToApply * TimeScale(), SizeEffectType::Grow);
 				AddStolenAttributes(giant, sizeToApply * TimeScale());
 				if (this->factor.value >= 0.99) {
 					this->state = VoreBuffState::Finishing;
@@ -336,11 +300,11 @@ namespace Gts {
 			case VoreBuffState::Finishing: {
 				if (!AllowDevourment()) {
 					if (this->giant) {
-						AdjustGiantessSkill(giant, this->tinySize);
+						ModSizeExperience(giant, 0.28 + (this->tinySize * 0.02));
 						VoreMessage_Absorbed(giant, this->tiny_name, this->WasDragon, this->WasGiant);
 						CallGainWeight(giant, 3.0 * this->tinySize);
 						BuffAttributes(giant, this->tinySize);
-						update_target_scale(giant, this->sizePower * 0.4);
+						update_target_scale(giant, this->sizePower * 0.4, SizeEffectType::Grow);
 						AdjustSizeReserve(giant, this->sizePower);
 						if (giant->formID == 0x14) {
 							AdjustSizeLimit(0.0260, giant);

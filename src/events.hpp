@@ -24,6 +24,14 @@ namespace Gts {
 		hugs,
 	};
 
+	enum SizeEffectType {
+		Shrink,
+		Grow,
+		Steal,
+		Gift,
+		Neutral,
+	};
+
 	enum DamageSource {
 		HandCrawlRight,
 		HandCrawlLeft,

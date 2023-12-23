@@ -257,12 +257,12 @@ namespace {
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1); // don't do damage and just add flat debuff
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1); // do it twice
 
-			AdjustGtsSkill(experience, giant);
+			ModSizeExperience(experience, giant);
 			AddSMTDuration(giant, 1.6);
 
 			if (damage >= Health * 0.99 || Health <= 0) {
 				CrushManager::Crush(giant, grabbedActor);
-				AdjustGtsSkill(0.14, giant);
+				ModSizeExperience(0.14, giant);
 				SetBeingHeld(grabbedActor, false);
 				GRumble::Once("GrabAttackKill", giant, 14.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 				if (!LessGore()) {

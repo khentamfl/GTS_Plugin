@@ -57,19 +57,12 @@ namespace {
 	float GetPerkBonus_OnTheEdge(Actor* giant, float amt) {
 		float bonus = 1.0;
 		bool perk = Runtime::HasPerkTeam(giant, "OnTheEdge");
-		log::info("---- {} -----", giant->GetDisplayFullName());
-		float currenthp = GetAV(giant, ActorValue::kHealth);
-		float maxhp = GetMaxAV(giant, ActorValue::kHealth);
-		log::info("Current HP: {}, Max HP: {}, percentage: {}", currenthp, maxhp, GetHealthPercentage(giant));
 		if (perk) { 
 			float GetHP = std::clamp(GetHealthPercentage(giant) + 0.4f, 0.5f, 1.0f); // Bonus Size Gain if Actor has perk
-			log::info("GetHP {}", GetHP);
 			if (amt > 0) {
 				bonus /= GetHP;
-				log::info("Bonus Alter >: {}", bonus);
 			} else if (amt < 0) {
 				bonus *= GetHP;
-				log::info("Bonus Alter <: {}", bonus);
 			} // When health is < 60%, empower growth by up to 50%. Max value at 10% health.
 		}
 		return bonus;	
@@ -853,7 +846,8 @@ namespace Gts {
 		}
 	}
 
-	void update_target_scale(Actor* giant, float amt) { // used to mod scale with perk bonuses taken into account
+	void update_target_scale(Actor* giant, float amt, SizeEffectType type) { // used to mod scale with perk bonuses taken into account
+		float OTE = 1.0;
 		float scale = get_visual_scale(giant);
 		bool perk = Runtime::HasPerkTeam(giant, "OnTheEdge");
 		if (amt > 0 && (giant->formID == 0x14 || IsTeammate(giant))) {
@@ -865,8 +859,9 @@ namespace Gts {
 			// If neative change: add stolen attributes
 			DistributeStolenAttributes(giant, -amt * GetGrowthReduction(scale)); // Adjust max attributes
 		}
-
-		float OTE = GetPerkBonus_OnTheEdge(giant, amt);
+		if (type == SizeEffectType::Shrink) {
+			OTE = GetPerkBonus_OnTheEdge(giant, amt);
+		}
 		if (giant->formID == 0x14) {
 			log::info("OnTheEdge: {}, Growth Penalty: {}", OTE, GetGrowthReduction(scale));
 		}
@@ -1762,7 +1757,7 @@ namespace Gts {
 		update_target_scale(tiny, -(shrinkpower * gigantism));
 		StartCombat(giant, tiny, true);
 
-		AdjustGtsSkill((shrinkpower * gigantism) * 0.80, giant);
+		ModSizeExperience((shrinkpower * gigantism) * 0.80, giant);
 
 		float MinScale = 0.11/Adjustment;
 
