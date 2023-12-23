@@ -28,7 +28,9 @@ namespace {
 						set_npcnode_scale(actor, ns);
 						set_model_scale(actor, ns);	
 					}
-					data->initialScale = -1.0;
+					if (data->initialScale > 0) {
+						data->initialScale = -1.0;
+					}
 				}
 			}
 		}
