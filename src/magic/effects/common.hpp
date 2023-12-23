@@ -233,9 +233,9 @@ namespace Gts {
 		float lose = CalcPower(from, receiver, 0, true);
 		float CasterScale = get_target_scale(from);
 		if (CasterScale > 1.0) { // We don't want to scale the caster below this limit!
-			update_target_scale(from, -lose, SizeEffectType::Shrink);
+			update_target_scale(from, -lose, SizeEffectType::Shrinking);
 		}
-		update_target_scale(to, receive, SizeEffectType::Grow);
+		update_target_scale(to, receive, SizeEffectType::Growing);
 	}
 
 	inline void TransferSize(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smt, ShrinkSource source) {
