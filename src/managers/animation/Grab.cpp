@@ -29,7 +29,7 @@
 
 using namespace RE;
 using namespace REL;
-using namespace giantess;
+using namespace Gts;
 using namespace std;
 
 ///GTS_GrabbedTiny MUST BE 1 when we have someone in hands
@@ -810,7 +810,7 @@ namespace {
 
 
 
-namespace giantess {
+namespace Gts {
 	Grab& Grab::GetSingleton() noexcept {
 		static Grab instance;
 		return instance;
