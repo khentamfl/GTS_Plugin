@@ -141,9 +141,9 @@ namespace {
 namespace Hooks
 {
 	void Hook_Damage::Hook(Trampoline& trampoline) {
-		static FunctionHook<void(Actor* a_this, float dmg, const HitData* hit_data, Actor* aggressor,TESObjectREFR* damageSrc)> SkyrimTakeDamage(
+		static FunctionHook<void(Actor* a_this, float dmg, HitData* hit_data, Actor* aggressor,TESObjectREFR* damageSrc)> SkyrimTakeDamage(
 			RELOCATION_ID(36345, 37335),
-			[](auto* a_this, auto dmg, const auto* hit_data, auto* aggressor, auto* damageSrc) {
+			[](auto* a_this, auto dmg, auto* hit_data, auto* aggressor, auto* damageSrc) {
 			log::info("Someone taking damage");
 			log::info("{}: Taking {} damage", a_this->GetDisplayFullName(), dmg);
 			float IsNotImmune = 1.0;
@@ -165,7 +165,7 @@ namespace Hooks
 				//hit_data->pushBack *= 16.0;
 				if (attacker) {
 					log::info("Attacker found");
-					log::info("Attacker: {}", attacker.get().get()->GetDisplayFullName());
+					//log::info("Attacker: {}", attacker.get().get()->GetDisplayFullName());
 				}
 			}
 			/*if (damageSrc) {
