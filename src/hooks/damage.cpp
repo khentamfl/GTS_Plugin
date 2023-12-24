@@ -161,7 +161,7 @@ namespace Hooks
 				log::info("Aggressor : {}", GetRawName(aggressor));
 			}
 			if (damageSrc) {
-				log::info("DamageSrc : {}", GetRawName(damageSrcr));
+				log::info("DamageSrc : {}", GetRawName(damageSrc));
 			}
 			// float multiplier = GetDamageMultiplier(aggressor);
 
