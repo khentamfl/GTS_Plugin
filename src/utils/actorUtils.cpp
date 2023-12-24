@@ -2293,7 +2293,8 @@ namespace Gts {
 	}
 
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
-		DamageAV(receiver, ActorValue::kHealth, value);
+		//DamageAV(receiver, ActorValue::kHealth, value);
+		ApplyDamage(receiver, value);
 	}
 
 	// RE Fun
@@ -2308,6 +2309,12 @@ namespace Gts {
 		typedef void (*DefAttacked)(Actor* victim, Actor* agressor);
 		REL::Relocation<DefAttacked> SkyrimAttacked{ RELOCATION_ID(37672, 38626) };
 		SkyrimAttacked(victim, agressor);
+	}
+
+	void ApplyDamage(Actor* tiny, float damage) {
+		typedef void (*DefApplyDamage)(Actor* a_this, float dmg, HitData* hit_data, Actor* aggressor,TESObjectREFR* damageSrc);
+		REL::Relocation<DefApplyDamage> Skyrim_ApplyDamage{ RELOCATION_ID(36345, 37335) };
+		Skyrim_ApplyDamage(tiny, damage, nullptr, nullptr, nullptr);
 	}
 
 	std::int16_t GetItemCount(InventoryChanges* changes, RE::TESBoundObject* a_obj)

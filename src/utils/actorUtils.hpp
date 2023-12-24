@@ -221,5 +221,6 @@ namespace Gts {
 	// RE Fun:
 	void SetCriticalStage(Actor* actor, int stage);
 	void Attacked(Actor* victim, Actor* agressor);
+	void ApplyDamage(Actor* tiny, float damage);
 	std::int16_t GetItemCount(InventoryChanges* changes, RE::TESBoundObject* a_obj);
 }
