@@ -161,7 +161,7 @@ namespace Hooks
 				log::info("Found hit data");
 				auto Aggressor = hit_data->aggressor.get().get();
 				if (Aggressor) {
-					log::info("Aggressor: {}", Aggressor);
+					log::info("Aggressor: {}", Aggressor->GetDisplayFullName());
 				}
 			}
 			/*if (damageSrc) {
