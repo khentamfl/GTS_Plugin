@@ -159,7 +159,7 @@ namespace Hooks
 			}
 			if (hit_data) {
 				log::info("Found hit data");
-				Actor* attacker = hit_data->aggressor;
+				auto attacker = hit_data->aggressor;
 				auto Source = hit_data->sourceRef;
 				//log::info("Pushback: {}", hit_data->pushBack);
 				//hit_data->pushBack *= 16.0;
