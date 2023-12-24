@@ -141,7 +141,7 @@ namespace {
 namespace Hooks
 {
 	void Hook_Damage::Hook(Trampoline& trampoline) {
-		static FunctionHook<void(Actor* a_this, float dmg, uintptr_t maybe_hit_data, Actor* aggressor,TESObjectREFR* damageSrc)> SkyrimTakeDamage(
+		static FunctionHook<void(Actor* a_this, float dmg, HitData* hit_data, Actor* aggressor,TESObjectREFR* damageSrc)> SkyrimTakeDamage(
 			RELOCATION_ID(36345, 37335),
 			[](auto* a_this, auto dmg, auto maybe_hit_data,auto* aggressor,auto* damageSrc) {
 			log::info("Someone taking damage");
@@ -157,9 +157,12 @@ namespace Hooks
 					IsNotImmune = transient->Immunity;
 				}
 			}
-			if (aggressor) {
-				log::info("Not null");
-				log::info("Aggressor : {}", GetRawName(aggressor));
+			if (mhit_data) {
+				log::info("Found hit data");
+				auto Aggressor = hit_data->aggressor.get().get();
+				if (Aggressor) {
+					log::info("Aggressor: {}", Aggressor);
+				}
 			}
 			/*if (damageSrc) {
 				log::info("DamageSrc : {}", GetRawName(damageSrc));
@@ -171,7 +174,7 @@ namespace Hooks
 
 			dmg *= (resistance * tiny * healthgate * IsNotImmune);
 			log::info("    - Reducing damage to {}, resistance: {}, shield: {}", dmg, resistance, tiny);
-			SkyrimTakeDamage(a_this, dmg, maybe_hit_data, aggressor, damageSrc);
+			SkyrimTakeDamage(a_this, dmg, hit_data, aggressor, damageSrc);
 			return;
 			}
 		);
