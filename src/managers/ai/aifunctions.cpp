@@ -1,4 +1,4 @@
-#include "managers/damage/AccurateDamage.hpp"
+#include "managers/damage/CollisionDamage.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "utils/papyrusUtils.hpp"

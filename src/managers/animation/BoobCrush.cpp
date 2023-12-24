@@ -1,7 +1,7 @@
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/Utils/CrawlUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
-#include "managers/damage/AccurateDamage.hpp"
+#include "managers/damage/CollisionDamage.hpp"
 #include "managers/animation/BoobCrush.hpp"
 #include "managers/damage/LaunchActor.hpp"
 #include "managers/animation/Grab.hpp"

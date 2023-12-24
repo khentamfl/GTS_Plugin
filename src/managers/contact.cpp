@@ -1,6 +1,6 @@
 #include "managers/contact.hpp"
 #include "data/persistent.hpp"
-#include "managers/damage/AccurateDamage.hpp"
+#include "managers/damage/CollisionDamage.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/highheel.hpp"
 #include "scale/scale.hpp"

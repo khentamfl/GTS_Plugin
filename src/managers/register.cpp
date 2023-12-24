@@ -4,7 +4,7 @@
 #include "managers/ThighSandwichController.hpp"
 #include "managers/emotions/EmotionManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
-#include "managers/damage/AccurateDamage.hpp"
+#include "managers/damage/CollisionDamage.hpp"
 #include "managers/animation/Grab.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
@@ -38,7 +38,7 @@ namespace Gts {
 		EventDispatcher::AddListener(&HighHeelManager::GetSingleton()); // Applies high heels
 		EventDispatcher::AddListener(&CameraManager::GetSingleton()); // Edits the camera
 		EventDispatcher::AddListener(&ReloadManager::GetSingleton()); // Handles Skyrim Events
-		EventDispatcher::AddListener(&AccurateDamage::GetSingleton()); // Handles precise size-related damage
+		EventDispatcher::AddListener(&CollisionDamage::GetSingleton()); // Handles precise size-related damage
 
 		EventDispatcher::AddListener(&MagicManager::GetSingleton()); // Manages spells and size changes in general
 		EventDispatcher::AddListener(&Vore::GetSingleton()); // Manages vore

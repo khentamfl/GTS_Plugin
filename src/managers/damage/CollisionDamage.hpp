@@ -14,9 +14,9 @@ using namespace RE;
 // Module for accurate size-related damage
 
 namespace Gts {
-	class AccurateDamage : public EventListener  {
+	class CollisionDamage : public EventListener  {
 		public:
-			[[nodiscard]] static AccurateDamage& GetSingleton() noexcept;
+			[[nodiscard]] static CollisionDamage& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
 

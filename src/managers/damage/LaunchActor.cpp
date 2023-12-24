@@ -1,5 +1,5 @@
 #include "magic/effects/smallmassivethreat.hpp"
-#include "managers/damage/AccurateDamage.hpp"
+#include "managers/damage/CollisionDamage.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
 #include "managers/damage/LaunchActor.hpp"
 #include "managers/RipClothManager.hpp"
@@ -100,7 +100,7 @@ namespace {
 		if (IsBeingGrinded(tiny)) {
 			return; // Disallow to launch if we're grinding an actor
 		}
-		auto& accuratedamage = AccurateDamage::GetSingleton();
+		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		float DamageSetting = Persistent::GetSingleton().size_related_damage_mult;
 		float DamageMult = 0.6;
 		float giantSize = get_visual_scale(giant);

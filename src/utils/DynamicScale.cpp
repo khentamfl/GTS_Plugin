@@ -3,7 +3,7 @@
 #include "managers/animation/Utils/CrawlUtils.hpp"
 #include "managers/gamemode/GameModeManager.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
-#include "managers/damage/AccurateDamage.hpp"
+#include "managers/damage/CollisionDamage.hpp"
 #include "managers/cameras/camutil.hpp"
 #include "managers/ai/headtracking.hpp"
 #include "managers/RipClothManager.hpp"

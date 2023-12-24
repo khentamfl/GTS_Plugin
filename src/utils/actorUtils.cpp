@@ -1,5 +1,5 @@
 #include "managers/animation/AnimationManager.hpp"
-#include "managers/damage/AccurateDamage.hpp"
+#include "managers/damage/CollisionDamage.hpp"
 #include "managers/animation/HugShrink.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "managers/GtsSizeManager.hpp"
@@ -1579,10 +1579,10 @@ namespace Gts {
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind, float crushmult, DamageSource Cause) {
 		radius *= 1.0 + (GetHighHeelsBonusDamage(giant) * 2.5);
 		if (kind == FootEvent::Left) {
-			AccurateDamage::GetSingleton().DoAccurateCollisionLeft(giant, (45.0 * damage), radius, random, bonedamage, crushmult, Cause);
+			CollisionDamage::GetSingleton().DoAccurateCollisionLeft(giant, (45.0 * damage), radius, random, bonedamage, crushmult, Cause);
 		}
 		if (kind == FootEvent::Right) {
-			AccurateDamage::GetSingleton().DoAccurateCollisionRight(giant, (45.0 * damage), radius, random, bonedamage, crushmult, Cause);
+			CollisionDamage::GetSingleton().DoAccurateCollisionRight(giant, (45.0 * damage), radius, random, bonedamage, crushmult, Cause);
 			//                                                                                         ^        ^           ^ - - - - Normal Crush
 			//                                                               Chance to trigger bone crush   Damage of            Threshold multiplication
 			//                                                                                             Bone Crush

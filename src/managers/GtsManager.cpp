@@ -2,7 +2,7 @@
 #include "managers/animation/Utils/CrawlUtils.hpp"
 #include "managers/gamemode/GameModeManager.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
-#include "managers/damage/AccurateDamage.hpp"
+#include "managers/damage/CollisionDamage.hpp"
 #include "managers/cameras/camutil.hpp"
 #include "managers/ai/headtracking.hpp"
 #include "managers/RipClothManager.hpp"
@@ -271,12 +271,12 @@ void GtsManager::Update() {
 
 		FixActorFade(actor);
 
-		auto& accuratedamage = AccurateDamage::GetSingleton();
+		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 
 		if (actor->formID == 0x14 || IsTeammate(actor)) {
-			accuratedamage.DoAccurateCollisionLeft(actor, 0.4 * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedLeft);
-			accuratedamage.DoAccurateCollisionRight(actor, 0.4 * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedRight);
+			CollisionDamage.DoAccurateCollisionLeft(actor, 0.4 * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedLeft);
+			CollisionDamage.DoAccurateCollisionRight(actor, 0.4 * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedRight);
 
 			ClothManager::GetSingleton().CheckRip();
 			SpawnActionIcon(actor);
@@ -289,8 +289,8 @@ void GtsManager::Update() {
 		}
 		if (Runtime::GetBool("PreciseDamageOthers")) {
 			if (actor->formID != 0x14 && !actor->IsPlayerTeammate() && !Runtime::InFaction(actor, "FollowerFaction")) {
-				accuratedamage.DoAccurateCollisionLeft(actor, 0.4 * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedLeft);
-				accuratedamage.DoAccurateCollisionRight(actor, 0.4 * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedRight);
+				CollisionDamage.DoAccurateCollisionLeft(actor, 0.4 * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedLeft);
+				CollisionDamage.DoAccurateCollisionRight(actor, 0.4 * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedRight);
 			}
 		}
 		update_actor(actor);

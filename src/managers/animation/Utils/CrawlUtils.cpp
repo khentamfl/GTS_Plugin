@@ -1,7 +1,7 @@
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/Utils/CrawlUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
-#include "managers/damage/AccurateDamage.hpp"
+#include "managers/damage/CollisionDamage.hpp"
 #include "managers/damage/LaunchActor.hpp"
 #include "managers/animation/Crawling.hpp"
 #include "managers/GtsSizeManager.hpp"
@@ -175,7 +175,7 @@ namespace Gts {
 						if (distance <= maxDistance) {
 							float force = 1.0 - distance / maxDistance;
 							float aveForce = std::clamp(force, 0.00f, 0.70f);
-							AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
+							CollisionDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
 						}
 					}
 				}

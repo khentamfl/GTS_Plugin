@@ -1,7 +1,7 @@
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/emotions/EmotionManager.hpp"
-#include "managers/damage/AccurateDamage.hpp"
+#include "managers/damage/CollisionDamage.hpp"
 #include "managers/damage/LaunchActor.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/CrushManager.hpp"
@@ -675,7 +675,7 @@ namespace Gts {
 							if (otherActor->IsDead()) {
 								tinyScale *= 0.6;
 							}
-							AccurateDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
+							CollisionDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
 							if (giantScale / tinyScale > 2.25) {
 								PushTowards(giant, otherActor, node, pushForce * pushpower, true);
 							}

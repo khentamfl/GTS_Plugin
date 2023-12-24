@@ -1,7 +1,7 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/gamemode/GameModeManager.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
-#include "managers/damage/AccurateDamage.hpp"
+#include "managers/damage/CollisionDamage.hpp"
 #include "managers/RipClothManager.hpp"
 #include "managers/ai/headtracking.hpp"
 #include "managers/GtsSizeManager.hpp"
