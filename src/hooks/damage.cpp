@@ -157,7 +157,7 @@ namespace Hooks
 					IsNotImmune = transient->Immunity;
 				}
 			}
-			if (mhit_data) {
+			if (hit_data) {
 				log::info("Found hit data");
 				auto Aggressor = hit_data->aggressor.get().get();
 				if (Aggressor) {
