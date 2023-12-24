@@ -29,7 +29,7 @@
 
 using namespace RE;
 using namespace REL;
-using namespace Gts;
+using namespace giantess;
 using namespace std;
 
 ///GTS_GrabbedTiny MUST BE 1 when we have someone in hands
@@ -239,7 +239,6 @@ namespace {
 		if (grabbedActor) {
 			Attacked(grabbedActor, giant); // force combat
 			float sizeDiff = get_visual_scale(giant)/get_visual_scale(grabbedActor);
-			float Health = GetAV(grabbedActor, ActorValue::kHealth);
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
 			float damage = (1.600 * sizeDiff) * power * additionaldamage * additionaldamage;
@@ -257,38 +256,49 @@ namespace {
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1); // do it twice
 
 			ModSizeExperience(experience, giant);
-			AddSMTDuration(giant, 1.6);
+			AddSMTDuration(giant, 1.0);
 
-			if (Health <= 0 || grabbedActor->IsDead()) {
-				CrushManager::Crush(giant, grabbedActor);
-				ModSizeExperience(0.14, giant);
-				SetBeingHeld(grabbedActor, false);
-				GRumble::Once("GrabAttackKill", giant, 14.0 * bonus, 0.15, "NPC L Hand [LHnd]");
-				if (!LessGore()) {
-					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
-					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
-					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
-				} else {
-					Runtime::PlaySoundAtNode("SoftHandAttack", giant, 1.0, 1.0, "NPC L Hand [LHnd]");
+
+			std::string taskname = std::format("GrabCrush_{}", grabbedActor->formID);
+			auto tinyref = grabbedActor->CreateRefHandle();
+			auto giantref = giant->CreateRefHandle();
+			TaskManager::RunOnce(taskname, [=](auto& update) {
+				if (!tinyref || !giantref) {
+					return;
 				}
-				Runtime::PlaySoundAtNode("GtsCrushSound", giant, 1.0, 1.0, "NPC L Hand [LHnd]");
-				SetBetweenBreasts(giant, false);
-				AdjustSizeReserve(giant, get_visual_scale(grabbedActor)/10);
-				AdvanceQuestProgression(giant, grabbedActor, 5, 1.0, false);
-				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
-				SpawnHurtParticles(giant, grabbedActor, 3.0, 1.6);
-				PrintDeathSource(giant, grabbedActor, DamageSource::HandCrushed);
-				Grab::DetachActorTask(giant);
-				Grab::Release(giant);
-			} else {
-				if (!LessGore()) {
-					Runtime::PlaySoundAtNode("CrunchImpactSound", giant, 1.0, 0.0, "NPC L Hand [LHnd]");
-					SpawnHurtParticles(giant, grabbedActor, 1.0, 1.0);
+				auto tiny = tinyref.get().get();
+				auto giantess = giantref.get().get();
+				if (GetAV(tiny, ActorValue::kHealth) <= 1.0 || tiny->IsDead()) {
+					CrushManager::Crush(giantess, tiny);
+					ModSizeExperience(0.14, giantess);
+					SetBeingHeld(tiny, false);
+					GRumble::Once("GrabAttackKill", giantess, 14.0 * bonus, 0.15, "NPC L Hand [LHnd]");
+					if (!LessGore()) {
+						Runtime::PlaySoundAtNode("CrunchImpactSound", giantess, 1.0, 0.0, "NPC L Hand [LHnd]");
+						Runtime::PlaySoundAtNode("CrunchImpactSound", giantess, 1.0, 0.0, "NPC L Hand [LHnd]");
+						Runtime::PlaySoundAtNode("CrunchImpactSound", giantess, 1.0, 0.0, "NPC L Hand [LHnd]");
+					} else {
+						Runtime::PlaySoundAtNode("SoftHandAttack", giantess, 1.0, 1.0, "NPC L Hand [LHnd]");
+					}
+					Runtime::PlaySoundAtNode("GtsCrushSound", giantess, 1.0, 1.0, "NPC L Hand [LHnd]");
+					SetBetweenBreasts(giantess, false);
+					AdjustSizeReserve(giantess, get_visual_scale(tiny)/10);
+					AdvanceQuestProgression(giantess, tiny, 5, 1.0, false);
+					SpawnHurtParticles(giantess, tiny, 3.0, 1.6);
+					SpawnHurtParticles(giantess, tiny, 3.0, 1.6);
+					PrintDeathSource(giantess, tiny, DamageSource::HandCrushed);
+					Grab::DetachActorTask(giantess);
+					Grab::Release(giantess);
 				} else {
-					Runtime::PlaySoundAtNode("SoftHandAttack", giant, 1.0, 1.0, "NPC L Hand [LHnd]");
+					if (!LessGore()) {
+						Runtime::PlaySoundAtNode("CrunchImpactSound", giantess, 1.0, 0.0, "NPC L Hand [LHnd]");
+						SpawnHurtParticles(giantess, tiny, 1.0, 1.0);
+					} else {
+						Runtime::PlaySoundAtNode("SoftHandAttack", giantess, 1.0, 1.0, "NPC L Hand [LHnd]");
+					}
+					StaggerActor(tiny);
 				}
-				StaggerActor(grabbedActor);
-			}
+			});
 		}
 	}
 
@@ -800,7 +810,7 @@ namespace {
 
 
 
-namespace Gts {
+namespace giantess {
 	Grab& Grab::GetSingleton() noexcept {
 		static Grab instance;
 		return instance;
