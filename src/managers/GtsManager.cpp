@@ -177,9 +177,9 @@ namespace {
 		if (trans_actor_data->initialScale < 0.0) {
 			trans_actor_data->initialScale = get_scale(actor); // Get raw scale from avnode now
 		}
-		if (actor->formID == 0x14) {
+		/*if (actor->formID == 0x14) {
 			log::info("Intiial Scale of Player is {}", trans_actor_data->initialScale);
-		}
+		}*/
 		set_scale(actor, visual_scale * trans_actor_data->initialScale);
 	}
 

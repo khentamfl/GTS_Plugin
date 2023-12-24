@@ -165,7 +165,7 @@ namespace Hooks
 				//hit_data->pushBack *= 16.0;
 				if (attacker) {
 					log::info("Attacker found");
-					//log::info("Attacker: {}", attacker.get().get()->GetDisplayFullName());
+					log::info("Attacker: {}", attacker.get().get()->GetDisplayFullName());
 				}
 			}
 			/*if (damageSrc) {
