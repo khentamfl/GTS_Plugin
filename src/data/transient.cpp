@@ -79,7 +79,7 @@ namespace Gts {
 
 			TESObjectREFR* disable_collision_with = nullptr;
 			float otherScales = 1.0;
-      float initialScale = -1.0;
+      		float initialScale = -1.0;
 			float WorldFov_Default = 0;
 			float FpFov_Default = 0;
 			float ButtCrushGrowthAmount = 0;
@@ -134,14 +134,14 @@ namespace Gts {
 		return &this->_actor_data[key];
 	}
 
-  std::vector<FormID> Transient::GetForms() {
-    std::vector<FormID> keys;
-    keys.reserve(this->_actor_data.size());
-    for(auto kv : this->_actor_data) {
-        keys.push_back(kv.first);
-    }
-    return keys;
-  }
+	std::vector<FormID> Transient::GetForms() {
+		std::vector<FormID> keys;
+		keys.reserve(this->_actor_data.size());
+		for(auto kv : this->_actor_data) {
+			keys.push_back(kv.first);
+		}
+		return keys;
+	}
 
 
 	std::string Transient::DebugName() {
@@ -179,6 +179,7 @@ namespace Gts {
 		}
 	}
 	void Transient::Reset() {
+		log::info("Transient was reset");
 		std::unique_lock lock(this->_lock);
 		this->_actor_data.clear();
 	}
