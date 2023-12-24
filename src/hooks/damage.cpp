@@ -166,7 +166,8 @@ namespace Hooks
 				if (attacker) {
 					log::info("Attacker: {}", attacker->GetDisplayFullName());
 				} if (Source) {
-					log::info("Source found");
+					log::info("Source found: {}", Source.get().get()->GetDisplayFullName());
+
 				}
 			}
 			/*if (damageSrc) {
