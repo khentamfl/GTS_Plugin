@@ -115,7 +115,7 @@ namespace {
 		GRumble::Once("HitGrowth", receiver, value, 0.15);
 	}
 
-	void ApplyHitGrowth(Actor* receiver, Actor* attacker, float damage) {
+	void ApplyHitGrowth(Actor* attacker, Actor* receiver, float damage) {
 		auto grabbedActor = Grab::GetHeldActor(receiver);
 		if (grabbedActor == attacker) {
 			return;

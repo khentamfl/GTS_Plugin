@@ -157,9 +157,10 @@ namespace Hooks
 					IsNotImmune = transient->Immunity;
 				}
 			}
-			/*if (aggressor) {
+			if (aggressor) {
+				log::info("Not null");
 				log::info("Aggressor : {}", GetRawName(aggressor));
-			}*/
+			}
 			if (damageSrc) {
 				log::info("DamageSrc : {}", GetRawName(damageSrc));
 			}

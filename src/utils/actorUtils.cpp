@@ -862,9 +862,6 @@ namespace Gts {
 		if (type == SizeEffectType::kShrink) {
 			OTE = GetPerkBonus_OnTheEdge(giant, amt);
 		}
-		if (giant->formID == 0x14) {
-			log::info("OnTheEdge: {}, Growth Penalty: {}", OTE, GetGrowthReduction(scale));
-		}
 
 		mod_target_scale(giant, amt * OTE); // set target scale value
 	}
