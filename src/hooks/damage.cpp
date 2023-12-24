@@ -159,9 +159,14 @@ namespace Hooks
 			}
 			if (hit_data) {
 				log::info("Found hit data");
-				auto Aggressor = hit_data->aggressor.get().get();
-				if (Aggressor) {
-					log::info("Aggressor: {}", Aggressor->GetDisplayFullName());
+				Actor* attacker = hit_data->aggressor.get().get();
+				auto Source = hit_data->sourceRef;
+				log::info("Pushback: {}", hit_data->pushBack);
+				hit_data->pushBack *= 16.0;
+				if (attacker) {
+					log::info("Attacker: {}", attacker->GetDisplayFullName());
+				} if (Source) {
+					log::info("Source found");
 				}
 			}
 			/*if (damageSrc) {
