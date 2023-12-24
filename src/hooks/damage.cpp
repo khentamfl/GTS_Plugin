@@ -157,6 +157,12 @@ namespace Hooks
 					IsNotImmune = transient->Immunity;
 				}
 			}
+			if (aggressor) {
+				log::info("Aggressor : {}", GetRawName(aggressor));
+			}
+			if (damageSrc) {
+				log::info("DamageSrc : {}", GetRawName(damageSrcr));
+			}
 			// float multiplier = GetDamageMultiplier(aggressor);
 
 			//^ Multiplier will CTD since aggressor is none
@@ -167,6 +173,6 @@ namespace Hooks
 			SkyrimTakeDamage(a_this, dmg, maybe_hit_data, aggressor, damageSrc);
 			return;
 			}
-			);
+		);
 	}
 }
