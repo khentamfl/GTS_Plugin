@@ -161,8 +161,8 @@ namespace Hooks
 				log::info("Found hit data");
 				Actor* attacker = hit_data->aggressor.get().get();
 				auto Source = hit_data->sourceRef;
-				log::info("Pushback: {}", hit_data->pushBack);
-				hit_data->pushBack *= 16.0;
+				//log::info("Pushback: {}", hit_data->pushBack);
+				//hit_data->pushBack *= 16.0;
 				if (attacker) {
 					log::info("Attacker: {}", attacker->GetDisplayFullName());
 				} if (Source) {
