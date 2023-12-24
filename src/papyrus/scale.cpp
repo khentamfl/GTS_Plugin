@@ -157,7 +157,7 @@ namespace {
 
 	// Configurable scale
 	void SetScaleMethod(StaticFunctionTag*, int size_method) {
-    	ResetScales(); // Must reset first
+    	//ResetScales(); // Must reset first
 		switch (size_method) {
 			case 0:
 				Persistent::GetSingleton().size_method = SizeMethod::ModelScale;
