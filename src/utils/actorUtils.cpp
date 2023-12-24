@@ -660,6 +660,9 @@ namespace Gts {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                                 G T S   A C T O R   F U N C T I O N S                                                              //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	float GetDamageSetting() {
+		return Persistent::GetSingleton().size_related_damage_mult;
+	}
 	float GetHPThreshold(Actor* actor) {
 		float hp = 0.20;
 		if (Runtime::HasPerkTeam(actor, "HugCrush_MightyCuddles")) {
@@ -1752,7 +1755,7 @@ namespace Gts {
 		}
 
 		update_target_scale(tiny, -(shrinkpower * gigantism), SizeEffectType::kShrink);
-		StartCombat(giant, tiny, true);
+		Attacked(tiny, giant);
 
 		ModSizeExperience((shrinkpower * gigantism) * 0.80, giant);
 
@@ -2293,8 +2296,9 @@ namespace Gts {
 	}
 
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
-		//DamageAV(receiver, ActorValue::kHealth, value);
-		ApplyDamage(receiver, value);
+		if (!receiver->IsDead()) {
+			ApplyDamage(receiver, value * GetDamageSetting());
+		}
 	}
 
 	// RE Fun
@@ -2311,9 +2315,9 @@ namespace Gts {
 		SkyrimAttacked(victim, agressor);
 	}
 
-	void ApplyDamage(Actor* tiny, float damage) {
+	void ApplyDamage(Actor* tiny, float damage) { // applies correct amount of damage and kills actors properly
 		typedef void (*DefApplyDamage)(Actor* a_this, float dmg, HitData* hit_data, Actor* aggressor,TESObjectREFR* damageSrc);
-		REL::Relocation<DefApplyDamage> Skyrim_ApplyDamage{ RELOCATION_ID(36345, 37335) };
+		REL::Relocation<DefApplyDamage> Skyrim_ApplyDamage{ RELOCATION_ID(36345, 37335) }; // 5D6300 (SE)
 		Skyrim_ApplyDamage(tiny, damage, nullptr, nullptr, nullptr);
 	}
 

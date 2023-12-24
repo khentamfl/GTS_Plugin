@@ -208,7 +208,7 @@ namespace {
 			Grab::AttachActorTask(giant, grabbedActor);
 			DisableCollisions(grabbedActor, &data.giant); // Just to be sure
 			if (!IsTeammate(grabbedActor)) {
-				StartCombat(giant, grabbedActor, true);
+				Attacked(grabbedActor, giant);
 			}
 		}
 		GRumble::Once("GrabCatch", giant, 2.0, 0.15);
@@ -240,10 +240,9 @@ namespace {
 			Attacked(grabbedActor, giant); // force combat
 			float sizeDiff = get_visual_scale(giant)/get_visual_scale(grabbedActor);
 			float Health = GetAV(grabbedActor, ActorValue::kHealth);
-			float multiplier = Persistent::GetSingleton().size_related_damage_mult;
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
-			float damage = (1.600 * sizeDiff) * power * additionaldamage * additionaldamage * multiplier;
+			float damage = (1.600 * sizeDiff) * power * additionaldamage * additionaldamage;
 			float experience = std::clamp(damage/800, 0.0f, 0.06f);
 			if (HasSMT(giant)) {
 				damage *= 1.60;
@@ -260,7 +259,7 @@ namespace {
 			ModSizeExperience(experience, giant);
 			AddSMTDuration(giant, 1.6);
 
-			if (damage >= Health * 0.99 || Health <= 0) {
+			if (Health <= 0 || grabbedActor->IsDead()) {
 				CrushManager::Crush(giant, grabbedActor);
 				ModSizeExperience(0.14, giant);
 				SetBeingHeld(grabbedActor, false);

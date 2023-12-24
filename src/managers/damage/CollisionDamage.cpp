@@ -435,16 +435,18 @@ namespace Gts {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto& crushmanager = CrushManager::GetSingleton();
 
-		float damagebonus = Persistent::GetSingleton().size_related_damage_mult;
-
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
 		float multiplier = GetSizeDifference(giant, tiny) * highheels;
-		if (HasSMT(giant)) {
-			damagebonus *= 0.25; // A lot less damage to compensate it
-		}
+		
 		if (multiplier < 1.4) {
 			return; // Do not do damage is Size Difference is < than x1.4
 		}
+
+		float damagebonus = 1.0;
+		if (HasSMT(giant)) {
+			damagebonus *= 0.25; // A lot less damage to compensate it
+		}
+
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
 		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.30, 0.30, 999999.0);
 		float highheelsdamage = 1.0 + (GetHighHeelsBonusDamage(giant) * 5);
@@ -491,11 +493,10 @@ namespace Gts {
 		if (DoDamage) {
 			ModVulnerability(giant, tiny, result);
 			InflictSizeDamage(giant, tiny, result);
-			StartCombat(giant, tiny, false);
 		}
 
 		if (GetAV(tiny, ActorValue::kHealth) <= 0 || tiny->IsDead()) {
-			Attacked(tiny, giant);
+			//Attacked(tiny, giant);
 			if (multiplier >= 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
 					if (!tiny->IsDead()) {

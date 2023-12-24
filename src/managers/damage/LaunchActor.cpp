@@ -101,7 +101,7 @@ namespace {
 			return; // Disallow to launch if we're grinding an actor
 		}
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
-		float DamageSetting = Persistent::GetSingleton().size_related_damage_mult;
+
 		float DamageMult = 0.6;
 		float giantSize = get_visual_scale(giant);
 
@@ -141,10 +141,10 @@ namespace {
 			sizemanager.GetSingleton().GetLaunchData(tiny).lastLaunchTime = Time::WorldTimeElapsed();
 
 			if (Runtime::HasPerkTeam(giant, "LaunchDamage") && CanDoDamage(giant, tiny)) {
-				float damage = LAUNCH_DAMAGE * sizeRatio * force * DamageMult * DamageSetting;
+				float damage = LAUNCH_DAMAGE * sizeRatio * force * DamageMult;
 				InflictSizeDamage(giant, tiny, damage);
 				if (OwnsPerk) { // Apply only when we have DisastrousTremor perk
-					update_target_scale(tiny, -damage / 500, SizeEffectType::kShrink);
+					update_target_scale(tiny, -(damage / 500) * GetDamageSetting(), SizeEffectType::kShrink);
 
 					if (get_target_scale(tiny) < 0.12/Adjustment) {
 						set_target_scale(tiny, 0.12/Adjustment);

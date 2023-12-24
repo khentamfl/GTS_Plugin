@@ -131,18 +131,6 @@ namespace Gts {
 		});
 	}
 
-	void StartCombat(Actor* giant, Actor* tiny, bool Forced) {
-		if (!Persistent::GetSingleton().hostile_toggle && !Forced) {
-			return;
-		}
-		if (tiny->IsDead()) {
-			return;
-		}
-		if (Forced == true || GetAV(tiny, ActorValue::kHealth) < GetMaxAV(tiny, ActorValue::kHealth) * 0.65) {
-			Attacked(tiny, giant);
-		}
-	}
-
 	void ScareActors(Actor* giant) {
 		auto profiler = Profilers::Profile("ActorUtils: ScareActors");
 		if (!Persistent::GetSingleton().actors_panic) {

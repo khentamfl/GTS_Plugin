@@ -285,14 +285,6 @@ namespace Gts {
 				}
 				break;
 			}
-			case ActorValue::kMovementNoiseMult: {
-				float scale = get_giantess_scale(actor);
-				if (scale <= 0) {
-					scale = 1.0;
-				}
-				bonus = scale;
-				break;
-			}
 		}
 
 		return originalValue * bonus;

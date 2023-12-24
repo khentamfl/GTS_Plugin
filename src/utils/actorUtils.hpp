@@ -85,7 +85,7 @@ namespace Gts {
 	// Gts Bools end
 
 	// GTS Actor Functions
-	
+	float GetDamageSetting();
 	float GetHPThreshold(Actor* actor);
 	float GetSizeDifference(Actor* giant, Actor* tiny);
 	float GetActorWeight(Actor* giant, bool metric);
