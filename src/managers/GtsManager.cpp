@@ -172,12 +172,14 @@ namespace {
 		if (visual_scale <= 1e-5) {
 			return;
 		}
-    // Before the first edit ensure we cache the original value
-    // this is to fix the child mods that scale our node
-    if (trans_actor_data->initialScale < 0.0) {
-      trans_actor_data->initialScale = get_scale(actor); // Get raw scale from avnode now
-    }
-		//log::info("Setting {} scale to {}, visual scale: {}", actor->GetDisplayFullName(), visual_scale, vs);
+		// Before the first edit ensure we cache the original value
+		// this is to fix the child mods that scale our node
+		if (trans_actor_data->initialScale < 0.0) {
+			trans_actor_data->initialScale = get_scale(actor); // Get raw scale from avnode now
+		}
+		if (actor->formID == 0x14) {
+			log::info("Intiial Scale of Player is {}", trans_actor_data->initialScale);
+		}
 		set_scale(actor, visual_scale * trans_actor_data->initialScale);
 	}
 
