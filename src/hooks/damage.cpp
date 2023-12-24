@@ -161,9 +161,9 @@ namespace Hooks
 				log::info("Not null");
 				log::info("Aggressor : {}", GetRawName(aggressor));
 			}
-			if (damageSrc) {
+			/*if (damageSrc) {
 				log::info("DamageSrc : {}", GetRawName(damageSrc));
-			}
+			}*/
 			// float multiplier = GetDamageMultiplier(aggressor);
 
 			//^ Multiplier will CTD since aggressor is none
