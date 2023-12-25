@@ -2324,11 +2324,11 @@ namespace Gts {
 
 	void DoHitEvent(Actor* giant, Actor* tiny, float damage) {
 		HitData* data;
-		data.aggressor = giant->CreateRefHandle();
-		data.target = tiny->CreateRefHandle();
-		data.totalDamage = damage;
-		data.physicalDamage = damage;
-		data.pushBack = 0.0;
+		data->aggressor = giant->CreateRefHandle();
+		data->target = tiny->CreateRefHandle();
+		data->totalDamage = damage;
+		data->physicalDamage = damage;
+		data->pushBack = 0.0;
 		ApplyDamage_HitEvent(tiny, data);
 	}
 
