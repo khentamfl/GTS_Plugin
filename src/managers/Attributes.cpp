@@ -90,10 +90,6 @@ namespace {
 			return;
 		}
 		float power = AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus) -1.0;
-		float scale = get_giantess_scale(actor);
-		if (scale <= 0) {
-			scale = 1.0;
-		}
 		if (power <= 0) {
 			power = 0;
 		}
