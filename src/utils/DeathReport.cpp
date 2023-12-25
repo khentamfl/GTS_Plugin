@@ -23,7 +23,7 @@ namespace Gts {
 		std::string_view node;
 		if (cause == DamageSource::HandCrawlRight||cause == DamageSource::HandSwipeRight||cause == DamageSource::HandSlamRight) {
 			return rHand;
-		} else if (cause == DamageSource::HandCrawlLeft||cause == DamageSource::HandSwipeLeft||cause == DamageSource::HandSlamLeft||DamageSource::HandCrushed) {
+		} else if (cause == DamageSource::HandCrawlLeft||cause == DamageSource::HandSwipeLeft||cause == DamageSource::HandSlamLeft || cause == DamageSource::HandCrushed) {
 			return lHand;
 		} else if (cause == DamageSource::KickedRight||cause == DamageSource::CrushedRight||cause == DamageSource::FootGrindedRight) {
 			return rFoot;
