@@ -269,7 +269,7 @@ namespace Hooks
 
       // Scale all magic based damage // 567A80 (SE)
 	  //Actor* a_this, float dmg, Actor* aggressor, std::uintptr_t unknown, TESObjectREFR* damageSrc
-     static CallHook<void(ActorValue* param1, float dmg, Actor* aggressor, uintptr_t param4, Actor* victim)> SkyrimMagicDamage(
+     static CallHook<void(ActorValue* param1, float dmg, Actor* aggressor, ActorValue* param4, Actor* victim)> SkyrimMagicDamage(
         RELOCATION_ID(34286, 35086), 
         RELOCATION_OFFSET(0x237, 0x232),
         [](auto* param1, auto dmg, auto* aggressor, auto param4, auto* victim) {
@@ -277,8 +277,13 @@ namespace Hooks
 			//log::info("agressor: {}", GetRawName(aggressor));
 			//log::info("unknown: {}", GetRawName(unknown));
 			//log::info("damage src: {}", GetRawName(damageSrc));
+
+			// Param 1 = .?AVCharacter@@
+			// Param 2 = float (damage), printed fine
+			// Param 4, 5 = AVCharacter (Actor) (printed name just fine)
+
 			log::info("Param1: {}", GetRawName(param1));
-			//log::info("Param4: {}", GetRawName(param4));
+			log::info("Param4: {}", GetRawName(param4));
 			if (victim) {
 				log::info("Found victim");
 				if (aggressor) {
@@ -286,11 +291,11 @@ namespace Hooks
 					log::info("Aggressor name: {}", aggressor->GetDisplayFullName());
 					log::info("Victim name: {}", victim->GetDisplayFullName());
 					log::info("Damage: {}", dmg);
-					dmg = dmg * std::clamp(get_visual_scale(aggressor), 0.1f, 10.0f) / std::clamp(get_visual_scale(victim), 0.1f, 10.0f);
+					//dmg = dmg * (std::clamp(get_visual_scale(aggressor), 0.1f, 10.0f) / std::clamp(get_visual_scale(victim), 0.1f, 10.0f));
 				} else {
 					log::info("Not Found aggressor");
 					log::info("Damage: {}", dmg);
-					dmg = dmg / std::clamp(get_visual_scale(victim), 0.1f, 10.0f);
+					//dmg = dmg / std::clamp(get_visual_scale(victim), 0.1f, 10.0f);
 				}
 			}
 			SkyrimMagicDamage(param1, dmg, aggressor, param4, victim);
