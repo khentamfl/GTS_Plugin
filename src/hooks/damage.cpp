@@ -1,7 +1,9 @@
 #include "managers/damage/SizeHitEffects.hpp"
 #include "managers/animation/HugShrink.hpp"
 #include "managers/animation/Grab.hpp"
+#include "managers/hitmanager.hpp"
 #include "managers/Attributes.hpp"
+#include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
@@ -15,15 +17,15 @@ using namespace SKSE;
 
 namespace {
 	void CameraFOVTask(Actor* actor) {
-		auto camera = PlayerCamera::GetSingleton();
-		if (!camera) {
-			return;
-		}
-		auto AllowEdits = Persistent::GetSingleton().Camera_PermitFovEdits;
-		if (!AllowEdits) {
-			return;
-		}
 		if (actor->formID == 0x14) {
+			auto camera = PlayerCamera::GetSingleton();
+			if (!camera) {
+				return;
+			}
+			auto AllowEdits = Persistent::GetSingleton().Camera_PermitFovEdits;
+			if (!AllowEdits) {
+				return;
+			}
 			auto tranData = Transient::GetSingleton().GetData(actor);
 			bool TP = camera->IsInThirdPerson();
 			bool FP = camera->IsInFirstPerson();
@@ -71,6 +73,18 @@ namespace {
 			}
 		}
 	}
+
+	void Overkill(Actor* attacker, Actor* receiver, float damage) {
+		if (damage > GetAV(receiver, ActorValue::kHealth) * 1) { // Overkill effect
+			float attackerscale = get_visual_scale(attacker);
+			float receiverscale = get_visual_scale(receiver) * GetScaleAdjustment(receiver);
+			float size_difference = attackerscale/receiverscale;
+			if (size_difference >= 12.0) {
+				HitManager::GetSingleton().Overkill(receiver, attacker);
+			}
+		}
+	}
+
 	float TinyShield(Actor* receiver) {
 		float protection = 1.0;
 		if (receiver->formID == 0x14) {
@@ -136,63 +150,86 @@ namespace {
 		}
 		return reduction;
 	}
+
+	float GetTotalDamageResistance(Actor* receiver, Actor* aggressor, float dmg) {
+		float resistance = GetDamageResistance(receiver) * HugDamageResistance(receiver);
+		float multiplier = GetDamageMultiplier(aggressor);
+		float healthgate = HealthGate(receiver, dmg * 4);
+		float tiny = 1.0; 
+		float IsNotImmune = 1.0;
+
+		float mult = 1.0;
+
+		auto transient = Transient::GetSingleton().GetData(receiver);
+		
+		if (transient) {
+			if (receiver->formID == 0x14) {
+				IsNotImmune = transient->Immunity;
+				tiny = TinyShield(receiver);
+			}
+		}
+		log::info("    - Damage Mult: {}, resistance: {}, shield: {}", multiplier, resistance, tiny);
+		mult *= (resistance * tiny * IsNotImmune * healthgate);
+		return mult;
+	}
 }
 
 namespace Hooks
 {
 	void Hook_Damage::Hook(Trampoline& trampoline) {
-		static FunctionHook<void(Actor* a_this, float dmg, HitData* hit_data, Actor* aggressor,TESObjectREFR* damageSrc)> SkyrimTakeDamage(
+		static FunctionHook<void(Actor* a_this, float dmg, Actor* aggressor, uintptr_t maybe_hitdata, TESObjectREFR* damageSrc)> SkyrimTakeDamage(
 			RELOCATION_ID(36345, 37335),
-			[](auto* a_this, auto dmg, auto* hit_data, auto* aggressor, auto* damageSrc) {
-			log::info("Someone taking damage");
-			log::info("{}: Taking {} damage", a_this->GetDisplayFullName(), dmg);
-			float IsNotImmune = 1.0;
-			float resistance = GetDamageResistance(a_this) * HugDamageResistance(a_this);
-			float healthgate = HealthGate(a_this, dmg * 4);
-			float tiny = TinyShield(a_this);
+			[](auto* a_this, auto dmg, auto* aggressor, uintptr_t maybe_hitdata, auto* damageSrc) { // Universal damage function before Difficulty damage
+				log::info("Someone taking damage");
+				log::info("{}: Taking {} damage", a_this->GetDisplayFullName(), dmg);
+			
+				if (aggressor) { // apply to hits only, We don't want to decrease fall damage for example
+					log::info("Found Aggressor");
+					log::info("Aggressor: {}", aggressor->GetDisplayFullName());
+					dmg *= GetTotalDamageResistance(a_this, aggressor, dmg);
 
-			if (a_this->formID == 0x14) {
-				auto transient = Transient::GetSingleton().GetData(a_this);
-				if (transient) {
-					IsNotImmune = transient->Immunity;
+					Overkill(aggressor, a_this, dmg);
+
+					log::info("Changing damage to: {}", dmg);
 				}
+				
+				SkyrimTakeDamage(a_this, dmg, hit_data, aggressor, damageSrc);
+				return;
 			}
-			if (hit_data) {
-				log::info("Found hit data");
-				log::info("Raw Name: {}", GetRawName(hit_data));
+		);
+	
+		static FunctionHook<void(TESObjectREFR* a_this, HitData* hit_data)> SkyrimProcessHitEvent( // Seems to work for Hit events, probably modified by Difficulty Damage
+			RELOCATION_ID(37633, 38586),
+			[](auto* a_this, auto* hit_data) {
+				if (a_this) {
+					log::info("Checking a_this");
+					log::info("SkyrimProcessHitEvent:a_this: {}", GetRawName(a_this));
+				}
+				if (hit_data) {
+					if (hit_data->aggressor) {
+						log::info("Checking agressor");
+						Actor* aggressor = hit_data->aggressor.get().get();
+						if (hit_data->target) {
+							Actor* receiver = hit_data->target.get().get();
+							float push = hit_data->pushBack;
+
+							log::info("Push: {}", push);
+							log::info("Total Damage: {}", hit_data->totalDamage);
+							log::info("Physical Damage: {}", hit_data->physicalDamage);
+
+							float rec_scale = std::powf(get_visual_scale(receiver), 3.0);
+							float att_scale = std::powf(get_visual_scale(aggressor), 3.0);
+							float sizedifference = std::clamp(rec_scale/att_scale, 1.0f, 100.0f);
+							if (push > 0.01) { // We don't want to do 0/0 which will lead to ctd
+								push /= sizedifference; 
+							}
+						}
+						
+						log::info("SkyrimProcessHitEvent:hit_data->aggressor: {}", GetRawName(aggressor));
+					}
+				}
+				SkyrimProcessHitEvent(a_this, hit_data);
 			}
-			/*if (damageSrc) {
-			        log::info("DamageSrc : {}", GetRawName(damageSrc));
-			   }*/
-			// float multiplier = GetDamageMultiplier(aggressor);
-
-			//^ Multiplier will CTD since aggressor is none
-			// TO-DO: Repair Overkill. Currently disabled
-
-			dmg *= (resistance * tiny * healthgate * IsNotImmune);
-			log::info("    - Reducing damage to {}, resistance: {}, shield: {}", dmg, resistance, tiny);
-			SkyrimTakeDamage(a_this, dmg, hit_data, aggressor, damageSrc);
-			return;
-			}
-			);
-
-      static FunctionHook<void(TESObjectREFR* a_this, HitData* hit_data)> SkyrimProcessHitEvent(
-        RELOCATION_ID(37633, 38586),
-  			[](auto* a_this, auto* hit_data) {
-          if (a_this) {
-            log::info("Checking a_this");
-            log::info("SkyrimProcessHitEvent:a_this: {}", GetRawName(a_this));
-          }
-          if (hit_data) {
-            if (hit_data->aggressor) {
-              log::info("Checking agressor");
-              Actor* agressor = hit_data->aggressor.get().get();
-              log::info("SkyrimProcessHitEvent:hit_data->aggressor: {}", GetRawName(agressor));
-            }
-          }
-          SkyrimProcessHitEvent(a_this, hit_data);
-        }
-      );
-
+		);
 	}
 }

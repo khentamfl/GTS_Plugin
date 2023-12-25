@@ -97,14 +97,8 @@ namespace {
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
 
-		//KillProperly_5d4700(tiny, giant, 1, 1, true, 0);
+		InflictSizeDamage(giant, tiny, GetAV(tiny, ActorValue::kHealth) * 2); // just to make sure
 		tiny->KillImpl(giant, 1, true, true);
-		//tiny->SetLifeState(ACTOR_LIFE_STATE::kDead);
-		//tiny->KillImmediate();
-		//tiny->KillDying();
-		//RagdollTask(tiny);
-		//SendDeathEvent(giant, tiny, true);
-		//S
 		auto* eventsource = ScriptEventSourceHolder::GetSingleton();
 		if (eventsource) {
 			auto event = TESDeathEvent();
@@ -114,21 +108,6 @@ namespace Gts {
 			eventsource->SendEvent(&event);
 		}
 
-		//tiny->GetActorRuntimeData().boolBits.set(BOOL_BITS::kDead);
-	}
-
-	void RagdollTask(Actor* tiny) {
-		auto tinyHandle = tiny->CreateRefHandle();
-		std::string name = std::format("Ragdoll_{}", tiny->formID);
-		TaskManager::RunOnce(name, [=](auto& update){
-			if (!tinyHandle) {
-				return;
-			}
-			auto tiny = tinyHandle.get().get();
-			tiny->NotifyAnimationGraph("Ragdoll");
-			ForceRagdoll(tiny, true);
-			return;
-		});
 	}
 
 	void ScareActors(Actor* giant) {

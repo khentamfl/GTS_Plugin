@@ -29,7 +29,7 @@ namespace Hooks {
 			auto actor = FindActor(a_this);
 			if (actor) {
 				if (actor->formID == 0x14) {// Apply to Player only
-					float scale = get_visual_scale(actor);
+					float scale = get_giantess_scale(actor);
 					if (scale > 1e-4) {
 						result /= scale;
 						//log::info("  - Changed to {} for {}", result, actor->GetDisplayFullName());

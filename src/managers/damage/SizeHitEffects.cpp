@@ -26,17 +26,6 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	void Overkill(Actor* attacker, Actor* receiver, float damage) {
-		if (damage > GetAV(receiver, ActorValue::kHealth) * 1) { // Overkill effect
-			float attackerscale = get_visual_scale(attacker);
-			float receiverscale = get_visual_scale(receiver) * GetScaleAdjustment(receiver);
-			float size_difference = attackerscale/receiverscale;
-			if (size_difference >= 12.0) {
-				HitManager::GetSingleton().Overkill(receiver, attacker);
-			}
-		}
-	}
-
 	void StaggerImmunity(Actor* attacker, Actor* receiver) {
 		float sizedifference = GetSizeDifference(receiver, attacker);
 		auto charCont = receiver->GetCharController();
@@ -126,7 +115,7 @@ namespace {
 		int LaughChance = rand() % 12;
 		int ShrinkChance = rand() % 5;
 		float scale = get_visual_scale(receiver);
-		float naturalscale = get_visual_scale(receiver);
+		float naturalscale = get_natural_scale(receiver);
 		auto& sizemanager = SizeManager::GetSingleton();
 		float BalanceMode = sizemanager.BalancedMode();
 		float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(receiver)/100;
@@ -197,7 +186,6 @@ namespace Gts {
 	}
 
 	void SizeHitEffects::ApplyEverything(Actor* attacker, Actor* receiver, float damage) {
-		log::info("Applying {} damage to: {}", damage, receiver->GetDisplayFullName());
 		ApplyHitGrowth(attacker, receiver, damage);
 		ApplyToTinies(attacker, receiver, damage);
 		StaggerImmunity(attacker, receiver);

@@ -1,11 +1,12 @@
-#include "managers/hitmanager.hpp"
-#include "managers/GtsSizeManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/ai/aifunctions.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "magic/effects/common.hpp"
 #include "managers/GtsManager.hpp"
+#include "managers/hitmanager.hpp"
 #include "utils/actorUtils.hpp"
+#include "managers/Rumble.hpp"
 #include "data/persistent.hpp"
 #include "utils/looting.hpp"
 #include "data/runtime.hpp"
@@ -14,7 +15,6 @@
 #include "events.hpp"
 #include "timer.hpp"
 #include "node.hpp"
-#include "managers/Rumble.hpp"
 
 using namespace RE;
 using namespace Gts;
