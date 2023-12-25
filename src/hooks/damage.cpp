@@ -274,9 +274,9 @@ namespace Hooks
         RELOCATION_OFFSET(0x237, 0x232),
         [](auto* a_this, auto dmg, auto* aggressor, auto unknown, auto* victim) {
 			//log::info("a_this: {}", GetRawName(a_this));
-			log::info("agressor: {}", GetRawName(aggressor));
+			//log::info("agressor: {}", GetRawName(aggressor));
 			//log::info("unknown: {}", GetRawName(unknown));
-			log::info("damage src: {}", GetRawName(damageSrc));
+			//log::info("damage src: {}", GetRawName(damageSrc));
 			if (victim) {
 				log::info("Found victim");
 				if (aggressor) {
