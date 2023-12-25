@@ -159,7 +159,7 @@ namespace Hooks
 			}
 			if (hit_data) {
 				log::info("Found hit data");
-				log::info("Raw Name: {}", hit_data->GetRawName());
+				log::info("Raw Name: {}", GetRawName(hit_data));
 			}
 			/*if (damageSrc) {
 			        log::info("DamageSrc : {}", GetRawName(damageSrc));
