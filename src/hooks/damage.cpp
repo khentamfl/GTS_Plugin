@@ -229,12 +229,14 @@ namespace Hooks
 							}
 
 							hit_data->physicalDamage *= GetTotalDamageResistance(receiver, aggressor, hit_data->physicalDamage);
-							hit_data->totalDamage *= GetTotalDamageResistance(receiver, aggressor, hit_data->totalDamage);
+							//hit_data->totalDamage *= GetTotalDamageResistance(receiver, aggressor, hit_data->totalDamage);
 
 							log::info("New push: {}", hit_data->pushBack);
 
 							log::info("New Total Damage: {}", hit_data->totalDamage);
 							log::info("New Physical Damage: {}", hit_data->physicalDamage);
+
+							DoOverkill(aggressor, receiver, hit_data->physicalDamage);
 						}
 					}
 				}
@@ -266,10 +268,10 @@ namespace Hooks
 
 
       // Scale all magic based damage
-     static CallHook<void(Actor* a_this, float dmg, Actor* agressor, std::uintptr_t unknown, TESObjectREFR* damageSrc)> SkyrimMagicDamage(
+     static CallHook<void(Actor* a_this, float dmg, Actor* aggressor, std::uintptr_t unknown, TESObjectREFR* damageSrc)> SkyrimMagicDamage(
         RELOCATION_ID(34286, 35086),
         RELOCATION_OFFSET(0x237, 0x232),
-        [](auto* a_this, auto dmg, auto* agressor, auto unknown, auto* damageSrc) {
+        [](auto* a_this, auto dmg, auto* aggressor, auto unknown, auto* damageSrc) {
 		log::info("a_this: {}", GetRawName(a_this));
 		log::info("agressor: {}", GetRawName(aggressor));
 		log::info("unknown: {}", GetRawName(unknown));
@@ -281,7 +283,7 @@ namespace Hooks
               dmg = dmg / std::clamp(get_visual_scale(a_this), 0.1f, 10.0f);
             }
           }
-          SkyrimMagicDamage(a_this, dmg, agressor, unknown, damageSrc);
+          SkyrimMagicDamage(a_this, dmg, aggressor, unknown, damageSrc);
         }
       );
 	}
