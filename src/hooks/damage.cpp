@@ -225,8 +225,8 @@ namespace Hooks
 							float att_scale = std::powf(get_visual_scale(aggressor), 3.0);
 							float sizedifference = std::clamp(rec_scale/att_scale, 1.0f, 100.0f);
 
-							//hit_data->physicalDamage *= GetTotalDamageResistance(receiver, aggressor, hit_data->physicalDamage);
-							//hit_data->totalDamage *= GetTotalDamageResistance(receiver, aggressor, hit_data->totalDamage);
+							hit_data->physicalDamage *= GetTotalDamageResistance(receiver, aggressor, hit_data->physicalDamage);
+							hit_data->totalDamage *= GetTotalDamageResistance(receiver, aggressor, hit_data->totalDamage);
 
 							log::info("New push: {}", hit_data->pushBack);
 
