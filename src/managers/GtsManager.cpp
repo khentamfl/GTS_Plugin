@@ -172,7 +172,7 @@ namespace {
 		if (visual_scale <= 1e-5) {
 			return;
 		}
-		float initialScale = GetInitialScale(&actor); // Incorperate the NIF scale into our edits
+		float initialScale = GetInitialScale(actor); // Incorperate the NIF scale into our edits
 		set_scale(actor, visual_scale * initialScale);
 	}
 
