@@ -2298,7 +2298,7 @@ namespace Gts {
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
 		if (!receiver->IsDead()) {
 			//ApplyDamage(attacker, receiver, value * GetDamageSetting());
-			DoHitEvent(attacker, tiny, value * GetDamageSetting());
+			DoHitEvent(attacker, receiver, value * GetDamageSetting());
 		}
 	}
 
@@ -2332,10 +2332,10 @@ namespace Gts {
 		ApplyDamage_HitEvent(tiny, data);
 	}
 
-	void ApplyDamage_HitEvent(TESObjectREFR* tiny, HitData* hitdata) {
-		typedef void (*DefApplyHitEvent)(auto* a_this, auto* hit_data);
+	void ApplyDamage_HitEvent(Actor* tiny, HitData* hitdata) {
+		typedef void (*DefApplyHitEvent)(Actor* a_this, HitData* hit_data);
 		REL::Relocation<DefApplyHitEvent> Skyrim_ApplyHitEvent{ RELOCATION_ID(37633, 38586) }; 
-		Skyrim_ApplyHitEvent(tiny, hit_data);
+		Skyrim_ApplyHitEvent(tiny, hitdata);
 	}
 
 	std::int16_t GetItemCount(InventoryChanges* changes, RE::TESBoundObject* a_obj)
