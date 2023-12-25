@@ -269,7 +269,7 @@ namespace Hooks
 
       // Scale all magic based damage // 567A80 (SE)
 	  //Actor* a_this, float dmg, Actor* aggressor, std::uintptr_t unknown, TESObjectREFR* damageSrc
-     static CallHook<void(uintptr_t param1, float dmg, Actor* aggressor, uintptr_t param4, Actor* victim)> SkyrimMagicDamage(
+     static CallHook<void(Actor* param1, float dmg, Actor* aggressor, uintptr_t param4, Actor* victim)> SkyrimMagicDamage(
         RELOCATION_ID(34286, 35086), 
         RELOCATION_OFFSET(0x237, 0x232),
         [](auto* param1, auto dmg, auto* aggressor, auto param4, auto* victim) {
