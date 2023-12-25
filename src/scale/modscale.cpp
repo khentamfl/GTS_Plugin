@@ -12,6 +12,10 @@ namespace {
     float model;
     float npc;
 
+    InitialScales() {
+      throw std::expection("Cannot InitialScales crate without actor");
+    }
+
     InitialScales(Actor* actor) {
       model = get_model_scale(actor);
       npc = get_npcnode_scale(actor);
@@ -25,7 +29,7 @@ namespace {
     return initScales;
   }
 
-  std::unordered_map<formID, InitialScales>& GetActorInitialScales(Actor* actor) {
+  InitialScales& GetActorInitialScales(Actor* actor) {
     if (!actor) {
       throw std::exception("Actor must exist for GetInitialScale");
     }
