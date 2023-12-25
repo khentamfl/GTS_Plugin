@@ -168,7 +168,7 @@ namespace {
 			}
 		}
 		log::info("    - Damage Mult: {}, resistance: {}, shield: {}", multiplier, resistance, tiny);
-		mult *= (resistance * tiny * IsNotImmune * healthgate);
+		mult *= (multiplier * resistance * tiny * IsNotImmune * healthgate);
 		return mult;
 	}
 }
@@ -176,27 +176,29 @@ namespace {
 namespace Hooks
 {
 	void Hook_Damage::Hook(Trampoline& trampoline) {
-		static FunctionHook<void(Actor* a_this, float dmg, Actor* aggressor, uintptr_t maybe_hitdata, TESObjectREFR* damageSrc)> SkyrimTakeDamage(
+		/*static FunctionHook<void(Actor* a_this, float dmg, Actor* aggressor, uintptr_t maybe_hitdata, TESObjectREFR* damageSrc)> SkyrimTakeDamage(
 			RELOCATION_ID(36345, 37335),
 			[](auto* a_this, auto dmg, auto* aggressor, uintptr_t maybe_hitdata, auto* damageSrc) { // Universal damage function before Difficulty damage
 				log::info("Someone taking damage");
 				log::info("{}: Taking {} damage", a_this->GetDisplayFullName(), dmg);
 
 				if (aggressor) { // apply to hits only, We don't want to decrease fall damage for example
-					log::info("Found Aggressor");
-					log::info("Aggressor: {}", aggressor->GetDisplayFullName());
-					dmg *= GetTotalDamageResistance(a_this, aggressor, dmg);
+					if (aggressor != a_this) {
+						log::info("Found Aggressor");
+						log::info("Aggressor: {}", aggressor->GetDisplayFullName());
+						dmg *= GetTotalDamageResistance(a_this, aggressor, dmg);
 
 
-					DoOverkill(aggressor, a_this, dmg);
+						DoOverkill(aggressor, a_this, dmg);
 
-					log::info("Changing damage to: {}", dmg);
+						log::info("Changing damage to: {}", dmg);
+					}
 				}
 
 				SkyrimTakeDamage(a_this, dmg, aggressor, maybe_hitdata, damageSrc);
 				return;
 			}
-		);
+		);*/
 
 		static FunctionHook<void(TESObjectREFR* a_this, HitData* hit_data)> SkyrimProcessHitEvent( // Seems to work for Hit events, probably modified by Difficulty Damage
 			RELOCATION_ID(37633, 38586),
@@ -211,21 +213,29 @@ namespace Hooks
 						Actor* aggressor = hit_data->aggressor.get().get();
 						if (hit_data->target) {
 							Actor* receiver = hit_data->target.get().get();
-							float push = hit_data->pushBack;
 
-							log::info("Push: {}", push);
+							log::info("aggressor: {}", aggressor->GetDisplayFullName());
+							log::info("receiver: {}", receiver->GetDisplayFullName());
+
+							log::info("Push: {}", hit_data->pushBack);
 							log::info("Total Damage: {}", hit_data->totalDamage);
 							log::info("Physical Damage: {}", hit_data->physicalDamage);
 
 							float rec_scale = std::powf(get_visual_scale(receiver), 3.0);
 							float att_scale = std::powf(get_visual_scale(aggressor), 3.0);
 							float sizedifference = std::clamp(rec_scale/att_scale, 1.0f, 100.0f);
-							if (push > 0.01) { // We don't want to do 0/0 which will lead to ctd
-								push /= sizedifference;
+							if (hit_data->pushBack > 0.01) { // We don't want to do 0/0 which will lead to ctd
+								hit_data->pushBack /= sizedifference;
 							}
-						}
 
-						log::info("SkyrimProcessHitEvent:hit_data->aggressor: {}", GetRawName(aggressor));
+							hit_data->physicalDamage *= GetTotalDamageResistance(receiver, aggressor, hit_data->physicalDamage);
+							hit_data->totalDamage *= GetTotalDamageResistance(receiver, aggressor, hit_data->totalDamage);
+
+							log::info("New push: {}", hit_data->pushBack);
+
+							log::info("New Total Damage: {}", hit_data->totalDamage);
+							log::info("New Physical Damage: {}", hit_data->physicalDamage);
+						}
 					}
 				}
 				SkyrimProcessHitEvent(a_this, hit_data);

@@ -14,13 +14,13 @@ namespace {
 	const std::string_view rThigh = "NPC R FrontThigh";
 	const std::string_view breast = "NPC Spine2 [Spn2]";
 	const std::string_view booty = "NPC Spine [Spn0]";
+	const std::string_voew none = "None";
 }
 
 
 namespace Gts {
 
 	std::string_view GetDeathNodeName(DamageSource cause) {
-		std::string_view node;
 		if (cause == DamageSource::HandCrawlRight||cause == DamageSource::HandSwipeRight||cause == DamageSource::HandSlamRight) {
 			return rHand;
 		} else if (cause == DamageSource::HandCrawlLeft||cause == DamageSource::HandSwipeLeft||cause == DamageSource::HandSlamLeft || cause == DamageSource::HandCrushed) {
@@ -40,6 +40,7 @@ namespace Gts {
 		} else if (cause == DamageSource::ThighSandwiched||cause == DamageSource::ThighCrushed) {
 			return rThigh;
 		}
+		return none;
 	}
 
 	void ReportDeath(Actor* giant, Actor* tiny, DamageSource cause) {
