@@ -225,12 +225,6 @@ namespace Hooks
 							float att_scale = std::powf(get_visual_scale(aggressor), 3.0);
 							float sizedifference = std::clamp(rec_scale/att_scale, 1.0f, 100.0f);
 
-							auto AttackData = hit_data->attackData.get()->data;
-							log::info("DamageMult old: {}", AttackData.damageMult);
-							log::info("Knockdown: {}", AttackData.knockDown);
-							AttackData.damageMult *= GetTotalDamageResistance(receiver, aggressor, hit_data->physicalDamage);
-							log::info("DamageMult new: {}", AttackData.damageMult);
-
 							//hit_data->physicalDamage *= GetTotalDamageResistance(receiver, aggressor, hit_data->physicalDamage);
 							//hit_data->totalDamage *= GetTotalDamageResistance(receiver, aggressor, hit_data->totalDamage);
 
@@ -239,6 +233,8 @@ namespace Hooks
 							log::info("New Total Damage: {}", hit_data->totalDamage);
 							log::info("New Physical Damage: {}", hit_data->physicalDamage);
 							log::info("bonusHealthDamageMult {}", hit_data->bonusHealthDamageMult);
+							log::info("resistedPhysicalDamage: {}", hit_data->resistedPhysicalDamage);
+							log::info("resistedTypedDamage: {}", hit_data->resistedTypedDamage);
 
 							DoOverkill(aggressor, receiver, hit_data->physicalDamage);
 						}
