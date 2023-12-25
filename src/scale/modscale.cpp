@@ -25,7 +25,7 @@ namespace {
 
   // Global actor inital scales singleton
   std::unordered_map<RE::FormID, InitialScales>& GetInitialScales() {
-
+    static std::unordered_map<RE::FormID, InitialScales> initScales;
     return initScales;
   }
 
@@ -33,7 +33,7 @@ namespace {
     if (!actor) {
       throw std::exception("Actor must exist for GetInitialScale");
     }
-    static std::unordered_map<RE::FormID, InitialScales> initScales;
+    auto& initalScale = GetInitialScales();
     auto id = actor->formID;
     initScales.try_emplace(id, actor);
     return initScales.at(id);
@@ -90,8 +90,8 @@ namespace Gts {
     if (actor) {
       if (actor->Is3DLoaded()) {
         auto& initScale = GetActorInitialScales(actor);
-        set_model_scale(initScale.model);
-        set_npcnode_scale(initScale.npc);
+        set_model_scale(actor, initScale.model);
+        set_npcnode_scale(actor, initScale.npc);
       }
     }
   }
