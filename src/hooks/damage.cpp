@@ -267,7 +267,7 @@ namespace Hooks
               dmg = dmg / std::clamp(get_visual_scale(a_this), 0.1f, 10.0f);
             }
           }
-          SkyrimMagicDamage(a_ths, dmg, agressor, unknown, damageSrc);
+          SkyrimMagicDamage(a_this, dmg, agressor, unknown, damageSrc);
         }
       );
 
