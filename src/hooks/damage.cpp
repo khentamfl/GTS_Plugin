@@ -150,10 +150,9 @@ namespace {
 		return reduction;
 	}
 
-	float GetTotalDamageResistance(Actor* receiver, Actor* aggressor, float dmg) {
+	float GetTotalDamageResistance(Actor* receiver, Actor* aggressor) {
 		float resistance = GetDamageResistance(receiver) * HugDamageResistance(receiver);
 		float multiplier = GetDamageMultiplier(aggressor);
-		float healthgate = HealthGate(receiver, dmg * 4);
 		float tiny = 1.0;
 		float IsNotImmune = 1.0;
 
@@ -168,7 +167,7 @@ namespace {
 			}
 		}
 		log::info("    - Damage Mult: {}, resistance: {}, shield: {}", multiplier, resistance, tiny);
-		mult *= (multiplier * resistance * tiny * IsNotImmune * healthgate);
+		mult *= (multiplier * resistance * tiny * IsNotImmune);
 		return mult;
 	}
 }
@@ -186,7 +185,8 @@ namespace Hooks
 					if (aggressor != a_this) {
 						log::info("Found Aggressor");
 						log::info("Aggressor: {}", aggressor->GetDisplayFullName());
-						dmg *= GetTotalDamageResistance(a_this, aggressor, dmg);
+						dmg *= GetTotalDamageResistance(a_this, aggressor);
+						dmg *= HealthGate(a_this, dmg);
 
 
 						DoOverkill(aggressor, a_this, dmg);
@@ -225,16 +225,18 @@ namespace Hooks
 							float att_scale = std::powf(get_visual_scale(aggressor), 3.0);
 							float sizedifference = std::clamp(rec_scale/att_scale, 1.0f, 100.0f);
 
-							hit_data->physicalDamage *= GetTotalDamageResistance(receiver, aggressor, hit_data->physicalDamage);
-							hit_data->totalDamage *= GetTotalDamageResistance(receiver, aggressor, hit_data->totalDamage);
+							float resistance = GetTotalDamageResistance(receiver, aggressor);
 
-							log::info("New push: {}", hit_data->pushBack);
-
-							log::info("New Total Damage: {}", hit_data->totalDamage);
-							log::info("New Physical Damage: {}", hit_data->physicalDamage);
+							//hit_data->physicalDamage *= GetTotalDamageResistance(receiver, aggressor, hit_data->physicalDamage);
+							//hit_data->totalDamage *= GetTotalDamageResistance(receiver, aggressor, hit_data->totalDamage);
 							log::info("bonusHealthDamageMult {}", hit_data->bonusHealthDamageMult);
+							hit_data->bonusHealthDamageMult *= resistance;
+							hit_data->bonusHealthDamageMult *= HealthGate(receiver, hit_data->totalDamage * resistance);
+
+							//log::info("New Total Damage: {}", hit_data->totalDamage);
+							//log::info("New Physical Damage: {}", hit_data->physicalDamage);
+							log::info("New bonusHealthDamageMult {}", hit_data->bonusHealthDamageMult);
 							log::info("resistedPhysicalDamage: {}", hit_data->resistedPhysicalDamage);
-							log::info("resistedTypedDamage: {}", hit_data->resistedTypedDamage);
 
 							DoOverkill(aggressor, receiver, hit_data->physicalDamage);
 						}
