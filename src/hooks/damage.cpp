@@ -224,17 +224,23 @@ namespace Hooks
 							float rec_scale = std::powf(get_visual_scale(receiver), 3.0);
 							float att_scale = std::powf(get_visual_scale(aggressor), 3.0);
 							float sizedifference = std::clamp(rec_scale/att_scale, 1.0f, 100.0f);
-							if (hit_data->pushBack > 0.01) { // We don't want to do 0/0 which will lead to ctd
-								hit_data->pushBack /= sizedifference;
+
+							auto AttackData = hit_data->BGSAttackData.get().get().data;
+							if (AttackData) {
+								log::info("DamageMult old: {}", AttackData->damageMult);
+								log::info("Knockdown: {}", AttackData->knockDown);
+								AttackData->damageMult *= GetTotalDamageResistance(receiver, aggressor, hit_data->physicalDamage);
+								log::info("DamageMult new: {}", AttackData->damageMult);
 							}
 
-							hit_data->physicalDamage *= GetTotalDamageResistance(receiver, aggressor, hit_data->physicalDamage);
+							//hit_data->physicalDamage *= GetTotalDamageResistance(receiver, aggressor, hit_data->physicalDamage);
 							//hit_data->totalDamage *= GetTotalDamageResistance(receiver, aggressor, hit_data->totalDamage);
 
 							log::info("New push: {}", hit_data->pushBack);
 
 							log::info("New Total Damage: {}", hit_data->totalDamage);
 							log::info("New Physical Damage: {}", hit_data->physicalDamage);
+							log::info("bonusHealthDamageMult {}", hit_data->bonusHealthDamageMult);
 
 							DoOverkill(aggressor, receiver, hit_data->physicalDamage);
 						}
