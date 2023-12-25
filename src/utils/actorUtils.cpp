@@ -2297,8 +2297,7 @@ namespace Gts {
 
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
 		if (!receiver->IsDead()) {
-			//ApplyDamage(attacker, receiver, value * GetDamageSetting());
-			DoHitEvent(attacker, receiver, value * GetDamageSetting());
+			ApplyDamage(attacker, receiver, value * GetDamageSetting());
 		}
 	}
 
@@ -2320,22 +2319,6 @@ namespace Gts {
 		typedef void (*DefApplyDamage)(Actor* a_this, float dmg, Actor* aggressor, HitData* maybe_hitdata, TESObjectREFR* damageSrc);
 		REL::Relocation<DefApplyDamage> Skyrim_ApplyDamage{ RELOCATION_ID(36345, 37335) }; // 5D6300 (SE)
 		Skyrim_ApplyDamage(tiny, damage, giant, nullptr, nullptr);
-	}
-
-	void DoHitEvent(Actor* giant, Actor* tiny, float damage) {
-		HitData* data;
-		data->aggressor = giant->CreateRefHandle();
-		data->target = tiny->CreateRefHandle();
-		data->totalDamage = damage;
-		data->physicalDamage = damage;
-		data->pushBack = 0.0;
-		ApplyDamage_HitEvent(tiny, data);
-	}
-
-	void ApplyDamage_HitEvent(Actor* tiny, HitData* hitdata) {
-		typedef void (*DefApplyHitEvent)(Actor* a_this, HitData* hit_data);
-		REL::Relocation<DefApplyHitEvent> Skyrim_ApplyHitEvent{ RELOCATION_ID(37633, 38586) }; 
-		Skyrim_ApplyHitEvent(tiny, hitdata);
 	}
 
 	std::int16_t GetItemCount(InventoryChanges* changes, RE::TESBoundObject* a_obj)
