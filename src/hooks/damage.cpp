@@ -159,14 +159,7 @@ namespace Hooks
 			}
 			if (hit_data) {
 				log::info("Found hit data");
-				auto attacker = hit_data->aggressor;
-				auto Source = hit_data->sourceRef;
-				//log::info("Pushback: {}", hit_data->pushBack);
-				//hit_data->pushBack *= 16.0;
-				if (attacker) {
-					log::info("Attacker found");
-					//log::info("Attacker: {}", attacker.get().get()->GetDisplayFullName());
-				}
+				log::info("Raw Name: {}", hit_data->GetRawName());
 			}
 			/*if (damageSrc) {
 			        log::info("DamageSrc : {}", GetRawName(damageSrc));
