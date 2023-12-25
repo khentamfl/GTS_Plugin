@@ -175,5 +175,24 @@ namespace Hooks
 			return;
 			}
 			);
+
+      static FunctionHook<void(TESObjectREFR* a_this, HitData* hit_data)> SkyrimProcessHitEvent(
+        RELOCATION_ID(37633, 38586),
+  			[](auto* a_this, auto* hit_data) {
+          if (a_this) {
+            log::info("Checking a_this");
+            log::info("SkyrimProcessHitEvent:a_this: {}", GetRawName(a_this));
+          }
+          if (hit_data) {
+            if (hit_data->aggressor) {
+              log::info("Checking agressor");
+              Actor* agressor = hit_data->aggressor.get().get();
+              log::info("SkyrimProcessHitEvent:hit_data->aggressor: {}", GetRawName(agressor));
+            }
+          }
+          SkyrimProcessHitEvent(a_this, hit_data);
+        }
+      );
+
 	}
 }
