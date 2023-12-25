@@ -247,7 +247,7 @@ namespace Gts {
 			}
 			case ActorValue::kAttackDamageMult: {
 				if (actor->formID == 0x14 && HasSMT(actor)) {
-					scale += 3.0;
+					scale += 1.0;
 				}
 				float bonusDamageMultiplier = Runtime::GetFloatOr("bonusDamageMultiplier", 1.0);
 				float damage_storage = 1.0 + ((bonusDamageMultiplier) * scale - 1.0);

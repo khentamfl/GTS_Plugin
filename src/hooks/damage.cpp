@@ -272,19 +272,19 @@ namespace Hooks
         RELOCATION_ID(34286, 35086),
         RELOCATION_OFFSET(0x237, 0x232),
         [](auto* a_this, auto dmg, auto* aggressor, auto unknown, auto* damageSrc) {
-		log::info("a_this: {}", GetRawName(a_this));
-		log::info("agressor: {}", GetRawName(aggressor));
-		log::info("unknown: {}", GetRawName(unknown));
-		log::info("damage src: {}", GetRawName(damageSrc));
-          if (a_this) {
-            if (agressor) {
-              dmg = dmg * std::clamp(get_visual_scale(agressor), 0.1f, 10.0f) / std::clamp(get_visual_scale(a_this), 0.1f, 10.0f);
-            } else {
-              dmg = dmg / std::clamp(get_visual_scale(a_this), 0.1f, 10.0f);
-            }
-          }
-          SkyrimMagicDamage(a_this, dmg, aggressor, unknown, damageSrc);
-        }
-      );
+			//log::info("a_this: {}", GetRawName(a_this));
+			log::info("agressor: {}", GetRawName(aggressor));
+			log::info("unknown: {}", GetRawName(unknown));
+			log::info("damage src: {}", GetRawName(damageSrc));
+			if (a_this) {
+				if (aggressor) {
+					dmg = dmg * std::clamp(get_visual_scale(aggressor), 0.1f, 10.0f) / std::clamp(get_visual_scale(a_this), 0.1f, 10.0f);
+				} else {
+					dmg = dmg / std::clamp(get_visual_scale(a_this), 0.1f, 10.0f);
+				}
+			}
+			SkyrimMagicDamage(a_this, dmg, aggressor, unknown, damageSrc);
+			}
+		);
 	}
 }
