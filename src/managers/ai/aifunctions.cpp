@@ -97,7 +97,7 @@ namespace {
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
 
-		InflictSizeDamage(giant, tiny, GetAV(tiny, ActorValue::kHealth) * 2); // just to make sure
+		//InflictSizeDamage(giant, tiny, GetAV(tiny, ActorValue::kHealth) * 2); // just to make sure
 		tiny->KillImpl(giant, 1, true, true);
 		auto* eventsource = ScriptEventSourceHolder::GetSingleton();
 		if (eventsource) {
