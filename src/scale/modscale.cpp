@@ -12,7 +12,7 @@ namespace {
     float model;
     float npc;
 
-    void InitialScales(Actor* actor) {
+    InitialScales(Actor* actor) {
       model = get_model_scale(actor);
       npc = get_npcnode_scale(actor);
     }
@@ -20,8 +20,8 @@ namespace {
 
 
   // Global actor inital scales singleton
-  std::unordered_map<formID, InitialScales>& GetInitialScales() {
-    static std::unordered_map<formID, InitialScales> initScales;
+  std::unordered_map<RE::FormID, InitialScales>& GetInitialScales() {
+    static std::unordered_map<RE::FormID, InitialScales> initScales;
     return initScales;
   }
 
