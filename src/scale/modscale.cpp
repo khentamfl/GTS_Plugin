@@ -33,7 +33,7 @@ namespace {
     if (!actor) {
       throw std::exception("Actor must exist for GetInitialScale");
     }
-    auto& initalScale = GetInitialScales();
+    auto& initScales = GetInitialScales();
     auto id = actor->formID;
     initScales.try_emplace(id, actor);
     return initScales.at(id);
