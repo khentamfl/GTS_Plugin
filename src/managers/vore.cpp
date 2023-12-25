@@ -136,7 +136,7 @@ namespace Gts {
 
 				bool Living = IsLiving(tiny);
 				bool Dragon = IsDragon(tiny);
-				float DefaultScale = Get_Other_Scale(tiny);
+				float DefaultScale = get_natural_scale(tiny);
 
 				SurvivalMode_AdjustHunger(this->giant.get().get(), get_visual_scale(tiny), DefaultScale, Dragon, Living, 0);
 			}
@@ -261,7 +261,7 @@ namespace Gts {
 			this->WasLiving = IsLiving(tiny);
 			this->sizePower = tiny_scale * mealEffiency * growth;
 			this->tinySize = tiny_scale;
-			this->naturalsize = Get_Other_Scale(tiny);
+			this->naturalsize = get_natural_scale(tiny);
 			this->tiny_name = tiny->GetDisplayFullName();
 		}
 	}

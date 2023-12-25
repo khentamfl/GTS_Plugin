@@ -81,6 +81,15 @@ namespace Gts {
 		//Plugin::SetInGame(false);
 		std::unique_lock lock(this->_lock);
 		this->_actor_data.clear();
+
+    // Ensure we reset them back to inital scales
+    // if they are loaded into game memory
+    // since skyrim only lazy loads actors
+    // that are already in memory it won't reload
+    // their nif scales otherwise
+    for (auto actor: find_actors()) {
+      ResetToInitScale(actor);
+    }
 	}
 
 	void Persistent::OnRevert(SerializationInterface*) {
@@ -1166,5 +1175,6 @@ namespace Gts {
 			data->stolen_magick = 0.0;
 			data->stolen_stamin = 0.0;
 		}
+    ResetToInitScale(actor);
 	}
 }

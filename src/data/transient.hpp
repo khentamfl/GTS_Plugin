@@ -21,7 +21,6 @@ namespace Gts {
 		float carryweight_boost;
 		float basehp;
 		float otherScales;
-		float initialScale;
 		float WorldFov_Default;
 		float FpFov_Default;
 		float ButtCrushGrowthAmount;

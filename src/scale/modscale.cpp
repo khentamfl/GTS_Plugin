@@ -7,7 +7,44 @@
 
 using namespace Gts;
 
+namespace {
+  struct InitialScales {
+    float model;
+    float npc;
+
+    void InitialScales(Actor* actor) {
+      model = get_model_scale(actor);
+      npc = get_npcnode_scale(actor);
+    }
+  }
+
+
+  // Global actor inital scales singleton
+  std::unordered_map<formID, InitialScales>& GetInitialScales() {
+    static std::unordered_map<formID, InitialScales> initScales;
+    return initScales;
+  }
+
+  std::unordered_map<formID, InitialScales>& GetActorInitialScales(Actor* actor) {
+    if (!actor) {
+      throw std::exception("Actor must exist for GetInitialScale");
+    }
+    auto& initalScale = GetInitialScales();
+    auto id = actor->formID;
+    initScales.try_emplace(id, actor);
+    return initScales.at(id);
+  }
+
+  void UpdateInitScale(Actor* actor) {
+    GetActorInitialScales(actor); // It's enough just to call this
+  }
+
+}
+
 namespace Gts {
+  // @ Sermit, do not call Get_Other_Scale, call get_natural_scale instead
+  // get_natural_scale is much faster and safer as it uses the cache
+  //
 	// Get the current physical value for all nodes of the player
 	// that we don't alter
 	//
@@ -45,6 +82,31 @@ namespace Gts {
 		return allScale / ourScale;
 	}
 
+  void ResetToInitScale(Actor* actor) {
+    if (actor) {
+      if (actor->Is3DLoaded()) {
+        auto& initScale = GetActorInitialScales(actor);
+        set_model_scale(initScale.model);
+        set_npcnode_scale(initScale.npc);
+      }
+    }
+  }
+
+  float GetInitialScale(Actor* actor) {
+    auto& initScale = GetActorInitialScales(actor);
+    auto& size_method = Persistent::GetSingleton().size_method;
+		switch (size_method) {
+      // Only initial scales for these two methods since the racemenu
+      // and refscale one can edit on the character edit menu and setscale
+			case SizeMethod::ModelScale:
+				return initScale.model;
+			case SizeMethod::RootScale:
+        return initScale.npc;
+      default:
+        return 1.0;
+    }
+  }
+
 	void set_ref_scale(Actor* actor, float target_scale) {
 		// This is how the game sets scale with the `SetScale` command
 		// It is limited to x10 and messes up all sorts of things like actor damage
@@ -63,6 +125,8 @@ namespace Gts {
 			return false;
 		}
 		bool result = false;
+
+    UpdateInitScale(actor); // This will update the inital scales BEFORE we alter them
 
 		auto model = actor->Get3D(false);
 		if (model) {
@@ -84,6 +148,8 @@ namespace Gts {
 		// This will set the scale of the root npc node
 		string node_name = "NPC Root [Root]";
 		bool result = false;
+
+    UpdateInitScale(actor); // This will update the inital scales BEFORE we alter them
 
 		auto node = find_node(actor, node_name, false);
 		if (node) {
@@ -111,7 +177,7 @@ namespace Gts {
 	}
 
 	float get_npcnode_scale(Actor* actor) {
-		// This will set the scale of the root npc node
+		// This will get the scale of the root npc node
 		string node_name = "NPC Root [Root]";
 		auto node = find_node(actor, node_name, false);
 		if (node) {
@@ -125,7 +191,12 @@ namespace Gts {
 	}
 
 	float get_npcparentnode_scale(Actor* actor) {
-		// This will set the scale of the root npc node
+		// This will get the scale of the root npc node
+		// this is also called the race scale, since it is
+		// the racemenu scale
+		//
+		// The name of it is variable. For actors it is NPC
+		// but for others it is the creature name
 		string node_name = "NPC Root [Root]";
 		auto childNode = find_node(actor, node_name, false);
 		if (!childNode) {
