@@ -154,13 +154,13 @@ namespace {
 		float resistance = GetDamageResistance(receiver) * HugDamageResistance(receiver);
 		float multiplier = GetDamageMultiplier(aggressor);
 		float healthgate = HealthGate(receiver, dmg * 4);
-		float tiny = 1.0; 
+		float tiny = 1.0;
 		float IsNotImmune = 1.0;
 
 		float mult = 1.0;
 
 		auto transient = Transient::GetSingleton().GetData(receiver);
-		
+
 		if (transient) {
 			if (receiver->formID == 0x14) {
 				IsNotImmune = transient->Immunity;
@@ -181,7 +181,7 @@ namespace Hooks
 			[](auto* a_this, auto dmg, auto* aggressor, uintptr_t maybe_hitdata, auto* damageSrc) { // Universal damage function before Difficulty damage
 				log::info("Someone taking damage");
 				log::info("{}: Taking {} damage", a_this->GetDisplayFullName(), dmg);
-			
+
 				if (aggressor) { // apply to hits only, We don't want to decrease fall damage for example
 					log::info("Found Aggressor");
 					log::info("Aggressor: {}", aggressor->GetDisplayFullName());
@@ -192,12 +192,12 @@ namespace Hooks
 
 					log::info("Changing damage to: {}", dmg);
 				}
-				
+
 				SkyrimTakeDamage(a_this, dmg, aggressor, maybe_hitdata, damageSrc);
 				return;
 			}
 		);
-	
+
 		static FunctionHook<void(TESObjectREFR* a_this, HitData* hit_data)> SkyrimProcessHitEvent( // Seems to work for Hit events, probably modified by Difficulty Damage
 			RELOCATION_ID(37633, 38586),
 			[](auto* a_this, auto* hit_data) {
@@ -221,15 +221,56 @@ namespace Hooks
 							float att_scale = std::powf(get_visual_scale(aggressor), 3.0);
 							float sizedifference = std::clamp(rec_scale/att_scale, 1.0f, 100.0f);
 							if (push > 0.01) { // We don't want to do 0/0 which will lead to ctd
-								push /= sizedifference; 
+								push /= sizedifference;
 							}
 						}
-						
+
 						log::info("SkyrimProcessHitEvent:hit_data->aggressor: {}", GetRawName(aggressor));
 					}
 				}
 				SkyrimProcessHitEvent(a_this, hit_data);
 			}
 		);
+
+      // This is the function that applies ValueModifierEffect to an actor including any damage and av adjustments
+      // static FunctionHook<void(ValueModifierEffect* a_this, Actor* actor, std::uintptr_t unknown, ActorValue actorValue)> SkyrimAvMagicEffect(
+      //   RELOCATION_ID(34286, 35086),
+  		// 	[](auto* a_this, auto* actor, auto unknown, auto av) {
+      //     if (actorValue == ActorValue::kHealth) {
+      //       auto casterHandle = a_this->caster;
+      //       if (casterHandle) {
+      //         Actor* caster = casterHandle.get().get();
+      //         if (caster) {
+      //           EffectSetting* baseEffect = a_this->GetBaseObject();
+      //           if (baseEffect) {
+      //             if (baseEffect->HasKeywordString("MagicDamageFire") || baseEffect->HasKeywordString("MagicDamageFrost") || baseEffect->HasKeywordString("MagicDamageShock")) {
+      //               // Physical spells are scaled
+      //               a_this->magnitude
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }
+      //     SkyrimAvMagicEffect(a_this, actor, unknown, av);
+      // });
+
+
+      // Scale all magic based damage
+      static BranchHook<void(Actor* a_this, float dmg, Actor* agressor, std::uintptr_t unknown,TESObjectREFR* damageSrc)> SkyrimMagicDamage(
+        RELOCATION_ID(34286, 35086),
+        RELOCATION_OFFSET(0x237, 0x232),
+        [](auto* a_this, auto dmg, auto* agressor, auto unknown, auto* damageSrc) {
+          if (a_this) {
+            if (agressor) {
+              dmg = dmg * std::clamp(get_visual_scale(agressor), 0.1f, 10.0f) / std::clamp(get_visual_scale(a_this), 0.1f, 10.0f);
+            } else {
+              dmg = dmg / std::clamp(get_visual_scale(a_this), 0.1f, 10.0f);
+            }
+          }
+          SkyrimMagicDamage(a_ths, dmg, agressor, unknown, damageSrc);
+        }
+      );
+
+
 	}
 }
