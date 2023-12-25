@@ -14,7 +14,7 @@ namespace {
 	const std::string_view rThigh = "NPC R FrontThigh";
 	const std::string_view breast = "NPC Spine2 [Spn2]";
 	const std::string_view booty = "NPC Spine [Spn0]";
-	const std::string_voew none = "None";
+	const std::string_view none = "None";
 }
 
 
