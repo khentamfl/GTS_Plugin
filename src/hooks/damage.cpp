@@ -200,7 +200,7 @@ namespace Hooks
 			}
 		);*/
 
-		static FunctionHook<void(TESObjectREFR* a_this, HitData* hit_data)> SkyrimProcessHitEvent( // Seems to work for Hit events, probably modified by Difficulty Damage
+		static FunctionHook<void(TESObjectREFR* a_this, HitData* hit_data)> SkyrimProcessHitEvent( // Works on HitData based events. Not affected by Difficulty modifiers.
 			RELOCATION_ID(37633, 38586),
 			[](auto* a_this, auto* hit_data) {
 				if (a_this) {
@@ -268,22 +268,26 @@ namespace Hooks
 
 
       // Scale all magic based damage
-     static CallHook<void(Actor* a_this, float dmg, Actor* aggressor, std::uintptr_t unknown, TESObjectREFR* damageSrc)> SkyrimMagicDamage(
+	  //Actor* a_this, float dmg, Actor* aggressor, std::uintptr_t unknown, TESObjectREFR* damageSrc
+     static CallHook<void(Actor* a_this, float dmg, Actor* aggressor, std::uintptr_t unknown, Actor* victim)> SkyrimMagicDamage(
         RELOCATION_ID(34286, 35086),
         RELOCATION_OFFSET(0x237, 0x232),
-        [](auto* a_this, auto dmg, auto* aggressor, auto unknown, auto* damageSrc) {
+        [](auto* a_this, auto dmg, auto* aggressor, auto unknown, auto* victim) {
 			//log::info("a_this: {}", GetRawName(a_this));
 			log::info("agressor: {}", GetRawName(aggressor));
 			//log::info("unknown: {}", GetRawName(unknown));
 			log::info("damage src: {}", GetRawName(damageSrc));
-			if (a_this) {
+			if (victim) {
+				log::info("Found victim");
 				if (aggressor) {
-					dmg = dmg * std::clamp(get_visual_scale(aggressor), 0.1f, 10.0f) / std::clamp(get_visual_scale(a_this), 0.1f, 10.0f);
+					log::info("Found aggressor");
+					dmg = dmg * std::clamp(get_visual_scale(aggressor), 0.1f, 10.0f) / std::clamp(get_visual_scale(victim), 0.1f, 10.0f);
 				} else {
-					dmg = dmg / std::clamp(get_visual_scale(a_this), 0.1f, 10.0f);
+					log::info("Not Found aggressor");
+					dmg = dmg / std::clamp(get_visual_scale(victim), 0.1f, 10.0f);
 				}
 			}
-			SkyrimMagicDamage(a_this, dmg, aggressor, unknown, damageSrc);
+			SkyrimMagicDamage(a_this, dmg, aggressor, unknown, victim);
 			}
 		);
 	}
