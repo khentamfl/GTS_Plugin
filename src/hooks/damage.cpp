@@ -175,7 +175,7 @@ namespace {
 namespace Hooks
 {
 	void Hook_Damage::Hook(Trampoline& trampoline) {
-		/*static FunctionHook<void(Actor* a_this, float dmg, Actor* aggressor, uintptr_t maybe_hitdata, TESObjectREFR* damageSrc)> SkyrimTakeDamage(
+		static FunctionHook<void(Actor* a_this, float dmg, Actor* aggressor, uintptr_t maybe_hitdata, TESObjectREFR* damageSrc)> SkyrimTakeDamage(
 			RELOCATION_ID(36345, 37335),
 			[](auto* a_this, auto dmg, auto* aggressor, uintptr_t maybe_hitdata, auto* damageSrc) { // Universal damage function before Difficulty damage
 				log::info("Someone taking damage");
@@ -198,9 +198,9 @@ namespace Hooks
 				SkyrimTakeDamage(a_this, dmg, aggressor, maybe_hitdata, damageSrc);
 				return;
 			}
-		);*/
+		);
 
-		static FunctionHook<void(TESObjectREFR* a_this, HitData* hit_data)> SkyrimProcessHitEvent( // Works on HitData based events. Not affected by Difficulty modifiers.
+		/*static FunctionHook<void(TESObjectREFR* a_this, HitData* hit_data)> SkyrimProcessHitEvent( // Works on HitData based events. Not affected by Difficulty modifiers.
 			RELOCATION_ID(37633, 38586),
 			[](auto* a_this, auto* hit_data) {
 				if (a_this) {
@@ -245,7 +245,7 @@ namespace Hooks
 				}
 				SkyrimProcessHitEvent(a_this, hit_data);
 			}
-		);
+		);*/
 
       // This is the function that applies ValueModifierEffect to an actor including any damage and av adjustments
       // static FunctionHook<void(ValueModifierEffect* a_this, Actor* actor, std::uintptr_t unknown, ActorValue actorValue)> SkyrimAvMagicEffect(
