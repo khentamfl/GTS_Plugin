@@ -7,7 +7,7 @@ using namespace RE;
 using namespace SKSE;
 
 namespace Gts {
-	enum FootEvent {
+	enum class FootEvent {
 		Left,
 		Right,
 		Front,
@@ -18,13 +18,13 @@ namespace Gts {
 		Breasts,
 	};
 
-	enum ShrinkSource {
+	enum class ShrinkSource {
 		other,
 		magic,
 		hugs,
 	};
 
-	enum SizeEffectType {
+	enum class SizeEffectType {
 		kShrink,
 		kGrow,
 		kSteal,
@@ -32,7 +32,7 @@ namespace Gts {
 		kNeutral,
 	};
 
-	enum DamageSource {
+	enum class DamageSource {
 		HandCrawlRight,
 		HandCrawlLeft,
 		HandSwipeRight,
@@ -67,7 +67,7 @@ namespace Gts {
 		HitSteal,
 	};
 
-	enum CrawlEvent {
+	enum class CrawlEvent {
 		LeftKnee,
 		RightKnee,
 		LeftHand,
