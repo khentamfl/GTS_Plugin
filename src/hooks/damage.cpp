@@ -225,7 +225,7 @@ namespace Hooks
 							float att_scale = std::powf(get_visual_scale(aggressor), 3.0);
 							float sizedifference = std::clamp(rec_scale/att_scale, 1.0f, 100.0f);
 
-							auto AttackData = hit_data->BGSAttackData.get().get().data;
+							auto AttackData = hit_data->attackData.get().get().data;
 							if (AttackData) {
 								log::info("DamageMult old: {}", AttackData->damageMult);
 								log::info("Knockdown: {}", AttackData->knockDown);
