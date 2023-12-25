@@ -274,7 +274,7 @@ namespace Hooks
         [](auto* a_this, auto dmg, auto* aggressor, auto unknown, auto* damageSrc) {
 			//log::info("a_this: {}", GetRawName(a_this));
 			log::info("agressor: {}", GetRawName(aggressor));
-			log::info("unknown: {}", GetRawName(unknown));
+			//log::info("unknown: {}", GetRawName(unknown));
 			log::info("damage src: {}", GetRawName(damageSrc));
 			if (a_this) {
 				if (aggressor) {
