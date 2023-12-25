@@ -13,19 +13,19 @@ namespace {
     float npc;
 
     InitialScales() {
-      throw std::expection("Cannot InitialScales crate without actor");
+      throw std::exception("Cannot init a InitialScales without an actor");
     }
 
     InitialScales(Actor* actor) {
       model = get_model_scale(actor);
       npc = get_npcnode_scale(actor);
     }
-  }
+  };
 
 
   // Global actor inital scales singleton
   std::unordered_map<RE::FormID, InitialScales>& GetInitialScales() {
-    static std::unordered_map<RE::FormID, InitialScales> initScales;
+
     return initScales;
   }
 
@@ -33,7 +33,7 @@ namespace {
     if (!actor) {
       throw std::exception("Actor must exist for GetInitialScale");
     }
-    auto& initalScale = GetInitialScales();
+    static std::unordered_map<RE::FormID, InitialScales> initScales;
     auto id = actor->formID;
     initScales.try_emplace(id, actor);
     return initScales.at(id);
