@@ -75,10 +75,9 @@ namespace {
 	}
 
 	void Overkill(Actor* attacker, Actor* receiver, float damage) {
-		if (damage > GetAV(receiver, ActorValue::kHealth) * 1) { // Overkill effect
-			float attackerscale = get_visual_scale(attacker);
-			float receiverscale = get_visual_scale(receiver) * GetScaleAdjustment(receiver);
-			float size_difference = attackerscale/receiverscale;
+		if (damage > GetAV(receiver, ActorValue::kHealth)) { // Overkill effect
+			float size_difference = GetSizeDifference(attacker, receiver);
+			log::info("Overkill Size Difference: {}", size_difference);
 			if (size_difference >= 12.0) {
 				HitManager::GetSingleton().Overkill(receiver, attacker);
 			}
@@ -188,12 +187,13 @@ namespace Hooks
 					log::info("Aggressor: {}", aggressor->GetDisplayFullName());
 					dmg *= GetTotalDamageResistance(a_this, aggressor, dmg);
 
+
 					Overkill(aggressor, a_this, dmg);
 
 					log::info("Changing damage to: {}", dmg);
 				}
 				
-				SkyrimTakeDamage(a_this, dmg, hit_data, aggressor, damageSrc);
+				SkyrimTakeDamage(a_this, dmg, aggressor, maybe_hitdata, damageSrc);
 				return;
 			}
 		);
