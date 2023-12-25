@@ -21,7 +21,7 @@ namespace Gts {
 		float carryweight_boost;
 		float basehp;
 		float otherScales;
-    	float initialScale;
+		float initialScale;
 		float WorldFov_Default;
 		float FpFov_Default;
 		float ButtCrushGrowthAmount;
@@ -52,7 +52,7 @@ namespace Gts {
 
 			TempActorData* GetData(TESObjectREFR* object);
 			TempActorData* GetActorData(Actor* actor);
-      		std::vector<FormID> GetForms();
+			std::vector<FormID> GetForms();
 
 			virtual std::string DebugName() override;
 			virtual void Update() override;

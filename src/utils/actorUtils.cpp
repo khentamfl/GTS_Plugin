@@ -57,7 +57,7 @@ namespace {
 	float GetPerkBonus_OnTheEdge(Actor* giant, float amt) {
 		float bonus = 1.0;
 		bool perk = Runtime::HasPerkTeam(giant, "OnTheEdge");
-		if (perk) { 
+		if (perk) {
 			float GetHP = std::clamp(GetHealthPercentage(giant) + 0.4f, 0.5f, 1.0f); // Bonus Size Gain if Actor has perk
 			if (amt > 0) {
 				bonus /= GetHP;
@@ -65,9 +65,9 @@ namespace {
 				bonus *= GetHP;
 			} // When health is < 60%, empower growth by up to 50%. Max value at 10% health.
 		}
-		return bonus;	
+		return bonus;
 	}
-	
+
 	float ShakeStrength(Actor* Source) {
 		float Size = get_visual_scale(Source);
 		float k = 0.065;
@@ -855,7 +855,7 @@ namespace Gts {
 		bool perk = Runtime::HasPerkTeam(giant, "OnTheEdge");
 		if (amt > 0 && (giant->formID == 0x14 || IsTeammate(giant))) {
 			if (scale >= 1.0) {
-				amt /= GetGrowthReduction(scale); 
+				amt /= GetGrowthReduction(scale);
 				// Enabled if BalanceMode is True. Decreases Grow Efficiency.
 			}
 		} else if (amt - EPS < 0.0) {

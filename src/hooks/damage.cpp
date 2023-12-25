@@ -169,8 +169,8 @@ namespace Hooks
 				}
 			}
 			/*if (damageSrc) {
-				log::info("DamageSrc : {}", GetRawName(damageSrc));
-			}*/
+			        log::info("DamageSrc : {}", GetRawName(damageSrc));
+			   }*/
 			// float multiplier = GetDamageMultiplier(aggressor);
 
 			//^ Multiplier will CTD since aggressor is none
@@ -181,6 +181,6 @@ namespace Hooks
 			SkyrimTakeDamage(a_this, dmg, hit_data, aggressor, damageSrc);
 			return;
 			}
-		);
+			);
 	}
 }

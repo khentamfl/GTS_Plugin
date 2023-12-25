@@ -112,9 +112,9 @@ namespace {
 					//log::info("new target_scale: {}", target_scale);
 				}
 			} else {
-        // Else we just scale to natural
-        target_scale = 1.0;
-      }
+				// Else we just scale to natural
+				target_scale = 1.0;
+			}
 		}
 
 		if (fabs(target_scale - persi_actor_data->visual_scale) > 1e-5) {
@@ -178,8 +178,8 @@ namespace {
 			trans_actor_data->initialScale = get_scale(actor); // Get raw scale from avnode now
 		}
 		/*if (actor->formID == 0x14) {
-			log::info("Intiial Scale of Player is {}", trans_actor_data->initialScale);
-		}*/
+		        log::info("Intiial Scale of Player is {}", trans_actor_data->initialScale);
+		   }*/
 		set_scale(actor, visual_scale * trans_actor_data->initialScale);
 	}
 

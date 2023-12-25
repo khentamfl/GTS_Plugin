@@ -11,21 +11,21 @@ namespace Gts {
 	float GetCeilingHeight(Actor* giant);
 	float GetMaxRoomScale(Actor* giant);
 
-  class DynamicScaleData {
-    public:
-      DynamicScaleData();
+	class DynamicScaleData {
+		public:
+			DynamicScaleData();
 
-      Spring roomHeight;
-  };
+			Spring roomHeight;
+	};
 
-  class DynamicScale : public EventListener {
+	class DynamicScale : public EventListener {
 		public:
 			[[nodiscard]] static DynamicScale& GetSingleton();
 
-      virtual std::string DebugName() override;
+			virtual std::string DebugName() override;
 
-      static DynamicScaleData& GetData(Actor* actor);
+			static DynamicScaleData& GetData(Actor* actor);
 
-      std::unordered_map<FormID, DynamicScaleData> data;
-  };
+			std::unordered_map<FormID, DynamicScaleData> data;
+	};
 }

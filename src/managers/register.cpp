@@ -69,7 +69,7 @@ namespace Gts {
 		EventDispatcher::AddListener(&ContactManager::GetSingleton()); // Manages collisions
 		EventDispatcher::AddListener(&InputManager::GetSingleton()); // Manages keyboard and mouse input
 
-    EventDispatcher::AddListener(&DynamicScale::GetSingleton()); // Handles room heights
+		EventDispatcher::AddListener(&DynamicScale::GetSingleton()); // Handles room heights
 		log::info("Managers Registered");
 	}
 }

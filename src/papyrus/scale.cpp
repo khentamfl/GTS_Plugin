@@ -27,7 +27,7 @@ namespace {
 			}
 		}
 	}
- 	void ResetScales() {
+	void ResetScales() {
 		log::info("Resetting all actor scale");
 		auto forms = Transient::GetSingleton().GetForms();
 		for (auto id: forms) {
@@ -36,9 +36,9 @@ namespace {
 				ResetActorScale(actor);
 			}
 		}
-  	}
-  
-	
+	}
+
+
 
 	// Model Scale
 	bool SetModelScale(StaticFunctionTag*, Actor* actor, float scale) {
@@ -157,7 +157,7 @@ namespace {
 
 	// Configurable scale
 	void SetScaleMethod(StaticFunctionTag*, int size_method) {
-    	//ResetScales(); // Must reset first
+		//ResetScales(); // Must reset first
 		switch (size_method) {
 			case 0:
 				Persistent::GetSingleton().size_method = SizeMethod::ModelScale;

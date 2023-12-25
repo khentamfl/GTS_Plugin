@@ -57,43 +57,43 @@ namespace Gts {
 		// === Calculation of ray directions ===
 		auto transform = root_node->world;
 		transform.scale = 1.0;
-   	// ray 1 center on giant + 70 (default), +100 now
+		// ray 1 center on giant + 70 (default), +100 now
 		auto ray1_p = NiPoint3(0.0, 0.0, 100.0); // in local space
 		ray1_p = transform * ray1_p; // in global space
 		// straight up
 		auto ray1_d = NiPoint3(0.0, 0.0, 1.0); // direction
 
-    // ray 2 slightly in front of the player
+		// ray 2 slightly in front of the player
 		auto ray2_p = NiPoint3(0.0, 18.0 * scale, 100.0);
 		ray2_p = transform * ray2_p;
 		// straight up
 		auto ray2_d = NiPoint3(0.0, 0.0, 1.0);
 
 
-    // Math for tilting forwards
-    //     o
-    //  _______
-    //  |    /
-    // a|   /
-    //  |  /
-    //  |A/
-    //  |/
-    //
-    //  tan(A)*a=o
-    //
-    //  If z = a = 1.0
-    //  then y = o = tan(A)*z
-    //
-    //  Convert from degrees to radian with radians=degrees*3.141/180.0
-    //
-    // At ray2 but tilting forward a bit
-    float tilt_degrees = 5.0;
-    auto ray3_p = ray2_p;
+		// Math for tilting forwards
+		//     o
+		//  _______
+		//  |    /
+		// a|   /
+		//  |  /
+		//  |A/
+		//  |/
+		//
+		//  tan(A)*a=o
+		//
+		//  If z = a = 1.0
+		//  then y = o = tan(A)*z
+		//
+		//  Convert from degrees to radian with radians=degrees*3.141/180.0
+		//
+		// At ray2 but tilting forward a bit
+		float tilt_degrees = 5.0;
+		auto ray3_p = ray2_p;
 		auto ray3_d = transform.rotate * NiPoint3(0.0, tan(tilt_degrees*3.141/180.0)*1.0, 1.0);
 		ray3_d.Unitize();
 
-    // At ray2 but tilting backwards a bit
-    auto ray4_p = ray2_p;
+		// At ray2 but tilting backwards a bit
+		auto ray4_p = ray2_p;
 		auto ray4_d = transform.rotate * NiPoint3(0.0, tan(-tilt_degrees*3.141/180.0)*1.0, 1.0);
 		ray4_d.Unitize();
 
@@ -106,42 +106,42 @@ namespace Gts {
 			{ray4_p, ray4_d}
 		};
 
-    if (scale > 3.0) {
-      int sides = 6;
-      float degrees = 380.0 / sides;
-      float rads = degrees * 3.141 / 180.0;
-      for (int i=0; i<sides;  i++) {
-        auto mat = NiMatrix3(0.0, 0.0, rads * i);
-        auto vert = mat * NiPoint3(0.0, 12.0, 0.0);
-        vert = transform.rotate * (vert * scale);
-        vert = ray2_p + vert;
-        rays.push_back(
-          {
-            vert,
-            NiPoint3(0.0, 0.0, 1.0)
-          }
-        );
+		if (scale > 3.0) {
+			int sides = 6;
+			float degrees = 380.0 / sides;
+			float rads = degrees * 3.141 / 180.0;
+			for (int i=0; i<sides; i++) {
+				auto mat = NiMatrix3(0.0, 0.0, rads * i);
+				auto vert = mat * NiPoint3(0.0, 12.0, 0.0);
+				vert = transform.rotate * (vert * scale);
+				vert = ray2_p + vert;
+				rays.push_back(
+				{
+					vert,
+					NiPoint3(0.0, 0.0, 1.0)
+				}
+					);
 
-      }
-    }
+			}
+		}
 
-    if (scale > 9.0) {
-      int sides = 6;
-      float degrees = 380.0 / sides;
-      float rads = degrees * 3.141 / 180.0;
-      for (int i=0; i<sides;  i++) {
-        auto mat = NiMatrix3(0.0, 0.0, rads * i);
-        auto vert = mat * NiPoint3(0.0, 4.0, 0.0);
-        vert = transform.rotate * (vert * scale);
-        vert = ray2_p + vert;
-        rays.push_back(
-          {
-            vert,
-            NiPoint3(0.0, 0.0, 1.0)
-          }
-        );
-      }
-    }
+		if (scale > 9.0) {
+			int sides = 6;
+			float degrees = 380.0 / sides;
+			float rads = degrees * 3.141 / 180.0;
+			for (int i=0; i<sides; i++) {
+				auto mat = NiMatrix3(0.0, 0.0, rads * i);
+				auto vert = mat * NiPoint3(0.0, 4.0, 0.0);
+				vert = transform.rotate * (vert * scale);
+				vert = ray2_p + vert;
+				rays.push_back(
+				{
+					vert,
+					NiPoint3(0.0, 0.0, 1.0)
+				}
+					);
+			}
+		}
 
 		const float RAY_LENGTH = 1000;
 		bool debug = IsDebugEnabled();
@@ -209,52 +209,52 @@ namespace Gts {
 		float stateScale = GetRaycastStateScale(giant);
 
 		float room_height_m = GetCeilingHeight(giant);
-    if (giant->formID == 0x14) {
-      log::info("room_height_m (pre spring): {}", room_height_m);
-    }
+		if (giant->formID == 0x14) {
+			log::info("room_height_m (pre spring): {}", room_height_m);
+		}
 
-    // Spring
-    auto& dynamicData = DynamicScale::GetData(giant);
-	dynamicData.roomHeight.halflife = 0.33;
-    if (giant->formID == 0x14) {
-      log::info(
-        "Spring State: taget: {}, value: {}, velocity: {:.16f}, hl: {}",
-        dynamicData.roomHeight.target,
-        dynamicData.roomHeight.value,
-        dynamicData.roomHeight.velocity,
-        dynamicData.roomHeight.halflife
-      );
-    }
-    if (!std::isinf(room_height_m)) {
-      // Under roof
-      if (std::isinf(dynamicData.roomHeight.target)) {
-        // Last check was infinity so we just went under a roof
-        // Snap current value to new roof
-        if (giant->formID == 0x14) {
-          log::info("Entered roof");
-        }
-        dynamicData.roomHeight.value = room_height_m;
-        dynamicData.roomHeight.velocity = 0.0;
-      }
+		// Spring
+		auto& dynamicData = DynamicScale::GetData(giant);
+		dynamicData.roomHeight.halflife = 0.33;
+		if (giant->formID == 0x14) {
+			log::info(
+				"Spring State: taget: {}, value: {}, velocity: {:.16f}, hl: {}",
+				dynamicData.roomHeight.target,
+				dynamicData.roomHeight.value,
+				dynamicData.roomHeight.velocity,
+				dynamicData.roomHeight.halflife
+				);
+		}
+		if (!std::isinf(room_height_m)) {
+			// Under roof
+			if (std::isinf(dynamicData.roomHeight.target)) {
+				// Last check was infinity so we just went under a roof
+				// Snap current value to new roof
+				if (giant->formID == 0x14) {
+					log::info("Entered roof");
+				}
+				dynamicData.roomHeight.value = room_height_m;
+				dynamicData.roomHeight.velocity = 0.0;
+			}
 
-      dynamicData.roomHeight.target = room_height_m;
-      room_height_m = dynamicData.roomHeight.value;
-    } else {
-      // No roof, set roomHeight to infinity so we know that we left the roof
-      // then continue as normal
-      if (!std::isinf(dynamicData.roomHeight.target)) {
-        if (giant->formID == 0x14) {
-          log::info("Left roof");
-        }
-        dynamicData.roomHeight.target = room_height_m;
-        dynamicData.roomHeight.value = room_height_m;
-        dynamicData.roomHeight.velocity = 0.0;
-      }
-    }
+			dynamicData.roomHeight.target = room_height_m;
+			room_height_m = dynamicData.roomHeight.value;
+		} else {
+			// No roof, set roomHeight to infinity so we know that we left the roof
+			// then continue as normal
+			if (!std::isinf(dynamicData.roomHeight.target)) {
+				if (giant->formID == 0x14) {
+					log::info("Left roof");
+				}
+				dynamicData.roomHeight.target = room_height_m;
+				dynamicData.roomHeight.value = room_height_m;
+				dynamicData.roomHeight.velocity = 0.0;
+			}
+		}
 
-    if (giant->formID == 0x14) {
-      log::info("room_height_m (post spring): {}", room_height_m);
-    }
+		if (giant->formID == 0x14) {
+			log::info("room_height_m (post spring): {}", room_height_m);
+		}
 
 		float room_height_s = room_height_m/1.82; // / height by 1.82 (default character height)
 		float max_scale = (room_height_s * 0.82) / stateScale; // Define max scale, make avalibale space seem bigger when prone etc
@@ -267,20 +267,21 @@ namespace Gts {
 		return max_scale;
 	}
 
-  	DynamicScaleData::DynamicScaleData() : roomHeight(
-    	Spring(std::numeric_limits<float>::infinity(), 1.0)
-  	) {}
+	DynamicScaleData::DynamicScaleData() : roomHeight(
+			Spring(std::numeric_limits<float>::infinity(), 1.0)
+			) {
+	}
 
 	DynamicScale& DynamicScale::GetSingleton() {
-    	static DynamicScale instance;
+		static DynamicScale instance;
 		return instance;
-  	}
+	}
 
 	std::string DynamicScale::DebugName() {
 		return "DynamicScale";
 	}
 
-  	DynamicScaleData& DynamicScale::GetData(Actor* actor) {
+	DynamicScaleData& DynamicScale::GetData(Actor* actor) {
 		if (!actor) {
 			throw std::exception("DynamicScale::GetData: Actor must exist");
 		}
@@ -290,9 +291,9 @@ namespace Gts {
 		manager.data.try_emplace(id);
 
 		try {
-		return manager.data.at(id);
+			return manager.data.at(id);
 		} catch (const std::out_of_range& oor) {
-		throw std::exception("DynamicScale::GetData: Unable to find actor data");
+			throw std::exception("DynamicScale::GetData: Unable to find actor data");
 		}
 	}
 }

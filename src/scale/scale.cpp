@@ -132,12 +132,12 @@ namespace Gts {
 	float get_natural_scale(Actor& actor) {
 		auto actor_data = Transient::GetSingleton().GetData(&actor);
 		if (actor_data) {
-      if (actor_data->initialScale > 0.0) {
-        return actor_data->otherScales * actor_data->initialScale;
-      } else {
-        // initialScale has not be found yet (actor not loaded)
-        return actor_data->otherScales;
-      }
+			if (actor_data->initialScale > 0.0) {
+				return actor_data->otherScales * actor_data->initialScale;
+			} else {
+				// initialScale has not be found yet (actor not loaded)
+				return actor_data->otherScales;
+			}
 		}
 		return 1.0;
 	}

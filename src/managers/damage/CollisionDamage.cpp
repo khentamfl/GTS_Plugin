@@ -437,7 +437,7 @@ namespace Gts {
 
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
 		float multiplier = GetSizeDifference(giant, tiny) * highheels;
-		
+
 		if (multiplier < 1.4) {
 			return; // Do not do damage is Size Difference is < than x1.4
 		}
