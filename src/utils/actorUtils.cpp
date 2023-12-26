@@ -825,17 +825,7 @@ namespace Gts {
 								auto node = find_node(otherActor, "NPC Root [Root]");
 								if (node) {
 									auto grabbedActor = Grab::GetHeldActor(giant);
-
-									float staminapercent = GetStaminaPercentage(giant);
-									bool ForceCrush = Runtime::HasPerkTeam(giant, "HugCrush_MightyCuddles");
-
-									bool CanHugCrush = false;
-									if (huggedActor) {
-										CanHugCrush = (GetHealthPercentage(huggedActor) < GetHPThreshold(giant) 
-										|| (ForceCrush && staminapercent > 0.5) || HasSMT(giant));
-									}
 									
-
 									float correction = (18.0 / tinyScale) - 18.0;
 									NiPoint3 Position = node->world.translate;
 									Position.z -= correction;
@@ -843,12 +833,17 @@ namespace Gts {
 									if (grabbedActor && otherActor == grabbedActor) {
 										return;
 									} else if (!IsGtsBusy(giant) && difference >= 10.0) {
-										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush_All.nif", NiMatrix3(), Position, 2.8, 7, node); // Spawn effect
+										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush_All.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn effect
 									} else if (!IsGtsBusy(giant) && difference >= 8.0) {
-										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Grab.nif", NiMatrix3(), Position, 2.8, 7, node); // Spawn effect
+										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Grab.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn effect
 									} else if (huggedActor) {
-										if (otherActor == huggedActor && !IsHugCrushing && CanHugCrush) {
-											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Hug_Crush.nif", NiMatrix3(), Position, 2.8, 7, node); // Spawn effect
+										bool LowHealth = (GetHealthPercentage(huggedActor) < GetHPThreshold(giant));
+										bool ForceCrush = Runtime::HasPerkTeam(giant, "HugCrush_MightyCuddles");
+										float Stamina = GetStaminaPercentage(giant);
+										if (otherActor == huggedActor && !IsHugCrushing) {
+											if (HasSMT(giant) || LowHealth || (ForceCrush && Stamina > 0.50)) {
+												SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Hug_Crush.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn effect
+											}
 										}
 									}
 								}
