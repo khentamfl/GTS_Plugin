@@ -2304,6 +2304,9 @@ namespace Gts {
 
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
 		if (!receiver->IsDead()) {
+			if (GetHealthPercentage(receiver) < 0.60) {
+				Attacked(receiver, attacker);
+			}
 			ApplyDamage(attacker, receiver, value * GetDamageSetting());
 		}
 	}
@@ -2322,22 +2325,10 @@ namespace Gts {
 		SkyrimAttacked(victim, agressor);
 	}
 
-	void ApplyDamage(Actor* giant, Actor* tiny, float damage, bool event) { // applies correct amount of damage and kills actors properly
+	void ApplyDamage(Actor* giant, Actor* tiny, float damage) { // applies correct amount of damage and kills actors properly
 		typedef void (*DefApplyDamage)(Actor* a_this, float dmg, Actor* aggressor, HitData* maybe_hitdata, TESObjectREFR* damageSrc);
 		REL::Relocation<DefApplyDamage> Skyrim_ApplyDamage{ RELOCATION_ID(36345, 37335) }; // 5D6300 (SE)
-		Skyrim_ApplyDamage(tiny, damage, giant, nullptr, nullptr);
-
-		if (GetAV(tiny, ActorValue::kHealth) < GetHealthPercentage(tiny) * 0.60) {
-			Attacked(tiny, giant);
-		}
-	}
-
-	void ApplyDamage(Actor* giant, Actor* tiny, float damage) { // applies correct amount of damage and kills actors properly
-		ApplyDamage(giant, tiny, true);
-	}
-
-	void ApplyDamageSilent(Actor* giant, Actor* tiny, float damage) { // applies correct amount of damage and kills actors properly
-		ApplyDamage(giant, tiny, false);
+		Skyrim_ApplyDamage(tiny, damage, nullptr, nullptr, nullptr);
 	}
 
 	std::int16_t GetItemCount(InventoryChanges* changes, RE::TESBoundObject* a_obj)

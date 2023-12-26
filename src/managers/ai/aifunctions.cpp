@@ -96,9 +96,9 @@ namespace {
 
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
-
-		InflictSizeDamage(giant, tiny, GetMaxAV(tiny, ActorValue::kHealth) * 1.25); // just to make sure
-		tiny->KillImpl(giant, 1, true, true);
+		float hp = GetMaxAV(tiny, ActorValue::kHealth) * 1.25;
+		InflictSizeDamage(giant, tiny, hp); // just to make sure
+		//tiny->KillImpl(giant, 1, true, true);
 		auto* eventsource = ScriptEventSourceHolder::GetSingleton();
 		if (eventsource) {
 			auto event = TESDeathEvent();
