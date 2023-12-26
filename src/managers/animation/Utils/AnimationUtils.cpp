@@ -231,7 +231,7 @@ namespace Gts {
 			if (FrameB <= 4.0) {
 				return true;
 			}
-			AttachTo(giantref, tinyref, coordinates);
+			AttachTo_NoForceRagdoll(giantref, tinyref, coordinates);
 			if (!isTrampling(giantref)) {
 				SetBeingGrinded(tinyref, false);
 				return false;
@@ -274,7 +274,7 @@ namespace Gts {
 			if (FrameB <= 4.0) {
 				return true;
 			}
-			AttachTo(giantref, tinyref, coordinates);
+			AttachTo_NoForceRagdoll(giantref, tinyref, coordinates);
 			if (!isTrampling(giantref)) {
 				SetBeingGrinded(tinyref, false);
 				return false;
@@ -317,7 +317,7 @@ namespace Gts {
 				return true;
 			}
 
-			AttachTo(giantref, tinyref, coordinates);
+			AttachTo_NoForceRagdoll(giantref, tinyref, coordinates);
 			if (!IsFootGrinding(giantref)) {
 				SetBeingGrinded(tinyref, false);
 				return false;
@@ -359,7 +359,7 @@ namespace Gts {
 				return true;
 			}
 
-			AttachTo(giantref, tinyref, coordinates);
+			AttachTo_NoForceRagdoll(giantref, tinyref, coordinates);
 			if (!IsFootGrinding(giantref)) {
 				SetBeingGrinded(tinyref, false);
 				return false;
