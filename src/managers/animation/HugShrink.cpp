@@ -91,6 +91,7 @@ namespace {
 			return;
 		}
 		HugShrink::ShrinkOtherTask(giant, huggedActor);
+		Attacked(huggedActor, giant);
 	}
 
 	void GTS_Hug_Moan(AnimationEventData& data) {
@@ -136,6 +137,7 @@ namespace {
 		}
 		auto scale = get_visual_scale(huggedActor);
 		float sizedifference = get_visual_scale(giant)/scale;
+		Attacked(huggedActor, giant);
 		set_target_scale(huggedActor, scale*0.60);
 		ModSizeExperience(scale/6, giant);
 		GRumble::For("ShrinkPulse", giant, 18.0 * sizedifference, 0.10, "NPC COM [COM ]", 0.35);
@@ -369,6 +371,7 @@ namespace Gts {
 		if (!tiny) {
 			return;
 		}
+
 		std::string name = std::format("Huggies_{}", giant->formID);
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		ActorHandle tinyhandle = tiny->CreateRefHandle();

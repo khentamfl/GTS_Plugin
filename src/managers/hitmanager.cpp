@@ -139,7 +139,7 @@ namespace Gts {
 			// Was done like that because Audio disappears on actors
 		});
 
-		Runtime::CreateExplosion(receiver, get_visual_scale(receiver), "BloodExplosion");
+		Runtime::CreateExplosion(receiver, get_visual_scale(receiver) * 0.5, "BloodExplosion");
 		std::random_device rd;
 		std::mt19937 gen(rd());
 		std::uniform_real_distribution<float> dis(-0.2, 0.2);

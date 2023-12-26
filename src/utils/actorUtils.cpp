@@ -781,7 +781,7 @@ namespace Gts {
 			bool IsHugCrushing;
 			giant->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
 
-			const float BASE_DISTANCE = 240.0;
+			const float BASE_DISTANCE = 180.0;
 			float CheckDistance = BASE_DISTANCE * giantScale;
 
 			if (IsCrawling(giant)) {
@@ -826,18 +826,26 @@ namespace Gts {
 								if (node) {
 									auto grabbedActor = Grab::GetHeldActor(giant);
 
+									float staminapercent = GetStaminaPercentage(giant);
+									bool ForceCrush = Runtime::HasPerkTeam(giant, "HugCrush_MightyCuddles");
+
+									bool CanHugCrush = (GetHealthPercentage(huggedActor) < GetHPThreshold(giant) 
+									|| (ForceCrush && staminapercent > 0.5) || HasSMT(giant));
+									
+
 									float correction = (18.0 / tinyScale) - 18.0;
 									NiPoint3 Position = node->world.translate;
 									Position.z -= correction;
+
 									if (grabbedActor && otherActor == grabbedActor) {
 										return;
 									} else if (!IsGtsBusy(giant) && difference >= 10.0) {
-										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush_All.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect
+										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush_All.nif", NiMatrix3(), Position, 2.8, 7, node); // Spawn effect
 									} else if (!IsGtsBusy(giant) && difference >= 8.0) {
-										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Grab.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect
-									} else if (huggedActor && GetHealthPercentage(huggedActor) < GetHPThreshold(giant)) {
-										if (otherActor == huggedActor && !IsHugCrushing) {
-											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Hug_Crush.nif", NiMatrix3(), Position, 3.0, 7, node); // Spawn effect
+										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Grab.nif", NiMatrix3(), Position, 2.8, 7, node); // Spawn effect
+									} else if (huggedActor) {
+										if (otherActor == huggedActor && !IsHugCrushing && CanHugCrush) {
+											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Hug_Crush.nif", NiMatrix3(), Position, 2.8, 7, node); // Spawn effect
 										}
 									}
 								}
@@ -848,6 +856,7 @@ namespace Gts {
 			}
 		}
 	}
+	
 
 	void update_target_scale(Actor* giant, float amt, SizeEffectType type) { // used to mod scale with perk bonuses taken into account
 		float OTE = 1.0;
@@ -2319,22 +2328,28 @@ namespace Gts {
 		typedef void (*DefApplyDamage)(Actor* a_this, float dmg, Actor* aggressor, HitData* maybe_hitdata, TESObjectREFR* damageSrc);
 		REL::Relocation<DefApplyDamage> Skyrim_ApplyDamage{ RELOCATION_ID(36345, 37335) }; // 5D6300 (SE)
 		Skyrim_ApplyDamage(tiny, damage, giant, nullptr, nullptr);
+
+		/*if (GetAV(tiny, ActorValue::kHealth) < GetHealthPercentage(tiny) * 0.60) {
+			Attacked(tiny, giant);
+		}*/
+		FormID Weapon = giant->GetEquippedObject(false)->formID;
 		if (event) {
-		auto* eventsource = ScriptEventSourceHolder::GetSingleton();
-		if (eventsource) {
-				auto event = TESHitEvent(tiny, giant, nullptr, nullptr, TESHitEvent::Flag::kNone);
+			auto* eventsource = ScriptEventSourceHolder::GetSingleton();
+			if (eventsource) {
+				auto event = TESHitEvent(tiny, giant, Weapon, FormID::None, TESHitEvent::Flag::kNone);
 				eventsource->SendEvent(&event);
 			}
 		}
+		
 	}
 
-  void ApplyDamage(Actor* giant, Actor* tiny, float damage) { // applies correct amount of damage and kills actors properly
-    ApplyDamage(giant, tiny, true);
-  }
+	void ApplyDamage(Actor* giant, Actor* tiny, float damage) { // applies correct amount of damage and kills actors properly
+		ApplyDamage(giant, tiny, true);
+	}
 
-  void ApplyDamageSilent(Actor* giant, Actor* tiny, float damage) { // applies correct amount of damage and kills actors properly
-    ApplyDamage(giant, tiny, false);
-  }
+	void ApplyDamageSilent(Actor* giant, Actor* tiny, float damage) { // applies correct amount of damage and kills actors properly
+		ApplyDamage(giant, tiny, false);
+	}
 
 	std::int16_t GetItemCount(InventoryChanges* changes, RE::TESBoundObject* a_obj)
 	{

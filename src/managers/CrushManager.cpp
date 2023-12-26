@@ -146,6 +146,7 @@ namespace Gts {
 				data.state = CrushState::Crushing;
 			} else if (data.state == CrushState::Crushing) {
 				if (data.delay.ShouldRun()) {
+					Attacked(tiny, giant);
 					data.state = CrushState::Crushed;
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						CompleteDragonQuest(tiny, false, tiny->IsDead());
