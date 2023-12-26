@@ -2336,7 +2336,7 @@ namespace Gts {
 		if (event) {
 			auto* eventsource = ScriptEventSourceHolder::GetSingleton();
 			if (eventsource) {
-				auto event = TESHitEvent(tiny, giant, Weapon, FormID::None, TESHitEvent::Flag::kNone);
+				auto event = TESHitEvent(tiny, giant, Weapon, -1, TESHitEvent::Flag::kNone);
 				eventsource->SendEvent(&event);
 			}
 		}
