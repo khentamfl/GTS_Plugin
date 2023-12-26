@@ -829,8 +829,11 @@ namespace Gts {
 									float staminapercent = GetStaminaPercentage(giant);
 									bool ForceCrush = Runtime::HasPerkTeam(giant, "HugCrush_MightyCuddles");
 
-									bool CanHugCrush = (GetHealthPercentage(huggedActor) < GetHPThreshold(giant) 
-									|| (ForceCrush && staminapercent > 0.5) || HasSMT(giant));
+									bool CanHugCrush = false;
+									if (huggedActor) {
+										CanHugCrush = (GetHealthPercentage(huggedActor) < GetHPThreshold(giant) 
+										|| (ForceCrush && staminapercent > 0.5) || HasSMT(giant));
+									}
 									
 
 									float correction = (18.0 / tinyScale) - 18.0;
