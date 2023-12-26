@@ -2322,25 +2322,16 @@ namespace Gts {
 		typedef void (*DefAttacked)(Actor* victim, Actor* agressor);
 		REL::Relocation<DefAttacked> SkyrimAttacked{ RELOCATION_ID(37672, 38626) };
 		SkyrimAttacked(victim, agressor);
-	}
+	}zz
 
 	void ApplyDamage(Actor* giant, Actor* tiny, float damage, bool event) { // applies correct amount of damage and kills actors properly
 		typedef void (*DefApplyDamage)(Actor* a_this, float dmg, Actor* aggressor, HitData* maybe_hitdata, TESObjectREFR* damageSrc);
 		REL::Relocation<DefApplyDamage> Skyrim_ApplyDamage{ RELOCATION_ID(36345, 37335) }; // 5D6300 (SE)
 		Skyrim_ApplyDamage(tiny, damage, giant, nullptr, nullptr);
 
-		/*if (GetAV(tiny, ActorValue::kHealth) < GetHealthPercentage(tiny) * 0.60) {
+		if (GetAV(tiny, ActorValue::kHealth) < GetHealthPercentage(tiny) * 0.60) {
 			Attacked(tiny, giant);
-		}*/
-		FormID Weapon = giant->GetEquippedObject(false)->formID;
-		if (event) {
-			auto* eventsource = ScriptEventSourceHolder::GetSingleton();
-			if (eventsource) {
-				auto event = TESHitEvent(tiny, giant, Weapon, -1, TESHitEvent::Flag::kNone);
-				eventsource->SendEvent(&event);
-			}
 		}
-		
 	}
 
 	void ApplyDamage(Actor* giant, Actor* tiny, float damage) { // applies correct amount of damage and kills actors properly
