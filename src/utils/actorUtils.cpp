@@ -2308,6 +2308,11 @@ namespace Gts {
 				Attacked(receiver, attacker);
 			}
 			ApplyDamage(attacker, receiver, value * GetDamageSetting());
+			auto* eventsource = ScriptEventSourceHolder::GetSingleton();
+			if (eventsource) {
+				auto event = TESHitEvent(tiny, giant, -1, -1, TESHitEvent::Flag::kNone);
+				eventsource->SendEvent(&event);
+			}
 		}
 	}
 
