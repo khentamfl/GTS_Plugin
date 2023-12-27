@@ -472,16 +472,31 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);
-								if (aveForce >= 0.00 && !otherActor->IsDead()) {
-									if (!strong) {
-										DoFootGrind_Left(actor, otherActor, SMT);
-										SetBeingGrinded(otherActor, true);
-										AnimationManager::StartAnim("GrindLeft", actor);
-									} else {
-										AnimationManager::StartAnim("TrampleStartL", actor);
-										DoFootTrample_Left(actor, otherActor, SMT);
+								ActorHandle giantHandle = actor->CreateRefHandle();
+								ActorHandle tinyHandle = otherActor->CreateRefHandle();
+								std::string taskname = std::format("GrindCheckL_{}_{}", actor->formID, otherActor->formID);
+								TaskManager::RunOnce(taskname, [=](auto& update){
+									if (!tinyHandle) {
+										return;
 									}
-								}
+									if (!giantHandle) {
+										return;
+									}
+									
+									auto giant = giantHandle.get().get();
+									auto tiny = tinyHandle.get().get();
+
+									if (aveForce >= 0.00 && !tiny->IsDead()) {
+										if (!strong) {
+											DoFootGrind_Left(giant, tiny, SMT);
+											SetBeingGrinded(tiny, true);
+											AnimationManager::StartAnim("GrindLeft", giant);
+										} else {
+											AnimationManager::StartAnim("TrampleStartL", giant);
+											DoFootTrample_Left(giant, tiny, SMT);
+										}
+									}
+								});
 							}
 						}
 					}
@@ -592,16 +607,31 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.00f, 0.70f);
-								if (aveForce >= 0.00 && !otherActor->IsDead()) {
-									if (!strong) {
-										DoFootGrind_Right(actor, otherActor, SMT);
-										SetBeingGrinded(otherActor, true);
-										AnimationManager::StartAnim("GrindRight", actor);
-									} else {
-										AnimationManager::StartAnim("TrampleStartR", actor); // Do Trample instead
-										DoFootTrample_Right(actor, otherActor, SMT);
+								ActorHandle giantHandle = actor->CreateRefHandle();
+								ActorHandle tinyHandle = otherActor->CreateRefHandle();
+								std::string taskname = std::format("GrindCheckR_{}_{}", actor->formID, otherActor->formID);
+								TaskManager::RunOnce(taskname, [=](auto& update){
+									if (!tinyHandle) {
+										return;
 									}
-								}
+									if (!giantHandle) {
+										return;
+									}
+									
+									auto giant = giantHandle.get().get();
+									auto tiny = tinyHandle.get().get();
+
+									if (aveForce >= 0.00 && !tiny->IsDead()) {
+										if (!strong) {
+											DoFootGrind_Right(giant, tiny, SMT);
+											SetBeingGrinded(tiny, true);
+											AnimationManager::StartAnim("GrindRight", giant);
+										} else {
+											AnimationManager::StartAnim("TrampleStartR", giant);
+											DoFootTrample_Right(giant, tiny, SMT);
+										}
+									}
+								});
 							}
 						}
 					}
