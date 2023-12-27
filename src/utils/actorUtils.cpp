@@ -781,7 +781,7 @@ namespace Gts {
 			bool IsHugCrushing;
 			giant->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
 
-			const float BASE_DISTANCE = 180.0;
+			const float BASE_DISTANCE = 100.0;
 			float CheckDistance = BASE_DISTANCE * giantScale;
 
 			if (IsCrawling(giant)) {
@@ -832,17 +832,19 @@ namespace Gts {
 
 									if (grabbedActor && otherActor == grabbedActor) {
 										return;
+									} else if (IsEssential(otherActor)) {
+										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Essential.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn Essential
 									} else if (!IsGtsBusy(giant) && difference >= 10.0) {
-										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush_All.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn effect
+										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush_All.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn 'can be crushed'
 									} else if (!IsGtsBusy(giant) && difference >= 8.0) {
-										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Grab.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn effect
+										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Grab.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn 'Can be grabbed/vored'
 									} else if (huggedActor) {
 										bool LowHealth = (GetHealthPercentage(huggedActor) < GetHPThreshold(giant));
 										bool ForceCrush = Runtime::HasPerkTeam(giant, "HugCrush_MightyCuddles");
 										float Stamina = GetStaminaPercentage(giant);
 										if (otherActor == huggedActor && !IsHugCrushing) {
 											if (HasSMT(giant) || LowHealth || (ForceCrush && Stamina > 0.50)) {
-												SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Hug_Crush.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn effect
+												SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Hug_Crush.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn 'can be hug crushed'
 											}
 										}
 									}
@@ -1956,6 +1958,13 @@ namespace Gts {
 	float GetXpBonus() {
 		float xp = Persistent::GetSingleton().experience_mult;
 		return xp;
+	}
+
+	float GetAttributePower() {
+		float normal = 0.20;
+		float level = std::clamp(GetGtsSkillLevel() * 0.008, 80.0f, 0.0f);
+		log::info("total boost: {}", normal + level);
+		return normal + level;
 	}
 
 	void AddSMTDuration(Actor* actor, float duration) {

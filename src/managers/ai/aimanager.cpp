@@ -252,6 +252,8 @@ namespace {
 			DoHugs(actor);
 			return;
 		}
+
+		// Random Vore is managed inside Vore.cpp, RandomVoreAttempt(Actor* pred) function
 	}
 }
 
