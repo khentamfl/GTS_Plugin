@@ -1962,7 +1962,7 @@ namespace Gts {
 
 	float GetAttributePower() {
 		float normal = 0.20;
-		float level = std::clamp(GetGtsSkillLevel() * 0.008, 80.0f, 0.0f);
+		float level = std::clamp(GetGtsSkillLevel() * 0.008f, 80.0f, 0.0f);
 		log::info("total boost: {}", normal + level);
 		return normal + level;
 	}
