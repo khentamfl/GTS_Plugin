@@ -30,7 +30,10 @@ namespace Gts {
 		if (!tiny) {
 			return false;
 		}
-
+		auto charcont = tiny->GetCharController();
+		if (charcont) {
+			charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actors won't fall down.
+		}
 		tiny->SetPosition(point, true);
 		return true;
 	}

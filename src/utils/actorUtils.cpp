@@ -2307,7 +2307,7 @@ namespace Gts {
 			if (GetHealthPercentage(receiver) < 0.60) {
 				Attacked(receiver, attacker);
 			}
-			float difficulty = 3.0; // taking Legendary Difficulty as a base
+			float difficulty = 2.0; // taking Legendary Difficulty as a base
 			ApplyDamage(attacker, receiver, value * difficulty * GetDamageSetting());
 		}
 	}
