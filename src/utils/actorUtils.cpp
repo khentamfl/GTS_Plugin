@@ -1942,6 +1942,7 @@ namespace Gts {
 				log::info("Allow: {}", IsScared);
 				if (!IsScared) {
 					auto combat = tiny->GetActorRuntimeData().combatController;
+					SizeManager::GetSingleton().GetDamageData(tiny).lastScareTime = Time::WorldTimeElapsed();
 					if (!combat) {
 						return;
 					}
@@ -1952,7 +1953,7 @@ namespace Gts {
 							auto GiantRef = skyrim_cast<TESObjectREFR*>(giant);
 							if (GiantRef) {
 								log::info("Scared {}", tiny->GetDisplayFullName());
-								tiny->InitiateFlee(GiantRef, true, true, true, cell, TinyRef, 400.0, 465.0 * sizedifference);
+								tiny->InitiateFlee(nullptr, true, true, true, nullptr, nullptr, 400.0, 465.0 * sizedifference);
 							}
 						}
 					}
