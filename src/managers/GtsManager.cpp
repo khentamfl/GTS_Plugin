@@ -58,6 +58,17 @@ namespace {
 		}
 	}
 
+	void Experiment(Actor* actor) {
+		if (actor->formID == 0x14) {
+			auto charCont = actor->GetCharController();
+			if (charCont) {
+				float lod = charCont->lodDistance;
+				float force = charCont->bumpedForce;
+				log::info("Lod: {}, bumpedForce: {}", lod, force);
+			}
+		}
+	}
+
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		auto profiler = Profilers::Profile("Manager: update_height");
 		if (!actor) {
@@ -265,6 +276,7 @@ void GtsManager::Update() {
 		}
 
 		FixActorFade(actor);
+		Experiment(actor);
 
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
