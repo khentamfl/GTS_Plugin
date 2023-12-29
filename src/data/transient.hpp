@@ -39,6 +39,7 @@ namespace Gts {
 		bool WasReanimated;
 		bool FPCrawling;
 		bool FPProning;
+		bool Overkilled;
 
 		float Immunity;
 

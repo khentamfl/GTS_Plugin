@@ -7,7 +7,6 @@ using namespace RE;
 
 namespace Gts
 {
-
 	class HitManager : public EventListener
 	{
 		public:

@@ -74,6 +74,7 @@ namespace Gts {
 			bool WasReanimated = false;
 			bool FPCrawling = false;
 			bool FPProning = false;
+			bool Overkilled = true;
 
 			float Immunity = 1.0;
 
@@ -123,6 +124,7 @@ namespace Gts {
 			result.WasReanimated = WasReanimated;
 			result.FPCrawling = FPCrawling;
 			result.FPProning = FPProning;
+			result.Overkilled = Overkilled;
 
 			result.Immunity = Immunity;
 

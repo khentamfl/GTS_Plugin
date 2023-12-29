@@ -1,5 +1,5 @@
 #pragma once
-// Module that handles footsteps
+// Module that handles crushing others
 #include "events.hpp"
 #include "timer.hpp"
 

@@ -30,6 +30,23 @@ namespace {
 		float power = soft_power(sizeRatio, push);
 		return power;
 	}
+
+	bool WasOverkilled(Actor* tiny) {
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient) {
+			return transient->Overkilled;
+		}
+		return false;
+	}
+
+	void SetOverkilled(Actor* tiny) {
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient) {
+			if (!transient->Overkilled) {
+				transient->Overkilled = true;
+			}
+		}
+	}
 }
 
 namespace Gts {
@@ -115,9 +132,14 @@ namespace Gts {
 		return;
 	}
 	void HitManager::Overkill(Actor* receiver, Actor* attacker) {
+		if (WasOverkilled(tiny)) {
+			return;
+		}
 		if (!receiver->IsDead()) {
 			KillActor(attacker, receiver);
 		}
+
+		SetOverkilled(receiver);
 
 		ActorHandle giantHandle = attacker->CreateRefHandle();
 		ActorHandle tinyHandle = receiver->CreateRefHandle();

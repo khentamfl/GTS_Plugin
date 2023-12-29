@@ -1,5 +1,5 @@
 #pragma once
-// Module that handles footsteps
+// Module that handles shrinking to nothing
 #include "events.hpp"
 #include "timer.hpp"
 
