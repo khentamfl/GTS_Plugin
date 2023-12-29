@@ -121,7 +121,7 @@ namespace {
 		float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(receiver)/100;
 		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(receiver)/100;
 		float SizeDifference = get_visual_scale(receiver)/get_visual_scale(attacker);
-		float DamageReduction = std::clamp(AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth), 0.0001f, 1.0f); // disallow going > than 1
+		float DamageReduction = std::clamp(AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth), 0.25f, 1.0f); // disallow going > than 1
 		float Dragon = 1.0 * GetScaleAdjustment(attacker);
 
 		float resistance = 1.0;
@@ -135,7 +135,7 @@ namespace {
 		damage *= DamageReduction;
 
 		if (receiver->formID == 0x14 && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0) { // if has perk
-			float GrowthValue = std::clamp((-damage/500) * SizeHunger * Gigantism, 0.0f, 0.25f * Gigantism);
+			float GrowthValue = std::clamp((-damage/2000) * SizeHunger * Gigantism, 0.0f, 0.25f * Gigantism);
 			log::info("Growth Value: {}", GrowthValue);
 			update_target_scale(receiver, GrowthValue, SizeEffectType::kShrink);
 			DoHitShake(receiver, GrowthValue * 10);

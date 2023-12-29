@@ -234,12 +234,12 @@ namespace Gts {
 		if (!FingerA) {
 			return false;
 		}
-		auto FingerB = find_node(giant, "NPC L Finger21 [LF21]");
+		auto FingerB = find_node(giant, "NPC L Finger30 [LF30]");
 		if (!FingerB) {
 			return false;
 		}
 		NiPoint3 coords = (FingerA->world.translate + FingerB->world.translate) / 2.0;
-		coords.z -= 6.0;
+		coords.z -= 3.0;
 		return AttachTo(anyGiant, anyTiny, coords);
 	}
 
