@@ -74,7 +74,7 @@ namespace Gts {
 			bool WasReanimated = false;
 			bool FPCrawling = false;
 			bool FPProning = false;
-			bool Overkilled = true;
+			bool Overkilled = false;
 
 			float Immunity = 1.0;
 
