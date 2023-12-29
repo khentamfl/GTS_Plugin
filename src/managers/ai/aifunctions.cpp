@@ -126,7 +126,7 @@ namespace Gts {
 				float GiantScale = get_visual_scale(giant);
 				float TinyScale = get_visual_scale(tiny);
 				float sizedifference = std::clamp(GiantScale/TinyScale, 0.10f, 12.0f);
-				float distancecheck = 164.0 * GetMovementModifier(giant);
+				float distancecheck = 128.0 * GetMovementModifier(giant);
 				float threshold = GetScareThreshold(giant);
 				if (sizedifference >= threshold) {
 					NiPoint3 GiantDist = giant->GetPosition();

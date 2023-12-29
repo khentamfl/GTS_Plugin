@@ -226,7 +226,21 @@ namespace Gts {
 
 	template<typename T, typename U>
 	bool AttachToHand(T& anyGiant, U& anyTiny) {
-		return AttachTo(anyGiant, anyTiny, "NPC L Finger02 [LF02]");
+		Actor* giant = GetActorPtr(anyGiant);
+		if (!giant) {
+			return false;
+		}
+		auto FingerA = find_node(giant, "NPC L Finger02 [LF02]");
+		if (!FingerA) {
+			return false;
+		}
+		auto FingerB = find_node(giant, "NPC L Finger21 [LF21]");
+		if (!FingerB) {
+			return false;
+		}
+		NiPoint3 coords = (FingerA->world.translate + FingerB->world.translate) / 2.0;
+		Coords.z -= 6.0;
+		return AttachTo(anyGiant, anyTiny, coords);
 	}
 
 	template<typename T, typename U>
