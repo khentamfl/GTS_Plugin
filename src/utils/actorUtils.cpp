@@ -1931,6 +1931,32 @@ namespace Gts {
 		}
 	}
 
+	void ChanceToScare(Actor* giant, Actor* tiny) {
+		float sizedifference = GetSizeDifference(giant, tiny);
+		if (sizedifference > 1.6) {
+			int rng = rand() % 1600;
+			rng /= sizedifference;
+			if (rng <= 1.0 * sizedifference) {
+				log::info("Trying to scare {}", tiny->GetDisplayFullName());
+				bool allow = SizeManager::GetSingleton().CanBeScared(tiny);
+				if (allow) {
+					auto combat = tiny->GetActorRuntimeData().combatController;
+					if (!combat) {
+						return;
+					}
+					auto cell = tiny->GetParentCell();
+					if (cell) {
+						auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
+						if (TinyRef) {
+							log::info("Scared {}", tiny->GetDisplayFullName());
+							tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 265.0 * sizedifference);
+						}
+					}
+				}
+			}
+		}
+	}
+
 	void StaggerActor(Actor* receiver) {
 		receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f);
 		receiver->NotifyAnimationGraph("staggerStart");
