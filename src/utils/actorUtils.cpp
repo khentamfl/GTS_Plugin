@@ -1943,7 +1943,6 @@ namespace Gts {
 				if (!IsScared) {
 					auto combat = tiny->GetActorRuntimeData().combatController;
 					if (!combat) {
-						log::info("No combat, returning");
 						return;
 					}
 					auto cell = tiny->GetParentCell();
@@ -1953,7 +1952,7 @@ namespace Gts {
 							auto GiantRef = skyrim_cast<TESObjectREFR*>(giant);
 							if (GiantRef) {
 								log::info("Scared {}", tiny->GetDisplayFullName());
-								tiny->InitiateFlee(TinyRef, true, true, true, cell, GiantRef, 200.0, 265.0 * sizedifference);
+								tiny->InitiateFlee(TinyRef, false, true, false, cell, GiantRef, 200.0, 265.0 * sizedifference);
 							}
 						}
 					}
