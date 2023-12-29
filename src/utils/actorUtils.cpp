@@ -1939,9 +1939,11 @@ namespace Gts {
 			if (rng <= 1.0 * sizedifference) {
 				log::info("Trying to scare {}", tiny->GetDisplayFullName());
 				bool allow = SizeManager::GetSingleton().CanBeScared(tiny);
+				log::info("Allow: {}", allow);
 				if (allow) {
 					auto combat = tiny->GetActorRuntimeData().combatController;
 					if (!combat) {
+						log::info("No combat, returning");
 						return;
 					}
 					auto cell = tiny->GetParentCell();
