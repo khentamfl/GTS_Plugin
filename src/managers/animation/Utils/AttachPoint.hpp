@@ -272,6 +272,8 @@ namespace Gts {
 		for (auto bone_name: bone_names) {
 			auto bone = find_node(giant, bone_name);
 			if (!bone) {
+				Notify("Error: Breast Nodes could not be found.");
+				Notify("Suggestion: install XP32 skeleton.");
 				return false;
 			}
 			targetB += (bone->world * NiPoint3()) * (1.0/bone_count);

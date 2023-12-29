@@ -222,6 +222,7 @@ namespace Gts {
 		ModSizeExperience(0.52 * scale_factor * target_scale, to);
 		update_target_scale(from, -amount, SizeEffectType::kShrink);
 		update_target_scale(to, amount*effeciency/10, SizeEffectType::kGrow); // < 10 times weaker size steal towards caster. Absorb exclusive.
+		ChanceToScare(to, from);
 	}
 
 	inline void Transfer(Actor* from, Actor* to, float scale_factor, float bonus) {
@@ -279,6 +280,8 @@ namespace Gts {
 
 		float alteration_level_bonus = 0.0380 + (GtsSkillLevel * 0.000360); // + 100% bonus at level 100
 		Steal(target, caster, power, power * alteration_level_bonus, transfer_effeciency, source);
+
+		ChanceToScare(caster, target);
 	}
 
 	inline bool ShrinkToNothing(Actor* caster, Actor* target) {
@@ -364,5 +367,31 @@ namespace Gts {
 
 	inline void CastTrackSize(Actor* caster, Actor* target) {
 		Runtime::CastSpell(caster, target, "TrackSizeSpell");
+	}
+
+	inline void ChanceToScare(Actor* giant, Actor* tiny) {
+		float sizedifference = GetSizeDifference(giant, tiny);
+		if (sizedifference > 1.6) {
+			int rng = rand() % 1600;
+			rng /= sizedifference;
+			if (rng <= 1.0 * sizedifference) {
+				log::info("Trying to scare {}", tiny->GetDisplayFullName());
+				bool allow = SizeManager::GetSingleton().CanBeScared(tiny);
+				if (allow) {
+					auto combat = tiny->GetActorRuntimeData().combatController;
+					if (!combat) {
+						return;
+					}
+					auto cell = tiny->GetParentCell();
+					if (cell) {
+						auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
+						if (TinyRef) {
+							log::info("Scared {}", tiny->GetDisplayFullName());
+							tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 265.0 * sizedifference);
+						}
+					}
+				}
+			}
+		}
 	}
 }

@@ -39,12 +39,13 @@ namespace Gts {
 	};
 
 	struct LaunchData {
-		double lastLaunchTime = -1.0e8; //
+		double lastLaunchTime = -1.0e8; 
 	};
 
 	struct DamageData {
-		double lastDamageTime = -1.0e8; //
+		double lastDamageTime = -1.0e8;
 		double lastHandDamageTime = -1.0e8;
+		double lastScareTime = -1.0e8;
 	};
 
 	class SizeManager : public EventListener {
@@ -93,6 +94,7 @@ namespace Gts {
 			static bool IsLaunching(Actor* actor);
 			static bool IsDamaging(Actor* actor);
 			static bool IsHandDamaging(Actor* actor);
+			static bool CanBeScared(Actor* actor);
 
 			bool GetPreciseDamage();
 

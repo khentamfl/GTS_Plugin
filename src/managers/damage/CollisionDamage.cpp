@@ -96,9 +96,15 @@ namespace {
 				float caster_scale = get_visual_scale(Caster);
 				float target_scale = get_visual_scale(Target);
 				float Multiplier = (caster_scale/target_scale);
+				float reduction = AttributeManager::GetSingleton().GetAttributeBonus(Caster, ActorValue::kHealth);
 				float CasterHp = Caster->AsActorValueOwner()->GetActorValue(ActorValue::kHealth);
 				float TargetHp = Target->AsActorValueOwner()->GetActorValue(ActorValue::kHealth);
-				if (CasterHp >= (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
+
+				if (CasterHp <= 0) {
+					return; // just in case, to avoid CTD
+				}
+
+				if (CasterHp/reduction >= (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
 					CrushManager::Crush(Caster, Target);
 					CrushBonuses(Caster, Target);
 
