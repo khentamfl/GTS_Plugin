@@ -1952,7 +1952,7 @@ namespace Gts {
 							auto GiantRef = skyrim_cast<TESObjectREFR*>(giant);
 							if (GiantRef) {
 								log::info("Scared {}", tiny->GetDisplayFullName());
-								tiny->InitiateFlee(TinyRef, false, true, false, cell, GiantRef, 200.0, 265.0 * sizedifference);
+								tiny->InitiateFlee(GiantRef, true, true, true, cell, TinyRef, 400.0, 465.0 * sizedifference);
 							}
 						}
 					}
