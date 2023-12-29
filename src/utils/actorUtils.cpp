@@ -1933,14 +1933,14 @@ namespace Gts {
 
 	void ChanceToScare(Actor* giant, Actor* tiny) {
 		float sizedifference = GetSizeDifference(giant, tiny);
-		if (sizedifference > 1.6) {
+		if (sizedifference > 1.6 && !tiny->IsDead()) {
 			int rng = rand() % 1600;
 			rng /= sizedifference;
 			if (rng <= 1.0 * sizedifference) {
 				log::info("Trying to scare {}", tiny->GetDisplayFullName());
-				bool allow = SizeManager::GetSingleton().CanBeScared(tiny);
+				bool allow = SizeManager::GetSingleton().IsBeingScared(tiny);
 				log::info("Allow: {}", allow);
-				if (allow) {
+				if (!allow) {
 					auto combat = tiny->GetActorRuntimeData().combatController;
 					if (!combat) {
 						log::info("No combat, returning");

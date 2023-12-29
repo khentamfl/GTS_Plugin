@@ -94,7 +94,7 @@ namespace Gts {
 			static bool IsLaunching(Actor* actor);
 			static bool IsDamaging(Actor* actor);
 			static bool IsHandDamaging(Actor* actor);
-			static bool CanBeScared(Actor* actor);
+			static bool IsBeingScared(Actor* actor);
 
 			bool GetPreciseDamage();
 

@@ -463,7 +463,7 @@ namespace Gts {
 		return Time::WorldTimeElapsed() <= (SizeManager::GetSingleton().GetDamageData(actor).lastHandDamageTime + HANDDAMAGE_COOLDOWN);
 	}
 
-	bool SizeManager::CanBeScared(Actor* actor) {
+	bool SizeManager::IsBeingScared(Actor* actor) {
 		return Time::WorldTimeElapsed() <= (SizeManager::GetSingleton().GetDamageData(actor).lastScareTime + SCARE_COOLDOWN);
 	}
 
