@@ -8,6 +8,7 @@
 #include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
 #include "data/persistent.hpp"
+#include "data/transient.hpp"
 #include "utils/looting.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
@@ -132,7 +133,7 @@ namespace Gts {
 		return;
 	}
 	void HitManager::Overkill(Actor* receiver, Actor* attacker) {
-		if (WasOverkilled(tiny)) {
+		if (WasOverkilled(receiver)) {
 			return;
 		}
 		if (!receiver->IsDead()) {
