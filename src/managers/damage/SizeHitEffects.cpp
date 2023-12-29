@@ -135,7 +135,8 @@ namespace {
 		damage *= DamageReduction;
 
 		if (receiver->formID == 0x14 && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0) { // if has perk
-			float GrowthValue = std::clamp((-damage/3500) * SizeHunger * Gigantism, 0.0f, 0.25f * Gigantism);
+			float GrowthValue = std::clamp((-damage/500) * SizeHunger * Gigantism, 0.0f, 0.25f * Gigantism);
+			log::info("Growth Value: {}", GrowthValue);
 			update_target_scale(receiver, GrowthValue, SizeEffectType::kShrink);
 			DoHitShake(receiver, GrowthValue * 10);
 			if (soundtimer.ShouldRunFrame()) {
@@ -156,6 +157,8 @@ namespace {
 			if (scale > naturalscale) {
 				float sizebonus = std::clamp(get_visual_scale(attacker), 0.10f, 1.0f);
 				float ShrinkValue = std::clamp(((-damage/850)/SizeHunger/Gigantism * sizebonus) * resistance, 0.0f, 0.25f / Gigantism); // affect limit by decreasing it
+
+				log::info("Shrink Value: {}", ShrinkValue);
 
 				if (scale < naturalscale) {
 					set_target_scale(receiver, naturalscale); // reset to normal scale

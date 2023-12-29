@@ -239,7 +239,7 @@ namespace Gts {
 			return false;
 		}
 		NiPoint3 coords = (FingerA->world.translate + FingerB->world.translate) / 2.0;
-		Coords.z -= 6.0;
+		coords.z -= 6.0;
 		return AttachTo(anyGiant, anyTiny, coords);
 	}
 
