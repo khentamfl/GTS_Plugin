@@ -178,20 +178,20 @@ namespace Hooks
 		static FunctionHook<void(Actor* a_this, float dmg, Actor* aggressor, uintptr_t maybe_hitdata, TESObjectREFR* damageSrc)> SkyrimTakeDamage(
 			RELOCATION_ID(36345, 37335),
 			[](auto* a_this, auto dmg, auto* aggressor, uintptr_t maybe_hitdata, auto* damageSrc) { // Universal damage function before Difficulty damage
-				log::info("Someone taking damage");
-				log::info("{}: Taking {} damage", a_this->GetDisplayFullName(), dmg);
+				//log::info("Someone taking damage");
+				//log::info("{}: Taking {} damage", a_this->GetDisplayFullName(), dmg);
 
 				if (aggressor) { // apply to hits only, We don't want to decrease fall damage for example
 					if (aggressor != a_this) {
-						log::info("Found Aggressor");
-						log::info("Aggressor: {}", aggressor->GetDisplayFullName());
+						//log::info("Found Aggressor");
+						//log::info("Aggressor: {}", aggressor->GetDisplayFullName());
 						dmg *= GetTotalDamageResistance(a_this, aggressor);
 						dmg *= HealthGate(a_this, dmg);
 
 
 						DoOverkill(aggressor, a_this, dmg);
 
-						log::info("Changing damage to: {}", dmg);
+						//log::info("Changing damage to: {}", dmg);
 					}
 				}
 

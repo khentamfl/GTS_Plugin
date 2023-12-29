@@ -1938,9 +1938,9 @@ namespace Gts {
 			rng /= sizedifference;
 			if (rng <= 1.0 * sizedifference) {
 				log::info("Trying to scare {}", tiny->GetDisplayFullName());
-				bool allow = SizeManager::GetSingleton().IsBeingScared(tiny);
-				log::info("Allow: {}", allow);
-				if (!allow) {
+				bool IsScared = SizeManager::GetSingleton().IsBeingScared(tiny);
+				log::info("Allow: {}", IsScared);
+				if (!IsScared) {
 					auto combat = tiny->GetActorRuntimeData().combatController;
 					if (!combat) {
 						log::info("No combat, returning");
@@ -1950,8 +1950,11 @@ namespace Gts {
 					if (cell) {
 						auto TinyRef = skyrim_cast<TESObjectREFR*>(tiny);
 						if (TinyRef) {
-							log::info("Scared {}", tiny->GetDisplayFullName());
-							tiny->InitiateFlee(TinyRef, true, true, true, cell, TinyRef, 100.0, 265.0 * sizedifference);
+							auto GiantRef = skyrim_cast<TESObjectREFR*>(giant);
+							if (GiantRef) {
+								log::info("Scared {}", tiny->GetDisplayFullName());
+								tiny->InitiateFlee(TinyRef, true, true, true, cell, GiantRef, 200.0, 265.0 * sizedifference);
+							}
 						}
 					}
 				}
