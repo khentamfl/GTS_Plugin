@@ -35,6 +35,7 @@ namespace {
 	bool WasOverkilled(Actor* tiny) {
 		auto transient = Transient::GetSingleton().GetData(tiny);
 		if (transient) {
+			log::info("Overkilled: {}", transient->Overkilled);
 			return transient->Overkilled;
 		}
 		return false;

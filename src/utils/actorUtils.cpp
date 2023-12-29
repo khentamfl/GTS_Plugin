@@ -781,7 +781,7 @@ namespace Gts {
 			bool IsHugCrushing;
 			giant->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
 
-			const float BASE_DISTANCE = 100.0;
+			const float BASE_DISTANCE = 124.0;
 			float CheckDistance = BASE_DISTANCE * giantScale;
 
 			if (IsCrawling(giant)) {

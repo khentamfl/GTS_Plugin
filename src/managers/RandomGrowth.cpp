@@ -19,7 +19,7 @@ namespace {
 		if (IsTeammate(actor)) {
 			MultiplySlider = Runtime::GetFloat("RandomGrowthMultiplyNPC");
 		}
-		if (!Runtime::HasPerkTeam(actor, "RandomGrowth") || MultiplySlider == 0 || !IsFemale(actor)) {
+		if (!Runtime::HasPerkTeam(actor, "RandomGrowth") || MultiplySlider <= 0.0 || !IsFemale(actor)) {
 			return false;
 		}
 
@@ -30,11 +30,11 @@ namespace {
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0) {
 			MultiplySlider = 1.0; // Disable effect in Balance Mode, so slider is always 1.0
 		}
-		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
+		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(actor)*0.01;
 		int Requirement = ((500 * MultiplySlider * SizeManager::GetSingleton().BalancedMode()) / Gigantism); // Doubles random in Balance Mode
 		int random = rand() % Requirement;
-		int decide_chance = 1;
-		if (random <= decide_chance) {
+		int chance = 1;
+		if (random <= chance) {
 			return true;
 		} else {
 			return false;
