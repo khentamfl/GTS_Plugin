@@ -1606,14 +1606,15 @@ namespace Gts {
 		PushActorAway(giantref, tinyref, 1);
 		// Do this next frame (or rather until some world time has elapsed)
 		TaskManager::Run([=](auto& update){
+			if (!gianthandle) {
+				return false;
+			}
+			if (!tinyHandle) {
+				return false;
+			}
 			Actor* giant = gianthandle.get().get();
 			Actor* tiny = tinyHandle.get().get();
-			if (!giant) {
-				return false;
-			}
-			if (!tiny) {
-				return false;
-			}
+			
 
 			NiPoint3 endCoords = bone->world.translate;
 			double endTime = Time::WorldTimeElapsed();
@@ -1662,14 +1663,15 @@ namespace Gts {
 		std::string taskname = std::format("PushOther {}", tinyref->formID);
 		PushActorAway(giantref, tinyref, 1);
 		TaskManager::Run(taskname, [=](auto& update) {
+			if (!gianthandle) {
+				return false;
+			}
+			if (!tinyHandle) {
+				return false;
+			}
 			Actor* giant = gianthandle.get().get();
 			Actor* tiny = tinyHandle.get().get();
-			if (!giant) {
-				return false;
-			}
-			if (!tiny) {
-				return false;
-			}
+			
 
 			auto playerRotation = giant->GetCurrent3D()->world.rotate;
 			RE::NiPoint3 localForwardVector{ 0.f, 1.f, 0.f };

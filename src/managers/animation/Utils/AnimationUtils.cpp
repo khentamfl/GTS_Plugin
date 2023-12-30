@@ -114,11 +114,12 @@ namespace Gts {
 		}
 		std::string name = std::format("StaminaDrain_{}_{}", TaskName, giant->formID);
 		if (decide) {
+			ActorHandle GiantHandle = giant->CreateRefHandle();
 			TaskManager::Run(name, [=](auto& progressData) {
-				ActorHandle casterhandle = giant->CreateRefHandle();
-				if (!casterhandle) {
+				if (!GiantHandle) {
 					return false;
 				}
+				auto GiantRef = GiantHandle.get().get();
 				float stamina = GetAV(giant, ActorValue::kStamina);
 				if (stamina <= 1.0) {
 					return false; // Abort if we don't have stamina so it won't drain it forever. Just to make sure.

@@ -40,6 +40,9 @@ namespace {
 	void RunScaleTask(ObjectRefHandle dropboxHandle, Actor* actor, const float Start, const float Scale, const bool soul, const NiPoint3 TotalPos) {
 		std::string taskname = std::format("Dropbox {}", actor->formID); // create task name for main task
 		TaskManager::RunFor(taskname, 16, [=](auto& progressData) { // Spawn loot piles
+			if (!dropboxHandle) {
+				return false;
+			}
 			float Finish = Time::WorldTimeElapsed();
 			auto dropboxPtr = dropboxHandle.get().get();
 			if (!dropboxPtr->Is3DLoaded()) {
@@ -80,6 +83,9 @@ namespace {
 	void RunAudioTask(ObjectRefHandle dropboxHandle, Actor* actor) {
 		std::string taskname_sound = std::format("DropboxAudio {}", actor->formID);
 		TaskManager::RunFor(taskname_sound, 6, [=](auto& progressData) {
+			if (!dropboxHandle) {
+				return false;
+			}
 			auto dropboxPtr = dropboxHandle.get().get();
 			if (!dropboxPtr->Is3DLoaded()) {
 				return true; // retry
