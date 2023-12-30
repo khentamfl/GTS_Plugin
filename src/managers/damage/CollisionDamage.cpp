@@ -503,10 +503,8 @@ namespace Gts {
 			GetAV(tiny, ActorValue::kHealth) <= 1.0 ||
 			tiny->IsDead()
 		);
-		log::info("{} ShouldBeCrushed: {}", tiny->GetDisplayFullName(), ShouldBeCrushed);
 		if (ShouldBeCrushed) {
-			//Attacked(tiny, giant);
-			if (multiplier >= 8.0 * crushmult) {
+			if (multiplier > 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
 					if (!tiny->IsDead()) {
 						if (IsGiant(tiny)) {
@@ -517,7 +515,6 @@ namespace Gts {
 					}
 					SetReanimatedState(tiny);
 
-					
 					CrushBonuses(giant, tiny);
 					PrintDeathSource(giant, tiny, Cause);
 					if (!LessGore()) {

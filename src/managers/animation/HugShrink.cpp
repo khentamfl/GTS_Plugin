@@ -76,40 +76,6 @@ namespace {
 		}
 	}
 
-	NiPoint3 GetHeartPosition(Actor* giant, Actor* tiny) {
-
-		float scaleFactor = get_visual_scale(tiny) / get_visual_scale(giant);
-
-		NiPoint3 TargetA = NiPoint3();
-		NiPoint3 TargetB = NiPoint3();
-		std::vector<std::string_view> bone_names = {
-			"L Breast03",
-			"R Breast03"
-		};
-		std::uint32_t bone_count = bone_names.size();
-		for (auto bone_name_A: bone_names) {
-			auto bone = find_node(giant, bone_name_A);
-			if (!bone) {
-				Notify("Error: Breast Nodes could not be found.");
-				Notify("Suggestion: install XP32 skeleton.");
-				return NiPoint3();
-			}
-			TargetA += (bone->world.translate) * (1.0/bone_count);
-		}
-		for (auto bone_name_B: bone_names) {
-			auto bone = find_node(giant, bone_name_B);
-			if (!bone) {
-				Notify("Error: Breast Nodes could not be found.");
-				Notify("Suggestion: install XP32 skeleton.");
-				return NiPoint3();
-			}
-			TargetB += (bone->world.translate) * (1.0/bone_count);
-		}
-
-		auto targetPoint = (TargetA + TargetB) / 2;
-		return targetPoint;
-	}
-
 	bool Hugs_RestoreHealth(Actor* giantref, Actor* tinyref, float steal) {
 		static Timer HeartTimer = Timer(0.5);
 		float hp = GetAV(tinyref, ActorValue::kHealth);

@@ -226,12 +226,6 @@ namespace Gts {
 			}
 			SizeManager::GetSingleton().ModSizeVulnerability(tiny, 0.05);
 			InflictSizeDamage(giant, tiny, damage);
-			float Health = GetAV(tiny, ActorValue::kHealth);
-			float sizedifference = get_visual_scale(giant)/get_visual_scale(tiny);
-
-			if (damage >= Health && sizedifference >= 8.0) {
-				CrushManager::Crush(giant, tiny);
-			}
 		}
 	}
 }
