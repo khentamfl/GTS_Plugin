@@ -43,12 +43,16 @@ namespace Gts {
 				continue;
 			}
 
+			log::info("Starting STN");
+
 			if (data.state == ShrinkState::Healthy) {
 				SetReanimatedState(tiny);
 				data.state = ShrinkState::Shrinking;
+				log::info("Set state to shrinking");
 			} else if (data.state == ShrinkState::Shrinking) {
 				if (data.delay.ShouldRun()) {
 					Attacked(tiny, giant);
+					log::info("State is shrinking");
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						CompleteDragonQuest(tiny, false, tiny->IsDead());
 					}
@@ -58,6 +62,7 @@ namespace Gts {
 					// Fully shrunk
 					ModSizeExperience(0.24, giant); // Adjust Size Matter skill
 					KillActor(giant, tiny);
+					log::info("Killed Actor");
 
 					if (!IsLiving(tiny)) {
 						SpawnDustParticle(tiny, tiny, "NPC Root [Root]", 3.6);
@@ -91,6 +96,8 @@ namespace Gts {
 					ActorHandle tinyHandle = tiny->CreateRefHandle();
 					std::string taskname = std::format("STN {}", tiny->formID);
 
+					log::info("Creating transfer task");
+
 					TaskManager::RunOnce(taskname, [=](auto& update){
 						if (!tinyHandle) {
 							return;
@@ -102,19 +109,22 @@ namespace Gts {
 						auto tiny = tinyHandle.get().get();
 						float scale = get_visual_scale(tiny);
 						TransferInventory(tiny, giant, scale, false, true, DamageSource::Crushed, true);
+						log::info("Transfer task succeeded");
 						// Actor reset is done within TransferInventory
 					});
 					if (tiny->formID != 0x14) {
 						Disintegrate(tiny, true); // Set critical stage 4 on actors
-					} else if (tiny->formID == 0x14) {
+						log::info("SetCritStage 4");
+					} else {
 						TriggerScreenBlood(50);
 						tiny->SetAlpha(0.0); // Player can't be disintegrated, so we make player Invisible
+						log::info("Setting alpha to 0");
 					}
 
 					if (tinyHandle) {
 						Runtime::PlaySound("ShrinkToNothingSound", tinyHandle.get().get(), 1.0, 0.5);
 					}
-
+					log::info("Shrinking finished");
 					data.state = ShrinkState::Shrinked;
 				}
 			}

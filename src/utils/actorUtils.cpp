@@ -572,7 +572,9 @@ namespace Gts {
 		bool essential = actor->IsEssential() && Runtime::GetBool("ProtectEssentials");
 		bool teammate = IsTeammate(actor);
 		bool protectfollowers = Persistent::GetSingleton().FollowerProtection;
-		if (!teammate && essential) {
+		if (actor->formID == 0x14) {
+			return false; // we don't want to make the player immune
+		} if (!teammate && essential) {
 			return true;
 		} else if (teammate && protectfollowers) {
 			if (IsHostile(PlayerCharacter::GetSingleton(), actor)) {

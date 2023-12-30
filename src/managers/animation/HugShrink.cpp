@@ -77,33 +77,36 @@ namespace {
 	}
 
 	NiPoint3 GetHeartPosition(Actor* giant, Actor* tiny) {
-		auto targetRootA = find_node(giant, "AnimObjectA");
-		if (!targetRootA) {
-			return NiPoint3();
-		}
-		auto targetA = targetRootA->world.translate;
 
 		float scaleFactor = get_visual_scale(tiny) / get_visual_scale(giant);
 
-		NiPoint3 targetB = NiPoint3();
+		NiPoint3 TargetA = NiPoint3();
+		NiPoint3 TargetB = NiPoint3();
 		std::vector<std::string_view> bone_names = {
-			"NPC L Finger02 [LF02]",
-			"NPC R Finger02 [RF02]",
-			"L Breast02",
-			"R Breast02"
+			"L Breast03",
+			"R Breast03"
 		};
 		std::uint32_t bone_count = bone_names.size();
-		for (auto bone_name: bone_names) {
-			auto bone = find_node(giant, bone_name);
+		for (auto bone_name_A: bone_names) {
+			auto bone = find_node(giant, bone_name_A);
 			if (!bone) {
 				Notify("Error: Breast Nodes could not be found.");
 				Notify("Suggestion: install XP32 skeleton.");
 				return NiPoint3();
 			}
-			targetB += (bone->world * NiPoint3()) * (1.0/bone_count);
+			TargetA += (bone->world.translate) * (1.0/bone_count);
+		}
+		for (auto bone_name_B: bone_names) {
+			auto bone = find_node(giant, bone_name_B);
+			if (!bone) {
+				Notify("Error: Breast Nodes could not be found.");
+				Notify("Suggestion: install XP32 skeleton.");
+				return NiPoint3();
+			}
+			TargetB += (bone->world.translate) * (1.0/bone_count);
 		}
 
-		auto targetPoint = targetA*(scaleFactor) + targetB*(1.0 - scaleFactor);
+		auto targetPoint = (TargetA + TargetB) / 2;
 		return targetPoint;
 	}
 
@@ -112,7 +115,7 @@ namespace {
 		float hp = GetAV(tinyref, ActorValue::kHealth);
 		float maxhp = GetMaxAV(tinyref, ActorValue::kHealth);
 
-		tinyref->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, maxhp * 0.004 * steal);
+		tinyref->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, maxhp * 0.006 * steal);
 		
 		if (HeartTimer.ShouldRunFrame()) {
 			NiPoint3 POS = GetHeartPosition(giantref, tinyref);
@@ -419,6 +422,10 @@ namespace Gts {
 				stamina -= level;
 			}
 
+
+			if (giantref->formID != 0x14) {
+				ShutUp(giantref) // STFU for GTS as well
+			}
 			ShutUp(tinyref); // Disallow idle dialogues
 
 			if (sizedifference >= threshold) {
