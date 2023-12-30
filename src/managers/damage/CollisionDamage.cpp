@@ -498,7 +498,13 @@ namespace Gts {
 			InflictSizeDamage(giant, tiny, result);
 		}
 
-		if (GetAV(tiny, ActorValue::kHealth) <= 0 || tiny->IsDead()) {
+		bool ShouldBeCrushed = (
+			//result >= GetAV(tiny, ActorValue::kHealth) ||
+			GetAV(tiny, ActorValue::kHealth) <= 1.0 ||
+			tiny->IsDead()
+		);
+		log::info("{} ShouldBeCrushed: {}", tiny->GetDisplayFullName(), ShouldBeCrushed);
+		if (ShouldBeCrushed) {
 			//Attacked(tiny, giant);
 			if (multiplier >= 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
@@ -509,10 +515,9 @@ namespace Gts {
 							AdvanceQuestProgression(giant, tiny, 3, 1, false);
 						}
 					}
-					crushmanager.Crush(giant, tiny);
 					SetReanimatedState(tiny);
 
-					KillActor(giant, tiny);
+					
 					CrushBonuses(giant, tiny);
 					PrintDeathSource(giant, tiny, Cause);
 					if (!LessGore()) {
@@ -527,6 +532,9 @@ namespace Gts {
 							Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
 						}
 					}
+
+					KillActor(giant, tiny);
+					crushmanager.Crush(giant, tiny);
 				}
 			}
 		}

@@ -204,7 +204,6 @@ namespace Gts {
 			if (timepassed < 1.0) {
 				return true; // not enough time has passed yet
 			}
-			log::info("{} was reset", tiny->GetDisplayFullName());
 			EventDispatcher::DoResetActor(tiny);
 			return false; // stop task, we reset the actor
 		});
@@ -802,51 +801,50 @@ namespace Gts {
 					if (otherActor->Is3DLoaded() && !otherActor->IsDead()) {
 						float tinyScale = get_visual_scale(otherActor);
 						float difference = GetSizeDifference(giant, otherActor);
-						if (difference < 5.8 && !huggedActor) {
-							return;
-						}
-						NiPoint3 actorLocation = otherActor->GetPosition();
-						if ((actorLocation - NodePosition).Length() < CheckDistance) {
-							int nodeCollisions = 0;
-							float force = 0.0;
+						if (difference > 5.8) {
+							NiPoint3 actorLocation = otherActor->GetPosition();
+							if ((actorLocation - NodePosition).Length() < CheckDistance) {
+								int nodeCollisions = 0;
+								float force = 0.0;
 
-							auto model = otherActor->GetCurrent3D();
+								auto model = otherActor->GetCurrent3D();
 
-							if (model) {
-								VisitNodes(model, [&nodeCollisions, &force, NodePosition, CheckDistance](NiAVObject& a_obj) {
-									float distance = (NodePosition - a_obj.world.translate).Length();
-									if (distance < CheckDistance) {
-										nodeCollisions += 1;
-										force = 1.0 - distance / CheckDistance;
-										return false;
-									}
-									return true;
-								});
-							}
-							if (nodeCollisions > 0) {
-								auto node = find_node(otherActor, "NPC Root [Root]");
-								if (node) {
-									auto grabbedActor = Grab::GetHeldActor(giant);
-									
-									float correction = (18.0 / tinyScale) - 18.0;
-									NiPoint3 Position = node->world.translate;
-									Position.z -= correction;
+								if (model) {
+									VisitNodes(model, [&nodeCollisions, &force, NodePosition, CheckDistance](NiAVObject& a_obj) {
+										float distance = (NodePosition - a_obj.world.translate).Length();
+										if (distance < CheckDistance) {
+											nodeCollisions += 1;
+											force = 1.0 - distance / CheckDistance;
+											return false;
+										}
+										return true;
+									});
+								}
+								if (nodeCollisions > 0) {
+									auto node = find_node(otherActor, "NPC Root [Root]");
+									if (node) {
+										auto grabbedActor = Grab::GetHeldActor(giant);
+										
+										float correction = (18.0 / tinyScale) - 18.0;
+										NiPoint3 Position = node->world.translate;
+										Position.z -= correction;
 
-									if (grabbedActor && otherActor == grabbedActor) {
-										return;
-									} else if (IsEssential(otherActor)) {
-										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Essential.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn Essential
-									} else if (!IsGtsBusy(giant) && difference >= 10.0) {
-										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush_All.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn 'can be crushed'
-									} else if (!IsGtsBusy(giant) && difference >= 8.0) {
-										SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Grab.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn 'Can be grabbed/vored'
-									} else if (huggedActor) {
-										bool LowHealth = (GetHealthPercentage(huggedActor) < GetHPThreshold(giant));
-										bool ForceCrush = Runtime::HasPerkTeam(giant, "HugCrush_MightyCuddles");
-										float Stamina = GetStaminaPercentage(giant);
-										if (otherActor == huggedActor && !IsHugCrushing) {
-											if (HasSMT(giant) || LowHealth || (ForceCrush && Stamina > 0.50)) {
-												SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Hug_Crush.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn 'can be hug crushed'
+										if (grabbedActor && otherActor == grabbedActor) {
+											// do nothing
+										} else if (IsEssential(otherActor)) {
+											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Essential.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn Essential
+										} else if (!IsGtsBusy(giant) && difference >= 10.0) {
+											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush_All.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn 'can be crushed'
+										} else if (!IsGtsBusy(giant) && difference >= 8.0) {
+											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Grab.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn 'Can be grabbed/vored'
+										} else if (huggedActor) {
+											bool LowHealth = (GetHealthPercentage(huggedActor) < GetHPThreshold(giant));
+											bool ForceCrush = Runtime::HasPerkTeam(giant, "HugCrush_MightyCuddles");
+											float Stamina = GetStaminaPercentage(giant);
+											if (otherActor == huggedActor && !IsHugCrushing) {
+												if (HasSMT(giant) || LowHealth || (ForceCrush && Stamina > 0.50)) {
+													SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Hug_Crush.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn 'can be hug crushed'
+												}
 											}
 										}
 									}

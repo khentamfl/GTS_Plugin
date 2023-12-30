@@ -195,7 +195,7 @@ namespace Gts {
 
 					TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(tiny);
 					if (ref) {
-						log::info("Transfering item: {}, looking for quantity", a_object->GetName());
+						//log::info("Transfering item: {}, looking for quantity", a_object->GetName());
 						auto changes = ref->GetInventoryChanges();
 						if (changes) {
 							quantity = GetItemCount(changes, a_object); // obtain item count
@@ -207,7 +207,7 @@ namespace Gts {
 						}
 					}
 
-					log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
+					//log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
 
 					tiny->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, giant, nullptr, nullptr);
 				}
@@ -287,7 +287,7 @@ namespace Gts {
 
 					TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
 					if (ref) {
-						log::info("Transfering item: {}, looking for quantity", a_object->GetName());
+						//log::info("Transfering item: {}, looking for quantity", a_object->GetName());
 						auto changes = ref->GetInventoryChanges();
 						if (changes) {
 							quantity = GetItemCount(changes, a_object); // obtain item count
@@ -299,7 +299,7 @@ namespace Gts {
 						}
 					}
 
-					log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
+					//log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
 
 					actor->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, dropbox, nullptr, nullptr);
 				}

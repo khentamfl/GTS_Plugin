@@ -159,9 +159,9 @@ namespace {
 
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(huggedActor);
 		if (giant->formID == 0x14) {
-			shake_camera(giant, 0.70 * sizedifference, 0.35);
+			shake_camera(giant, 0.40 * sizedifference, 0.35);
 		} else {
-			GRumble::Once("HugGrab", giant, sizedifference * 12, 0.15);
+			GRumble::Once("HugGrab", giant, sizedifference * 6, 0.15);
 		}
 
 		DisableCollisions(huggedActor, giant);
@@ -181,10 +181,12 @@ namespace {
 			shrink = false;
 		}
 
-		HugShrink::ShrinkOtherTask(giant, huggedActor, shrink);
 		if (shrink || !IsTeammate(huggedActor)) {
 			Attacked(huggedActor, giant);
 		}
+
+		HugShrink::ShrinkOtherTask(giant, huggedActor, shrink);
+		
 	}
 
 	void GTS_Hug_Moan(AnimationEventData& data) {
@@ -445,9 +447,9 @@ namespace Gts {
 			TransferSize(giantref, tinyref, false, shrink, steal, false, ShrinkSource::hugs); // Shrink foe, enlarge gts
 			ModSizeExperience(0.00020, giantref);
 			if (giantref->formID == 0x14) {
-				shake_camera(giantref, 0.70 * sizedifference, 0.05);
+				shake_camera(giantref, 0.40 * sizedifference, 0.05);
 			} else {
-				GRumble::Once("HugSteal", giantref, get_visual_scale(giantref) * 8, 0.10);
+				GRumble::Once("HugSteal", giantref, get_visual_scale(giantref) * 6, 0.10);
 			}
 			
 			return true;
