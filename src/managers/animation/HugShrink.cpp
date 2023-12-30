@@ -424,7 +424,7 @@ namespace Gts {
 
 
 			if (giantref->formID != 0x14) {
-				ShutUp(giantref) // STFU for GTS as well
+				ShutUp(giantref); // STFU for GTS as well
 			}
 			ShutUp(tinyref); // Disallow idle dialogues
 
