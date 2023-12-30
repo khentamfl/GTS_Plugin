@@ -100,6 +100,10 @@ namespace {
 				if (rng < 12) {
 					float health = GetHealthPercentage(tinyref);
 					float HpThreshold = GetCrushThreshold(giantref);
+
+					if (!Runtime::HasPerkTeam(giantref, "HugCrush_LovingEmbrace")) {
+						rng = 12;
+					}	
 					
 					if (health <= HpThreshold && (tinyref->formID != 0x14 || IsHostile(giantref, tinyref) || rng <= 1)) {
 						AnimationManager::StartAnim("Huggies_HugCrush", giantref);

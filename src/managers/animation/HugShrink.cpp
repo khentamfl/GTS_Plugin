@@ -77,6 +77,9 @@ namespace {
 	}
 
 	bool Hugs_RestoreHealth(Actor* giantref, Actor* tinyref, float steal) {
+		if (!Runtime::HasPerkTeam(giantref, "HugCrush_LovingEmbrace")) {
+			return false;
+		}
 		static Timer HeartTimer = Timer(0.5);
 		float hp = GetAV(tinyref, ActorValue::kHealth);
 		float maxhp = GetMaxAV(tinyref, ActorValue::kHealth);
