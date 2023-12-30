@@ -16,6 +16,21 @@ namespace {
 	const std::string_view leftToeLookup = "AnimObjectB";
 	const std::string_view rightToeLookup = "AnimObjectB";
 	const std::string_view bodyLookup = "NPC Spine1 [Spn1]";
+
+	NiPoint3 CastRayDownwards(Actor* tiny) {
+		bool success = false;
+		NiPoint3 ray_start = tiny->GetPosition();
+		ray_start.z += 40.0; // overrize .z with tiny .z + 40, so ray starts from above a bit
+		NiPoint3 ray_direction(0.0, 0.0, -1.0);
+
+		float ray_length = 180;
+
+		NiPoint3 endpos = CastRayStatics(tiny, ray_start, ray_direction, ray_length, success);
+		if (success) {
+			return endpos;
+		}
+		return tiny->GetPosition();
+	}
 }
 
 namespace Gts {
@@ -143,7 +158,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 				NiPoint3 coords = leftFoot->world.translate;//foot->world*(rotMat*point);
-				coords.z = tiny->GetPosition().z; // Use Z offset of Tiny so it won't look off
+				coords.z = CastRayDownwards(tiny).z; // Cast ray down to get precise ground position
 				return coords;
 				//return AttachTo(anyGiant, anyTiny, coords);
 			}
@@ -214,7 +229,7 @@ namespace Gts {
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
 				NiPoint3 coords = rightFoot->world.translate;//foot->world*(rotMat*point);
-				coords.z = tiny->GetPosition().z; // Use Z offset of Tiny so it won't look off
+				coords.z = CastRayDownwards(tiny).z; // Cast ray down to get precise ground position
 				return coords;
 				//return AttachTo(anyGiant, anyTiny, coords);
 			}
