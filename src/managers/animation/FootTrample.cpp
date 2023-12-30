@@ -12,6 +12,7 @@
 #include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
 #include "managers/tremor.hpp"
+#include "rays/raycast.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "node.hpp"
@@ -92,7 +93,7 @@ namespace {
 			dust = 1.25;
 		}
 		GRumble::Once("TrampleL", &data.giant, 1.60 * shake, 0.0, LNode);
-		DoDamageEffect(&data.giant, 0.7 * launch * perk, 1.50 * launch, 1, 0.10, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+		DoDamageEffect(&data.giant, 0.7 * launch * perk, 1.50 * launch, 100, 0.10, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.65 * perk, 0.75 * perk, FootEvent::Left);
@@ -114,7 +115,7 @@ namespace {
 			dust = 1.25;
 		}
 		GRumble::Once("TrampleR", &data.giant, 1.60 * shake, 0.0, RNode);
-		DoDamageEffect(&data.giant, 0.7 * launch * perk, 1.50 * launch, 1, 0.10, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+		DoDamageEffect(&data.giant, 0.7 * launch * perk, 1.50 * launch, 100, 0.10, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.65 * perk, 0.75 * perk, FootEvent::Right);
