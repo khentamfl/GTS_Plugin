@@ -1,6 +1,7 @@
 #pragma once
 #include "managers/highheel.hpp"
 #include "utils/actorUtils.hpp"
+#include "rays/raycast.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "UI/DebugAPI.hpp"
