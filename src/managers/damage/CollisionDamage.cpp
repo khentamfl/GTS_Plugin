@@ -104,7 +104,7 @@ namespace {
 					return; // just in case, to avoid CTD
 				}
 
-				if (CasterHp/reduction >= (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
+				if (CasterHp >= ((TargetHp / Multiplier) * reduction) && !CrushManager::AlreadyCrushed(Target)) {
 					CrushManager::Crush(Caster, Target);
 					CrushBonuses(Caster, Target);
 
@@ -114,7 +114,7 @@ namespace {
 					Cprint("{} was instantly turned into mush by the body of {}", Target->GetDisplayFullName(), Caster->GetDisplayFullName());
 					if (Runtime::HasPerk(Caster, "NoSpeedLoss")) {
 						AttributeManager::GetSingleton().OverrideSMTBonus(0.65); // Reduce speed after crush
-					} else if (!Runtime::HasPerk(Caster, "NoSpeedLoss")) {
+					} else {
 						AttributeManager::GetSingleton().OverrideSMTBonus(0.35); // Reduce more speed after crush
 					}
 				} else if (CasterHp < (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
@@ -127,10 +127,7 @@ namespace {
 					shake_camera(Caster, 4.35, 0.5);
 					Runtime::PlaySound("lJumpLand", Caster, 1.0, 1.0);
 
-					std::string text_a = Target->GetDisplayFullName();
-					std::string text_b = " is too tough to be crushed";
-					std::string Message = text_a + text_b;
-					DebugNotification(Message.c_str(), 0, true);
+					Notify("{} is too tough to be crushed", Target->GetDisplayFullName());
 
 					AttributeManager::GetSingleton().OverrideSMTBonus(0.75); // Less speed loss after force crush
 				}

@@ -96,11 +96,12 @@ namespace {
 			}
 
 			if (ActionTimer.ShouldRunFrame()) {
-				int rng = rand() % 10;
-				if (rng < 6) {
+				int rng = rand() % 20;
+				if (rng < 12) {
 					float health = GetHealthPercentage(tinyref);
 					float HpThreshold = GetCrushThreshold(giantref);
-					if (health <= HpThreshold) {
+					
+					if (health <= HpThreshold && (tinyref->formID != 0x14 || IsHostile(giantref, tinyref) || rng <= 1)) {
 						AnimationManager::StartAnim("Huggies_HugCrush", giantref);
 						AnimationManager::StartAnim("Huggies_HugCrush_Victim", tinyref);
 					} else {

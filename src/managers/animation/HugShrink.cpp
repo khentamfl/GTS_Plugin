@@ -60,6 +60,65 @@ namespace {
 		return threshold * bonus;
 	}
 
+	NiPoint3 GetHeartPosition(Actor* giant, Actor* tiny) {
+		auto targetRootA = find_node(giant, "AnimObjectA");
+		if (!targetRootA) {
+			return NiPoint3();
+		}
+		auto targetA = targetRootA->world.translate;
+
+		float scaleFactor = get_visual_scale(tiny) / get_visual_scale(giant);
+
+		NiPoint3 targetB = NiPoint3();
+		std::vector<std::string_view> bone_names = {
+			"NPC L Finger02 [LF02]",
+			"NPC R Finger02 [RF02]",
+			"L Breast02",
+			"R Breast02"
+		};
+		std::uint32_t bone_count = bone_names.size();
+		for (auto bone_name: bone_names) {
+			auto bone = find_node(giant, bone_name);
+			if (!bone) {
+				Notify("Error: Breast Nodes could not be found.");
+				Notify("Suggestion: install XP32 skeleton.");
+				return NiPoint3();
+			}
+			targetB += (bone->world * NiPoint3()) * (1.0/bone_count);
+		}
+
+		auto targetPoint = targetA*(scaleFactor) + targetB*(1.0 - scaleFactor);
+		return targetPoint;
+	}
+
+	bool Hugs_RestoreHealth(Actor* giantref, Actor* tinyref, float steal) {
+		static Timer HeartTimer = Timer(0.5);
+		float hp = GetAV(tinyref, ActorValue::kHealth);
+		float maxhp = GetMaxAV(tinyref, ActorValue::kHealth);
+
+		tinyref->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, maxhp * 0.004 * steal);
+		
+		if (HeartTimer.ShouldRunFrame()) {
+			NiPoint3 POS = GetHeartPosition(giantref, tinyref);
+			if (POS.length() > 0) {
+				float scale = get_visual_scale(giantref);
+				SpawnParticle(giantref, 3.00, "GTS/Magic/Hearts.nif", NiMatrix3(), POS, scale * 3.0, 7, nullptr);
+			}
+		}
+
+		if (hp >= maxhp) {
+			AbortAnimation(giantref, tinyref);
+			return false;
+		}
+
+		if (giantref->formID == 0x14) {
+			shake_camera(giantref, 0.90 * sizedifference, 0.05);
+		} else {
+			GRumble::Once("HugSteal", giantref, get_visual_scale(giantref) * 8, 0.10);
+		}
+		return true;
+	}
+
 	void GTS_Hug_Catch(AnimationEventData& data) {
 	} // Unused
 
@@ -90,8 +149,18 @@ namespace {
 		if (!huggedActor) {
 			return;
 		}
-		HugShrink::ShrinkOtherTask(giant, huggedActor);
-		Attacked(huggedActor, giant);
+
+		int rng = rand() % 20;
+		bool shrink = (rng <= 1);
+
+		if (giant->formID == 0x14) {
+			shrink = false;
+		}
+
+		HugShrink::ShrinkOtherTask(giant, huggedActor, shrink);
+		if (shrink || !IsTeammate(huggedActor)) {
+			Attacked(huggedActor, giant);
+		}
 	}
 
 	void GTS_Hug_Moan(AnimationEventData& data) {
@@ -307,7 +376,7 @@ namespace Gts {
 		TaskManager::Cancel(name_2);
 	}
 
-	void HugShrink::ShrinkOtherTask(Actor* giant, Actor* tiny) {
+	void HugShrink::ShrinkOtherTask(Actor* giant, Actor* tiny, bool SHRINK) {
 		if (!giant) {
 			return;
 		}
@@ -353,6 +422,10 @@ namespace Gts {
 			DamageAV(tinyref, ActorValue::kStamina, (0.60 * TimeScale())); // Drain Stamina
 			DamageAV(giantref, ActorValue::kStamina, 0.50 * stamina * TimeScale()); // Damage GTS Stamina
 
+			if (!SHRINK && (tinyref->formID == 0x14 && !IsHostile(tinyref, giantref)) || (giantref->formID == 0x14 && !IsHostile(giantref, tinyref))) {
+				return Hugs_RestoreHealth(giantref, tinyref, steal);
+			}
+			
 			TransferSize(giantref, tinyref, false, shrink, steal, false, ShrinkSource::hugs); // Shrink foe, enlarge gts
 			ModSizeExperience(0.00020, giantref);
 			if (giantref->formID == 0x14) {
@@ -360,6 +433,7 @@ namespace Gts {
 			} else {
 				GRumble::Once("HugSteal", giantref, get_visual_scale(giantref) * 8, 0.10);
 			}
+			
 			return true;
 		});
 	}
