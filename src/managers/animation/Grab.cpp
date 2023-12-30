@@ -278,7 +278,7 @@ namespace {
 						Runtime::PlaySoundAtNode("CrunchImpactSound", giantess, 1.0, 0.0, "NPC L Hand [LHnd]");
 						Runtime::PlaySoundAtNode("CrunchImpactSound", giantess, 1.0, 0.0, "NPC L Hand [LHnd]");
 					} else {
-						Runtime::PlaySoundAtNode("SoftHandAttack", giantess, 1.0, 1.0, "NPC L Hand [LHnd]");
+						Runtime::PlaySoundAtNode("SoftHandAttack", giantess, 1.0, 0.0, "NPC L Hand [LHnd]");
 					}
 					Runtime::PlaySoundAtNode("GtsCrushSound", giantess, 1.0, 1.0, "NPC L Hand [LHnd]");
 					SetBetweenBreasts(giantess, false);
@@ -294,7 +294,7 @@ namespace {
 						Runtime::PlaySoundAtNode("CrunchImpactSound", giantess, 1.0, 0.0, "NPC L Hand [LHnd]");
 						SpawnHurtParticles(giantess, tiny, 1.0, 1.0);
 					} else {
-						Runtime::PlaySoundAtNode("SoftHandAttack", giantess, 1.0, 1.0, "NPC L Hand [LHnd]");
+						Runtime::PlaySoundAtNode("SoftHandAttack", giantess, 1.0, 0.0, "NPC L Hand [LHnd]");
 					}
 					StaggerActor(tiny);
 				}
