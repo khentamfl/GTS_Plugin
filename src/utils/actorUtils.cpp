@@ -801,7 +801,7 @@ namespace Gts {
 					if (otherActor->Is3DLoaded() && !otherActor->IsDead()) {
 						float tinyScale = get_visual_scale(otherActor);
 						float difference = GetSizeDifference(giant, otherActor);
-						if (difference > 5.8) {
+						if (difference > 5.8 || huggedActor) {
 							NiPoint3 actorLocation = otherActor->GetPosition();
 							if ((actorLocation - NodePosition).Length() < CheckDistance) {
 								int nodeCollisions = 0;
@@ -824,13 +824,11 @@ namespace Gts {
 									auto node = find_node(otherActor, "NPC Root [Root]");
 									if (node) {
 										auto grabbedActor = Grab::GetHeldActor(giant);
-										
 										float correction = (18.0 / tinyScale) - 18.0;
 										NiPoint3 Position = node->world.translate;
 										Position.z -= correction;
-
-										if (grabbedActor && otherActor == grabbedActor) {
-											// do nothing
+										if (grabbedActor && grabbedActor == otherActor) {
+											//do nothing
 										} else if (huggedActor && huggedActor == otherActor && !IsHugCrushing) {
 											bool LowHealth = (GetHealthPercentage(huggedActor) < GetHPThreshold(giant));
 											bool ForceCrush = Runtime::HasPerkTeam(giant, "HugCrush_MightyCuddles");
@@ -838,11 +836,11 @@ namespace Gts {
 											if (HasSMT(giant) || LowHealth || (ForceCrush && Stamina > 0.50)) {
 												SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Hug_Crush.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn 'can be hug crushed'
 											}
-										} else if (IsEssential(otherActor)) {
+										} else if (!IsGtsBusy(giant) && IsEssential(otherActor)) {
 											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Essential.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn Essential
-										} else if (!IsGtsBusy(giant) && difference >= 10.0) {
-											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush_All.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn 'can be crushed'
 										} else if (!IsGtsBusy(giant) && difference >= 8.0) {
+											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush_All.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn 'can be crushed'
+										} else if (!IsGtsBusy(giant) && difference >= 6.0) {
 											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Grab.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn 'Can be grabbed/vored'
 										} 
 									}
