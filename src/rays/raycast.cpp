@@ -78,7 +78,7 @@ namespace Gts {
 			for (auto& hit: collector->GetHits()) {
 				// This varient filters out the char ones
 				auto collision_layer = static_cast<COL_LAYER>(hit.rootCollidable->broadPhaseHandle.collisionFilterInfo & 0x7F);
-				if (collision_layer != COL_LAYER::kCharController) {
+				if (collision_layer != COL_LAYER::kCharController && collision_layer != COL_LAYER::kWeapon) {
 					success = true;
 					return hit.position;
 				}

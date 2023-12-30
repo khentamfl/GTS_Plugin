@@ -77,20 +77,17 @@ namespace {
 	}
 
 	bool Hugs_RestoreHealth(Actor* giantref, Actor* tinyref, float steal) {
-		if (!Runtime::HasPerkTeam(giantref, "HugCrush_LovingEmbrace")) {
-			return false;
-		}
 		static Timer HeartTimer = Timer(0.5);
 		float hp = GetAV(tinyref, ActorValue::kHealth);
 		float maxhp = GetMaxAV(tinyref, ActorValue::kHealth);
 
-		tinyref->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, maxhp * 0.006 * steal);
+		tinyref->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, maxhp * 0.008 * steal * TimeScale());
 		
 		if (HeartTimer.ShouldRunFrame()) {
 			NiPoint3 POS = GetHeartPosition(giantref, tinyref);
 			if (POS.Length() > 0) {
 				float scale = get_visual_scale(giantref);
-				SpawnParticle(giantref, 3.00, "GTS/Magic/Hearts.nif", NiMatrix3(), POS, scale * 3.0, 7, nullptr);
+				SpawnParticle(giantref, 3.00, "GTS/Magic/Hearts.nif", NiMatrix3(), POS, scale * 2.4, 7, nullptr);
 			}
 		}
 
@@ -409,8 +406,10 @@ namespace Gts {
 			DamageAV(tinyref, ActorValue::kStamina, (0.60 * TimeScale())); // Drain Stamina
 			DamageAV(giantref, ActorValue::kStamina, 0.50 * stamina * TimeScale()); // Damage GTS Stamina
 
-			if (!SHRINK && (tinyref->formID == 0x14 && !IsHostile(tinyref, giantref)) || (giantref->formID == 0x14 && !IsHostile(giantref, tinyref))) {
-				return Hugs_RestoreHealth(giantref, tinyref, steal);
+			if (Runtime::HasPerkTeam(giantref, "HugCrush_LovingEmbrace")) {
+				if (!SHRINK && (tinyref->formID == 0x14 && !IsHostile(tinyref, giantref)) || (giantref->formID == 0x14 && !IsHostile(giantref, tinyref))) {
+					return Hugs_RestoreHealth(giantref, tinyref, steal);
+				}
 			}
 			
 			TransferSize(giantref, tinyref, false, shrink, steal, false, ShrinkSource::hugs); // Shrink foe, enlarge gts

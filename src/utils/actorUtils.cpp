@@ -831,22 +831,20 @@ namespace Gts {
 
 										if (grabbedActor && otherActor == grabbedActor) {
 											// do nothing
+										} else if (huggedActor && huggedActor == otherActor && !IsHugCrushing) {
+											bool LowHealth = (GetHealthPercentage(huggedActor) < GetHPThreshold(giant));
+											bool ForceCrush = Runtime::HasPerkTeam(giant, "HugCrush_MightyCuddles");
+											float Stamina = GetStaminaPercentage(giant);
+											if (HasSMT(giant) || LowHealth || (ForceCrush && Stamina > 0.50)) {
+												SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Hug_Crush.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn 'can be hug crushed'
+											}
 										} else if (IsEssential(otherActor)) {
 											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Essential.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn Essential
 										} else if (!IsGtsBusy(giant) && difference >= 10.0) {
 											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush_All.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn 'can be crushed'
 										} else if (!IsGtsBusy(giant) && difference >= 8.0) {
 											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Grab.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn 'Can be grabbed/vored'
-										} else if (huggedActor) {
-											bool LowHealth = (GetHealthPercentage(huggedActor) < GetHPThreshold(giant));
-											bool ForceCrush = Runtime::HasPerkTeam(giant, "HugCrush_MightyCuddles");
-											float Stamina = GetStaminaPercentage(giant);
-											if (otherActor == huggedActor && !IsHugCrushing) {
-												if (HasSMT(giant) || LowHealth || (ForceCrush && Stamina > 0.50)) {
-													SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Hug_Crush.nif", NiMatrix3(), Position, 2.4, 7, node); // Spawn 'can be hug crushed'
-												}
-											}
-										}
+										} 
 									}
 								}
 							}
@@ -2349,7 +2347,7 @@ namespace Gts {
 			if (GetHealthPercentage(receiver) < 0.60) {
 				Attacked(receiver, attacker);
 			}
-			float difficulty = 3.0; // taking Legendary Difficulty as a base
+			float difficulty = 2.0; // taking Legendary Difficulty as a base
 			ApplyDamage(attacker, receiver, value * difficulty * GetDamageSetting());
 		}
 	}
