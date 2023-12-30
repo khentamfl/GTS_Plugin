@@ -126,7 +126,7 @@ namespace Gts {
 		if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
 			return false;
 		}
-		if (IsCrawling(pred) || IsTransitioning(pred)) {
+		if (IsCrawling(pred) || IsTransitioning(pred) || IsBeingHeld(prey)) {
 			return false;
 		}
 

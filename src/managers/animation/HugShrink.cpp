@@ -45,6 +45,7 @@ namespace {
 		}
 		return steal;
 	}
+
 	float GetShrinkThreshold(Actor* actor) {
 		float threshold = 2.5;
 		float bonus = 1.0;
@@ -58,6 +59,21 @@ namespace {
 			bonus *= 2.0;
 		}
 		return threshold * bonus;
+	}
+
+
+	// Cancels all the things
+	void AbortAnimation(Actor* giant, Actor* tiny) {
+		AnimationManager::StartAnim("Huggies_Spare", giant);
+		AdjustFacialExpression(giant, 0, 0.0, "phenome");
+		AdjustFacialExpression(giant, 0, 0.0, "modifier");
+		AdjustFacialExpression(giant, 1, 0.0, "modifier");
+		HugShrink::Release(giant);
+		if (tiny) {
+			EnableCollisions(tiny);
+			SetBeingHeld(tiny, false);
+			PushActorAway(giant, tiny, 1.0);
+		}
 	}
 
 	NiPoint3 GetHeartPosition(Actor* giant, Actor* tiny) {
@@ -100,7 +116,7 @@ namespace {
 		
 		if (HeartTimer.ShouldRunFrame()) {
 			NiPoint3 POS = GetHeartPosition(giantref, tinyref);
-			if (POS.length() > 0) {
+			if (POS.Length() > 0) {
 				float scale = get_visual_scale(giantref);
 				SpawnParticle(giantref, 3.00, "GTS/Magic/Hearts.nif", NiMatrix3(), POS, scale * 3.0, 7, nullptr);
 			}
@@ -118,6 +134,10 @@ namespace {
 		}
 		return true;
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////// E V E N T S
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void GTS_Hug_Catch(AnimationEventData& data) {
 	} // Unused
@@ -250,20 +270,8 @@ namespace {
 		HugShrink::Release(giant);
 	}
 
-	// Cancel all the things
-	void AbortAnimation(Actor* giant, Actor* tiny) {
-		AnimationManager::StartAnim("Huggies_Spare", giant);
-		AdjustFacialExpression(giant, 0, 0.0, "phenome");
-		AdjustFacialExpression(giant, 0, 0.0, "modifier");
-		AdjustFacialExpression(giant, 1, 0.0, "modifier");
-		HugShrink::Release(giant);
-		if (tiny) {
-			EnableCollisions(tiny);
-			SetBeingHeld(tiny, false);
-			PushActorAway(giant, tiny, 1.0);
-		}
-	}
 
+	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////// I N P U T
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
