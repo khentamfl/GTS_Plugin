@@ -501,10 +501,6 @@ namespace Gts {
 	}
 
 	bool IsFemale(Actor* actor) {
-		/*bool FemaleCheck = false;
-		   if (!FemaleCheck) {
-		        return true; // Always return true if we don't check for male/female
-		   }*/
 		auto base = actor->GetActorBase();
 		int sex = 0;
 		if (base) {
@@ -746,9 +742,6 @@ namespace Gts {
 			Reduction = 1.0;
 		}
 		float HH = (HighHeelManager::GetBaseHHOffset(giant).Length()/100)/1.82; // Get HH value and convert it to meters
-		if (giant->formID == 0x14 || IsTeammate(giant)) {
-			//log::info("HH of {} is {}", giant->GetDisplayFullName(), HH);
-		}
 		return (Normal + HH) * Reduction;
 	}
 
@@ -821,7 +814,7 @@ namespace Gts {
 									});
 								}
 								if (nodeCollisions > 0) {
-									auto node = find_node(otherActor, "NPC Root [Root]");
+									auto node = find_node(otherActor, "NPC COM [COM ]");
 									if (node) {
 										auto grabbedActor = Grab::GetHeldActor(giant);
 										float correction = (18.0 / tinyScale) - 18.0;
@@ -2346,6 +2339,8 @@ namespace Gts {
 				Attacked(receiver, attacker);
 			}
 			float difficulty = 2.0; // taking Legendary Difficulty as a base
+			float levelbonus = 1.0 + (GetGtsSkillLevel() * 0.60);
+			value *= levelbonus;
 			ApplyDamage(attacker, receiver, value * difficulty * GetDamageSetting());
 		}
 	}

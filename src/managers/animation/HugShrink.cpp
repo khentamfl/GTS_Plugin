@@ -91,6 +91,13 @@ namespace {
 			}
 		}
 
+		bool IsHugCrushing;
+		giantref->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
+
+		if (IsHugCrushing) {
+			return true; // disallow to cancel it during Hug Crush
+		}
+
 		if (hp >= maxhp) {
 			AbortAnimation(giantref, tinyref);
 			return false;

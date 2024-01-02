@@ -19,7 +19,11 @@ namespace {
 		if (IsTeammate(actor)) {
 			MultiplySlider = Runtime::GetFloat("RandomGrowthMultiplyNPC");
 		}
-		if (!Runtime::HasPerkTeam(actor, "RandomGrowth") || MultiplySlider <= 0.0 || !IsFemale(actor)) {
+		if (!Runtime::HasPerkTeam(actor, "RandomGrowth") || MultiplySlider <= 0.0) {
+			return false;
+		}
+
+		if (!IsFemale(actor)) {
 			return false;
 		}
 
@@ -77,8 +81,8 @@ namespace Gts {
 					float ProgressionMultiplier = Persistent::GetSingleton().progression_multiplier;
 					int random = rand()% 79 + 1;
 					float TotalPower = (100 + random)/100;
-					float base_power = ((0.00750 * TotalPower * 60) * ProgressionMultiplier);  // The power of it
-					float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
+					float base_power = ((0.00750 * TotalPower * 120) * ProgressionMultiplier);  // The power of it
+					float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(actor)*0.01;
 					ActorHandle gianthandle = actor->CreateRefHandle();
 					std::string name = std::format("RandomGrowth_{}", actor->formID);
 					// Sounds

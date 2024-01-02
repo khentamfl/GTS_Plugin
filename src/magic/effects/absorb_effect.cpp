@@ -38,6 +38,10 @@ namespace Gts {
 			return;
 		}
 
+		if (target == caster) {
+			return;
+		}
+
 		float size_difference = GetSizeDifference(caster, target);
 		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)*0.01;
 		if (IsEssential(target)) {
@@ -55,7 +59,7 @@ namespace Gts {
 		
 		AbsorbSteal(target, caster, (0.0040 * size_difference) * gigantism, 0.0, 0.2);
 		if (ShrinkToNothing(caster, target)) {
-			//Dispel(); <- maybe no need to dispel since it will allow to absorb again?
+			//
 		}
 	}
 	
