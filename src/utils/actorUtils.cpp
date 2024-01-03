@@ -817,7 +817,12 @@ namespace Gts {
 									auto node = find_node(otherActor, "NPC COM [COM ]");
 									if (node) {
 										auto grabbedActor = Grab::GetHeldActor(giant);
-										float correction = (18.0 / tinyScale) - 18.0;
+										float correction = 0; 
+										if (tinyScale < 1.0) {
+											correction = (18.0 / tinyScale) - 18.0;
+										} else {
+											correction = (18.0 * tinyScale) - 18.0;
+										}
 										NiPoint3 Position = node->world.translate;
 										Position.z -= correction;
 										if (grabbedActor && grabbedActor == otherActor) {
@@ -2339,7 +2344,7 @@ namespace Gts {
 				Attacked(receiver, attacker);
 			}
 			float difficulty = 2.0; // taking Legendary Difficulty as a base
-			float levelbonus = 1.0 + (GetGtsSkillLevel() * 0.60);
+			float levelbonus = 1.0 + ((GetGtsSkillLevel() * 0.01) * 0.60);
 			value *= levelbonus;
 			ApplyDamage(attacker, receiver, value * difficulty * GetDamageSetting());
 		}
