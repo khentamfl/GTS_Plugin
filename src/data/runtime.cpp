@@ -493,11 +493,11 @@ namespace Gts {
 		}
 		return data;
 	}
-	void Runtime::PlayImpactEffect(Actor* actor, const std::string_view& tag, const std::string_view& node, NiPoint3 direction, const float& length, const bool& applyRotation, const bool& useLocalRotation) {
+	void Runtime::PlayImpactEffect(Actor* actor, const std::string_view& tag, const std::string_view& node, NiPoint3 pick_direction, const float& length, const bool& applyRotation, const bool& useLocalRotation) {
 		auto data = GetImpactEffect(tag);
 		if (data) {
 			auto impact = BGSImpactManager::GetSingleton();
-			impact->PlayImpactEffect(actor, data, node, direction, length, applyRotation, useLocalRotation);
+			impact->PlayImpactEffect(actor, data, node, pick_direction, length, applyRotation, useLocalRotation);
 		}
 	}
 

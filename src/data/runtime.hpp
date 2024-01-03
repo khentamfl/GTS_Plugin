@@ -112,7 +112,7 @@ namespace Gts {
 			static bool InFactionOr(Actor* actor, const std::string_view& tag, const bool& default_value);
 			// Impacts
 			static BGSImpactDataSet* GetImpactEffect(const std::string_view& tag);
-			static void PlayImpactEffect(Actor* actor, const std::string_view& tag, const std::string_view& node, NiPoint3 direction, const float& length, const bool& applyRotation, const bool& useLocalRotation);
+			static void PlayImpactEffect(Actor* actor, const std::string_view& tag, const std::string_view& node, NiPoint3 pick_direction, const float& length, const bool& applyRotation, const bool& useLocalRotation);
 			// Races
 			static TESRace* GetRace(const std::string_view& tag);
 			static bool IsRace(Actor* actor, const std::string_view& tag);

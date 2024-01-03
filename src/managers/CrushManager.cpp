@@ -188,9 +188,10 @@ namespace Gts {
 								SpawnParticle(tiny, 1.20, "GTS/Damage/ShrinkOrCrush.nif", NiMatrix3(), root->world.translate, currentSize * 25, 7, root);
 							}
 							Runtime::CreateExplosion(tiny, get_visual_scale(tiny)/4,"BloodExplosion");
-							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Head [Head]", NiPoint3{dis(gen), 0, -1}, 512, true, true);
-							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC L Foot [Lft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
-							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{dis(gen), 0, -1}, 512, true, false);
+							/*Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Head [Head]", NiPoint3{0, 0, -10}, 512, true, false);
+							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC L Foot [Lft ]", NiPoint3{0, 0, -10}, 512, true, false);
+							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{0, 0, -10}, 512, true, false);*/
+							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Root [Root]", NiPoint3{0, 0, -1}, 512, false, true);
 						}
 					}
 					ActorHandle giantHandle = giant->CreateRefHandle();
