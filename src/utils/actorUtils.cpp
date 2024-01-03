@@ -814,7 +814,7 @@ namespace Gts {
 									});
 								}
 								if (nodeCollisions > 0) {
-									auto node = find_node(otherActor, "NPC COM [COM ]");
+									auto node = find_node(otherActor, "NPC Root [Root]");
 									if (node) {
 										auto grabbedActor = Grab::GetHeldActor(giant);
 										float correction = 0; 
@@ -825,7 +825,7 @@ namespace Gts {
 										}
 
 										float iconScale = std::clamp(tinyScale, 1.0f, 9999.0f) * 2.4;
-										
+
 										NiPoint3 Position = node->world.translate;
 										Position.z -= correction;
 
