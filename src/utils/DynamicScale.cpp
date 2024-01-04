@@ -53,6 +53,8 @@ namespace Gts {
 		if (!root_node) {
 			return std::numeric_limits<float>::infinity();
 		}
+		bool debug = IsDebugEnabled();
+		
 		float scale = get_visual_scale(giant);
 		// === Calculation of ray directions ===
 		auto transform = root_node->world;
@@ -69,7 +71,7 @@ namespace Gts {
 		std::vector<std::pair<NiPoint3, NiPoint3> > rays = {
 			{ray1_p, ray1_d},
 		};
-
+	
 		int sides = 6;
 		float degrees = 380.0 / sides;
 		float rads = degrees * 3.141 / 180.0;
@@ -116,7 +118,7 @@ namespace Gts {
 		}
 
 		const float RAY_LENGTH = 1000;
-		bool debug = IsDebugEnabled();
+		
 
 		// Ceiling
 		std::vector<float>  ceiling_heights = {};
