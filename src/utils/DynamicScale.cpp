@@ -63,83 +63,55 @@ namespace Gts {
 		// straight up
 		auto ray1_d = NiPoint3(0.0, 0.0, 1.0); // direction
 
-		// ray 2 slightly in front of the player
-		auto ray2_p = NiPoint3(0.0, 18.0 * scale, 100.0);
-		ray2_p = transform * ray2_p;
-		// straight up
-		auto ray2_d = NiPoint3(0.0, 0.0, 1.0);
-
-
-		// Math for tilting forwards
-		//     o
-		//  _______
-		//  |    /
-		// a|   /
-		//  |  /
-		//  |A/
-		//  |/
-		//
-		//  tan(A)*a=o
-		//
-		//  If z = a = 1.0
-		//  then y = o = tan(A)*z
-		//
-		//  Convert from degrees to radian with radians=degrees*3.141/180.0
-		//
-		// At ray2 but tilting forward a bit
-		float tilt_degrees = 5.0;
-		auto ray3_p = ray2_p;
-		auto ray3_d = transform.rotate * NiPoint3(0.0, tan(tilt_degrees*3.141/180.0)*1.0, 1.0);
-		ray3_d.Unitize();
-
-		// At ray2 but tilting backwards a bit
-		auto ray4_p = ray2_p;
-		auto ray4_d = transform.rotate * NiPoint3(0.0, tan(-tilt_degrees*3.141/180.0)*1.0, 1.0);
-		ray4_d.Unitize();
 
 		// List of ray positions and directions for the ceiling
 		// Don't add a down here, down is made automatically as -dir
 		std::vector<std::pair<NiPoint3, NiPoint3> > rays = {
 			{ray1_p, ray1_d},
-			{ray2_p, ray2_d},
-			{ray3_p, ray3_d},
-			{ray4_p, ray4_d}
 		};
 
-		if (scale > 3.0) {
-			int sides = 6;
-			float degrees = 380.0 / sides;
-			float rads = degrees * 3.141 / 180.0;
+		int sides = 6;
+		float degrees = 380.0 / sides;
+		float rads = degrees * 3.141 / 180.0;
+		const float BASE_DIST = 18.0;
+		const float LEVEL_SEP = 6.0;
+		const int LEVELS = 3;
+		for (int j=0; j < LEVELS; j++) {
 			for (int i=0; i<sides; i++) {
+				
 				auto mat = NiMatrix3(0.0, 0.0, rads * i);
-				auto vert = mat * NiPoint3(0.0, 12.0, 0.0);
+				auto vert = mat * NiPoint3(0.0, BASE_DIST + LEVEL_SEP*j, 0.0);
 				vert = transform.rotate * (vert * scale);
-				vert = ray2_p + vert;
-				rays.push_back(
-				{
-					vert,
-					NiPoint3(0.0, 0.0, 1.0)
-				}
-					);
+				vert = ray1_p + vert;
 
-			}
-		}
-
-		if (scale > 9.0) {
-			int sides = 6;
-			float degrees = 380.0 / sides;
-			float rads = degrees * 3.141 / 180.0;
-			for (int i=0; i<sides; i++) {
-				auto mat = NiMatrix3(0.0, 0.0, rads * i);
-				auto vert = mat * NiPoint3(0.0, 4.0, 0.0);
-				vert = transform.rotate * (vert * scale);
-				vert = ray2_p + vert;
-				rays.push_back(
-				{
-					vert,
-					NiPoint3(0.0, 0.0, 1.0)
+				// Test ray
+				const bool DO_TESTRAY = true;
+				if (DO_TESTRAY) {
+					float TESTRAY_LENGTH = LEVEL_SEP * scale;
+					auto ray_start = vert;
+					auto ray_dir = mat * NiPoint3(0.0, 1.0, 0.0);
+					if (debug) {
+						NiPoint3 ray_end = vert + ray_dir*TESTRAY_LENGTH;
+						DebugAPI::DrawSphere(glm::vec3(ray_start.x, ray_start.y, ray_start.z), 8.0, 10, {1.0, 1.0, 0.0, 1.0});
+						DebugAPI::DrawLineForMS(glm::vec3(ray_start.x, ray_start.y, ray_start.z), glm::vec3(ray_end.x, ray_end.y, ray_end.z), 10, {1.0, 0.0, 1.0, 1.0});
+					}
+					bool success = false;
+					NiPoint3 testPos = CastRayStatics(giant, ray_start, ray_dir, TESTRAY_LENGTH, success);
+					if (success) {
+						if (debug) {
+							DebugAPI::DrawSphere(glm::vec3(testPos.x, testPos.y, testPos.z), 5.0, 30, {1.0, 0.0, 0.0, 1.0});
+						}
+						continue;
+					}
 				}
-					);
+
+				rays.push_back(
+					{
+						vert,
+						NiPoint3(0.0, 0.0, 1.0)
+					}
+				);
+
 			}
 		}
 
