@@ -77,7 +77,7 @@ jobs:
         with:
           name: GTSPluginDebugInfo
           path: "contrib/*.pdb"
-      - uses: actions/upload-artifat@v2
+      - uses: actions/upload-artifact@v2
         name: Update compile_commands.json
         with:
           name: "Compiled File Data"
