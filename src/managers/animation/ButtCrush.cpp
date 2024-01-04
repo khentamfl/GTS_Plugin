@@ -337,7 +337,7 @@ namespace {
 			}
 			std::vector<Actor*> preys = ButtCrush.GetButtCrushTargets(player, numberOfPrey);
 			for (auto prey: preys) {
-				ButtCrush.StartButtCrush(player, prey);
+				ButtCrush.StartButtCrush(player, prey); // attaches actors to AnimObjectB
 			}
 			return;
 		} else if (CanDoButtCrush(player) && !Runtime::HasPerk(player, "ButtCrush_NoEscape")) {
