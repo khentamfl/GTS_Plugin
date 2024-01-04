@@ -203,51 +203,22 @@ namespace Hooks
 		);
 
     // SE(626400)
-		/*static FunctionHook<void(TESObjectREFR* a_this, HitData* hit_data)> SkyrimProcessHitEvent( // Works on HitData based events. Not affected by Difficulty modifiers.
-			RELOCATION_ID(37633, 38586),
-			[](auto* a_this, auto* hit_data) {
-				if (a_this) {
-					log::info("Checking a_this");
-					log::info("SkyrimProcessHitEvent:a_this: {}", GetRawName(a_this));
+		static FunctionHook<void(RE::AIProcess* proc, RE::Actor* attacker, RE::DEFAULT_OBJECT object, RE::TESIdleForm* idle, bool a5, bool a6, RE::TESObjectREFR* target)> SkyrimAnimEvent( 
+			RELOCATION_ID(38290),
+			[](auto* proc, auto* attacker, auto* object, auto* idle, auto a5, auto a6, auto* target) {
+				if (target) {
+					log::info("Target: {}", target->GetDisplayFullName());
 				}
-				if (hit_data) {
-					if (hit_data->aggressor) {
-						log::info("Checking agressor");
-						Actor* aggressor = hit_data->aggressor.get().get();
-						if (hit_data->target) {
-							Actor* receiver = hit_data->target.get().get();
-
-							log::info("aggressor: {}", aggressor->GetDisplayFullName());
-							log::info("receiver: {}", receiver->GetDisplayFullName());
-
-							log::info("Push: {}", hit_data->pushBack);
-							log::info("Total Damage: {}", hit_data->totalDamage);
-							log::info("Physical Damage: {}", hit_data->physicalDamage);
-
-							float rec_scale = std::powf(get_visual_scale(receiver), 3.0);
-							float att_scale = std::powf(get_visual_scale(aggressor), 3.0);
-							float sizedifference = std::clamp(rec_scale/att_scale, 1.0f, 100.0f);
-
-							float resistance = GetTotalDamageResistance(receiver, aggressor);
-
-							//hit_data->physicalDamage *= GetTotalDamageResistance(receiver, aggressor);
-							//hit_data->totalDamage *= GetTotalDamageResistance(receiver, aggressor);
-							hit_data->physicalDamage *= resistance;
-							hit_data->physicalDamage *= HealthGate(receiver, hit_data->totalDamage * resistance);
-
-							hit_data->totalDamage *= resistance;
-							hit_data->totalDamage *= HealthGate(receiver, hit_data->totalDamage * resistance);
-
-
-							log::info("New Total Damage: {}", hit_data->totalDamage);
-							log::info("New Physical Damage: {}", hit_data->physicalDamage);
-
-							DoOverkill(aggressor, receiver, hit_data->physicalDamage);
-						}
-					}
+				if (attacker) {
+					log::info("Attacker: {}", attacker->GetDisplayFullName());
 				}
-				SkyrimProcessHitEvent(a_this, hit_data);
+				if (idle) {
+					log::idle("IdleForm: {}", idle);
+				} if (object) {
+					log::info("Default Object: {}", object);
+				}
+				SkyrimAnimEvent(proc, attacker, object, idle, a5, a6, target);
 			}
-		);*/
+		);
 	}
 }

@@ -47,7 +47,7 @@ namespace Gts {
 		float rads = degrees * 3.141 / 180.0;
 		const float BASE_DIST = 18.0;
 		const float LEVEL_SEP = 12.0;
-		const int LEVELS = 3;
+		const int LEVELS = 5;
 		
 		for (int i=0; i<sides; i++) {
 			for (int j=0; j < LEVELS; j++) {
