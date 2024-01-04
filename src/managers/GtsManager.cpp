@@ -64,7 +64,7 @@ namespace {
 			float scale = get_visual_scale(actor);
 			actor->GetGraphVariableFloat("VelocityZ", falling);
 			log::info("VelocityZ pre: {}", falling);
-			if (falling > 0) {
+			if (falling != 0) {
 				actor->SetGraphVariableFloat("VelocityZ", falling /= scale);
 				log::info("VelocityZ post: {}", falling);
 			}
