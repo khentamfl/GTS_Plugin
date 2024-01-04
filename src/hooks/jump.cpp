@@ -39,7 +39,25 @@ namespace Hooks {
 
 			return result;
 			}
-			);
+		);
+
+		static FunctionHook<void(uintptr_t proc, Actor* attacker, DEFAULT_OBJECT object, TESIdleForm* idle, bool a5, bool a6, TESObjectREFR* target)> SkyrimAnimEvent( 
+			REL::RelocationID(38290, 39256),
+			[](auto* proc, auto* attacker, auto* object, auto* idle, auto a5, auto a6, auto* target) {
+				if (target) {
+					log::info("Target: {}", target->GetDisplayFullName());
+				}
+				if (attacker) {
+					log::info("Attacker: {}", attacker->GetDisplayFullName());
+				}
+				if (idle) {
+					log::idle("IdleForm: {}", idle);
+				} if (object) {
+					log::info("Default Object: {}", object);
+				}
+				return SkyrimAnimEvent(proc, attacker, object, idle, a5, a6, target);
+			}
+		);
 
 		// AE 1402bc7c3
 		// SE 1402aa40c
