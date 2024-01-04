@@ -18,7 +18,7 @@ using namespace REL;
 using namespace Gts;
 
 namespace {
-    void PlayGoreEffects(Actor* tiny) {
+    void PlayGoreEffects(Actor* tiny, Actor* giant) {
         if (!IsLiving(tiny)) {
             SpawnDustParticle(tiny, giant, "NPC Root [Root]", 3.0);
         } else {
@@ -39,6 +39,7 @@ namespace {
     }
 
     void MoveItems(ActorHandle giantHandle, ActorHandle tinyHandle) {
+        std::string taskname = std::format("Overkill {}", tiny->formID);
         TaskManager::RunOnce(taskname, [=](auto& update){
             if (!tinyHandle) {
                 return;
@@ -94,9 +95,7 @@ namespace Gts {
                     ActorHandle giantHandle = giant->CreateRefHandle();
                     ActorHandle tinyHandle = tiny->CreateRefHandle();
 
-                    std::string taskname = std::format("Overkill {}", tiny->formID);
-                
-                    PlayGoreEffects(tiny);    
+                    PlayGoreEffects(tiny, giant);    
                     MoveItems(giantHandle, tinyHandle);
                     PrintDeathSource(giant, tiny, DamageSource::Overkill);
 
