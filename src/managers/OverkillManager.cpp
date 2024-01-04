@@ -38,8 +38,8 @@ namespace {
         }
     }
 
-    void MoveItems(ActorHandle giantHandle, ActorHandle tinyHandle) {
-        std::string taskname = std::format("Overkill {}", tiny->formID);
+    void MoveItems(ActorHandle giantHandle, ActorHandle tinyHandle, FormID ID) {
+        std::string taskname = std::format("Overkill {}", ID);
         TaskManager::RunOnce(taskname, [=](auto& update){
             if (!tinyHandle) {
                 return;
@@ -85,7 +85,7 @@ namespace Gts {
 
 			if (data.state == OverkillState::Healthy) {
 				SetReanimatedState(tiny);
-				data.state = OverkillState::Shrinking;
+				data.state = OverkillState::Overkilling;
 			} else if (data.state == OverkillState::Overkilling) {
 				if (data.delay.ShouldRun()) {
                     if (!tiny->IsDead()) {
@@ -96,7 +96,7 @@ namespace Gts {
                     ActorHandle tinyHandle = tiny->CreateRefHandle();
 
                     PlayGoreEffects(tiny, giant);    
-                    MoveItems(giantHandle, tinyHandle);
+                    MoveItems(giantHandle, tinyHandle, tiny->formID);
                     PrintDeathSource(giant, tiny, DamageSource::Overkill);
 
                     if (tiny->formID != 0x14) {
