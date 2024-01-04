@@ -1,6 +1,7 @@
 #pragma once
 
 #include "events.hpp"
+#include "spring.hpp"
 
 using namespace std;
 using namespace SKSE;
