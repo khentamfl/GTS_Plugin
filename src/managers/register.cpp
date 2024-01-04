@@ -11,6 +11,7 @@
 #include "managers/ai/headtracking.hpp"
 #include "managers/ai/AiManager.hpp"
 #include "managers/CrushManager.hpp"
+#include "managers/OverkillManager.hpp"
 #include "managers/RandomGrowth.hpp"
 #include "managers/Attributes.hpp"
 #include "managers/GtsManager.hpp"
@@ -43,6 +44,7 @@ namespace Gts {
 		EventDispatcher::AddListener(&MagicManager::GetSingleton()); // Manages spells and size changes in general
 		EventDispatcher::AddListener(&Vore::GetSingleton()); // Manages vore
 		EventDispatcher::AddListener(&CrushManager::GetSingleton()); // Manages crushing
+		EventDispatcher::AddListener(&OverkillManager::GetSingleton()); // Manages crushing
 		EventDispatcher::AddListener(&ShrinkToNothingManager::GetSingleton()); // Shrink to nothing manager
 
 		EventDispatcher::AddListener(&FootStepManager::GetSingleton()); // Manages footstep sounds

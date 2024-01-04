@@ -1,5 +1,6 @@
 #include "managers/damage/SizeHitEffects.hpp"
 #include "managers/animation/HugShrink.hpp"
+#include "managers/OverkillManager.hpp"
 #include "managers/animation/Grab.hpp"
 #include "managers/hitmanager.hpp"
 #include "managers/Attributes.hpp"
@@ -79,7 +80,7 @@ namespace {
 			float size_difference = GetSizeDifference(attacker, receiver);
 			log::info("Overkill Size Difference: {}", size_difference);
 			if (size_difference >= 12.0) {
-				HitManager::GetSingleton().Overkill(receiver, attacker);
+				OverkillManager::GetSingleton().Overkill(attacker, receiver);
 			}
 		}
 	}

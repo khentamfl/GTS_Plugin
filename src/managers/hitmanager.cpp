@@ -31,24 +31,6 @@ namespace {
 		float power = soft_power(sizeRatio, push);
 		return power;
 	}
-
-	bool WasOverkilled(Actor* tiny) {
-		auto transient = Transient::GetSingleton().GetData(tiny);
-		if (transient) {
-			log::info("Overkilled: {}", transient->Overkilled);
-			return transient->Overkilled;
-		}
-		return false;
-	}
-
-	void SetOverkilled(Actor* tiny) {
-		auto transient = Transient::GetSingleton().GetData(tiny);
-		if (transient) {
-			if (!transient->Overkilled) {
-				transient->Overkilled = true;
-			}
-		}
-	}
 }
 
 namespace Gts {
@@ -131,72 +113,7 @@ namespace Gts {
 	}
 
 	void HitManager::Update() {
+		// unused
 		return;
-	}
-	void HitManager::Overkill(Actor* receiver, Actor* attacker) {
-		if (WasOverkilled(receiver)) {
-			return;
-		}
-		if (!receiver->IsDead()) {
-			KillActor(attacker, receiver);
-		}
-
-		SetOverkilled(receiver);
-
-		ActorHandle giantHandle = attacker->CreateRefHandle();
-		ActorHandle tinyHandle = receiver->CreateRefHandle();
-
-		std::string taskname = std::format("Overkill {}", receiver->formID);
-
-		TaskManager::RunOnce(taskname, [=](auto& update){
-			if (!tinyHandle) {
-				return;
-			}
-			if (!giantHandle) {
-				return;
-			}
-			auto giant = giantHandle.get().get();
-			auto tiny = tinyHandle.get().get();
-			float scale = get_visual_scale(tiny);
-			TransferInventory(tiny, giant, scale, false, true, DamageSource::Overkill, true);
-			// ^ transferInventory>TransferInventoryToDropBox also plays crush audio on loot pile
-			// Was done like that because Audio disappears on actors
-		});
-
-		Runtime::CreateExplosion(receiver, get_visual_scale(receiver) * 0.5, "BloodExplosion");
-		std::random_device rd;
-		std::mt19937 gen(rd());
-		std::uniform_real_distribution<float> dis(-0.2, 0.2);
-
-		if (!IsLiving(receiver)) {
-			SpawnDustParticle(receiver, attacker, "NPC Root [Root]", 3.0);
-		} else {
-			if (!LessGore()) {
-				auto root = find_node(receiver, "NPC Root [Root]");
-				if (root) {
-					float currentSize = get_visual_scale(receiver);
-					SpawnParticle(receiver, 0.60, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, currentSize * 1.25, 7, root);
-					SpawnParticle(receiver, 0.60, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, currentSize * 1.25, 7, root);
-					SpawnParticle(receiver, 0.60, "GTS/Damage/Crush.nif", root->world.rotate, root->world.translate, currentSize * 1.25, 7, root);
-					SpawnParticle(receiver, 0.60, "GTS/Damage/Crush.nif", root->world.rotate, root->world.translate, currentSize * 1.25, 7, root);
-					SpawnParticle(receiver, 1.20, "GTS/Damage/ShrinkOrCrush.nif", NiMatrix3(), root->world.translate, currentSize * 12.5, 7, root);
-				}
-			}
-			/*Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC Head [Head]", NiPoint3{0 0, -10}, 512, true, true);
-			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC L Foot [Lft ]", NiPoint3{0, 0, -10}, 512, true, false);
-			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{0, 0, -10}, 512, true, false);*/
-			Runtime::PlayImpactEffect(receiver, "GtsBloodSprayImpactSet", "NPC Root [Root]", NiPoint3{0, 0, -1}, 512, false, true);
-		}
-
-		// We don't want to call CrushManager::crush here because it will double-transfer the loot
-
-		PrintDeathSource(attacker, receiver, DamageSource::Overkill);
-
-		if (receiver->formID != 0x14) {
-			Disintegrate(receiver, true); // Set critical stage 4 on actors
-		} else if (receiver->formID == 0x14) {
-			TriggerScreenBlood(50);
-			receiver->SetAlpha(0.0); // Player can't be disintegrated, so we make player Invisible
-		}
 	}
 }
