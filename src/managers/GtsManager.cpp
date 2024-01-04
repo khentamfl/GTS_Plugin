@@ -58,6 +58,19 @@ namespace {
 		}
 	}
 
+	void FixFalling(Actor* actor) {
+		if (actor->formID == 0x14 || IsTeammate(actor)) {
+			float falling = 0.0;
+			float scale = get_visual_scale(actor);
+			actor->GetGraphVariableFloat("VelocityZ", falling);
+			log::info("VelocityZ pre: {}", falling);
+			if (falling > 0) {
+				actor->SetGraphVariableFloat("VelocityZ", falling /= scale);
+				log::info("VelocityZ post: {}", falling);
+			}
+		}
+	}
+
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		auto profiler = Profilers::Profile("Manager: update_height");
 		if (!actor) {
@@ -265,6 +278,7 @@ void GtsManager::Update() {
 		}
 
 		FixActorFade(actor);
+		FixFalling(actor);
 
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();

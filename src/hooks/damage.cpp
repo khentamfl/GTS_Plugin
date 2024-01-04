@@ -203,7 +203,7 @@ namespace Hooks
 		);
 
     // SE(626400)
-		static FunctionHook<void(AIProcess* proc, Actor* attacker, DEFAULT_OBJECT object, TESIdleForm* idle, bool a5, bool a6, TESObjectREFR* target)> SkyrimAnimEvent( 
+		/*static FunctionHook<void(AIProcess* proc, Actor* attacker, DEFAULT_OBJECT object, TESIdleForm* idle, bool a5, bool a6, TESObjectREFR* target)> SkyrimAnimEvent( 
 			REL::RelocationID(38290, 38294),
 			[](auto* proc, auto* attacker, auto* object, auto* idle, auto a5, auto a6, auto* target) {
 				if (target) {
@@ -219,6 +219,6 @@ namespace Hooks
 				}
 				return SkyrimAnimEvent(proc, attacker, object, idle, a5, a6, target);
 			}
-		);
+		);*/
 	}
 }
