@@ -88,7 +88,7 @@ namespace Gts {
 			}
 		}
 
-		const float RAY_LENGTH = 1000;
+		float RAY_LENGTH = 200 * scale;
 		
 
 		// Ceiling
