@@ -54,6 +54,8 @@ namespace Hooks {
 					log::info("IdleForm: found");
 				} if (object) {
 					log::info("Default Object found");
+					log::info("Object ID: {}", BGSDefaultObjectManager::GetSingleton()->GetObject(object)->GetFormID());
+					log::info("Object Name: {}", BGSDefaultObjectManager::GetSingleton()->GetObject(object)->GetName());
 				}
 				SkyrimPlayAnimation(proc, attacker, object, idle, a5, a6, target);
 				return;
