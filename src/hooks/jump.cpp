@@ -51,7 +51,7 @@ namespace Hooks {
 					log::info("Attacker: {}", attacker->GetDisplayFullName());
 				}
 				if (idle) {
-					log::idle("IdleForm: {}", idle);
+					log::info("IdleForm: {}", idle);
 				} if (object) {
 					log::info("Default Object: {}", object);
 				}
