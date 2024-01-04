@@ -175,6 +175,8 @@ namespace {
 namespace Hooks
 {
 	void Hook_Damage::Hook(Trampoline& trampoline) {
+
+    // SE(5D6300)
 		static FunctionHook<void(Actor* a_this, float dmg, Actor* aggressor, uintptr_t maybe_hitdata, TESObjectREFR* damageSrc)> SkyrimTakeDamage(
 			RELOCATION_ID(36345, 37335),
 			[](auto* a_this, auto dmg, auto* aggressor, uintptr_t maybe_hitdata, auto* damageSrc) { // Universal damage function before Difficulty damage
@@ -200,6 +202,7 @@ namespace Hooks
 			}
 		);
 
+    // SE(626400)
 		/*static FunctionHook<void(TESObjectREFR* a_this, HitData* hit_data)> SkyrimProcessHitEvent( // Works on HitData based events. Not affected by Difficulty modifiers.
 			RELOCATION_ID(37633, 38586),
 			[](auto* a_this, auto* hit_data) {
