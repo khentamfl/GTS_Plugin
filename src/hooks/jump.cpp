@@ -54,7 +54,7 @@ namespace Hooks {
 					log::info("IdleForm: found");
 				} if (object) {
 					log::info("Default Object found");
-					log::info("Object Form: {}", stl::to_underlying(object));
+					object = nullptr;
 				}
 				SkyrimPlayAnimation(proc, attacker, object, idle, a5, a6, target);
 				return;
