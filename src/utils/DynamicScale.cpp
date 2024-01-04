@@ -54,7 +54,7 @@ namespace Gts {
 			return std::numeric_limits<float>::infinity();
 		}
 		bool debug = IsDebugEnabled();
-		
+
 		float scale = get_visual_scale(giant);
 		// === Calculation of ray directions ===
 		auto transform = root_node->world;
@@ -76,11 +76,12 @@ namespace Gts {
 		float degrees = 380.0 / sides;
 		float rads = degrees * 3.141 / 180.0;
 		const float BASE_DIST = 18.0;
-		const float LEVEL_SEP = 6.0;
+		const float LEVEL_SEP = 12.0;
 		const int LEVELS = 3;
-		for (int j=0; j < LEVELS; j++) {
-			for (int i=0; i<sides; i++) {
-				
+		
+		for (int i=0; i<sides; i++) {
+			for (int j=0; j < LEVELS; j++) {
+
 				auto mat = NiMatrix3(0.0, 0.0, rads * i);
 				auto vert = mat * NiPoint3(0.0, BASE_DIST + LEVEL_SEP*j, 0.0);
 				vert = transform.rotate * (vert * scale);
@@ -91,7 +92,7 @@ namespace Gts {
 				if (DO_TESTRAY) {
 					float TESTRAY_LENGTH = LEVEL_SEP * scale;
 					auto ray_start = vert;
-					auto ray_dir = mat * NiPoint3(0.0, 1.0, 0.0);
+					auto ray_dir = transform.rotate * (mat * NiPoint3(0.0, 1.0, 0.0));
 					if (debug) {
 						NiPoint3 ray_end = vert + ray_dir*TESTRAY_LENGTH;
 						DebugAPI::DrawSphere(glm::vec3(ray_start.x, ray_start.y, ray_start.z), 8.0, 10, {1.0, 1.0, 0.0, 1.0});
@@ -103,7 +104,7 @@ namespace Gts {
 						if (debug) {
 							DebugAPI::DrawSphere(glm::vec3(testPos.x, testPos.y, testPos.z), 5.0, 30, {1.0, 0.0, 0.0, 1.0});
 						}
-						continue;
+						break; // Don't do later levels either
 					}
 				}
 
