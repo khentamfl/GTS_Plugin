@@ -1,38 +1,8 @@
-
-#include "managers/animation/AnimationManager.hpp"
-#include "managers/animation/Utils/CrawlUtils.hpp"
-#include "managers/gamemode/GameModeManager.hpp"
-#include "magic/effects/smallmassivethreat.hpp"
-#include "managers/damage/CollisionDamage.hpp"
-#include "managers/cameras/camutil.hpp"
-#include "managers/ai/headtracking.hpp"
-#include "managers/RipClothManager.hpp"
-#include "managers/GtsSizeManager.hpp"
-#include "managers/InputManager.hpp"
-#include "magic/effects/common.hpp"
-#include "managers/GtsManager.hpp"
-#include "managers/Attributes.hpp"
-#include "managers/hitmanager.hpp"
 #include "utils/DynamicScale.hpp"
-#include "managers/highheel.hpp"
 #include "utils/actorUtils.hpp"
-#include "data/persistent.hpp"
-#include "managers/Rumble.hpp"
-#include "scale/modscale.hpp"
-#include "data/transient.hpp"
-#include "data/runtime.hpp"
-#include "utils/camera.hpp"
-#include "utils/debug.hpp"
 #include "UI/DebugAPI.hpp"
 #include "scale/scale.hpp"
-#include "data/time.hpp"
-#include "profiler.hpp"
 #include "rays/raycast.hpp"
-#include "Config.hpp"
-#include "timer.hpp"
-#include "node.hpp"
-#include <vector>
-#include <string>
 
 using namespace Gts;
 using namespace RE;
