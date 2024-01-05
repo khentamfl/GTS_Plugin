@@ -265,8 +265,8 @@ namespace Gts {
 		LaunchActor::LaunchAtNode(giant, radius, power, node); // doesn't need a check since function below has it
 	}
 
-	void LaunchActor::LaunchAtNode(Actor* giant, float radius, float power, std::string_view node) {
-		auto node = find_node(giant, node);
+	void LaunchActor::LaunchAtNode(Actor* giant, float radius, float power, std::string_view object) {
+		auto node = find_node(giant, object);
 		if (node) {
 			LaunchActor::LaunchAtNode(giant, radius, power, node);
 		}
