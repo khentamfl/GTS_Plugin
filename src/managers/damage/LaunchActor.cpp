@@ -265,6 +265,13 @@ namespace Gts {
 		LaunchActor::LaunchAtNode(giant, radius, power, node); // doesn't need a check since function below has it
 	}
 
+	void LaunchActor::LaunchAtNode(Actor* giant, float radius, float power, std::string_view node) {
+		auto node = find_node(giant, node);
+		if (node) {
+			LaunchActor::LaunchAtNode(giant, radius, power, node);
+		}
+	}
+
 	void LaunchActor::LaunchAtNode(Actor* giant, float radius, float power, NiAVObject* node) {
 		auto profiler = Profilers::Profile("Other: Launch Actor Crawl");
 		if (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone(giant)) {

@@ -168,11 +168,11 @@ namespace {
     void GTSSneakCrush_Butt_FallDownImpact(AnimationEventData& data) {DoButtDamage(&data.giant);}
 
     // footsteps 
-    void GTSSneakCrush_FootStepL(AnimationEventData& data) {DoFootstepEffects(&data.giant, 1.0, false);}
-    void GTSSneakCrush_FootStepR(AnimationEventData& data) {DoFootstepEffects(&data.giant, 1.0, true);}
+    void GTSSneakCrush_FootStepL(AnimationEventData& data) {DoFootsteps(&data.giant, 1.0, false);}
+    void GTSSneakCrush_FootStepR(AnimationEventData& data) {DoFootsteps(&data.giant, 1.0, true);}
 
-    void GTSSneakCrush_FootStep_SilentL(AnimationEventData& data) {DoFootstepEffects(&data.giant, 0.7, false);}
-    void GTSSneakCrush_FootStep_SilentR(AnimationEventData& data) {DoFootstepEffects(&data.giant, 0.7, true);}
+    void GTSSneakCrush_FootStep_SilentL(AnimationEventData& data) {DoFootsteps(&data.giant, 0.7, false);}
+    void GTSSneakCrush_FootStep_SilentR(AnimationEventData& data) {DoFootsteps(&data.giant, 0.7, true);}
 }
 
 namespace Gts
