@@ -51,32 +51,30 @@ namespace {
 
     void DoFootsteps(Actor* giant, float power, bool right) {
         float dust = 1.0;
-        float perk = GetPerkBonus_Basics(&data.giant);
+        float perk = GetPerkBonus_Basics(giant);
 
-        if (HasSMT(&data.giant)) {
+        if (HasSMT(giant)) {
 			dust = 1.25;
 		} 
         
         if (right) {
-            GRumble::Once("FST_R", &data.giant, 2.20 * power, 0.0, RNode);
-            DoDamageEffect(&data.giant, 1.4 * power, 1.45 * power, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
-            DoFootstepSound(&data.giant, 1.0 * power, FootEvent::Right, RNode);
-            DoDustExplosion(&data.giant, dust * power, FootEvent::Right, RNode);
-            DoLaunch(&data.giant, 0.65 * perk * power, 1.3 * power, FootEvent::Right);
+            GRumble::Once("FST_R", giant, 2.20 * power, 0.0, RNode);
+            DoDamageEffect(giant, 1.4 * power, 1.45 * power, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+            DoFootstepSound(giant, 1.0 * power, FootEvent::Right, RNode);
+            DoDustExplosion(giant, dust * power, FootEvent::Right, RNode);
+            DoLaunch(giant, 0.65 * perk * power, 1.3 * power, FootEvent::Right);
         } else {
-            GRumble::Once("FST_L", &data.giant, 2.20 * power, 0.0, LNode);
-            DoDamageEffect(&data.giant, 1.4 * power, 1.45 * power, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
-            DoFootstepSound(&data.giant, 1.0 * power, FootEvent::Left, LNode);
-            DoDustExplosion(&data.giant, dust * power, FootEvent::Left, LNode);
-            DoLaunch(&data.giant, 0.65 * perk * power, 1.3 * power, FootEvent::Left);
+            GRumble::Once("FST_L", giant, 2.20 * power, 0.0, LNode);
+            DoDamageEffect(giant, 1.4 * power, 1.45 * power, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+            DoFootstepSound(giant, 1.0 * power, FootEvent::Left, LNode);
+            DoDustExplosion(giant, dust * power, FootEvent::Left, LNode);
+            DoLaunch(giant, 0.65 * perk * power, 1.3 * power, FootEvent::Left);
         }
     }
 
 
     void DoButtDamage(Actor* giant) {
-        auto giant = &data.giant;
-
-		float perk = GetPerkBonus_Basics(&data.giant);
+		float perk = GetPerkBonus_Basics(giant);
 		float dust = 1.0;
 
 		if (HasSMT(giant)) {
@@ -97,9 +95,9 @@ namespace {
 				DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC R Butt");
 				DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC L Butt");
 				DoFootstepSound(giant, 1.25, FootEvent::Right, RNode);
-				DoLaunch(&data.giant, 1.30 * perk, 4.20, FootEvent::Butt);
-				GRumble::Once("Butt_L", &data.giant, 3.60 * damage, 0.02, "NPC R Butt");
-				GRumble::Once("Butt_R", &data.giant, 3.60 * damage, 0.02, "NPC L Butt");
+				DoLaunch(giant, 1.30 * perk, 4.20, FootEvent::Butt);
+				GRumble::Once("Butt_L", giant, 3.60 * damage, 0.02, "NPC R Butt");
+				GRumble::Once("Butt_R", giant, 3.60 * damage, 0.02, "NPC L Butt");
 			}
 		} else {
 			if (!ButtR) {
@@ -117,9 +115,8 @@ namespace {
     }
 
     void DoKneeDamage(Actor* giant) {
-        auto giant = &data.giant;
 
-		float perk = GetPerkBonus_Basics(&data.giant);
+		float perk = GetPerkBonus_Basics(giant);
 		float dust = 1.0;
 
 		if (HasSMT(giant)) {
