@@ -5,6 +5,7 @@
 #include "managers/damage/CollisionDamage.hpp"
 #include "managers/animation/ButtCrush.hpp"
 #include "managers/damage/LaunchActor.hpp"
+#include "managers/ai/aifunctions.hpp"
 #include "managers/animation/Grab.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
@@ -138,63 +139,6 @@ namespace {
 		});
 	}
 
-	void ModGrowthCount(Actor* giant, float value, bool reset) {
-		auto transient = Transient::GetSingleton().GetData(giant);
-		if (transient) {
-			transient->ButtCrushGrowthAmount += value;
-			if (reset) {
-				transient->ButtCrushGrowthAmount = 0.0;
-			}
-		}
-	}
-
-	void SetBonusSize(Actor* giant, float value, bool reset) {
-		auto saved_data = Persistent::GetSingleton().GetData(giant);
-		if (saved_data) {
-			saved_data->bonus_max_size += value;
-			if (reset) {
-				update_target_scale(giant, -saved_data->bonus_max_size, SizeEffectType::kNeutral);
-				if (get_target_scale(giant) < get_natural_scale(giant)) {
-					set_target_scale(giant, get_natural_scale(giant)); // Protect against going into negatives
-				}
-				saved_data->bonus_max_size = 0;
-			}
-		}
-	}
-
-	float GetGrowthCount(Actor* giant) {
-		auto transient = Transient::GetSingleton().GetData(giant);
-		if (transient) {
-			return transient->ButtCrushGrowthAmount;
-		}
-		return 1.0;
-	}
-
-	float GetGrowthLimit(Actor* actor) {
-		float limit = 0;
-		if (Runtime::HasPerkTeam(actor, "ButtCrush_GrowingDisaster")) {
-			limit += 2.0;
-		}
-		if (Runtime::HasPerkTeam(actor, "ButtCrush_UnstableGrowth")) {
-			limit += 3.0;
-		}
-		if (Runtime::HasPerkTeam(actor, "ButtCrush_LoomingDoom")) {
-			limit += 4.0;
-		}
-		return limit;
-	}
-
-	float GetButtCrushDamage(Actor* actor) {
-		float damage = 1.0;
-		if (Runtime::HasPerkTeam(actor, "ButtCrush_KillerBooty")) {
-			damage += 0.30;
-		}
-		if (Runtime::HasPerkTeam(actor, "ButtCrush_UnstableGrowth")) {
-			damage += 0.70;
-		}
-		return damage;
-	}
-
 	void GTSButtCrush_MoveBody_MixFrameToLoop(AnimationEventData& data) {
 		auto giant = &data.giant;
 		TrackButt(giant, true);
@@ -234,7 +178,7 @@ namespace {
 			dust = 1.25;
 		}
 		GRumble::Once("FS_R", &data.giant, 2.20, 0.0, RNode);
-		DoDamageEffect(&data.giant, 1.4, 1.45, 10, 0.25, FootEvent::Right, 1.0, DamageSource::Booty);
+		DoDamageEffect(&data.giant, 1.4, 1.45, 10, 0.25, FootEvent::Right, 1.0, DamageSource::Crush);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.65 * perk, 1.3, FootEvent::Right);
@@ -249,7 +193,7 @@ namespace {
 			dust = 1.25;
 		}
 		GRumble::Once("FS_L", &data.giant, 2.20, 0.0, LNode);
-		DoDamageEffect(&data.giant, 1.4, 1.45, 10, 0.25, FootEvent::Left, 1.0, DamageSource::Booty);
+		DoDamageEffect(&data.giant, 1.4, 1.45, 10, 0.25, FootEvent::Left, 1.0, DamageSource::Crush);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.65 * perk, 1.3, FootEvent::Left);

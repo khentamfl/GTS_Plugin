@@ -10,6 +10,14 @@ using namespace Gts;
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny);
 	void RagdollTask(Actor* tiny);
+
+	
+	float GetGrowthCount(Actor* giant);
+	float GetGrowthLimit(Actor* actor);
+	float GetButtCrushDamage(Actor* actor);
+
+	void ModGrowthCount(Actor* giant, float value, bool reset);
+	void SetBonusSize(Actor* giant, float value, bool reset);
+
 	void ScareActors(Actor* giant);
-	void ScareHostileActors(Actor* giant, float dist);
 }
