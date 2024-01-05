@@ -222,7 +222,6 @@ namespace Gts {
 		ModSizeExperience(0.52 * scale_factor * target_scale, to);
 		update_target_scale(from, -amount, SizeEffectType::kShrink);
 		update_target_scale(to, amount*effeciency/10, SizeEffectType::kGrow); // < 10 times weaker size steal towards caster. Absorb exclusive.
-		ChanceToScare(to, from);
 	}
 
 	inline void Transfer(Actor* from, Actor* to, float scale_factor, float bonus) {
@@ -280,8 +279,6 @@ namespace Gts {
 
 		float alteration_level_bonus = 0.0380 + (GtsSkillLevel * 0.000360); // + 100% bonus at level 100
 		Steal(target, caster, power, power * alteration_level_bonus, transfer_effeciency, source);
-
-		ChanceToScare(caster, target);
 	}
 
 	inline bool ShrinkToNothing(Actor* caster, Actor* target) {

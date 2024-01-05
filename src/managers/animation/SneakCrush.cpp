@@ -59,13 +59,13 @@ namespace {
         
         if (right) {
             GRumble::Once("FST_R", &data.giant, 2.20 * power, 0.0, RNode);
-            DoDamageEffect(&data.giant, 1.4 * power, 1.45 * power, 10, 0.25, FootEvent::Right, 1.0, DamageSource::Crush);
+            DoDamageEffect(&data.giant, 1.4 * power, 1.45 * power, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
             DoFootstepSound(&data.giant, 1.0 * power, FootEvent::Right, RNode);
             DoDustExplosion(&data.giant, dust * power, FootEvent::Right, RNode);
             DoLaunch(&data.giant, 0.65 * perk * power, 1.3 * power, FootEvent::Right);
         } else {
             GRumble::Once("FST_L", &data.giant, 2.20 * power, 0.0, LNode);
-            DoDamageEffect(&data.giant, 1.4 * power, 1.45 * power, 10, 0.25, FootEvent::Left, 1.0, DamageSource::Crush);
+            DoDamageEffect(&data.giant, 1.4 * power, 1.45 * power, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
             DoFootstepSound(&data.giant, 1.0 * power, FootEvent::Left, LNode);
             DoDustExplosion(&data.giant, dust * power, FootEvent::Left, LNode);
             DoLaunch(&data.giant, 0.65 * perk * power, 1.3 * power, FootEvent::Left);
