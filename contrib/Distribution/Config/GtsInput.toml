@@ -572,7 +572,7 @@ duration = 1.2
 # Reports Follower's size info into the console
 
 [[InputEvent]]
-name = "ProtectTinies"
+name = "ProtectSmallOnes"
 keys = ["C"]
 duration = 1.0
 
