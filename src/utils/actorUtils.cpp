@@ -1866,11 +1866,11 @@ namespace Gts {
 
 		for (auto Actor: find_actors()) {
 			if (Actor == player || IsTeammate(Actor)) {
-				float scale = 4.0;
+				float scale = 4.0 * get_visual_scale(Actor);
 				auto node = find_node(Actor, "NPC Root [Root]");
 				if (node) {
 					NiPoint3 pos = node->world.translate;
-					SpawnParticle(tiny, 4.60, "GTS/Magic/Life_Drain.nif", NiMatrix3(), pos, scale, 7, nullptr);
+					SpawnParticle(Actor, 4.60, "GTS/Magic/Life_Drain.nif", NiMatrix3(), pos, scale, 7, nullptr);
 				}
 			}
 		}
