@@ -1893,7 +1893,7 @@ namespace Gts {
 		float Start = Time::WorldTimeElapsed();
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
-			if (!tinyhandle) {
+			if (!gianthandle) {
 				return false;
 			}
 			float Finish = Time::WorldTimeElapsed();

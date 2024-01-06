@@ -183,6 +183,7 @@ namespace Gts {
 	void ShrinkOutburstExplosion(Actor* giant, bool WasHit);
 
 	void ProtectSmallOnes();
+	void LaunchImmunityTask(Actor* giant);
 
 	bool HasSMT(Actor* giant);
 	void TiredSound(Actor* player, std::string_view message);
