@@ -75,6 +75,7 @@ namespace Gts {
 			bool FPCrawling = false;
 			bool FPProning = false;
 			bool Overkilled = false;
+			bool Protection = false;
 
 			float Immunity = 1.0;
 
@@ -125,8 +126,10 @@ namespace Gts {
 			result.FPCrawling = FPCrawling;
 			result.FPProning = FPProning;
 			result.Overkilled = Overkilled;
+			result.Protection = Protection;
 
 			result.Immunity = Immunity;
+			
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();
 

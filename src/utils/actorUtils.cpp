@@ -1250,13 +1250,17 @@ namespace Gts {
 	}
 
 	bool DisallowSizeDamage(Actor* giant, Actor* tiny) {
-		bool hasEffect = Runtime::HasMagicEffect(giant, "gtsProtectTiniesMGEF");
-		if (!hasEffect) {
-			return false; // exit early
+		auto transient = Transient::GetSingleton().GetData(giant);
+		if (transient) {
+			if (transient->Protection == false) {
+				return false;
+			} 
+
+			bool Hostile = IsHostile(giant, tiny);
+			return transient->Protection && !Hostile;
 		}
-		bool Hostile = IsHostile(giant, tiny);
 		
-		return hasEffect && !Hostile;
+		return false;
 	}
 
 	bool AllowDevourment() {
@@ -1874,6 +1878,34 @@ namespace Gts {
 				}
 			}
 		}
+
+		LaunchImmunityTask(Actor);
+	}
+
+	void LaunchImmunityTask(Actor* giant) {
+		auto transient = Transient::GetSingleton().GetData(giant);
+		if (transient) {
+			transient->Protection = true;
+		}
+
+		std::string name = std::format("Protect_{}", giant->formID);
+
+		float Start = Time::WorldTimeElapsed();
+		ActorHandle gianthandle = giant->CreateRefHandle();
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!tinyhandle) {
+				return false;
+			}
+			float Finish = Time::WorldTimeElapsed();
+			float timepassed = Finish - Start;
+			if (timepassed < 30.0) {
+				return true; // not enough time has passed yet
+			}
+			if (transient) {
+				transient->Protection = false; // reset protection to default value
+			}
+			return false; // stop task, immunity has ended
+		});
 	}
 
 
