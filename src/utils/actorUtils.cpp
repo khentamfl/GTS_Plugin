@@ -1866,7 +1866,7 @@ namespace Gts {
 
 		for (auto Actor: find_actors()) {
 			if (Actor == player || IsTeammate(Actor)) {
-				float scale = 4.0 * get_visual_scale(Actor);
+				float scale = 2.0 * get_visual_scale(Actor);
 				auto node = find_node(Actor, "NPC Root [Root]");
 				if (node) {
 					NiPoint3 pos = node->world.translate;
