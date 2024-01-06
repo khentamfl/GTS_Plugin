@@ -135,6 +135,8 @@ EffectSizeAmplifyPotion = "GTS.esp|452F1D"
 SizeDrainPotion = "GTS.esp|5B5557"
 ShrinkPoison = "GTS.esp|5B5552"
 
+gtsProtectTiniesMGEF = "GTS.esp|763AD1"
+
 
 # Crushing
 FakeCrushEffect = "GTS.esp|271EF9"
@@ -168,6 +170,8 @@ GtsBleedSpell = "GTS.esp|01CEA2"
 HealthBoost = "GTS.esp|518643"
 ShrinkStorm = "GTS.esp|3C527A"
 ShrinkBolt = "GTS.esp|3C5276"
+
+gtsProtectTiniesSpell = "GTS.esp|763ACF"
 
 # Survival
 

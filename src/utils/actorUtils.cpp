@@ -1249,6 +1249,16 @@ namespace Gts {
 		playerCamera->ToggleFreeCameraMode(false);
 	}
 
+	bool DisallowSizeDamage(Actor* giant, Actor* tiny) {
+		bool hasEffect = Runtime::HasMagicEffect(giant, "gtsProtectTiniesMGEF");
+		if (!hasEffect) {
+			return false; // exit early
+		}
+		bool Hostile = IsHostile(giant, tiny);
+		
+		return hasEffect && !Hostile;
+	}
+
 	bool AllowDevourment() {
 		return Persistent::GetSingleton().devourment_compatibility;
 	}
@@ -1845,6 +1855,22 @@ namespace Gts {
 					if (nodeCollisions > 0) {
 						ShrinkOutburst_Shrink(giant, otherActor, shrink, gigantism);
 					}
+				}
+			}
+		}
+	}
+
+	void ProtectSmallOnes() {
+		auto player = PlayerCharacter::GetSingleton();
+		Runtime::CastSpell(player, player, "gtsProtectTiniesSpell");
+
+		for (auto Actor: find_actors()) {
+			if (Actor == player || IsTeammate(Actor)) {
+				float scale = 4.0;
+				auto node = find_node(Actor, "NPC Root [Root]");
+				if (node) {
+					NiPoint3 pos = node->world.translate;
+					SpawnParticle(tiny, 4.60, "GTS/Magic/Life_Drain.nif", NiMatrix3(), pos, scale, 7, nullptr);
 				}
 			}
 		}

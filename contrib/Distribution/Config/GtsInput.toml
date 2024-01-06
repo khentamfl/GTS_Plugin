@@ -570,3 +570,12 @@ keys = ["LCONTROL"]
 duration = 1.2
 
 # Reports Follower's size info into the console
+
+[[InputEvent]]
+name = "ProtectTinies"
+keys = ["C"]
+duration = 1.0
+
+# Protect tinies against size-related damage for 30 seconds. 
+# Protects from yourself and followers.
+# Works on non-hostile actors only. 

@@ -142,6 +142,7 @@ namespace Gts {
 	void ApplyShakeAtPoint(Actor* caster, float modifier, const NiPoint3& coords, float radius);
 	void EnableFreeCamera();
 
+	bool DisallowSizeDamage(Actor* giant, Actor* tiny);
 	bool AllowDevourment();
 	bool AllowFeetTracking();
 	bool LessGore();
@@ -180,6 +181,8 @@ namespace Gts {
 	void TinyCalamityExplosion(Actor* giant, float radius);
 	void ShrinkOutburst_Shrink(Actor* giant, Actor* tiny, float shrink, float gigantism);
 	void ShrinkOutburstExplosion(Actor* giant, bool WasHit);
+
+	void ProtectSmallOnes();
 
 	bool HasSMT(Actor* giant);
 	void TiredSound(Actor* player, std::string_view message);

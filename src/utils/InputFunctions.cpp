@@ -158,6 +158,13 @@ namespace {
 		ShrinkOutburstExplosion(player, false);
 	}
 
+	void ProtectSmallOnesEvent(const InputEventData& data) {
+		static Timer ProtectTimer = Timer(5.0);
+		if (ProtectTimer.ShouldRunFrame()) {
+			ProtectSmallOnes();
+		}
+	}
+
 	void AnimSpeedUpEvent(const InputEventData& data) {
 		AnimationManager::AdjustAnimSpeed(0.045); // Increase speed and power
 	}
@@ -181,5 +188,6 @@ namespace Gts
 		InputManager::RegisterInputEvent("RapidGrowth", RapidGrowthEvent);
 		InputManager::RegisterInputEvent("RapidShrink", RapidShrinkEvent);
 		InputManager::RegisterInputEvent("ShrinkOutburst", ShrinkOutburstEvent);
+		InputManager::RegisterInputEvent("ProtectSmallOnes", ProtectSmallOnesEvent);
 	}
 }
