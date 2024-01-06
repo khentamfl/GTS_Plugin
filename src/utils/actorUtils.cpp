@@ -1866,7 +1866,7 @@ namespace Gts {
 
 	void ProtectSmallOnes() {
 		auto player = PlayerCharacter::GetSingleton();
-		Runtime::CastSpell(player, player, "gtsProtectTiniesSpell");
+		//Runtime::CastSpell(player, player, "gtsProtectTiniesSpell");
 
 		for (auto Actor: find_actors()) {
 			if (Actor == player || IsTeammate(Actor)) {
@@ -1898,7 +1898,7 @@ namespace Gts {
 			}
 			float Finish = Time::WorldTimeElapsed();
 			float timepassed = Finish - Start;
-			if (timepassed < 30.0) {
+			if (timepassed < 60.0) {
 				return true; // not enough time has passed yet
 			}
 			if (transient) {
