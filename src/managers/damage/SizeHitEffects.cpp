@@ -165,8 +165,8 @@ namespace {
 		float scale = get_visual_scale(receiver);
 		float naturalscale = get_natural_scale(receiver);
 		
-		float BalanceMode = sizemanager.BalancedMode();
 		auto& sizemanager = SizeManager::GetSingleton();
+		float BalanceMode = sizemanager.BalancedMode();
 		float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(receiver)/100;
 		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(receiver)/100;
 		float SizeDifference = get_visual_scale(receiver)/get_visual_scale(attacker);
