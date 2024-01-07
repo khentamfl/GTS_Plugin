@@ -43,8 +43,6 @@ namespace Gts {
 				continue;
 			}
 
-			log::info("Starting STN");
-
 			if (data.state == ShrinkState::Healthy) {
 				SetReanimatedState(tiny);
 				data.state = ShrinkState::Shrinking;

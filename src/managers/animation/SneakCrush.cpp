@@ -158,33 +158,33 @@ namespace {
     ///                             E V E N T S
     ////////////////////////////////////////////////////////////////////////////////////////
 
-    void GTSSneakCrush_Knee_CamOn(AnimationEventData& data) {TrackKnee(&data.giant, true);}
-    void GTSSneakCrush_Knee_CamOff(AnimationEventData& data) {TrackKnee(&data.giant, false);}
+    void GTS_SneakCrush_Knee_CamOn(AnimationEventData& data) {TrackKnee(&data.giant, true);}
+    void GTS_SneakCrush_Knee_CamOff(AnimationEventData& data) {TrackKnee(&data.giant, false);}
     // Knee / Butt camera tracking
-    void GTSSneakCrush_Butt_CamOn(AnimationEventData& data) {TrackBooty(&data.giant, true);}
-    void GTSSneakCrush_Butt_CamOff(AnimationEventData& data) {TrackBooty(&data.giant, false);}
+    void GTS_SneakCrush_Butt_CamOn(AnimationEventData& data) {TrackBooty(&data.giant, true);}
+    void GTS_SneakCrush_Butt_CamOff(AnimationEventData& data) {TrackBooty(&data.giant, false);}
     // Knee / Butt impacts
-    void GTSSneakCrush_Knee_FallDownImpact(AnimationEventData& data) {DoKneeDamage(&data.giant);}
-    void GTSSneakCrush_Butt_FallDownImpact(AnimationEventData& data) {DoButtDamage(&data.giant);}
+    void GTS_SneakCrush_Knee_FallDownImpact(AnimationEventData& data) {DoKneeDamage(&data.giant);}
+    void GTS_SneakCrush_Butt_FallDownImpact(AnimationEventData& data) {DoButtDamage(&data.giant);}
 
     // footsteps 
-    void GTSSneakCrush_FootStepL(AnimationEventData& data) {DoFootsteps(&data.giant, 1.0, false);}
-    void GTSSneakCrush_FootStepR(AnimationEventData& data) {DoFootsteps(&data.giant, 1.0, true);}
+    void GTS_SneakCrush_FootStepL(AnimationEventData& data) {DoFootsteps(&data.giant, 1.0, false);}
+    void GTS_SneakCrush_FootStepR(AnimationEventData& data) {DoFootsteps(&data.giant, 1.0, true);}
 
-    void GTSSneakCrush_FootStep_SilentL(AnimationEventData& data) {DoFootsteps(&data.giant, 0.7, false);}
-    void GTSSneakCrush_FootStep_SilentR(AnimationEventData& data) {DoFootsteps(&data.giant, 0.7, true);}
+    void GTS_SneakCrush_FootStep_SilentL(AnimationEventData& data) {DoFootsteps(&data.giant, 0.7, false);}
+    void GTS_SneakCrush_FootStep_SilentR(AnimationEventData& data) {DoFootsteps(&data.giant, 0.7, true);}
 }
 
 namespace Gts
 {
 	void AnimationSneakCrush::RegisterEvents() {
-		AnimationManager::RegisterEvent("GTSSneakCrush_Knee_CamOn", "SneakCrush", GTSSneakCrush_Knee_CamOn);
-		AnimationManager::RegisterEvent("GTSSneakCrush_Knee_CamOff", "ButtCrush", GTSSneakCrush_Knee_CamOff);
-		AnimationManager::RegisterEvent("GTSSneakCrush_Butt_CamOn", "ButtCrush", GTSSneakCrush_Butt_CamOn);
-		AnimationManager::RegisterEvent("GTSSneakCrush_Butt_CamOff", "ButtCrush", GTSSneakCrush_Butt_CamOff);
-		AnimationManager::RegisterEvent("GTSSneakCrush_Knee_FallDownImpact", "ButtCrush", GTSSneakCrush_Knee_FallDownImpact);
-		AnimationManager::RegisterEvent("GTSSneakCrush_Butt_FallDownImpact", "ButtCrush", GTSSneakCrush_Butt_FallDownImpact);
-		AnimationManager::RegisterEvent("GTSSneakCrush_FootStepL", "ButtCrush", GTSSneakCrush_FootStepL);
-		AnimationManager::RegisterEvent("GTSSneakCrush_FootStepR", "ButtCrush", GTSSneakCrush_FootStepR);
+		AnimationManager::RegisterEvent("GTS_SneakCrush_Knee_CamOn", "SneakCrush", GTS_SneakCrush_Knee_CamOn);
+		AnimationManager::RegisterEvent("GTS_SneakCrush_Knee_CamOff", "ButtCrush", GTS_SneakCrush_Knee_CamOff);
+		AnimationManager::RegisterEvent("GTS_SneakCrush_Butt_CamOn", "ButtCrush", GTS_SneakCrush_Butt_CamOn);
+		AnimationManager::RegisterEvent("GTS_SneakCrush_Butt_CamOff", "ButtCrush", GTS_SneakCrush_Butt_CamOff);
+		AnimationManager::RegisterEvent("GTS_SneakCrush_Knee_FallDownImpact", "ButtCrush", GTS_SneakCrush_Knee_FallDownImpact);
+		AnimationManager::RegisterEvent("GTS_SneakCrush_Butt_FallDownImpact", "ButtCrush", GTS_SneakCrush_Butt_FallDownImpact);
+		AnimationManager::RegisterEvent("GTS_SneakCrush_FootStepL", "ButtCrush", GTS_SneakCrush_FootStepL);
+		AnimationManager::RegisterEvent("GTS_SneakCrush_FootStepR", "ButtCrush", GTS_SneakCrush_FootStepR);
 	}
 }
