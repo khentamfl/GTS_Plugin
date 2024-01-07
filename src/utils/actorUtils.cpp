@@ -363,7 +363,7 @@ namespace Gts {
 	bool IsButtCrushing(Actor* actor) {
 		bool ButtCrushing;
 		actor->GetGraphVariableBool("GTS_IsButtCrushing", ButtCrushing);
-		return ButtCrushing;//Voring;
+		return ButtCrushing;
 	}
 
 	bool ButtCrush_IsAbleToGrow(Actor* actor, float limit) {
@@ -1375,10 +1375,11 @@ namespace Gts {
 		if (giant->formID == 0x14) {
 			auto Persistent = Persistent::GetSingleton().GetData(giant);
 			if (Persistent) {
+				float modifier = Runtime::GetFloatOr("LevelLimitModifier", 1.0);
 				float& health = Persistent->stolen_health;
 				float& magick = Persistent->stolen_magick;
 				float& stamin = Persistent->stolen_stamin;
-				float limit = 2.0 * giant->GetLevel();
+				float limit = 2.0 * giant->GetLevel() * modifier;
 				if (type == ActorValue::kHealth) {
 					health += value;
 					if (health >= limit) {
@@ -1432,8 +1433,9 @@ namespace Gts {
 	void DistributeStolenAttributes(Actor* giant, float value) {
 		if (value > 0 && giant->formID == 0x14 && Runtime::HasPerk(giant, "SizeAbsorption")) { // Permamently increases random AV after shrinking and stuff
 			float scale = std::clamp(get_visual_scale(giant), 0.01f, 999999.0f);
+			float modifier = Runtime::GetFloatOr("LevelLimitModifier", 1.0);
 			float Storage = GetStolenAttributes(giant);
-			float limit = 2.0 * giant->GetLevel();
+			float limit = 2.0 * giant->GetLevel() * modifier;
 
 
 			auto Persistent = Persistent::GetSingleton().GetData(giant);
@@ -1864,7 +1866,7 @@ namespace Gts {
 		}
 	}
 
-	void ProtectSmallOnes() {
+	void ProtectSmallOnes() { // This is used to avoid damaging friendly actors in towns and in general
 		auto player = PlayerCharacter::GetSingleton();
 		//Runtime::CastSpell(player, player, "gtsProtectTiniesSpell");
 

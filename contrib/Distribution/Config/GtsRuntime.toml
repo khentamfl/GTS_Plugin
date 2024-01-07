@@ -355,6 +355,9 @@ GtsSkillProgress = "GTS.esp|142201"
 
 ConversationCameraComp = "GTS.esp|50933F"
 
+LevelLimitModifier = "GTS.esp|151516"
+SizeLossModifier = "GTS.esp|1E429E"
+
 PreciseDamage = "GTS.esp|4F4F3A"
 PreciseDamageOthers = "GTS.esp|513540"
 
