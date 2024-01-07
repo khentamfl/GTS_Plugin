@@ -34,52 +34,7 @@ namespace {
 		}
 	}
 
-	void HitGrowth(Actor* receiver, Actor* attacker, float GrowthValue, float SizeDifference) {
-		log::info("Growth Value: {}", GrowthValue);
-
-		int LaughChance = rand() % 12;
-		int ShrinkChance = rand() % 5;
-
-		static Timer soundtimer = Timer(1.5);
-		static Timer laughtimer = Timer(4.0);
-
-		float Dragon = 1.0 * GetScaleAdjustment(attacker);
-
-		DoHitShake(receiver, GrowthValue * 10);
-		update_target_scale(receiver, GrowthValue, SizeEffectType::kShrink);
-		
-		if (soundtimer.ShouldRunFrame()) {
-			Runtime::PlaySoundAtNode("growthSound", receiver, GrowthValue * 2, 1.0, "NPC Pelvis [Pelv]");
-		}
-		if (ShrinkChance >= 2) {
-			update_target_scale(attacker, -GrowthValue/(6.0 * Dragon*BalanceMode), SizeEffectType::kShrink); // Shrink Attacker
-			update_target_scale(receiver, GrowthValue/(2.0 * Dragon*BalanceMode), SizeEffectType::kGrow); // Grow receiver
-			if (get_target_scale(attacker) <= 0.12/Dragon) {
-				set_target_scale(attacker, 0.12/Dragon);
-			}
-		}
-		if (SizeDifference >= 4.0 && LaughChance >= 11 && laughtimer.ShouldRunFrame()) {
-			Runtime::PlaySoundAtNode("LaughSound", receiver, 1.0, 0.5, "NPC Head [Head]");
-		}
-	}
-
-	void HitShrink(Actor* receiver, float ShrinkValue) {
-		float scale = get_target_scale(receiver);
-		float naturalscale = get_natural_scale(receiver);
-
-		float lossmod = Runtime::GetFloatOr("SizeLossModifier", 1.0);
-		float modifier = std::clamp(lossmod, 0.10f, 25.0f); // * size loss value
-
-		ShrinkValue *= modifier;
-
-		log::info("Shrink Value: {}", -ShrinkValue);
-
-		if (scale < naturalscale) {
-			set_target_scale(receiver, naturalscale); // reset to normal scale
-			return;
-		}
-		update_target_scale(receiver, -ShrinkValue, SizeEffectType::kShrink);
-	}
+	
 
 	void TinyAsShield(Actor* receiver, float a_damage) {
 
@@ -151,6 +106,53 @@ namespace {
 		GRumble::Once("HitGrowth", receiver, value, 0.15);
 	}
 
+	void HitGrowth(Actor* receiver, Actor* attacker, float GrowthValue, float SizeDifference, float BalanceMode) {
+		log::info("Growth Value: {}", GrowthValue);
+
+		int LaughChance = rand() % 12;
+		int ShrinkChance = rand() % 5;
+
+		static Timer soundtimer = Timer(1.5);
+		static Timer laughtimer = Timer(4.0);
+
+		float Dragon = 1.0 * GetScaleAdjustment(attacker);
+
+		DoHitShake(receiver, GrowthValue * 10);
+		update_target_scale(receiver, GrowthValue, SizeEffectType::kShrink);
+		
+		if (soundtimer.ShouldRunFrame()) {
+			Runtime::PlaySoundAtNode("growthSound", receiver, GrowthValue * 2, 1.0, "NPC Pelvis [Pelv]");
+		}
+		if (ShrinkChance >= 2) {
+			update_target_scale(attacker, -GrowthValue/(6.0 * Dragon*BalanceMode), SizeEffectType::kShrink); // Shrink Attacker
+			update_target_scale(receiver, GrowthValue/(2.0 * Dragon*BalanceMode), SizeEffectType::kGrow); // Grow receiver
+			if (get_target_scale(attacker) <= 0.12/Dragon) {
+				set_target_scale(attacker, 0.12/Dragon);
+			}
+		}
+		if (SizeDifference >= 4.0 && LaughChance >= 11 && laughtimer.ShouldRunFrame()) {
+			Runtime::PlaySoundAtNode("LaughSound", receiver, 1.0, 0.5, "NPC Head [Head]");
+		}
+	}
+
+	void HitShrink(Actor* receiver, float ShrinkValue) {
+		float scale = get_target_scale(receiver);
+		float naturalscale = get_natural_scale(receiver);
+
+		float lossmod = Runtime::GetFloatOr("SizeLossModifier", 1.0);
+		float modifier = std::clamp(lossmod, 0.10f, 25.0f); // * size loss value
+
+		ShrinkValue *= modifier;
+
+		log::info("Shrink Value: {}", -ShrinkValue);
+
+		if (scale < naturalscale) {
+			set_target_scale(receiver, naturalscale); // reset to normal scale
+			return;
+		}
+		update_target_scale(receiver, -ShrinkValue, SizeEffectType::kShrink);
+	}
+
 	void ApplyHitGrowth(Actor* attacker, Actor* receiver, float damage) {
 		auto grabbedActor = Grab::GetHeldActor(receiver);
 		if (grabbedActor == attacker) {
@@ -179,7 +181,7 @@ namespace {
 
 		if (receiver->formID == 0x14 && Runtime::HasPerk(receiver, "GrowthOnHitPerk") && sizemanager.GetHitGrowth(receiver) >= 1.0) { // if has perk
 			float GrowthValue = std::clamp((-damage/2000) * SizeHunger * Gigantism, 0.0f, 0.25f * Gigantism);
-			HitGrowth(receiver, attacker, GrowthValue, SizeDifference);
+			HitGrowth(receiver, attacker, GrowthValue, SizeDifference, BalanceMode);
 			return;
 		} else if (BalanceMode >= 2.0 && receiver->formID == 0x14 && !Runtime::HasPerk(receiver, "GrowthOnHitPerk")) { // Shrink us
 			if (scale > naturalscale) {
