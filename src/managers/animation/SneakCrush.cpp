@@ -173,6 +173,9 @@ namespace {
 
     void GTS_SneakCrush_FootStep_SilentL(AnimationEventData& data) {DoFootsteps(&data.giant, 0.7, false);}
     void GTS_SneakCrush_FootStep_SilentR(AnimationEventData& data) {DoFootsteps(&data.giant, 0.7, true);}
+
+	void GTS_DisableHH(AnimationEventData& data) {data.stage = 2; data.disableHH = true; Notify("Test: HH Disabled");}
+	void GTS_EnableHH(AnimationEventData& data) {data.disableHH = false; Notify("Test: HH Enabled");}
 }
 
 namespace Gts
@@ -184,7 +187,12 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTS_SneakCrush_Butt_CamOff", "SneakCrush", GTS_SneakCrush_Butt_CamOff);
 		AnimationManager::RegisterEvent("GTS_SneakCrush_Knee_FallDownImpact", "SneakCrush", GTS_SneakCrush_Knee_FallDownImpact);
 		AnimationManager::RegisterEvent("GTS_SneakCrush_Butt_FallDownImpact", "SneakCrush", GTS_SneakCrush_Butt_FallDownImpact);
+		AnimationManager::RegisterEvent("GTS_SneakCrush_FootStep_SilentL", "SneakCrush", GTS_SneakCrush_FootStep_SilentL);
+		AnimationManager::RegisterEvent("GTS_SneakCrush_FootStep_SilentR", "SneakCrush", GTS_SneakCrush_FootStep_SilentR);
 		AnimationManager::RegisterEvent("GTS_SneakCrush_FootStepL", "SneakCrush", GTS_SneakCrush_FootStepL);
 		AnimationManager::RegisterEvent("GTS_SneakCrush_FootStepR", "SneakCrush", GTS_SneakCrush_FootStepR);
+
+		AnimationManager::RegisterEvent("GTS_DisableHH", "SneakCrush", GTS_DisableHH);
+		AnimationManager::RegisterEvent("GTS_EnableHH", "SneakCrush", GTS_EnableHH);
 	}
 }

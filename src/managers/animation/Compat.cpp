@@ -158,15 +158,7 @@ namespace {
 		});
 	}
 
-	void GTS_DisableHH(AnimationEventData& data) {
-		data.disableHH = true;
-		Notify("Test: HH Disabled");
-	}
-
-	void GTS_EnableHH(AnimationEventData& data) {
-		data.disableHH = false;
-		Notify("Test: HH Enabled");
-	}
+	
 
 	void GTScrush_caster(AnimationEventData& data) {
 		//data.stage = 0;
@@ -267,8 +259,7 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTS_BodyDamage_ON", "Body", GTS_BodyDamage_ON);
 		AnimationManager::RegisterEvent("GTS_BodyDamage_Off", "Body", GTS_BodyDamage_Off);
 
-		AnimationManager::RegisterEvent("GTS_DisableHH", "SneakCrush", GTS_DisableHH);
-		AnimationManager::RegisterEvent("GTS_EnableHH", "SneakCrush", GTS_EnableHH);
+		
 	}
 
 	void AnimationCompat::RegisterTriggers() {

@@ -733,11 +733,11 @@ namespace Gts {
 		float Reduction = 1.0;
 
 		if (IsProning(giant)) {
-			return 0.20;
+			return 0.18;
 		} else if (IsCrawling(giant)) {
-			return 0.35;
+			return 0.30;
 		} else if (giant->IsSneaking()) {
-			Reduction = 0.65;
+			Reduction = 0.60;
 		} else {
 			Reduction = 1.0;
 		}
