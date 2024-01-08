@@ -179,12 +179,12 @@ namespace Gts
 {
 	void AnimationSneakCrush::RegisterEvents() {
 		AnimationManager::RegisterEvent("GTS_SneakCrush_Knee_CamOn", "SneakCrush", GTS_SneakCrush_Knee_CamOn);
-		AnimationManager::RegisterEvent("GTS_SneakCrush_Knee_CamOff", "ButtCrush", GTS_SneakCrush_Knee_CamOff);
-		AnimationManager::RegisterEvent("GTS_SneakCrush_Butt_CamOn", "ButtCrush", GTS_SneakCrush_Butt_CamOn);
-		AnimationManager::RegisterEvent("GTS_SneakCrush_Butt_CamOff", "ButtCrush", GTS_SneakCrush_Butt_CamOff);
-		AnimationManager::RegisterEvent("GTS_SneakCrush_Knee_FallDownImpact", "ButtCrush", GTS_SneakCrush_Knee_FallDownImpact);
-		AnimationManager::RegisterEvent("GTS_SneakCrush_Butt_FallDownImpact", "ButtCrush", GTS_SneakCrush_Butt_FallDownImpact);
-		AnimationManager::RegisterEvent("GTS_SneakCrush_FootStepL", "ButtCrush", GTS_SneakCrush_FootStepL);
-		AnimationManager::RegisterEvent("GTS_SneakCrush_FootStepR", "ButtCrush", GTS_SneakCrush_FootStepR);
+		AnimationManager::RegisterEvent("GTS_SneakCrush_Knee_CamOff", "SneakCrush", GTS_SneakCrush_Knee_CamOff);
+		AnimationManager::RegisterEvent("GTS_SneakCrush_Butt_CamOn", "SneakCrush", GTS_SneakCrush_Butt_CamOn);
+		AnimationManager::RegisterEvent("GTS_SneakCrush_Butt_CamOff", "SneakCrush", GTS_SneakCrush_Butt_CamOff);
+		AnimationManager::RegisterEvent("GTS_SneakCrush_Knee_FallDownImpact", "SneakCrush", GTS_SneakCrush_Knee_FallDownImpact);
+		AnimationManager::RegisterEvent("GTS_SneakCrush_Butt_FallDownImpact", "SneakCrush", GTS_SneakCrush_Butt_FallDownImpact);
+		AnimationManager::RegisterEvent("GTS_SneakCrush_FootStepL", "SneakCrush", GTS_SneakCrush_FootStepL);
+		AnimationManager::RegisterEvent("GTS_SneakCrush_FootStepR", "SneakCrush", GTS_SneakCrush_FootStepR);
 	}
 }

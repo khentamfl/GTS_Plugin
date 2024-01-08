@@ -267,8 +267,8 @@ namespace Gts
 		AnimationManager::RegisterEvent("GTS_BodyDamage_ON", "Body", GTS_BodyDamage_ON);
 		AnimationManager::RegisterEvent("GTS_BodyDamage_Off", "Body", GTS_BodyDamage_Off);
 
-		AnimationManager::RegisterEvent("GTS_DisableHH", "HHPatch", GTS_DisableHH);
-		AnimationManager::RegisterEvent("GTS_EnableHH", "HHPatch", GTS_EnableHH);
+		AnimationManager::RegisterEvent("GTS_DisableHH", "SneakCrush", GTS_DisableHH);
+		AnimationManager::RegisterEvent("GTS_EnableHH", "SneakCrush", GTS_EnableHH);
 	}
 
 	void AnimationCompat::RegisterTriggers() {
