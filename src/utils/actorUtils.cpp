@@ -727,17 +727,17 @@ namespace Gts {
 		return sc;
 	}
 
-	float GetRaycastStateScale(Actor* giant) {
+	float GetRoomStateScale(Actor* giant) {
 		// Goal is to make us effectively smaller during these checks, so RayCast won't adjust our height unless we're truly too big
 		float Normal = 1.0;
 		float Reduction = 1.0;
 
 		if (IsProning(giant)) {
-			return 0.18;
+			return 0.25;
 		} else if (IsCrawling(giant)) {
-			return 0.30;
+			return 0.45;
 		} else if (giant->IsSneaking()) {
-			Reduction = 0.60;
+			Reduction = 0.70;
 		} else {
 			Reduction = 1.0;
 		}

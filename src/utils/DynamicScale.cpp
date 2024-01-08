@@ -151,7 +151,7 @@ namespace Gts {
 	}
 
 	float GetMaxRoomScale(Actor* giant) {
-		float stateScale = GetRaycastStateScale(giant);
+		float stateScale = GetRoomStateScale(giant);
 
 		float room_height_m = GetCeilingHeight(giant);
 		/*if (giant->formID == 0x14) {
@@ -202,7 +202,7 @@ namespace Gts {
 		}*/
 
 		float room_height_s = room_height_m/1.82; // / height by 1.82 (default character height)
-		float max_scale = (room_height_s * 0.82) / stateScale; // Define max scale, make avalibale space seem bigger when prone etc
+		float max_scale = (room_height_s * 0.78) / stateScale; // Define max scale, make avalibale space seem bigger when prone etc
 		/*if (giant->formID == 0x14) {
 			log::info("State scale: {}", stateScale);
 			log::info("room_height_m: {}", room_height_m);

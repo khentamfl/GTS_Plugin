@@ -91,7 +91,7 @@ namespace Gts {
 	float GetActorWeight(Actor* giant, bool metric);
 	float GetActorHeight(Actor* giant, bool metric);
 	float GetScaleAdjustment(Actor* tiny);
-	float GetRaycastStateScale(Actor* giant);
+	float GetRoomStateScale(Actor* giant);
 	float GetProneAdjustment();
 
 	void update_target_scale(Actor* giant, float amt, SizeEffectType type);
