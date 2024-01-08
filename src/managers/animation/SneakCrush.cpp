@@ -171,8 +171,8 @@ namespace {
     void GTS_SneakCrush_FootStepL(AnimationEventData& data) {DoFootsteps(&data.giant, 1.0, false);}
     void GTS_SneakCrush_FootStepR(AnimationEventData& data) {DoFootsteps(&data.giant, 1.0, true);}
 
-    void GTS_SneakCrush_FootStep_SilentL(AnimationEventData& data) {DoFootsteps(&data.giant, 0.7, false);}
-    void GTS_SneakCrush_FootStep_SilentR(AnimationEventData& data) {DoFootsteps(&data.giant, 0.7, true);}
+    void GTS_SneakCrush_FootStep_SilentL(AnimationEventData& data) {DoFootsteps(&data.giant, 0.8, false);}
+    void GTS_SneakCrush_FootStep_SilentR(AnimationEventData& data) {DoFootsteps(&data.giant, 0.8, true);}
 
 	void GTS_DisableHH(AnimationEventData& data) {data.stage = 2; data.disableHH = true; Notify("Test: HH Disabled");}
 	void GTS_EnableHH(AnimationEventData& data) {data.disableHH = false; Notify("Test: HH Enabled");}
