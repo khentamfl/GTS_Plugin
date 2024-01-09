@@ -1275,7 +1275,7 @@ namespace Gts {
 	}
 
 	bool IsTeammate(Actor* actor) {
-		if (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
+		if (actor->IsPlayerTeammate()) { //Runtime::InFaction(actor, "FollowerFaction") || 
 			return true;
 		}
 		return false;
@@ -1285,13 +1285,17 @@ namespace Gts {
 		if (giant->formID == 0x14) { // don't enable for Player
 			return false;
 		}
-		bool dead = giant->IsDead();
-		bool everyone = Runtime::GetBool("PreciseDamageOthers");
-		if (!dead && everyone) {
-			return true;
-		} else {
-			return false;
+		float scale = get_visual_scale(giant);
+		if (scale > 1.10) {
+			bool dead = giant->IsDead();
+			bool everyone = Runtime::GetBool("PreciseDamageOthers");
+			if (!dead && everyone) {
+				return true;
+			} else {
+				return false;
+			}
 		}
+		return false;
 	}
 
 	void TrackFeet(Actor* giant, float number, bool enable) {
@@ -1310,7 +1314,7 @@ namespace Gts {
 			auto& sizemanager = SizeManager::GetSingleton();
 			vector<float> modes = 
 			{	0.0, 1.0, 2.0, 3.0, 4.0, 
-				5.0, 6.0, 7.0, 8.0, 9.0	}; // list all modes
+				5.0, 6.0, 7.0, 8.0, 9.0, 10	}; // list all modes
 			for (auto number: modes) {
 				sizemanager.SetActionBool(player, false, number);
 				log::info("Setting Camera Mode {} to false", number);

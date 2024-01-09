@@ -42,7 +42,6 @@ namespace {
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
 		
-
 		float hp = GetMaxAV(tiny, ActorValue::kHealth) * 3.0;
 		InflictSizeDamage(giant, tiny, hp); // just to make sure
 		if (tiny->formID == 0x14) {

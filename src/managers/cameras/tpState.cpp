@@ -33,6 +33,8 @@ namespace {
 			return 0.08;
 		} else if (sizemanager.GetActionBool(player, 9.0)) {
 			return 0.10;
+		} else if (sizemanager.GetActionBool(player, 10.0)) {
+			return 0.10;
 		} else {
 			return 0.05;
 		}
@@ -111,9 +113,7 @@ namespace Gts {
 	NiPoint3 ThirdPersonCameraState::ProneAdjustment(const NiPoint3& cameraPos) {
 		float proneFactor = Runtime::GetFloat("CalcProne");
 		auto player = PlayerCharacter::GetSingleton();
-		//if (!IsCrawling(player)) {
-		//proneFactor = 1.0;
-		//}
+		
 		NiPoint3 result = NiPoint3();
 		result.z = -cameraPos.z * proneFactor;
 		return result;

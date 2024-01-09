@@ -78,6 +78,9 @@ namespace Gts {
 		} else if (sizemanager.GetActionBool(player, 9)) {
 			altMode = 5; // Track Breasts
 			offset = -15;
+		} else if (sizemanager.GetActionBool(player, 10)) {
+			altMode = 16; // Track Knees
+			offset = -15;
 		}
 
 		SetZOff(offset);
@@ -214,6 +217,15 @@ namespace Gts {
 						"NPC R Butt",
 						"NPC L RearThigh",
 						"NPC R RearThigh",
+					},
+				        .zoomScale = 1.25,
+				};
+			} 
+			case 16: {
+				return BoneTarget {
+				        .boneNames = {
+						"NPC L Calf [LClf]",
+						"NPC R Calf [RClf]",
 					},
 				        .zoomScale = 1.25,
 				};

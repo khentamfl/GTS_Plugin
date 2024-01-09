@@ -38,7 +38,7 @@ namespace {
     void TrackKnee(Actor* giant, bool enable) {
 		if (AllowFeetTracking()) {
 			auto& sizemanager = SizeManager::GetSingleton();
-			sizemanager.SetActionBool(giant, enable, 8.0);
+			sizemanager.SetActionBool(giant, enable, 10.0);
 		}
 	}
 
