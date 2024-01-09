@@ -151,6 +151,7 @@ namespace Gts {
 	bool EffectsForEveryone(Actor* giant);
 
 	void TrackFeet(Actor* giant, float number, bool enable);
+	void ResetCameraTracking();
 	void CallDevourment(Actor* giant, Actor* tiny);
 	void CallGainWeight(Actor* giant, float value);
 	void CallVampire();
@@ -213,7 +214,7 @@ namespace Gts {
 	void SpringShrink(Actor* actor, float amt, float halfLife, std::string_view naming);
 
 	void ResetGrab(Actor* giant);
-	void FixAnimations();
+	void FixAnimationsAndCamera();
 
 	bool CanPerformAnimation(Actor* giant, float type);
 	void AdvanceQuestProgression(Actor* giant, float stage, float value);

@@ -103,7 +103,7 @@ namespace Gts {
 
 		SizeManager::GetSingleton().Reset();
 
-		FixAnimations(); // Call it from ActorUtils, needed to fix Grab anim on save-reload
+		FixAnimationsAndCamera(); // Call it from ActorUtils, needed to fix Grab anim on save-reload
 
 		while (serde->GetNextRecordInfo(type, version, size)) {
 			if (type == ActorDataRecord) {

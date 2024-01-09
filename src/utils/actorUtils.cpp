@@ -1303,6 +1303,21 @@ namespace Gts {
 		}
 	}
 
+	void ResetCameraTracking() {
+		auto player = PlayerCharacter::GetSingleton();
+		if (player) {
+			log::info("Player found");
+			auto& sizemanager = SizeManager::GetSingleton();
+			vector<float> modes = 
+			{	0.0, 1.0, 2.0, 3.0, 4.0, 
+				5.0, 6.0, 7.0, 8.0, 9.0	}; // list all modes
+			for (auto number: modes) {
+				sizemanager.SetActionBool(player, false, number);
+				log::info("Setting Camera Mode {} to false", number);
+			}
+		}
+	}
+
 	void CallDevourment(Actor* giant, Actor* tiny) {
 		auto progressionQuest = Runtime::GetQuest("MainQuest");
 		if (progressionQuest) {
@@ -2245,8 +2260,11 @@ namespace Gts {
 		}
 	}
 
-	void FixAnimations() { // Fixes Animations for GTS Grab Actions
+	void FixAnimationsAndCamera() { // Fixes Animations for GTS Grab Actions and resets the bone tracking on camera
 		auto profiler = Profilers::Profile("Utils: Actor State Fix");
+
+		ResetCameraTracking(); // fix the camera tracking if loading previous save while voring/thigh crushing for example
+
 		for (auto giant: find_actors()) {
 			if (!giant) {
 				continue;
