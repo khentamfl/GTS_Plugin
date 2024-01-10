@@ -35,32 +35,6 @@ using namespace std;
 
 namespace {
 
-	float GetStealRate(Actor* actor) {
-		float steal = 0.18;
-		if (Runtime::HasPerkTeam(actor, "HugCrush_ToughGrip")) {
-			steal += 0.072;
-		}
-		if (Runtime::HasPerkTeam(actor, "HugCrush")) {
-			steal *= 1.35;
-		}
-		return steal;
-	}
-
-	float GetShrinkThreshold(Actor* actor) {
-		float threshold = 2.5;
-		float bonus = 1.0;
-		if (Runtime::HasPerk(actor, "HugCrush")) {
-			bonus += 0.25;
-		}
-		if (Runtime::HasPerk(actor, "HugCrush_Greed")) {
-			bonus += 0.35;
-		}
-		if (HasGrowthSpurt(actor)) {
-			bonus *= 2.0;
-		}
-		return threshold * bonus;
-	}
-
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////// E V E N T S
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -268,7 +242,7 @@ namespace {
 		if (!huggedActor) {
 			return;
 		}
-		if (get_target_scale(player)/get_target_scale(huggedActor) >= GetShrinkThreshold(player)) {
+		if (get_target_scale(player)/get_target_scale(huggedActor) >= GetHugShrinkThreshold(player)) {
 			AbortHugAnimation(player, huggedActor);
 			return;
 		}
@@ -333,9 +307,9 @@ namespace Gts {
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
-			float threshold = GetShrinkThreshold(giantref);
+			float threshold = GetHugShrinkThreshold(giantref);
 			float stamina = 0.35;
-			float steal = GetStealRate(giantref);
+			float steal = GetHugStealRate(giantref);
 			float shrink = 5.60;
 			if (Runtime::HasPerkTeam(giantref, "HugCrush_Greed")) {
 				shrink *= 1.25;
@@ -396,7 +370,7 @@ namespace Gts {
 			auto tinyref = tinyhandle.get().get();
 
 			ShutUp(tinyref);
-			float threshold = GetShrinkThreshold(giantref);
+			float threshold = GetHugShrinkThreshold(giantref);
 
 			// Exit on death
 			float sizedifference = get_visual_scale(giantref)/get_visual_scale(tinyref);

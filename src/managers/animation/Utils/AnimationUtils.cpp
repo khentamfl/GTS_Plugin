@@ -783,4 +783,42 @@ namespace Gts {
 		auto targetPoint = (TargetA + TargetB) / 2;
 		return targetPoint;
 	}
+
+
+	float GetHugStealRate(Actor* actor) {
+		float steal = 0.18;
+		if (Runtime::HasPerkTeam(actor, "HugCrush_ToughGrip")) {
+			steal += 0.072;
+		}
+		if (Runtime::HasPerkTeam(actor, "HugCrush")) {
+			steal *= 1.35;
+		}
+		return steal;
+	}
+
+	float GetHugShrinkThreshold(Actor* actor) {
+		float threshold = 2.5;
+		float bonus = 1.0;
+		if (Runtime::HasPerk(actor, "HugCrush")) {
+			bonus += 0.25;
+		}
+		if (Runtime::HasPerk(actor, "HugCrush_Greed")) {
+			bonus += 0.35;
+		}
+		if (HasGrowthSpurt(actor)) {
+			bonus *= 2.0;
+		}
+		return threshold * bonus;
+	}
+
+	float GetHugCrushThreshold(Actor* actor) {
+		float hp = 0.20;
+		if (Runtime::HasPerkTeam(actor, "HugCrush_MightyCuddles")) {
+			hp += 0.10; // 0.30
+		}
+		if (Runtime::HasPerkTeam(actor, "HugCrush_HugsOfDeath")) {
+			hp += 0.20; // 0.50
+		}
+		return hp;
+	}
 }

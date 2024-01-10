@@ -5,7 +5,7 @@
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
 #include "managers/damage/LaunchActor.hpp"
-#include "managers/animation/HugShrink.hpp"
+#include "managers/animation/HugHeal.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "managers/CrushManager.hpp"
@@ -99,7 +99,7 @@ namespace {
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 			float threshold = 2.5;
 			float stamina = 0.35;
-			float steal = GetStealRate(giantref);
+			float steal = GetHugStealRate(giantref);
 			if (Runtime::HasPerkTeam(giantref, "HugCrush_Greed")) {
 				stamina *= 0.75;
 			}
@@ -133,7 +133,7 @@ namespace {
 	}
 
     void GTS_Hug_Heal(AnimationEventData& data) {
-        auto huggedActor = HugShrink::GetHuggiesActor(giant);
+        auto huggedActor = HugShrink::GetHuggiesActor(&data.giant);
 		if (huggedActor) {
 			HealOtherTask(&data.giant, huggedActor);
 		}

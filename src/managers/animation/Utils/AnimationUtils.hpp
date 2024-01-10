@@ -40,4 +40,8 @@ namespace Gts {
 	void DoDamageAtPoint_Cooldown(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, float pushpower, DamageSource Cause);
 
 	NiPoint3 GetHeartPosition(Actor* giant, Actor* tiny);
+
+	float GetHugStealRate(Actor* actor);
+	float GetHugShrinkThreshold(Actor* actor);
+	float GetHugCrushThreshold(Actor* actor);
 }

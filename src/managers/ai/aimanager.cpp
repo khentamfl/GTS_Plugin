@@ -27,32 +27,6 @@ namespace {
 	const float STOMP_ANGLE = 50;
 	const float PI = 3.14159;
 
-	float GetCrushThreshold(Actor* actor) {
-		float hp = 0.20;
-		if (Runtime::HasPerkTeam(actor, "HugCrush_MightyCuddles")) {
-			hp += 0.10; // 0.30
-		}
-		if (Runtime::HasPerkTeam(actor, "HugCrush_HugsOfDeath")) {
-			hp += 0.20; // 0.50
-		}
-		return hp;
-	}
-
-	float GetShrinkThreshold(Actor* actor) {
-		float threshold = 2.4;
-		float bonus = 1.0;
-		if (Runtime::HasPerk(actor, "HugCrush")) {
-			bonus += 0.25;
-		}
-		if (Runtime::HasPerk(actor, "HugCrush_Greed")) {
-			bonus += 0.35;
-		}
-		if (HasGrowthSpurt(actor)) {
-			bonus *= 2.0;
-		}
-		return threshold * bonus;
-	}
-
 	void DoSandwich(Actor* pred) {
 		if (!Persistent::GetSingleton().Sandwich_Ai || IsCrawling(pred)) {
 			return;
@@ -99,7 +73,7 @@ namespace {
 				int rng = rand() % 20;
 				if (rng < 12) {
 					float health = GetHealthPercentage(tinyref);
-					float HpThreshold = GetCrushThreshold(giantref);
+					float HpThreshold = GetHugCrushThreshold(giantref);
 
 					if (!Runtime::HasPerkTeam(giantref, "HugCrush_LovingEmbrace")) {
 						rng = 1; // always force crush if conditions are met
@@ -154,7 +128,7 @@ namespace {
 				std::vector<Actor*> preys = hugs.GetHugTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
 					float sizedifference = get_visual_scale(pred)/get_visual_scale(prey);
-					if (sizedifference > 0.98 && sizedifference < GetShrinkThreshold(pred)) {
+					if (sizedifference > 0.98 && sizedifference < GetHugShrinkThreshold(pred)) {
 						StartHugs(pred, prey);
 					}
 				}
