@@ -29,9 +29,9 @@ namespace {
 
 	void HealOrShrink(Actor* giant, Actor* tiny, int rng) {
 		if (rng <= 1) { // chance to get drained by follower
-			AnimationManager::StartAnim("Huggies_Shrink", giantref);
-			AnimationManager::StartAnim("Huggies_Shrink_Victim", tinyref);
-		} else { // else we heal, if conditions are met
+			AnimationManager::StartAnim("Huggies_Shrink", giant);
+			AnimationManager::StartAnim("Huggies_Shrink_Victim", tiny);
+		} else { // else heal
 			StartHealingAnimation(giant, tiny);
 		}
 	}
