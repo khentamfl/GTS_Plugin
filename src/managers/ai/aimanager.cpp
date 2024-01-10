@@ -27,6 +27,15 @@ namespace {
 	const float STOMP_ANGLE = 50;
 	const float PI = 3.14159;
 
+	void HealOrShrink(Actor* giant, Actor* tiny, int rng) {
+		if (rng <= 1) { // chance to get drained by follower
+			AnimationManager::StartAnim("Huggies_Shrink", giantref);
+			AnimationManager::StartAnim("Huggies_Shrink_Victim", tinyref);
+		} else { // else we heal, if conditions are met
+			StartHealingAnimation(giant, tiny);
+		}
+	}
+
 	void DoSandwich(Actor* pred) {
 		if (!Persistent::GetSingleton().Sandwich_Ai || IsCrawling(pred)) {
 			return;
@@ -76,15 +85,14 @@ namespace {
 					float HpThreshold = GetHugCrushThreshold(giantref);
 
 					if (!Runtime::HasPerkTeam(giantref, "HugCrush_LovingEmbrace")) {
-						rng = 1; // always force crush if conditions are met
+						rng = 1; // always force crush and always shrink
 					}	
 					
 					if (health <= HpThreshold && (tinyref->formID != 0x14 || IsHostile(giantref, tinyref) || rng <= 1)) {
 						AnimationManager::StartAnim("Huggies_HugCrush", giantref);
 						AnimationManager::StartAnim("Huggies_HugCrush_Victim", tinyref);
 					} else {
-						AnimationManager::StartAnim("Huggies_Shrink", giantref);
-						AnimationManager::StartAnim("Huggies_Shrink_Victim", tinyref);
+						HealOrShrink(giant, tiny, rng);
 					}
 				}
 			}

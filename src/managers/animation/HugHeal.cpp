@@ -4,6 +4,7 @@
 #include "managers/emotions/EmotionManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
+#include "managers/animation/HugShrink.hpp"
 #include "managers/damage/LaunchActor.hpp"
 #include "managers/animation/HugHeal.hpp"
 #include "managers/GtsSizeManager.hpp"
@@ -138,7 +139,10 @@ namespace {
 			HealOtherTask(&data.giant, huggedActor);
 		}
     }
+}
 
+
+namespace Gts {
     void HugHeal::RegisterEvents() {
         AnimationManager::RegisterEvent("GTS_Hug_Heal", "Hugs", GTS_Hug_Heal);
     }
