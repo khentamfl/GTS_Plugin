@@ -1284,7 +1284,7 @@ namespace Gts {
 	}
 
 	bool IsTeammate(Actor* actor) {
-		if (actor->IsPlayerTeammate()) { //Runtime::InFaction(actor, "FollowerFaction") || 
+		if (Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) { 
 			return true;
 		}
 		return false;
