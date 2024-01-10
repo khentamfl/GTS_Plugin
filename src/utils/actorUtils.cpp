@@ -243,6 +243,18 @@ namespace Gts {
 		return actor!= nullptr && actor->IsSneaking() && crawl;
 	}
 
+	bool IsHugCrushing(Actor* actor) {
+		bool IsHugCrushing;
+		actor->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
+		return IsHugCrushing;
+	}
+
+	bool IsHugHealing(Actor* actor) {
+		bool IsHugHealing;
+		actor->GetGraphVariableBool("GTS_IsHugHealing", IsHugHealing);
+		return IsHugHealing;
+	}
+
 	bool IsTransitioning(Actor* actor) { // reports sneak transition to crawl
 		bool transition;
 		actor->GetGraphVariableBool("GTS_Transitioning", transition);
@@ -772,9 +784,6 @@ namespace Gts {
 			float giantScale = get_visual_scale(giant);
 			auto huggedActor = HugShrink::GetHuggiesActor(giant);
 
-			bool IsHugCrushing;
-			giant->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
-
 			const float BASE_DISTANCE = 124.0;
 			float CheckDistance = BASE_DISTANCE * giantScale;
 
@@ -831,7 +840,7 @@ namespace Gts {
 
 										if (grabbedActor && grabbedActor == otherActor) {
 											//do nothing
-										} else if (huggedActor && huggedActor == otherActor && !IsHugCrushing) {
+										} else if (huggedActor && huggedActor == otherActor && !IsHugCrushing(giant)) {
 											bool LowHealth = (GetHealthPercentage(huggedActor) < GetHPThreshold(giant));
 											bool ForceCrush = Runtime::HasPerkTeam(giant, "HugCrush_MightyCuddles");
 											float Stamina = GetStaminaPercentage(giant);
@@ -1313,8 +1322,12 @@ namespace Gts {
 			log::info("Player found");
 			auto& sizemanager = SizeManager::GetSingleton();
 			vector<float> modes = 
-			{	0.0, 1.0, 2.0, 3.0, 4.0, 
-				5.0, 6.0, 7.0, 8.0, 9.0, 10	}; // list all modes
+			{	0.0, 1.0, 
+				2.0, 3.0, 
+				4.0, 5.0,
+				6.0, 7.0, 
+				8.0, 9.0, 
+				10.0	}; // list all modes
 			for (auto number: modes) {
 				sizemanager.SetActionBool(player, false, number);
 				log::info("Setting Camera Mode {} to false", number);

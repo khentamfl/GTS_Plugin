@@ -11,6 +11,7 @@
 #include "managers/animation/CrawlVore.hpp"
 #include "managers/animation/HugShrink.hpp"
 #include "managers/animation/Crawling.hpp"
+#include "managers/animation/HugHeal.hpp"
 #include "managers/animation/Compat.hpp"
 #include "managers/animation/Growth.hpp"
 #include "managers/animation/Shrink.hpp"
@@ -94,6 +95,9 @@ namespace Gts {
 
 		HugShrink::RegisterEvents();
 		HugShrink::RegisterTriggers();
+
+		HugHeal::RegisterEvents();
+		HugHeal::RegisterTriggers();
 
 		Grab::RegisterEvents();
 		Grab::RegisterTriggers();

@@ -11,6 +11,10 @@ using namespace Gts;
 
 namespace Gts {
 	void BlockFirstPerson(Actor* actor, bool block);
+
+	void AbortHugAnimation(Actor* giant, Actor* tiny);
+	void StartHealingAnimation(Actor* giant, Actor* tiny);
+
 	void AllowToDoVore(Actor* actor, bool toggle);
 	void AllowToBeCrushed(Actor* actor, bool toggle);
 	void ManageCamera(Actor* giant, bool enable, float type);

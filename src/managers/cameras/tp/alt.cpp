@@ -211,8 +211,8 @@ namespace Gts {
 				};
 			}
 			case 15: {
-				return BoneTarget {
-				        .boneNames = {
+				return BoneTarget { // Track between booty and thighs
+				        .boneNames = { 
 						"NPC L Butt",
 						"NPC R Butt",
 						"NPC L RearThigh",

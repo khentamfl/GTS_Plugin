@@ -2,6 +2,7 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/emotions/EmotionManager.hpp"
 #include "managers/damage/CollisionDamage.hpp"
+#include "managers/animation/HugShrink.hpp"
 #include "managers/damage/LaunchActor.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/CrushManager.hpp"
@@ -48,6 +49,29 @@ namespace Gts {
 		}
 		//playerControls->data.povScriptMode = block;
 		controlMap->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch); // Allow POV Switching
+	}
+
+	// Cancels all hug-related things
+	void AbortHugAnimation(Actor* giant, Actor* tiny) {
+		AnimationManager::StartAnim("Huggies_Spare", giant);
+		AdjustFacialExpression(giant, 0, 0.0, "phenome");
+		AdjustFacialExpression(giant, 0, 0.0, "modifier");
+		AdjustFacialExpression(giant, 1, 0.0, "modifier");
+		HugShrink::Release(giant);
+		if (tiny) {
+			EnableCollisions(tiny);
+			SetBeingHeld(tiny, false);
+			PushActorAway(giant, tiny, 1.0);
+		}
+	}
+
+	void StartHealingAnimation(Actor* giant, Actor* tiny) {
+		AnimationManager::StartAnim("Huggies_Heal", giant);
+		if (IsFemale(tiny)) {
+			AnimationManager::StartAnim("Huggies_Heal_Victim_F", tiny);
+		} else {
+			AnimationManager::StartAnim("Huggies_Heal_Victim_M", tiny);
+		}
 	}
 
 	void AllowToDoVore(Actor* actor, bool toggle) {

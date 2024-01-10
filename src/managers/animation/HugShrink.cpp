@@ -61,57 +61,6 @@ namespace {
 		return threshold * bonus;
 	}
 
-
-	// Cancels all the things
-	void AbortAnimation(Actor* giant, Actor* tiny) {
-		AnimationManager::StartAnim("Huggies_Spare", giant);
-		AdjustFacialExpression(giant, 0, 0.0, "phenome");
-		AdjustFacialExpression(giant, 0, 0.0, "modifier");
-		AdjustFacialExpression(giant, 1, 0.0, "modifier");
-		HugShrink::Release(giant);
-		if (tiny) {
-			EnableCollisions(tiny);
-			SetBeingHeld(tiny, false);
-			PushActorAway(giant, tiny, 1.0);
-		}
-	}
-
-	bool Hugs_RestoreHealth(Actor* giantref, Actor* tinyref, float steal) {
-		static Timer HeartTimer = Timer(0.5);
-		float hp = GetAV(tinyref, ActorValue::kHealth);
-		float maxhp = GetMaxAV(tinyref, ActorValue::kHealth);
-
-		tinyref->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, maxhp * 0.008 * steal * TimeScale());
-		
-		if (HeartTimer.ShouldRunFrame()) {
-			NiPoint3 POS = GetHeartPosition(giantref, tinyref);
-			if (POS.Length() > 0) {
-				float scale = get_visual_scale(giantref);
-				SpawnParticle(giantref, 3.00, "GTS/Magic/Hearts.nif", NiMatrix3(), POS, scale * 2.4, 7, nullptr);
-			}
-		}
-
-		bool IsHugCrushing;
-		giantref->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
-
-		if (IsHugCrushing) {
-			return true; // disallow to cancel it during Hug Crush
-		}
-
-		if (hp >= maxhp) {
-			AbortAnimation(giantref, tinyref);
-			return false;
-		}
-
-		if (giantref->formID == 0x14) {
-			float sizedifference = get_visual_scale(giantref)/get_visual_scale(tinyref);
-			shake_camera(giantref, 0.90 * sizedifference, 0.05);
-		} else {
-			GRumble::Once("HugSteal", giantref, get_visual_scale(giantref) * 8, 0.10);
-		}
-		return true;
-	}
-
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////// E V E N T S
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -147,18 +96,11 @@ namespace {
 			return;
 		}
 
-		int rng = rand() % 20;
-		bool shrink = (rng <= 1);
-
-		if (giant->formID == 0x14) {
-			shrink = false;
-		}
-
-		if (shrink || !IsTeammate(huggedActor)) {
+		if (!IsTeammate(huggedActor)) {
 			Attacked(huggedActor, giant);
 		}
 
-		HugShrink::ShrinkOtherTask(giant, huggedActor, shrink);
+		HugShrink::ShrinkOtherTask(giant, huggedActor);
 		
 	}
 
@@ -327,21 +269,28 @@ namespace {
 			return;
 		}
 		if (get_target_scale(player)/get_target_scale(huggedActor) >= GetShrinkThreshold(player)) {
-			AbortAnimation(player, huggedActor);
+			AbortHugAnimation(player, huggedActor);
 			return;
 		}
+
+		if (Runtime::HasPerkTeam(player, "HugCrush_LovingEmbrace")) {
+			//if (tinyref->formID == 0x14 && !IsHostile(tinyref, giantref)) || (giantref->formID == 0x14 && !IsHostile(giantref, tinyref)) {
+			if (!IsHostile(huggedActor, player) && IsTeammate(huggedActor)) {
+				StartHealingAnimation(player, huggedActor);
+				return;
+			}
+		}
+
 		AnimationManager::StartAnim("Huggies_Shrink", player);
 		AnimationManager::StartAnim("Huggies_Shrink_Victim", huggedActor);
 	}
 	void HugReleaseEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		auto huggedActor = HugShrink::GetHuggiesActor(player);
-		bool IsHugCrushing;
-		player->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
-		if (IsHugCrushing) {
+		if (IsHugCrushing(player) || IsHugHealing(player)) {
 			return; // disallow manual release when it's true
 		}
-		AbortAnimation(player, huggedActor);
+		AbortHugAnimation(player, huggedActor);
 		HugShrink::DetachActorTask(player);
 	}
 }
@@ -363,7 +312,7 @@ namespace Gts {
 		TaskManager::Cancel(name_2);
 	}
 
-	void HugShrink::ShrinkOtherTask(Actor* giant, Actor* tiny, bool SHRINK) {
+	void HugShrink::ShrinkOtherTask(Actor* giant, Actor* tiny) {
 		if (!giant) {
 			return;
 		}
@@ -407,17 +356,11 @@ namespace Gts {
 				SetBeingHeld(tinyref, false);
 				std::string_view message = std::format("{} can't shrink {} any further", giantref->GetDisplayFullName(), tinyref->GetDisplayFullName());
 				Notify(message);
-				AbortAnimation(giantref, tinyref);
+				AbortHugAnimation(giantref, tinyref);
 				return false;
 			}
 			DamageAV(tinyref, ActorValue::kStamina, (0.60 * TimeScale())); // Drain Stamina
 			DamageAV(giantref, ActorValue::kStamina, 0.50 * stamina * TimeScale()); // Damage GTS Stamina
-
-			if (Runtime::HasPerkTeam(giantref, "HugCrush_LovingEmbrace")) {
-				if (!SHRINK && (tinyref->formID == 0x14 && !IsHostile(tinyref, giantref)) || (giantref->formID == 0x14 && !IsHostile(giantref, tinyref))) {
-					return Hugs_RestoreHealth(giantref, tinyref, steal);
-				}
-			}
 			
 			TransferSize(giantref, tinyref, false, shrink, steal, false, ShrinkSource::hugs); // Shrink foe, enlarge gts
 			ModSizeExperience(0.00020, giantref);
@@ -468,21 +411,18 @@ namespace Gts {
 
 			DamageAV(tinyref, ActorValue::kStamina, 0.125 * TimeScale()); // Drain Tiny Stamina
 
-			bool IsHugCrushing;
-			giantref->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
-
 			bool TinyAbsorbed;
 			giantref->GetGraphVariableBool("GTS_TinyAbsorbed", TinyAbsorbed);
 
 			float stamina = GetAV(giantref, ActorValue::kStamina);
-			if (!IsHugCrushing) {
+			if (!IsHugCrushing(giantref)) {
 				if (sizedifference < 0.9 || giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || !HugShrink::GetHuggiesActor(giantref)) {
-					AbortAnimation(giantref, tinyref);
+					AbortHugAnimation(giantref, tinyref);
 					return false;
 				}
-			} else if (IsHugCrushing && !TinyAbsorbed) {
+			} else if (IsHugCrushing(giantref) && !TinyAbsorbed) {
 				if (giantref->IsDead() || tinyref->IsDead() || !HugShrink::GetHuggiesActor(giantref)) {
-					AbortAnimation(giantref, tinyref);
+					AbortHugAnimation(giantref, tinyref);
 					return false;
 				}
 			}
@@ -532,7 +472,7 @@ namespace Gts {
 			GRumble::Once("HugGrab", giant, sizedifference * 12, 0.15);
 		}
 		Notify(message);
-		AbortAnimation(giant, huggedActor);
+		AbortHugAnimation(giant, huggedActor);
 	}
 
 	TESObjectREFR* HugShrink::GetHuggiesObj(Actor* giant) {
