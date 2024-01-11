@@ -73,7 +73,7 @@ namespace Hooks {
 
 
 
-				//log::info("Found Graph Variable Float: {} - {}", a_variableName.c_str(), a_in);
+				log::info("Found Graph Variable Float: {} - {}", a_variableName.c_str(), a_in);
 				if (a_variableName.c_str() == "VelocityZ") {
 					log::info("Found Velocity");
 					log::info("Setting to zero");
