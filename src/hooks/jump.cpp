@@ -42,26 +42,6 @@ namespace Hooks {
 			}
 		);
 
-		/*static FunctionHook<void(AIProcess* proc, Actor* attacker, DEFAULT_OBJECT object, TESIdleForm* idle, bool* a5, bool* a6, TESObjectREFR* target)> SkyrimPlayAnimation( 
-			REL::RelocationID(38290, 39256),
-			[](auto* proc, auto* attacker, auto object, auto* idle, auto* a5, auto* a6, auto* target) {
-				if (target) {
-					log::info("Target: {}", target->GetDisplayFullName());
-				}
-				if (attacker) {
-					log::info("Attacker: {}", attacker->GetDisplayFullName());
-				}
-				if (idle) {
-					log::info("IdleForm: found: {}", idle->GetFormEditorID());
-				}
-				if (object) {
-					log::info("Default Object found: {}", object);
-				}
-				SkyrimPlayAnimation(proc, attacker, object, idle, a5, a6, target);
-				return;
-			}
-		);*/
-
 		// AE 1402bc7c3
 		// SE 1402aa40c
 		//
@@ -91,9 +71,9 @@ namespace Hooks {
 				if (a_variableName.c_str() == "VelocityZ") {
 					//log::info("Found Velocity");
 					//log::info("Setting to zero");
-					float Velocity = a_in;
-					Velocity = 0.0;
-					return SkyrimSetGraphVarFloat(a_variableName, Velocity);
+					//float Velocity = a_in;
+					//Velocity = 0.0;
+					//return SkyrimSetGraphVarFloat(a_variableName, Velocity);
 				}
 				return SkyrimSetGraphVarFloat(a_variableName, a_in);
 			});
