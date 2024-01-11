@@ -90,13 +90,10 @@ namespace Hooks {
 				//log::info("Found Graph Variable Float: {} - {}", a_variableName.c_str(), a_in);
 				if (a_variableName.c_str() == "VelocityZ") {
 					//log::info("Found Velocity");
-					if (Plugin::InGame()) {
-						log::info("Original Value {}", a_in);
-					}
 					//log::info("Setting to zero");
-					//float Velocity = a_in;
-					//Velocity = 0.0;
-					//return SkyrimSetGraphVarFloat(a_variableName, Velocity);
+					float Velocity = a_in;
+					Velocity = 0.0;
+					return SkyrimSetGraphVarFloat(a_variableName, Velocity);
 				}
 				return SkyrimSetGraphVarFloat(a_variableName, a_in);
 			});
