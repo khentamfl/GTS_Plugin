@@ -64,7 +64,7 @@ namespace Hooks {
 		//     return result;
 		// });
 
-		static FunctionHook<bool(const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat(  // SE: B25990
+		static FunctionHook<void(const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat(  // SE: B25990
 			REL::RelocationID(62709, 63608),
 			[](const auto& a_variableName, const auto a_in) {
 				//  63608 (B25990) is probably incorrect, it seems to lead 
@@ -73,7 +73,7 @@ namespace Hooks {
 
 
 
-				log::info("Found Graph Variable Float: {} - {}", a_variableName.c_str(), a_in);
+				//log::info("Found Graph Variable Float: {} - {}", a_variableName.c_str(), a_in);
 				if (a_variableName.c_str() == "VelocityZ") {
 					log::info("Found Velocity");
 					log::info("Setting to zero");
