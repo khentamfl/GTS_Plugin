@@ -65,6 +65,9 @@ namespace {
 
 		if (hp >= maxhp) {
 			AbortHugAnimation(giantref, tinyref);
+			if (giantref->formID == 0x14) {
+				Notify("{} health is full", tinyref->GetDisplayFullName());
+			}
 			return false;
 		}
 
