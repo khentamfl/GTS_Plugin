@@ -64,16 +64,22 @@ namespace Hooks {
 		//     return result;
 		// });
 
-		static FunctionHook<bool(const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat( 
-			REL::RelocationID(63608, 62709),
+		static FunctionHook<bool(const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat(  // SE: B25990
+			REL::RelocationID(62709, 63608),
 			[](const auto& a_variableName, const auto a_in) {
-				//log::info("Found Graph Variable Float: {} - {}", a_variableName.c_str(), a_in);
+				//  63608 (B25990) is probably incorrect, it seems to lead 
+				// to `void hkpCollisionDispatcher::sub_140B25990(hkpCollisionDispatcher *param_1)` function
+
+
+
+
+				log::info("Found Graph Variable Float: {} - {}", a_variableName.c_str(), a_in);
 				if (a_variableName.c_str() == "VelocityZ") {
-					//log::info("Found Velocity");
-					//log::info("Setting to zero");
-					//float Velocity = a_in;
-					//Velocity = 0.0;
-					//return SkyrimSetGraphVarFloat(a_variableName, Velocity);
+					log::info("Found Velocity");
+					log::info("Setting to zero");
+					float Velocity = a_in;
+					Velocity = 0.0;
+					return SkyrimSetGraphVarFloat(a_variableName, Velocity);
 				}
 				return SkyrimSetGraphVarFloat(a_variableName, a_in);
 			});
