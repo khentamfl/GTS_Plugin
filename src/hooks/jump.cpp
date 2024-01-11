@@ -83,6 +83,16 @@ namespace Hooks {
 		//     return result;
 		// });
 
+		static FunctionHook<bool(const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat( 
+			REL::RelocationID(63608, 62709),
+			[](const auto& a_variableName, const auto a_in) {
+				log::info("Setting Graph Variable Float: {} to {}", a_variableName, a_in);
+				if (a_variableName.c_str() == "VelocityZ") {
+					log::info("  - Setting to zero");
+					a_in = 0.0;
+				}
+				return SkyrimSetGraphVarFloat(a_variableName, a_in);
+			});
 	}
 
 	float Hook_Jumping::GetScaleJumpHook(TESObjectREFR* a_this) {
