@@ -13,6 +13,17 @@ using json = nlohmann::json;
 using namespace RE;
 using namespace Gts;
 
+namespace {
+	bool DisableHighHeels(Actor* giant) {
+		bool disable = (
+			AnimationManager::HHDisabled(actor) || !Persistent::GetSingleton().highheel_correction ||
+			BehaviorGraph_DisableHH(actor) || IsCrawling(actor) || 
+			IsProning(actor)
+		);
+		return disable;
+	}
+}
+
 namespace Gts {
 	HighHeelManager& HighHeelManager::GetSingleton() noexcept {
 		static HighHeelManager instance;
@@ -73,16 +84,11 @@ namespace Gts {
 			speedup = 4.00; // To shift down a lot faster
 		}
 		// Should disable HH?
-		bool disableHH = (
-			AnimationManager::HHDisabled(actor) ||
-			IsCrawling(actor) || IsProning(actor) ||
-			!Persistent::GetSingleton().highheel_correction
-			);
-		//log::info("HH Disable: {}", disableHH);
+		bool disableHH = DisableHighHeels(actor);
+
 		if (disableHH) {
 			hhData.multiplier.target = 0.0;
 			hhData.multiplier.halflife = 1 / (AnimationManager::GetAnimSpeed(actor) * speedup);
-			//log::info("HH is false");
 		} else {
 			hhData.multiplier.target = 1.0;
 			hhData.multiplier.halflife = 1 / (AnimationManager::GetAnimSpeed(actor) * speedup);

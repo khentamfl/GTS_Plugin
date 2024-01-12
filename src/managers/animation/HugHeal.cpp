@@ -39,8 +39,11 @@ namespace {
     void AdjustBehaviors(Actor* giant, Actor* tiny) { // blend between two anims: send value to behaviors
         float tinySize = get_visual_scale(tiny);
         float giantSize = get_visual_scale(giant);
-        float size_difference_gtspov = giantSize/tinySize;
-        float size_difference_tinypov = tinySize/giantSize;
+        float size_difference_gtspov = std::clamp(giantSize/tinySize, 0.02f, 1.0f);
+        float size_difference_tinypov = std::clamp(tinySize/giantSize, 0.02f, 1.0f);
+
+		giant->SetGraphVariableFloat("GTS_SizeDifference ", size_difference_tinypov); // pass Tiny / Giant size diff POV to GTS
+		tiny->SetGraphVariableFloat("GTS_SizeDifference ", size_difference_tinypov); // pass Tiny / Giant size diff POV to Tiny
     }
 
     bool Hugs_RestoreHealth(Actor* giantref, Actor* tinyref, float steal) {
@@ -104,6 +107,9 @@ namespace {
 			float threshold = 2.5;
 			float stamina = 0.35;
 			float steal = GetHugStealRate(giantref);
+
+			AdjustBehaviors(giantref, tinyref);
+
 			if (Runtime::HasPerkTeam(giantref, "HugCrush_Greed")) {
 				stamina *= 0.75;
 			}

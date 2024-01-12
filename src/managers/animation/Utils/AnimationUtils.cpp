@@ -745,8 +745,6 @@ namespace Gts {
 
 	NiPoint3 GetHeartPosition(Actor* giant, Actor* tiny) { // used to spawn Heart Particles during healing hugs
 
-		float scaleFactor = get_visual_scale(tiny) / get_visual_scale(giant);
-
 		NiPoint3 TargetA = NiPoint3();
 		NiPoint3 TargetB = NiPoint3();
 		std::vector<std::string_view> bone_names = {
@@ -758,15 +756,17 @@ namespace Gts {
 			auto bone = find_node(giant, bone_name_A);
 			if (!bone) {
 				Notify("Error: Breast Nodes could not be found.");
+				Notify("Actor without nodes: {}", giant->GetDisplayFullName());
 				Notify("Suggestion: install XP32 skeleton.");
 				return NiPoint3();
 			}
 			TargetA += (bone->world.translate) * (1.0/bone_count);
 		}
 		for (auto bone_name_B: bone_names) {
-			auto bone = find_node(giant, bone_name_B);
+			auto bone = find_node(tiny, bone_name_B);
 			if (!bone) {
 				Notify("Error: Breast Nodes could not be found.");
+				Notify("Actor without nodes: {}", tiny->GetDisplayFullName());
 				Notify("Suggestion: install XP32 skeleton.");
 				return NiPoint3();
 			}

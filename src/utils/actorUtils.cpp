@@ -213,6 +213,16 @@ namespace Gts {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                                 G T S   ST A T E S  B O O L S                                                                      //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	bool BehaviorGraph_DisableHH(Actor* actor) { // should .dll disable HH if Behavior Graph has HH Disable data?
+		bool disable;
+		actor->GetGraphVariableBool("GTS_DisableHH", disable);
+		if (actor->formID == 0x14 && IsFirstPerson()) {
+			return false;
+		}
+		return disable;
+	}
+
 	bool IsEquipBusy(Actor* actor) {
 		auto profiler = Profilers::Profile("ActorUtils: IsEquipBusy");
 		int State;
@@ -1533,7 +1543,6 @@ namespace Gts {
 			reduction = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
 		}
 		cost -= reduction;
-		log::info("Reduction: {}", cost);
 		return cost;
 	}
 
