@@ -44,7 +44,7 @@ namespace {
 		if (data.giant.formID != 0x14) {
 			data.animSpeed = 1.33 + GetRandomBoost()/2;
 		}
-		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.0, 1.8);
+		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.8);
 		TrackFeet(&data.giant, 6, true);
 		GRumble::Start("StompR", &data.giant, 0.35, 0.15, RNode);
 		//log::info("StompStartR true");
@@ -57,7 +57,7 @@ namespace {
 		if (data.giant.formID != 0x14) {
 			data.animSpeed = 1.33 + GetRandomBoost()/2;
 		}
-		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.0, 1.8);
+		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.8);
 		TrackFeet(&data.giant, 5, true);
 		GRumble::Start("StompL", &data.giant, 0.45, 0.15, LNode); // Start stonger effect
 		//log::info("StompStartL true");
@@ -78,7 +78,7 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/8, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust + (data.animSpeed * 0.05), FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.80 * perk, 1.35 * data.animSpeed, FootEvent::Right);
-		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);
+		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.8);
 		FootGrindCheck_Right(&data.giant, 1.45, false);
 	}
 
@@ -97,7 +97,7 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust + (data.animSpeed * 0.05), FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.80 * perk, 1.35 * data.animSpeed, FootEvent::Left);
-		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);
+		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.8);
 		FootGrindCheck_Left(&data.giant, 1.45, false);
 	}
 
@@ -161,8 +161,8 @@ namespace {
 	void GTSBEH_Exit(AnimationEventData& data) {
 		GRumble::Stop("StompR", &data.giant);
 		GRumble::Stop("StompL", &data.giant);
-		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.0, 1.8);
-		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 2.8);
+		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.8);
+		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 2.8);
 		TrackFeet(&data.giant, 6, false);
 		TrackFeet(&data.giant, 5, false);
 	}

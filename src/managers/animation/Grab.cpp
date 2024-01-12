@@ -225,7 +225,7 @@ namespace {
 
 	void GTSGrab_Attack_MoveStart(AnimationEventData& data) {
 		auto giant = &data.giant;
-		DrainStamina(giant, "GrabAttack", "DestructionBasics", true, 0.40, 0.75);
+		DrainStamina(giant, "GrabAttack", "DestructionBasics", true, 0.75);
 		ManageCamera(giant, true, 7.0);
 		StartLHandRumble("GrabMoveL", data.giant, 0.5, 0.10);
 	}
@@ -307,7 +307,7 @@ namespace {
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(giant);
 		ManageCamera(giant, false, 7.0);
-		DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.40, 0.75);
+		DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.75);
 		StopLHandRumble("GrabMoveL", data.giant);
 		if (!grabbedActor) {
 			giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
@@ -409,7 +409,7 @@ namespace {
 
 	void GTSGrab_Throw_MoveStart(AnimationEventData& data) {
 		auto giant = &data.giant;
-		DrainStamina(giant, "GrabThrow", "DestructionBasics", true, 0.60, 1.25);
+		DrainStamina(giant, "GrabThrow", "DestructionBasics", true, 1.25);
 		ManageCamera(giant, true, 7.0);
 		StartLHandRumble("GrabThrowL", data.giant, 0.5, 0.10);
 	}
@@ -580,7 +580,7 @@ namespace {
 
 	void GTSGrab_Throw_MoveStop(AnimationEventData& data) { // Throw Frame 3
 		auto giant = &data.giant;
-		DrainStamina(giant, "GrabThrow", "DestructionBasics", false, 0.60, 1.25);
+		DrainStamina(giant, "GrabThrow", "DestructionBasics", false, 1.25);
 		StopLHandRumble("GrabThrowL", data.giant);
 	}
 
@@ -620,8 +620,8 @@ namespace {
 		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
 		AnimationManager::StartAnim("TinyDied", giant);
-		DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.40, 0.75);
-		DrainStamina(giant, "GrabThrow", "DestructionBasics", false, 0.60, 1.25);
+		DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.75);
+		DrainStamina(giant, "GrabThrow", "DestructionBasics", false, 1.25);
 		ManageCamera(&data.giant, false, 7.0);
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
@@ -640,8 +640,8 @@ namespace {
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
 
 		AnimationManager::StartAnim("TinyDied", giant);
-		DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.40, 0.75);
-		DrainStamina(giant, "GrabThrow", "DestructionBasics", false, 0.60, 1.25);
+		DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.75);
+		DrainStamina(giant, "GrabThrow", "DestructionBasics", false, 1.25);
 		ManageCamera(&data.giant, false, 7.0);
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
@@ -868,7 +868,7 @@ namespace Gts {
 				giantref->SetGraphVariableInt("GTS_GrabbedTiny", 0); // Tell behaviors 'we have nothing in our hands'. A must.
 				giantref->SetGraphVariableInt("GTS_Grab_State", 0);
 				giantref->SetGraphVariableInt("GTS_Storing_Tiny", 0);
-				DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.30, 0.75);
+				DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.75);
 				AnimationManager::StartAnim("GrabAbort", giantref); // Abort Grab animation
 				AnimationManager::StartAnim("TinyDied", giantref);
 				ManageCamera(giantref, false, 7.0); // Disable any camera edits

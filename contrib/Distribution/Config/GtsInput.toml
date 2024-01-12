@@ -373,6 +373,7 @@ duration = 0.25
 name = "GrabAttack"
 keys = ["E"]
 exclusive = false
+duration = 0.5 
 trigger = "continuous"
 
 # Damage actor that is currently held in hand
@@ -382,6 +383,7 @@ trigger = "continuous"
 name = "GrabVore"
 keys = ["V"]
 exclusive = false
+duration = 0.5 
 trigger = "continuous"
 
 # Vore Everyone in your hands

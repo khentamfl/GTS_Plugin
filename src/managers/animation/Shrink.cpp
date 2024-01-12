@@ -62,7 +62,9 @@ namespace {
 			float caster_scale = get_visual_scale(caster);
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 
-			DamageAV(caster, ActorValue::kStamina, 0.45 * caster_scale * stamina * TimeScale() * multiply);
+			float perk = Perk_GetCostReduction(caster);
+
+			DamageAV(caster, ActorValue::kStamina, 0.15 * perk * caster_scale * stamina * TimeScale() * multiply);
 			Grow(caster, -(0.0080 * stamina * multiply), 0.0);
 
 			GRumble::Once("ShrinkButton", caster, 4.0 * stamina, 0.05, "NPC Pelvis [Pelv]");

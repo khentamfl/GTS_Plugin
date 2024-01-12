@@ -107,10 +107,7 @@ namespace {
 			if (Runtime::HasPerkTeam(giantref, "HugCrush_Greed")) {
 				stamina *= 0.75;
 			}
-			if (Runtime::HasPerkTeam(giantref, "SkilledGTS")) {
-				float level = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
-				stamina -= level;
-			}
+			stamina *= Perk_GetCostReduction(giantref);
 
 			if (giantref->formID != 0x14) {
 				ShutUp(giantref); // STFU GTS

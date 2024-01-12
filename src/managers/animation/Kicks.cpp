@@ -63,8 +63,8 @@ namespace {
 
 	void StopAllDamageAndStamina(Actor* actor) {
 		std::string name = std::format("LegKick_{}", actor->formID);
-		DrainStamina(actor, "StaminaDrain_StrongKick", "DestructionBasics", false, 2.0, 8.0);
-		DrainStamina(actor, "StaminaDrain_Kick", "DestructionBasics", false, 2.0, 4.0);
+		DrainStamina(actor, "StaminaDrain_StrongKick", "DestructionBasics", false, 8.0);
+		DrainStamina(actor, "StaminaDrain_Kick", "DestructionBasics", false, 4.0);
 		TaskManager::Cancel(name);
 	}
 
@@ -101,11 +101,11 @@ namespace {
 
 	void GTS_Kick_HitBox_On_R(AnimationEventData& data) {
 		StartDamageAt_R(&data.giant, 0.7, 1.8, 0.50, "NPC R Toe0 [RToe]");
-		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 2.0, 4.0);
+		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 4.0);
 	}
 	void GTS_Kick_HitBox_On_L(AnimationEventData& data) {
 		StartDamageAt_L(&data.giant, 0.7, 1.8, 0.50, "NPC L Toe0 [LToe]");
-		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 2.0, 4.0);
+		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 4.0);
 	}
 	void GTS_Kick_HitBox_Off_R(AnimationEventData& data) {
 		StopAllDamageAndStamina(&data.giant);
@@ -116,11 +116,11 @@ namespace {
 
 	void GTS_Kick_HitBox_Power_On_R(AnimationEventData& data) {
 		StartDamageAt_R(&data.giant, 1.4, 1.8, 1.8, "NPC R Toe0 [RToe]");
-		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 2.0, 8.0);
+		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 8.0);
 	}
 	void GTS_Kick_HitBox_Power_On_L(AnimationEventData& data) {
 		StartDamageAt_L(&data.giant, 1.4, 1.8, 1.8, "NPC L Toe0 [LToe]");
-		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 2.0, 8.0);
+		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 8.0);
 	}
 	void GTS_Kick_HitBox_Power_Off_R(AnimationEventData& data) {
 		StopAllDamageAndStamina(&data.giant);

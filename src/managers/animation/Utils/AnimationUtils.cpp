@@ -118,24 +118,19 @@ namespace Gts {
 		if (Runtime::HasPerkTeam(giant, "DestructionBasics")) {
 			WasteMult *= 0.65;
 		}
-		if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
-			float level = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
-			WasteMult -= level;
-		}
+		WasteMult *= Perk_GetCostReduction(giant);
 
-		float WasteStamina = (1.00 * WasteMult)/sizedifference * TimeScale();
+		float WasteStamina = (1.40 * WasteMult)/sizedifference * TimeScale();
 		DamageAV(giant, ActorValue::kStamina, WasteStamina);
 	}
 
-	void DrainStamina(Actor* giant, std::string_view TaskName, std::string_view perk, bool decide, float waste, float power) {
+	void DrainStamina(Actor* giant, std::string_view TaskName, std::string_view perk, bool decide, float power) {
 		float WasteMult = 1.0;
 		if (Runtime::HasPerkTeam(giant, perk)) {
 			WasteMult -= 0.35;
 		}
-		if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
-			float level = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
-			WasteMult -= level;
-		}
+		WasteMult *= Perk_GetCostReduction(giant);
+
 		std::string name = std::format("StaminaDrain_{}_{}", TaskName, giant->formID);
 		if (decide) {
 			ActorHandle GiantHandle = giant->CreateRefHandle();
@@ -204,9 +199,7 @@ namespace Gts {
 		if (Runtime::HasPerk(giant, "DestructionBasics")) {
 			WasteMult *= 0.65;
 		}
-		if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
-			WasteMult -= GetGtsSkillLevel() * 0.0035;
-		}
+		WasteMult *= Perk_GetCostReduction(giant);
 		return WasteMult;
 	}
 

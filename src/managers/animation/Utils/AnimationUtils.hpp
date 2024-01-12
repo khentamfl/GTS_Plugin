@@ -23,7 +23,7 @@ namespace Gts {
 	void DoLaunch(Actor* giant, float radius, float damage, NiAVObject* node);
 
 	void GrabStaminaDrain(Actor* giant, Actor* tiny, float sizedifference);
-	void DrainStamina(Actor* giant, std::string_view TaskName, std::string_view perk, bool decide, float waste, float power);
+	void DrainStamina(Actor* giant, std::string_view TaskName, std::string_view perk, bool decide, float power);
 
 	void SpawnHurtParticles(Actor* giant, Actor* grabbedActor, float mult, float dustmult);
 

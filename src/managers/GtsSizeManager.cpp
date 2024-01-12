@@ -36,7 +36,10 @@ namespace {
 		if (Runtime::HasPerk(player, "TotalControl")) {
 			float scale = get_visual_scale(player);
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
-			DamageAV(player, ActorValue::kStamina, 0.15 * (scale * 0.5 + 0.5) * stamina * TimeScale());
+
+			float perk = Perk_GetCostReduction(player);
+
+			DamageAV(player, ActorValue::kStamina, 0.15 * perk * (scale * 0.5 + 0.5) * stamina * TimeScale());
 			Grow(player, 0.0010 * stamina, 0.0);
 			float Volume = clamp(0.20, 2.0, get_visual_scale(player)/16);
 			GRumble::Once("TotalControl", player, scale/10, 0.05);
@@ -52,8 +55,10 @@ namespace {
 			float scale = get_visual_scale(player);
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
 
+			float perk = Perk_GetCostReduction(player);
+
 			if (get_target_scale(player) > 0.12) {
-				DamageAV(player, ActorValue::kStamina, 0.10 * (scale * 0.5 + 0.5) * stamina * TimeScale());
+				DamageAV(player, ActorValue::kStamina, 0.07 * perk * (scale * 0.5 + 0.5) * stamina * TimeScale());
 				ShrinkActor(player, 0.0010 * stamina, 0.0);
 			} else {
 				set_target_scale(player, 0.12);
@@ -75,9 +80,12 @@ namespace {
 					continue;
 				}
 				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+
+					float perk = Perk_GetCostReduction(player);
+
 					float npcscale = get_visual_scale(actor);
 					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
-					DamageAV(player, ActorValue::kMagicka, 0.15 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
+					DamageAV(player, ActorValue::kMagicka, 0.15 * perk * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
 					Grow(actor, 0.0010 * magicka, 0.0);
 					float Volume = clamp(0.20, 2.0, get_visual_scale(actor)/16);
 					GRumble::Once("TotalControlOther", actor, 0.25, 0.05);
@@ -97,9 +105,12 @@ namespace {
 					continue;
 				}
 				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+					
+					float perk = Perk_GetCostReduction(player);
+
 					float npcscale = get_visual_scale(actor);
 					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
-					DamageAV(player, ActorValue::kMagicka, 0.10 * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
+					DamageAV(player, ActorValue::kMagicka, 0.07 * perk * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
 					ShrinkActor(actor, 0.0010 * magicka, 0.0);
 					float Volume = clamp(0.05, 2.0, get_visual_scale(actor)/16);
 					GRumble::Once("TotalControlOther", actor, 0.20, 0.05);

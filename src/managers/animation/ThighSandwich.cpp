@@ -171,6 +171,7 @@ namespace {
 		sandwichdata.EnableRuneTask(&data.giant, false); // Start Growing the Rune
 	}
 	void GTSSandwich_SitStart(AnimationEventData& data) {
+		DrainStamina(&data.giant, "StaminaDrain_Sandwich_Idle", "KillerThighs", true, 0.25);
 	}
 	void GTSSandwich_MoveBody_end(AnimationEventData& data) {
 		StopBodyRumble("BodyRumble", data.giant);
@@ -185,7 +186,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.EnableSuffocate(false);
 		StartLeftLegRumble("LLSandwich", data.giant, 0.10, 0.12);
-		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", true, 0.225, 1.0);
+		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", true, 1.0);
 	}
 
 	void GTSSandwich_MoveLL_start_H(AnimationEventData& data) {
@@ -198,7 +199,7 @@ namespace {
 		auto& sandwichdata = ThighSandwichController::GetSingleton().GetSandwichingData(&data.giant);
 		sandwichdata.EnableSuffocate(false);
 		StartLeftLegRumble("LLSandwichHeavy", data.giant, 0.15, 0.15);
-		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", true, 0.225, 2.5);
+		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", true, 2.5);
 	}
 
 	void GTSSandwich_ThighImpact(AnimationEventData& data) {
@@ -213,7 +214,7 @@ namespace {
 		}
 		//std::string message = std::format("You're able to attack targets with her thighs during thigh sandwich. Press LMB for Normal attack, press both RMB + LMB for strong attack. Additionally, you can hold LMB or LMB + RMB to increase attack speed, or RMB to decrease it. Attack speed directly affects attack damage.");
 		//TutorialMessage(message, "SandwichControls");
-		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 0.225, 1.0);
+		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 1.0);
 	}
 
 	void GTSSandwich_ThighImpact_H(AnimationEventData& data) {
@@ -227,7 +228,7 @@ namespace {
 			tiny->NotifyAnimationGraph("ragdoll");
 			AllowToBeCrushed(tiny, true);
 		}
-		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 0.225, 2.5);
+		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 2.5);
 	}
 
 	void GTSSandwich_MoveLL_end(AnimationEventData& data) {
@@ -257,7 +258,7 @@ namespace {
 			SetBeingHeld(tiny, false);
 			EnableCollisions(tiny);
 		}
-		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 0.225, 2.5);
+		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 2.5);
 	}
 
 	void GTSSandwich_ThighAttack_start(AnimationEventData& data) {
@@ -272,7 +273,8 @@ namespace {
 		for (auto tiny: sandwichdata.GetActors()) {
 			SetBeingHeld(tiny, false);
 		}
-		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 0.225, 2.5);
+		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 2.5);
+		DrainStamina(&data.giant, "StaminaDrain_Sandwich_Idle", "KillerThighs", false, 0.25);
 		sandwichdata.MoveActors(false);
 		sandwichdata.ReleaseAll();
 	}
@@ -284,7 +286,7 @@ namespace {
 			SetBeingHeld(tiny, false);
 			EnableCollisions(tiny);
 		}
-		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 0.225, 2.5);
+		DrainStamina(&data.giant, "StaminaDrain_Sandwich", "KillerThighs", false, 2.5);
 		//sandwichdata.DisableRuneTask(&data.giant, false); // Disable Rune Growth
 		//sandwichdata.DisableRuneTask(&data.giant, true); // Disable Rune Shrink
 		sizemanager.SetActionBool(&data.giant, false, 1.0); // Allow sandwich repeat

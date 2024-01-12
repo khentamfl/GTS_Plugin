@@ -75,12 +75,14 @@ namespace {
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.0;
+		DrainStamina(&data.giant, "StaminaDrain_FootGrind", "DestructionBasics", true, 0.25);
 	}
 
 	void GTSstomp_FootGrindR_Enter(AnimationEventData& data) {
 		data.stage = 1;
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.0;
+		DrainStamina(&data.giant, "StaminaDrain_FootGrind", "DestructionBasics", true, 0.25);
 	}
 
 	void GTSstomp_FootGrindL_MV_S(AnimationEventData& data) { // Feet starts to move: Left
@@ -109,6 +111,9 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.75 * perk, 1.35 * perk, FootEvent::Right);
 		DoDamageEffect(&data.giant, 2.6, 1.70, 20, 0.15, FootEvent::Right, 1.0, DamageSource::FootGrindedRight);
+
+		DamageAV(&data.giant, ActorValue::kStamina, 30 * GetWasteMult(&data.giant));
+
 		GRumble::Once("GrindStompR", &data.giant, 1.25, 0.05, RNode);
 	}
 
@@ -118,6 +123,9 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.75 * perk, 1.35 * perk, FootEvent::Left);
 		DoDamageEffect(&data.giant, 2.6, 1.70, 20, 0.15, FootEvent::Left, 1.0, DamageSource::FootGrindedLeft);
+
+		DamageAV(&data.giant, ActorValue::kStamina, 30 * GetWasteMult(&data.giant));
+
 		GRumble::Once("GrindStompL", &data.giant, 1.25, 0.05, LNode);
 	}
 
@@ -126,6 +134,7 @@ namespace {
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 		CancelDamageOverTime(&data.giant);
+		DrainStamina(&data.giant, "StaminaDrain_FootGrind", "DestructionBasics", false, 0.25);
 	}
 
 	void GTSstomp_FootGrindL_Exit(AnimationEventData& data) { // Remove foot from enemy: Left
@@ -133,6 +142,7 @@ namespace {
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 		CancelDamageOverTime(&data.giant);
+		DrainStamina(&data.giant, "StaminaDrain_FootGrind", "DestructionBasics", false, 0.25);
 	}
 }
 

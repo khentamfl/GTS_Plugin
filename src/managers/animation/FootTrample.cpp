@@ -66,7 +66,7 @@ namespace {
 
 	void GTS_Trample_Cam_End_L(AnimationEventData& data) {
 		TrackFeet(&data.giant, 5, false);
-		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 1.0, 1.2);
+		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 0.8);
 
 		data.animSpeed = 1.0;
 		data.canEditAnimSpeed = false;
@@ -74,7 +74,7 @@ namespace {
 	}
 	void GTS_Trample_Cam_End_R(AnimationEventData& data) {
 		TrackFeet(&data.giant, 6, false);
-		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 1.0, 1.2);
+		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 0.8);
 
 		data.animSpeed = 1.0;
 		data.canEditAnimSpeed = false;
@@ -96,7 +96,7 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.65 * perk, 0.75 * perk, FootEvent::Left);
-		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", true, 1.0, 1.2);
+		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", true, 0.8);
 		FootGrindCheck_Left(&data.giant, 1.65, true);
 
 		data.animSpeed = 1.0;
@@ -118,7 +118,7 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.65 * perk, 0.75 * perk, FootEvent::Right);
-		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", true, 1.0, 1.2);
+		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", true, 0.8);
 		FootGrindCheck_Right(&data.giant, 1.65, true);
 
 		data.animSpeed = 1.0;

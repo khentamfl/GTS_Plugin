@@ -168,7 +168,9 @@ namespace Gts {
 	void DistributeStolenAttributes(Actor* giant, float value);
 
 	float GetRandomBoost();
+	
 	float GetButtCrushCost(Actor* actor);
+	float Perk_GetCostReduction(Actor* giant);
 	float GetAnimationSlowdown(Actor* giant);
 
 	void DoFootstepSound(Actor* giant, float modifier, FootEvent kind, std::string_view node);

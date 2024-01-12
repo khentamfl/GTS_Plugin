@@ -64,11 +64,13 @@ namespace Hooks {
 		//     return result;
 		// });
 
-		static FunctionHook<void(const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat(  // SE: B25990
+		static FunctionHook<void(const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat(  // SE: B25990 ?
 			REL::RelocationID(62709, 63608),
 			[](const auto& a_variableName, const auto a_in) {
-				//  63608 (B25990) is probably incorrect, it seems to lead 
+				//  63608 (B25990) for SE is probably incorrect, it seems to lead 
+				//  
 				// to `void hkpCollisionDispatcher::sub_140B25990(hkpCollisionDispatcher *param_1)` function
+				// 62709 = AF7190 ()
 
 
 

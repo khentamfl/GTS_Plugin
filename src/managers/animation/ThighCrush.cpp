@@ -158,7 +158,7 @@ namespace {
 
 	void GTSsitcrushlight_start(AnimationEventData& data) {
 		StartLegRumble("ThighCrush", data.giant, 0.18, 0.12);
-		DrainStamina(&data.giant, "StaminaDrain_Thighs", "KillerThighs", true, 0.25, 1.0); // < Start Light Stamina Drain
+		DrainStamina(&data.giant, "StaminaDrain_Thighs", "KillerThighs", true, 1.0); // < Start Light Stamina Drain
 		data.stage = 5;
 	}
 
@@ -167,19 +167,19 @@ namespace {
 		data.canEditAnimSpeed = true;
 		LegRumbleOnce("ThighCrush_End", data.giant, 0.22, 0.20);
 		StopLegRumble("ThighCrush", data.giant);
-		DrainStamina(&data.giant, "StaminaDrain_Thighs", "KillerThighs", false, 0.25, 1.0); // < Stop Light Stamina Drain
+		DrainStamina(&data.giant, "StaminaDrain_Thighs", "KillerThighs", false, 1.0); // < Stop Light Stamina Drain
 		data.stage = 6;
 	}
 
 	void GTSsitcrushheavy_start(AnimationEventData& data) {
-		DrainStamina(&data.giant, "StaminaDrain_Thighs", "KillerThighs", true, 0.25, 2.5); // < - Start HEAVY Stamina Drain
+		DrainStamina(&data.giant, "StaminaDrain_Thighs", "KillerThighs", true, 2.5); // < - Start HEAVY Stamina Drain
 		StartLegRumble("ThighCrushHeavy", data.giant, 0.35, 0.10);
 		data.stage = 5;
 	}
 
 	void GTSsitcrushheavy_end(AnimationEventData& data) {
 		data.currentTrigger = 2;
-		DrainStamina(&data.giant, "StaminaDrain_Thighs", "KillerThighs", false, 0.25, 2.5); // < Stop Heavy Stamina Drain
+		DrainStamina(&data.giant, "StaminaDrain_Thighs", "KillerThighs", false, 2.5); // < Stop Heavy Stamina Drain
 		LegRumbleOnce("ThighCrushHeavy_End", data.giant, 0.50, 0.15);
 		StopLegRumble("ThighCrushHeavy", data.giant);
 		data.stage = 6;

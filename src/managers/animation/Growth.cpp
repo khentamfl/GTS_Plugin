@@ -63,7 +63,9 @@ namespace {
 			float caster_scale = get_visual_scale(caster);
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 
-			DamageAV(caster, ActorValue::kStamina, 0.60 * caster_scale * stamina * TimeScale() * multiply);
+			float perk = Perk_GetCostReduction(caster);
+
+			DamageAV(caster, ActorValue::kStamina, 0.60 * perk * caster_scale * stamina * TimeScale() * multiply);
 			Grow(caster, 0.0080 * stamina * multiply * animspeed, 0.0);
 			// value*scale ^  ; ^ static value, not affected by scale
 

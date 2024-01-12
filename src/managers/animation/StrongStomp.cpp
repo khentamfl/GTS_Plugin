@@ -124,7 +124,7 @@ namespace {
 		}
 		TrackFeet(giant, 6.0, true);
 		StartLegRumble("StrongStompR", data.giant, 0.35 *data.animSpeed - 0.35, 0.10, "Right");
-		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", true, 1.45, 2.8);
+		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", true, 3.4);
 	}
 
 	void GTS_StrongStomp_LL_Start(AnimationEventData& data) {
@@ -136,7 +136,7 @@ namespace {
 		}
 		TrackFeet(giant, 5.0, true);
 		StartLegRumble("StrongStompL", data.giant, 0.35 *data.animSpeed - 0.35, 0.10, "Left");
-		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", true, 1.45, 2.8);
+		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", true, 3.4);
 	}
 
 	void GTS_StrongStomp_LR_Middle(AnimationEventData& data) {
@@ -172,7 +172,7 @@ namespace {
 		DoFootstepSound(&data.giant, SMT + (data.animSpeed/10), FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 0.25 + SMT + (data.animSpeed * 0.05), FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 1.05 * perk, 2.4 + data.animSpeed/2, FootEvent::Right);
-		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 2.8);
+		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 3.4);
 		data.stage = 0;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
@@ -191,7 +191,7 @@ namespace {
 		DoFootstepSound(&data.giant, SMT + (data.animSpeed/10), FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, 0.25 + SMT + (data.animSpeed * 0.05), FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 1.05 * perk, 2.4 + data.animSpeed/2, FootEvent::Left);
-		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 1.45, 2.8);
+		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 3.4);
 		data.stage = 0;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;

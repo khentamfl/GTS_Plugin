@@ -1519,13 +1519,21 @@ namespace Gts {
 		if (Runtime::HasPerkTeam(actor, "ButtCrush_LoomingDoom")) {
 			cost -= 0.25;
 		}
-		if (Runtime::HasPerkTeam(actor, "SkilledGTS")) {
-			float level = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
-			cost -= level;
-		}
+		cost *= Perk_GetCostReduction(actor);
 		if (IsCrawling(actor)) {
 			cost *= 1.35;
 		}
+		return cost;
+	}
+
+	float Perk_GetCostReduction(Actor* giant) {
+		float cost = 1.0;
+		float reduction = 0.0;
+		if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
+			reduction = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
+		}
+		cost -= reduction;
+		log::info("Reduction: {}", cost);
 		return cost;
 	}
 
