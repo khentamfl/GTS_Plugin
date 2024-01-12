@@ -42,7 +42,8 @@ namespace {
 	void TestVelocity(Actor* giant) {
 		if (giant->formID == 0x14) {
 			auto ref = skyrim_cast<TESObjectREFR*>(giant);
-			NiPoint3 vel = ref->GetLinearVelocity();
+			NiPoint3 vel;
+			ref->GetLinearVelocity(vel);
 			log::info("Velocity of {}: {}", giant->GetDisplayFullName(), Vector2Str(vel));
 		}
 	}
