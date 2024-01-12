@@ -50,21 +50,16 @@ namespace Hooks {
 		REL::Relocation<uintptr_t> hook{REL::RelocationID(41811, 42892)};
 		_GetScaleJumpHook = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x4d, 0x4d), GetScaleJumpHook);
 
-		static FunctionHook<bool(const BShkbAnimationGraph* graph, const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat(  // SE: B25990 ?
+		static FunctionHook<bool(const BShkbAnimationGraph* graph, const BSFixedString& a_variableName, float a_in)> SkyrimSetGraphVarFloat(  // SE: B25990 ?
 			REL::RelocationID(32143, 32887),
-			[](const auto* graph, const auto& a_variableName, const auto a_in) {
-				//  63608 (B25990) for SE is probably incorrect, it seems to lead 
-				//  
-				// to `void hkpCollisionDispatcher::sub_140B25990(hkpCollisionDispatcher *param_1)` function
-				// 62709 = AF7190 ()
-
-				log::info("Found Graph Variable Float: {} - {}", a_variableName.c_str(), a_in);
+			[](const auto* graph, const auto& a_variableName, auto a_in) {
 				if (a_variableName == "VelocityZ") {
-					log::info("Found Velocity");
-					log::info("Setting to zero");
-					float Velocity = a_in;
-					Velocity = 0.0;
-					return SkyrimSetGraphVarFloat(graph, a_variableName, Velocity);
+					log::info("Found Velocity: {}", a_in);
+					auto actor = graph->holder;
+					auto scale = get_visual_scale(actor);
+					log::info("Dividing velocity by scale: {}", scale);
+					a_in /= scale;
+					log::info(" new V: {}", a_in);
 				}
 				return SkyrimSetGraphVarFloat(graph, a_variableName, a_in);
 			});
