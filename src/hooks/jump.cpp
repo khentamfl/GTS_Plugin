@@ -55,7 +55,7 @@ namespace Hooks {
 			[](const auto* graph, const auto& a_variableName, auto a_in) {
 				if (a_variableName == "VelocityZ") {
 					log::info("Found Velocity: {}", a_in);
-					auto actor = skyrim_cast<Actor*>(graph);
+					auto actor = skyrim_cast<TESObjectREFR*>(graph);
 
 					BSAnimationGraphManagerPtr animGraphManager;
 					if (graph->GetAnimationGraphManager(animGraphManager)) {
