@@ -39,15 +39,6 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	void TestVelocity(Actor* giant) {
-		if (giant->formID == 0x14) {
-			auto ref = skyrim_cast<TESObjectREFR*>(giant);
-			NiPoint3 vel;
-			ref->GetLinearVelocity(vel);
-			log::info("Velocity of {}: {}", giant->GetDisplayFullName(), Vector2Str(vel));
-		}
-	}
-
 	void FixActorFade(Actor* actor) {
 		auto profiler = Profilers::Profile("Manager: Fade Fix");
 		if (get_visual_scale(actor) < 1.5) {
@@ -281,9 +272,7 @@ void GtsManager::Update() {
 		if (actor->formID == 0x14 || IsTeammate(actor)) {
 			CollisionDamage.DoAccurateCollisionLeft(actor, 0.4 * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedLeft);
 			CollisionDamage.DoAccurateCollisionRight(actor, 0.4 * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedRight);
-
-			TestVelocity(actor);
-
+			
 			ClothManager::GetSingleton().CheckRip();
 			SpawnActionIcon(actor);
 

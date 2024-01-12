@@ -102,7 +102,7 @@ namespace {
 		AdjustFacialExpression(&data.giant, 2, 0.0, "expression");
 	}
 
-	void GTS_Hug_PullBack(AnimationEventData& data) { // When we pull actor back to chest, used to play moans/laugh
+	void GTS_Hug_PullBack(AnimationEventData& data) { // When we pull actor back to chest, used to play laugh
 		int Random = rand() % 5 + 1;
 		if (Random >= 5) {
 			Runtime::PlaySoundAtNode("LaughSound", &data.giant, 1.0, 1.0, "NPC Head [Head]");

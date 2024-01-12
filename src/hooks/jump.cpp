@@ -56,17 +56,6 @@ namespace Hooks {
 				if (a_variableName == "VelocityZ") {
 					log::info("Found Velocity: {}", a_in);
 					auto actor = skyrim_cast<Actor*>(graph);
-
-					BSAnimationGraphManagerPtr animGraphManager;
-					if (graph->GetAnimationGraphManager(animGraphManager)) {
-						for (auto& graph : animGraphManager->graphs) {
-							if (graph) {
-								auto& character = graph->characterInstance;
-								log::info("LOD Fade: {}", character.currentLOD);
-							}
-						}
-					}
-					
 					if (actor) {
 						auto scale = get_giantess_scale(actor);
 						log::info("Dividing velocity by scale: {}", scale);
