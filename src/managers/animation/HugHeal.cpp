@@ -93,8 +93,7 @@ namespace {
 		std::string name = std::format("Huggies_Heal_{}", giant->formID);
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		ActorHandle tinyhandle = tiny->CreateRefHandle();
-		const float duration = 4.0;
-		TaskManager::RunFor(name, duration, [=](auto& progressData) {
+		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
 			}
@@ -103,6 +102,12 @@ namespace {
 			}
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
+
+			if (!IsHugHealing(giantref)) {
+				Notify("Task has ended");
+				return false; // end task in that case
+			}
+
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 			float threshold = 2.5;
 			float stamina = 0.35;
@@ -125,7 +130,7 @@ namespace {
 				AbortHugAnimation(giantref, tinyref);
 				return false;
 			}
-			DamageAV(tinyref, ActorValue::kStamina, (0.30 * TimeScale())); // Drain Stamina
+			DamageAV(tinyref, ActorValue::kStamina, -(0.45 * TimeScale())); // Restore Tiny stamina
 			DamageAV(giantref, ActorValue::kStamina, 0.25 * stamina * TimeScale()); // Damage GTS Stamina
             
 			if (giantref->formID == 0x14) {
