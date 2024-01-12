@@ -68,7 +68,7 @@ namespace Hooks {
 					}
 					
 					if (actor) {
-						auto scale = get_visual_scale(actor);
+						auto scale = get_giantess_scale(actor);
 						log::info("Dividing velocity by scale: {}", scale);
 						log::info("Actor: {}", actor->GetDisplayFullName());
 						a_in /= scale;
