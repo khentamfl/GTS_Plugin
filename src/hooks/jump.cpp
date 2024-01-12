@@ -59,7 +59,7 @@ namespace Hooks {
 				// 62709 = AF7190 ()
 
 				log::info("Found Graph Variable Float: {} - {}", a_variableName.c_str(), a_in);
-				if (a_variableName.c_str() == "VelocityZ") {
+				if (a_variableName == "VelocityZ") {
 					log::info("Found Velocity");
 					log::info("Setting to zero");
 					float Velocity = a_in;
