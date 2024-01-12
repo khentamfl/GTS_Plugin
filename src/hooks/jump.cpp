@@ -56,6 +56,10 @@ namespace Hooks {
 				if (a_variableName == "VelocityZ") {
 					log::info("Found Velocity: {}", a_in);
 					auto actor = graph->holder;
+					auto character = graph->characterInstance;
+					if (character) {
+						log::info("LOD Fade: {}", character->currentLOD);
+					}
 					if (actor) {
 						auto scale = get_visual_scale(actor);
 						log::info("Dividing velocity by scale: {}", scale);
