@@ -61,7 +61,7 @@ namespace Hooks {
 					if (graph->GetAnimationGraphManager(animGraphManager)) {
 						for (auto& graph : animGraphManager->graphs) {
 							if (graph) {
-								auto character = graph->characterInstance;
+								auto& character = graph->characterInstance;
 								log::info("LOD Fade: {}", character.currentLOD);
 							}
 						}
