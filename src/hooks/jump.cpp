@@ -50,14 +50,23 @@ namespace Hooks {
 		REL::Relocation<uintptr_t> hook{REL::RelocationID(41811, 42892)};
 		_GetScaleJumpHook = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x4d, 0x4d), GetScaleJumpHook);
 
-		static FunctionHook<bool(const BShkbAnimationGraph* graph, const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat( 
+		static FunctionHook<bool(const IAnimationGraphManagerHolder* graph, const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat( 
 			REL::RelocationID(32143, 32887),
 			[](const auto* graph, const auto& a_variableName, auto a_in) {
 				if (a_variableName == "VelocityZ") {
 					log::info("Found Velocity: {}", a_in);
-					auto actor = graph->holder;
-					auto character = graph->characterInstance;
-					log::info("LOD Fade: {}", character.currentLOD);
+					auto actor = skyrim_cast<Actor*>(graph);
+
+					BSAnimationGraphManagerPtr animGraphManager;
+					if (graph->GetAnimationGraphManager(animGraphManager)) {
+						for (auto& graph : animGraphManager->graphs) {
+							if (graph) {
+								auto character = graph->characterInstance;
+								log::info("LOD Fade: {}", character.currentLOD);
+							}
+						}
+					}
+					
 					if (actor) {
 						auto scale = get_visual_scale(actor);
 						log::info("Dividing velocity by scale: {}", scale);
