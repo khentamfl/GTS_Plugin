@@ -51,7 +51,7 @@ namespace Hooks {
 		_GetScaleJumpHook = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x4d, 0x4d), GetScaleJumpHook);
 
 		static FunctionHook<bool(const BShkbAnimationGraph* graph, const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat(  // SE: B25990 ?
-			REL::RelocationID(63608, 62709),
+			REL::RelocationID(32143, 32887),
 			[](const auto& a_variableName, const auto a_in) {
 				//  63608 (B25990) for SE is probably incorrect, it seems to lead 
 				//  
