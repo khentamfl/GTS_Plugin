@@ -628,6 +628,10 @@ namespace Gts {
 		if (prey->IsDead()) {
 			return false;
 		}
+		
+		if (IsBeingHeld(prey)) {
+			return false;
+		}
 
 		if (transient) {
 			if (transient->can_be_vored == false) {

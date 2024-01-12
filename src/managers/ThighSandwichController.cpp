@@ -283,6 +283,10 @@ namespace Gts {
 			return false;
 		}
 
+		if (IsBeingHeld(prey)) {
+			return false;
+		}
+
 		float pred_scale = get_visual_scale(pred);
 
 		float sizedifference = GetSizeDifference(pred, prey);
