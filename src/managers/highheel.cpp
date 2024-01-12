@@ -14,7 +14,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-	bool DisableHighHeels(Actor* giant) {
+	bool DisableHighHeels(Actor* actor) {
 		bool disable = (
 			AnimationManager::HHDisabled(actor) || !Persistent::GetSingleton().highheel_correction ||
 			BehaviorGraph_DisableHH(actor) || IsCrawling(actor) || 
