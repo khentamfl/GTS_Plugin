@@ -42,8 +42,8 @@ namespace {
         float size_difference_gtspov = std::clamp(giantSize/tinySize, 0.02f, 1.0f);
         float size_difference_tinypov = std::clamp(tinySize/giantSize, 0.02f, 1.0f);
 
-		giant->SetGraphVariableFloat("GTS_SizeDifference ", size_difference_tinypov); // pass Tiny / Giant size diff POV to GTS
-		tiny->SetGraphVariableFloat("GTS_SizeDifference ", size_difference_tinypov); // pass Tiny / Giant size diff POV to Tiny
+		giant->SetGraphVariableFloat("GTS_SizeDifference", size_difference_tinypov); // pass Tiny / Giant size diff POV to GTS
+		tiny->SetGraphVariableFloat("GTS_SizeDifference", size_difference_tinypov); // pass Tiny / Giant size diff POV to Tiny
     }
 
     bool Hugs_RestoreHealth(Actor* giantref, Actor* tinyref, float steal) {

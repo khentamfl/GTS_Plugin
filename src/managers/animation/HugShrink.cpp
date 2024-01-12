@@ -386,6 +386,11 @@ namespace Gts {
 			giantref->GetGraphVariableBool("GTS_TinyAbsorbed", TinyAbsorbed);
 
 			float stamina = GetAV(giantref, ActorValue::kStamina);
+
+			if (IsHugHealing(giantref)) {
+				return true; // do nothing while we heal actor
+			}
+			
 			if (!IsHugCrushing(giantref)) {
 				if (sizedifference < 0.9 || giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || !HugShrink::GetHuggiesActor(giantref)) {
 					AbortHugAnimation(giantref, tinyref);
