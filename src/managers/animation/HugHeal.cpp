@@ -42,15 +42,9 @@ namespace {
         float size_difference_gtspov = std::clamp(giantSize/tinySize, 0.02f, 1.0f);
         float size_difference_tinypov = std::clamp(tinySize/giantSize, 0.02f, 1.0f);
 
-		float sizediff_A; // tiny
-		float sizediff_B; // gts
-		tiny->GetGraphVariableFloat("GTS_SizeDifference", sizediff_A);
-		giant->GetGraphVariableFloat("GTS_SizeDifference", sizediff_B);
-
-		if (sizediff_A != size_difference_tinypov) {
+		static Timer timer = Timer(0.25);
+		if (timer.ShouldRunFrame()) {
 			tiny->SetGraphVariableFloat("GTS_SizeDifference", size_difference_tinypov); // pass Tiny / Giant size diff POV to Tiny
-		} 
-		if (sizediff_B != size_difference_tinypov) {
 			giant->SetGraphVariableFloat("GTS_SizeDifference", size_difference_tinypov); // pass Tiny / Giant size diff POV to GTS
 		}
     }
