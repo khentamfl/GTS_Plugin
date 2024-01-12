@@ -189,7 +189,9 @@ namespace {
 		DoLaunch(&data.giant, 1.25 * perk, 3.20 * perk, FootEvent::Left);
 		DoFootstepSound(&data.giant, 1.15, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
-		DeplenishStamina(&data.giant, 80.0);
+
+		DeplenishStamina(&data.giant, 100.0);
+
 		DoSounds(&data.giant, 1.25, LNode);
 	}
 	void GTS_Trample_Finisher_R(AnimationEventData& data) { // last hit that deals huge chunk of damage
@@ -207,7 +209,9 @@ namespace {
 		DoLaunch(&data.giant, 1.25 * perk, 3.20 * perk, FootEvent::Right);
 		DoFootstepSound(&data.giant, 1.15, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
-		DeplenishStamina(&data.giant, 80.0);
+
+		DeplenishStamina(&data.giant, 100.0);
+		
 		DoSounds(&data.giant, 1.25, LNode);
 	}
 

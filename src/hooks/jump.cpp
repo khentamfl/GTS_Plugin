@@ -50,21 +50,7 @@ namespace Hooks {
 		REL::Relocation<uintptr_t> hook{REL::RelocationID(41811, 42892)};
 		_GetScaleJumpHook = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x4d, 0x4d), GetScaleJumpHook);
 
-		// static CallHook<float(TESObjectREFR*)> GetScaleHookJumpAnimEvent(RELOCATION_ID(41811, 42892),  0x4d,
-		// [](auto* self) {
-		//     float result = GetScaleHookJumpAnimEvent(self);
-		//     Actor* actor = skyrim_cast<Actor*>(self);
-		//     if (actor) {
-		//       float scale = get_visual_scale(actor);
-		//       if (scale > 1e-4) {
-		//         log::info("Jump Hook: {} for {}", scale, actor->GetDisplayFullName());
-		//         result *= scale;
-		//       }
-		//     }
-		//     return result;
-		// });
-
-		static FunctionHook<void(const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat(  // SE: B25990 ?
+		/*static FunctionHook<void(const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat(  // SE: B25990 ?
 			REL::RelocationID(62709, 63608),
 			[](const auto& a_variableName, const auto a_in) {
 				//  63608 (B25990) for SE is probably incorrect, it seems to lead 
@@ -84,7 +70,7 @@ namespace Hooks {
 					return SkyrimSetGraphVarFloat(a_variableName, Velocity);
 				}
 				return SkyrimSetGraphVarFloat(a_variableName, a_in);
-			});
+			});*/
 	}
 
 	float Hook_Jumping::GetScaleJumpHook(TESObjectREFR* a_this) {
