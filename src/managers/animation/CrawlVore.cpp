@@ -93,9 +93,7 @@ namespace {
 		if (AllowFeetTracking() && giant->formID == 0x14) {
 			if (IsTransferingTiny(giant)) {
 				ManageCamera(giant, true, 4.0);
-				ManageCamera(giant, false, 2.0);
 			} else {
-				ManageCamera(giant, false, 4.0);
 				ManageCamera(giant, true, 2.0);
 			}
 		}
