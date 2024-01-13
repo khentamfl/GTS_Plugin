@@ -97,7 +97,7 @@ namespace Gts {
         shake_camera(giant, 8.0, 0.45);
         RefreshDuration(giant);
 
-        giant->SetGraphVariableFloat("staggerMagnitude", 0.50f);
+        giant->SetGraphVariableFloat("staggerMagnitude", 50.0f);
 		giant->NotifyAnimationGraph("staggerStart");
 
         Runtime::PlaySound("GtsCrushSound", giant, 1.0, 0.0);
