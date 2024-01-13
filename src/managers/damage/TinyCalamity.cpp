@@ -18,7 +18,7 @@ using namespace Gts;
 
 namespace {
     void RefreshDuration(Actor* giant) {
-        if (Runtime::HasPerk(Giant, "NoSpeedLoss")) {
+        if (Runtime::HasPerk(giant, "NoSpeedLoss")) {
             AttributeManager::GetSingleton().OverrideSMTBonus(0.65); // Reduce speed after crush
         } else {
             AttributeManager::GetSingleton().OverrideSMTBonus(0.35); // Reduce more speed after crush
@@ -29,8 +29,8 @@ namespace {
         float GiantHp = GetAV(giant, ActorValue::kHealth);
 		float TinyHp = GetAV(tiny, ActorValue::kHealth);
 
-        float Multiplier = GetSizeDifference(Giant, Tiny);
-        float reduction = AttributeManager::GetSingleton().GetAttributeBonus(Giant, ActorValue::kHealth);
+        float Multiplier = GetSizeDifference(giant, Tiny);
+        float reduction = AttributeManager::GetSingleton().GetAttributeBonus(giant, ActorValue::kHealth);
 
         if (GiantHp >= ((TinyHp / Multiplier) * reduction)) {
             return true;
@@ -51,7 +51,7 @@ namespace Gts {
 
             float giantScale = get_visual_scale(giant);
 
-            const float BASE_DISTANCE = 24.0;
+            const float BASE_DISTANCE = 48.0;
             float CheckDistance = BASE_DISTANCE*giantScale;
 
             if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant))) {
@@ -62,7 +62,7 @@ namespace Gts {
             for (auto otherActor: find_actors()) {
                 if (otherActor != giant) {
                     NiPoint3 actorLocation = otherActor->GetPosition();
-                    if ((actorLocation - giantLocation).Length() < BASE_DISTANCE*giantScale*radius*3) {
+                    if ((actorLocation - giantLocation).Length() < BASE_DISTANCE*giantScale*3) {
                         int nodeCollisions = 0;
                         float force = 0.0;
 
@@ -96,7 +96,7 @@ namespace Gts {
 		auto& persistent = Persistent::GetSingleton();
 		if (persistent.GetData(Giant)) {
 			if (persistent.GetData(Giant)->smt_run_speed >= 1.0) {
-                float GiantHp = GetAV(giant, ActorValue::kHealth);
+                float GiantHp = GetAV(Giant, ActorValue::kHealth);
 
                 if (CrushManager::AlreadyCrushed(Tiny)) {
                     return;

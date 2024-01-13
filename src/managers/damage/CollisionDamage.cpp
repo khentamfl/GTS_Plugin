@@ -1,6 +1,7 @@
 #include "magic/effects/smallmassivethreat.hpp"
 #include "managers/damage/CollisionDamage.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
+#include "managers/damage/TinyCalamity.hpp"
 #include "managers/RipClothManager.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "managers/GtsSizeManager.hpp"
