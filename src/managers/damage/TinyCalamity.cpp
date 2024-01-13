@@ -4,9 +4,11 @@
 #include "managers/Attributes.hpp"
 #include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
+#include "utils/looting.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "UI/DebugAPI.hpp"
+
 
 #include "profiler.hpp"
 
