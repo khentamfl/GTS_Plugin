@@ -101,7 +101,6 @@ namespace {
 			float sizedifference_tiny = tiny_size/gts_size;
 			float threshold = 3.0;
 			float stamina = 0.35;
-			float steal = GetHugStealRate(giantref);
 
 			if (Runtime::HasPerkTeam(giantref, "HugCrush_Greed")) {
 				stamina *= 0.75;
@@ -125,7 +124,7 @@ namespace {
 			DamageAV(tinyref, ActorValue::kStamina, -(0.45 * TimeScale())); // Restore Tiny stamina
 			DamageAV(giantref, ActorValue::kStamina, 0.25 * stamina * TimeScale()); // Damage GTS Stamina
 
-			return Hugs_RestoreHealth(giantref, tinyref, steal);
+			return Hugs_RestoreHealth(giantref, tinyref);
 
 		});
 	}
