@@ -66,11 +66,6 @@ namespace Hooks
 
 	void Hook_Actor::HandleHealthDamage(Actor* a_this, Actor* a_attacker, float a_damage) {
 		if (a_attacker) {
-			auto charCont = a_this->GetCharController();
-			if (charCont) {
-				float sizedifference = get_giantess_scale(a_this)/get_giantess_scale(a_attacker);
-				a_this->SetGraphVariableFloat("GiantessScale", sizedifference); // Manages Stagger Resistance inside Behaviors.
-			}
 			if (Runtime::HasPerkTeam(a_this, "SizeReserveAug")) { // Size Reserve Augmentation
 				auto Cache = Persistent::GetSingleton().GetData(a_this);
 				if (Cache) {

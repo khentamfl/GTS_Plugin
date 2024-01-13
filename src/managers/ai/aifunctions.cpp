@@ -44,6 +44,7 @@ namespace Gts {
 		
 		float hp = GetMaxAV(tiny, ActorValue::kHealth) * 3.0;
 		InflictSizeDamage(giant, tiny, hp); // just to make sure
+		Cprint("Killing Actor");
 		if (tiny->formID == 0x14) {
 			tiny->KillImpl(giant, 1, true, true);
 		}

@@ -94,10 +94,14 @@ namespace Gts {
         MoveItems(giantHandle, tinyHandle, tiny->formID);
         PrintDeathSource(giant, tiny, DamageSource::Collision);
 
+        float OldScale;
+        giant->GetGraphVariableFloat("GiantessScale", OldScale); // save old scale
+        giant->SetGraphVariableFloat("GiantessScale", 1.0); // Needed to allow Stagger to play, else it won't work
+
         shake_camera(giant, 8.0, 0.45);
         RefreshDuration(giant);
 
-        giant->SetGraphVariableFloat("staggerMagnitude", 50.0f);
+        giant->SetGraphVariableFloat("staggerMagnitude", 0.50f);
 		giant->NotifyAnimationGraph("staggerStart");
 
         Runtime::PlaySound("GtsCrushSound", giant, 1.0, 0.0);
@@ -108,6 +112,8 @@ namespace Gts {
             TriggerScreenBlood(50);
             tiny->SetAlpha(0.0); // Player can't be disintegrated, so we make player Invisible
         }
+
+        giant->SetGraphVariableFloat("GiantessScale", OldScale);
     }
 
     void TinyCalamity_SeekActors(Actor* giant) {
@@ -174,6 +180,10 @@ namespace Gts {
 				if (Collision_AllowTinyCalamityCrush(giant, tiny)) {
                     TinyCalamity_ExplodeActor(giant, tiny);
 				} else {
+                    float OldScale;
+                    giant->GetGraphVariableFloat("GiantessScale", OldScale); // save old scale
+                    giant->SetGraphVariableFloat("GiantessScale", 1.0); // Needed to allow Stagger to play, else it won't work
+
 					PushForward(giant, tiny, 1000);
 					AddSMTDuration(giant, 2.5);
 					StaggerActor(giant);
@@ -187,6 +197,8 @@ namespace Gts {
 					Notify("{} is too tough to be crushed", tiny->GetDisplayFullName());
 
                     RefreshDuration(giant);
+
+                    giant->SetGraphVariableFloat("GiantessScale", OldScale);
 				}
 			}
 		}
