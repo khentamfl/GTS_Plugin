@@ -243,7 +243,9 @@ namespace {
 			return;
 		}
 		if (get_target_scale(player)/get_target_scale(huggedActor) >= GetHugShrinkThreshold(player)) {
-			AbortHugAnimation(player, huggedActor);
+			if (!IsHugCrushing(player) && !IsHugHealing(player)) {
+				AbortHugAnimation(player, huggedActor);
+			}
 			return;
 		}
 
@@ -252,6 +254,19 @@ namespace {
 	}
 
 	void HugHealEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		auto huggedActor = HugShrink::GetHuggiesActor(player);
+		if (!huggedActor) {
+			return;
+		}
+
+		if (get_target_scale(player)/get_target_scale(huggedActor) >= GetHugShrinkThreshold(player)) {
+			if (!IsHugCrushing(player) && !IsHugHealing(player)) {
+				AbortHugAnimation(player, huggedActor);
+			}
+			return;
+		}
+
 		if (Runtime::HasPerkTeam(player, "HugCrush_LovingEmbrace")) {
 			if (!IsHostile(huggedActor, player) && IsTeammate(huggedActor)) {
 				StartHealingAnimation(player, huggedActor);
