@@ -52,6 +52,51 @@ namespace Gts {
 		controlMap->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch); // Allow POV Switching
 	}
 
+	void Vore_AttachToRightHandTask(Actor* giant, Actor* tiny) {
+		std::string name = std::format("CrawlVore_{}_{}", giant->formID, tiny->formID);
+		ActorHandle giantHandle = giant->CreateRefHandle();
+		ActorHandle tinyHandle = tiny->CreateRefHandle();
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!giantHandle) {
+				return false;
+			} 
+			if (!tinyHandle) {
+				return false;
+			}
+			auto giantref = giantHandle.get().get();
+			auto tinyref = tinyHandle.get().get();
+
+			auto FingerA = find_node(giant, "NPC R Finger02 [RF02]");
+			if (!FingerA) {
+				Notify("R Finger 02 node not found");
+				return;
+			}
+			auto FingerB = find_node(giant, "NPC R Finger30 [RF30]");
+			if (!FingerB) {
+				Notify("R Finger 30 node not found");
+				return;
+			}
+			NiPoint3 coords = (FingerA->world.translate + FingerB->world.translate) / 2.0;
+			coords.z -= 3.0;
+
+			if (tinyref->IsDead()) {
+				Notify("Vore Task ended");
+				return false;
+			}
+
+			return AttachTo(giantref, tinyref, coords);
+		});
+	}
+
+	bool Vore_ShouldAttachToRHand(Actor* giant, Actor* tiny) {
+		if (IsTransferingTiny(giant)) {
+			Vore_AttachToRightHandTask(giant, tiny);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	void HugCrushOther(Actor* giant, Actor* tiny) {
 		Attacked(tiny, giant);
 		if (giant->formID == 0x14 && IsDragon(tiny)) {

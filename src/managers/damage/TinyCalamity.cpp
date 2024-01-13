@@ -31,9 +31,8 @@ namespace {
 		float tinyHp = GetAV(tiny, ActorValue::kHealth);
 
         float Multiplier = GetSizeDifference(giant, tiny);
-        float reduction = AttributeManager::GetSingleton().GetAttributeBonus(giant, ActorValue::kHealth);
 
-        if (giantHp >= ((tinyHp / Multiplier) * reduction)) {
+        if (giantHp >= ((tinyHp / Multiplier))) {
             return true;
         } else {
             return false;
@@ -115,7 +114,7 @@ namespace Gts {
                     Runtime::PlaySound("GtsCrushSound", giant, 1.0, 0.0);
 
 					Cprint("{} was instantly turned into mush by the body of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-                    shake_camera(giant, 1.75, 0.45);
+                    shake_camera(giant, 4.75, 0.45);
                     RefreshDuration(giant);
 				} else {
 					PushForward(giant, tiny, 1000);

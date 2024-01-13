@@ -352,7 +352,7 @@ namespace Gts {
 		if (timer.ShouldRunFrame()) { //Try to not call it too often
 			std::vector<Actor*> AbleToVore = {};
 			for (auto actor: find_actors()) {
-				if (actor->formID != 0x14 && IsTeammate(actor) && (actor->IsInCombat() || !persist.vore_combatonly) || EffectsForEveryone(actor)) {
+				if (actor->formID != 0x14 && IsTeammate(actor) && (actor->IsInCombat() || !persist.vore_combatonly) || (EffectsForEveryone(actor) && IsFemale(actor))) {
 					AbleToVore.push_back(actor);
 				}
 			}

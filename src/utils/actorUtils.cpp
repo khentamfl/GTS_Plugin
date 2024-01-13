@@ -846,15 +846,16 @@ namespace Gts {
 										float iconScale = std::clamp(tinyScale, 1.0f, 9999.0f) * 2.4;
 										bool Ally = !IsHostile(giant, otherActor) && IsTeammate(otherActor);
 										bool HasLovingEmbrace = Runtime::HasPerk(giant, "HugCrush_LovingEmbrace");
+										bool Healing = IsHugHealing(giant);
 
 										NiPoint3 Position = node->world.translate;
 										Position.z -= correction;
 
 										if (grabbedActor && grabbedActor == otherActor) {
 											//do nothing
-										} else if (huggedActor && huggedActor == otherActor && Ally && HasLovingEmbrace) {
+										} else if (huggedActor && huggedActor == otherActor && Ally && HasLovingEmbrace && !Healing) {
 											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_LovingEmbrace.nif", NiMatrix3(), Position, iconScale, 7, node);
-										} else if (huggedActor && huggedActor == otherActor && !IsHugCrushing(giant)) {
+										} else if (huggedActor && huggedActor == otherActor && !IsHugCrushing(giant) && !Healing) {
 											bool LowHealth = (GetHealthPercentage(huggedActor) < GetHPThreshold(giant));
 											bool ForceCrush = Runtime::HasPerkTeam(giant, "HugCrush_MightyCuddles");
 											float Stamina = GetStaminaPercentage(giant);

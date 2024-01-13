@@ -82,11 +82,14 @@ namespace {
 	void GTSCrawlVore_Grab(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
-		VoreData.GrabAll();
 		for (auto& tiny: VoreData.GetVories()) {
+			if (!Vore_ShouldAttachToRHand(giant, tiny)) {
+				VoreData.GrabAll();
+			}
 			tiny->NotifyAnimationGraph("JumpFall");
 			SetBeingHeld(tiny, true);
 			Attacked(tiny, giant);
+
 		}
 		if (AllowFeetTracking() && giant->formID == 0x14) {
 			ManageCamera(giant, false, 4.0);

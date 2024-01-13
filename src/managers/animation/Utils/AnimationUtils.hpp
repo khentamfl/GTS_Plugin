@@ -12,6 +12,9 @@ using namespace Gts;
 namespace Gts {
 	void BlockFirstPerson(Actor* actor, bool block);
 
+	void Vore_AttachToRightHandTask(Actor* giant, Actor* tiny);
+	bool Vore_ShouldAttachToRHand(Actor* giant, Actor* tiny);
+
 	void HugCrushOther(Actor* giant, Actor* tiny);
 
 	void AbortHugAnimation(Actor* giant, Actor* tiny);
