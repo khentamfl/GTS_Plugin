@@ -22,7 +22,7 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
-		StaggerActor(target);
+		StaggerActor(target, 100.0f);
 	}
 
 	void Absorb::OnUpdate() {

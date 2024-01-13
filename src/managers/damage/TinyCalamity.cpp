@@ -101,8 +101,7 @@ namespace Gts {
         shake_camera(giant, 8.0, 0.45);
         RefreshDuration(giant);
 
-        giant->SetGraphVariableFloat("staggerMagnitude", 0.50f);
-		giant->NotifyAnimationGraph("staggerStart");
+        StaggerActor(giant, 0.5f);
 
         Runtime::PlaySound("GtsCrushSound", giant, 1.0, 0.0);
 
@@ -186,12 +185,12 @@ namespace Gts {
 
 					PushForward(giant, tiny, 1000);
 					AddSMTDuration(giant, 2.5);
-					StaggerActor(giant);
+					StaggerActor(giant, 0.5);
 
 					DamageAV(tiny, ActorValue::kHealth, giantHp * 0.75);
 					DamageAV(tiny, ActorValue::kHealth, giantHp * 0.25);
 
-					shake_camera(giant, 4.35, 0.5);
+					shake_camera(giant, 4.35, 0.5f);
 					Runtime::PlaySound("lJumpLand", giant, 1.0, 1.0);
 
 					Notify("{} is too tough to be crushed", tiny->GetDisplayFullName());

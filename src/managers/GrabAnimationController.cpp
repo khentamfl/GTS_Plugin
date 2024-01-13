@@ -163,7 +163,7 @@ namespace Gts {
 			return;
 		}
 
-		StaggerActor(prey);
+		StaggerActor(prey, 100.0f);
 		ShrinkUntil(pred, prey, 10.0);
 		Grab::GetSingleton().GrabActor(pred, prey);
 		

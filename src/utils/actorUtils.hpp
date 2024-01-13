@@ -197,7 +197,7 @@ namespace Gts {
 
 	void ManageRagdoll(Actor* tinyref, float deltaLength, NiPoint3 deltaLocation, NiPoint3 targetLocation);
 	void ChanceToScare(Actor* giant, Actor* tiny);
-	void StaggerActor(Actor* receiver);
+	void StaggerActor(Actor* receiver, float power);
 	
 
 	float GetMovementModifier(Actor* giant);

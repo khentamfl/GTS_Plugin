@@ -1793,7 +1793,7 @@ namespace Gts {
 					if (nodeCollisions > 0) {
 						float sizedifference = giantScale/get_visual_scale(otherActor);
 						if (sizedifference <= 1.6) {
-							StaggerActor(otherActor);
+							StaggerActor(otherActor, 0.75f);
 						} else {
 							PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference));
 						}
@@ -1835,7 +1835,7 @@ namespace Gts {
 			set_target_scale(tiny, MinScale);
 		}
 		if (sizedifference <= 4.0) { // Stagger or Push
-			StaggerActor(tiny);
+			StaggerActor(tiny, 0.25f);
 		} else {
 			PushActorAway(giant, tiny, 1.0/Adjustment * GetLaunchPower(sizedifference));
 		}
@@ -2067,8 +2067,8 @@ namespace Gts {
 		}
 	}
 
-	void StaggerActor(Actor* receiver) {
-		receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f);
+	void StaggerActor(Actor* receiver, float power) {
+		receiver->SetGraphVariableFloat("staggerMagnitude", power);
 		receiver->NotifyAnimationGraph("staggerStart");
 	}
 
@@ -2151,7 +2151,7 @@ namespace Gts {
 			if (preyscale >= targetScale) { // Apply ONLY if target is bigger than requirement
 				set_target_scale(tiny, targetScale);
 				AddSMTPenalty(giant, 5.0 * GetScaleAdjustment(tiny));
-				StaggerActor(tiny);
+				StaggerActor(tiny, 0.25f);
 			}
 		}
 	}

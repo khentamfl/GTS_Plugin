@@ -112,7 +112,7 @@ namespace Gts {
 		}
 		float sizediff = get_visual_scale(caster)/get_visual_scale(target);
 		if (this->power >= 18.00 && sizediff > 4.0) {
-			StaggerActor(target);
+			StaggerActor(target, 100.0f);
 		}
 		//CancelWeaknessTask(target);
 	}

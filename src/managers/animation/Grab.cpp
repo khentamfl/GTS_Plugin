@@ -296,7 +296,7 @@ namespace {
 					} else {
 						Runtime::PlaySoundAtNode("SoftHandAttack", giantess, 1.0, 0.0, "NPC L Hand [LHnd]");
 					}
-					StaggerActor(tiny);
+					StaggerActor(tiny, 0.25f);
 				}
 			});
 		}
