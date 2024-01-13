@@ -37,14 +37,13 @@ using namespace std;
 namespace {
 
 
-    bool Hugs_RestoreHealth(Actor* giantref, Actor* tinyref, float steal) {
+    bool Hugs_RestoreHealth(Actor* giantref, Actor* tinyref) {
 		static Timer HeartTimer = Timer(0.5);
 		float hp = GetAV(tinyref, ActorValue::kHealth);
 		float maxhp = GetMaxAV(tinyref, ActorValue::kHealth);
-
-		tinyref->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, maxhp * 0.004 * steal * TimeScale());
+		bool Healing = IsHugHealing(giantref);
 		
-		if (HeartTimer.ShouldRunFrame()) {
+		if (Healing && HeartTimer.ShouldRunFrame()) {
 			NiPoint3 POS = GetHeartPosition(giantref, tinyref);
 			if (POS.Length() > 0) {
 				float scale = get_visual_scale(giantref);
@@ -52,18 +51,13 @@ namespace {
 			}
 		}
 
-
-		if (IsHugCrushing(giantref) || IsHugHealing(giantref)) {
-			return true; // disallow to cancel it during Hug Crush/Heal
-		}
-
-		if (hp >= maxhp) {
+		if (!Healing && hp >= maxhp) {
 			AbortHugAnimation(giantref, tinyref);
 			if (giantref->formID == 0x14) {
 				Notify("{} health is full", tinyref->GetDisplayFullName());
 			}
 			return false;
-		}
+		} 
 
 		if (giantref->formID == 0x14) {
 			float sizedifference = get_visual_scale(giantref)/get_visual_scale(tinyref);
@@ -71,6 +65,12 @@ namespace {
 		} else {
 			GRumble::Once("HugSteal", giantref, get_visual_scale(giantref) * 8, 0.10);
 		}
+		tinyref->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, maxhp * 0.004 * 0.15 * TimeScale());
+
+		if (!Healing) {
+			return false;
+		}
+
 		return true;
 	}
 
@@ -94,23 +94,11 @@ namespace {
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 
-			if (!IsHugHealing(giantref)) {
+			float tiny_size = get_visual_scale(tinyref);
+			float gts_size = get_visual_scale(giantref);
 
-				float hp = GetAV(tinyref, ActorValue::kHealth);
-				float maxhp = GetMaxAV(tinyref, ActorValue::kHealth);
-
-				if (hp >= maxhp) {
-					if (giantref->formID == 0x14) {
-						AbortHugAnimation(giantref, tinyref);
-						Notify("{} health is full", tinyref->GetDisplayFullName());
-					}
-
-					Notify("Task has ended");
-					return false; // end task in that case
-				}
-			}
-
-			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
+			float sizedifference_gts = gts_size/tiny_size;
+			float sizedifference_tiny = tiny_size/gts_size;
 			float threshold = 3.0;
 			float stamina = 0.35;
 			float steal = GetHugStealRate(giantref);
@@ -125,23 +113,17 @@ namespace {
 			}
 			ShutUp(tinyref); // Disallow idle dialogues
 
-			if (sizedifference >= threshold) {
+			if (sizedifference_gts >= 1.08 || sizedifference_tiny >= threshold) {
 				SetBeingHeld(tinyref, false);
 				AbortHugAnimation(giantref, tinyref);
 				if (giantref->formID == 0x14) {
 					shake_camera(giantref, 0.50, 0.15);
-					Notify("it's difficult to gently hug {}", tinyref->GetDisplayFullName());
+					Notify("It's difficult to gently hug {}", tinyref->GetDisplayFullName());
 				}
 				return false;
 			}
 			DamageAV(tinyref, ActorValue::kStamina, -(0.45 * TimeScale())); // Restore Tiny stamina
 			DamageAV(giantref, ActorValue::kStamina, 0.25 * stamina * TimeScale()); // Damage GTS Stamina
-            
-			if (giantref->formID == 0x14) {
-				shake_camera(giantref, 0.30 * sizedifference, 0.05);
-			} else {
-				GRumble::Once("HugSteal", giantref, get_visual_scale(giantref) * 4, 0.10);
-			}
 
 			return Hugs_RestoreHealth(giantref, tinyref, steal);
 
