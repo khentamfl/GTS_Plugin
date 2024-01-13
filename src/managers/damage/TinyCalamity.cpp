@@ -26,7 +26,7 @@ namespace {
         }
     }
 
-    bool Collision_AllowtinyCalamityCrush(Actor* giant, Actor* tiny) {
+    bool Collision_AllowTinyCalamityCrush(Actor* giant, Actor* tiny) {
         float giantHp = GetAV(giant, ActorValue::kHealth);
 		float tinyHp = GetAV(tiny, ActorValue::kHealth);
 
@@ -42,7 +42,7 @@ namespace {
 }
 
 namespace Gts {
-    void tinyCalamity_SeekActors(Actor* giant) {
+    void TinyCalamity_SeekActors(Actor* giant) {
         if (giant->formID == 0x14 && giant->AsActorState()->IsSprinting() && HasSMT(giant)) {
             auto node = find_node(giant, "NPC Pelvis [Pelv]");
             if (!node) {
@@ -81,7 +81,7 @@ namespace Gts {
                             });
                         }
                         if (nodeCollisions > 0) {
-                            tinyCalamity_CrushCheck(giant, otherActor);
+                            TinyCalamity_CrushCheck(giant, otherActor);
                         }
                     }
                 }
@@ -89,7 +89,7 @@ namespace Gts {
         }
     }
 
-    void tinyCalamity_CrushCheck(Actor* giant, Actor* tiny) {
+    void TinyCalamity_CrushCheck(Actor* giant, Actor* tiny) {
 		auto profiler = Profilers::Profile("tinyCalamity: CrushCheck");
 		if (giant == tiny) {
 			return;
