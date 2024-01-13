@@ -101,18 +101,10 @@ namespace Gts {
 			}
 			return;
 		} else if (cause == DamageSource::Collision) { // Through Collision
-			if (random <= 2) {
+			if (random <= 3) {
 				Cprint("{} exploded after colliding with {}", TinyName, GiantName);
-			} else if (random == 3) {
-				Cprint("{} completely absorbed {}", GiantName, TinyName);
-			} else if (random == 4) {
-				Cprint("{} was absorbed by {}", TinyName, GiantName);
-			} else if (random == 5) {
-				Cprint("{} was shrinkned to nothing by {}", TinyName, GiantName);
-			} else if (random == 6) {
-				Cprint("{} size was completely drained by {}", TinyName, GiantName);
-			} else if (random >= 7) {
-				Cprint("{} stole all the size from {}, exploding {}", GiantName, TinyName);
+			} else {
+				Cprint("{} was instantly turned into mush by the body of {}", TinyName, GiantName);
 			}
 		} else if (cause == DamageSource::Shrinked) { // Shrink to nothing
 			if (random <= 2) {

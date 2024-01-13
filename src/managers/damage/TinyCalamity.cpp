@@ -18,6 +18,44 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
+    void PlayGoreEffects(Actor* giant, Actor* tiny) {
+        if (!IsLiving(tiny)) {
+            SpawnDustParticle(tiny, giant, "NPC Root [Root]", 3.0);
+        } else {
+            if (!LessGore()) {
+                auto root = find_node(tiny, "NPC Root [Root]");
+                if (root) {
+                    float currentSize = get_visual_scale(tiny);
+                    SpawnParticle(tiny, 0.60, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, currentSize * 1.25, 7, root);
+                    SpawnParticle(tiny, 0.60, "GTS/Damage/Explode.nif", root->world.rotate, root->world.translate, currentSize * 1.25, 7, root);
+                    SpawnParticle(tiny, 0.60, "GTS/Damage/Crush.nif", root->world.rotate, root->world.translate, currentSize * 1.25, 7, root);
+                    SpawnParticle(tiny, 0.60, "GTS/Damage/Crush.nif", root->world.rotate, root->world.translate, currentSize * 1.25, 7, root);
+                    SpawnParticle(tiny, 1.20, "GTS/Damage/ShrinkOrCrush.nif", NiMatrix3(), root->world.translate, currentSize * 12.5, 7, root);
+                }
+            }
+            Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Root [Root]", NiPoint3{0, 0, -1}, 512, false, true);
+            Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Root [Root]", NiPoint3{0, 0, -1}, 512, false, true);
+            Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Root [Root]", NiPoint3{0, 0, -1}, 512, false, true);
+            Runtime::CreateExplosion(tiny, get_visual_scale(tiny) * 0.5, "BloodExplosion");
+        }
+    }
+
+    void MoveItems(ActorHandle giantHandle, ActorHandle tinyHandle, FormID ID) {
+        std::string taskname = std::format("CollisionDeath {}", ID);
+        TaskManager::RunOnce(taskname, [=](auto& update){
+            if (!tinyHandle) {
+                return;
+            }
+            if (!giantHandle) {
+                return;
+            }
+            auto giant = giantHandle.get().get();
+            auto tiny = tinyHandle.get().get();
+            float scale = get_visual_scale(tiny);
+            TransferInventory(tiny, giant, scale, false, true, DamageSource::Collision, true);
+        });
+    }
+
     void RefreshDuration(Actor* giant) {
         if (Runtime::HasPerk(giant, "NoSpeedLoss")) {
             AttributeManager::GetSingleton().OverrideSMTBonus(0.65); // Reduce speed after crush
@@ -41,6 +79,35 @@ namespace {
 }
 
 namespace Gts {
+    void TinyCalamity_ExplodeActor(Actor* giant, Actor* tiny) {
+        if (!tiny->IsDead()) {
+            KillActor(giant, tiny);
+        }
+
+        ActorHandle giantHandle = giant->CreateRefHandle();
+        ActorHandle tinyHandle = tiny->CreateRefHandle();
+
+        CrushBonuses(giant, tiny);                             // common.hpp
+        PlayGoreEffects(tiny, giant);    
+        MoveItems(giantHandle, tinyHandle, tiny->formID);
+        PrintDeathSource(giant, tiny, DamageSource::Collision);
+
+        shake_camera(giant, 8.0, 0.45);
+        RefreshDuration(giant);
+
+        giant->SetGraphVariableFloat("staggerMagnitude", 0.50f);
+		giant->NotifyAnimationGraph("staggerStart");
+
+        Runtime::PlaySound("GtsCrushSound", giant, 1.0, 0.0);
+
+        if (tiny->formID != 0x14) {
+            Disintegrate(tiny, true); // Set critical stage 4 on actors
+        } else if (tiny->formID == 0x14) {
+            TriggerScreenBlood(50);
+            tiny->SetAlpha(0.0); // Player can't be disintegrated, so we make player Invisible
+        }
+    }
+
     void TinyCalamity_SeekActors(Actor* giant) {
         if (giant->formID == 0x14 && giant->AsActorState()->IsSprinting() && HasSMT(giant)) {
             auto node = find_node(giant, "NPC Pelvis [Pelv]");
@@ -98,24 +165,12 @@ namespace Gts {
 			if (persistent.GetData(giant)->smt_run_speed >= 1.0) {
                 float giantHp = GetAV(giant, ActorValue::kHealth);
 
-                if (CrushManager::AlreadyCrushed(tiny)) {
-                    return;
-                }
-
 				if (giantHp <= 0) {
 					return; // just in case, to avoid CTD
 				}
 
 				if (Collision_AllowTinyCalamityCrush(giant, tiny)) {
-					CrushManager::Crush(giant, tiny);
-					CrushBonuses(giant, tiny); // common.hpp
-
-					Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
-                    Runtime::PlaySound("GtsCrushSound", giant, 1.0, 0.0);
-
-					Cprint("{} was instantly turned into mush by the body of {}", tiny->GetDisplayFullName(), giant->GetDisplayFullName());
-                    shake_camera(giant, 4.75, 0.45);
-                    RefreshDuration(giant);
+                    TinyCalamity_ExplodeActor(giant, tiny);
 				} else {
 					PushForward(giant, tiny, 1000);
 					AddSMTDuration(giant, 2.5);
