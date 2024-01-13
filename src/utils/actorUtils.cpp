@@ -844,7 +844,7 @@ namespace Gts {
 										}
 
 										float iconScale = std::clamp(tinyScale, 1.0f, 9999.0f) * 2.4;
-										bool Ally = !IsHostile(giant, tiny) && IsTeammate(tiny);
+										bool Ally = !IsHostile(giant, otherActor) && IsTeammate(otherActor);
 										bool HasLovingEmbrace = Runtime::HasPerk(giant, "HugCrush_LovingEmbrace");
 
 										NiPoint3 Position = node->world.translate;
