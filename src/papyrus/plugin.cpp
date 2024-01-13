@@ -173,6 +173,9 @@ namespace {
 
 	void SetFeetTracking(StaticFunctionTag*, bool enabled) {
 		Persistent::GetSingleton().allow_feetracking = enabled;
+		if (!enabled) {
+			ResetCameraTracking();
+		}
 	}
 
 	void AllowCameraFOVEdits(StaticFunctionTag*, bool enabled) {
