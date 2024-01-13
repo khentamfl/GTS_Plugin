@@ -36,15 +36,6 @@ using namespace std;
 
 namespace {
 
-    void AdjustBehaviors(Actor* giant, Actor* tiny) { // blend between two anims: send value to behaviors
-        float tinySize = get_visual_scale(tiny);
-        float giantSize = get_visual_scale(giant);
-        float size_difference_gtspov = std::clamp(giantSize/tinySize, 0.02f, 1.0f);
-        float size_difference_tinypov = std::clamp(tinySize/giantSize, 0.02f, 1.0f);
-
-		tiny->SetGraphVariableFloat("GTS_SizeDifference", size_difference_tinypov); // pass Tiny / Giant size diff POV to Tiny
-		giant->SetGraphVariableFloat("GTS_SizeDifference", size_difference_tinypov); // pass Tiny / Giant size diff POV to GTS
-    }
 
     bool Hugs_RestoreHealth(Actor* giantref, Actor* tinyref, float steal) {
 		static Timer HeartTimer = Timer(0.5);
@@ -120,11 +111,9 @@ namespace {
 			}
 
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
-			float threshold = 2.5;
+			float threshold = 3.0;
 			float stamina = 0.35;
 			float steal = GetHugStealRate(giantref);
-
-			AdjustBehaviors(giantref, tinyref);
 
 			if (Runtime::HasPerkTeam(giantref, "HugCrush_Greed")) {
 				stamina *= 0.75;
@@ -139,6 +128,10 @@ namespace {
 			if (sizedifference >= threshold) {
 				SetBeingHeld(tinyref, false);
 				AbortHugAnimation(giantref, tinyref);
+				if (giantref->formID == 0x14) {
+					shake_camera(giantref, 0.50, 0.15);
+					Notify("it's difficult to gently hug {}", tinyref->GetDisplayFullName());
+				}
 				return false;
 			}
 			DamageAV(tinyref, ActorValue::kStamina, -(0.45 * TimeScale())); // Restore Tiny stamina

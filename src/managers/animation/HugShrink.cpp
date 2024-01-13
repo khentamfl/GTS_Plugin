@@ -387,6 +387,8 @@ namespace Gts {
 
 			float stamina = GetAV(giantref, ActorValue::kStamina);
 
+			UpdateHugBehaviors(giantref, tinyref);
+
 			if (IsHugHealing(giantref)) {
 				ForceRagdoll(tinyref, false);
 				if (!HugAttach(gianthandle, tinyhandle)) {
