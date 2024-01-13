@@ -152,8 +152,7 @@ namespace Gts {
 
 	bool IsTeammate(Actor* actor);
 	bool EffectsForEveryone(Actor* giant);
-
-	void TrackFeet(Actor* giant, float number, bool enable);
+	
 	void ResetCameraTracking();
 	void CallDevourment(Actor* giant, Actor* tiny);
 	void CallGainWeight(Actor* giant, float value);

@@ -207,8 +207,12 @@ namespace Gts {
 	}
 
 	void ManageCamera(Actor* giant, bool enable, float type) {
-		auto& sizemanager = SizeManager::GetSingleton();
-		sizemanager.SetActionBool(giant, enable, type);
+		if (giant->formID == 0x14) {
+			if (AllowFeetTracking()) {
+				auto& sizemanager = SizeManager::GetSingleton();
+				sizemanager.SetActionBool(giant, enable, type);
+			}
+		}
 	}
 
 	void DoLaunch(Actor* giant, float radius, float power, FootEvent kind) {

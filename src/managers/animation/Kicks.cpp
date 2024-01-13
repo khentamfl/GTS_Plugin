@@ -69,16 +69,16 @@ namespace {
 	}
 
 	void GTS_Kick_Camera_On_R(AnimationEventData& data) {
-		TrackFeet(&data.giant, 6.0, true);
+		ManageCamera(&data.giant, true, 6.0);
 	}
 	void GTS_Kick_Camera_On_L(AnimationEventData& data) {
-		TrackFeet(&data.giant, 5.0, true);
+		ManageCamera(&data.giant, true, 5.0);
 	}
 	void GTS_Kick_Camera_Off_R(AnimationEventData& data) {
-		TrackFeet(&data.giant, 6.0, false);
+		ManageCamera(&data.giant, false, 6.0);
 	}
 	void GTS_Kick_Camera_Off_L(AnimationEventData& data) {
-		TrackFeet(&data.giant, 5.0, false);
+		ManageCamera(&data.giant, false, 5.0);
 	}
 
 	void GTS_Kick_SwingLeg_L(AnimationEventData& data) {

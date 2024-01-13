@@ -1322,15 +1322,6 @@ namespace Gts {
 		return false;
 	}
 
-	void TrackFeet(Actor* giant, float number, bool enable) {
-		if (giant->formID == 0x14) {
-			if (AllowFeetTracking()) {
-				auto& sizemanager = SizeManager::GetSingleton();
-				sizemanager.SetActionBool(giant, enable, number);
-			}
-		}
-	}
-
 	void ResetCameraTracking() {
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {

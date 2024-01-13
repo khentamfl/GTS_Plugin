@@ -45,7 +45,7 @@ namespace {
 			data.animSpeed = 1.33 + GetRandomBoost()/2;
 		}
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.8);
-		TrackFeet(&data.giant, 6, true);
+		ManageCamera(&data.giant, true, 6.0);
 		GRumble::Start("StompR", &data.giant, 0.35, 0.15, RNode);
 		//log::info("StompStartR true");
 	}
@@ -58,7 +58,7 @@ namespace {
 			data.animSpeed = 1.33 + GetRandomBoost()/2;
 		}
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.8);
-		TrackFeet(&data.giant, 5, true);
+		ManageCamera(&data.giant, true, 5.0);
 		GRumble::Start("StompL", &data.giant, 0.45, 0.15, LNode); // Start stonger effect
 		//log::info("StompStartL true");
 	}
@@ -163,8 +163,8 @@ namespace {
 		GRumble::Stop("StompL", &data.giant);
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.8);
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 2.8);
-		TrackFeet(&data.giant, 6, false);
-		TrackFeet(&data.giant, 5, false);
+		ManageCamera(&data.giant, false, 6.0);
+		ManageCamera(&data.giant, false, 5.0);
 	}
 
 	void RightStompEvent(const InputEventData& data) {

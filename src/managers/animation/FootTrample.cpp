@@ -49,7 +49,6 @@ namespace {
 		}
 	}
 	void GTS_Trample_Leg_Raise_R(AnimationEventData& data) {
-		//TrackFeet(&data.giant, 6, true);
 		data.stage = 1;
 		data.canEditAnimSpeed = false;
 		if (data.animSpeed == 1.0) {
@@ -58,14 +57,14 @@ namespace {
 	}
 
 	void GTS_Trample_Cam_Start_L(AnimationEventData& data) {
-		TrackFeet(&data.giant, 5, true);
+		ManageCamera(&data.giant, true, 5);
 	}
 	void GTS_Trample_Cam_Start_R(AnimationEventData& data) {
-		TrackFeet(&data.giant, 6, true);
+		ManageCamera(&data.giant, true, 6);
 	}
 
 	void GTS_Trample_Cam_End_L(AnimationEventData& data) {
-		TrackFeet(&data.giant, 5, false);
+		ManageCamera(&data.giant, false, 5);
 		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 0.6);
 
 		data.animSpeed = 1.0;
@@ -73,7 +72,7 @@ namespace {
 		data.stage = 0;
 	}
 	void GTS_Trample_Cam_End_R(AnimationEventData& data) {
-		TrackFeet(&data.giant, 6, false);
+		ManageCamera(&data.giant, false, 6);
 		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 0.6);
 
 		data.animSpeed = 1.0;

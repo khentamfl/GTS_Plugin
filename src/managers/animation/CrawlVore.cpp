@@ -90,12 +90,10 @@ namespace {
 			SetBeingHeld(tiny, true);
 			Attacked(tiny, giant);
 		}
-		if (AllowFeetTracking() && giant->formID == 0x14) {
-			if (IsTransferingTiny(giant)) {
-				ManageCamera(giant, true, 4.0);
-			} else {
-				ManageCamera(giant, true, 2.0);
-			}
+		if (IsTransferingTiny(giant)) {
+			ManageCamera(giant, true, 4.0);
+		} else {
+			ManageCamera(giant, true, 2.0);
 		}
 	}
 
@@ -176,10 +174,8 @@ namespace {
 		VoreData.KillAll();
 		VoreData.ReleaseAll();
 
-		if (AllowFeetTracking() && giant->formID == 0x14) {
-			ManageCamera(giant, false, 4.0);
-			ManageCamera(giant, false, 2.0);
-		}
+		ManageCamera(giant, false, 4.0);
+		ManageCamera(giant, false, 2.0);
 	}
 
 	void GTSCrawlVore_SmileOff(AnimationEventData& data) {
