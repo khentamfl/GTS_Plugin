@@ -97,8 +97,7 @@ namespace {
 			float tiny_size = get_visual_scale(tinyref);
 			float gts_size = get_visual_scale(giantref);
 
-			float sizedifference_gts = gts_size/tiny_size;
-			float sizedifference_tiny = tiny_size/gts_size;
+			float sizedifference = gts_size/tiny_size;
 			float threshold = 3.0;
 			float stamina = 0.35;
 
@@ -112,7 +111,7 @@ namespace {
 			}
 			ShutUp(tinyref); // Disallow idle dialogues
 
-			if (sizedifference_gts >= 1.08 || sizedifference_tiny >= threshold) {
+			if (sizedifference >= threshold || sizedifference <= 0.9) {
 				SetBeingHeld(tinyref, false);
 				AbortHugAnimation(giantref, tinyref);
 				if (giantref->formID == 0x14) {

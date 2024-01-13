@@ -265,8 +265,20 @@ exclusive = false
 [[InputEvent]]
 name = "HugShrink"
 keys = ["LMB"]
+trigger = "release"
+duration = 0.0
 exclusive = true
 # Shrink the one you're currently hugging.
+
+[[InputEvent]]
+name = "HugHeal"
+keys = ["LMB"]
+trigger = "continuous"
+duration = 0.33
+exclusive = true
+# If you have Loving Embrace perk, heal the one you hug. 
+# Will Shrink other if actor is hostile or if you don't have the perk
+
 
 [[InputEvent]]
 name = "HugCrush"

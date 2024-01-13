@@ -247,16 +247,20 @@ namespace {
 			return;
 		}
 
+		AnimationManager::StartAnim("Huggies_Shrink", player);
+		AnimationManager::StartAnim("Huggies_Shrink_Victim", huggedActor);
+	}
+
+	void HugHealEvent(const InputEventData& data) {
 		if (Runtime::HasPerkTeam(player, "HugCrush_LovingEmbrace")) {
-			//if (tinyref->formID == 0x14 && !IsHostile(tinyref, giantref)) || (giantref->formID == 0x14 && !IsHostile(giantref, tinyref)) {
 			if (!IsHostile(huggedActor, player) && IsTeammate(huggedActor)) {
 				StartHealingAnimation(player, huggedActor);
 				return;
 			}
+		} else {
+			AnimationManager::StartAnim("Huggies_Shrink", player);
+			AnimationManager::StartAnim("Huggies_Shrink_Victim", huggedActor);
 		}
-
-		AnimationManager::StartAnim("Huggies_Shrink", player);
-		AnimationManager::StartAnim("Huggies_Shrink_Victim", huggedActor);
 	}
 	void HugReleaseEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
@@ -481,6 +485,7 @@ namespace Gts {
 		InputManager::RegisterInputEvent("HugAttempt", HugAttemptEvent);
 		InputManager::RegisterInputEvent("HugRelease", HugReleaseEvent);
 		InputManager::RegisterInputEvent("HugShrink", HugShrinkEvent);
+		InputManager::RegisterInputEvent("HugHeal", HugHealEvent);
 		InputManager::RegisterInputEvent("HugCrush", HugCrushEvent);
 		InputManager::RegisterInputEvent("ForceHugCrush", ForceHugCrushEvent);
 
