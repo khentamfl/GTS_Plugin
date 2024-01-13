@@ -89,11 +89,15 @@ namespace {
 			tiny->NotifyAnimationGraph("JumpFall");
 			SetBeingHeld(tiny, true);
 			Attacked(tiny, giant);
-
 		}
 		if (AllowFeetTracking() && giant->formID == 0x14) {
-			ManageCamera(giant, false, 4.0);
-			ManageCamera(giant, true, 2.0);
+			if (IsTransferingTiny(giant)) {
+				ManageCamera(giant, true, 4.0);
+				ManageCamera(giant, false, 2.0);
+			} else {
+				ManageCamera(giant, false, 4.0);
+				ManageCamera(giant, true, 2.0);
+			}
 		}
 	}
 
@@ -173,13 +177,17 @@ namespace {
 		VoreData.AllowToBeVored(true);
 		VoreData.KillAll();
 		VoreData.ReleaseAll();
+
+		if (AllowFeetTracking() && giant->formID == 0x14) {
+			ManageCamera(giant, false, 4.0);
+			ManageCamera(giant, false, 2.0);
+		}
 	}
 
 	void GTSCrawlVore_SmileOff(AnimationEventData& data) {
 		auto giant = &data.giant;
 		AdjustFacialExpression(&data.giant, 2, 0.0, "expression");
 		AdjustFacialExpression(&data.giant, 3, 0.0, "phenome");
-		ManageCamera(giant, false, 2.0);
 	}
 
 	void GTSBEH_CrawlVoreExit(AnimationEventData& data) {

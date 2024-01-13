@@ -87,7 +87,7 @@ namespace Gts {
 			return AttachTo(giantref, tinyref, coords);
 		});
 	}
-
+	
 	bool Vore_ShouldAttachToRHand(Actor* giant, Actor* tiny) {
 		if (IsTransferingTiny(giant)) {
 			Vore_AttachToRightHandTask(giant, tiny);
