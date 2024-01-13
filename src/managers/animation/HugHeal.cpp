@@ -61,7 +61,7 @@ namespace {
 
 		if (giantref->formID == 0x14) {
 			float sizedifference = get_visual_scale(giantref)/get_visual_scale(tinyref);
-			shake_camera(giantref, 0.90 * sizedifference, 0.05);
+			shake_camera(giantref, 0.30 * sizedifference, 0.05);
 		} else {
 			GRumble::Once("HugSteal", giantref, get_visual_scale(giantref) * 8, 0.10);
 		}

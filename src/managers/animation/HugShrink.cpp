@@ -271,6 +271,9 @@ namespace {
 			if (!IsHostile(huggedActor, player) && IsTeammate(huggedActor)) {
 				StartHealingAnimation(player, huggedActor);
 				return;
+			} else {
+				AnimationManager::StartAnim("Huggies_Shrink", player);
+				AnimationManager::StartAnim("Huggies_Shrink_Victim", huggedActor);
 			}
 		} else {
 			AnimationManager::StartAnim("Huggies_Shrink", player);
