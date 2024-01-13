@@ -1310,7 +1310,7 @@ namespace Gts {
 			return false;
 		}
 		float scale = get_visual_scale(giant);
-		//if (scale > 1.10) {
+		if (scale > 1.10) {
 			bool dead = giant->IsDead();
 			bool everyone = Runtime::GetBool("PreciseDamageOthers");
 			if (!dead && everyone) {
@@ -1318,7 +1318,7 @@ namespace Gts {
 			} else {
 				return false;
 			}
-		//}
+		}
 		return false;
 	}
 

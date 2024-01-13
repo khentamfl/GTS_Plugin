@@ -146,8 +146,6 @@ namespace Gts {
 		bool OwnsPerk = Runtime::HasPerk(giant, "NoSpeedLoss");
 		float& currentspeed = Attributes->smt_run_speed;
 
-        log::info("Current Speed of {} is {}", giant->GetDisplayFullName(), currentspeed);
-
 		if (giant->AsActorState()->IsSprinting() && HasSMT(giant)) { // SMT Active and sprinting
 			if (OwnsPerk) {
 				bonus = 1.5;
@@ -161,7 +159,7 @@ namespace Gts {
 			}
 		} else { // else decay bonus speed over time
 			if (currentspeed > 0.0) {
-				currentspeed -= 0.045000;
+				currentspeed -= 0.045000 / bonus;
 			} else if (currentspeed <= 0.0) {
 				currentspeed = 0.0;
 			} 
