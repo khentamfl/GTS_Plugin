@@ -30,9 +30,9 @@ namespace {
         float giantHp = GetAV(giant, ActorValue::kHealth);
 		float tinyHp = GetAV(tiny, ActorValue::kHealth);
 
-        float Multiplier = GetSizeDifference(giant, tiny);
+        float Multiplier = get_visual_scale(giant) + 2.0/get_visual_scale(tiny);
 
-        if (giantHp >= ((tinyHp / Multiplier))) {
+        if (giantHp >= ((tinyHp / Multiplier) * 1.25)) {
             return true;
         } else {
             return false;
@@ -134,4 +134,37 @@ namespace Gts {
 			}
 		}
 	}
+
+    void TinyCalamity_BonusSpeed(Actor* giant) { // Manages SMT bonus speed
+		// Andy's TODO: Calc on demand rather than poll
+		float cap = 1.0;
+		float bonus = 1.0; 
+
+		auto Attributes = Persistent::GetSingleton().GetData(giant);
+		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(giant)/100;
+
+		bool OwnsPerk = Runtime::HasPerk(giant, "NoSpeedLoss");
+		float& currentspeed = Attributes->smt_run_speed;
+
+        log::info("Current Speed of {} is {}", giant->GetDisplayFullName(), currentspeed);
+
+		if (giant->AsActorState()->IsSprinting() && HasSMT(giant)) { // SMT Active and sprinting
+			if (OwnsPerk) {
+				bonus = 1.5;
+				cap = 1.25;
+			}
+
+			currentspeed += 0.003600 * bonus * Gigantism; // increase MS
+
+			if (currentspeed > cap) {
+				currentspeed = cap;
+			}
+		} else { // else decay bonus speed over time
+			if (currentspeed > 0.0) {
+				currentspeed -= 0.045000;
+			} else if (currentspeed <= 0.0) {
+				currentspeed = 0.0;
+			} 
+		}
+    }
 }

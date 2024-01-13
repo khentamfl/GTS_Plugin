@@ -199,7 +199,6 @@ namespace {
 			return;
 		}
 		float speedmultcalc = GetAnimationSlowdown(actor); // For all other movement types
-		float bonus = Persistent::GetSingleton().GetActorData(actor)->smt_run_speed;
 		float perkspeed = 1.0;
 		persi_actor_data->anim_speed = speedmultcalc*perkspeed;//MS_mult;
 	}
@@ -229,7 +228,6 @@ namespace {
 
 	void apply_actor(Actor* actor, bool force = false) {
 		auto profiler = Profilers::Profile("Manager: apply_actor");
-		//log::info("Apply_Actor name is {}", actor->GetDisplayFullName());
 		auto temp_data = Transient::GetSingleton().GetData(actor);
 		auto saved_data = Persistent::GetSingleton().GetData(actor);
 		apply_height(actor, saved_data, temp_data, force);

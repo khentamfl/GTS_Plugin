@@ -51,6 +51,5 @@ namespace Hooks
 			static NiPoint3 GetBoundMax(PlayerCharacter* a_this);
 			static inline REL::Relocation<decltype(GetBoundMax)> _GetBoundMax;
 
-			float protectionticks = 360.0;
 	};
 }

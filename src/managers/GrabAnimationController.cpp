@@ -143,6 +143,7 @@ namespace Gts {
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 		if (pred->formID == 0x14 && prey_distance <= MINIMUM_DISTANCE * pred_scale && sizedifference < MINIMUM_GRAB_SCALE) {
 			Notify("{} is too big to be grabbed.", prey->GetDisplayFullName());
+			Attacked(prey, pred);
 			return false;
 		}
 		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && sizedifference > MINIMUM_GRAB_SCALE) {
@@ -162,9 +163,10 @@ namespace Gts {
 			return;
 		}
 
+		StaggerActor(prey);
 		ShrinkUntil(pred, prey, 10.0);
 		Grab::GetSingleton().GrabActor(pred, prey);
-		//BlockFirstPerson(pred, true);
+		
 		AnimationManager::StartAnim("GrabSomeone", pred);
 	}
 }

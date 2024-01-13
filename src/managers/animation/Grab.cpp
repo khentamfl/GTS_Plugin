@@ -702,7 +702,7 @@ namespace {
 		if (!CanPerformAnimation(player, 2)) {
 			return;
 		}
-		if (IsEquipBusy(player) || IsTransitioning(player)) {
+		if (IsGtsBusy(player) || IsEquipBusy(player) || IsTransitioning(player)) {
 			return; // Disallow Grabbing if Behavior is busy doing other stuff.
 		}
 		auto& Grabbing = GrabAnimationController::GetSingleton();
@@ -718,6 +718,9 @@ namespace {
 
 	void GrabAttackEvent(const InputEventData& data) { // Attack everyone in your hand
 		auto player = PlayerCharacter::GetSingleton();
+		if (IsGtsBusy(player)) {
+			return;
+		}
 		if (!IsStomping(player) && !IsTransitioning(player)) {
 			auto grabbedActor = Grab::GetHeldActor(player);
 			if (!grabbedActor) {
@@ -740,7 +743,7 @@ namespace {
 		if (!CanPerformAnimation(player, 3)) {
 			return;
 		}
-		if (!IsStomping(player) && !IsTransitioning(player)) {
+		if (!IsGtsBusy(player) && !IsTransitioning(player)) {
 			auto grabbedActor = Grab::GetHeldActor(player);
 			if (!grabbedActor) {
 				return;
@@ -754,7 +757,7 @@ namespace {
 
 	void GrabThrowEvent(const InputEventData& data) { // Throw everyone away
 		auto player = PlayerCharacter::GetSingleton();
-		if (!IsStomping(player) && !IsTransitioning(player)) { // Only allow outside of stomps and when not transitioning
+		if (!IsGtsBusy(player) && !IsTransitioning(player)) { // Only allow outside of GtsBusy and when not transitioning
 			auto grabbedActor = Grab::GetHeldActor(player);
 			if (!grabbedActor) {
 				return;

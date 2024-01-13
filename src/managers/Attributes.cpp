@@ -1,12 +1,13 @@
+#include "managers/damage/tinyCalamity.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "magic/effects/common.hpp"
 #include "managers/GtsManager.hpp"
 #include "managers/Attributes.hpp"
 #include "managers/highheel.hpp"
 #include "utils/actorUtils.hpp"
-#include "scale/scale.hpp"
-#include "data/runtime.hpp"
 #include "data/persistent.hpp"
-#include "magic/effects/common.hpp"
+#include "data/runtime.hpp"
+#include "scale/scale.hpp"
 #include "profiler.hpp"
 #include "timer.hpp"
 
@@ -97,48 +98,13 @@ namespace {
 		SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
 	}
 
-	void Augmentation(Actor* Player, bool& BlockMessage) { // Manages SMT bonus speed
-		// TODO: Calc on demand rather than poll
-		auto ActorAttributes = Persistent::GetSingleton().GetData(Player);
-		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(Player)/100;
-		if (Player->AsActorState()->IsSprinting() && Runtime::HasPerk(Player, "NoSpeedLoss") && HasSMT(Player)) {
-			ActorAttributes->smt_run_speed += 0.005400 * Gigantism;
-			if (ActorAttributes->smt_run_speed < 1.0) {
-				BlockMessage = false;
-			}
-		} else if (Player->AsActorState()->IsSprinting() && HasSMT(Player)) {
-			ActorAttributes->smt_run_speed += 0.003600 * Gigantism;
-			if (ActorAttributes->smt_run_speed < 1.0) {
-				BlockMessage = false;
-			}
-		} else {
-			if (ActorAttributes->smt_run_speed > 0.0) {
-				ActorAttributes->smt_run_speed -= 0.045000;
-			} else if (ActorAttributes->smt_run_speed <= 0.0) {
-				ActorAttributes->smt_run_speed -= 0.0;
-				BlockMessage = false;
-			} else if (ActorAttributes->smt_run_speed > 1.0) {
-				ActorAttributes->smt_run_speed = 1.0;
-			} else if (ActorAttributes->smt_run_speed < 1.0) {
-				BlockMessage = false;
-			} else {
-				ActorAttributes->smt_run_speed = 0.0;
-				BlockMessage = false;
-			}
-		}
-		if (ActorAttributes->smt_run_speed >= 1.0 && !BlockMessage) {
-			BlockMessage = true; // Avoid spamming it
-			DebugNotification("You're fast enough to instantly crush someone", 0, true);
-		}
-		//log::info("SMT Bonus: {}", ActorAttributes->smt_run_speed);
-	}
 	// Todo unify the functions
-	void UpdateActors(Actor* actor, bool& BlockMessage) {
+	void UpdateActors(Actor* actor) {
 		if (!actor) {
 			return;
 		}
 		static Timer timer = Timer(0.05);
-		static Timer jumptimer = Timer (0.50);
+		static Timer jumptimer = Timer(0.50);
 		float size = get_giantess_scale(actor);
 
 		if (jumptimer.ShouldRunFrame()) {
@@ -148,7 +114,7 @@ namespace {
 			ManagePerkBonuses(actor);
 
 			if (actor->formID == 0x14) {
-				Augmentation(actor, BlockMessage); // Manages SMT bonuses
+				TinyCalamity_BonusSpeed(actor); // Manages SMT bonuses
 			}
 		}
 	}
@@ -166,10 +132,8 @@ namespace Gts {
 	}
 
 	void AttributeManager::Update() {
-		auto pc = PlayerCharacter::GetSingleton();
-		auto healthEff = Runtime::GetMagicEffect("HealthBoost");
 		for (auto actor: find_actors()) {
-			UpdateActors(actor, this->BlockMessage);
+			UpdateActors(actor);
 		}
 	}
 

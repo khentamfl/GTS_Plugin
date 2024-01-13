@@ -2160,6 +2160,7 @@ namespace Gts {
 			if (preyscale >= targetScale) { // Apply ONLY if target is bigger than requirement
 				set_target_scale(tiny, targetScale);
 				AddSMTPenalty(giant, 5.0 * GetScaleAdjustment(tiny));
+				StaggerActor(tiny);
 			}
 		}
 	}
