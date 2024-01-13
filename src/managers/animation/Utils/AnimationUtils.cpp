@@ -774,7 +774,7 @@ namespace Gts {
 		}
 
 		auto targetPoint = (TargetA + TargetB) / 2;
-		targetPoint.z += 30.0 * get_visual_scale(giant);
+		targetPoint.z += 45.0 * get_visual_scale(giant);
 		return targetPoint;
 	}
 

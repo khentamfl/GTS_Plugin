@@ -108,13 +108,15 @@ namespace {
 				float hp = GetAV(tinyref, ActorValue::kHealth);
 				float maxhp = GetMaxAV(tinyref, ActorValue::kHealth);
 
-				AbortHugAnimation(giantref, tinyref);
-				if (giantref->formID == 0x14) {
-					Notify("{} health is full", tinyref->GetDisplayFullName());
-				}
+				if (hp >= maxhp) {
+					if (giantref->formID == 0x14) {
+						AbortHugAnimation(giantref, tinyref);
+						Notify("{} health is full", tinyref->GetDisplayFullName());
+					}
 
-				Notify("Task has ended");
-				return false; // end task in that case
+					Notify("Task has ended");
+					return false; // end task in that case
+				}
 			}
 
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
