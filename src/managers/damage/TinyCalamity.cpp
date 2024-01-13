@@ -107,7 +107,7 @@ namespace Gts {
 					return; // just in case, to avoid CTD
 				}
 
-				if (Collision_AllowtinyCalamityCrush(giant, tiny)) {
+				if (Collision_AllowTinyCalamityCrush(giant, tiny)) {
 					CrushManager::Crush(giant, tiny);
 					CrushBonuses(giant, tiny); // common.hpp
 
