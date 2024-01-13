@@ -17,6 +17,7 @@
 #include "managers/Rumble.hpp"
 #include "managers/tremor.hpp"
 #include "data/transient.hpp"
+#include "utils/looting.hpp"
 #include "managers/vore.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
