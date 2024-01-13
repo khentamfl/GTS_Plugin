@@ -12,6 +12,8 @@ using namespace Gts;
 namespace Gts {
 	void BlockFirstPerson(Actor* actor, bool block);
 
+	void HugCrushOther(Actor* giant, Actor* tiny);
+
 	void AbortHugAnimation(Actor* giant, Actor* tiny);
 	void UpdateHugBehaviors(Actor* giant, Actor* tiny);
 	void StartHealingAnimation(Actor* giant, Actor* tiny);

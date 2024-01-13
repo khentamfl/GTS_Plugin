@@ -3,6 +3,7 @@
 #include "managers/gamemode/GameModeManager.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
 #include "managers/damage/CollisionDamage.hpp"
+#include "managers/damage/TinyCalamity.hpp"
 #include "managers/cameras/camutil.hpp"
 #include "managers/ai/headtracking.hpp"
 #include "managers/RipClothManager.hpp"
@@ -19,6 +20,7 @@
 #include "managers/Rumble.hpp"
 #include "scale/modscale.hpp"
 #include "data/transient.hpp"
+#include "rays/raycast.hpp"
 #include "data/runtime.hpp"
 #include "utils/camera.hpp"
 #include "utils/debug.hpp"
@@ -26,7 +28,6 @@
 #include "scale/scale.hpp"
 #include "data/time.hpp"
 #include "profiler.hpp"
-#include "rays/raycast.hpp"
 #include "Config.hpp"
 #include "timer.hpp"
 #include "node.hpp"
@@ -274,6 +275,7 @@ void GtsManager::Update() {
 			CollisionDamage.DoAccurateCollisionRight(actor, 0.4 * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedRight);
 			
 			ClothManager::GetSingleton().CheckRip();
+			TinyCalamity_SeekActors(actor);
 			SpawnActionIcon(actor);
 
 			if (IsCrawling(actor)) {

@@ -109,9 +109,7 @@ namespace {
 		}
 	}
 
-	void GTSBEH_HugAbsorbAtk(AnimationEventData& data) {
-		auto giant = &data.giant;
-	}
+	void GTSBEH_HugAbsorbAtk(AnimationEventData& data) {}
 
 	void GTS_Hug_ShrinkPulse(AnimationEventData& data) {
 		auto giant = &data.giant;
@@ -127,13 +125,9 @@ namespace {
 		GRumble::For("ShrinkPulse", giant, 18.0 * sizedifference, 0.10, "NPC COM [COM ]", 0.35);
 	}
 
-	void GTS_Hug_RunShrinkTask(AnimationEventData& data) {
+	void GTS_Hug_RunShrinkTask(AnimationEventData& data) {}
 
-	}
-
-	void GTS_Hug_StopShrinkTask(AnimationEventData& data) {
-
-	}
+	void GTS_Hug_StopShrinkTask(AnimationEventData& data) {}
 
 	void GTS_Hug_CrushTiny(AnimationEventData& data) {
 		auto giant = &data.giant;
@@ -141,7 +135,7 @@ namespace {
 		if (!huggedActor) {
 			return;
 		}
-		ShrinkToNothingManager::Shrink(giant, huggedActor);
+		HugCrushOther(giant, huggedActor);
 		PrintDeathSource(giant, huggedActor, DamageSource::Hugs);
 		GRumble::For("HugCrush", giant, 76.0, 0.10, "NPC COM [COM ]", 0.15);
 		HugShrink::DetachActorTask(giant);

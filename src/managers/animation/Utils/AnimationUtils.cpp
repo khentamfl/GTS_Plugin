@@ -51,6 +51,68 @@ namespace Gts {
 		controlMap->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch); // Allow POV Switching
 	}
 
+	void HugCrushOther(Actor* giant, Actor* tiny) {
+		Attacked(tiny, giant);
+		if (giant->formID == 0x14 && IsDragon(tiny)) {
+			CompleteDragonQuest(tiny, false, tiny->IsDead());
+		}
+		float currentSize = get_visual_scale(tiny);
+
+		ModSizeExperience(0.24, giant); // Adjust Size Matter skill
+		KillActor(giant, tiny);
+
+		if (!IsLiving(tiny)) {
+			SpawnDustParticle(tiny, tiny, "NPC Root [Root]", 3.6);
+		} else {
+			if (!LessGore()) {
+				auto root = find_node(tiny, "NPC Root [Root]");
+				if (root) {
+					SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
+					SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
+					SpawnParticle(tiny, 0.20, "GTS/Damage/Explode.nif", NiMatrix3(), root->world.translate, 2.0, 7, root);
+					SpawnParticle(tiny, 1.20, "GTS/Damage/ShrinkOrCrush.nif", NiMatrix3(), root->world.translate, get_visual_scale(tiny) * 10, 7, root);
+				}
+				Runtime::CreateExplosion(tiny, get_visual_scale(tiny)/4, "BloodExplosion");
+				Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Root [Root]", NiPoint3{0, 0, -1}, 512, false, true);
+			} else {
+				Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
+			}
+		}
+
+		AddSMTDuration(giant, 5.0);
+
+		ApplyShakeAtNode(tiny, 20, "NPC Root [Root]", 20.0);
+
+		ActorHandle giantHandle = giant->CreateRefHandle();
+		ActorHandle tinyHandle = tiny->CreateRefHandle();
+		std::string taskname = std::format("HugCrush {}", tiny->formID);
+
+		TaskManager::RunOnce(taskname, [=](auto& update){
+			if (!tinyHandle) {
+				return;
+			}
+			if (!giantHandle) {
+				return;
+			}
+			auto giant = giantHandle.get().get();
+			auto tiny = tinyHandle.get().get();
+			float scale = get_visual_scale(tiny);
+			TransferInventory(tiny, giant, scale, false, true, DamageSource::Crushed, true);
+		});
+		if (tiny->formID != 0x14) {
+			Disintegrate(tiny, true); // Set critical stage 4 on actor
+		} else {
+			TriggerScreenBlood(50);
+			tiny->SetAlpha(0.0); // Player can't be disintegrated, so we make player Invisible
+		}
+		auto Node = find_node(giant, "NPC Spine2 [Spn2]"); 
+		if (!Node) {
+			Notify("Error: Spine2 [Spn2] node not found");
+			return;
+		}
+		Runtime::PlaySoundAtNode("ShrinkToNothingSound", giant, 1.0, 0.5, "NPC Spine2 [Spn2]");
+	}
+
 	// Cancels all hug-related things
 	void AbortHugAnimation(Actor* giant, Actor* tiny) {
 		AnimationManager::StartAnim("Huggies_Spare", giant);

@@ -85,56 +85,6 @@ namespace {
 		sizemanager.ModSizeVulnerability(tiny, damage * 0.0015);
 	}
 
-	void SMTCrushCheck(Actor* Caster, Actor* Target) {
-		auto profiler = Profilers::Profile("CollisionDamage: SMTCrushCheck");
-		if (Caster == Target) {
-			return;
-		}
-		auto& persistent = Persistent::GetSingleton();
-		if (persistent.GetData(Caster)) {
-			if (persistent.GetData(Caster)->smt_run_speed >= 1.0) {
-				float caster_scale = get_visual_scale(Caster);
-				float target_scale = get_visual_scale(Target);
-				float Multiplier = (caster_scale/target_scale);
-				float reduction = AttributeManager::GetSingleton().GetAttributeBonus(Caster, ActorValue::kHealth);
-				float CasterHp = Caster->AsActorValueOwner()->GetActorValue(ActorValue::kHealth);
-				float TargetHp = Target->AsActorValueOwner()->GetActorValue(ActorValue::kHealth);
-
-				if (CasterHp <= 0) {
-					return; // just in case, to avoid CTD
-				}
-
-				if (CasterHp >= ((TargetHp / Multiplier) * reduction) && !CrushManager::AlreadyCrushed(Target)) {
-					CrushManager::Crush(Caster, Target);
-					CrushBonuses(Caster, Target);
-
-					Runtime::PlaySound("GtsCrushSound", Caster, 1.0, 1.0);
-
-					shake_camera(Caster, 0.75 * caster_scale, 0.45);
-					Cprint("{} was instantly turned into mush by the body of {}", Target->GetDisplayFullName(), Caster->GetDisplayFullName());
-					if (Runtime::HasPerk(Caster, "NoSpeedLoss")) {
-						AttributeManager::GetSingleton().OverrideSMTBonus(0.65); // Reduce speed after crush
-					} else {
-						AttributeManager::GetSingleton().OverrideSMTBonus(0.35); // Reduce more speed after crush
-					}
-				} else if (CasterHp < (TargetHp / Multiplier) && !CrushManager::AlreadyCrushed(Target)) {
-					PushForward(Caster, Target, 800);
-					AddSMTDuration(Caster, 2.5);
-					StaggerActor(Caster);
-					Caster->ApplyCurrent(0.5 * target_scale, 0.5 * target_scale);
-					Target->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, -CasterHp * 0.75);
-					Caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage,ActorValue::kHealth, -CasterHp * 0.25);
-					shake_camera(Caster, 4.35, 0.5);
-					Runtime::PlaySound("lJumpLand", Caster, 1.0, 1.0);
-
-					Notify("{} is too tough to be crushed", Target->GetDisplayFullName());
-
-					AttributeManager::GetSingleton().OverrideSMTBonus(0.75); // Less speed loss after force crush
-				}
-			}
-		}
-	}
-
 	void SizeModifications(Actor* giant, Actor* tiny, float HighHeels) {
 		auto profiler = Profilers::Profile("CollisionDamage: SizeModifications");
 		if (tiny == giant) {
@@ -458,7 +408,7 @@ namespace Gts {
 		float weightdamage = 1.0 + (giant->GetWeight()*0.01);
 
 		SizeModifications(giant, tiny, highheels);
-		SMTCrushCheck(giant, tiny);
+		TinyCalamity_CrushCheck(giant, tiny);
 
 		if (giant->AsActorState()->IsSprinting()) {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
