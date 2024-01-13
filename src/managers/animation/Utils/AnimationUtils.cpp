@@ -69,12 +69,12 @@ namespace Gts {
 			auto FingerA = find_node(giant, "NPC R Finger02 [RF02]");
 			if (!FingerA) {
 				Notify("R Finger 02 node not found");
-				return;
+				return false;
 			}
 			auto FingerB = find_node(giant, "NPC R Finger30 [RF30]");
 			if (!FingerB) {
 				Notify("R Finger 30 node not found");
-				return;
+				return false;
 			}
 			NiPoint3 coords = (FingerA->world.translate + FingerB->world.translate) / 2.0;
 			coords.z -= 3.0;
