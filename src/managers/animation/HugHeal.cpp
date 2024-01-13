@@ -42,11 +42,8 @@ namespace {
         float size_difference_gtspov = std::clamp(giantSize/tinySize, 0.02f, 1.0f);
         float size_difference_tinypov = std::clamp(tinySize/giantSize, 0.02f, 1.0f);
 
-		static Timer timer = Timer(0.25);
-		if (timer.ShouldRunFrame()) {
-			tiny->SetGraphVariableFloat("GTS_SizeDifference", size_difference_tinypov); // pass Tiny / Giant size diff POV to Tiny
-			giant->SetGraphVariableFloat("GTS_SizeDifference", size_difference_tinypov); // pass Tiny / Giant size diff POV to GTS
-		}
+		tiny->SetGraphVariableFloat("GTS_SizeDifference", size_difference_tinypov); // pass Tiny / Giant size diff POV to Tiny
+		giant->SetGraphVariableFloat("GTS_SizeDifference", size_difference_tinypov); // pass Tiny / Giant size diff POV to GTS
     }
 
     bool Hugs_RestoreHealth(Actor* giantref, Actor* tinyref, float steal) {
@@ -54,7 +51,7 @@ namespace {
 		float hp = GetAV(tinyref, ActorValue::kHealth);
 		float maxhp = GetMaxAV(tinyref, ActorValue::kHealth);
 
-		tinyref->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, maxhp * 0.008 * steal * TimeScale());
+		tinyref->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, maxhp * 0.004 * steal * TimeScale());
 		
 		if (HeartTimer.ShouldRunFrame()) {
 			NiPoint3 POS = GetHeartPosition(giantref, tinyref);

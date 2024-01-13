@@ -388,6 +388,11 @@ namespace Gts {
 			float stamina = GetAV(giantref, ActorValue::kStamina);
 
 			if (IsHugHealing(giantref)) {
+				ForceRagdoll(tinyref, false);
+				if (!HugAttach(gianthandle, tinyhandle)) {
+					AbortHugAnimation(giantref, tinyref);
+					return false;
+				}
 				return true; // do nothing while we heal actor
 			}
 			
