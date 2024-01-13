@@ -75,7 +75,6 @@ namespace {
 		}
 
 		HugShrink::ShrinkOtherTask(giant, huggedActor);
-		
 	}
 
 	void GTS_Hug_Moan(AnimationEventData& data) {
@@ -91,7 +90,6 @@ namespace {
 		AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
 		AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
 		AdjustFacialExpression(giant, 0, 0.0, "phenome");
-		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 	}
 
 	void GTS_Hug_FacialOn(AnimationEventData& data) { // Smug or something
