@@ -124,10 +124,10 @@ namespace Gts {
 		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
 		if (success) {
 			auto objectref = ref->CreateRefHandle();
-			auto objectget = objectref.get().get();
-			if (objectget) {
+			if (objectref) {
+				auto objectget = objectref.get().get();
 				soundHandle.SetVolume(volume);
-				NiAVObject* follow = nullptr;
+				NiAVObject& follow = nullptr;
 				NiAVObject* current_3d = objectget->GetCurrent3D();
 				log::info("ObjectGet true");
 				if (current_3d) {
@@ -164,7 +164,7 @@ namespace Gts {
 		BSSoundHandle soundHandle;
 		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
 		if (success) {
-			//soundHandle.SetFrequency(frequency);
+			soundHandle.SetFrequency(frequency);
 			soundHandle.SetVolume(volume);
 			soundHandle.SetObjectToFollow(&node);
 			soundHandle.Play();
