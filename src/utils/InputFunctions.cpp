@@ -59,7 +59,7 @@ namespace {
 				static Timer timergrowth = Timer(2.00);
 				if (timergrowth.ShouldRunFrame()) {
 					Runtime::PlaySoundAtNode("growthSound", player, Cache->SizeReserve/50 * duration, 1.0, "NPC Pelvis [Pelv]");
-					Runtime::PlaySoundAtNode("MoanSound", player, Volume, 0.0, "NPC Head [Head]");
+					Runtime::PlaySoundAtNode("MoanSound", player, Volume, 1.0, "NPC Head [Head]");
 				}
 
 				update_target_scale(player, SizeCalculation/80 * gigantism, SizeEffectType::kNeutral);
@@ -149,7 +149,7 @@ namespace {
 
 		if (!ShouldTimerRun(player)) {
 			if (NotifyTimer.ShouldRunFrame()) {
-				Runtime::PlaySound("VoreSound_Fail", player, 1.2, 0.0);
+				Runtime::PlaySound("VoreSound_Fail", player, 1.2, 1.0);
 				Notify("Shrink Outburst is on a cooldown");
 			}
 			return;

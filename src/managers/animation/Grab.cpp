@@ -274,11 +274,11 @@ namespace {
 					SetBeingHeld(tiny, false);
 					GRumble::Once("GrabAttackKill", giantess, 14.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 					if (!LessGore()) {
-						Runtime::PlaySoundAtNode("CrunchImpactSound", giantess, 1.0, 0.0, "NPC L Hand [LHnd]");
-						Runtime::PlaySoundAtNode("CrunchImpactSound", giantess, 1.0, 0.0, "NPC L Hand [LHnd]");
-						Runtime::PlaySoundAtNode("CrunchImpactSound", giantess, 1.0, 0.0, "NPC L Hand [LHnd]");
+						Runtime::PlaySoundAtNode("CrunchImpactSound", giantess, 1.0, 1.0, "NPC L Hand [LHnd]");
+						Runtime::PlaySoundAtNode("CrunchImpactSound", giantess, 1.0, 1.0, "NPC L Hand [LHnd]");
+						Runtime::PlaySoundAtNode("CrunchImpactSound", giantess, 1.0, 1.0, "NPC L Hand [LHnd]");
 					} else {
-						Runtime::PlaySoundAtNode("SoftHandAttack", giantess, 1.0, 0.0, "NPC L Hand [LHnd]");
+						Runtime::PlaySoundAtNode("SoftHandAttack", giantess, 1.0, 1.0, "NPC L Hand [LHnd]");
 					}
 					Runtime::PlaySoundAtNode("GtsCrushSound", giantess, 1.0, 1.0, "NPC L Hand [LHnd]");
 					SetBetweenBreasts(giantess, false);
@@ -291,10 +291,10 @@ namespace {
 					Grab::Release(giantess);
 				} else {
 					if (!LessGore()) {
-						Runtime::PlaySoundAtNode("CrunchImpactSound", giantess, 1.0, 0.0, "NPC L Hand [LHnd]");
+						Runtime::PlaySoundAtNode("CrunchImpactSound", giantess, 1.0, 1.0, "NPC L Hand [LHnd]");
 						SpawnHurtParticles(giantess, tiny, 1.0, 1.0);
 					} else {
-						Runtime::PlaySoundAtNode("SoftHandAttack", giantess, 1.0, 0.0, "NPC L Hand [LHnd]");
+						Runtime::PlaySoundAtNode("SoftHandAttack", giantess, 1.0, 1.0, "NPC L Hand [LHnd]");
 					}
 					StaggerActor(tiny, 0.75f);
 				}

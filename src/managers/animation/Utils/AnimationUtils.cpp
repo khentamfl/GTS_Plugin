@@ -156,7 +156,7 @@ namespace Gts {
 			Notify("Error: Spine2 [Spn2] node not found");
 			return;
 		}
-		Runtime::PlaySoundAtNode("ShrinkToNothingSound", giant, 1.0, 0.5, "NPC Spine2 [Spn2]");
+		Runtime::PlaySoundAtNode("ShrinkToNothingSound", giant, 1.0, 1.0, "NPC Spine2 [Spn2]");
 	}
 
 	// Cancels all hug-related things

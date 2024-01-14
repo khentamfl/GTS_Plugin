@@ -83,7 +83,7 @@ namespace Gts {
 							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Spine [Spn0]", NiPoint3{0, 0, -1}, 512, true, false);*/
 							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSetVoreMedium", "NPC Root [Root]", NiPoint3{0, 0, -1}, 512, false, true);
 						} else {
-							Runtime::PlaySound("BloodGushSound", tiny, 1.0, 0.5);
+							Runtime::PlaySound("BloodGushSound", tiny, 1.0, 1.0);
 						}
 					}
 
@@ -121,7 +121,7 @@ namespace Gts {
 					}
 
 					if (tinyHandle) {
-						Runtime::PlaySound("ShrinkToNothingSound", tinyHandle.get().get(), 1.0, 0.5);
+						Runtime::PlaySound("ShrinkToNothingSound", tinyHandle.get().get(), 1.0, 1.0);
 					}
 					log::info("Shrinking finished");
 					data.state = ShrinkState::Shrinked;

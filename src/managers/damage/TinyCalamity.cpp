@@ -58,6 +58,17 @@ namespace {
         });
     }
 
+    void PlayCrushSound(Actor* giant) {
+        std::string taskname = std::format("TCC_Audio {}", giant->formID);
+        TaskManager::RunOnce(taskname, [=](auto& update){
+            if (!giantHandle) {
+                return;
+            }
+            auto giantref = giantHandle.get().get();
+            Runtime::PlaySound("TinyCalamity_Crush", giantref, 1.0, 1.0);
+        });
+    }
+
     void RefreshDuration(Actor* giant) {
         if (Runtime::HasPerk(giant, "NoSpeedLoss")) {
             AttributeManager::GetSingleton().OverrideSMTBonus(0.65); // Reduce speed after crush
@@ -103,8 +114,7 @@ namespace Gts {
 
         StaggerActor(giant, 0.5f);
 
-        Runtime::PlaySound("GtsCrushSound", giant, 1.0, 0.0);
-        Runtime::PlaySound("TinyCalamity_Crush", giant, 1.0, 1.0);
+        Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
 
         if (tiny->formID != 0x14) {
             Disintegrate(tiny, true); // Set critical stage 4 on actors
@@ -112,6 +122,8 @@ namespace Gts {
             TriggerScreenBlood(50);
             tiny->SetAlpha(0.0); // Player can't be disintegrated, so we make player Invisible
         }
+
+        PlayCrushSound(giant);
 
         giant->SetGraphVariableFloat("GiantessScale", OldScale);
     }

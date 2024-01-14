@@ -122,7 +122,7 @@ namespace Gts {
 
 		GRumble::Once("ExplosiveGrowth", actor, get_visual_scale(actor) * 2, 0.05);
 		if (this->timerSound.ShouldRunFrame()) {
-			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 0.0);
+			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 1.0);
 		}
 		if (this->timer.ShouldRun()) {
 			float Volume = clamp(0.20, 2.0, get_visual_scale(actor)/8);
@@ -143,11 +143,11 @@ namespace Gts {
 
 		GRumble::Once("ExplosiveGrowth", actor, 7.0, 0.05);
 		if (this->timerSound.ShouldRunFrame()) {
-			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 0.0);
+			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 1.0);
 		}
 		if (this->timer.ShouldRun()) {
 			float Volume = clamp(0.12, 2.0, get_visual_scale(actor)/4);
-			Runtime::PlaySound("shrinkSound", actor, Volume, 0.0);
+			Runtime::PlaySound("shrinkSound", actor, Volume, 1.0);
 		}
 	}
 }

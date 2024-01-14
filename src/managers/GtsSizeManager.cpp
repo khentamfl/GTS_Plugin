@@ -68,7 +68,7 @@ namespace {
 			GRumble::Once("TotalControl", player, scale/14, 0.05);
 			static Timer timergrowth = Timer(2.00);
 			if (timergrowth.ShouldRun()) {
-				Runtime::PlaySound("shrinkSound", player, Volume, 0.0);
+				Runtime::PlaySound("shrinkSound", player, Volume, 1.0);
 			}
 		}
 	}
@@ -116,7 +116,7 @@ namespace {
 					GRumble::Once("TotalControlOther", actor, 0.20, 0.05);
 					static Timer timergrowth = Timer(2.00);
 					if (timergrowth.ShouldRun()) {
-						Runtime::PlaySound("shrinkSound", actor, Volume, 0.0);
+						Runtime::PlaySound("shrinkSound", actor, Volume, 1.0);
 					}
 				}
 			}

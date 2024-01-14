@@ -66,9 +66,9 @@ namespace {
 			}
 			CrushManager::Crush(receiver, grabbedActor);
 			if (!LessGore()) {
-				Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
-				Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
-				Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 0.0, "NPC L Hand [LHnd]");
+				Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 1.0, "NPC L Hand [LHnd]");
+				Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 1.0, "NPC L Hand [LHnd]");
+				Runtime::PlaySoundAtNode("CrunchImpactSound", receiver, 1.0, 1.0, "NPC L Hand [LHnd]");
 			} else {
 				Runtime::PlaySoundAtNode("SoftHandAttack", receiver, 1.0, 1.0, "NPC L Hand [LHnd]");
 			}

@@ -35,7 +35,7 @@ namespace Gts {
 
 		if (this->timer.ShouldRun()) {
 			float Volume = clamp(0.15, 2.0, get_visual_scale(caster)/4);
-			Runtime::PlaySound("shrinkSound", caster, Volume, 0.0);
+			Runtime::PlaySound("shrinkSound", caster, Volume, 1.0);
 			GRumble::Once("ShrinkBack", caster, 0.60, 0.05);
 		}
 

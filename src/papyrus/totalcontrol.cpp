@@ -78,7 +78,7 @@ namespace {
 				continue;
 			}
 			float Volume = clamp(0.50, 1.0, get_visual_scale(targetRef));
-			Runtime::PlaySound("shrinkSound", targetRef, Volume, 0.0);
+			Runtime::PlaySound("shrinkSound", targetRef, Volume, 1.0);
 			KnockAreaEffect(targetRef, 3, 30 * get_visual_scale(targetRef));
 
 			// Thread safe handles

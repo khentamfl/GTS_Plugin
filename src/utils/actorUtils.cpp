@@ -1972,7 +1972,7 @@ namespace Gts {
 		}
 		static Timer Cooldown = Timer(1.2);
 		if (Cooldown.ShouldRun()) {
-			Runtime::PlaySound("VoreSound_Fail", player, 0.7, 0.0);
+			Runtime::PlaySound("VoreSound_Fail", player, 0.7, 1.0);
 			Notify(message);
 		}
 	}
