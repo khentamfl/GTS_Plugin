@@ -95,6 +95,7 @@ namespace {
 namespace Gts {
     void TinyCalamity_ExplodeActor(Actor* giant, Actor* tiny) {
         if (!tiny->IsDead()) {
+            Cprint("Trying to explode {}", tiny->GetDisplayFullName());
             KillActor(giant, tiny);
         }
 

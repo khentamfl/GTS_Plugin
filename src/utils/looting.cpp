@@ -167,6 +167,7 @@ namespace Gts {
 			auto giant = gianthandle.get().get();
 			if (!tiny->IsDead()) {
 				KillActor(giant, tiny); // just to make sure
+				Cprint("{} isn't dead", tiny->GetDisplayFullName());
 				return true; // try again
 			}
 			if (tiny->IsDead()) {
