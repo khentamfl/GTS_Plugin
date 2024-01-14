@@ -95,6 +95,7 @@ namespace Gts {
 			auto actorget = actorref.get().get();
 			if (actorget) {
 				soundHandle.SetVolume(volume);
+				soundHandle.SetFrequency(frequency);
 				NiAVObject* follow = nullptr;
 				NiAVObject* current_3d = actorget->GetCurrent3D();
 				if (current_3d) {
