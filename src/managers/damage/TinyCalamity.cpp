@@ -60,6 +60,7 @@ namespace {
 
     void PlayCrushSound(Actor* giant) {
         std::string taskname = std::format("TCC_Audio {}", giant->formID);
+        auto giantHandle = giant->CreateRefHandle();
         TaskManager::RunOnce(taskname, [=](auto& update){
             if (!giantHandle) {
                 return;
@@ -233,7 +234,7 @@ namespace Gts {
 				cap = 1.25;
 			}
 
-			currentspeed += 0.003600 * bonus * Gigantism; // increase MS
+			currentspeed += 0.004400 * bonus * Gigantism; // increase MS
 
 			if (currentspeed > cap) {
 				currentspeed = cap;
