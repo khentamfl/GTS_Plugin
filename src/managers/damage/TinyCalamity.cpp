@@ -131,7 +131,7 @@ namespace Gts {
         PlayCrushSound(giant);
     }
 
-    void TinyCalamity_StaggerActor(Actor* giant, Actor* tiny) {
+    void TinyCalamity_StaggerActor(Actor* giant, Actor* tiny, float giantHp) {
         float OldScale; 
         giant->GetGraphVariableFloat("GiantessScale", OldScale); // record old slace
         giant->SetGraphVariableFloat("GiantessScale", 1.0); // Needed to allow Stagger to play, else it won't work
@@ -220,7 +220,7 @@ namespace Gts {
 				if (Collision_AllowTinyCalamityCrush(giant, tiny)) {
                     TinyCalamity_ExplodeActor(giant, tiny);
 				} else {
-                    TinyCalamity_StaggerActor(giant, tiny);
+                    TinyCalamity_StaggerActor(giant, tiny, giantHp);
 				}
 			}
 		}
