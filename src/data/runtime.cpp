@@ -127,9 +127,10 @@ namespace Gts {
 			if (objectref) {
 				auto objectget = objectref.get().get();
 				soundHandle.SetVolume(volume);
+				NiAVObject* follow = nullptr;
 				NiAVObject* current_3d = objectget->GetCurrent3D();
 				if (current_3d) {
-					NiAVObject& follow = &current_3d;
+					follow = current_3d;
 					soundHandle.SetObjectToFollow(follow);
 					soundHandle.Play();
 				}
