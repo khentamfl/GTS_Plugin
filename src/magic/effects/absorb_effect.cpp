@@ -27,7 +27,6 @@ namespace Gts {
 
 	void Absorb::OnUpdate() {
 		const float SMT_BONUS = 1.0;
-		const float TRUE_ABSORB_UPGRADE = 6.0;
 
 		auto caster = GetCaster();
 		if (!caster) {
@@ -52,12 +51,12 @@ namespace Gts {
 		} // More shrink with SMT
 
 		
-		if (size_difference >= 4.0) {
-			size_difference = 4.0;
+		if (size_difference >= 3.0) {
+			size_difference = 3.0;
 		} // Cap Size Difference
 
 		
-		AbsorbSteal(target, caster, (0.0040 * size_difference) * gigantism, 0.0, 0.2);
+		AbsorbSteal(target, caster, (0.0008 * size_difference) * gigantism, 0.0, 0.20);
 		if (ShrinkToNothing(caster, target)) {
 			//
 		}

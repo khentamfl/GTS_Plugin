@@ -191,7 +191,7 @@ namespace Gts {
 					DamageAV(tiny, ActorValue::kHealth, giantHp * 0.25);
 
 					shake_camera(giant, 4.35, 0.5f);
-					Runtime::PlaySound("lJumpLand", giant, 1.0, 1.0);
+					Runtime::PlaySound("TinyCalamity_Impact", giant, 1.0, 1.0);
 
 					Notify("{} is too tough to be crushed", tiny->GetDisplayFullName());
 
