@@ -58,18 +58,6 @@ namespace {
         });
     }
 
-    void PlayCrushSound(Actor* giant) {
-        std::string taskname = std::format("TCC_Audio {}", giant->formID);
-        auto giantHandle = giant->CreateRefHandle();
-        TaskManager::RunOnce(taskname, [=](auto& update){
-            if (!giantHandle) {
-                return;
-            }
-            auto giantref = giantHandle.get().get();
-            Runtime::PlaySound("TinyCalamity_Crush", giantref, 1.0, 1.0);
-        });
-    }
-
     void RefreshDuration(Actor* giant) {
         if (Runtime::HasPerk(giant, "NoSpeedLoss")) {
             AttributeManager::GetSingleton().OverrideSMTBonus(0.65); // Reduce speed after crush
@@ -98,7 +86,6 @@ namespace {
 namespace Gts {
     void TinyCalamity_ExplodeActor(Actor* giant, Actor* tiny) {
         if (!tiny->IsDead()) {
-            Cprint("Trying to explode {}", tiny->GetDisplayFullName());
             KillActor(giant, tiny);
         }
 
@@ -128,7 +115,7 @@ namespace Gts {
         }
 
         giant->SetGraphVariableFloat("GiantessScale", OldScale);
-        PlayCrushSound(giant);
+        Runtime::PlaySound("TinyCalamity_Crush", giant, 1.0, 1.0);
     }
 
     void TinyCalamity_StaggerActor(Actor* giant, Actor* tiny, float giantHp) {
