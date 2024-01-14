@@ -132,7 +132,7 @@ namespace Gts {
 				if (current_3d) {
 					log::info("Found3D");
 					NiAVObject& follow = current_3d;
-					soundHandle.SetObjectToFollow(follow);
+					soundHandle.SetObjectToFollow(&follow);
 					soundHandle.Play();
 				}
 			}

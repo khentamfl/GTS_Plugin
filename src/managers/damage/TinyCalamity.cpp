@@ -101,7 +101,7 @@ namespace Gts {
         giant->GetGraphVariableFloat("GiantessScale", OldScale); // save old scale
         giant->SetGraphVariableFloat("GiantessScale", 1.0); // Needed to allow Stagger to play, else it won't work
 
-        shake_camera(giant, 8.0, 0.45);
+        shake_camera(giant, 24.0, 0.5);
         StaggerActor(giant, 0.5f);
         RefreshDuration(giant);
 
@@ -131,7 +131,7 @@ namespace Gts {
         DamageAV(tiny, ActorValue::kHealth, giantHp * 0.25);
 
         Runtime::PlaySound("TinyCalamity_Impact", giant, 2.0, 1.0);
-        shake_camera(giant, 4.35, 0.5f);
+        shake_camera(giant, 12.0, 0.5);
         
         if (IsEssential(tiny)) {
             Notify("{} is essential", tiny->GetDisplayFullName());
