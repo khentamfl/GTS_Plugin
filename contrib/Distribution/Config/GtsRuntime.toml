@@ -36,6 +36,7 @@ SoftHandAttack = "GTS.esp|5E2E60"
 SwingImpact = "GTS.esp|68F0AD"
 
 TinyCalamity_Impact = "GTS.esp|76DCD2"
+TinyCalamity_Crush = "GTS.esp|76DCD3"
 
 ShrinkOutburstSound = "GTS.esp|6524A3"
 TinyCalamitySound = "GTS.esp|65C6AA"
