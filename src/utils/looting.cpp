@@ -156,7 +156,7 @@ namespace Gts {
 			StartResetTask(from); // reset actor data.
 		}
 
-		TaskManager::Run(name, [=](auto& progressData) {
+		TaskManager::RunFor(name, 3.0, [=](auto& progressData) {
 			if (!tinyhandle) {
 				return false;
 			}
@@ -167,8 +167,7 @@ namespace Gts {
 			auto giant = gianthandle.get().get();
 			if (!tiny->IsDead()) {
 				KillActor(giant, tiny); // just to make sure
-				Cprint("{} isn't dead", tiny->GetDisplayFullName());
-				return true; // try again
+				return true;
 			}
 			if (tiny->IsDead()) {
 				float Finish = Time::WorldTimeElapsed();

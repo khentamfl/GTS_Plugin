@@ -11,6 +11,8 @@ using namespace Gts;
 
 namespace Gts {
     void TinyCalamity_ExplodeActor(Actor* giant, Actor* tiny);
+    void TinyCalamity_StaggerActor(Actor* giant, Actor* tiny);
+     
     void TinyCalamity_SeekActors(Actor* giant);
     void TinyCalamity_CrushCheck(Actor* giant, Actor* tiny);
     void TinyCalamity_BonusSpeed(Actor* giant);

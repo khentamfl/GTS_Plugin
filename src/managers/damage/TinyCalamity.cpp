@@ -79,6 +79,9 @@ namespace {
     }
 
     bool Collision_AllowTinyCalamityCrush(Actor* giant, Actor* tiny) {
+        if (IsEssential(tiny)) {
+            return false;
+        }
         float giantHp = GetAV(giant, ActorValue::kHealth);
 		float tinyHp = GetAV(tiny, ActorValue::kHealth);
 
@@ -112,9 +115,8 @@ namespace Gts {
         giant->SetGraphVariableFloat("GiantessScale", 1.0); // Needed to allow Stagger to play, else it won't work
 
         shake_camera(giant, 8.0, 0.45);
-        RefreshDuration(giant);
-
         StaggerActor(giant, 0.5f);
+        RefreshDuration(giant);
 
         Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
 
@@ -125,9 +127,33 @@ namespace Gts {
             tiny->SetAlpha(0.0); // Player can't be disintegrated, so we make player Invisible
         }
 
+        giant->SetGraphVariableFloat("GiantessScale", OldScale);
         PlayCrushSound(giant);
+    }
+
+    void TinyCalamity_StaggerActor(Actor* giant, Actor* tiny) {
+        float OldScale; 
+        giant->GetGraphVariableFloat("GiantessScale", OldScale); // record old slace
+        giant->SetGraphVariableFloat("GiantessScale", 1.0); // Needed to allow Stagger to play, else it won't work
+
+        PushForward(giant, tiny, 1000);
+        AddSMTDuration(giant, 2.5);
+        StaggerActor(giant, 0.5);
+
+        DamageAV(tiny, ActorValue::kHealth, giantHp * 0.75);
+        DamageAV(tiny, ActorValue::kHealth, giantHp * 0.25);
+
+        Runtime::PlaySound("TinyCalamity_Impact", giant, 1.0, 1.0);
+        shake_camera(giant, 4.35, 0.5f);
+        
+        if (IsEssential(tiny)) {
+            Notify("{} is essential", tiny->GetDisplayFullName());
+        } else {
+            Notify("{} is too tough to be crushed", tiny->GetDisplayFullName());
+        }
 
         giant->SetGraphVariableFloat("GiantessScale", OldScale);
+        RefreshDuration(giant);
     }
 
     void TinyCalamity_SeekActors(Actor* giant) {
@@ -194,25 +220,7 @@ namespace Gts {
 				if (Collision_AllowTinyCalamityCrush(giant, tiny)) {
                     TinyCalamity_ExplodeActor(giant, tiny);
 				} else {
-                    float OldScale;
-                    giant->GetGraphVariableFloat("GiantessScale", OldScale); // save old scale
-                    giant->SetGraphVariableFloat("GiantessScale", 1.0); // Needed to allow Stagger to play, else it won't work
-
-					PushForward(giant, tiny, 1000);
-					AddSMTDuration(giant, 2.5);
-					StaggerActor(giant, 0.5);
-
-					DamageAV(tiny, ActorValue::kHealth, giantHp * 0.75);
-					DamageAV(tiny, ActorValue::kHealth, giantHp * 0.25);
-
-					shake_camera(giant, 4.35, 0.5f);
-					Runtime::PlaySound("TinyCalamity_Impact", giant, 1.0, 1.0);
-
-					Notify("{} is too tough to be crushed", tiny->GetDisplayFullName());
-
-                    RefreshDuration(giant);
-
-                    giant->SetGraphVariableFloat("GiantessScale", OldScale);
+                    TinyCalamity_StaggerActor(giant, tiny);
 				}
 			}
 		}
