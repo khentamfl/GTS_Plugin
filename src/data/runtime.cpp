@@ -126,12 +126,13 @@ namespace Gts {
 			auto objectref = ref->CreateRefHandle();
 			if (objectref) {
 				auto objectget = objectref.get().get();
-				soundHandle.SetVolume(volume);
-				NiAVObject* follow = nullptr;
+			
 				NiAVObject* current_3d = objectget->GetCurrent3D();
 				if (current_3d) {
-					follow = current_3d;
-					soundHandle.SetObjectToFollow(follow);
+					NiAVObject& follow = *current_3d;
+					soundHandle.SetFrequency(frequency);
+					soundHandle.SetVolume(volume);
+					soundHandle.SetObjectToFollow(&follow);
 					soundHandle.Play();
 				}
 			}
