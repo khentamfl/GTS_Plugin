@@ -240,7 +240,7 @@ namespace Gts {
 
 	bool IsInJumpState(Actor* actor) {
 		bool jump;
-		actor->GetGraphVariableBool("bInJumpState", mt);
+		actor->GetGraphVariableBool("bInJumpState", jump);
 
 		return jump;
 	}
