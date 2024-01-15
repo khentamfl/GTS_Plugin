@@ -96,6 +96,8 @@ namespace Gts {
         PlayGoreEffects(tiny, giant);    
         MoveItems(giantHandle, tinyHandle, tiny->formID);
 
+        Attacked(tiny, giant);
+
         PrintDeathSource(giant, tiny, DamageSource::Collision);
 
         float OldScale;
@@ -127,6 +129,8 @@ namespace Gts {
         PushForward(giant, tiny, 1000);
         AddSMTDuration(giant, 2.5);
         StaggerActor(giant, 0.5);
+
+        Attacked(tiny, giant);
 
         DamageAV(tiny, ActorValue::kHealth, giantHp * 0.75);
         DamageAV(tiny, ActorValue::kHealth, giantHp * 0.25);
