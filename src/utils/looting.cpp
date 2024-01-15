@@ -170,7 +170,6 @@ namespace Gts {
 
 			if (!tiny->IsDead()) {
 				KillActor(giant, tiny); // just to make sure
-				return true;
 			}
 			if (tiny->IsDead() || hp <= 0.0) {
 				float Finish = Time::WorldTimeElapsed();

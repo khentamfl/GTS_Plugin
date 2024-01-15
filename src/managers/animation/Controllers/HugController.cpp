@@ -129,6 +129,12 @@ namespace Gts {
 		if (IsCrawling(pred) || IsTransitioning(pred) || IsBeingHeld(prey)) {
 			return false;
 		}
+		if (!IsInMovementType(pred) || !IsInMovementType(prey)) {
+			return false;
+		}
+		if (IsGtsBusy(pred) || IsGtsBusy(prey)) {
+			return false;
+		}
 
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);

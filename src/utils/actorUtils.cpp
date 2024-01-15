@@ -233,12 +233,20 @@ namespace Gts {
 		return false;
 	}
 
+	bool IsInMovementType(Actor* actor) {
+		bool mt;
+		actor->GetGraphVariableBool("bIsInMT", mt);
+		// ^ returns False when actor is jumping/being ragdolled. Used to prevent hugs in these cases.
+		return mt;
+	}
+
 	bool IsProning(Actor* actor) {
 		bool prone;
 		auto transient = Transient::GetSingleton().GetData(actor);
 		actor->GetGraphVariableBool("GTS_IsProne", prone);
 		if (actor->formID == 0x14 && actor->IsSneaking() && IsFirstPerson() && transient) {
-			return transient->FPProning; // Needed to fix proning being applied to FP even when Prone is off
+			return transient->FPProning; // Because we have no FP behaviors, 
+			// ^ it is Needed to fix proning being applied to FP even when Prone is off
 		}
 		return actor!= nullptr && actor->IsSneaking() && prone;
 	}
