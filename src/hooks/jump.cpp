@@ -50,24 +50,28 @@ namespace Hooks {
 		REL::Relocation<uintptr_t> hook{REL::RelocationID(41811, 42892)};
 		_GetScaleJumpHook = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x4d, 0x4d), GetScaleJumpHook);
 
-		static FunctionHook<bool(IAnimationGraphManagerHolder* graph, const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat( 
+		/*static FunctionHook<bool(IAnimationGraphManagerHolder* graph, const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat( 
 			REL::RelocationID(32143, 32887),
 			[](auto* graph, const auto& a_variableName, auto a_in) {
 				if (a_variableName == "VelocityZ") {
-					log::info("Found Velocity: {}", a_in);
 					if (a_in < 0) {
+						log::info("Found Velocity: {}", a_in);
 						auto actor = skyrim_cast<Actor*>(graph);
 						if (actor) {
 							auto scale = get_giantess_scale(actor);
-							log::info("Dividing velocity by scale: {}", scale);
-							log::info("Actor: {}", actor->GetDisplayFullName());
+							if (actor->formID == 0x14) {
+								log::info("Dividing velocity by scale: {}", scale);
+								log::info("Actor: {}", actor->GetDisplayFullName());
+							}
 							a_in /= scale;
-							log::info(" new V: {}", a_in);
+							if (actor->formID == 0x14) {
+								log::info(" new V: {}", a_in);
+							}
 						}
 					}
 				}
 				return SkyrimSetGraphVarFloat(graph, a_variableName, a_in);
-			});
+			});*/
 	}
 
 	float Hook_Jumping::GetScaleJumpHook(TESObjectREFR* a_this) {
