@@ -64,7 +64,7 @@ namespace {
 				set_target_scale(player, 0.12);
 			}
 
-			float Volume = clamp(0.05, 2.0, get_visual_scale(player)/16);
+			float Volume = clamp(0.10, 1.0, get_visual_scale(player) * 0.10);
 			GRumble::Once("TotalControl", player, scale/14, 0.05);
 			static Timer timergrowth = Timer(2.00);
 			if (timergrowth.ShouldRun()) {
@@ -112,7 +112,7 @@ namespace {
 					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
 					DamageAV(player, ActorValue::kMagicka, 0.07 * perk * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
 					ShrinkActor(actor, 0.0010 * magicka, 0.0);
-					float Volume = clamp(0.05, 2.0, get_visual_scale(actor)/16);
+					float Volume = clamp(0.10, 1.0, get_visual_scale(actor) * 0.10);
 					GRumble::Once("TotalControlOther", actor, 0.20, 0.05);
 					static Timer timergrowth = Timer(2.00);
 					if (timergrowth.ShouldRun()) {

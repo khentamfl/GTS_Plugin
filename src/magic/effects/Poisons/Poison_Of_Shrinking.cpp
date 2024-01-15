@@ -28,7 +28,7 @@ namespace Gts {
 
 		GRumble::Once("Shrink_Poison", target, 2.0, 0.05);
 
-		float Volume = clamp(0.15, 2.0, get_visual_scale(target)/12);
+		float Volume = clamp(0.10, 1.0, get_visual_scale(target) * 0.10);
 		Runtime::PlaySound("shrinkSound", target, Volume, 1.0);
 	}
 

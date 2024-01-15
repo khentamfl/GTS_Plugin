@@ -45,7 +45,7 @@ namespace Hooks {
 		// AE 1402bc7c3
 		// SE 1402aa40c
 		//
-		// Is used in the jump anim event handller
+		// Is used in the jump anim event handler
 		//
 		REL::Relocation<uintptr_t> hook{REL::RelocationID(41811, 42892)};
 		_GetScaleJumpHook = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x4d, 0x4d), GetScaleJumpHook);

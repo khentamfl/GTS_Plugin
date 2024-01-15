@@ -77,7 +77,7 @@ namespace {
 			if (!targetRef) {
 				continue;
 			}
-			float Volume = clamp(0.50, 1.0, get_visual_scale(targetRef));
+			float Volume = clamp(0.10, 1.0, get_visual_scale(targetRef) * 0.10);
 			Runtime::PlaySound("shrinkSound", targetRef, Volume, 1.0);
 			KnockAreaEffect(targetRef, 3, 30 * get_visual_scale(targetRef));
 
