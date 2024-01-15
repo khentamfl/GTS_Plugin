@@ -20,6 +20,14 @@ namespace Gts {
 		ShakeCamera(intensity, position, duration);
 	}
 
+	void shake_camera_at_node(Actor* giant, std::string_view node, float intensity, float duration) { // TESObjectREFR*
+		auto bone = find_node(giant, node);
+		if (bone) {
+			NiPoint3 position = bone->world.translate;
+			ShakeCamera(intensity, position, duration);
+		}
+	}
+
 	void TriggerScreenBlood(int aiValue) {
 		CallFunction("Game", "TriggerScreenBlood", aiValue);
 	}
