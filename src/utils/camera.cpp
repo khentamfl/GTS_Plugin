@@ -1,6 +1,8 @@
 #include "utils/camera.hpp"
 #include "utils/papyrusUtils.hpp"
 
+#include "node.hpp"
+
 using namespace RE;
 using namespace SKSE;
 
