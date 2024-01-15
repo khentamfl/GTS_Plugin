@@ -55,13 +55,15 @@ namespace Hooks {
 			[](auto* graph, const auto& a_variableName, auto a_in) {
 				if (a_variableName == "VelocityZ") {
 					log::info("Found Velocity: {}", a_in);
-					auto actor = skyrim_cast<Actor*>(graph);
-					if (actor) {
-						auto scale = get_giantess_scale(actor);
-						log::info("Dividing velocity by scale: {}", scale);
-						log::info("Actor: {}", actor->GetDisplayFullName());
-						a_in /= scale;
-						log::info(" new V: {}", a_in);
+					if (a_in < 0) {
+						auto actor = skyrim_cast<Actor*>(graph);
+						if (actor) {
+							auto scale = get_giantess_scale(actor);
+							log::info("Dividing velocity by scale: {}", scale);
+							log::info("Actor: {}", actor->GetDisplayFullName());
+							a_in /= scale;
+							log::info(" new V: {}", a_in);
+						}
 					}
 				}
 				return SkyrimSetGraphVarFloat(graph, a_variableName, a_in);
