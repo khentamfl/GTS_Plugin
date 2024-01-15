@@ -24,6 +24,13 @@ namespace {
 	const float MINIMUM_HUG_SCALE_RATIO = 0.9;
 	const float GRAB_ANGLE = 70;
 	const float PI = 3.14159;
+
+	bool DisallowHugs(Actor* actor) {
+		bool jumping = IsInJumpState(actor);
+		bool ragdolled = IsRagdolled(actor);
+		bool busy = IsGtsBusy(actor);
+		return jumping || ragdolled || busy;
+	}
 }
 
 namespace Gts {
@@ -129,10 +136,7 @@ namespace Gts {
 		if (IsCrawling(pred) || IsTransitioning(pred) || IsBeingHeld(prey)) {
 			return false;
 		}
-		if (!IsInMovementType(pred) || !IsInMovementType(prey)) {
-			return false;
-		}
-		if (IsGtsBusy(pred) || IsGtsBusy(prey)) {
+		if (DisallowHugs(pred) || DisallowHugs(prey)) {
 			return false;
 		}
 

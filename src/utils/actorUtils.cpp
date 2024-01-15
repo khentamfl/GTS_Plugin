@@ -233,11 +233,16 @@ namespace Gts {
 		return false;
 	}
 
-	bool IsInMovementType(Actor* actor) {
-		bool mt;
-		actor->GetGraphVariableBool("bIsInMT", mt);
-		// ^ returns False when actor is jumping/being ragdolled. Used to prevent hugs in these cases.
-		return mt;
+	bool IsRagdolled(Actor* actor) {
+		bool ragdoll = actor->IsInRagdollState();
+		return ragdoll;
+	}
+
+	bool IsInJumpState(Actor* actor) {
+		bool jump;
+		actor->GetGraphVariableBool("bInJumpState", mt);
+
+		return jump;
 	}
 
 	bool IsProning(Actor* actor) {

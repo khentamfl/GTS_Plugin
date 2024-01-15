@@ -130,7 +130,7 @@ namespace Gts {
 				NiAVObject* current_3d = objectget->GetCurrent3D();
 				if (current_3d) {
 					NiAVObject& follow = *current_3d;
-					soundHandle.SetFrequency(frequency);
+					//soundHandle.SetFrequency(frequency);
 					soundHandle.SetVolume(volume);
 					soundHandle.SetObjectToFollow(&follow);
 					soundHandle.Play();
@@ -163,7 +163,7 @@ namespace Gts {
 		BSSoundHandle soundHandle;
 		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
 		if (success) {
-			soundHandle.SetFrequency(frequency);
+			//soundHandle.SetFrequency(frequency);
 			soundHandle.SetVolume(volume);
 			soundHandle.SetObjectToFollow(&node);
 			soundHandle.Play();

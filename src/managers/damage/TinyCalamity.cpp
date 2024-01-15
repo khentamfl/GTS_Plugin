@@ -115,7 +115,7 @@ namespace Gts {
         }
 
         giant->SetGraphVariableFloat("GiantessScale", OldScale);
-        Runtime::PlaySound("TinyCalamity_Crush", giant, 2.0, 1.0);
+        Runtime::PlaySoundAtNode("TinyCalamity_Crush", giant, 1.0, 1.0, "NPC COM [COM ]");
     }
 
     void TinyCalamity_StaggerActor(Actor* giant, Actor* tiny, float giantHp) {
@@ -130,7 +130,7 @@ namespace Gts {
         DamageAV(tiny, ActorValue::kHealth, giantHp * 0.75);
         DamageAV(tiny, ActorValue::kHealth, giantHp * 0.25);
 
-        Runtime::PlaySound("TinyCalamity_Impact", giant, 2.0, 1.0);
+        Runtime::PlaySound("TinyCalamity_Impact", giant, 1.0, 1.0);
         shake_camera(giant, 12.0, 0.5);
         
         if (IsEssential(tiny)) {
