@@ -95,13 +95,14 @@ namespace Gts {
         CrushBonuses(giant, tiny);                             // common.hpp
         PlayGoreEffects(tiny, giant);    
         MoveItems(giantHandle, tinyHandle, tiny->formID);
+
         PrintDeathSource(giant, tiny, DamageSource::Collision);
 
         float OldScale;
         giant->GetGraphVariableFloat("GiantessScale", OldScale); // save old scale
         giant->SetGraphVariableFloat("GiantessScale", 1.0); // Needed to allow Stagger to play, else it won't work
 
-        shake_camera_at_node(giant, "NPC COM [COM ]", 12.0, 0.5);
+        shake_camera_at_node(giant, "NPC COM [COM ]", 24.0, 1.0);
         StaggerActor(giant, 0.5f);
         RefreshDuration(giant);
 
@@ -131,7 +132,7 @@ namespace Gts {
         DamageAV(tiny, ActorValue::kHealth, giantHp * 0.25);
 
         Runtime::PlaySound("TinyCalamity_Impact", giant, 1.0, 1.0);
-        shake_camera_at_node(giant, "NPC COM [COM ]", 12.0, 0.5);
+        shake_camera_at_node(giant, "NPC COM [COM ]", 16.0, 1.0);
         
         if (IsEssential(tiny)) {
             Notify("{} is essential", tiny->GetDisplayFullName());
