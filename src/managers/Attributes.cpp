@@ -90,12 +90,9 @@ namespace {
 		if (actor->formID != 0x14) {
 			return;
 		}
-		float power = AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kJumpingBonus) -1.0;
-		if (power <= 0) {
-			power = 0;
-		}
+		float bonus = std::clamp(get_giantess_scale(actor), 1.0f, 99999.0f);
 
-		SetINIFloat("fJumpHeightMin", 76.0 + (76.0 * power));
+		SetINIFloat("fJumpHeightMin", 76.0 * bonus);
 	}
 
 	// Todo unify the functions

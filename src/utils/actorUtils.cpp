@@ -1338,7 +1338,6 @@ namespace Gts {
 	void ResetCameraTracking() {
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
-			log::info("Player found");
 			auto& sizemanager = SizeManager::GetSingleton();
 			vector<float> modes = 
 			{	0.0, 1.0, 
@@ -1349,7 +1348,6 @@ namespace Gts {
 				10.0	}; // list all modes
 			for (auto number: modes) {
 				sizemanager.SetActionBool(player, false, number);
-				log::info("Setting Camera Mode {} to false", number);
 			}
 		}
 	}
