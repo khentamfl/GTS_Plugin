@@ -1936,10 +1936,8 @@ namespace Gts {
 				auto node = find_node(actor, "NPC Root [Root]");
 				if (node) {
 					NiPoint3 pos = node->world.translate;
-					SpawnParticle(actor, 4.60, "GTS/Magic/Life_Drain.nif", NiMatrix3(), pos, scale, 7, nullptr);
+					SpawnParticle(actor, 4.60, "GTS/Magic/Life_Drain.nif", NiMatrix3(), pos, scale * 1.15, 7, nullptr);
 					Runtime::PlaySoundAtNode("Magic_ProtectTinies", actor, 1.0, 1.0, "NPC COM [COM ]");
-
-					shake_camera_at_node(actor, "NPC COM [COM ]", 2.0, 1.0);
 
 					std::string name_com = std::format("Protect_{}", actor->formID);
 					std::string name_root = std::format("Protect_Root_{}", actor->formID);
