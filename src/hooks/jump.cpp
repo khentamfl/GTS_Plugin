@@ -50,7 +50,7 @@ namespace Hooks {
 		REL::Relocation<uintptr_t> hook{REL::RelocationID(41811, 42892)};
 		_GetScaleJumpHook = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x4d, 0x4d), GetScaleJumpHook);
 
-		static FunctionHook<bool(IAnimationGraphManagerHolder* graph, const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat( 
+		/*static FunctionHook<bool(IAnimationGraphManagerHolder* graph, const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat( 
 			REL::RelocationID(32143, 32887),
 			[](auto* graph, const auto& a_variableName, auto a_in) {
 				if (a_variableName == "VelocityZ") {
@@ -71,10 +71,10 @@ namespace Hooks {
 					}
 				}
 				return SkyrimSetGraphVarFloat(graph, a_variableName, a_in);
-			});
+			});*/
 	}
 
-	float Hook_Jumping::GetScaleJumpHook(TESObjectREFR* a_this) {
+	/*float Hook_Jumping::GetScaleJumpHook(TESObjectREFR* a_this) {
 		float result = _GetScaleJumpHook(a_this);
 		Actor* actor = skyrim_cast<Actor*>(a_this);
 		if (actor) {
@@ -85,5 +85,5 @@ namespace Hooks {
 			}
 		}
 		return result;
-	}
+	}*/
 }
