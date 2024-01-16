@@ -1940,6 +1940,12 @@ namespace Gts {
 					Runtime::PlaySoundAtNode("Magic_ProtectTinies", actor, 1.0, 1.0, "NPC COM [COM ]");
 
 					shake_camera_at_node(actor, "NPC COM [COM ]", 2.0, 1.0);
+
+					std::string name_com = std::format("Protect_{}", actor->formID);
+					std::string name_root = std::format("Protect_Root_{}", actor->formID);
+
+					GRumble::Once(name_com, caster, 8.6, 0.45, "NPC COM [COM ]");
+					GRumble::Once(name_root, caster, 8.6, 0.45, "NPC Root [Root]");
 				}
 
 				LaunchImmunityTask(actor);
