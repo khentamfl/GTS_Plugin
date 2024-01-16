@@ -145,6 +145,7 @@ namespace {
 
 			auto caster = casterHandle.get().get();
 
+			float caster_scale = get_visual_scale(caster);
 			float target_scale = get_target_scale(caster);
 
 			float bonus = 1.0;

@@ -4,7 +4,6 @@
 #include "magic/effects/absorb_effect.hpp"
 #include "magic/effects/explosive_growth.hpp"
 #include "magic/effects/EnchGigantism.hpp"
-#include "magic/effects/grow_button.hpp"
 #include "magic/effects/grow_other.hpp"
 #include "magic/effects/tracksize.hpp"
 #include "magic/effects/grow_other_button.hpp"
@@ -13,10 +12,8 @@
 #include "magic/effects/shrink.hpp"
 #include "magic/effects/shrink_back.hpp"
 #include "magic/effects/shrink_back_other.hpp"
-#include "magic/effects/shrink_button.hpp"
 #include "magic/effects/shrink_foe.hpp"
 #include "magic/effects/shrink_other.hpp"
-#include "magic/effects/shrink_other_button.hpp"
 #include "magic/effects/slow_grow.hpp"
 #include "magic/effects/sword_of_size.hpp"
 #include "magic/effects/vore_growth.hpp"
@@ -239,8 +236,6 @@ namespace Gts {
 
 
 		RegisterMagic<SwordOfSize>("SwordEnchant");
-		RegisterMagic<ShrinkButton>("ShrinkPCButton");
-		RegisterMagic<GrowButton>("GrowPcButton");
 		RegisterMagic<SlowGrow>("SlowGrowth");
 		RegisterMagic<SmallMassiveThreat>("SmallMassiveThreat");
 		RegisterMagic<Growth>("GrowthSpell");
@@ -255,7 +250,6 @@ namespace Gts {
 		RegisterMagic<ShrinkOther>("ShrinkAllyAdept");
 		RegisterMagic<ShrinkOther>("ShrinkAllyExpert");
 		RegisterMagic<GrowOtherButton>("GrowAllySizeButton");
-		RegisterMagic<ShrinkOtherButton>("ShrinkAllySizeButton");
 		RegisterMagic<ShrinkBack>("ShrinkBack");
 		RegisterMagic<ShrinkBackOther>("ShrinkBackNPC");
 		RegisterMagic<VoreGrowth>("GlobalVoreGrowth");
