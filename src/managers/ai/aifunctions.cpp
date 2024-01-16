@@ -56,7 +56,6 @@ namespace Gts {
 			event.dead = true;
 			eventsource->SendEvent(&event);
 		}
-
 	}
 
 	// butt crush related things

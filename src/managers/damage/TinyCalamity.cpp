@@ -20,6 +20,14 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
+
+    void ScareEnemies(Actor* giant)  {
+		int FearChance = rand() % 2;
+		if (FearChance <= 0) {
+			Runtime::CastSpell(giant, giant, "GtsVoreFearSpell");
+		}
+	}
+
     void PlayGoreEffects(Actor* giant, Actor* tiny) {
         if (!IsLiving(tiny)) {
             SpawnDustParticle(tiny, giant, "NPC Root [Root]", 3.0);
@@ -73,7 +81,7 @@ namespace {
         float giantHp = GetAV(giant, ActorValue::kHealth);
 		float tinyHp = GetAV(tiny, ActorValue::kHealth);
 
-        float Multiplier = (get_visual_scale(giant) + 1.0) / get_visual_scale(tiny);
+        float Multiplier = (get_visual_scale(giant) + 0.5) / get_visual_scale(tiny);
 
         if (giantHp >= ((tinyHp / Multiplier) * 1.25)) {
             return true;
@@ -119,6 +127,8 @@ namespace Gts {
 
         giant->SetGraphVariableFloat("GiantessScale", OldScale);
         Runtime::PlaySoundAtNode("TinyCalamity_Crush", giant, 1.0, 1.0, "NPC COM [COM ]");
+
+        ScareEnemies(giant);
     }
 
     void TinyCalamity_StaggerActor(Actor* giant, Actor* tiny, float giantHp) {

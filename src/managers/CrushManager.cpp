@@ -56,17 +56,11 @@ namespace {
 		float size = get_visual_scale(giant);
 		int MaxValue = (20 - (1.6 * size));
 
-		// TODO: Ask about the max value thing here
-		// If you have small massive threat then the max value is ALWAYS 4
-
-		// S.Answer: It's supposed to proc more often with SMT active, so having it always 4 is fine ^
-		if (MaxValue <= 4 || HasSMT(giant)) {
-			MaxValue = 4;
+		if (MaxValue <= 3 || HasSMT(giant)) {
+			MaxValue = 3;
 		}
 		int FearChance = rand() % MaxValue;
-		if (FearChance <= 0 ) {
-			//auto event = RegistrationSet("CastFear");
-			//event.SendEvent();
+		if (FearChance <= 0) {
 			Runtime::CastSpell(giant, giant, "GtsVoreFearSpell");
 			// Should cast fear
 		}
@@ -159,14 +153,13 @@ namespace Gts {
 
 					float currentSize = get_visual_scale(tiny);
 					ModSizeExperience(GetExperience(tiny, currentSize), giant); // Adjust Size Matter skill
+
 					data.state = CrushState::Crushed;
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						CompleteDragonQuest(tiny, false, tiny->IsDead());
 					}
 					// Do crush
-					if (!tiny->IsDead()) {
-						KillActor(giant, tiny);
-					}
+					KillActor(giant, tiny);
 					
 					std::string taskname = std::format("CrushTiny {}", tiny->formID);
 
@@ -199,9 +192,6 @@ namespace Gts {
 								SpawnParticle(tiny, 1.20, "GTS/Damage/ShrinkOrCrush.nif", NiMatrix3(), root->world.translate, currentSize * 25, 7, root);
 							}
 							Runtime::CreateExplosion(tiny, get_visual_scale(tiny)/4,"BloodExplosion");
-							/*Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Head [Head]", NiPoint3{0, 0, -10}, 512, true, false);
-							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC L Foot [Lft ]", NiPoint3{0, 0, -10}, 512, true, false);
-							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC R Foot [Rft ]", NiPoint3{0, 0, -10}, 512, true, false);*/
 							Runtime::PlayImpactEffect(tiny, "GtsBloodSprayImpactSet", "NPC Root [Root]", NiPoint3{0, 0, -1}, 512, false, true);
 						}
 					}

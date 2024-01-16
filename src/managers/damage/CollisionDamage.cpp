@@ -481,7 +481,6 @@ namespace Gts {
 						}
 					}
 
-					KillActor(giant, tiny);
 					crushmanager.Crush(giant, tiny);
 				}
 			}
