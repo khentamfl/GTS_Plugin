@@ -44,7 +44,7 @@ namespace Gts {
 		return eff;
 	}
 
-	inline void ModSizeExperience(float value, Actor* Caster) { // Adjust Matter Of Size skill
+	inline void ModSizeExperience(Actor* Caster, float value) { // Adjust Matter Of Size skill
 		if (Caster->formID != 0x14) {
 			return; //Bye
 		}
