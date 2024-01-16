@@ -1944,6 +1944,8 @@ namespace Gts {
 
 					GRumble::Once(name_com, actor, 8.6, 0.25, "NPC COM [COM ]");
 					GRumble::Once(name_root, actor, 8.6, 0.25, "NPC Root [Root]");
+
+					StaggerActor(actor, 0.25);
 				}
 
 				LaunchImmunityTask(actor);
