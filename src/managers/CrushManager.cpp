@@ -158,8 +158,6 @@ namespace Gts {
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						CompleteDragonQuest(tiny, false, tiny->IsDead());
 					}
-					// Do crush
-					KillActor(giant, tiny);
 					
 					std::string taskname = std::format("CrushTiny {}", tiny->formID);
 
@@ -178,6 +176,9 @@ namespace Gts {
 
 					AddSMTDuration(giant, 5.0);
 					ScareChance(giant);
+
+					// Do crush
+					KillActor(giant, tiny);
 
 					if (!IsLiving(tiny) || LessGore()) {
 						SpawnDustParticle(giant, tiny, "NPC Root [Root]", 3.0);
