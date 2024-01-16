@@ -191,7 +191,7 @@ namespace Gts {
 	void ShrinkOutburst_Shrink(Actor* giant, Actor* tiny, float shrink, float gigantism);
 	void ShrinkOutburstExplosion(Actor* giant, bool WasHit);
 
-	void ProtectSmallOnes();
+	void Utils_ProtectTinies();
 	void LaunchImmunityTask(Actor* giant);
 
 	bool HasSMT(Actor* giant);

@@ -1927,9 +1927,8 @@ namespace Gts {
 		}
 	}
 
-	void ProtectSmallOnes() { // This is used to avoid damaging friendly actors in towns and in general
+	void Utils_ProtectTinies() { // This is used to avoid damaging friendly actors in towns and in general
 		auto player = PlayerCharacter::GetSingleton();
-		//Runtime::CastSpell(player, player, "gtsProtectTiniesSpell");
 
 		for (auto actor: find_actors()) {
 			if (actor == player || IsTeammate(actor)) {
@@ -1939,6 +1938,8 @@ namespace Gts {
 					NiPoint3 pos = node->world.translate;
 					SpawnParticle(actor, 4.60, "GTS/Magic/Life_Drain.nif", NiMatrix3(), pos, scale, 7, nullptr);
 					Runtime::PlaySoundAtNode("Magic_ProtectTinies", actor, 1.0, 1.0, "NPC COM [COM ]");
+
+					shake_camera_at_node(actor, "NPC COM [COM ]", 2.0, 1.0);
 				}
 
 				LaunchImmunityTask(actor);

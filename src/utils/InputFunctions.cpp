@@ -161,7 +161,7 @@ namespace {
 	void ProtectSmallOnesEvent(const InputEventData& data) {
 		static Timer ProtectTimer = Timer(5.0);
 		if (ProtectTimer.ShouldRunFrame()) {
-			ProtectSmallOnes();
+			Utils_ProtectTinies();
 		}
 	}
 
