@@ -1927,7 +1927,7 @@ namespace Gts {
 		}
 	}
 
-	void Utils_ProtectTinies() { // This is used to avoid damaging friendly actors in towns and in general
+	void Utils_ProtectTinies(bool Balance) { // This is used to avoid damaging friendly actors in towns and in general
 		auto player = PlayerCharacter::GetSingleton();
 
 		for (auto actor: find_actors()) {

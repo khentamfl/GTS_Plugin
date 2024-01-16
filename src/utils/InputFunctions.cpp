@@ -161,7 +161,8 @@ namespace {
 	void ProtectSmallOnesEvent(const InputEventData& data) {
 		static Timer ProtectTimer = Timer(5.0);
 		if (ProtectTimer.ShouldRunFrame()) {
-			Utils_ProtectTinies();
+			bool balance = SizeManager::GetSingleton().BalancedMode() == 2.0;
+			Utils_ProtectTinies(balance);
 		}
 	}
 
