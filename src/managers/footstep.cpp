@@ -69,20 +69,6 @@ namespace {
 		return result;
 	}
 
-	BSISoundDescriptor* get_calamity_sounddesc(const FootEvent& foot_kind) {
-		switch (foot_kind) {
-			case FootEvent::Left:
-			case FootEvent::Front:
-				return Runtime::GetSound("TinyCalamity_Footsteps");
-				break;
-			case FootEvent::Right:
-			case FootEvent::Back:
-				return Runtime::GetSound("TinyCalamity_Footsteps");
-				break;
-		}
-		return nullptr;
-	}
-
 	BSISoundDescriptor* get_lFootstep_sounddesc(const FootEvent& foot_kind) {
 		switch (foot_kind) {
 			case FootEvent::Left:
@@ -301,11 +287,9 @@ namespace Gts {
 			auto profiler = Profilers::Profile("FootStepSound: OnImpact");
 			auto player = PlayerCharacter::GetSingleton();
 			auto actor = impact.actor;
-			float scale = impact.scale; 
-			bool SMT = false;
+			float scale = impact.scale;
 
 			if (actor->formID == 0x14 && HasSMT(actor)) {
-				SMT = true;
 				scale *= 2.5;
 			}
 
@@ -346,12 +330,8 @@ namespace Gts {
 				}
 				if (Runtime::GetBool("EnableGiantSounds")) {
 					for (NiAVObject* foot: impact.nodes) {
-						if (SMT) {
-							FootStepManager::PlayTinyCalamitySounds(foot, foot_kind, scale);
-							return;
-						}
 						FootStepManager::PlayLegacySounds(foot, foot_kind, scale, start_l, start_xl, start_xxl);
-						return; // New sounds are disabled for now
+						return; // New soundsa re disabled for now
 						if (!LegacySounds && WearingHighHeels) { // Play high heel sounds that will be done someday
 							FootStepManager::PlayHighHeelSounds(foot, foot_kind, scale, sprint_factor, sprinting);
 							return;
@@ -365,19 +345,6 @@ namespace Gts {
 					}
 				}
 			}
-		}
-	}
-
-	void FootStepManager::PlayTinyCalamitySounds(NiAVObject* foot, FootEvent foot_kind, float scale) { 
-		// TinyCalamity_Footsteps
-		auto profiler = Profilers::Profile("Impact: CalamitySounds");
-		BSSoundHandle Calamity    = get_sound(foot, scale, get_calamity_sounddesc(foot_kind),   VolumeParams { .a = 1.25,  .k = 0.40,  .n = 0.7, .s = 1.0}, "Calamity Footstep", 1.0);
-		BSSoundHandle JumpLand    = get_sound(foot, scale, get_lJumpLand_sounddesc(foot_kind),   VolumeParams { .a = 1.25,  .k = 0.65,  .n = 0.7, .s = 1.0}, "L Jump", 1.0);
-		if (Calamity.soundID != BSSoundHandle::kInvalidID) {
-			Calamity.Play();
-		}
-		if (JumpLand.soundID != BSSoundHandle::kInvalidID) {
-			JumpLand.Play();
 		}
 	}
 
