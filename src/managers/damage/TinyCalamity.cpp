@@ -147,7 +147,7 @@ namespace Gts {
         DamageAV(tiny, ActorValue::kHealth, giantHp * 0.75);
         DamageAV(giant, ActorValue::kHealth, giantHp * 0.25);
 
-        float xp = std::clamp((giantHp * 0.75)/800, 0.0f, 0.12f);
+        float xp = std::clamp((giantHp * 0.75)/800f, 0.0f, 0.12f);
         ModSizeExperience(giant, xp);
 
         Runtime::PlaySoundAtNode("TinyCalamity_Impact", giant, 1.0, 1.0, "NPC COM [COM ]");
