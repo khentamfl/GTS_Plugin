@@ -77,9 +77,12 @@ namespace {
 			if (!targetRef) {
 				continue;
 			}
-			float Volume = clamp(0.10, 1.0, get_visual_scale(targetRef) * 0.10);
+			float scale = get_visual_scale(targetRef);
+			float Volume = clamp(0.10, 1.0, scale * 0.10);
+			
+			KnockAreaEffect(targetRef, 3, 30 * scale);
 			Runtime::PlaySound("shrinkSound", targetRef, Volume, 1.0);
-			KnockAreaEffect(targetRef, 3, 30 * get_visual_scale(targetRef));
+			
 
 			// Thread safe handles
 			ActorHandle casterHandle = casterRef->CreateRefHandle();
@@ -95,7 +98,6 @@ namespace {
 				if (!targetHandle) {
 					return false;
 				}
-				float timeDelta = progressData.delta * 60; // Was optimised as 60fps
 
 				auto target = targetHandle.get().get();
 				auto caster = casterHandle.get().get();
@@ -109,13 +111,102 @@ namespace {
 				}
 
 				if (target_scale > get_natural_scale(target)) {
-					DamageAV(caster, ActorValue::kMagicka, 0.25 * (target_scale * 0.25 + 0.75) * magicka * bonus * timeDelta * power);
+					DamageAV(caster, ActorValue::kMagicka, 0.25 * (target_scale * 0.25 + 0.75) * magicka * bonus * TimeScale() * power);
 					ShrinkActor(target, 0.0030 * magicka * bonus, 0.0);
 					GRumble::Once("ShrinkOtherButton", target, 1.0, 0.05);
 				}
 				return true;
 			});
 		}
+	}
+
+	void GrowPlayer(StaticFunctionTag*, float power) {
+		auto casterRef = PlayerCharacter::GetSingleton();
+		if (!casterRef) {
+			return;
+		}
+
+		float scale = get_visual_scale(casterRef);
+		float Volume = clamp(0.20, 1.0, scale * 0.20);
+
+		KnockAreaEffect(casterRef, 6, 60 * scale);
+		Runtime::PlaySoundAtNode("growthSound", casterRef, Volume, 1.0, "NPC Pelvis [Pelv]");
+	
+		// Thread safe handles
+		ActorHandle casterHandle = casterRef->CreateRefHandle();
+
+		const float DURATION = 2.0;
+		std::string name = std::format("GrowPlayer_{}", casterRef->formID);
+
+		TaskManager::RunFor(name, DURATION, [=](auto& progressData){
+			if (!casterHandle) {
+				return false;
+			}
+
+			auto caster = casterHandle.get().get();
+
+			float target_scale = get_target_scale(caster);
+
+			float bonus = 1.0;
+			if (Runtime::HasMagicEffect(caster, "EffectSizeAmplifyPotion")) {
+				bonus = target_scale * 0.25 + 0.75;
+			}
+
+			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
+			DamageAV(caster, ActorValue::kStamina, 0.45 * (caster_scale * 0.5 + 0.5) * stamina * TimeScale());
+
+			GRumble::Once("GrowButton", caster, 1.0, 0.05);
+
+			return true;
+		});
+	}
+	
+
+	void ShrinkPlayer(StaticFunctionTag*, float power) {
+		auto casterRef = PlayerCharacter::GetSingleton();
+		if (!casterRef) {
+			return;
+		}
+
+		float scale = get_visual_scale(casterRef);
+		float Volume = clamp(0.10, 1.0, scale * 0.10);
+
+		KnockAreaEffect(casterRef, 3, 30 * scale);
+		Runtime::PlaySound("shrinkSound", casterRef, Volume, 1.0);
+	
+		// Thread safe handles
+		ActorHandle casterHandle = casterRef->CreateRefHandle();
+
+		const float DURATION = 2.0;
+		std::string name = std::format("ShrinkPlayer_{}", casterRef->formID);
+
+		TaskManager::RunFor(name, DURATION, [=](auto& progressData){
+			if (!casterHandle) {
+				return false;
+			}
+
+			auto caster = casterHandle.get().get();
+
+			float caster_scale = get_visual_scale(caster);
+			float target_scale = get_target_scale(caster);
+
+			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
+
+			float bonus = 1.0;
+			if (Runtime::HasMagicEffect(caster, "EffectSizeAmplifyPotion")) {
+				bonus = target_scale * 0.25 + 0.75;
+			}
+
+			if (target_scale > 0.12) {
+				DamageAV(caster, ActorValue::kStamina, 0.25 * (caster_scale * 0.5 + 0.5) * stamina * TimeScale());
+				ShrinkActor(caster, 0.0030 * stamina, 0.0);
+				GRumble::Once("ShrinkButton", caster, 0.60, 0.05);
+			} else {
+				set_target_scale(caster, 0.12);
+				return false;
+			}
+			return true;
+		});
 	}
 
 	void CallRapidGrowth(StaticFunctionTag*, float amt, float halflife) {
@@ -127,12 +218,17 @@ namespace {
 		auto PC = PlayerCharacter::GetSingleton();
 		SpringShrink(PC, amt, halflife, "Input");
 	}
+
 }
 
 namespace Gts {
 	bool register_total_control(IVirtualMachine* vm) {
 		vm->RegisterFunction("GrowTeammate", PapyrusClass, GrowTeammate);
 		vm->RegisterFunction("ShrinkTeammate", PapyrusClass, ShrinkTeammate);
+
+		vm->RegisterFunction("GrowPlayer", PapyrusClass, GrowPlayer);
+		vm->RegisterFunction("ShrinkPlayer", PapyrusClass, ShrinkPlayer);
+
 		vm->RegisterFunction("CallRapidGrowth", PapyrusClass, CallRapidGrowth);
 		vm->RegisterFunction("CallRapidShrink", PapyrusClass, CallRapidShrink);
 
