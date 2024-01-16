@@ -176,13 +176,26 @@ namespace Gts {
 	void UpdateHugBehaviors(Actor* giant, Actor* tiny) { // blend between two anims: send value to behaviors
         float tinySize = get_visual_scale(tiny);
         float giantSize = get_visual_scale(giant);
-        float size_difference = std::clamp(tinySize/giantSize, 0.02f, 1.0f);
+        float size_difference = std::clamp(giantSize/tinySize, 1.0f, 3.0f);
 
-		float min = 1.0;
-		float max = 0.0;
+		float OldMin = 1.0;
+		float OldMax = 3.0;
 
-		tiny->SetGraphVariableFloat("GTS_SizeDifference", size_difference); // pass Tiny / Giant size diff POV to Tiny
-		giant->SetGraphVariableFloat("GTS_SizeDifference", size_difference); // pass Tiny / Giant size diff POV to GTS
+		float NewMin = 0.0;
+		float NewMax = 1.0;
+
+		float OldValue = size_difference; // let's imagine it's 3.0
+		// (3 - 1 = 2)   (oldValue - OldMin)
+		// *
+		// (1 - 0 = 1)  (NewMax - NewMin)
+		// /
+		// (3 - 1 = 2)     (OldMax - OldMin)
+		// + 
+		// NewMin = 0
+		float NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin;
+
+		tiny->SetGraphVariableFloat("GTS_SizeDifference", NewValue); // pass Tiny / Giant size diff POV to Tiny
+		giant->SetGraphVariableFloat("GTS_SizeDifference", NewValue); // pass Tiny / Giant size diff POV to GTS
     }
 
 	void StartHealingAnimation(Actor* giant, Actor* tiny) {
