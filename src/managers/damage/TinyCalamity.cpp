@@ -73,7 +73,7 @@ namespace {
         float giantHp = GetAV(giant, ActorValue::kHealth);
 		float tinyHp = GetAV(tiny, ActorValue::kHealth);
 
-        float Multiplier = get_visual_scale(giant) + 2.0/get_visual_scale(tiny);
+        float Multiplier = (get_visual_scale(giant) + 1.0) / get_visual_scale(tiny);
 
         if (giantHp >= ((tinyHp / Multiplier) * 1.25)) {
             return true;
@@ -135,7 +135,7 @@ namespace Gts {
         DamageAV(tiny, ActorValue::kHealth, giantHp * 0.75);
         DamageAV(tiny, ActorValue::kHealth, giantHp * 0.25);
 
-        Runtime::PlaySound("TinyCalamity_Impact", giant, 1.0, 1.0);
+        Runtime::PlaySoundAtNode("TinyCalamity_Impact", giant, 1.0, 1.0, "NPC COM [COM ]");
         shake_camera_at_node(giant, "NPC COM [COM ]", 16.0, 1.0);
         
         if (IsEssential(tiny)) {

@@ -17,6 +17,18 @@ using namespace RE;
 using namespace REL;
 using namespace Gts;
 
+namespace {
+	float GetXPModifier(Actor* tiny) {
+		float mult = 1.0;
+		if (tiny->IsDead()) {
+			Cprint("Tiny is ded");
+			mult = 0.25;
+		}
+		
+		return mult;
+	}
+}
+
 namespace Gts {
 	ShrinkToNothingManager& ShrinkToNothingManager::GetSingleton() noexcept {
 		static ShrinkToNothingManager instance;
@@ -50,7 +62,7 @@ namespace Gts {
 			} else if (data.state == ShrinkState::Shrinking) {
 				if (data.delay.ShouldRun()) {
 					Attacked(tiny, giant);
-					log::info("State is shrinking");
+					ModSizeExperience(0.24 * GetXPModifier(tiny), giant); // Adjust Size Matter skill
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						CompleteDragonQuest(tiny, false, tiny->IsDead());
 					}
@@ -58,7 +70,7 @@ namespace Gts {
 					float currentSize = get_visual_scale(tiny);
 
 					// Fully shrunk
-					ModSizeExperience(0.24, giant); // Adjust Size Matter skill
+					
 					KillActor(giant, tiny);
 					log::info("Killed Actor");
 

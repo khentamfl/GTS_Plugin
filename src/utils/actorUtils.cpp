@@ -220,6 +220,11 @@ namespace Gts {
 		if (actor->formID == 0x14 && IsFirstPerson()) {
 			return false;
 		}
+		bool anims = AnimationsInstalled(actor);
+		if (!anims) {
+			return false; // prevent hh from being disabled if there's no Nemesis Generation
+		}
+
 		return disable;
 	}
 
@@ -1641,7 +1646,7 @@ namespace Gts {
 		float giantSize = get_visual_scale(giant);
 		float tinySize = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
 		if (HasSMT(giant)) {
-			giantSize *= 4.0;
+			giantSize += 1.5;
 		}
 		float sizedifference = giantSize/tinySize;
 		int ragdollchance = rand() % 30 + 1.0;

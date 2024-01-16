@@ -20,6 +20,15 @@ using namespace REL;
 using namespace Gts;
 
 namespace {
+	float GetExperience(Actor* tiny, float size) {
+		float xp = 0.20 + (size * 0.02);
+		if (tiny->IsDead()) {
+			Cprint("Crush: Tiny is ded");
+			xp *= 0.2;
+		}
+		return xp;
+	}
+
 	void ScareChance(Actor* actor) {
 		int voreFearRoll = rand() % 5;
 		if (HasSMT(actor)) {
@@ -147,6 +156,9 @@ namespace Gts {
 			} else if (data.state == CrushState::Crushing) {
 				if (data.delay.ShouldRun()) {
 					Attacked(tiny, giant);
+
+					float currentSize = get_visual_scale(tiny);
+					ModSizeExperience(GetExperience(tiny, currentSize), giant); // Adjust Size Matter skill
 					data.state = CrushState::Crushed;
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						CompleteDragonQuest(tiny, false, tiny->IsDead());
@@ -155,8 +167,7 @@ namespace Gts {
 					if (!tiny->IsDead()) {
 						KillActor(giant, tiny);
 					}
-					float currentSize = get_visual_scale(tiny);
-
+					
 					std::string taskname = std::format("CrushTiny {}", tiny->formID);
 
 					MoanOrLaugh(giant, tiny);
@@ -217,7 +228,6 @@ namespace Gts {
 						tiny->SetAlpha(0.0); // Player can't be disintegrated, so we make player Invisible
 					}
 
-					ModSizeExperience(0.20 + (currentSize * 0.02), giant); // Adjust Size Matter skill
 					FearChance(giant);
 				}
 			}
