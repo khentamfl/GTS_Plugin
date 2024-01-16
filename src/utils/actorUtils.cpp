@@ -1931,16 +1931,17 @@ namespace Gts {
 		auto player = PlayerCharacter::GetSingleton();
 		//Runtime::CastSpell(player, player, "gtsProtectTiniesSpell");
 
-		for (auto Actor: find_actors()) {
-			if (Actor == player || IsTeammate(Actor)) {
-				float scale = get_visual_scale(Actor);
-				auto node = find_node(Actor, "NPC Root [Root]");
+		for (auto actor: find_actors()) {
+			if (actor == player || IsTeammate(actor)) {
+				float scale = get_visual_scale(actor);
+				auto node = find_node(actor, "NPC Root [Root]");
 				if (node) {
 					NiPoint3 pos = node->world.translate;
-					SpawnParticle(Actor, 4.60, "GTS/Magic/Life_Drain.nif", NiMatrix3(), pos, scale, 7, nullptr);
+					SpawnParticle(actor, 4.60, "GTS/Magic/Life_Drain.nif", NiMatrix3(), pos, scale, 7, nullptr);
+					Runtime::PlaySoundAtNode("Magic_ProtectTinies", actor, 1.0, 1.0, "NPC COM [COM ]");
 				}
 
-				LaunchImmunityTask(Actor);
+				LaunchImmunityTask(actor);
 			}
 		}
 	}
