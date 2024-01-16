@@ -20,14 +20,6 @@ using namespace REL;
 using namespace Gts;
 
 namespace {
-	float GetExperience(Actor* tiny, float size) {
-		float xp = 0.20 + (size * 0.02);
-		if (tiny->IsDead()) {
-			Cprint("Crush: Tiny is ded");
-			xp *= 0.2;
-		}
-		return xp;
-	}
 
 	void ScareChance(Actor* actor) {
 		int voreFearRoll = rand() % 5;
@@ -152,7 +144,6 @@ namespace Gts {
 					Attacked(tiny, giant);
 
 					float currentSize = get_visual_scale(tiny);
-					ModSizeExperience(GetExperience(tiny, currentSize), giant); // Adjust Size Matter skill
 
 					data.state = CrushState::Crushed;
 					if (giant->formID == 0x14 && IsDragon(tiny)) {

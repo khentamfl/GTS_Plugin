@@ -255,7 +255,7 @@ namespace {
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1); // don't do damage and just add flat debuff
 			SizeHitEffects::GetSingleton().BreakBones(giant, grabbedActor, 0, 1); // do it twice
 
-			ModSizeExperience(experience, giant);
+			ModSizeExperience(giant, experience);
 			AddSMTDuration(giant, 1.0);
 
 
@@ -268,9 +268,13 @@ namespace {
 				}
 				auto tiny = tinyref.get().get();
 				auto giantess = giantref.get().get();
+
 				if (GetAV(tiny, ActorValue::kHealth) <= 1.0 || tiny->IsDead()) {
+
+					ModSizeExperience_Crush(giant, tiny);
+
 					CrushManager::Crush(giantess, tiny);
-					ModSizeExperience(0.14, giantess);
+					
 					SetBeingHeld(tiny, false);
 					GRumble::Once("GrabAttackKill", giantess, 14.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 					if (!LessGore()) {

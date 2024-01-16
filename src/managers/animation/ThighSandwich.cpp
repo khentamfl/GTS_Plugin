@@ -104,11 +104,14 @@ namespace {
 		InflictSizeDamage(giant, tiny, damage);
 
 		float experience = std::clamp(damage/200, 0.0f, 0.20f);
-		ModSizeExperience(experience, giant);
+		ModSizeExperience(giant, experience);
 
 		float hp = GetAV(tiny, ActorValue::kHealth);
 		if (damage > hp || hp <= 0) {
+			ModSizeExperience_Crush(giant, tiny);
+			
 			CrushManager::GetSingleton().Crush(giant, tiny);
+			
 			PrintDeathSource(giant, tiny, DamageSource::ThighSandwiched);
 			AdvanceQuestProgression(giant, tiny, 5, 1.0, false);
 			auto node = find_node(giant, "NPC R FrontThigh");

@@ -1843,7 +1843,7 @@ namespace Gts {
 		update_target_scale(tiny, -(shrinkpower * gigantism), SizeEffectType::kShrink);
 		Attacked(tiny, giant);
 
-		ModSizeExperience((shrinkpower * gigantism) * 0.80, giant);
+		ModSizeExperience(giant, (shrinkpower * gigantism) * 0.80);
 
 		float MinScale = 0.11/Adjustment;
 
@@ -1929,6 +1929,9 @@ namespace Gts {
 
 	void Utils_ProtectTinies(bool Balance) { // This is used to avoid damaging friendly actors in towns and in general
 		auto player = PlayerCharacter::GetSingleton();
+
+		//to-do: make it consume health over time in balance mode
+		// And make it self-dispel if health is < threshold + play audio effect and push actors away, as well as stagger gts
 
 		for (auto actor: find_actors()) {
 			if (actor == player || IsTeammate(actor)) {

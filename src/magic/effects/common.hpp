@@ -78,6 +78,16 @@ namespace Gts {
 		}
 	}
 
+	inline void ModSizeExperience_Crush(Actor* giant, Actor* tiny) {
+		float size = get_visual_scale(tiny);
+		float xp = 0.20 + (size * 0.02);
+		if (tiny->IsDead()) {
+			Cprint("Crush Tiny is ded");
+			xp *= 0.20;
+		}
+		ModSizeExperience(giant, xp); // Adjust Size Matter skill
+	}
+
 	inline void AdjustSizeLimit(float value, Actor* caster) {  // A function that adjusts Size Limit (Globals)
 		if (caster->formID != 0x14) {
 			return;
@@ -200,7 +210,7 @@ namespace Gts {
 		float amount = CalcPower(from, scale_factor, bonus, true);
 		float amountnomult = CalcPower(from, scale_factor, bonus, false);
 		float target_scale = get_visual_scale(from);
-		ModSizeExperience(0.52 * scale_factor * target_scale, to);
+		ModSizeExperience(to, 0.52 * scale_factor * target_scale);
 		update_target_scale(from, -amountnomult * 0.55 * effeciency_noscale, SizeEffectType::kShrink);
 		update_target_scale(to, amount*effeciency, SizeEffectType::kGrow);
 
@@ -219,7 +229,7 @@ namespace Gts {
 		float target_scale = get_visual_scale(from);
 		AdjustSizeLimit(0.0012 * scale_factor * target_scale, to);
 		AdjustMassLimit(0.0012 * scale_factor* target_scale, to);
-		ModSizeExperience(0.52 * scale_factor * target_scale, to);
+		ModSizeExperience(to, 0.52 * scale_factor * target_scale);
 		update_target_scale(from, -amount, SizeEffectType::kShrink);
 		update_target_scale(to, amount*effeciency/10, SizeEffectType::kGrow); // < 10 times weaker size steal towards caster. Absorb exclusive.
 	}

@@ -431,7 +431,7 @@ namespace Gts {
 
 		float experience = std::clamp(result/500, 0.0f, 0.05f);
 		if (!tiny->IsDead()) {
-			ModSizeExperience(experience, giant);
+			ModSizeExperience(giant, experience);
 		}
 
 		if (tiny->formID == 0x14 || SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
@@ -456,6 +456,9 @@ namespace Gts {
 		if (ShouldBeCrushed) {
 			if (multiplier > 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
+
+					ModSizeExperience_Crush(giant, tiny);
+
 					if (!tiny->IsDead()) {
 						if (IsGiant(tiny)) {
 							AdvanceQuestProgression(giant, tiny, 7, 1, false);

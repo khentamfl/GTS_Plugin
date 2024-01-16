@@ -21,7 +21,7 @@ namespace {
 	float GetXPModifier(Actor* tiny) {
 		float mult = 1.0;
 		if (tiny->IsDead()) {
-			Cprint("Tiny is ded");
+			Cprint("Tiny is dead");
 			mult = 0.25;
 		}
 		
@@ -62,7 +62,7 @@ namespace Gts {
 			} else if (data.state == ShrinkState::Shrinking) {
 				if (data.delay.ShouldRun()) {
 					Attacked(tiny, giant);
-					ModSizeExperience(0.24 * GetXPModifier(tiny), giant); // Adjust Size Matter skill
+					ModSizeExperience(giant, 0.24 * GetXPModifier(tiny)); // Adjust Size Matter skill
 					if (giant->formID == 0x14 && IsDragon(tiny)) {
 						CompleteDragonQuest(tiny, false, tiny->IsDead());
 					}

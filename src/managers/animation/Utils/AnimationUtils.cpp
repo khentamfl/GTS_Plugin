@@ -104,7 +104,7 @@ namespace Gts {
 		}
 		float currentSize = get_visual_scale(tiny);
 
-		ModSizeExperience(0.24, giant); // Adjust Size Matter skill
+		ModSizeExperience(giant, 0.24); // Adjust Size Matter skill
 		KillActor(giant, tiny);
 
 		if (!IsLiving(tiny)) {

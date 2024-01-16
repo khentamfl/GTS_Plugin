@@ -300,7 +300,7 @@ namespace Gts {
 			case VoreBuffState::Finishing: {
 				if (!AllowDevourment()) {
 					if (this->giant) {
-						ModSizeExperience(0.28 + (this->tinySize * 0.02), giant);
+						ModSizeExperience(giant, 0.28 + (this->tinySize * 0.02));
 						VoreMessage_Absorbed(giant, this->tiny_name, this->WasDragon, this->WasGiant);
 						CallGainWeight(giant, 3.0 * this->tinySize);
 						BuffAttributes(giant, this->tinySize);

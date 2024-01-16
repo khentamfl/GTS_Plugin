@@ -55,6 +55,7 @@ namespace {
 			}
 
 			Grab::DetachActorTask(receiver);
+			ModSizeExperience_Crush(receiver, grabbedActor);
 			auto hand = find_node(receiver, "NPC L Hand [LHnd]");
 			if (hand) {
 				if (IsLiving(grabbedActor)) {
