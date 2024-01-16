@@ -22,7 +22,7 @@ namespace Hooks {
 	void Hook_Jumping::Hook(Trampoline& trampoline) {
 
 
-		static FunctionHook<float(bhkCharacterController* a_this)> GetFallDistance(
+		/*static FunctionHook<float(bhkCharacterController* a_this)> GetFallDistance(
 			REL::RelocationID(76430, 78269),
 			[](auto* a_this){
 			float result = GetFallDistance(a_this);
@@ -40,7 +40,7 @@ namespace Hooks {
 
 			return result;
 			}
-		);
+		);*/
 
 		// AE 1402bc7c3
 		// SE 1402aa40c

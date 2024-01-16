@@ -184,9 +184,8 @@ namespace Gts {
 		float NewMin = 0.0;
 		float NewMax = 1.0;
 
-		float OldValue = size_difference; 
-
-		float NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + 1.0;
+		float OldValue = size_difference;
+		float NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin;
 
 		tiny->SetGraphVariableFloat("GTS_SizeDifference", NewValue); // pass Tiny / Giant size diff POV to Tiny
 		giant->SetGraphVariableFloat("GTS_SizeDifference", NewValue); // pass Tiny / Giant size diff POV to GTS
