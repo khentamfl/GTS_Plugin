@@ -450,7 +450,6 @@ namespace Gts {
 		}
 
 		bool ShouldBeCrushed = (
-			//result >= GetAV(tiny, ActorValue::kHealth) ||
 			GetAV(tiny, ActorValue::kHealth) <= 1.0 ||
 			tiny->IsDead()
 		);
