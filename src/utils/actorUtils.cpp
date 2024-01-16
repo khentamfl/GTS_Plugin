@@ -1942,8 +1942,8 @@ namespace Gts {
 					std::string name_com = std::format("Protect_{}", actor->formID);
 					std::string name_root = std::format("Protect_Root_{}", actor->formID);
 
-					GRumble::Once(name_com, actor, 8.6, 0.45, "NPC COM [COM ]");
-					GRumble::Once(name_root, actor, 8.6, 0.45, "NPC Root [Root]");
+					GRumble::Once(name_com, actor, 8.6, 0.25, "NPC COM [COM ]");
+					GRumble::Once(name_root, actor, 8.6, 0.25, "NPC Root [Root]");
 				}
 
 				LaunchImmunityTask(actor);
