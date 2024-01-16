@@ -371,7 +371,7 @@ namespace Gts {
 	void FootStepManager::PlayTinyCalamitySounds(NiAVObject* foot, FootEvent foot_kind, float scale) { 
 		// TinyCalamity_Footsteps
 		auto profiler = Profilers::Profile("Impact: CalamitySounds");
-		BSSoundHandle Calamity    = get_sound(foot, scale, get_calamity_sounddesc(foot_kind),   VolumeParams { .a = 1.25,  .k = 0.25,  .n = 0.7, .s = 1.0}, "Calamity Footstep", 1.0);
+		BSSoundHandle Calamity    = get_sound(foot, scale, get_calamity_sounddesc(foot_kind),   VolumeParams { .a = 1.25,  .k = 0.40,  .n = 0.7, .s = 1.0}, "Calamity Footstep", 1.0);
 		BSSoundHandle JumpLand    = get_sound(foot, scale, get_lJumpLand_sounddesc(foot_kind),   VolumeParams { .a = 1.25,  .k = 0.65,  .n = 0.7, .s = 1.0}, "L Jump", 1.0);
 		if (Calamity.soundID != BSSoundHandle::kInvalidID) {
 			Calamity.Play();
