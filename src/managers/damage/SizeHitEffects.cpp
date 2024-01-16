@@ -5,6 +5,7 @@
 #include "managers/GtsSizeManager.hpp"
 #include "managers/animation/Grab.hpp"
 #include "managers/CrushManager.hpp"
+#include "magic/effects/common.hpp"
 #include "managers/hitmanager.hpp"
 #include "managers/Attributes.hpp"
 #include "utils/actorUtils.hpp"
@@ -56,6 +57,7 @@ namespace {
 
 			Grab::DetachActorTask(receiver);
 			ModSizeExperience_Crush(receiver, grabbedActor);
+
 			auto hand = find_node(receiver, "NPC L Hand [LHnd]");
 			if (hand) {
 				if (IsLiving(grabbedActor)) {
