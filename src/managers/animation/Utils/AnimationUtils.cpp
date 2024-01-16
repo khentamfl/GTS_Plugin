@@ -173,7 +173,7 @@ namespace Gts {
 		}
 	}
 
-	void UpdateHugBehaviors(Actor* giant, Actor* tiny) { // blend between two anims: send value to behaviors
+	void Utils_UpdateHugBehaviors(Actor* giant, Actor* tiny) { // blend between two anims: send value to behaviors
         float tinySize = get_visual_scale(tiny);
         float giantSize = get_visual_scale(giant);
         float size_difference = std::clamp(giantSize/tinySize, 1.0f, 3.0f);
@@ -184,15 +184,9 @@ namespace Gts {
 		float NewMin = 0.0;
 		float NewMax = 1.0;
 
-		float OldValue = size_difference; // let's imagine it's 3.0
-		// (3 - 1 = 2)   (oldValue - OldMin)
-		// *
-		// (1 - 0 = 1)  (NewMax - NewMin)
-		// /
-		// (3 - 1 = 2)     (OldMax - OldMin)
-		// + 
-		// NewMin = 0
-		float NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin;
+		float OldValue = size_difference; 
+
+		float NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + 1.0;
 
 		tiny->SetGraphVariableFloat("GTS_SizeDifference", NewValue); // pass Tiny / Giant size diff POV to Tiny
 		giant->SetGraphVariableFloat("GTS_SizeDifference", NewValue); // pass Tiny / Giant size diff POV to GTS

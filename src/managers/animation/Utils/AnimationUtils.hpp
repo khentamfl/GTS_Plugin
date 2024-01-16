@@ -18,7 +18,7 @@ namespace Gts {
 	void HugCrushOther(Actor* giant, Actor* tiny);
 
 	void AbortHugAnimation(Actor* giant, Actor* tiny);
-	void UpdateHugBehaviors(Actor* giant, Actor* tiny);
+	void Utils_UpdateHugBehaviors(Actor* giant, Actor* tiny);
 	void StartHealingAnimation(Actor* giant, Actor* tiny);
 
 	void AllowToDoVore(Actor* actor, bool toggle);
