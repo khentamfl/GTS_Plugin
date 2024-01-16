@@ -22,7 +22,7 @@ namespace Hooks {
 	void Hook_Jumping::Hook(Trampoline& trampoline) {
 
 
-		/*static FunctionHook<float(bhkCharacterController* a_this)> GetFallDistance(
+		static FunctionHook<float(bhkCharacterController* a_this)> GetFallDistance(
 			REL::RelocationID(76430, 78269),
 			[](auto* a_this){
 			float result = GetFallDistance(a_this);
@@ -40,7 +40,7 @@ namespace Hooks {
 
 			return result;
 			}
-		);*/
+		);
 
 		// AE 1402bc7c3
 		// SE 1402aa40c
@@ -50,7 +50,7 @@ namespace Hooks {
 		//REL::Relocation<uintptr_t> hook{REL::RelocationID(41811, 42892)};
 		//_GetScaleJumpHook = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x4d, 0x4d), GetScaleJumpHook);
 
-		/*static FunctionHook<bool(IAnimationGraphManagerHolder* graph, const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat( 
+		static FunctionHook<bool(IAnimationGraphManagerHolder* graph, const BSFixedString& a_variableName, const float a_in)> SkyrimSetGraphVarFloat( 
 			REL::RelocationID(32143, 32887),
 			[](auto* graph, const auto& a_variableName, auto a_in) {
 				if (a_variableName == "VelocityZ") {
@@ -71,7 +71,7 @@ namespace Hooks {
 					}
 				}
 				return SkyrimSetGraphVarFloat(graph, a_variableName, a_in);
-			});*/
+			});
 	}
 
 	/*float Hook_Jumping::GetScaleJumpHook(TESObjectREFR* a_this) {
