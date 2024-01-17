@@ -58,7 +58,7 @@ namespace {
 		float sp = GetAV(giantref, ActorValue::kStamina);
 
 		if (!force_cancel) {
-			DamageAV(giantref, ActorValue::kStamina, 0.06 * TimeScale());
+			DamageAV(giantref, ActorValue::kStamina, 0.12 *  * TimeScale());
 		}
 
 		if (sp <= 1.0 || force_cancel) {
@@ -2024,15 +2024,13 @@ namespace Gts {
 				return false;
 			}
 
-			if (Balance) {
-				auto giantref = gianthandle.get().get();
-				return Utils_ManageTinyProtection(giant, false);
-			}
-			
-
 			float Finish = Time::WorldTimeElapsed();
 			float timepassed = Finish - Start;
 			if (timepassed < 60.0) {
+				if (Balance) {
+					auto giantref = gianthandle.get().get();
+					return Utils_ManageTinyProtection(giant, false);
+				}
 				return true; // not enough time has passed yet
 			}
 			if (transient) {
