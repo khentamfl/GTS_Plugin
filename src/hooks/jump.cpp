@@ -15,6 +15,17 @@ namespace {
 		}
 		return nullptr;
 	}
+
+	float FallModifier(float scale) {
+		float k = 1.0;
+		float a = 0.0;
+		float n = 0.75;
+		float s = 1.0;
+		// https://www.desmos.com/calculator/ygoxbe7hjg
+		float result = k*pow(s*(scale-a), n);
+		log::info("Result: {}, scale {}", result, scale);
+		return result;
+	}
 }
 
 namespace Hooks {
@@ -63,8 +74,8 @@ namespace Hooks {
 								log::info("Dividing velocity by scale: {}", scale);
 								log::info("Actor: {}", actor->GetDisplayFullName());
 							}
-							a_in /= scale;
 							if (actor->formID == 0x14) {
+								a_in /= FallModifier(scale);
 								log::info(" new V: {}", a_in);
 							}
 						}
