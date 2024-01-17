@@ -45,7 +45,7 @@ namespace {
 		float s = 1.0;
 		// https://www.desmos.com/calculator/ygoxbe7hjg
 		float result = k*pow(s*(aspect-a), n);
-		log::info("Result: {}, aspect {}", result, aspect);
+		//log::info("Result: {}, aspect {}", result, aspect);
 		return result;
 	}
 }
@@ -187,11 +187,13 @@ namespace Gts {
 					}
 
 					float Aspect = Ench_Aspect_GetPower(actor);
-					float gigantism = 1.0 + (GetEnchEffectiveness(Aspect) * 0.5);
-					float default_scale = natural_scale * gigantism;
+					float gigantism = GetEnchEffectiveness(Aspect) * 0.5;
+					float default_scale = natural_scale * (1.0 + gigantism);
 
-					log::info("Gigantism of {} is {}", actor->GetDisplayFullName(), gigantism);
-					log::info("Min scale of {} is {}", actor->GetDisplayFullName(), default_scale);
+					if (actor->formID == 0x14) {
+						log::info("Gigantism of {} is {}", actor->GetDisplayFullName(), gigantism);
+						log::info("Min scale of {} is {}", actor->GetDisplayFullName(), default_scale);
+					}
 
 					if ((targetScale + modAmount) > default_scale) {
 						update_target_scale(actor, modAmount, SizeEffectType::kShrink);

@@ -755,12 +755,12 @@ namespace Gts {
 	}
 
 	float Ench_Aspect_GetPower(Actor* giant) {
-		float value = SizeManager::GetSingleton().GetEnchantmentBonus(giant) * 0.01;
-		return value;
+		float& value = SizeManager::GetSingleton().GetEnchantmentBonus(giant);
+		return value * 0.01;
 	}
 	float Ench_Hunger_GetPower(Actor* giant) {
-		float value = SizeManager::GetSingleton().GetSizeHungerBonus(giant) * 0.01;
-		return value;
+		float& value = SizeManager::GetSingleton().GetSizeHungerBonus(giant);
+		return value * 0.01;
 	}
 
 	float GetSizeDifference(Actor* giant, Actor* tiny) {
