@@ -1986,12 +1986,12 @@ namespace Gts {
 
 			if (Balance) {
 				auto giantref = gianthandle.get().get();
-				float hp = GetAV(giantref, ActorValue::kHealth);
-				float maxhp = GetMaxAV(giantref, ActorValue::kHealth);
+				float sp = GetAV(giantref, ActorValue::kStamina);
+				float maxsp = GetMaxAV(giantref, ActorValue::kStamina);
 
-				DamageAV(giantref, ActorValue::kHealth, maxhp * 0.00035 * TimeScale());
+				DamageAV(giantref, ActorValue::kStamina, 0.06 * TimeScale());
 
-				if (hp < maxhp * 0.35) {
+				if (sp < maxsp * 0.35) {
 					float OldScale;
 					giantref->GetGraphVariableFloat("GiantessScale", OldScale); // save old scale
 					giantref->SetGraphVariableFloat("GiantessScale", 1.0); // Needed to allow Stagger to play, else it won't work
