@@ -70,7 +70,6 @@ namespace {
 		auto model = tiny->GetCurrent3D();
 
 		bool moving = IsMoving(giant);
-		log::info("{} moving: {}", giant->GetDisplayFullName(), moving);
 
 		if (model) {
 			bool isdamaging = sizemanager.IsDamaging(tiny);

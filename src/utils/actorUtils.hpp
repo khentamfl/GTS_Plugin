@@ -76,7 +76,6 @@ namespace Gts {
 	bool IsLiving(Actor* actor);
 	bool IsUndead(Actor* actor);
 	bool WasReanimated(Actor* actor);
-	bool IsMoving(Actor* giant);
 	bool IsHeadtracking(Actor* giant);
 	bool IsHostile(Actor* giant, Actor* tiny);
 	bool CanPerformAnimationOn(Actor* giant, Actor* tiny);
@@ -244,4 +243,5 @@ namespace Gts {
   	void ApplyDamage(Actor* giant, Actor* tiny, float damage);
 
 	std::int16_t GetItemCount(InventoryChanges* changes, RE::TESBoundObject* a_obj);
+	bool IsMoving(Actor* giant);
 }

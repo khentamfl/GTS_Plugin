@@ -644,14 +644,6 @@ namespace Gts {
 		return reanimated;
 	}
 
-	
-
-	bool IsMoving(Actor* giant) { // New CommonLib version copy-paste
-		using func_t = decltype(&IsMoving);
-		REL::Relocation<func_t> func{ RELOCATION_ID(36928, 37953) };
-		return func(giant);
-	}
-
 	bool IsHeadtracking(Actor* giant) { // Used to report True when we lock onto something, should be Player Exclusive.
 		//Currently used to fix TDM mesh issues when we lock on someone.
 		//auto profiler = Profilers::Profile("ActorUtils: HeadTracking");
@@ -1715,13 +1707,14 @@ namespace Gts {
 		}
 
 		float sizedifference = giantSize/tinySize;
+		float sizedifference_tinypov = tinySize/giantSize;
 
 		int ragdollchance = rand() % 30 + 1.0;
 		if (!IsRagdolled(tiny) && sizedifference > 2.8 && ragdollchance < 4.0 * sizedifference) { // Chance for ragdoll. Becomes 100% at high scales
 			PushActorAway(giant, tiny, 1.0); // Ragdoll
 			return;
 		} else if (sizedifference > 1.25) { // Always Stagger
-			tiny->SetGraphVariableFloat("GiantessScale", sizedifference); // enable stagger just in case
+			tiny->SetGraphVariableFloat("GiantessScale", sizedifference_tinypov); // enable stagger just in case
 
 		    float push = std::clamp(0.25f * (sizedifference - 0.25f), 0.25f, 1.0f);
 			StaggerActor(tiny, push);
@@ -2636,5 +2629,11 @@ namespace Gts {
 		using func_t = decltype(&GetItemCount);
 		REL::Relocation<func_t> func{ RELOCATION_ID(15868, 16108) };
 		return func(changes, a_obj);
+	}
+
+	bool IsMoving(Actor* giant) { // New CommonLib version copy-paste
+		using func_t = decltype(&IsMoving);
+		REL::Relocation<func_t> func{ RELOCATION_ID(36928, 37953) };
+		return func(giant);
 	}
 }

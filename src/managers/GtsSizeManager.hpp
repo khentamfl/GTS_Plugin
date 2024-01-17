@@ -35,8 +35,6 @@ namespace Gts {
 		bool TrackButt = false;
 		bool TrackBreasts = false;
 		bool TrackKnees = false;
-
-
 	};
 
 	struct LaunchData {
