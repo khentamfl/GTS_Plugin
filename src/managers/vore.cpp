@@ -393,10 +393,9 @@ namespace Gts {
 			if (!actor->Is3DLoaded() || actor->IsDead()) {
 				return;
 			}
-			float Gigantism = 1.0 / (1.0 + Ench_Aspect_GetPower(pred));
-			float Requirement = (8.0 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
+			int Requirement = 8.0 * SizeManager::GetSingleton().BalancedMode();
 
-			float random = rand() % Requirement;
+			int random = rand() % Requirement;
 			int trigger_threshold = 2;
 			if (random <= trigger_threshold) {
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
