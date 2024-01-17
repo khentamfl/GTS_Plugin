@@ -39,9 +39,6 @@ namespace Hooks
 					if (graph) {
 						if (a_this == graph->behaviorGraph) {
 							float multi = Animation_GetSpeedCorrection(actor);
-							if (actor->formID == 0x14 || IsTeammate(actor)) {
-								log::info("Multi of {} is {}", actor->GetDisplayFullName(), multi);
-							}
 							anim_speed *= multi;
 						}
 					}

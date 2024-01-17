@@ -187,7 +187,7 @@ namespace Gts {
 					}
 
 					float Aspect = Ench_Aspect_GetPower(actor);
-					float gigantism = 1.0 + GetEnchEffectiveness(Aspect);
+					float gigantism = 1.0 + (GetEnchEffectiveness(Aspect) * 0.5);
 					float default_scale = natural_scale * gigantism;
 
 					log::info("Gigantism of {} is {}", actor->GetDisplayFullName(), gigantism);

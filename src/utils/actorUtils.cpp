@@ -56,13 +56,12 @@ namespace {
 
 	bool Utils_ManageTinyProtection(Actor* giantref, bool force_cancel) {
 		float sp = GetAV(giantref, ActorValue::kStamina);
-		float maxsp = GetMaxAV(giantref, ActorValue::kStamina);
 
 		if (!force_cancel) {
 			DamageAV(giantref, ActorValue::kStamina, 0.06 * TimeScale());
 		}
 
-		if (sp < maxsp * 0.35 || force_cancel) {
+		if (sp <= 1.0 || force_cancel) {
 			float OldScale;
 			giantref->GetGraphVariableFloat("GiantessScale", OldScale); // save old scale
 			giantref->SetGraphVariableFloat("GiantessScale", 1.0); // Needed to allow Stagger to play, else it won't work
