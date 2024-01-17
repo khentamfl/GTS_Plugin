@@ -647,7 +647,7 @@ namespace Gts {
 	
 
 	bool IsMoving(Actor* giant) {
-		return giant->AsActorState()->IsSprinting() || giant->AsActorState()->IsWalking() || giant->IsRunning() || giant->IsSneaking();
+		return giant->IsMoving();
 	}
 
 	bool IsHeadtracking(Actor* giant) { // Used to report True when we lock onto something, should be Player Exclusive.
@@ -1699,15 +1699,25 @@ namespace Gts {
 		}
 		if (!AllowStagger(giant, tiny)) {
 			return;
+		} 
+		if (IsRagdolled(tiny)) {
+			return;
 		}
+		auto& sm = SizeManager::GetSingleton();
+
 		float giantSize = get_visual_scale(giant);
 		float tinySize = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
 		if (HasSMT(giant)) {
 			giantSize += 1.5;
 		}
 		float sizedifference = giantSize/tinySize;
+
+		tiny->SetGraphVariableFloat("GiantessScale", sizedifference);
+		bool ImmuneToStagger = sm.IsStaggerImmune(tiny);
+
 		int ragdollchance = rand() % 30 + 1.0;
-		if (sizedifference > 2.8 && ragdollchance < 4.0 * sizedifference) { // Chance for ragdoll. Becomes 100% at high scales
+		if (!ImmuneToStagger && sizedifference > 2.8 && ragdollchance < 4.0 * sizedifference) { // Chance for ragdoll. Becomes 100% at high scales
+			sm.GetDamageData(tiny).lastStaggerTime = Time::WorldTimeElapsed(); // protect from stagger for 3 sec
 			PushActorAway(giant, tiny, 1.0); // Ragdoll
 			return;
 		} else if (sizedifference > 1.25) { // Always Stagger

@@ -47,6 +47,7 @@ namespace Gts {
 		double lastDamageTime = -1.0e8;
 		double lastHandDamageTime = -1.0e8;
 		double lastScareTime = -1.0e8;
+		double lastStaggerTime = -1.0e8;
 	};
 
 	class SizeManager : public EventListener {
@@ -95,6 +96,7 @@ namespace Gts {
 			static bool IsDamaging(Actor* actor);
 			static bool IsHandDamaging(Actor* actor);
 			static bool IsBeingScared(Actor* actor);
+			static bool IsStaggerImmune(Actor* actor);
 
 			bool GetPreciseDamage();
 
