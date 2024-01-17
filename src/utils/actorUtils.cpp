@@ -754,7 +754,7 @@ namespace Gts {
 		return hp;
 	}
 
-	float Ench_Aspect_GetPower(Actor* giant) {
+	float Ench_Aspect_GetPower(Actor* giant) { 
 		return SizeManager::GetSingleton().GetEnchantmentBonus(giant) * 0.01;
 	}
 	float Ench_Hunger_GetPower(Actor* giant) {
