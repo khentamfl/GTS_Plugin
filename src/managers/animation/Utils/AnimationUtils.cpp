@@ -100,7 +100,7 @@ namespace Gts {
 	void UpdateFriendlyHugs(Actor* giant, Actor* tiny, bool force) {
 		bool perk = Runtime::HasPerkTeam(giant, "HugCrush_LovingEmbrace");
 		bool hostile = IsHostile(tiny, giant);
-		bool teammate = IsTeammate(tinyr);
+		bool teammate = IsTeammate(tiny);
 
 		if (perk && !hostile && teammate && !force) {
 			tiny->SetGraphVariableBool("GTS_IsFollower", true);
