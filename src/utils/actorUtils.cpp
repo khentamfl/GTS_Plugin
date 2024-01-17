@@ -1656,7 +1656,7 @@ namespace Gts {
 			PushActorAway(giant, tiny, 1.0); // Ragdoll
 			return;
 		} else if (sizedifference > 1.25) { // Always Stagger
-		    float push = std::clamp(0.25f * (sizedifference - 0.25f), 0.25f, 1.0f)
+		    float push = std::clamp(0.25f * (sizedifference - 0.25f), 0.25f, 1.0f);
 			StaggerActor(tiny, push);
 			return;
 		}
