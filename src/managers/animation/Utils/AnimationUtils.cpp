@@ -98,9 +98,9 @@ namespace Gts {
 	}
 
 	void UpdateFriendlyHugs(Actor* giant, Actor* tiny, bool force) {
-		bool perk = Runtime::HasPerkTeam(player, "HugCrush_LovingEmbrace");
+		bool perk = Runtime::HasPerkTeam(giant, "HugCrush_LovingEmbrace");
 		bool hostile = IsHostile(tiny, giant);
-		bool teammate = IsTeammate(huggedActor);
+		bool teammate = IsTeammate(tinyr);
 
 		if (perk && !hostile && teammate && !force) {
 			tiny->SetGraphVariableBool("GTS_IsFollower", true);
@@ -208,7 +208,7 @@ namespace Gts {
     }
 
 	void StartHealingAnimation(Actor* giant, Actor* tiny) {
-		UpdateFriendlyHugs(player, huggedActor, false);
+		UpdateFriendlyHugs(giant, tiny, false);
 		AnimationManager::StartAnim("Huggies_Heal", giant);
 
 		if (IsFemale(tiny)) {
