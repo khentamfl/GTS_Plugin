@@ -382,7 +382,7 @@ namespace Gts {
 
 			ShutUp(tinyref);
 			ShutUp(giantref);
-			
+
 			float threshold = GetHugShrinkThreshold(giantref);
 
 			float sizedifference = get_visual_scale(giantref)/get_visual_scale(tinyref);
@@ -403,7 +403,7 @@ namespace Gts {
 			float stamina = GetAV(giantref, ActorValue::kStamina);
 
 			Utils_UpdateHugBehaviors(giantref, tinyref);
-			Hugs_FixAnimationDesync(giantref, false);
+			Hugs_FixAnimationDesync(giantref, tinyref, false);
 
 			if (IsHugHealing(giantref)) {
 				ForceRagdoll(tinyref, false);

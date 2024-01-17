@@ -1656,8 +1656,8 @@ namespace Gts {
 			PushActorAway(giant, tiny, 1.0); // Ragdoll
 			return;
 		} else if (sizedifference > 1.25) { // Always Stagger
-			tiny->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
-			tiny->NotifyAnimationGraph("staggerStart");
+		    float push = std::clamp(0.25f * (sizedifference - 0.25f), 0.25f, 1.0f)
+			StaggerActor(tiny, push);
 			return;
 		}
 	}

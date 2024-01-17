@@ -52,19 +52,16 @@ namespace Gts {
 		controlMap->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch); // Allow POV Switching
 	}
 
-	void Hugs_FixAnimationDesync(Actor* giant, bool reset) {
-		auto huggedActor = HugShrink::GetHuggiesActor(giant);
-		if (huggedActor) {
-			auto transient = Transient::GetSingleton().GetData(huggedActor);
-			if (transient) {
-				float& animspeed = transient->Hug_AnimSpeed;
-				if (!reset) {
-					animspeed = AnimationManager::GetAnimSpeed(giant);
-				} else {
-					animspeed = 1.0; // 1.0 makes dll use GetAnimSpeed of tiny
-				}
-				// Fix hug anim de-sync
+	void Hugs_FixAnimationDesync(Actor* giant, Actor* tiny, bool reset) {
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient) {
+			float& animspeed = transient->Hug_AnimSpeed;
+			if (!reset) {
+				animspeed = AnimationManager::GetAnimSpeed(giant);
+			} else {
+				animspeed = 1.0; // 1.0 makes dll use GetAnimSpeed of tiny
 			}
+			// Fix hug anim de-sync
 		}
 	}
 
@@ -196,14 +193,15 @@ namespace Gts {
 		AdjustFacialExpression(giant, 0, 0.0, "modifier");
 		AdjustFacialExpression(giant, 1, 0.0, "modifier");
 
-		HugShrink::Release(giant);
 		if (tiny) {
 			EnableCollisions(tiny);
 			SetBeingHeld(tiny, false);
 			PushActorAway(giant, tiny, 1.0);
 			UpdateFriendlyHugs(giant, tiny, true); // set GTS_IsFollower bool to false
-			Hugs_FixAnimationDesync(tiny, true); // reset anim speed override so .dll won't use it
+			Hugs_FixAnimationDesync(giant, tiny, true); // reset anim speed override so .dll won't use it
 		}
+
+		HugShrink::Release(giant);
 	}
 
 	void Utils_UpdateHugBehaviors(Actor* giant, Actor* tiny) { // blend between two anims: send value to behaviors
