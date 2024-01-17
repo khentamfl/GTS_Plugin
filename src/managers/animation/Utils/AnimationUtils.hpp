@@ -12,7 +12,7 @@ using namespace Gts;
 namespace Gts {
 	void BlockFirstPerson(Actor* actor, bool block);
 
-	void Hugs_FixAnimationDesync(Actor* giant, bool reset);
+	void Hugs_FixAnimationDesync(Actor* giant, Actor* tiny, bool reset);
 	void Vore_AttachToRightHandTask(Actor* giant, Actor* tiny);
 
 	void UpdateFriendlyHugs(Actor* giant, Actor* tiny, bool force);
