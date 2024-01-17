@@ -54,7 +54,6 @@ namespace Gts {
 			[[nodiscard]] static SizeManager& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
-			virtual void DataReady() override;
 			virtual void Update() override;
 
 			void Reset();

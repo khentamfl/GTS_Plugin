@@ -240,7 +240,7 @@ namespace Gts {
 		float bonus = 1.0; 
 
 		auto Attributes = Persistent::GetSingleton().GetData(giant);
-		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(giant)/100;
+		float Gigantism = 1.0 + Ench_Aspect_GetPower(giant);
 
 		bool OwnsPerk = Runtime::HasPerk(giant, "NoSpeedLoss");
 		float& currentspeed = Attributes->smt_run_speed;

@@ -30,98 +30,6 @@ namespace {
 	const double SCARE_COOLDOWN = 6.0;
 	const float LAUNCH_DAMAGE_BASE = 1.0f;
 	const float LAUNCH_KNOCKBACK_BASE = 0.02f;
-
-	void TotalControlGrowEvent(const InputEventData& data) {
-		auto player = PlayerCharacter::GetSingleton();
-		if (Runtime::HasPerk(player, "TotalControl")) {
-			float scale = get_visual_scale(player);
-			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
-
-			float perk = Perk_GetCostReduction(player);
-
-			DamageAV(player, ActorValue::kStamina, 0.15 * perk * (scale * 0.5 + 0.5) * stamina * TimeScale());
-			Grow(player, 0.0010 * stamina, 0.0);
-			float Volume = clamp(0.20, 2.0, get_visual_scale(player)/16);
-			GRumble::Once("TotalControl", player, scale/10, 0.05);
-			static Timer timergrowth = Timer(2.00);
-			if (timergrowth.ShouldRun()) {
-				Runtime::PlaySoundAtNode("growthSound", player, Volume, 1.0, "NPC Pelvis [Pelv]");
-			}
-		}
-	}
-	void TotalControlShrinkEvent(const InputEventData& data) {
-		auto player = PlayerCharacter::GetSingleton();
-		if (Runtime::HasPerk(player, "TotalControl")) {
-			float scale = get_visual_scale(player);
-			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
-
-			float perk = Perk_GetCostReduction(player);
-
-			if (get_target_scale(player) > 0.12) {
-				DamageAV(player, ActorValue::kStamina, 0.07 * perk * (scale * 0.5 + 0.5) * stamina * TimeScale());
-				ShrinkActor(player, 0.0010 * stamina, 0.0);
-			} else {
-				set_target_scale(player, 0.12);
-			}
-
-			float Volume = clamp(0.10, 1.0, get_visual_scale(player) * 0.10);
-			GRumble::Once("TotalControl", player, scale/14, 0.05);
-			static Timer timergrowth = Timer(2.00);
-			if (timergrowth.ShouldRun()) {
-				Runtime::PlaySound("shrinkSound", player, Volume, 1.0);
-			}
-		}
-	}
-	void TotalControlGrowOtherEvent(const InputEventData& data) {
-		auto player = PlayerCharacter::GetSingleton();
-		if (Runtime::HasPerk(player, "TotalControl")) {
-			for (auto actor: find_actors()) {
-				if (!actor) {
-					continue;
-				}
-				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
-
-					float perk = Perk_GetCostReduction(player);
-
-					float npcscale = get_visual_scale(actor);
-					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
-					DamageAV(player, ActorValue::kMagicka, 0.15 * perk * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
-					Grow(actor, 0.0010 * magicka, 0.0);
-					float Volume = clamp(0.20, 2.0, get_visual_scale(actor)/16);
-					GRumble::Once("TotalControlOther", actor, 0.25, 0.05);
-					static Timer timergrowth = Timer(2.00);
-					if (timergrowth.ShouldRun()) {
-						Runtime::PlaySoundAtNode("growthSound", actor, Volume, 1.0, "NPC Pelvis [Pelv]");
-					}
-				}
-			}
-		}
-	}
-	void TotalControlShrinkOtherEvent(const InputEventData& data) {
-		auto player = PlayerCharacter::GetSingleton();
-		if (Runtime::HasPerk(player, "TotalControl")) {
-			for (auto actor: find_actors()) {
-				if (!actor) {
-					continue;
-				}
-				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
-					
-					float perk = Perk_GetCostReduction(player);
-
-					float npcscale = get_visual_scale(actor);
-					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
-					DamageAV(player, ActorValue::kMagicka, 0.07 * perk * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
-					ShrinkActor(actor, 0.0010 * magicka, 0.0);
-					float Volume = clamp(0.10, 1.0, get_visual_scale(actor) * 0.10);
-					GRumble::Once("TotalControlOther", actor, 0.20, 0.05);
-					static Timer timergrowth = Timer(2.00);
-					if (timergrowth.ShouldRun()) {
-						Runtime::PlaySound("shrinkSound", actor, Volume, 1.0);
-					}
-				}
-			}
-		}
-	}
 }
 
 namespace Gts {
@@ -134,13 +42,6 @@ namespace Gts {
 		return "SizeManager";
 	}
 
-	void SizeManager::DataReady() {
-		InputManager::RegisterInputEvent("TotalControlGrow", TotalControlGrowEvent);
-		InputManager::RegisterInputEvent("TotalControlShrink", TotalControlShrinkEvent);
-		InputManager::RegisterInputEvent("TotalControlGrowOther", TotalControlGrowOtherEvent);
-		InputManager::RegisterInputEvent("TotalControlShrinkOther", TotalControlShrinkOtherEvent);
-	}
-
 	void SizeManager::Update() {
 		auto profiler = Profilers::Profile("SizeManager: Update");
 		for (auto actor: find_actors()) {
@@ -151,7 +52,8 @@ namespace Gts {
 			}
 			float NaturalScale = get_neutral_scale(actor);
 			float QuestStage = Runtime::GetStage("MainQuest");
-			float Gigantism = this->GetEnchantmentBonus(actor)/100;
+			float Gigantism = Ench_Aspect_GetPower(actor);
+
 			float GetLimit = clamp(NaturalScale, 99999999.0, NaturalScale + ((Runtime::GetFloat("sizeLimit") - 1.0) * NaturalScale)); // Default size limit
 			auto Persistent = Persistent::GetSingleton().GetData(actor);
 			float Persistent_Size = 0.0;
@@ -190,8 +92,8 @@ namespace Gts {
 		if (!actor) {
 			return 0.0;
 		}
-		float EB = clamp(0.0, 10000.0, this->GetData(actor).enchantmentBonus);
-		return EB;
+		float EB = clamp(0.0, 10.0, this->GetData(actor).enchantmentBonus);
+		return EB * 0.01;
 	}
 
 	void SizeManager::ModEnchantmentBonus(Actor* actor, float amt) {
@@ -214,7 +116,7 @@ namespace Gts {
 		if (!actor) {
 			return 0.0;
 		}
-		float SHB = clamp(0.0, 100.0, this->GetData(actor).SizeHungerBonus);
+		float SHB = clamp(0.0, 10.0, this->GetData(actor).SizeHungerBonus);
 		return SHB;
 	}
 

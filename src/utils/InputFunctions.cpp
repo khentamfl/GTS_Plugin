@@ -23,6 +23,99 @@ using namespace Gts;
 
 
 namespace {
+
+	void TotalControlGrowEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (Runtime::HasPerk(player, "TotalControl")) {
+			float scale = get_visual_scale(player);
+			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
+
+			float perk = Perk_GetCostReduction(player);
+
+			DamageAV(player, ActorValue::kStamina, 0.15 * perk * (scale * 0.5 + 0.5) * stamina * TimeScale());
+			Grow(player, 0.0010 * stamina, 0.0);
+			float Volume = clamp(0.20, 2.0, get_visual_scale(player)/16);
+			GRumble::Once("TotalControl", player, scale/10, 0.05);
+			static Timer timergrowth = Timer(2.00);
+			if (timergrowth.ShouldRun()) {
+				Runtime::PlaySoundAtNode("growthSound", player, Volume, 1.0, "NPC Pelvis [Pelv]");
+			}
+		}
+	}
+	void TotalControlShrinkEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (Runtime::HasPerk(player, "TotalControl")) {
+			float scale = get_visual_scale(player);
+			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
+
+			float perk = Perk_GetCostReduction(player);
+
+			if (get_target_scale(player) > 0.12) {
+				DamageAV(player, ActorValue::kStamina, 0.07 * perk * (scale * 0.5 + 0.5) * stamina * TimeScale());
+				ShrinkActor(player, 0.0010 * stamina, 0.0);
+			} else {
+				set_target_scale(player, 0.12);
+			}
+
+			float Volume = clamp(0.10, 1.0, get_visual_scale(player) * 0.10);
+			GRumble::Once("TotalControl", player, scale/14, 0.05);
+			static Timer timergrowth = Timer(2.00);
+			if (timergrowth.ShouldRun()) {
+				Runtime::PlaySound("shrinkSound", player, Volume, 1.0);
+			}
+		}
+	}
+	void TotalControlGrowOtherEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (Runtime::HasPerk(player, "TotalControl")) {
+			for (auto actor: find_actors()) {
+				if (!actor) {
+					continue;
+				}
+				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+
+					float perk = Perk_GetCostReduction(player);
+
+					float npcscale = get_visual_scale(actor);
+					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
+					DamageAV(player, ActorValue::kMagicka, 0.15 * perk * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
+					Grow(actor, 0.0010 * magicka, 0.0);
+					float Volume = clamp(0.20, 2.0, get_visual_scale(actor)/16);
+					GRumble::Once("TotalControlOther", actor, 0.25, 0.05);
+					static Timer timergrowth = Timer(2.00);
+					if (timergrowth.ShouldRun()) {
+						Runtime::PlaySoundAtNode("growthSound", actor, Volume, 1.0, "NPC Pelvis [Pelv]");
+					}
+				}
+			}
+		}
+	}
+	void TotalControlShrinkOtherEvent(const InputEventData& data) {
+		auto player = PlayerCharacter::GetSingleton();
+		if (Runtime::HasPerk(player, "TotalControl")) {
+			for (auto actor: find_actors()) {
+				if (!actor) {
+					continue;
+				}
+				if (actor->formID != 0x14 && (actor->IsPlayerTeammate() || Runtime::InFaction(actor, "FollowerFaction"))) {
+					
+					float perk = Perk_GetCostReduction(player);
+
+					float npcscale = get_visual_scale(actor);
+					float magicka = clamp(0.05, 1.0, GetMagikaPercentage(player));
+					DamageAV(player, ActorValue::kMagicka, 0.07 * perk * (npcscale * 0.5 + 0.5) * magicka * TimeScale());
+					ShrinkActor(actor, 0.0010 * magicka, 0.0);
+					float Volume = clamp(0.10, 1.0, get_visual_scale(actor) * 0.10);
+					GRumble::Once("TotalControlOther", actor, 0.20, 0.05);
+					static Timer timergrowth = Timer(2.00);
+					if (timergrowth.ShouldRun()) {
+						Runtime::PlaySound("shrinkSound", actor, Volume, 1.0);
+					}
+				}
+			}
+		}
+	}
+
 	void RapidGrowthEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		if (!Runtime::HasPerk(player, "TotalControl")) {
@@ -54,7 +147,7 @@ namespace {
 
 			if (duration >= 1.2 && Runtime::HasPerk(player, "SizeReserve") && Cache->SizeReserve > 0) {
 				float SizeCalculation = duration - 1.2;
-				float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(player)/100;
+				float gigantism = 1.0 + Ench_Aspect_GetPower(player);
 				float Volume = clamp(0.10, 2.0, get_visual_scale(player) * Cache->SizeReserve/10);
 				static Timer timergrowth = Timer(2.00);
 				if (timergrowth.ShouldRunFrame()) {
@@ -62,7 +155,7 @@ namespace {
 					Runtime::PlaySoundAtNode("MoanSound", player, Volume, 1.0, "NPC Head [Head]");
 				}
 
-				update_target_scale(player, SizeCalculation/80 * gigantism, SizeEffectType::kNeutral);
+				update_target_scale(player, (SizeCalculation/80) * gigantism, SizeEffectType::kNeutral);
 				Cache->SizeReserve -= SizeCalculation/80;
 				if (Cache->SizeReserve <= 0) {
 					Cache->SizeReserve = 0.0; // Protect against negative values.
@@ -76,7 +169,7 @@ namespace {
 		auto Cache = Persistent::GetSingleton().GetData(player);
 		if (Cache) {
 			if (Runtime::HasPerk(player, "SizeReserve")) { //F
-				float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(player)/100;
+				float gigantism = 1.0 + Ench_Aspect_GetPower(player);
 				float Value = Cache->SizeReserve * gigantism;
 				Notify("Reserved Size: {:.2f}", Value);
 			}
@@ -87,7 +180,7 @@ namespace {
 		for (auto actor: find_actors()) {
 			if (actor->formID != 0x14 && Runtime::InFaction(actor, "FollowerFaction") || actor->IsPlayerTeammate()) {
 				float hh = HighHeelManager::GetBaseHHOffset(actor)[2]/100;
-				float gigantism = SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
+				float gigantism = Ench_Aspect_GetPower(player);
 				float naturalscale = get_natural_scale(actor);
 				float scale = get_visual_scale(actor);
 				float maxscale = get_max_scale(actor) * naturalscale;
@@ -122,7 +215,7 @@ namespace {
 		bool DarkArts2 = Runtime::HasPerk(player, "DarkArts_Aug2");
 		bool DarkArts3 = Runtime::HasPerk(player, "DarkArts_Aug3");
 
-		float gigantism = std::clamp(1.0f + SizeManager::GetSingleton().GetEnchantmentBonus(player)*0.01f, 1.0f, 20.0f);
+		float gigantism = 1.0 + Ench_Aspect_GetPower(player);
 
 		float multi = AttributeManager::GetSingleton().GetAttributeBonus(player, ActorValue::kHealth);
 
@@ -190,5 +283,10 @@ namespace Gts
 		InputManager::RegisterInputEvent("RapidShrink", RapidShrinkEvent);
 		InputManager::RegisterInputEvent("ShrinkOutburst", ShrinkOutburstEvent);
 		InputManager::RegisterInputEvent("ProtectSmallOnes", ProtectSmallOnesEvent);
+
+		InputManager::RegisterInputEvent("TotalControlGrow", TotalControlGrowEvent);
+		InputManager::RegisterInputEvent("TotalControlShrink", TotalControlShrinkEvent);
+		InputManager::RegisterInputEvent("TotalControlGrowOther", TotalControlGrowOtherEvent);
+		InputManager::RegisterInputEvent("TotalControlShrinkOther", TotalControlShrinkOtherEvent);
 	}
 }

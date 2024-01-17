@@ -94,7 +94,6 @@ namespace {
 		float giantscale = get_visual_scale(giant);
 		float tinyscale = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
 		float size_difference = giantscale/tinyscale;
-		float Gigantism = 1.0 / (1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(giant)/200);
 		float BonusShrink = (IsJumping(giant) * 3.0) + 1.0;
 
 		if (Runtime::HasPerk(giant, "ExtraGrowth") && giant != tiny && HasGrowthSpurt(giant)) {

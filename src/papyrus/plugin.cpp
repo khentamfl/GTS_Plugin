@@ -224,7 +224,7 @@ namespace {
 
 	float GetAspectOfGiantessPower(StaticFunctionTag*) {
 		auto player = PlayerCharacter::GetSingleton();
-		return SizeManager::GetSingleton().GetEnchantmentBonus(player)*0.01;
+		return Ench_Aspect_GetPower(player);
 	}
 
 	bool GetIsHighHeelEnabled(StaticFunctionTag*) {

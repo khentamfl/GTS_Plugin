@@ -700,6 +700,8 @@ namespace Gts {
 	float GetDamageSetting() {
 		return Persistent::GetSingleton().size_related_damage_mult;
 	}
+
+	
 	float GetHPThreshold(Actor* actor) {
 		float hp = 0.20;
 		if (Runtime::HasPerkTeam(actor, "HugCrush_MightyCuddles")) {
@@ -709,6 +711,15 @@ namespace Gts {
 			hp += 0.20; // 0.50
 		}
 		return hp;
+	}
+
+	float Ench_Aspect_GetPower(Actor* giant) {
+		float value = SizeManager::GetSingleton().GetEnchantmentBonus(giant);
+		return value;
+	}
+	float Ench_Hunger_GetPower(Actor* giant) {
+		float value = SizeManager::GetSingleton().GetSizeHungerBonus(giant) * 0.01;
+		return value;
 	}
 
 	float GetSizeDifference(Actor* giant, Actor* tiny) {
@@ -1870,7 +1881,7 @@ namespace Gts {
 		NiPoint3 NodePosition = node->world.translate;
 
 		float giantScale = get_visual_scale(giant);
-		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(giant)*0.01;
+		float gigantism = 1.0 + Ench_Aspect_GetPower(giant);
 		float shrink = 0.38;
 		float radius = 1.0;
 
@@ -1951,12 +1962,12 @@ namespace Gts {
 					GRumble::Once(name_root, actor, 8.6, 0.20, "NPC Root [Root]");
 				}
 
-				LaunchImmunityTask(actor);
+				LaunchImmunityTask(actor, Balance);
 			}
 		}
 	}
 
-	void LaunchImmunityTask(Actor* giant) {
+	void LaunchImmunityTask(Actor* giant, bool Balance) {
 		auto transient = Transient::GetSingleton().GetData(giant);
 		if (transient) {
 			transient->Protection = true;
@@ -1964,12 +1975,34 @@ namespace Gts {
 
 		std::string name = std::format("Protect_{}", giant->formID);
 
+		Balance = true;
+
 		float Start = Time::WorldTimeElapsed();
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
 			}
+
+			if (Balance) {
+				auto giantref = gianthandle.get().get();
+				float hp = GetAV(giantref, ActorValue::kHealth);
+				float maxhp = GetMaxAV(giantref, ActorValue::kHealth);
+
+				DamageAV(giantref, ActorValue::kHealth, maxhp * 0.0006 * TimeScale());
+
+				if (hp < maxhp * 0.35) {
+					StaggerActor(giantref, 0.25);
+					float scale = get_visual_scale(giantref);
+
+					StaggerActor_Around(giantref, 48.0);
+
+					Runtime::PlaySoundAtNode("Magic_BreakTinyProtection", giant, 1.0, 1.0, "NPC COM [COM ]");
+					SpawnParticle(giantref, 6.00, "GTS/Effects/TinyCalamity.nif", NiMatrix3(), position, scale * 4.0, 7, nullptr); // Spawn
+					return false;
+				}
+			}
+
 			float Finish = Time::WorldTimeElapsed();
 			float timepassed = Finish - Start;
 			if (timepassed < 60.0) {
@@ -2097,6 +2130,53 @@ namespace Gts {
 	void StaggerActor(Actor* receiver, float power) {
 		receiver->SetGraphVariableFloat("staggerMagnitude", power);
 		receiver->NotifyAnimationGraph("staggerStart");
+	}
+
+	void StaggerActor_Around(Actor* giant, const float radius) {
+		if (!giant) {
+			return;
+		}
+		auto node = find_node(giant, "NPC Root [Root]");
+		if (!node) {
+			return;
+		}
+		NiPoint3 NodePosition = node->world.translate;
+
+		float giantScale = get_visual_scale(giant);
+		float CheckDistance = radius * giantScale;
+
+		if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant))) {
+			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), CheckDistance, 600, {0.0, 1.0, 0.0, 1.0});
+		}
+
+		NiPoint3 giantLocation = giant->GetPosition();
+		for (auto otherActor: find_actors()) {
+			if (otherActor != giant) {
+				float tinyScale = get_visual_scale(otherActor);
+				NiPoint3 actorLocation = otherActor->GetPosition();
+				if ((actorLocation - giantLocation).Length() < CheckDistance*3) {
+					int nodeCollisions = 0;
+					float force = 0.0;
+
+					auto model = otherActor->GetCurrent3D();
+
+					if (model) {
+						VisitNodes(model, [&nodeCollisions, &force, NodePosition, CheckDistance](NiAVObject& a_obj) {
+							float distance = (NodePosition - a_obj.world.translate).Length();
+							if (distance < CheckDistance) {
+								nodeCollisions += 1;
+								force = 1.0 - distance / CheckDistance;
+								return false;
+							}
+							return true;
+						});
+					}
+					if (nodeCollisions > 0) {
+						StaggerActor(otherActor, 0.50);
+					}
+				}
+			}
+		}
 	}
 
 	float GetMovementModifier(Actor* giant) {

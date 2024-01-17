@@ -170,8 +170,8 @@ namespace {
 		
 		auto& sizemanager = SizeManager::GetSingleton();
 		float BalanceMode = sizemanager.BalancedMode();
-		float SizeHunger = 1.0 + sizemanager.GetSizeHungerBonus(receiver)/100;
-		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(receiver)/100;
+		float SizeHunger = 1.0 + Ench_Hunger_GetPower(receiver);
+		float Gigantism = 1.0 + Ench_Aspect_GetPower(receiver);
 		float SizeDifference = get_visual_scale(receiver)/get_visual_scale(attacker);
 		float DamageReduction = std::clamp(AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth), 0.25f, 1.0f); // disallow going > than 1
 

@@ -34,7 +34,7 @@ namespace {
 		if (SizeManager::GetSingleton().BalancedMode() == 2.0) {
 			MultiplySlider = 1.0; // Disable effect in Balance Mode, so slider is always 1.0
 		}
-		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(actor)*0.01;
+		float Gigantism = 1.0 + Ench_Aspect_GetPower(actor);
 		int Requirement = ((500 * MultiplySlider * SizeManager::GetSingleton().BalancedMode()) / Gigantism); // Doubles random in Balance Mode
 		int random = rand() % Requirement;
 		int chance = 1;
@@ -82,7 +82,7 @@ namespace Gts {
 					int random = rand()% 79 + 1;
 					float TotalPower = (100 + random)/100;
 					float base_power = ((0.00750 * TotalPower * 120) * ProgressionMultiplier);  // The power of it
-					float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(actor)*0.01;
+					float Gigantism = 1.0 + Ench_Aspect_GetPower(actor);
 					ActorHandle gianthandle = actor->CreateRefHandle();
 					std::string name = std::format("RandomGrowth_{}", actor->formID);
 					// Sounds

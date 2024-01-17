@@ -71,9 +71,8 @@ namespace Gts {
 				this->grow_limit = 2.01; // NOLINT
 			}
 		}
-		auto& sizemanager = SizeManager::GetSingleton();
 		float AdjustLimit = std::clamp(Runtime::GetFloatOr("CrushGrowthStorage", 0.0) + 1.0f, 1.0f, 12.0f);
-		float Gigantism = 1.0 + sizemanager.GetEnchantmentBonus(caster)/100;
+		float Gigantism = 1.0 + Ench_Aspect_GetPower(caster);
 		float scale = get_visual_scale(caster);
 
 		float bonus = 1.0;

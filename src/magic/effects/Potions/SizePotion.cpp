@@ -37,7 +37,7 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
+		float Gigantism = 1.0 + ;
 		auto saved_data = Persistent::GetSingleton().GetData(caster);
 		if (saved_data) {
 			float PotionPower = this->Strenght;
@@ -52,7 +52,7 @@ namespace Gts {
 			return;
 		}
 		float PotionPower = this->Strenght;
-		float Gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)/100;
+		float Gigantism = 1.0 + Ench_Aspect_GetPower(caster);
 		float expected = Runtime::GetFloat("sizeLimit") * PotionPower * Gigantism;
 		auto saved_data = Persistent::GetSingleton().GetData(caster);
 		if (saved_data) {

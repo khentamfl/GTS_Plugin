@@ -39,6 +39,7 @@ TinyCalamity_Impact = "GTS.esp|76DCD2"
 TinyCalamity_Crush = "GTS.esp|76DCD3"
 
 Magic_ProtectTinies = "GTS.esp|772DD4"
+Magic_BreakTinyProtection = "GTS.esp|777ED6"
 
 ShrinkOutburstSound = "GTS.esp|6524A3"
 TinyCalamitySound = "GTS.esp|65C6AA"

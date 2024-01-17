@@ -94,6 +94,10 @@ namespace Gts {
 	// GTS Actor Functions
 	float GetDamageSetting();
 	float GetHPThreshold(Actor* actor);
+
+	float Ench_Aspect_GetPower(Actor* giant);
+	float Ench_Hunger_GetPower(Actor* giant);
+
 	float GetSizeDifference(Actor* giant, Actor* tiny);
 	float GetActorWeight(Actor* giant, bool metric);
 	float GetActorHeight(Actor* giant, bool metric);
@@ -202,6 +206,7 @@ namespace Gts {
 	void ManageRagdoll(Actor* tinyref, float deltaLength, NiPoint3 deltaLocation, NiPoint3 targetLocation);
 	void ChanceToScare(Actor* giant, Actor* tiny);
 	void StaggerActor(Actor* receiver, float power);
+	void StaggerActor_Around(Actor* giant, const float radius);
 	
 
 	float GetMovementModifier(Actor* giant);

@@ -138,9 +138,9 @@ namespace Gts {
 		}
 		float casterlevel = clamp(1.0, 500.0, caster->GetLevel());
 		float targetlevel = clamp(1.0, 500.0, target->GetLevel());
-		float GigantismCaster = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(caster)*0.01;
-		float SizeHunger = 1.0 + SizeManager::GetSingleton().GetSizeHungerBonus(caster)*0.01;
-		float GigantismTarget = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(target)*0.01;  // May go negative needs fixing with a smooth clamp
+		float GigantismCaster = 1.0 + Ench_Aspect_GetPower(caster);
+		float SizeHunger = 1.0 + Ench_Hunger_GetPower(caster);
+		float GigantismTarget = 1.0 + Ench_Aspect_GetPower(target);  // May go negative needs fixing with a smooth clamp
 		float efficiency = clamp(0.50, 1.0, (casterlevel/targetlevel)) * progression_multiplier;
 
 		float Scale_Resistance = std::clamp(get_visual_scale(target), 1.0f, 9999.0f); // Calf_power makes shrink effects stronger based on scale, this fixes that.

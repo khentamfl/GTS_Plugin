@@ -34,7 +34,7 @@ namespace {
 	void ManagePerkBonuses(Actor* actor) {
 		auto& SizeManager = SizeManager::GetSingleton();
 		float BalancedMode = SizeManager::GetSingleton().BalancedMode();
-		float gigantism = 1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(actor)/100;
+		float gigantism = 1.0 + Ench_Aspect_GetPower(actor);
 
 		float BaseGlobalDamage = SizeManager::GetSingleton().GetSizeAttribute(actor, 0);
 		float BaseSprintDamage = SizeManager::GetSingleton().GetSizeAttribute(actor, 1);

@@ -380,26 +380,25 @@ namespace Gts {
 		if (!Persistent::GetSingleton().Vore_Ai) {
 			return;
 		}
-		Actor* player = PlayerCharacter::GetSingleton();
 		auto& VoreManager = Vore::GetSingleton();
 		if (IsGtsBusy(pred)) {
 			return; // No Vore attempts if in GTS_Busy
 		}
 
 		std::size_t numberOfPrey = 1;
-		if (Runtime::HasPerk(player, "MassVorePerk")) {
+		if (Runtime::HasPerkTeam(pred, "MassVorePerk")) {
 			numberOfPrey = 1 + (get_visual_scale(pred)/3);
 		}
 		for (auto actor: find_actors()) {
 			if (!actor->Is3DLoaded() || actor->IsDead()) {
 				return;
 			}
-			float Gigantism = 1.0 / (1.0 + SizeManager::GetSingleton().GetEnchantmentBonus(pred)/100);
-			int Requirement = (8 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
+			float Gigantism = 1.0 / (1.0 + Ench_Aspect_GetPower(pred));
+			float Requirement = (8.0 * Gigantism) * SizeManager::GetSingleton().BalancedMode();
 
-			int random = rand() % Requirement;
-			int decide_chance = 2;
-			if (random <= decide_chance) {
+			float random = rand() % Requirement;
+			int trigger_threshold = 2;
+			if (random <= trigger_threshold) {
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
 					VoreManager.StartVore(pred, prey);
