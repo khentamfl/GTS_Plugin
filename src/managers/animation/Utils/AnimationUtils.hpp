@@ -14,7 +14,7 @@ namespace Gts {
 
 	void Vore_AttachToRightHandTask(Actor* giant, Actor* tiny);
 
-	void CheckFriendlyHugs(Actor* giant, Actor* tiny, bool force);
+	void UpdateFriendlyHugs(Actor* giant, Actor* tiny, bool force);
 
 	bool Vore_ShouldAttachToRHand(Actor* giant, Actor* tiny);
 

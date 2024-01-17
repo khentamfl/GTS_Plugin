@@ -97,7 +97,7 @@ namespace Gts {
 		}
 	}
 
-	void CheckFriendlyHugs(Actor* giant, Actor* tiny, bool force) {
+	void UpdateFriendlyHugs(Actor* giant, Actor* tiny, bool force) {
 		bool perk = Runtime::HasPerkTeam(player, "HugCrush_LovingEmbrace");
 		bool hostile = IsHostile(tiny, giant);
 		bool teammate = IsTeammate(huggedActor);
@@ -180,7 +180,7 @@ namespace Gts {
 		AdjustFacialExpression(giant, 0, 0.0, "modifier");
 		AdjustFacialExpression(giant, 1, 0.0, "modifier");
 
-		CheckFriendlyHugs(giant, tiny, true); // reset it
+		UpdateFriendlyHugs(giant, tiny, true); // reset it
 		HugShrink::Release(giant);
 		if (tiny) {
 			EnableCollisions(tiny);

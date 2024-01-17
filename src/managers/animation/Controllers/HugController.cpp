@@ -187,7 +187,7 @@ namespace Gts {
 			return;
 		}
 
-		CheckFriendlyHugs(pred, prey, false);
+		UpdateFriendlyHugs(pred, prey, false);
 
 		HugShrink::GetSingleton().HugActor(pred, prey);
 		AnimationManager::StartAnim("Huggies_Try", pred);
