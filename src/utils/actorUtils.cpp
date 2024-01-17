@@ -58,7 +58,8 @@ namespace {
 		float sp = GetAV(giantref, ActorValue::kStamina);
 
 		if (!force_cancel) {
-			DamageAV(giantref, ActorValue::kStamina, 0.12 *  * TimeScale());
+			float perk = Perk_GetCostReduction(giantref);
+			DamageAV(giantref, ActorValue::kStamina, 0.12 * TimeScale() * perk);
 		}
 
 		if (sp <= 1.0 || force_cancel) {
