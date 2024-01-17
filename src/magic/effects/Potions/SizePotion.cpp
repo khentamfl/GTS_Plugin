@@ -1,12 +1,14 @@
-
-#include "managers/GtsSizeManager.hpp"
-#include "managers/GtsManager.hpp"
 #include "magic/effects/Potions/SizePotion.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "magic/effects/common.hpp"
-#include "magic/magic.hpp"
-#include "scale/scale.hpp"
+#include "managers/GtsManager.hpp"
+#include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
+#include "magic/magic.hpp"
+#include "scale/scale.hpp"
+
+
 
 
 namespace Gts {
@@ -37,7 +39,7 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		float Gigantism = 1.0 + ;
+		float Gigantism = 1.0 + Ench_Aspect_GetPower(caster);
 		auto saved_data = Persistent::GetSingleton().GetData(caster);
 		if (saved_data) {
 			float PotionPower = this->Strenght;
