@@ -1997,8 +1997,12 @@ namespace Gts {
 
 					StaggerActor_Around(giantref, 48.0);
 
-					Runtime::PlaySoundAtNode("Magic_BreakTinyProtection", giant, 1.0, 1.0, "NPC COM [COM ]");
-					SpawnParticle(giantref, 6.00, "GTS/Effects/TinyCalamity.nif", NiMatrix3(), position, scale * 4.0, 7, nullptr); // Spawn
+					Runtime::PlaySoundAtNode("Magic_BreakTinyProtection", giantref, 1.0, 1.0, "NPC COM [COM ]");
+					auto node = find_node(giantref, "NPC Root [Root]");
+					if (node) {
+						NiPoint3 position = node->world.translate;
+						SpawnParticle(giantref, 6.00, "GTS/Effects/TinyCalamity.nif", NiMatrix3(), position, scale * 4.0, 7, nullptr); // Spawn it
+					}
 					return false;
 				}
 			}
