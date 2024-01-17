@@ -106,11 +106,6 @@ namespace {
 			}
 			stamina *= Perk_GetCostReduction(giantref);
 
-			if (giantref->formID != 0x14) {
-				ShutUp(giantref); // STFU GTS
-			}
-			ShutUp(tinyref); // Disallow idle dialogues
-
 			if (sizedifference >= threshold || sizedifference <= 0.9) {
 				SetBeingHeld(tinyref, false);
 				AbortHugAnimation(giantref, tinyref);

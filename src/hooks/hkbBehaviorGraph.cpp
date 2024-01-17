@@ -7,7 +7,7 @@ using namespace SKSE;
 using namespace Gts;
 
 namespace {
-	float Animation_GetSpeedCorrection(Actor* giant) { // Fixes Hug animation de-sync by copying Gts anim speed to Tiny
+	float Animation_GetSpeedCorrection(Actor* actor) { // Fixes Hug animation de-sync by copying Gts anim speed to Tiny
 		auto transient = Transient::GetSingleton().GetData(actor);
 		if (transient) {
 			if (transient->Hug_AnimSpeed < 1.0) {
