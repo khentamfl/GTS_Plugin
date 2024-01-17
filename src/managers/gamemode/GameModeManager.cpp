@@ -5,6 +5,7 @@
 #include "managers/RipClothManager.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
+#include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "managers/Rumble.hpp"
 #include "data/transient.hpp"
@@ -35,6 +36,17 @@ namespace {
 		};
 		float power = soft_power(size, launch);
 		return power;
+	}
+
+	float GetEnchEffectiveness(float aspect) {
+		float k = 1.0;
+		float a = 0.0;
+		float n = 0.75;
+		float s = 1.0;
+		// https://www.desmos.com/calculator/ygoxbe7hjg
+		float result = k*pow(s*(aspect-a), n);
+		log::info("Result: {}, aspect {}", result, aspect);
+		return result;
 	}
 }
 
@@ -173,10 +185,18 @@ namespace Gts {
 					if (fabs(ShrinkRate) < EPS) {
 						return;
 					}
-					if ((targetScale + modAmount) > natural_scale) {
+
+					float Aspect = Ench_Aspect_GetPower(actor);
+					float gigantism = 1.0 + GetEnchEffectiveness(Aspect);
+					float default_scale = natural_scale * gigantism;
+
+					log::info("Gigantism of {} is {}", actor->GetDisplayFullName(), gigantism);
+					log::info("Min scale of {} is {}", actor->GetDisplayFullName(), default_scale);
+
+					if ((targetScale + modAmount) > default_scale) {
 						update_target_scale(actor, modAmount, SizeEffectType::kShrink);
-					} else if (targetScale > natural_scale) {
-						set_target_scale(actor, natural_scale);
+					} else if (targetScale > default_scale) {
+						set_target_scale(actor, default_scale);
 					} // Need to have size restored by something
 				}
 				break;

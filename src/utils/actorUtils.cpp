@@ -54,6 +54,47 @@ namespace {
 		}
 	}
 
+	bool Utils_ManageTinyProtection(Actor* giantref, bool force_cancel) {
+		float sp = GetAV(giantref, ActorValue::kStamina);
+		float maxsp = GetMaxAV(giantref, ActorValue::kStamina);
+
+		if (!force_cancel) {
+			DamageAV(giantref, ActorValue::kStamina, 0.06 * TimeScale());
+		}
+
+		if (sp < maxsp * 0.35 || force_cancel) {
+			float OldScale;
+			giantref->GetGraphVariableFloat("GiantessScale", OldScale); // save old scale
+			giantref->SetGraphVariableFloat("GiantessScale", 1.0); // Needed to allow Stagger to play, else it won't work
+
+			if (!force_cancel) {
+				StaggerActor(giantref, 0.25);
+			}
+			float scale = get_visual_scale(giantref);
+
+			StaggerActor_Around(giantref, 48.0);
+
+			auto node = find_node(giantref, "NPC Root [Root]");
+			Runtime::PlaySoundAtNode("Magic_BreakTinyProtection", giantref, 1.0, 1.0, "NPC COM [COM ]");
+			
+			if (node) {
+				NiPoint3 position = node->world.translate;
+
+				std::string name_com = std::format("BreakProtect_{}", giantref->formID);
+				std::string name_root = std::format("BreakProtect_Root_{}", giantref->formID);
+
+				GRumble::Once(name_com, giantref, 8.6, 0.20, "NPC COM [COM ]");
+				GRumble::Once(name_root, giantref, 8.6, 0.20, "NPC Root [Root]");
+
+				SpawnParticle(giantref, 6.00, "GTS/Effects/TinyCalamity.nif", NiMatrix3(), position, scale * 3.4, 7, nullptr); // Spawn it
+			}
+			giantref->SetGraphVariableFloat("GiantessScale", OldScale);
+
+			return false;
+		}
+		return true;
+	}
+
 	float GetPerkBonus_OnTheEdge(Actor* giant, float amt) {
 		float bonus = 1.0;
 		bool perk = Runtime::HasPerkTeam(giant, "OnTheEdge");
@@ -714,7 +755,7 @@ namespace Gts {
 	}
 
 	float Ench_Aspect_GetPower(Actor* giant) {
-		float value = SizeManager::GetSingleton().GetEnchantmentBonus(giant);
+		float value = SizeManager::GetSingleton().GetEnchantmentBonus(giant) * 0.01;
 		return value;
 	}
 	float Ench_Hunger_GetPower(Actor* giant) {
@@ -1986,38 +2027,9 @@ namespace Gts {
 
 			if (Balance) {
 				auto giantref = gianthandle.get().get();
-				float sp = GetAV(giantref, ActorValue::kStamina);
-				float maxsp = GetMaxAV(giantref, ActorValue::kStamina);
-
-				DamageAV(giantref, ActorValue::kStamina, 0.06 * TimeScale());
-
-				if (sp < maxsp * 0.35) {
-					float OldScale;
-					giantref->GetGraphVariableFloat("GiantessScale", OldScale); // save old scale
-					giantref->SetGraphVariableFloat("GiantessScale", 1.0); // Needed to allow Stagger to play, else it won't work
-
-					StaggerActor(giantref, 0.25);
-					float scale = get_visual_scale(giantref);
-
-					StaggerActor_Around(giantref, 48.0);
-
-					Runtime::PlaySoundAtNode("Magic_BreakTinyProtection", giantref, 1.0, 1.0, "NPC COM [COM ]");
-					auto node = find_node(giantref, "NPC Root [Root]");
-					if (node) {
-						NiPoint3 position = node->world.translate;
-
-						std::string name_com = std::format("BreakProtect_{}", giantref->formID);
-						std::string name_root = std::format("BreakProtect_Root_{}", giantref->formID);
-
-						GRumble::Once(name_com, giantref, 8.6, 0.20, "NPC COM [COM ]");
-						GRumble::Once(name_root, giantref, 8.6, 0.20, "NPC Root [Root]");
-
-						SpawnParticle(giantref, 6.00, "GTS/Effects/TinyCalamity.nif", NiMatrix3(), position, scale * 3.4, 7, nullptr); // Spawn it
-					}
-					giantref->SetGraphVariableFloat("GiantessScale", OldScale);
-					return false;
-				}
+				return Utils_ManageTinyProtection(giant, false);
 			}
+			
 
 			float Finish = Time::WorldTimeElapsed();
 			float timepassed = Finish - Start;
@@ -2027,7 +2039,7 @@ namespace Gts {
 			if (transient) {
 				transient->Protection = false; // reset protection to default value
 			}
-			return false; // stop task, immunity has ended
+			return Utils_ManageTinyProtection(giant, true); // stop task, immunity has ended
 		});
 	}
 

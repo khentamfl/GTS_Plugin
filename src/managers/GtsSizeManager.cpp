@@ -93,7 +93,7 @@ namespace Gts {
 			return 0.0;
 		}
 		float EB = clamp(0.0, 10.0, this->GetData(actor).enchantmentBonus);
-		return EB * 0.01;
+		return EB;
 	}
 
 	void SizeManager::ModEnchantmentBonus(Actor* actor, float amt) {
