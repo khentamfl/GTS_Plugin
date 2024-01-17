@@ -69,9 +69,12 @@ namespace {
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		auto model = tiny->GetCurrent3D();
 
+		bool moving = IsMoving(giant);
+		log::info("{} moving: {}", giant->GetDisplayFullName(), moving);
+
 		if (model) {
 			bool isdamaging = sizemanager.IsDamaging(tiny);
-			if (!isdamaging && (force >= 0.12 || IsMoving(giant))) {
+			if (!isdamaging && (force >= 0.12 || moving)) {
 				StaggerOr(giant, tiny, force, 0, 0, 0, 0);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 			}

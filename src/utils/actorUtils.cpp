@@ -646,8 +646,10 @@ namespace Gts {
 
 	
 
-	bool IsMoving(Actor* giant) {
-		return giant->IsMoving();
+	bool IsMoving(Actor* giant) { // New CommonLib version copy-paste
+		using func_t = decltype(&IsMoving);
+		REL::Relocation<func_t> func{ RELOCATION_ID(36928, 37953) };
+		return func(giant);
 	}
 
 	bool IsHeadtracking(Actor* giant) { // Used to report True when we lock onto something, should be Player Exclusive.
@@ -771,6 +773,8 @@ namespace Gts {
 		float TinyScale = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
 		if (HasSMT(giant)) {
 			GiantScale += 7.8;
+		} if (tiny->formID == 0x14 && HasSMT(tiny)) {
+			TinyScale += 1.25;
 		}
 		float Difference = GiantScale/TinyScale;
 
@@ -1705,12 +1709,10 @@ namespace Gts {
 		}
 		auto& sm = SizeManager::GetSingleton();
 
-		float giantSize = get_visual_scale(giant);
-		float tinySize = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
 		if (HasSMT(giant)) {
 			giantSize += 1.5;
 		}
-		float sizedifference = giantSize/tinySize;
+		float sizedifference = GetSizeDifference(giant, tiny);
 
 		tiny->SetGraphVariableFloat("GiantessScale", sizedifference);
 		bool ImmuneToStagger = sm.IsStaggerImmune(tiny);
