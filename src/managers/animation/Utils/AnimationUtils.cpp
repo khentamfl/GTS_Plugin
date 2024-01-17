@@ -52,6 +52,22 @@ namespace Gts {
 		controlMap->enabledControls.set(RE::UserEvents::USER_EVENT_FLAG::kPOVSwitch); // Allow POV Switching
 	}
 
+	void Hugs_FixAnimationDesync(Actor* giant, bool reset) {
+		auto huggedActor = HugShrink::GetHuggiesActor(giant);
+		if (huggedActor) {
+			auto transient = Transient::GetSingleton().GetData(huggedActor);
+			if (transient) {
+				float& animspeed = transient->Hug_AnimSpeed;
+				if (!reset) {
+					animspeed = AnimationManager::GetAnimSpeed(giant);
+				} else {
+					animspeed = 1.0; // 1.0 makes dll use GetAnimSpeed of tiny
+				}
+				// Fix hug anim de-sync
+			}
+		}
+	}
+
 	void Vore_AttachToRightHandTask(Actor* giant, Actor* tiny) {
 		std::string name = std::format("CrawlVore_{}_{}", giant->formID, tiny->formID);
 		ActorHandle giantHandle = giant->CreateRefHandle();
@@ -185,7 +201,8 @@ namespace Gts {
 			EnableCollisions(tiny);
 			SetBeingHeld(tiny, false);
 			PushActorAway(giant, tiny, 1.0);
-			UpdateFriendlyHugs(giant, tiny, true); // reset it
+			UpdateFriendlyHugs(giant, tiny, true); // set GTS_IsFollower bool to false
+			Hugs_FixAnimationDesync(tiny, true); // reset anim speed override so .dll won't use it
 		}
 	}
 

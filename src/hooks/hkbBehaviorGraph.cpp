@@ -1,10 +1,23 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "hooks/hkbBehaviorGraph.hpp"
-#include "managers/animation/AnimationManager.hpp"
+#include "data/transient.hpp"
 
 using namespace RE;
 using namespace SKSE;
 using namespace Gts;
+
+namespace {
+	float Animation_GetSpeedCorrection(Actor* giant) { // Fixes Hug animation de-sync by copying Gts anim speed to Tiny
+		auto transient = Transient::GetSingleton().GetData(actor);
+		if (transient) {
+			if (transient->Hug_AnimSpeed < 1.0) {
+				return transient->Hug_AnimSpeed;
+			}
+			return AnimationManager::GetAnimSpeed(actor);
+		} 
+		return AnimationManager::GetAnimSpeed(actor);
+	}
+}
 
 namespace Hooks
 {
@@ -23,7 +36,8 @@ namespace Hooks
 				for (auto& graph : animGraphManager->graphs) {
 					if (graph) {
 						if (a_this == graph->behaviorGraph) {
-							float multi = AnimationManager::GetAnimSpeed(actor);
+							float multi = Animation_GetSpeedCorrection(actor);
+							log::info("Multi of {} is {}", actor->GetDisplayFullName(), multi);
 							anim_speed *= multi;
 						}
 					}

@@ -20,6 +20,7 @@ namespace Gts {
 		float SMT_Penalty_Duration;
 		float carryweight_boost;
 		float basehp;
+		float Hug_AnimSpeed;
 		float otherScales;
 		float WorldFov_Default;
 		float FpFov_Default;

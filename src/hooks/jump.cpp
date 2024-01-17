@@ -24,6 +24,9 @@ namespace {
 		// https://www.desmos.com/calculator/ygoxbe7hjg
 		float result = k*pow(s*(scale-a), n);
 		log::info("Result: {}, scale {}", result, scale);
+		if (scale < 1.0) {
+			return 1.0;
+		}
 		return result;
 	}
 }

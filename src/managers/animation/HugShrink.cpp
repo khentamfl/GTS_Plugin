@@ -337,12 +337,6 @@ namespace Gts {
 			}
 			stamina *= Perk_GetCostReduction(giantref);
 
-
-			if (giantref->formID != 0x14) {
-				ShutUp(giantref); // STFU for GTS as well
-			}
-			ShutUp(tinyref); // Disallow idle dialogues
-
 			if (sizedifference >= threshold) {
 				SetBeingHeld(tinyref, false);
 				std::string_view message = std::format("{} can't shrink {} any further", giantref->GetDisplayFullName(), tinyref->GetDisplayFullName());
@@ -387,9 +381,9 @@ namespace Gts {
 			auto tinyref = tinyhandle.get().get();
 
 			ShutUp(tinyref);
+			ShutUp(giantref);
 			float threshold = GetHugShrinkThreshold(giantref);
 
-			// Exit on death
 			float sizedifference = get_visual_scale(giantref)/get_visual_scale(tinyref);
 			if (!FaceOpposite(giantref, tinyref)) {
 				// If face towards fails then actor is invalid
@@ -408,6 +402,7 @@ namespace Gts {
 			float stamina = GetAV(giantref, ActorValue::kStamina);
 
 			Utils_UpdateHugBehaviors(giantref, tinyref);
+			Hugs_FixAnimationDesync(giantref, false);
 
 			if (IsHugHealing(giantref)) {
 				ForceRagdoll(tinyref, false);
