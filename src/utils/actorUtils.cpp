@@ -1704,30 +1704,25 @@ namespace Gts {
 		if (!AllowStagger(giant, tiny)) {
 			return;
 		} 
-		if (IsRagdolled(tiny)) {
-			return;
-		}
-		auto& sm = SizeManager::GetSingleton();
 
 		float giantSize = get_visual_scale(giant);
-		float tinySize = get_visual_scale(tiny) * GetScaleAdjustment(tiny); 
-		
+		float tinySize = get_visual_scale(tiny); 
+
 		if (HasSMT(giant)) {
 			giantSize += 1.0;
 		} if (tiny->formID == 0x14 && HasSMT(tiny)) {
 			tinySize += 1.25;
 		}
-		float sizedifference = GetSizeDifference(giant, tiny);
 
-		tiny->SetGraphVariableFloat("GiantessScale", sizedifference);
-		bool ImmuneToStagger = sm.IsStaggerImmune(tiny);
+		float sizedifference = giantSize/tinySize;
 
 		int ragdollchance = rand() % 30 + 1.0;
-		if (!ImmuneToStagger && sizedifference > 2.8 && ragdollchance < 4.0 * sizedifference) { // Chance for ragdoll. Becomes 100% at high scales
-			sm.GetDamageData(tiny).lastStaggerTime = Time::WorldTimeElapsed(); // protect from stagger for 3 sec
+		if (!IsRagdolled(tiny) && sizedifference > 2.8 && ragdollchance < 4.0 * sizedifference) { // Chance for ragdoll. Becomes 100% at high scales
 			PushActorAway(giant, tiny, 1.0); // Ragdoll
 			return;
 		} else if (sizedifference > 1.25) { // Always Stagger
+			tiny->SetGraphVariableFloat("GiantessScale", sizedifference); // enable stagger just in case
+
 		    float push = std::clamp(0.25f * (sizedifference - 0.25f), 0.25f, 1.0f);
 			StaggerActor(tiny, push);
 			return;

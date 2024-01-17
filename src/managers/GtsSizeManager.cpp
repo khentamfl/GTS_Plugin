@@ -25,10 +25,9 @@ using namespace SKSE;
 
 namespace {
 	const double LAUNCH_COOLDOWN = 3.0;
-	const double DAMAGE_COOLDOWN = 1.0;
+	const double DAMAGE_COOLDOWN = 2.0;
 	const double HANDDAMAGE_COOLDOWN = 1.0;
 	const double SCARE_COOLDOWN = 6.0;
-	const double STAGGER_COOLDOWN = 3.0;
 	const float LAUNCH_DAMAGE_BASE = 1.0f;
 	const float LAUNCH_KNOCKBACK_BASE = 0.02f;
 }
@@ -383,10 +382,6 @@ namespace Gts {
 
 	bool SizeManager::IsBeingScared(Actor* actor) {
 		return Time::WorldTimeElapsed() <= (SizeManager::GetSingleton().GetDamageData(actor).lastScareTime + SCARE_COOLDOWN);
-	}
-
-	bool SizeManager::IsStaggerImmune(Actor* actor) {
-		return Time::WorldTimeElapsed() <= (SizeManager::GetSingleton().GetDamageData(actor).lastStaggerTime + STAGGER_COOLDOWN);
 	}
 
 	bool SizeManager::GetPreciseDamage() {
