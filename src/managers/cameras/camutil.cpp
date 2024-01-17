@@ -365,8 +365,8 @@ namespace Gts {
 							UpdatePlayerCamera(targetLocationLocalShifted);
 							UpdateNiCamera(targetLocationLocalShifted);
 
-							UpdateSceneManager(targetLocationLocalShifted);
-							UpdateRenderManager(targetLocationLocalShifted);
+							//UpdateSceneManager(targetLocationLocalShifted);
+							//UpdateRenderManager(targetLocationLocalShifted);
 						}
 					}
 				}

@@ -1989,9 +1989,13 @@ namespace Gts {
 				float hp = GetAV(giantref, ActorValue::kHealth);
 				float maxhp = GetMaxAV(giantref, ActorValue::kHealth);
 
-				DamageAV(giantref, ActorValue::kHealth, maxhp * 0.0006 * TimeScale());
+				DamageAV(giantref, ActorValue::kHealth, maxhp * 0.00035 * TimeScale());
 
 				if (hp < maxhp * 0.35) {
+					float OldScale;
+					giantref->GetGraphVariableFloat("GiantessScale", OldScale); // save old scale
+					giantref->SetGraphVariableFloat("GiantessScale", 1.0); // Needed to allow Stagger to play, else it won't work
+
 					StaggerActor(giantref, 0.25);
 					float scale = get_visual_scale(giantref);
 
@@ -2001,8 +2005,16 @@ namespace Gts {
 					auto node = find_node(giantref, "NPC Root [Root]");
 					if (node) {
 						NiPoint3 position = node->world.translate;
-						SpawnParticle(giantref, 6.00, "GTS/Effects/TinyCalamity.nif", NiMatrix3(), position, scale * 4.0, 7, nullptr); // Spawn it
+
+						std::string name_com = std::format("BreakProtect_{}", giantref->formID);
+						std::string name_root = std::format("BreakProtect_Root_{}", giantref->formID);
+
+						GRumble::Once(name_com, giantref, 8.6, 0.20, "NPC COM [COM ]");
+						GRumble::Once(name_root, giantref, 8.6, 0.20, "NPC Root [Root]");
+
+						SpawnParticle(giantref, 6.00, "GTS/Effects/TinyCalamity.nif", NiMatrix3(), position, scale * 3.4, 7, nullptr); // Spawn it
 					}
+					giantref->SetGraphVariableFloat("GiantessScale", OldScale);
 					return false;
 				}
 			}
