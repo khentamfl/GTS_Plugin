@@ -76,11 +76,11 @@ namespace Gts {
 	bool IsLiving(Actor* actor);
 	bool IsUndead(Actor* actor);
 	bool WasReanimated(Actor* actor);
-	bool IsEssential(Actor* actor);
 	bool IsMoving(Actor* giant);
 	bool IsHeadtracking(Actor* giant);
 	bool IsHostile(Actor* giant, Actor* tiny);
-	bool AllowActionsWithFollowers(Actor* giant, Actor* tiny);
+	bool CanPerformAnimationOn(Actor* giant, Actor* tiny);
+	bool IsEssential(Actor* actor);
 	bool AnimationsInstalled(Actor* giant);
 	bool IsInGodMode(Actor* giant);
 	bool IsFreeCameraEnabled();

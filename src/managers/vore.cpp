@@ -622,6 +622,11 @@ namespace Gts {
 		if (!CanPerformAnimation(pred, 3)) {
 			return false;
 		}
+
+		if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
+			return false;
+		}
+
 		auto transient = Transient::GetSingleton().GetData(prey);
 		if (prey->IsDead()) {
 			return false;
@@ -666,7 +671,7 @@ namespace Gts {
 			return false;
 		}
 		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && sizedifference > MINIMUM_VORE_SCALE) {
-			if ((prey->formID != 0x14 && IsEssential(prey) && !AllowActionsWithFollowers(pred, prey))) {
+			if ((prey->formID != 0x14 && !CanPerformAnimationOn(pred, prey))) {
 				Notify("{} is important and shouldn't be eaten.", prey->GetDisplayFullName());
 				return false;
 			} else {
@@ -688,15 +693,6 @@ namespace Gts {
 	}
 
 	void Vore::StartVore(Actor* pred, Actor* prey) {
-		if (pred->formID != 0x14) {
-			if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
-				return;
-			}
-			if (!AllowActionsWithFollowers(pred, prey)) {
-				return;
-			}
-		}
-
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 

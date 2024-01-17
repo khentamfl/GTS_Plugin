@@ -159,7 +159,7 @@ namespace Gts {
 			return false;
 		}
 		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && pred_scale/prey_scale >= MINIMUM_HUG_SCALE) {
-			if ((prey->formID != 0x14 && IsEssential(prey) && !AllowActionsWithFollowers(pred, prey))) {
+			if ((prey->formID != 0x14 && !CanPerformAnimationOn(pred, prey))) {
 				return false;
 			}
 			if (!IsHuman(prey)) { // Allow hugs with humanoids only

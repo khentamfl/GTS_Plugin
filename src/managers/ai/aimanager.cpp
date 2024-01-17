@@ -47,7 +47,7 @@ namespace {
 		}
 		std::vector<Actor*> preys = Sandwiching.GetSandwichTargetsInFront(pred, numberOfPrey);
 		for (auto prey: preys) {
-			if (AllowActionsWithFollowers(pred, prey)) {
+			if (CanPerformAnimationOn(pred, prey)) { // player check is done inside CanSandwich()
 				Sandwiching.StartSandwiching(pred, prey);
 				auto node = find_node(pred, "GiantessRune", false);
 				if (node) {
@@ -112,7 +112,7 @@ namespace {
 		if (prey->formID != 0x14 && !IsHostile(pred, prey) || !IsTeammate(pred) || (!pred->IsInCombat() && persist.vore_combatonly)) {
 			return;
 		}
-		if (prey->formID == 0x14 && !persist.vore_allowplayervore || !AllowActionsWithFollowers(pred, prey)) {
+		if (prey->formID == 0x14 && !persist.vore_allowplayervore || !CanPerformAnimationOn(pred, prey)) {
 			return;
 		}
 		HugShrink::GetSingleton().HugActor(pred, prey);
@@ -364,7 +364,7 @@ namespace Gts {
 		if (IsGtsBusy(pred)) {
 			return false;
 		}
-		if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore || !AllowActionsWithFollowers(pred, prey)) {
+		if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore || !CanPerformAnimationOn(pred, prey)) {
 			return false;
 		}
 		float pred_scale = get_visual_scale(pred);

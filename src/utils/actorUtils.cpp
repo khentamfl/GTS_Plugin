@@ -644,24 +644,7 @@ namespace Gts {
 		return reanimated;
 	}
 
-	bool IsEssential(Actor* actor) {
-		bool essential = actor->IsEssential() && Runtime::GetBool("ProtectEssentials");
-		bool teammate = IsTeammate(actor);
-		bool protectfollowers = Persistent::GetSingleton().FollowerProtection;
-		if (actor->formID == 0x14) {
-			return false; // we don't want to make the player immune
-		} if (!teammate && essential) {
-			return true;
-		} else if (teammate && protectfollowers) {
-			if (IsHostile(PlayerCharacter::GetSingleton(), actor)) {
-				return false;
-			} else {
-				return true;
-			}
-		} else {
-			return false;
-		}
-	}
+	
 
 	bool IsMoving(Actor* giant) {
 		return giant->AsActorState()->IsSprinting() || giant->AsActorState()->IsWalking() || giant->IsRunning() || giant->IsSneaking();
@@ -683,20 +666,40 @@ namespace Gts {
 		return tiny->IsHostileToActor(giant);
 	}
 
-	bool AllowActionsWithFollowers(Actor* giant, Actor* tiny) {
+	bool CanPerformAnimationOn(Actor* giant, Actor* tiny) {
 		bool allow = Persistent::GetSingleton().FollowerInteractions;
 		bool hostile = IsHostile(giant, tiny);
+		bool essential = IsEssential(tiny);
 		bool Teammate = IsTeammate(tiny);
-		if (hostile) {
-			return true;
-		} else if (giant->formID == 0x14) { // always disallow for Player
+		if (essential) { // disallow to perform on essentials
 			return false;
-		} else if (!Teammate) {
+		} else if (hostile) { // always allow for enemies. Will return true if Teammate is hostile towards someone (even player)
 			return true;
-		} else if (Teammate && !allow) {
+		} else if (!Teammate) { // always allow for non-teammates
+			return true;
+		} else if (Teammate && !allow) { // disallow if teammate and if toggle is false
 			return false;
 		} else {
 			return true;
+		}
+	}
+
+	bool IsEssential(Actor* actor) {
+		bool essential = actor->IsEssential() && Runtime::GetBool("ProtectEssentials");
+		bool teammate = IsTeammate(actor);
+		bool protectfollowers = Persistent::GetSingleton().FollowerProtection;
+		if (actor->formID == 0x14) {
+			return false; // we don't want to make the player immune
+		} if (!teammate && essential) {
+			return true;
+		} else if (teammate && protectfollowers) {
+			if (IsHostile(PlayerCharacter::GetSingleton(), actor)) {
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			return false;
 		}
 	}
 
@@ -755,10 +758,12 @@ namespace Gts {
 	}
 
 	float Ench_Aspect_GetPower(Actor* giant) { 
-		return SizeManager::GetSingleton().GetEnchantmentBonus(giant) * 0.01;
+		float aspect = SizeManager::GetSingleton().GetEnchantmentBonus(giant) * 0.01;
+		return aspect;
 	}
 	float Ench_Hunger_GetPower(Actor* giant) {
-		return SizeManager::GetSingleton().GetSizeHungerBonus(giant) * 0.01;
+		float hunger = SizeManager::GetSingleton().GetSizeHungerBonus(giant) * 0.01;
+		return hunger;
 	}
 
 	float GetSizeDifference(Actor* giant, Actor* tiny) {

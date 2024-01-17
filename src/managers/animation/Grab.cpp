@@ -271,7 +271,7 @@ namespace {
 
 				if (GetAV(tiny, ActorValue::kHealth) <= 1.0 || tiny->IsDead()) {
 
-					ModSizeExperience_Crush(giant, tiny);
+					ModSizeExperience_Crush(giant, tiny, false);
 
 					CrushManager::Crush(giantess, tiny);
 					

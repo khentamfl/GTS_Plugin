@@ -47,8 +47,8 @@ namespace {
 			return; // Don't kill teammates
 		}
 
-		DamageAV(grabbedActor, ActorValue::kHealth, a_damage * 0.25);
-		if (grabbedActor->IsDead() || GetAV(grabbedActor, ActorValue::kHealth) < a_damage * 0.25) {
+		DamageAV(grabbedActor, ActorValue::kHealth, a_damage * 0.50);
+		if (grabbedActor->IsDead() || GetAV(grabbedActor, ActorValue::kHealth) < a_damage * 0.50) {
 			if (!IsBetweenBreasts(receiver)) {
 				PrintDeathSource(receiver, grabbedActor, DamageSource::BlockDamage);
 			} else {
@@ -56,7 +56,7 @@ namespace {
 			}
 
 			Grab::DetachActorTask(receiver);
-			ModSizeExperience_Crush(receiver, grabbedActor);
+			ModSizeExperience_Crush(receiver, grabbedActor, false);
 
 			auto hand = find_node(receiver, "NPC L Hand [LHnd]");
 			if (hand) {

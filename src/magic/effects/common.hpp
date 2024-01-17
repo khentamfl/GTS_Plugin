@@ -78,10 +78,10 @@ namespace Gts {
 		}
 	}
 
-	inline void ModSizeExperience_Crush(Actor* giant, Actor* tiny) {
+	inline void ModSizeExperience_Crush(Actor* giant, Actor* tiny, bool check) {
 		float size = get_visual_scale(tiny);
 		float xp = 0.20 + (size * 0.02);
-		if (tiny->IsDead()) {
+		if (tiny->IsDead() && check) {
 			Cprint("Crush Tiny is ded");
 			xp *= 0.20;
 		}

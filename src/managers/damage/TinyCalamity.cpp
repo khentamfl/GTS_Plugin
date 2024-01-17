@@ -93,7 +93,7 @@ namespace {
 
 namespace Gts {
     void TinyCalamity_ExplodeActor(Actor* giant, Actor* tiny) {
-        ModSizeExperience_Crush(giant, tiny);
+        ModSizeExperience_Crush(giant, tiny, true);
 
         if (!tiny->IsDead()) {
             KillActor(giant, tiny);

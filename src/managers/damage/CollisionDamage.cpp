@@ -456,7 +456,7 @@ namespace Gts {
 			if (multiplier > 8.0 * crushmult) {
 				if (CrushManager::CanCrush(giant, tiny)) {
 
-					ModSizeExperience_Crush(giant, tiny);
+					ModSizeExperience_Crush(giant, tiny, true);
 
 					if (!tiny->IsDead()) {
 						if (IsGiant(tiny)) {

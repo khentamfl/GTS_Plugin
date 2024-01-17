@@ -108,7 +108,7 @@ namespace {
 
 		float hp = GetAV(tiny, ActorValue::kHealth);
 		if (damage > hp || hp <= 0) {
-			ModSizeExperience_Crush(giant, tiny);
+			ModSizeExperience_Crush(giant, tiny, true);
 			
 			CrushManager::GetSingleton().Crush(giant, tiny);
 			
