@@ -92,7 +92,7 @@ namespace Gts {
 		if (!actor) {
 			return 0.0;
 		}
-		float EB = clamp(0.0, 10.0, this->GetData(actor).enchantmentBonus);
+		float EB = clamp(0.0, 1000.0, this->GetData(actor).enchantmentBonus);
 		return EB;
 	}
 
@@ -116,7 +116,7 @@ namespace Gts {
 		if (!actor) {
 			return 0.0;
 		}
-		float SHB = clamp(0.0, 10.0, this->GetData(actor).SizeHungerBonus);
+		float SHB = clamp(0.0, 1000.0, this->GetData(actor).SizeHungerBonus);
 		return SHB;
 	}
 
