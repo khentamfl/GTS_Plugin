@@ -62,7 +62,7 @@ namespace {
 		std::string name = std::format("Huggies_Forced_{}", giant->formID);
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		ActorHandle tinyhandle = tiny->CreateRefHandle();
-		static Timer ActionTimer = Timer(2.0);
+		static Timer ActionTimer = Timer(2.5);
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;

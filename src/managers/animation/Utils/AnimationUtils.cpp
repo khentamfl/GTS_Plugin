@@ -97,6 +97,20 @@ namespace Gts {
 		}
 	}
 
+	void CheckFriendlyHugs(Actor* giant, Actor* tiny, bool force) {
+		bool perk = Runtime::HasPerkTeam(player, "HugCrush_LovingEmbrace");
+		bool hostile = IsHostile(tiny, giant);
+		bool teammate = IsTeammate(huggedActor);
+
+		if (perk && !hostile && teammate && !force) {
+			tiny->SetGraphVariableBool("GTS_IsFollower", true);
+		} else {
+			tiny->SetGraphVariableBool("GTS_IsFollower", false);
+		}
+		// This function determines the following:
+		// Should the Tiny play "willing" or "Unwilling" hug idle?
+	}
+
 	void HugCrushOther(Actor* giant, Actor* tiny) {
 		Attacked(tiny, giant);
 		if (giant->formID == 0x14 && IsDragon(tiny)) {
@@ -165,6 +179,8 @@ namespace Gts {
 		AdjustFacialExpression(giant, 0, 0.0, "phenome");
 		AdjustFacialExpression(giant, 0, 0.0, "modifier");
 		AdjustFacialExpression(giant, 1, 0.0, "modifier");
+
+		CheckFriendlyHugs(giant, tiny, true); // reset it
 		HugShrink::Release(giant);
 		if (tiny) {
 			EnableCollisions(tiny);
@@ -192,7 +208,9 @@ namespace Gts {
     }
 
 	void StartHealingAnimation(Actor* giant, Actor* tiny) {
+		UpdateFriendlyHugs(player, huggedActor, false);
 		AnimationManager::StartAnim("Huggies_Heal", giant);
+
 		if (IsFemale(tiny)) {
 			AnimationManager::StartAnim("Huggies_Heal_Victim_F", tiny);
 		} else {

@@ -186,6 +186,9 @@ namespace Gts {
 			TiredSound(pred, "Hugs are on the cooldown");
 			return;
 		}
+
+		CheckFriendlyHugs(pred, prey, false);
+
 		HugShrink::GetSingleton().HugActor(pred, prey);
 		AnimationManager::StartAnim("Huggies_Try", pred);
 		AnimationManager::StartAnim("Huggies_Try_Victim", prey);

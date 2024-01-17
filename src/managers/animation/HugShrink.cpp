@@ -270,6 +270,7 @@ namespace {
 		} else {
 			AnimationManager::StartAnim("Huggies_Shrink", player);
 			AnimationManager::StartAnim("Huggies_Shrink_Victim", huggedActor);
+			UpdateFriendlyHugs(player, huggedActor, true);
 		}
 	}
 	void HugReleaseEvent(const InputEventData& data) {
@@ -310,6 +311,9 @@ namespace Gts {
 		std::string name = std::format("Huggies_Shrink_{}", giant->formID);
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		ActorHandle tinyhandle = tiny->CreateRefHandle();
+
+		UpdateFriendlyHugs(player, huggedActor, true);
+
 		const float duration = 2.0;
 		TaskManager::RunFor(name, duration, [=](auto& progressData) {
 			if (!gianthandle) {

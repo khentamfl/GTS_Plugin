@@ -13,6 +13,9 @@ namespace Gts {
 	void BlockFirstPerson(Actor* actor, bool block);
 
 	void Vore_AttachToRightHandTask(Actor* giant, Actor* tiny);
+
+	void CheckFriendlyHugs(Actor* giant, Actor* tiny, bool force);
+
 	bool Vore_ShouldAttachToRHand(Actor* giant, Actor* tiny);
 
 	void HugCrushOther(Actor* giant, Actor* tiny);
