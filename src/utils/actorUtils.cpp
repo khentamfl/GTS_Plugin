@@ -1709,8 +1709,13 @@ namespace Gts {
 		}
 		auto& sm = SizeManager::GetSingleton();
 
+		float giantSize = get_visual_scale(giant);
+		float tinySize = get_visual_scale(tiny) * GetScaleAdjustment(tiny); 
+		
 		if (HasSMT(giant)) {
-			giantSize += 1.5;
+			giantSize += 1.0;
+		} if (tiny->formID == 0x14 && HasSMT(tiny)) {
+			tinySize += 1.25;
 		}
 		float sizedifference = GetSizeDifference(giant, tiny);
 
