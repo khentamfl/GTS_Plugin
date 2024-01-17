@@ -276,11 +276,13 @@ namespace {
 	void HugReleaseEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		auto huggedActor = HugShrink::GetHuggiesActor(player);
-		if (IsHugCrushing(player) || IsHugHealing(player)) {
-			return; // disallow manual release when it's true
+		if (huggedActor) {
+			if (IsHugCrushing(player) || IsHugHealing(player)) {
+				return; // disallow manual release when it's true
+			}
+			AbortHugAnimation(player, huggedActor);
+			HugShrink::DetachActorTask(player);
 		}
-		AbortHugAnimation(player, huggedActor);
-		HugShrink::DetachActorTask(player);
 	}
 }
 

@@ -180,12 +180,12 @@ namespace Gts {
 		AdjustFacialExpression(giant, 0, 0.0, "modifier");
 		AdjustFacialExpression(giant, 1, 0.0, "modifier");
 
-		UpdateFriendlyHugs(giant, tiny, true); // reset it
 		HugShrink::Release(giant);
 		if (tiny) {
 			EnableCollisions(tiny);
 			SetBeingHeld(tiny, false);
 			PushActorAway(giant, tiny, 1.0);
+			UpdateFriendlyHugs(giant, tiny, true); // reset it
 		}
 	}
 
