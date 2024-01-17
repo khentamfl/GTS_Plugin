@@ -312,7 +312,7 @@ namespace Gts {
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		ActorHandle tinyhandle = tiny->CreateRefHandle();
 
-		UpdateFriendlyHugs(player, huggedActor, true);
+		UpdateFriendlyHugs(giant, tiny, true);
 
 		const float duration = 2.0;
 		TaskManager::RunFor(name, duration, [=](auto& progressData) {
