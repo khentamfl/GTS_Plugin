@@ -1052,16 +1052,19 @@ namespace Gts {
 	void Disintegrate(Actor* actor, bool script) {
 		std::string taskname = std::format("Disintegrate_{}", actor->formID);
 		auto tinyref = actor->CreateRefHandle();
-		bool dragon = IsDragon(actor);
-		if (dragon || !actor->IsDead()) {
-			actor->Disable();
-			return;
-		}
 		TaskManager::RunOnce(taskname, [=](auto& update) {
 			if (!tinyref) {
 				return;
 			}
 			auto tiny = tinyref.get().get();
+
+			bool dragon = IsDragon(tiny);
+			if (dragon || !tiny->IsDead()) {
+				tiny->Disable();
+				Cprint(" {} Isn't dead or is dragon, disabling", tiny->GetDisplayFullName());
+				return false;
+			}
+
 			SetCriticalStage(tiny, 4);
 		});
 	}

@@ -125,6 +125,16 @@ namespace {
 			}
 		}
 	}
+
+	float HighHeels_PerkDamage(Actor* giant, DamageSource Cause) {
+		float value = 1.0;
+		bool perk = Runtime::HasPerkTeam(giant, "hhBonus");
+		bool matches = (Cause == DamageSource::CrushedLeft || Cause == DamageSource::CrushedRight);
+		if (perk && matches) {
+			value += 0.15; // 15% bonus damage if we have High Heels perk
+		}
+		return value;
+	}
 }
 
 
@@ -139,7 +149,7 @@ namespace Gts {
 		return "CollisionDamage";
 	}
 
-	void CollisionDamage::DoAccurateCollisionLeft(Actor* actor, float damage, float radius, int random, float bbmult, float crushmult, DamageSource Cause) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+	void CollisionDamage::DoAccurateCollisionLeft(Actor* actor, float damage, float radius, int random, float bbmult, float crush_threshold, DamageSource Cause) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		auto profiler = Profilers::Profile("CollisionDamageLeft: DoAccurateCollisionLeft");
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		if (!actor) {
@@ -237,8 +247,8 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
-								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
-								CollisionDamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
+								float aveForce = std::clamp(force, 0.25f, 0.70f);///nodeCollisions;
+								CollisionDamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult, crush_threshold, Cause);
 							}
 						}
 					}
@@ -247,7 +257,7 @@ namespace Gts {
 		}
 	}
 
-	void CollisionDamage::DoAccurateCollisionRight(Actor* actor, float damage, float radius, int random, float bbmult, float crushmult, DamageSource Cause) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+	void CollisionDamage::DoAccurateCollisionRight(Actor* actor, float damage, float radius, int random, float bbmult, float crush_threshold, DamageSource Cause) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		auto profiler = Profilers::Profile("CollisionDamageRight: DoAccurateCollisionRight");
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		if (!actor) {
@@ -348,8 +358,8 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
-								float aveForce = std::clamp(force, 0.00f, 0.70f);///nodeCollisions;
-								CollisionDamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
+								float aveForce = std::clamp(force, 0.25f, 0.70f);///nodeCollisions;
+								CollisionDamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult, crush_threshold, Cause);
 							}
 						}
 					}
@@ -358,21 +368,24 @@ namespace Gts {
 		}
 	}
 
-	void CollisionDamage::ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult, float crushmult, DamageSource Cause) {
+	void CollisionDamage::ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult, float crush_threshold, DamageSource Cause) {
 		auto profiler = Profilers::Profile("CollisionDamage: ApplySizeEffect");
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 
-		float movementFactor = 1.0;
 		if (giant->AsActorState()->IsSprinting()) {
-			movementFactor *= 1.5;
+			force *= 1.5;
+			// Force acts as a damage here. 
+			// DoDamageEffect() (ActorUtils.cpp) function sends 45.0 by default and then further multiplies it based on animation damage setting
+			//
+			// So, force = (force * 45 * modifier from animation)             (True only when actors performs animation)
+			// Else force is normal and damage is very low (in case of just standing still)
 		}
 
+		CollisionDamage.DoSizeDamage(giant, tiny, force, bbmult, crush_threshold, random, Cause);
 		PushCheck(giant, tiny, force);
-
-		CollisionDamage.DoSizeDamage(giant, tiny, movementFactor, force, random, bbmult, true, crushmult, Cause);
 	}
 
-	void CollisionDamage::DoSizeDamage(Actor* giant, Actor* tiny, float totaldamage, float mult, int random, float bbmult, bool DoDamage, float crushmult, DamageSource Cause) { // Applies damage and crushing
+	void CollisionDamage::DoSizeDamage(Actor* giant, Actor* tiny, float damage, float bbmult, float crush_threshold, int random, DamageSource Cause) { // Applies damage and crushing
 		auto profiler = Profilers::Profile("CollisionDamage: DoSizeDamage");
 		if (!giant) {
 			return;
@@ -383,21 +396,21 @@ namespace Gts {
 		if (giant == tiny) {
 			return;
 		}
-		if (!CanDoDamage(giant, tiny) && !IsBetweenBreasts(giant)) {
+		if (!CanDoDamage(giant, tiny) || !IsBetweenBreasts(giant)) {
 			return;
 		}
 
 		auto& sizemanager = SizeManager::GetSingleton();
-		auto& crushmanager = CrushManager::GetSingleton();
 
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
-		float multiplier = GetSizeDifference(giant, tiny) * highheels;
+		float size_difference = GetSizeDifference(giant, tiny) * highheels;
 
-		if (multiplier < 1.4 || DisallowSizeDamage(giant, tiny)) {
-			return; // Do not do damage is Size Difference is < than x1.4 or we want to protect a tiny
+		if (size_difference < 1.4 || DisallowSizeDamage(giant, tiny)) {
+			return; // Do not do damage is Size Difference is < than x1.4 or we want to protect a tiny 
+			// when under the effect of non-hostile protection
 		}
 
-		float damagebonus = 1.0;
+		float damagebonus = HighHeels_PerkDamage(giant, Cause); // 15% bonus HH damage if we have perk
 		if (HasSMT(giant)) {
 			damagebonus *= 0.25; // A lot less damage to compensate it
 		}
@@ -406,7 +419,7 @@ namespace Gts {
 		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.30, 0.30, 999999.0);
 		float highheelsdamage = 1.0 + (GetHighHeelsBonusDamage(giant) * 5);
 		float sprintdamage = 1.0; // default Sprint damage of 1.0
-		float falldamage = 1.0; // default Fall damage of 1.0
+		// fall damage is unused since it is always = 1.0
 		float weightdamage = 1.0 + (giant->GetWeight()*0.01);
 
 		SizeModifications(giant, tiny, highheels);
@@ -416,76 +429,74 @@ namespace Gts {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
 		}
 
-		float result = ((0.125 * multiplier) * totaldamage) * (normaldamage * sprintdamage * falldamage) * (highheelsdamage * weightdamage * mult) * additionaldamage;
+		float damage_result = (0.125 * size_difference) * (normaldamage * sprintdamage) * (highheelsdamage * weightdamage * force) * additionaldamage;
 		if (giant->IsSneaking()) {
-			result *= 0.33;
+			damage_result *= 0.66;
 		}
 
-		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, result * bbmult, random);
+		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, damage_result * bbmult, random);
 		// ^ Chance to break bonues and inflict additional damage, as well as making target more vulerable to size damage
 
-		result *= damagebonus;
+		damage_result *= damagebonus;
 
-		if ((Cause == DamageSource::CrushedLeft || Cause == DamageSource::CrushedRight) && Runtime::HasPerkTeam(giant, "hhBonus")) {
-			result *= 1.15; // 15% bonus damage if we have High Heels perk
-		}
-
-		float experience = std::clamp(result/500, 0.0f, 0.05f);
 		if (!tiny->IsDead()) {
+			float experience = std::clamp(damage_result/500, 0.0f, 0.05f);
 			ModSizeExperience(giant, experience);
 		}
 
 		if (tiny->formID == 0x14 || SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
-			DamageAV(tiny, ActorValue::kStamina, result * 2.0);
-			result -= GetAV(tiny, ActorValue::kStamina); // Reduce damage by stamina amount
-			if (result < 0) {
-				result = 0; // just to be safe
+			DamageAV(tiny, ActorValue::kStamina, damage_result * 2.0);
+			damage_result -= GetAV(tiny, ActorValue::kStamina); // Reduce damage by stamina amount
+			if (damage_result < 0) {
+				damage_result = 0; // just to be safe and to not restore attributes
 			}
-			if (result < GetAV(tiny, ActorValue::kStamina)) {
+			if (damage_result < GetAV(tiny, ActorValue::kStamina)) {
 				return; // Fully protect against size-related damage
 			}
 		}
-		if (DoDamage) {
-			ModVulnerability(giant, tiny, result);
-			InflictSizeDamage(giant, tiny, result);
-		}
+		
+		ModVulnerability(giant, tiny, damage_result);
+		InflictSizeDamage(giant, tiny, damage_result);
 
-		bool ShouldBeCrushed = (
+		CollisionDamage::CrushCheck(giant, tiny, Cause);
+	}
+
+	void CollisionDamage::CrushCheck(Actor* giant, Actor* tiny, DamageSource Cause) {
+		bool CanBeCrushed = (
 			GetAV(tiny, ActorValue::kHealth) <= 1.0 ||
 			tiny->IsDead()
 		);
-		if (ShouldBeCrushed) {
-			if (multiplier > 8.0 * crushmult) {
-				if (CrushManager::CanCrush(giant, tiny)) {
+		
+		if (CanBeCrushed) {
+			if (multiplier > 8.0 * crush_threshold && CrushManager::CanCrush(giant, tiny)) {
+				ModSizeExperience_Crush(giant, tiny, true);
 
-					ModSizeExperience_Crush(giant, tiny, true);
-
-					if (!tiny->IsDead()) {
-						if (IsGiant(tiny)) {
-							AdvanceQuestProgression(giant, tiny, 7, 1, false);
-						} else {
-							AdvanceQuestProgression(giant, tiny, 3, 1, false);
-						}
+				if (!tiny->IsDead()) {
+					if (IsGiant(tiny)) {
+						AdvanceQuestProgression(giant, tiny, 7, 1, false);
+					} else {
+						AdvanceQuestProgression(giant, tiny, 3, 1, false);
 					}
-					SetReanimatedState(tiny);
-
-					CrushBonuses(giant, tiny);
-					PrintDeathSource(giant, tiny, Cause);
-					if (!LessGore()) {
-						auto node = find_node(giant, GetDeathNodeName(Cause));
-						if (node) {
-							if (IsMechanical(tiny)) {
-								return;
-							} else {
-								Runtime::PlaySoundAtNode("GtsCrushSound", giant, 1.0, 1.0, node);
-							}
-						} else {
-							Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
-						}
-					}
-
-					crushmanager.Crush(giant, tiny);
 				}
+
+				SetReanimatedState(tiny);
+
+				CrushBonuses(giant, tiny);
+				PrintDeathSource(giant, tiny, Cause);
+				if (!LessGore()) {
+					auto node = find_node(giant, GetDeathNodeName(Cause));
+					if (node) {
+						if (IsMechanical(tiny)) {
+							return;
+						} else {
+							Runtime::PlaySoundAtNode("GtsCrushSound", giant, 1.0, 1.0, node);
+						}
+					} else {
+						Runtime::PlaySound("GtsCrushSound", giant, 1.0, 1.0);
+					}
+				}
+
+				CrushManager::GetSingleton().Crush(giant, tiny);
 			}
 		}
 	}
