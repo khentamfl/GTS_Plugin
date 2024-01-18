@@ -124,11 +124,6 @@ namespace {
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 
-			auto TinyRef = skyrim_cast<TESObjectREFR*>(tinyref);
-			if (!TinyRef) {
-				return false;
-			}
-
 			float LPosX = 0.0f;
 			float LPosY = 0.0f;
 			float LPosZ = 0.0f;
@@ -137,16 +132,8 @@ namespace {
 			float RPosY = 0.0f;
 			float RPosZ = 0.0f;
 
-			float TinyX = 0.0f;
-			float TinyY = 0.0f;
-			float TinyZ = 0.0f;
-
-			auto NPC = find_node(tiny, "CME LBody [LBody]");
 			auto BreastL = find_node(giant, "L Breast02");
 			auto BreastR = find_node(giant, "R Breast02");
-			if (!NPC) {
-				return false;
-			}
 			if (!BreastL) {
 				return false;
 			}
@@ -154,42 +141,31 @@ namespace {
 				return false;
 			}
 
-			NiMatrix3 LeftBreastRotation = BreastL->world.rotate;
+			NiMatrix3 LeftBreastRotation = BreastL->world.rotate; // get breast rotation
 			NiMatrix3 RightBreastRotation = BreastR->world.rotate;
 
-			LeftBreastRotation.ToEulerAnglesXYZ(LPosX, LPosY, LPosZ);
+			LeftBreastRotation.ToEulerAnglesXYZ(LPosX, LPosY, LPosZ); // fill empty rotation data of breast with proper one
 			RightBreastRotation.ToEulerAnglesXYZ(RPosX, RPosY, RPosZ);
 
-			NiMatrix3 NPCROT = NPC->world.rotate;
+			float BreastRotation_X = (LPosX + RPosX) / 2;
+			NiPoint3 Reset = NiPoint3(0, 0, 0);
 
-			//NPCROT.SetEulerAnglesXYZ(NewRot); = NiPoint3((LPosX + RPosX) / 2, 0, giantref->data.angle.z);
-
-			auto NewRot = NiPoint3(((LPosX + RPosX) * 70) / 2, 0, giantref->data.angle.z);
-			auto Reset = NiPoint3(0, 0, 0);
-
-			NPCROT.SetEulerAnglesXYZ(NewRot);
-			update_node(NPC);
-
-			auto RotationResult = NPCROT.ToEulerAnglesXYZ(TinyX, TinyY, TinyZ);
 
 			auto transient = Transient::GetSingleton().GetData(tiny);
 			if (transient) {
-				transient->Rotation_X = RotationResult[0];
-				log::info("TinyX: {}", RotationResult[0]);
-				tiny->SetRotationX(RotationResult[0]);
+				transient->Rotation_X = BreastRotation_X;
+				log::info("TinyX: {}", BreastRotation_X);
+				tiny->SetRotationX(BreastRotation_X);
 			}
 
-			//log::info("Angle of L breast: x: {}, y: {}, z: {}", LPosX, LPosY, LPosZ);
-			//log::info("Angle of R breast: x: {}, y: {}, z: {}", RPosX, RPosY, RPosZ);
+			log::info("Angle of L breast: X: {}, Y: {}, Z: {}", LPosX, LPosY, LPosZ);
+			log::info("Angle of R breast: X: {}, Y: {}, Z: {}", RPosX, RPosY, RPosZ);
 
 			// All good try another frame
 			if (!IsBetweenBreasts(giantref)) {
 				if (transient) {
 					transient->Rotation_X = 0.0;
 				}
-				NPCROT.SetEulerAnglesXYZ(Reset);
-	
-				update_node(NPC);
 				return false; // Abort it
 			}
 			return true;
