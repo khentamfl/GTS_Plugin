@@ -661,20 +661,22 @@ namespace Gts {
 	}
 
 	bool CanPerformAnimationOn(Actor* giant, Actor* tiny) {
-		bool allow = Persistent::GetSingleton().FollowerInteractions;
-		bool hostile = IsHostile(giant, tiny);
-		bool essential = IsEssential(tiny);
+		
 		bool Teammate = IsTeammate(tiny);
+		bool essential = IsEssential(tiny);
+		bool hostile = IsHostile(giant, tiny);
+		bool protection = Persistent::GetSingleton().FollowerInteractions;
+		bool allow_teammate = (protection && IsTeammate(tiny) && IsTeammate(giant));
 		if (essential) { // disallow to perform on essentials
 			return false;
-		} else if (hostile) { // always allow for enemies. Will return true if Teammate is hostile towards someone (even player)
+		} else if (hostile) { // always allow for non-essential enemies. Will return true if Teammate is hostile towards someone (even player)
 			return true;
 		} else if (!Teammate) { // always allow for non-teammates
 			return true;
-		} else if (Teammate && !allow) { // disallow if teammate and if toggle is false
+		} else if (giant->formID != 0x14 && !allow_teammate) { // disallow if type is (teammate - teammate), and if bool is false
 			return false;
 		} else {
-			return true;
+			return true; // else allow
 		}
 	}
 

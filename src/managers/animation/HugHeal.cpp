@@ -35,7 +35,20 @@ using namespace std;
 
 
 namespace {
-
+	void ActivateEmotions(Actor* actor, bool toggle) {
+		float p_1 = 1.0;
+		float p_2 = 0.75;
+		int rng = rand()% 8;
+		if (!toggle) {
+			param_1 = 0.0;
+			param_2 = 0.0;
+		} if (rng <= 1) {
+			Runtime::PlaySoundAtNode("MoanSound", actor, 1.0, 1.0, "NPC Head [Head]");
+		}
+		AdjustFacialExpression(actor, 0, p_1, "modifier"); // blink L
+		AdjustFacialExpression(actor, 1, p_1, "modifier"); // blink R
+		AdjustFacialExpression(actor, 0, p_2, "phenome");
+	}
 
     bool Hugs_RestoreHealth(Actor* giantref, Actor* tinyref) {
 		static Timer HeartTimer = Timer(0.5);
@@ -129,12 +142,17 @@ namespace {
 			HealOtherTask(&data.giant, huggedActor);
 		}
     }
+
+	void GTS_Hug_Moan_Tiny_End(nimationEventData& data) {ActivateEmotions(&data.giant, false);}
+	void GTS_Hug_Moan_Tiny(nimationEventData& data) {ActivateEmotions(&data.giant, true);}
 }
 
 
 namespace Gts {
     void HugHeal::RegisterEvents() {
         AnimationManager::RegisterEvent("GTS_Hug_Heal", "Hugs", GTS_Hug_Heal);
+		AnimationManager::RegisterEvent("GTS_Hug_Moan_Tiny", "Hugs", GTS_Hug_Moan_Tiny);
+		AnimationManager::RegisterEvent("GTS_Hug_Moan_Tiny_End", "Hugs", GTS_Hug_Moan_Tiny_End);
     }
 
     void HugHeal::RegisterTriggers() {
