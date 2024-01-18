@@ -40,8 +40,8 @@ namespace {
 		float p_2 = 0.75;
 		int rng = rand()% 8;
 		if (!toggle) {
-			param_1 = 0.0;
-			param_2 = 0.0;
+			p_1 = 0.0;
+			p_2 = 0.0;
 		} if (rng <= 1) {
 			Runtime::PlaySoundAtNode("MoanSound", actor, 1.0, 1.0, "NPC Head [Head]");
 		}
@@ -143,8 +143,8 @@ namespace {
 		}
     }
 
-	void GTS_Hug_Moan_Tiny_End(nimationEventData& data) {ActivateEmotions(&data.giant, false);}
-	void GTS_Hug_Moan_Tiny(nimationEventData& data) {ActivateEmotions(&data.giant, true);}
+	void GTS_Hug_Moan_Tiny(AnimationEventData& data) {ActivateEmotions(&data.giant, true);}
+	void GTS_Hug_Moan_Tiny_End(AnimationEventData& data) {ActivateEmotions(&data.giant, false);}
 }
 
 
