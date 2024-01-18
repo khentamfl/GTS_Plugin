@@ -396,7 +396,7 @@ namespace Gts {
 		if (giant == tiny) {
 			return;
 		}
-		if (!CanDoDamage(giant, tiny) || !IsBetweenBreasts(giant)) {
+		if (!CanDoDamage(giant, tiny) || IsBetweenBreasts(giant)) { // disallow if 
 			log::info("Can do damage Check isn't passed");
 			return;
 		}
