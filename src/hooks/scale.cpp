@@ -34,7 +34,10 @@ namespace Hooks {
 		// SE: 140290bf8
 		// Used during Set3D
 
-		static FunctionHook<float(TESObjectREFR* ref)> Skyrim_GetScale_14028CC60(  // 19238 = 14028CC60 (SE), AE = ???
+		/*static FunctionHook<float(TESObjectREFR* ref)> Skyrim_GetScale_14028CC60(  // 19238 = 14028CC60 (SE), AE = ???
+		    // Very unstable hook to say the least. Does same effect as SetScale() command (without fps cost)
+			// Seems to multiply actor speed and causes chaos in-game overall
+			// Actors fly and behave weirdly. The only positive effect of this hook is fixed Headtracking and possible Pathing improvements.
             REL::RelocationID(19238, 19238),
             [](auto* ref) {
                 float result = Skyrim_GetScale_14028CC60(ref);
@@ -47,6 +50,6 @@ namespace Hooks {
 
                 return result;
             }
-        );
+        );*/
 	}
 }

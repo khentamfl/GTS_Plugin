@@ -110,7 +110,7 @@ namespace {
 		return (tiny_chance > giant_chance);
 	}
 
-	void RotateActorTask(Actor* giant, Actor* tiny) {
+	void Task_RotateActorToBreastX(Actor* giant, Actor* tiny) {
 		std::string name = std::format("RotateActor_{}", giant->formID);
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		ActorHandle tinyhandle = tiny->CreateRefHandle();
@@ -654,7 +654,7 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		auto otherActor = Grab::GetHeldActor(giant);
 		if (otherActor) {
-			RotateActorTask(giant, otherActor);
+			Task_RotateActorToBreastX(giant, otherActor);
 			otherActor->SetGraphVariableBool("GTSBEH_T_InStorage", true);
 			if (IsHostile(giant, otherActor)) {
 				AnimationManager::StartAnim("Breasts_Idle_Unwilling", otherActor);

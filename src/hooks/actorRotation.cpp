@@ -3,6 +3,7 @@
 #include "hooks/callhook.hpp"
 #include "scale/scale.hpp"
 #include "data/plugin.hpp"
+#include "utils/debug.hpp"
 
 
 using namespace RE;
@@ -21,9 +22,9 @@ namespace {
 
 namespace Hooks {
 
-	void Hook_ActorRotation::Hook(Trampoline& trampoline) {
+	void Hook_ActorRotation::Hook(Trampoline& trampoline) { // Sadly, works on player only and seems to depend on Camera Angle. Reports only Player.
 
-        static FunctionHook<float(Actor* actor)> Skyrim_GetActorRotationX(  // 36601 = 1405EDD40 (SE), AE = ???
+        /*static FunctionHook<float(Actor* actor)> Skyrim_GetActorRotationX(  // 36601 = 1405EDD40 (SE), AE = ???
             REL::RelocationID(36601, 36601),
             [](auto* actor) {
                 float result = Skyrim_GetActorRotationX(actor);
@@ -38,6 +39,19 @@ namespace Hooks {
                 
                 return result;
             }
-        );
+        );*/
+    
+
+    static FunctionHook<void(TESObjectREFR* ref, NiPoint3 pos)> Skyrim_SetRefRotationX( // 19360 = 140296680 (SE)
+        REL::RelocationID(19360, 19360),
+        [](auto* ref, auto pos) {
+            log::info("Raw Name Ref: {}", GetRawName(ref));
+            log::info("Raw Name pos: {}", GetRawName(pos));
+            log::info("Pos: {}", Vector2Str(pos));
+            return Skyrim_SetRefRotationX(ref, pos);
+        });
     }
 }
+
+
+
