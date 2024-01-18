@@ -175,7 +175,7 @@ namespace Gts {
 						if (distance <= maxDistance) {
 							float force = 1.0 - distance / maxDistance;
 
-							Utils_PushCheck(giant, tiny, force); // pass original un-altered force
+							Utils_PushCheck(giant, otherActor, force); // pass original un-altered force
 							float aveForce = std::clamp(force, 0.15f, 0.70f);
 							CollisionDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
 						}
