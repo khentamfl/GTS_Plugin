@@ -89,6 +89,8 @@ namespace Hooks {
 				return SkyrimSetGraphVarFloat(graph, a_variableName, a_in);
 			});
 
+
+
 		
 		static CallHook<float(Actor*)> SkyrimJumpHeight(RELOCATION_ID(37257, 37257),  REL::Relocate(0x17F, 0x17F),
 		[](auto* actor) {
@@ -102,7 +104,18 @@ namespace Hooks {
 		    }
 		    return result;
 		});
-	}
+
+		static FunctionHook<float(Actor* actor)> Skyrim_GetRotationX(  // 36601 = 1405EDD40, (SE), AE = ???
+			REL::RelocationID(36601, 36601),
+			[](auto* actor) {
+				float result = Skyrim_GetRotationX(actor);
+				log::info("Rotation X of {} is: {}", actor->GetDisplayFullName(), result);
+				
+				return result;
+			});
+		}
+
+	
 
 	/*float Hook_Jumping::GetScaleJumpHook(TESObjectREFR* a_this) {
 		float result = _GetScaleJumpHook(a_this);

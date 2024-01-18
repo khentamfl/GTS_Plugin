@@ -890,7 +890,7 @@ namespace Gts {
 							if (giantScale / tinyScale > 2.25) {
 								PushTowards(giant, otherActor, node, pushForce * pushpower, true);
 							} else {
-								Utils_PushCheck(giant, otherActor, force); // pass original un-altered force
+								Utils_PushCheck(giant, otherActor, aveForce);
 							}
 							float Volume = clamp(0.25, 1.0, (giantScale/tinyScale)*pushForce);
 

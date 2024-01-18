@@ -38,10 +38,10 @@ namespace {
 		return power;
 	}
 
-	float GetEnchEffectiveness(float aspect) {
-		float k = 1.0;
+	float Aspect_GetEfficiency(float aspect) {
+		float k = 0.75;
 		float a = 0.0;
-		float n = 0.75;
+		float n = 0.85;
 		float s = 1.0;
 		// https://www.desmos.com/calculator/ygoxbe7hjg
 		float result = k*pow(s*(aspect-a), n);
@@ -187,7 +187,7 @@ namespace Gts {
 					}
 
 					float Aspect = Ench_Aspect_GetPower(actor);
-					float gigantism = GetEnchEffectiveness(Aspect) * 0.5;
+					float gigantism = Aspect_GetEfficiency(Aspect) * 0.5;
 					float default_scale = natural_scale * (1.0 + gigantism);
 
 					if (actor->formID == 0x14) {
