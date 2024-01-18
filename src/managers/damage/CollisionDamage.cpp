@@ -397,6 +397,7 @@ namespace Gts {
 			return;
 		}
 		if (!CanDoDamage(giant, tiny) || !IsBetweenBreasts(giant)) {
+			log::info("Can do damage Check isn't passed");
 			return;
 		}
 
@@ -406,6 +407,7 @@ namespace Gts {
 		float size_difference = GetSizeDifference(giant, tiny) * highheels;
 
 		if (size_difference < 1.4 || DisallowSizeDamage(giant, tiny)) {
+			log::info("Size differnce is not passed: {}, diallow: {}", size_difference, DisallowSizeDamage(giant, tiny));
 			return; // Do not do damage is Size Difference is < than x1.4 or we want to protect a tiny 
 			// when under the effect of non-hostile protection
 		}
@@ -438,6 +440,7 @@ namespace Gts {
 		// ^ Chance to break bonues and inflict additional damage, as well as making target more vulerable to size damage
 
 		damage_result *= damagebonus;
+		log::info("Damage Result of {} is {}", giant->GetDisplayFullName(), damage_result);
 
 		if (!tiny->IsDead()) {
 			float experience = std::clamp(damage_result/500, 0.0f, 0.05f);

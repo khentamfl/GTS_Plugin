@@ -187,9 +187,9 @@ namespace {
 				
 				Cprint("{} Height: {:.2f} m / {:.2f} ft; Weight: {:.2f} kg / {:.2f} lb;", actor->GetDisplayFullName(), GetActorHeight(actor, true), GetActorHeight(actor, false), GetActorWeight(actor, true), GetActorWeight(actor, false));
 				if (maxscale > 250.0 * naturalscale) {
-					Cprint("{} Scale: {:.2f}  (Natural Scale: {:.2f}; Size Limit: Infinite; Aspect Of Giantess: {:.0f}%)", actor->GetDisplayFullName(), scale, naturalscale, gigantism);
+					Cprint("{} Scale: {:.2f}  (Natural Scale: {:.2f}; Size Limit: Infinite; Aspect Of Giantess: {:.1f}%)", actor->GetDisplayFullName(), scale, naturalscale, gigantism);
 				} else {
-					Cprint("{} Scale: {:.2f}  (Natural Scale: {:.2f}; Size Limit: {:.2f}; Aspect Of Giantess: {:.0f}%)", actor->GetDisplayFullName(), scale, naturalscale, maxscale, gigantism);
+					Cprint("{} Scale: {:.2f}  (Natural Scale: {:.2f}; Size Limit: {:.2f}; Aspect Of Giantess: {:.1f}%)", actor->GetDisplayFullName(), scale, naturalscale, maxscale, gigantism);
 				}
 				if (hh > 0.0) { // if HH is > 0, print HH info
 					Cprint("{} High Heels: {:.2f} (+{:.2f} cm / +{:.2f} ft)", actor->GetDisplayFullName(), hh, hh, hh*3.28);
