@@ -45,7 +45,7 @@ namespace Hooks {
     static FunctionHook<void(TESObjectREFR* ref, NiPoint3 pos)> Skyrim_SetRefRotationX( // 19360 = 140296680 (SE)
         REL::RelocationID(19360, 19360),
         [](auto* ref, auto pos) {
-            log::info("Raw Name Ref: {}", GetRawName(ref));
+            log::info("Raw Name Ref: {}", GetRawName(ref)); 
             log::info("Pos: {}", Vector2Str(pos));
             return Skyrim_SetRefRotationX(ref, pos);
         });
