@@ -23,7 +23,7 @@ namespace Hooks {
 
 	void Hook_ActorRotation::Hook(Trampoline& trampoline) {
 
-        static FunctionHook<float(Actor* actor)> Skyrim_GetActorRotationX(  // 36601 = 1405EDD40, (SE), AE = ???
+        static FunctionHook<float(Actor* actor)> Skyrim_GetActorRotationX(  // 36601 = 1405EDD40 (SE), AE = ???
             REL::RelocationID(36601, 36601),
             [](auto* actor) {
                 float result = Skyrim_GetActorRotationX(actor);

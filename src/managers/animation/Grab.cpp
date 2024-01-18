@@ -174,8 +174,9 @@ namespace {
 
 			auto transient = Transient::GetSingleton().GetData(tiny);
 			if (transient) {
-				transient->Rotation_X = RotationResult.x;
-				tiny->SetRotationX(RotationResult.x);
+				transient->Rotation_X = RotationResult[0];
+				log::info("TinyX: {}", RotationResult[0]);
+				tiny->SetRotationX(RotationResult[0]);
 			}
 
 			//log::info("Angle of L breast: x: {}, y: {}, z: {}", LPosX, LPosY, LPosZ);
@@ -184,7 +185,7 @@ namespace {
 			// All good try another frame
 			if (!IsBetweenBreasts(giantref)) {
 				if (transient) {
-					transient->rotation_x = 0.0;
+					transient->Rotation_X = 0.0;
 				}
 				NPCROT.SetEulerAnglesXYZ(Reset);
 	
