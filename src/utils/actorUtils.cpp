@@ -251,7 +251,7 @@ namespace Gts {
 	}
 
 	void PlayMoanSound(Actor* actor, float volume) {
-		if (IsFemale(actor)) {
+		if (IsFemale(actor) && IsHuman(actor)) {
 			Runtime::PlaySoundAtNode("MoanSound", actor, volume, 1.0, "NPC Head [Head]");
 		}
 	}
@@ -540,7 +540,7 @@ namespace Gts {
 		return dwemer;
 	}
 
-	bool IsHuman(Actor* actor) { // Check if Actor is humanoid or not. Currently used for Hugs Animation
+	bool IsHuman(Actor* actor) { // Check if Actor is humanoid or not. Currently used for Hugs Animation and for playing moans
 		bool vampire = Runtime::HasKeyword(actor, "VampireKeyword");
 		bool dragon = Runtime::HasKeyword(actor, "DragonKeyword");
 		bool animal = Runtime::HasKeyword(actor, "AnimalKeyword");
@@ -549,8 +549,7 @@ namespace Gts {
 		bool creature = Runtime::HasKeyword(actor, "CreatureKeyword");
 		if (!dragon && !animal && !dwemer && !undead && !creature) {
 			return true; // Detect non-vampire
-		}
-		if (!dragon && !animal && !dwemer && !creature && undead && vampire) {
+		} if (!dragon && !animal && !dwemer && !creature && undead && vampire) {
 			return true; // Detect Vampire
 		} else {
 			return false;
