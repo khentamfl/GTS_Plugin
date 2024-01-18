@@ -150,6 +150,8 @@ namespace {
 		float scale = get_visual_scale(giant);
 		float bonus = 0.24 * (GetGrowthCount(giant) + 1.0);
 		float target = std::clamp(bonus/2, 0.02f, 0.80f);
+
+		PlayMoanSound(giant, 1.0);
 		ModGrowthCount(giant, 1.0, false);
 		SetBonusSize(giant, bonus, false);
 		SpringGrow_Free(giant, bonus, 0.3 / GetAnimationSlowdown(giant), "ButtCrushGrowth");
@@ -158,7 +160,6 @@ namespace {
 		DamageAV(giant, ActorValue::kStamina, WasteStamina);
 
 		Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
-		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 
 		StartRumble("BCRumble", data.giant, 0.4, 0.40);
 	}

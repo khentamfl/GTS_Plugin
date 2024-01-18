@@ -23,6 +23,7 @@ namespace Gts {
 	float GetLaunchPower(float sizeRatio);
 
 	void StartResetTask(Actor* tiny);
+	void PlayMoanSound(Actor* actor, float volume);
 
 
 	// GTS State Bools

@@ -92,7 +92,7 @@ namespace {
 		if (randomInt <= 3.0) {
 			if (voicetimer.ShouldRun()) {
 				if (select >= 2.0) {
-					Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
+					PlayMoanSound(giant, 1.0);
 					GrowAfterTheKill(giant, target);
 				} else {
 					Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 1.0, "NPC Head [Head]");

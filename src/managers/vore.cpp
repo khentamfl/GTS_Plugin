@@ -314,7 +314,7 @@ namespace Gts {
 						GRumble::Once("GrowthRumble", giant, 2.45, 0.30);
 						GRumble::Once("VoreShake", giant, this->sizePower * 4, 0.05);
 						if (Vore::GetSingleton().GetVoreData(giant).GetTimer() == true) {
-							Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
+							PlayMoanSound(giant, 1.0);
 						}
 					}
 				}

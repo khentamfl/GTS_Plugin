@@ -43,7 +43,7 @@ namespace {
 			p_1 = 0.0;
 			p_2 = 0.0;
 		} if (rng <= 1) {
-			Runtime::PlaySoundAtNode("MoanSound", actor, 1.0, 1.0, "NPC Head [Head]");
+			PlayMoanSound(actor, 1.0);
 		}
 		AdjustFacialExpression(actor, 0, p_1, "modifier"); // blink L
 		AdjustFacialExpression(actor, 1, p_1, "modifier"); // blink R

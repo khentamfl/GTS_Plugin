@@ -78,7 +78,7 @@ namespace {
 		});
 	}
 	void GtsGrowth_Moan(AnimationEventData& data) {
-		Runtime::PlaySoundAtNode("MoanSound", &data.giant, 1.0, 1.0, "NPC Head [Head]");
+		PlayMoanSound(&data.giant, 1.0);
 	}
 	void GtsGrowth_Mouth_Open(AnimationEventData& data) {
 		auto giant = &data.giant;

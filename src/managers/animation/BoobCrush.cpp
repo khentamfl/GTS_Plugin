@@ -337,6 +337,8 @@ namespace {
 	void GTS_BoobCrush_Grow_Start(AnimationEventData& data) {
 		auto giant = &data.giant;
 		float bonus = 0.24 * (GetGrowthCount(giant) + 1.0);
+
+		PlayMoanSound(giant, 1.0);
 		ModGrowthCount(giant, 1.0, false);
 		SetBonusSize(giant, bonus, false);
 		SpringGrow_Free(giant, bonus, 0.3 / GetAnimationSlowdown(giant), "BreastCrushGrowth");
@@ -345,8 +347,9 @@ namespace {
 		DamageAV(giant, ActorValue::kStamina, WasteStamina);
 
 		//CameraFOVTask(giant, 1.0, 0.003);
+		
 		Runtime::PlaySoundAtNode("growthSound", giant, 1.0, 1.0, "NPC Pelvis [Pelv]");
-		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
+		
 
 		StartRumble("CleavageRumble", data.giant, 0.06, 0.60);
 	}

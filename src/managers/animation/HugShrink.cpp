@@ -79,10 +79,11 @@ namespace {
 
 	void GTS_Hug_Moan(AnimationEventData& data) {
 		auto giant = &data.giant;
+
+		PlayMoanSound(giant, 1.0);
 		AdjustFacialExpression(giant, 0, 1.0, "modifier"); // blink L
 		AdjustFacialExpression(giant, 1, 1.0, "modifier"); // blink R
 		AdjustFacialExpression(giant, 0, 0.75, "phenome");
-		Runtime::PlaySoundAtNode("MoanSound", giant, 1.0, 1.0, "NPC Head [Head]");
 	}
 
 	void GTS_Hug_Moan_End(AnimationEventData& data) {

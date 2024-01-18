@@ -106,11 +106,11 @@ namespace Gts {
 			return;
 		}
 
+		PlayMoanSound(Act, 1.0);
 		auto manager = RE::ActorEquipManager::GetSingleton();
 		// log::info("Rip");
 		manager->UnequipObject(Act, Slot);
 		Runtime::PlaySound("ClothTearSound", Act, 1.0, 1.0);
-		Runtime::PlaySoundAtNode("MoanSound", Act, 1.0, 1.0, "NPC Head [Head]");
 		GRumble::Once("ClothManager", Act, (32 * get_visual_scale(Act)), 0.05);
 	}
 

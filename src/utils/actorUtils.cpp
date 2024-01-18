@@ -248,7 +248,12 @@ namespace Gts {
 			EventDispatcher::DoResetActor(tiny);
 			return false; // stop task, we reset the actor
 		});
+	}
 
+	void PlayMoanSound(Actor* actor, float volume) {
+		if (IsFemale(actor)) {
+			Runtime::PlaySoundAtNode("MoanSound", actor, volume, 1.0, "NPC Head [Head]");
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

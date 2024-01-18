@@ -170,7 +170,7 @@ namespace Gts {
 							set_target_scale(actor, sizelimit);
 						}
 						if (((StrongGrowthChance >= 19 && Random >= 19.0) || (StrongGrowthChance >= 19 && MegaGrowth >= 19.0)) && Runtime::GetFloat("AllowMoanSounds") == 1.0) {
-							Runtime::PlaySound("MoanSound", actor, targetScale/4, 1.0);
+							PlayMoanSound(giant, targetScale/4);
 						}
 						if (targetScale < maxScale) {
 							update_target_scale(actor, GrowthPower, SizeEffectType::kGrow);

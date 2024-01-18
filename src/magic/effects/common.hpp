@@ -349,7 +349,7 @@ namespace Gts {
 		}
 		int Random = rand() % 8;
 		if (Random >= 8 && Runtime::HasPerk(caster, "GrowthDesirePerk")) {
-			Runtime::PlaySoundAtNode("MoanSound", caster, 1.0, 1.0, "NPC Head [Head]");
+			PlayMoanSound(caster, 1.0);
 		}
 
 		bool GTSBusy;

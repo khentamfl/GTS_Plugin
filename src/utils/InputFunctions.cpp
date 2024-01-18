@@ -152,7 +152,7 @@ namespace {
 				static Timer timergrowth = Timer(2.00);
 				if (timergrowth.ShouldRunFrame()) {
 					Runtime::PlaySoundAtNode("growthSound", player, Cache->SizeReserve/50 * duration, 1.0, "NPC Pelvis [Pelv]");
-					Runtime::PlaySoundAtNode("MoanSound", player, Volume, 1.0, "NPC Head [Head]");
+					PlayMoanSound(giant, Volume);
 				}
 
 				update_target_scale(player, (SizeCalculation/80) * gigantism, SizeEffectType::kNeutral);

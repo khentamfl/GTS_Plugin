@@ -28,9 +28,9 @@ namespace Gts {
 			float Volume = clamp(0.20, 1.0, get_visual_scale(caster)/8);
 			Runtime::PlaySoundAtNode("growthSound", caster, Volume, 1.0,  "NPC Pelvis [Pelv]");
 		}
-		if (this->MoanTimer.ShouldRun() && Runtime::GetFloat("AllowMoanSounds") == 1.0) {
+		if (this->MoanTimer.ShouldRun() && Runtime::GetFloat("AllowMoanSounds") == 1.0 && IsFemale(caster)) {
 			float MoanVolume = clamp(0.25, 2.0, get_visual_scale(caster)/8);
-			Runtime::PlaySoundAtNode("MoanSound", caster, MoanVolume, 1.0, "NPC Head [Head]");
+			PlayMoanSound(caster, MoanVolume);
 			//log::info("Attempting to play Moan Sound for: {}", caster->GetDisplayFullName());
 		}
 		float bonus = 1.0;
