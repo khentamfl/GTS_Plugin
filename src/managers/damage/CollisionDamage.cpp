@@ -429,7 +429,7 @@ namespace Gts {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
 		}
 
-		float damage_result = (0.125 * size_difference) * (normaldamage * sprintdamage) * (highheelsdamage * weightdamage * force) * additionaldamage;
+		float damage_result = (0.125 * size_difference) * (normaldamage * sprintdamage) * (highheelsdamage * weightdamage * damage) * additionaldamage;
 		if (giant->IsSneaking()) {
 			damage_result *= 0.66;
 		}
@@ -458,17 +458,17 @@ namespace Gts {
 		ModVulnerability(giant, tiny, damage_result);
 		InflictSizeDamage(giant, tiny, damage_result);
 
-		CollisionDamage::CrushCheck(giant, tiny, Cause);
+		CollisionDamage::CrushCheck(giant, tiny, size_difference, crush_threshold, Cause);
 	}
 
-	void CollisionDamage::CrushCheck(Actor* giant, Actor* tiny, DamageSource Cause) {
+	void CollisionDamage::CrushCheck(Actor* giant, Actor* tiny, float size_difference, float crush_threshold, DamageSource Cause) {
 		bool CanBeCrushed = (
 			GetAV(tiny, ActorValue::kHealth) <= 1.0 ||
 			tiny->IsDead()
 		);
 		
 		if (CanBeCrushed) {
-			if (multiplier > 8.0 * crush_threshold && CrushManager::CanCrush(giant, tiny)) {
+			if (size_difference > 8.0 * crush_threshold && CrushManager::CanCrush(giant, tiny)) {
 				ModSizeExperience_Crush(giant, tiny, true);
 
 				if (!tiny->IsDead()) {
