@@ -26,6 +26,7 @@ namespace Gts {
 		float FpFov_Default;
 		float ButtCrushGrowthAmount;
 		float ShrinkWeakness;
+		float Rotation_X;
 
 		bool is_teammate;
 		bool can_do_vore;

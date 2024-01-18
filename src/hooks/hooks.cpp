@@ -1,6 +1,7 @@
 #include "hooks/hooks.hpp"
 #include "hooks/main.hpp"
 #include "hooks/headTracking.hpp"
+#include "hooks/actorRotation.hpp"
 #include "hooks/impact.hpp"
 #include "hooks/vm.hpp"
 #include "hooks/havok.hpp"
@@ -41,6 +42,7 @@ namespace Hooks
 		Hook_Jumping::Hook(trampoline);
 		Hook_Scale::Hook(trampoline);
 		Hook_Damage::Hook(trampoline);
+		Hook_ActorRotation::Hook(trampoline);
 		HookCameraStates();
 
 		log::info("Gts finished applying hooks...");

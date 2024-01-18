@@ -104,16 +104,7 @@ namespace Hooks {
 		    }
 		    return result;
 		});
-
-		static FunctionHook<float(Actor* actor)> Skyrim_GetRotationX(  // 36601 = 1405EDD40, (SE), AE = ???
-			REL::RelocationID(36601, 36601),
-			[](auto* actor) {
-				float result = Skyrim_GetRotationX(actor);
-				log::info("Rotation X of {} is: {}", actor->GetDisplayFullName(), result);
-				
-				return result;
-			});
-		}
+	}
 
 	
 

@@ -172,12 +172,22 @@ namespace {
 
 			auto RotationResult = NPCROT.ToEulerAnglesXYZ(TinyX, TinyY, TinyZ);
 
+			auto transient = Transient::GetSingleton().GetData(tiny);
+			if (transient) {
+				transient->Rotation_X = RotationResult.x;
+				tiny->SetRotationX(RotationResult.x);
+			}
+
 			//log::info("Angle of L breast: x: {}, y: {}, z: {}", LPosX, LPosY, LPosZ);
 			//log::info("Angle of R breast: x: {}, y: {}, z: {}", RPosX, RPosY, RPosZ);
 
 			// All good try another frame
 			if (!IsBetweenBreasts(giantref)) {
+				if (transient) {
+					transient->rotation_x = 0.0;
+				}
 				NPCROT.SetEulerAnglesXYZ(Reset);
+	
 				update_node(NPC);
 				return false; // Abort it
 			}
@@ -667,6 +677,7 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		auto otherActor = Grab::GetHeldActor(giant);
 		if (otherActor) {
+			RotateActorTask(giant, otherActor);
 			otherActor->SetGraphVariableBool("GTSBEH_T_InStorage", true);
 			if (IsHostile(giant, otherActor)) {
 				AnimationManager::StartAnim("Breasts_Idle_Unwilling", otherActor);
