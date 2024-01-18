@@ -18,6 +18,18 @@ namespace {
         }
         return rotation_x;
     }
+
+    float GetTinyRotation_X(TESObjectREFR* ref) {
+        Actor* actor = skyrim_cast<Actor*>(ref);
+        if (actor) {
+            float rotation_x = 0.0;
+            auto transient = Transient::GetSingleton().GetData(actor);
+            if (transient) {
+                rotation_x = transient->Rotation_X;
+            }
+            return rotation_x;
+        }
+    }
 }
 
 namespace Hooks {
@@ -45,8 +57,10 @@ namespace Hooks {
     static FunctionHook<void(TESObjectREFR* ref, float x)> Skyrim_SetRefRotationX( // 19360 = 140296680 (SE)
         REL::RelocationID(19360, 19360),
         [](auto* ref, auto x) {
-            log::info("Raw Name Ref: {}", GetRawName(ref)); 
+            //log::info("Raw Name Ref: {}", GetRawName(ref)); 
             //log::info("Pos: {}", Vector2Str(pos));
+            x = GetTinyRotation_X(ref);
+            log::info("X of {} is {}", ref->GetDisplayFullName(), x);
             return Skyrim_SetRefRotationX(ref, x);
         });
     }
