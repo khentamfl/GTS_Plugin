@@ -190,11 +190,6 @@ namespace Gts {
 					float gigantism = Aspect_GetEfficiency(Aspect) * 0.5;
 					float default_scale = natural_scale * (1.0 + gigantism);
 
-					if (actor->formID == 0x14) {
-						log::info("Gigantism of {} is {}", actor->GetDisplayFullName(), gigantism);
-						log::info("Min scale of {} is {}", actor->GetDisplayFullName(), default_scale);
-					}
-
 					if ((targetScale + modAmount) > default_scale) {
 						update_target_scale(actor, modAmount, SizeEffectType::kShrink);
 					} else if (targetScale > default_scale) {
