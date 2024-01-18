@@ -1686,7 +1686,7 @@ namespace Gts {
 		}
 	}
 
-	void StaggerOr(Actor* giant, Actor* tiny, float power, float afX, float afY, float afZ, float afMagnitude) {
+	void StaggerOr(Actor* giant, Actor* tiny, float afX, float afY, float afZ, float afMagnitude) {
 		if (tiny->IsDead()) {
 			return;
 		}
@@ -1725,13 +1725,28 @@ namespace Gts {
 		}
 	}
 
+	void Utils_PushCheck(Actor* giant, Actor* tiny, float force) {
+		auto model = tiny->GetCurrent3D();
+		auto& sizemanager = SizeManager::GetSingleton();
+	
+		bool moving = IsMoving(giant);
+
+		if (model) {
+			bool isdamaging = sizemanager.IsDamaging(tiny);
+			if (!isdamaging && (force >= 0.12 || moving)) {
+				StaggerOr(giant, tiny, 0, 0, 0, 0);
+				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
+			}
+		}
+	}
+
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind, float crushmult, DamageSource Cause) {
 		radius *= 1.0 + (GetHighHeelsBonusDamage(giant) * 2.5);
 		if (kind == FootEvent::Left) {
-			CollisionDamage::GetSingleton().DoAccurateCollisionLeft(giant, (45.0 * damage), radius, random, bonedamage, crushmult, Cause);
+			CollisionDamage::GetSingleton().DoFootCollision_Left(giant, (45.0 * damage), radius, random, bonedamage, crushmult, Cause);
 		}
 		if (kind == FootEvent::Right) {
-			CollisionDamage::GetSingleton().DoAccurateCollisionRight(giant, (45.0 * damage), radius, random, bonedamage, crushmult, Cause);
+			CollisionDamage::GetSingleton().DoFootCollision_Right(giant, (45.0 * damage), radius, random, bonedamage, crushmult, Cause);
 			//                                                                                         ^        ^           ^ - - - - Normal Crush
 			//                                                               Chance to trigger bone crush   Damage of            Threshold multiplication
 			//                                                                                             Bone Crush

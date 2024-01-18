@@ -64,22 +64,6 @@ namespace {
 		return true;
 	}
 
-	void PushCheck(Actor* giant, Actor* tiny, float force) {
-		auto& sizemanager = SizeManager::GetSingleton();
-		auto& CollisionDamage = CollisionDamage::GetSingleton();
-		auto model = tiny->GetCurrent3D();
-
-		bool moving = IsMoving(giant);
-
-		if (model) {
-			bool isdamaging = sizemanager.IsDamaging(tiny);
-			if (!isdamaging && (force >= 0.12 || moving)) {
-				StaggerOr(giant, tiny, force, 0, 0, 0, 0);
-				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
-			}
-		}
-	}
-
 	void ModVulnerability(Actor* giant, Actor* tiny, float damage) {
 		if (!Runtime::HasPerkTeam(giant, "GrowingPressure")) {
 			return;
@@ -149,8 +133,8 @@ namespace Gts {
 		return "CollisionDamage";
 	}
 
-	void CollisionDamage::DoAccurateCollisionLeft(Actor* actor, float damage, float radius, int random, float bbmult, float crush_threshold, DamageSource Cause) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
-		auto profiler = Profilers::Profile("CollisionDamageLeft: DoAccurateCollisionLeft");
+	void CollisionDamage::DoFootCollision_Left(Actor* actor, float damage, float radius, int random, float bbmult, float crush_threshold, DamageSource Cause) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+		auto profiler = Profilers::Profile("CollisionDamageLeft: DoFootCollision_Left");
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		if (!actor) {
 			return;
@@ -247,7 +231,8 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
-								float aveForce = std::clamp(force, 0.25f, 0.70f);///nodeCollisions;
+								Utils_PushCheck(giant, tiny, force); // pass original un-altered force
+								float aveForce = std::clamp(force, 0.15f, 0.70f);///nodeCollisions;
 								CollisionDamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult, crush_threshold, Cause);
 							}
 						}
@@ -257,8 +242,8 @@ namespace Gts {
 		}
 	}
 
-	void CollisionDamage::DoAccurateCollisionRight(Actor* actor, float damage, float radius, int random, float bbmult, float crush_threshold, DamageSource Cause) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
-		auto profiler = Profilers::Profile("CollisionDamageRight: DoAccurateCollisionRight");
+	void CollisionDamage::DoFootCollision_Right(Actor* actor, float damage, float radius, int random, float bbmult, float crush_threshold, DamageSource Cause) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+		auto profiler = Profilers::Profile("CollisionDamageRight: DoFootCollision_Right");
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		if (!actor) {
 			return;
@@ -358,7 +343,8 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
-								float aveForce = std::clamp(force, 0.25f, 0.70f);///nodeCollisions;
+								Utils_PushCheck(giant, tiny, force); // pass original un-altered force
+								float aveForce = std::clamp(force, 0.15f, 0.70f);///nodeCollisions;
 								CollisionDamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult, crush_threshold, Cause);
 							}
 						}
@@ -382,7 +368,6 @@ namespace Gts {
 		}
 
 		CollisionDamage.DoSizeDamage(giant, tiny, force, bbmult, crush_threshold, random, Cause);
-		PushCheck(giant, tiny, force);
 	}
 
 	void CollisionDamage::DoSizeDamage(Actor* giant, Actor* tiny, float damage, float bbmult, float crush_threshold, int random, DamageSource Cause) { // Applies damage and crushing

@@ -886,9 +886,11 @@ namespace Gts {
 							if (otherActor->IsDead()) {
 								tinyScale *= 0.6;
 							}
-							CollisionDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
+							
 							if (giantScale / tinyScale > 2.25) {
 								PushTowards(giant, otherActor, node, pushForce * pushpower, true);
+							} else {
+								Utils_PushCheck(giant, tiny, force); // pass original un-altered force
 							}
 							float Volume = clamp(0.25, 1.0, (giantScale/tinyScale)*pushForce);
 
@@ -897,8 +899,10 @@ namespace Gts {
 								Runtime::PlaySoundAtNode("SwingImpact", giant, Volume, 1.0, node); // play swing impact sound
 							}
 
+							
 							ApplyShakeAtPoint(giant, 3.0 * pushpower * audio, node->world.translate, 1.5);
 							sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
+							CollisionDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
 						}
 					}
 				}
