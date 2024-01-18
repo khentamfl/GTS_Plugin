@@ -28,7 +28,7 @@ namespace {
     }
 }
 
-namespace Hooks {
+namespace Hooks { // This hook is commented out inside hooks.cpp
 
 	void Hook_ActorRotation::Hook(Trampoline& trampoline) { // Sadly, works on player only and seems to depend on Camera Angle. Reports only Player.
 
@@ -47,10 +47,11 @@ namespace Hooks {
                 
                 return result;
             }
-        );*/
+        );
     
 
     static FunctionHook<void(TESObjectREFR* ref, float x)> Skyrim_SetRefRotationX( // 19360 = 140296680 (SE)
+        // Reports values properly on actor, but still does nothing.
         REL::RelocationID(19360, 19360),
         [](auto* ref, auto x) {
             //log::info("Raw Name Ref: {}", GetRawName(ref)); 
@@ -58,10 +59,11 @@ namespace Hooks {
             float rotation = GetTinyRotation_X(ref);
             if (rotation != 0.0) {
                 x = rotation;
+                log::info("X of {} is {}", ref->GetDisplayFullName(), x);
             }
-            log::info("X of {} is {}", ref->GetDisplayFullName(), x);
+            
             return Skyrim_SetRefRotationX(ref, x);
-        });
+        });*/
     }
 }
 

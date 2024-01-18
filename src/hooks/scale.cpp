@@ -5,9 +5,17 @@
 using namespace RE;
 using namespace SKSE;
 
+
+// Possible hooks that may benefit from scaling: (SE)
+// - Character::GetEyeHeight_140601E40  (Headtracking?)
+// - Actor::Jump_1405D1F80              (Maybe jump height)
+// - Pathing::sub_140474420             (perhaps pathing fix)
+// - TESObject::LoadGraphics_140220DD0  (Model render distance?)
+
+
 namespace Hooks {
 
-	void Hook_Scale::Hook(Trampoline& trampoline) {
+	void Hook_Scale::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
 		// AE 1402bc7c3
 		// SE 1402aa40c
 		//

@@ -40,9 +40,10 @@ namespace Hooks
 		Hook_Character::Hook();
 		Hook_Sinking::Hook(trampoline);
 		Hook_Jumping::Hook(trampoline);
-		Hook_Scale::Hook(trampoline);
 		Hook_Damage::Hook(trampoline);
-		Hook_ActorRotation::Hook(trampoline);
+
+		//Hook_Scale::Hook(trampoline);
+		//Hook_ActorRotation::Hook(trampoline);
 		HookCameraStates();
 
 		log::info("Gts finished applying hooks...");

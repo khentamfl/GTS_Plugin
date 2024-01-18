@@ -153,7 +153,7 @@ namespace {
 
 			auto transient = Transient::GetSingleton().GetData(tiny);
 			if (transient) {
-				transient->Rotation_X = BreastRotation_X;
+				transient->Rotation_X = BreastRotation_X * 70;
 				log::info("TinyX: {}", BreastRotation_X);
 				tiny->SetRotationX(BreastRotation_X);
 			}
@@ -654,7 +654,7 @@ namespace {
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		auto otherActor = Grab::GetHeldActor(giant);
 		if (otherActor) {
-			Task_RotateActorToBreastX(giant, otherActor);
+			//Task_RotateActorToBreastX(giant, otherActor);
 			otherActor->SetGraphVariableBool("GTSBEH_T_InStorage", true);
 			if (IsHostile(giant, otherActor)) {
 				AnimationManager::StartAnim("Breasts_Idle_Unwilling", otherActor);
