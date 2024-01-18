@@ -74,12 +74,13 @@ namespace Hooks {
 						auto actor = skyrim_cast<Actor*>(graph);
 						if (actor) {
 							float new_jump = AttributeManager::GetSingleton().GetJumpHeight(actor);
+							float jump_factor = pow(0.76/new_jump, 0.5);
 							if (actor->formID == 0x14) {
-								log::info("Dividing velocity by scale: {}", scale);
+								log::info("Dividing velocity by scale: {}", jump_factor);
 								log::info("Actor: {}", actor->GetDisplayFullName());
 							}
 							if (actor->formID == 0x14) {
-								a_in *= pow(0.76/new_jump, 0.5) ;
+								a_in *= jump_factor;
 								log::info(" new V: {}", a_in);
 							}
 						}
