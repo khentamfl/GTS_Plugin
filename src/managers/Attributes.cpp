@@ -95,9 +95,9 @@ namespace {
 		if (actor->formID != 0x14) {
 			return;
 		}
-		float bonus = JumpHeight(actor);
+		float new_jump = JumpHeight(actor);
 
-		SetINIFloat("fJumpHeightMin", 76.0 * bonus);
+		SetINIFloat("fJumpHeightMin", new_jump);
 	}
 
 	// Todo unify the functions
