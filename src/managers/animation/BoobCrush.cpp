@@ -253,8 +253,8 @@ namespace {
 		if (BreastL03 && BreastR03) {
 			DoDamageAtPoint(giant, 24, 330.0 * damage, BreastL03, 4, 0.70, 0.85, DamageSource::BreastImpact);
 			DoDamageAtPoint(giant, 24, 330.0 * damage, BreastR03, 4, 0.70, 0.85, DamageSource::Breast);
-			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "L Breast03");
-			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "R Breast03");
+			DoDustExplosion(giant, 1.25 * dust + damage/10, FootEvent::Right, "L Breast03");
+			DoDustExplosion(giant, 1.25 * dust + damage/10, FootEvent::Left, "R Breast03");
 			DoFootstepSound(giant, 1.25, FootEvent::Right, "R Breast03");
 			DoFootstepSound(giant, 1.25, FootEvent::Left, "L Breast03");
 			DoLaunch(giant, 1.20 * perk, 4.20, FootEvent::Breasts);
@@ -265,8 +265,8 @@ namespace {
 		} else if (BreastL && BreastR) {
 			DoDamageAtPoint(giant, 24, 330.0 * damage, BreastL, 4, 0.70, 0.85, DamageSource::BreastImpact);
 			DoDamageAtPoint(giant, 24, 330.0 * damage, BreastR, 4, 0.70, 0.85, DamageSource::BreastImpact);
-			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC L Breast");
-			DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC R Breast");
+			DoDustExplosion(giant, 1.25 * dust + damage/10, FootEvent::Right, "NPC L Breast");
+			DoDustExplosion(giant, 1.25 * dust + damage/10, FootEvent::Left, "NPC R Breast");
 			DoFootstepSound(giant, 1.25, FootEvent::Right, "NPC R Breast");
 			DoFootstepSound(giant, 1.25, FootEvent::Right, "NPC L Breast");
 			DoLaunch(giant, 1.20 * perk, 4.20, FootEvent::Breasts);

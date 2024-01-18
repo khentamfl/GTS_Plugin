@@ -839,12 +839,12 @@ namespace Gts {
 	float GetProneAdjustment() {
 		auto player = PlayerCharacter::GetSingleton();
 		float value = 1.0;
-		if (IsCrawling(player)) {
+		if (IsProning(player)) {
+			return 0.18;
+		} else if (IsCrawling(player)) {
 			value = std::clamp(Runtime::GetFloat("ProneOffsetFP"), 0.10f, 1.0f);
 		}
-		if (IsProning(player)) {
-			value *= 0.5;
-		}
+		
 		return value;
 	}
 
@@ -1059,13 +1059,13 @@ namespace Gts {
 			auto tiny = tinyref.get().get();
 
 			bool dragon = IsDragon(tiny);
-			if (dragon || !tiny->IsDead()) {
+			if (dragon) {
 				tiny->Disable();
-				Cprint(" {} Isn't dead or is dragon, disabling", tiny->GetDisplayFullName());
 				return;
 			}
 
 			SetCriticalStage(tiny, 4);
+			tiny->Disable();
 		});
 	}
 

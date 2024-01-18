@@ -8,7 +8,7 @@ using namespace RE;
 
 namespace Gts {
 	float FirstPerson::GetScaleOverride(bool IsCrawling) {
-		float proneFactor = 1.001;
+		float proneFactor = 1.005;
 		if (IsCrawling) {
 			return proneFactor; // 1.0 only if we crawl
 		} else {
