@@ -88,6 +88,20 @@ namespace Hooks {
 				}
 				return SkyrimSetGraphVarFloat(graph, a_variableName, a_in);
 			});
+
+		
+		static CallHook<float(Actor*)> SkyrimJumpHeight(RELOCATION_ID(37257, 37257),  REL::Relocate(0x17F, 0x17F),
+		[](auto* actor) {
+		    float result = SkyrimJumpHeight(actor);
+			log::info("Original jump height: {}", result);
+		    if (actor) {
+		      if (actor->formID == 0x14) {
+				log::info("form id is of the player");
+			  }
+			  log::info("Raw Name: {}", GetRawName(actor));
+		    }
+		    return result;
+		});
 	}
 
 	/*float Hook_Jumping::GetScaleJumpHook(TESObjectREFR* a_this) {
