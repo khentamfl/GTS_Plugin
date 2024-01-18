@@ -2,6 +2,7 @@
 #include "hooks/callhook.hpp"
 #include "scale/scale.hpp"
 #include "data/plugin.hpp"
+#include "managers/Attributes.hpp"
 
 using namespace RE;
 using namespace SKSE;
@@ -72,13 +73,13 @@ namespace Hooks {
 						log::info("Found Velocity: {}", a_in);
 						auto actor = skyrim_cast<Actor*>(graph);
 						if (actor) {
-							auto scale = get_giantess_scale(actor);
+							float new_jump = AttributeManager::GetSingleton().GetJumpHeight(actor);
 							if (actor->formID == 0x14) {
 								log::info("Dividing velocity by scale: {}", scale);
 								log::info("Actor: {}", actor->GetDisplayFullName());
 							}
 							if (actor->formID == 0x14) {
-								a_in /= FallModifier(scale);
+								a_in *= pow(0.76/new_jump, 0.5) ;
 								log::info(" new V: {}", a_in);
 							}
 						}

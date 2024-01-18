@@ -85,12 +85,17 @@ namespace {
 		}
 	}
 
+	float JumpHeight(Actor* actor) {
+		float bonus = std::max(get_giantess_scale(actor), 1.0f);
+		return 76.0 * bonus;
+	}
+
 	void BoostJump(Actor* actor) {
 		// TODO: Write a real hook inside skyrims GETINI FLOAT
 		if (actor->formID != 0x14) {
 			return;
 		}
-		float bonus = std::clamp(get_giantess_scale(actor), 1.0f, 99999.0f);
+		float bonus = JumpHeight(actor);
 
 		SetINIFloat("fJumpHeightMin", 76.0 * bonus);
 	}
@@ -322,6 +327,10 @@ namespace Gts {
 
 	float AttributeManager::AlterGetAvMod(float originalValue, Actor* actor, ACTOR_VALUE_MODIFIER a_modifier, ActorValue a_value) {
 		return originalValue;
+	}
+
+	float AttributeManager::GetJumpHeight(Actor* actor) {
+		return JumpHeight(actor);
 	}
 
 	float AttributeManager::AlterMovementSpeed(Actor* actor, const NiPoint3& direction) {
