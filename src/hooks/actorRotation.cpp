@@ -46,7 +46,6 @@ namespace Hooks {
         REL::RelocationID(19360, 19360),
         [](auto* ref, auto pos) {
             log::info("Raw Name Ref: {}", GetRawName(ref));
-            log::info("Raw Name pos: {}", GetRawName(pos));
             log::info("Pos: {}", Vector2Str(pos));
             return Skyrim_SetRefRotationX(ref, pos);
         });
