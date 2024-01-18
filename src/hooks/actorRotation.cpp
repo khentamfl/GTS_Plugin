@@ -22,13 +22,9 @@ namespace {
     float GetTinyRotation_X(TESObjectREFR* ref) {
         Actor* actor = skyrim_cast<Actor*>(ref);
         if (actor) {
-            float rotation_x = 0.0;
-            auto transient = Transient::GetSingleton().GetData(actor);
-            if (transient) {
-                rotation_x = transient->Rotation_X;
-            }
-            return rotation_x;
+            return GetTinyRotation_X(actor);
         }
+        return 0.0;
     }
 }
 
@@ -59,7 +55,10 @@ namespace Hooks {
         [](auto* ref, auto x) {
             //log::info("Raw Name Ref: {}", GetRawName(ref)); 
             //log::info("Pos: {}", Vector2Str(pos));
-            x = GetTinyRotation_X(ref);
+            float rotation = GetTinyRotation_X(ref);
+            if (rotation != 0.0) {
+                x = rotation;
+            }
             log::info("X of {} is {}", ref->GetDisplayFullName(), x);
             return Skyrim_SetRefRotationX(ref, x);
         });
