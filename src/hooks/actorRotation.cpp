@@ -39,5 +39,5 @@ namespace Hooks {
                 return result;
             }
         );
-     }
+    }
 }

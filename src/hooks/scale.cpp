@@ -34,6 +34,19 @@ namespace Hooks {
 		// SE: 140290bf8
 		// Used during Set3D
 
+		static FunctionHook<float(TESObjectREFR* ref)> Skyrim_GetScale_14028CC60(  // 19238 = 14028CC60 (SE), AE = ???
+            REL::RelocationID(19238, 19238),
+            [](auto* ref) {
+                float result = Skyrim_GetScale_14028CC60(ref);
+                Actor* actor = skyrim_cast<Actor*>(ref);
+                if (actor) {
+					float scale = get_visual_scale(actor);
+                    result *= scale;
+                    log::info("Scale Hook: {} for {}", scale, actor->GetDisplayFullName());
+                }
 
+                return result;
+            }
+        );
 	}
 }
