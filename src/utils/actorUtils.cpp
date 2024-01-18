@@ -1062,7 +1062,7 @@ namespace Gts {
 			if (dragon || !tiny->IsDead()) {
 				tiny->Disable();
 				Cprint(" {} Isn't dead or is dragon, disabling", tiny->GetDisplayFullName());
-				return false;
+				return;
 			}
 
 			SetCriticalStage(tiny, 4);
