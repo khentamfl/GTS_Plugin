@@ -231,7 +231,7 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
-								Utils_PushCheck(giant, tiny, force); // pass original un-altered force
+								Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
 								float aveForce = std::clamp(force, 0.15f, 0.70f);///nodeCollisions;
 								CollisionDamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult, crush_threshold, Cause);
 							}
@@ -343,7 +343,7 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
-								Utils_PushCheck(giant, tiny, force); // pass original un-altered force
+								Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
 								float aveForce = std::clamp(force, 0.15f, 0.70f);///nodeCollisions;
 								CollisionDamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult, crush_threshold, Cause);
 							}
