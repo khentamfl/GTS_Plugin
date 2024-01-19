@@ -97,15 +97,20 @@ namespace {
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 
+			bool AllyHugged;
+			bool IsDead = (tinyref->IsDead() || giantref->IsDead());
+			tinyref->GetGraphVariableBool("GTS_IsFollower", AllyHugged);
+
 			if (!HugShrink::GetHuggiesActor(giantref)) {
-				PushActorAway(giantref, tinyref, 1.0);
+				if (!AllyHugged) {
+					PushActorAway(giantref, tinyref, 1.0);
+				}
 				return false;
 			}
 
 			if (ActionTimer.ShouldRunFrame()) {
 				int rng = rand() % 20;
 				if (rng < 12) {
-					
 					if (!Runtime::HasPerkTeam(giantref, "HugCrush_LovingEmbrace")) {
 						rng = 1; // always force crush and always shrink
 					}	
@@ -118,7 +123,7 @@ namespace {
 					}
 				}
 			}
-			if (tinyref->IsDead() || giantref->IsDead()) {
+			if (IsDead) {
 				return false;
 			}
 			return true;
