@@ -1,12 +1,13 @@
+#include "managers/animation/Controllers/HugController.hpp"
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
-#include "managers/animation/Controllers/HugController.hpp"
 #include "managers/emotions/EmotionManager.hpp"
 #include "managers/ShrinkToNothingManager.hpp"
 #include "managers/damage/SizeHitEffects.hpp"
 #include "managers/animation/HugShrink.hpp"
 #include "managers/damage/LaunchActor.hpp"
 #include "managers/animation/HugHeal.hpp"
+#include "colliders/charcontroller.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "managers/CrushManager.hpp"
@@ -24,7 +25,7 @@
 #include "events.hpp"
 #include "timer.hpp"
 #include "node.hpp"
-#include "colliders/charcontroller.hpp"
+
 
 #include <random>
 
@@ -48,6 +49,17 @@ namespace {
 		AdjustFacialExpression(actor, 0, p_1, "modifier"); // blink L
 		AdjustFacialExpression(actor, 1, p_1, "modifier"); // blink R
 		AdjustFacialExpression(actor, 0, p_2, "phenome");
+	}
+
+	void AbortHugAnimation_Friendly(Actor* giant) {
+		auto tiny = HugShrink::GetHuggiesActor(giant);
+		if (tiny) {
+			EnableCollisions(tiny);
+			SetBeingHeld(tiny, false);
+			UpdateFriendlyHugs(giant, tiny, true); // set GTS_IsFollower (tiny) and GTS_HuggingTeammate (GTS) bools to false
+			Hugs_FixAnimationDesync(giant, tiny, true); // reset anim speed override so .dll won't use it
+		}
+		HugShrink::Release(giant);
 	}
 
     bool Hugs_RestoreHealth(Actor* giantref, Actor* tinyref) {
@@ -143,6 +155,8 @@ namespace {
 		}
     }
 
+	void GTS_Hug_Release(AnimationEventData& data) {AbortHugAnimation_Friendly(&data.giant);}
+
 	void GTS_Hug_Moan_Tiny(AnimationEventData& data) {ActivateEmotions(&data.giant, true);}
 	void GTS_Hug_Moan_Tiny_End(AnimationEventData& data) {ActivateEmotions(&data.giant, false);}
 }
@@ -151,6 +165,7 @@ namespace {
 namespace Gts {
     void HugHeal::RegisterEvents() {
         AnimationManager::RegisterEvent("GTS_Hug_Heal", "Hugs", GTS_Hug_Heal);
+		AnimationManager::RegisterEvent("GTS_Hug_Release", "Hugs", GTS_Hug_Release);
 		AnimationManager::RegisterEvent("GTS_Hug_Moan_Tiny", "Hugs", GTS_Hug_Moan_Tiny);
 		AnimationManager::RegisterEvent("GTS_Hug_Moan_Tiny_End", "Hugs", GTS_Hug_Moan_Tiny_End);
     }

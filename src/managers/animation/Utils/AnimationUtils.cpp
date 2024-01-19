@@ -117,8 +117,10 @@ namespace Gts {
 
 		if (perk && !hostile && teammate && !force) {
 			tiny->SetGraphVariableBool("GTS_IsFollower", true);
+			giant->SetGraphVariableBool("GTS_HuggingTeammate", true);
 		} else {
 			tiny->SetGraphVariableBool("GTS_IsFollower", false);
+			giant->SetGraphVariableBool("GTS_HuggingTeammate", false);
 		}
 		// This function determines the following:
 		// Should the Tiny play "willing" or "Unwilling" hug idle?
@@ -188,20 +190,28 @@ namespace Gts {
 
 	// Cancels all hug-related things
 	void AbortHugAnimation(Actor* giant, Actor* tiny) {
-		AnimationManager::StartAnim("Huggies_Spare", giant);
+		AnimationManager::StartAnim("Huggies_Spare", giant); // Start "Release" animation on Giant
+
 		AdjustFacialExpression(giant, 0, 0.0, "phenome");
 		AdjustFacialExpression(giant, 0, 0.0, "modifier");
 		AdjustFacialExpression(giant, 1, 0.0, "modifier");
+
+		bool Friendly;
+		giant->GetGraphVariableBool("GTS_HuggingTeammate", Friendly);
+
+		if (Friendly) { // If friendly, we don't want to push/release actor
+			return; // GTS_Hug_Release event handles that in this case.
+		}
 
 		if (tiny) {
 			EnableCollisions(tiny);
 			SetBeingHeld(tiny, false);
 			PushActorAway(giant, tiny, 1.0);
-			UpdateFriendlyHugs(giant, tiny, true); // set GTS_IsFollower bool to false
+			UpdateFriendlyHugs(giant, tiny, true); // set GTS_IsFollower (tiny) and GTS_HuggingTeammate (GTS) bools to false
 			Hugs_FixAnimationDesync(giant, tiny, true); // reset anim speed override so .dll won't use it
 		}
-
 		HugShrink::Release(giant);
+		
 	}
 
 	void Utils_UpdateHugBehaviors(Actor* giant, Actor* tiny) { // blend between two anims: send value to behaviors
