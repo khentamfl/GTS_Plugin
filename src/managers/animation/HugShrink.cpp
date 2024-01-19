@@ -281,8 +281,15 @@ namespace {
 			if (IsHugCrushing(player) || IsHugHealing(player)) {
 				return; // disallow manual release when it's true
 			}
+
+			bool Hugging;
+			player->GetGraphVariableBool("GTS_HuggingTeammate", Hugging);
+
 			AbortHugAnimation(player, huggedActor);
-			HugShrink::DetachActorTask(player);
+
+			if (!Hugging) { // we don't want to stop task if it returns true
+				HugShrink::DetachActorTask(player);
+			}
 		}
 	}
 }
@@ -397,7 +404,6 @@ namespace Gts {
 			ModSizeExperience(giantref, 0.00005);
 
 			DamageAV(tinyref, ActorValue::kStamina, 0.125 * TimeScale()); // Drain Tiny Stamina
-			DamageAV(giantref, ActorValue::kStamina, 0.125 * TimeScale()); // Drain Tiny Stamina
 
 			bool TinyAbsorbed;
 			giantref->GetGraphVariableBool("GTS_TinyAbsorbed", TinyAbsorbed);
