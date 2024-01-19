@@ -139,7 +139,7 @@ namespace Hooks {
 		static CallHook<float(TESObjectREFR* ref, uintptr_t param_2, uintptr_t param_3, uintptr_t Character, uintptr_t param_5)> 
 		Skyrim_Ref_sub_1406AA410(RELOCATION_ID(39477, 39477),  REL::Relocate(0xC1, 0xC1),
 		[](auto* ref, auto param_2, auto param_3, auto Character, auto param_5) {
-		    float result = Skyrim_Ref_sub_1406AA410(ref);
+		    float result = Skyrim_Ref_sub_1406AA410(ref, param_2, param_3, Character, param_5);
 			log::info("Sub A410: Original Ref_Sub Value: {}", result);
 			log::info("Param 1 Raw Name: {}", GetRawName(ref));
 			log::info("Param 2 Raw Name: {}", GetRawName(param_2));
