@@ -80,7 +80,7 @@ namespace Hooks {
             }
         );*/
 
-		static CallHook<float(NiNode* node)> Skyrim_NiNode(RELOCATION_ID(19889, 19889),  REL::Relocate(-0xBC, -0xBC),
+		static CallHook<float(NiNode* node)> Skyrim_NiNode(RELOCATION_ID(19889, 19889),  REL::Relocate(0xBC, 0xBC),
 		[](auto* node) {
 		    float result = Skyrim_NiNode(node);
 			log::info("Original Node Value: {}", result);
