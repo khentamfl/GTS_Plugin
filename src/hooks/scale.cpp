@@ -19,8 +19,8 @@ using namespace SKSE;
 // -[x] TESObjectREFR::sub_1407BA9C0                                            offset:  0x57         46015     
 // -[x] TESObjectREFR::sub_1407BA910                                            offset:  0x94         46014 
 // -[x] TESObjectREFR::sub_1407BA8B0                                            offset:  0x44         46013  
-//    ^ These 3 subs seem to do literally nothing.
-//      TESObjectREFR::sub_1406AA410                                           offset: 0xC1           39477
+// -[x] TESObjectREFR::sub_1406AA410                                            offset:  0xC1         39477
+// ^ These 4 subs seem to do literally nothing.
 
 namespace Hooks {
 
@@ -135,30 +135,5 @@ namespace Hooks {
 			}
 		    return result;
 		});*/
-
-		static CallHook<float(TESObjectREFR* ref, uintptr_t param_2, uintptr_t param_3, uintptr_t Character, uintptr_t param_5)> 
-		Skyrim_Ref_sub_1406AA410(RELOCATION_ID(39477, 39477),  REL::Relocate(0xC1, 0xC1),
-		[](auto* ref, auto param_2, auto param_3, auto Character, auto param_5) {
-		    float result = Skyrim_Ref_sub_1406AA410(ref, param_2, param_3, Character, param_5);
-			log::info("Sub A410: Original Ref_Sub Value: {}", result);
-			log::info("Param 1 Raw Name: {}", GetRawName(ref));
-			//log::info("Param 2 Raw Name: {}", GetRawName(param_2));
-			//log::info("Param 3 Raw Name: {}", GetRawName(param_3));
-			//log::info("Param 4 Raw Name: {}", GetRawName(Character));
-			//log::info("Param 5 Raw Name: {}", GetRawName(param_5));
-			Actor* giant = skyrim_cast<Actor*>(ref);
-			if (giant) {
-				if (giant->formID == 0x14 || IsTeammate(giant)) {
-					float scale = get_visual_scale(giant);
-					if (scale > 0.0) {
-						result *= scale;
-						log::info("Found Actor: {}, scale: {}", giant->GetDisplayFullName(), scale);
-					}
-
-				log::info("Sub A410: New Ref Sub Value: {}", result);
-				}
-			}
-		    return result;
-		});
 	}
 }
