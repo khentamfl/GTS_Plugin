@@ -6,12 +6,15 @@ using namespace RE;
 using namespace SKSE;
 
 
-// Possible hooks that may benefit from scaling: (SE)
-// - Character::GetEyeHeight_140601E40  (Headtracking?)
-// - Actor::Jump_1405D1F80              (Maybe jump height)
-// - Pathing::sub_140474420             (perhaps pathing fix)  [Looks like it does nothing, there's no prints]
-// - TESObject::LoadGraphics_140220DD0  (Model render distance?)
-
+// Possible hooks that may benefit from scaling: All info for Special Edition (SE)
+// - Character::GetEyeHeight_140601E40  									(Headtracking?)
+// - Actor::Jump_1405D1F80              									(Maybe jump height)
+// - Pathing::sub_140474420             									(perhaps pathing fix)  [Looks like it does nothing, there's no prints]
+// - TESObjectREFR::sub_140619040       									(? unknown, something node-related)
+// - IAnimationGraphManagerHolder::Func7_140609D50      					 Offset: -0xBD
+// - FUN_1405513a0                                      					(Something attack angle related)
+// - NiNode::sub_1402AA350(NiNode *param_1)                           		 Offset: -0xBC
+// - TESObject::LoadGraphics_140220DD0(TESObject *param_1)                  Offset: -0x1FC
 
 namespace Hooks {
 
@@ -76,5 +79,18 @@ namespace Hooks {
                 return Skyrim_Pathing_140474420(param_1, param_2, param_3, param_4, param_5);
             }
         );*/
+
+		static CallHook<float(NiNode* node)> Skyrim_NiNode(RELOCATION_ID(19889, 19889),  REL::Relocate(-0xBC, -0xBC),
+		[](auto* node) {
+		    float result = Skyrim_NiNode(node);
+			log::info("Original Node Value: {}", result);
+		    if (node) {
+				float scale = 10.0;
+				result *= scale;
+				
+				log::info("Node Value: {}", result);
+		    }
+		    return result;
+		});
 	}
 }
