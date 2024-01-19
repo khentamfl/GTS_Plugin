@@ -190,6 +190,7 @@ namespace Gts {
 
 	// Cancels all hug-related things
 	void AbortHugAnimation(Actor* giant, Actor* tiny) {
+		
 		bool Friendly;
 		giant->GetGraphVariableBool("GTS_HuggingTeammate", Friendly);
 
@@ -197,12 +198,13 @@ namespace Gts {
 		AdjustFacialExpression(giant, 0, 0.0, "modifier");
 		AdjustFacialExpression(giant, 1, 0.0, "modifier");
 
-		
 		AnimationManager::StartAnim("Huggies_Spare", giant); // Start "Release" animation on Giant
 		
+		log::info("Starting abort animation, friendly: {}", Friendly);
+
 		if (Friendly) { // If friendly, we don't want to push/release actor
 			AnimationManager::StartAnim("Huggies_Spare", tiny);
-			return; // GTS_Hug_Release event handles that in this.
+			return; // GTS_Hug_Release event handles that in this case.
 		}
 
 		if (tiny) {
@@ -213,6 +215,7 @@ namespace Gts {
 			Hugs_FixAnimationDesync(giant, tiny, true); // reset anim speed override so .dll won't use it
 		}
 		HugShrink::Release(giant);
+		log::info("Releasing Tiny");
 		
 	}
 

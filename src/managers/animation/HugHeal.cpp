@@ -66,6 +66,8 @@ namespace {
 			}
 		}
 
+		std::string name = std::format("Huggies_{}", giant->formID);
+		TaskManager::Cancel(name);
 		HugShrink::Release(giant);
 	}
 

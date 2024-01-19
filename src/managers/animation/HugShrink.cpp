@@ -398,9 +398,9 @@ namespace Gts {
 				// If face towards fails then actor is invalid
 				return false;
 			}
-			if (giantref->formID == 0x14) {
-				GrabStaminaDrain(giantref, tinyref, sizedifference * 3.0);
-			}
+			
+			GrabStaminaDrain(giantref, tinyref, sizedifference * 3.6);
+			
 			ModSizeExperience(giantref, 0.00005);
 
 			DamageAV(tinyref, ActorValue::kStamina, 0.125 * TimeScale()); // Drain Tiny Stamina
@@ -422,13 +422,18 @@ namespace Gts {
 				return true; // do nothing while we heal actor
 			}
 			
+			bool HuggingAlly;
+			giantref->GetGraphVariableBool("GTS_HuggingTeammate", HuggingAlly);
+
 			if (!IsHugCrushing(giantref)) {
-				if (sizedifference < 0.9 || giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || !HugShrink::GetHuggiesActor(giantref)) {
+				if (sizedifference < 0.9 || giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || (!HugShrink::GetHuggiesActor(giantref) && !HuggingAlly)) {
+					log::info("Condition 1 failed, aborting hugs");
 					AbortHugAnimation(giantref, tinyref);
 					return false;
 				}
 			} else if (IsHugCrushing(giantref) && !TinyAbsorbed) {
-				if (giantref->IsDead() || tinyref->IsDead() || !HugShrink::GetHuggiesActor(giantref)) {
+				if (giantref->IsDead() || tinyref->IsDead() || !HugShrink::GetHuggiesActor(giantref) || (!HugShrink::GetHuggiesActor(giantref) && !HuggingAlly)) {
+					log::info("Condition 2 failed, aborting hugs");
 					AbortHugAnimation(giantref, tinyref);
 					return false;
 				}
