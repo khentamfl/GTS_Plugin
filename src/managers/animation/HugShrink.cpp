@@ -35,6 +35,11 @@ using namespace std;
 
 namespace {
 
+	void AbortHugAnimation_AnimsOnly(Actor* giantref, Actor* tinyref) {
+		AnimationManager::StartAnim("Huggies_Spare", giantref);
+		AnimationManager::StartAnim("Huggies_Spare", tinyref);
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////// E V E N T S
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -388,6 +393,9 @@ namespace Gts {
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 
+			bool HuggingAlly;
+			giantref->GetGraphVariableBool("GTS_HuggingTeammate", HuggingAlly);
+
 			ShutUp(tinyref);
 			ShutUp(giantref);
 
@@ -421,19 +429,20 @@ namespace Gts {
 				}
 				return true; // do nothing while we heal actor
 			}
-			
-			bool HuggingAlly;
-			giantref->GetGraphVariableBool("GTS_HuggingTeammate", HuggingAlly);
+
+			bool IsDead = (giantref->IsDead() || tinyref->IsDead());
 
 			if (!IsHugCrushing(giantref)) {
-				if (sizedifference < 0.9 || giantref->IsDead() || tinyref->IsDead() || stamina <= 2.0 || (!HugShrink::GetHuggiesActor(giantref) && !HuggingAlly)) {
-					log::info("Condition 1 failed, aborting hugs");
+				if (sizedifference < 0.9 || IsDead || stamina <= 2.0 || (!HugShrink::GetHuggiesActor(giantref) && !HuggingAlly)) {
+					if (HuggingAlly) {
+						AbortHugAnimation_AnimsOnly(giantref, tinyref);
+						return true;
+					}
 					AbortHugAnimation(giantref, tinyref);
 					return false;
 				}
 			} else if (IsHugCrushing(giantref) && !TinyAbsorbed) {
-				if (giantref->IsDead() || tinyref->IsDead() || !HugShrink::GetHuggiesActor(giantref) || (!HugShrink::GetHuggiesActor(giantref) && !HuggingAlly)) {
-					log::info("Condition 2 failed, aborting hugs");
+				if (IsDead || !HugShrink::GetHuggiesActor(giantref) || (!HugShrink::GetHuggiesActor(giantref) && !HuggingAlly)) {
 					AbortHugAnimation(giantref, tinyref);
 					return false;
 				}
