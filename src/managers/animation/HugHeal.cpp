@@ -66,8 +66,12 @@ namespace {
 			}*/
 		}
 		log::info("Calling Abort Hug_Friendly");
-		std::string name = std::format("Huggies_{}", giant->formID);
-		TaskManager::Cancel(name);
+		
+		std::string name_normal = std::format("Huggies_{}", giant->formID);
+		std::string name_forced = std::format("Huggies_Forced_{}", giant->formID);
+
+		TaskManager::Cancel(name_normal);
+		TaskManager::Cancel(name_forced);
 		HugShrink::Release(giant);
 	}
 
