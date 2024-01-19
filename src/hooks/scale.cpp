@@ -111,7 +111,7 @@ namespace Hooks {
 		});
 
 		static CallHook<float(IAnimationGraphManagerHolder* graph)> Skyrim_AnimGraph_140609D50(RELOCATION_ID(36957, 36957),  REL::Relocate(0xBD, 0xBD),
-		[](auto* ref) {
+		[](auto* graph) {
 		    float result = Skyrim_AnimGraph_140609D50(graph);
 			log::info("Original Graph Value: {}", result);
 			Actor* giant = skyrim_cast<Actor*>(graph);
