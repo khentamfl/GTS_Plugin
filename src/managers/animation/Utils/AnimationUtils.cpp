@@ -299,7 +299,7 @@ namespace Gts {
 		WasteMult *= Perk_GetCostReduction(giant);
 
 		if (giant->formID != 0x14) {
-			WasteMult *= 0.5; // less drain for non-player
+			WasteMult *= 0.33; // less drain for non-player
 		}
 
 		float WasteStamina = (1.40 * WasteMult)/sizedifference * TimeScale();

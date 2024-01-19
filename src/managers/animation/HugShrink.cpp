@@ -398,42 +398,39 @@ namespace Gts {
 			if (!tinyhandle) {
 				return false;
 			}
-			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
-
-			float DrainReduction = 3.6;
-
+			auto giantref = gianthandle.get().get();
+			
 			bool HuggingAlly;
+			float DrainReduction = 3.4;
 			tinyref->GetGraphVariableBool("GTS_IsFollower", HuggingAlly);
 
 			if (HuggingAlly) {
-				DrainReduction *= 1.8; // less stamina drain for friendlies
+				DrainReduction *= 1.5; // less stamina drain for friendlies
 			}
 
 			ShutUp(tinyref);
 			ShutUp(giantref);
 
 			float threshold = GetHugShrinkThreshold(giantref);
-
 			float sizedifference = get_visual_scale(giantref)/get_visual_scale(tinyref);
+
 			if (!FaceOpposite(giantref, tinyref)) {
 				// If face towards fails then actor is invalid
 				return false;
 			}
 			
+			ModSizeExperience(giantref, 0.00005);
+			DamageAV(tinyref, ActorValue::kStamina, 0.125 * TimeScale()); // Drain Tiny Stamina
 			GrabStaminaDrain(giantref, tinyref, sizedifference * DrainReduction);
 			
-			ModSizeExperience(giantref, 0.00005);
-
-			DamageAV(tinyref, ActorValue::kStamina, 0.125 * TimeScale()); // Drain Tiny Stamina
-
 			bool TinyAbsorbed;
 			giantref->GetGraphVariableBool("GTS_TinyAbsorbed", TinyAbsorbed);
 
 			float stamina = GetAV(giantref, ActorValue::kStamina);
 
-			Utils_UpdateHugBehaviors(giantref, tinyref);
-			Hugs_FixAnimationDesync(giantref, tinyref, false);
+			Utils_UpdateHugBehaviors(giantref, tinyref); // Record GTS/Tiny Size-Difference value for animation blending
+			Hugs_FixAnimationDesync(giantref, tinyref, false); // Share GTS Animation Speed with hugged actor to avoid de-sync
 
 			if (IsHugHealing(giantref)) {
 				ForceRagdoll(tinyref, false);
@@ -443,25 +440,24 @@ namespace Gts {
 				}
 				return true; // do nothing while we heal actor
 			}
-
+			
+			bool GotTiny = HugShrink::GetHuggiesActor(giantref);
 			bool IsDead = (giantref->IsDead() || tinyref->IsDead());
-
+			
 			if (!IsHugCrushing(giantref)) {
-				if (sizedifference < 0.9 || IsDead || stamina <= 2.0 || (!HugShrink::GetHuggiesActor(giantref) && !HuggingAlly)) {
-					if (HuggingAlly) { // this is needed to still attach the actor while we gentle release ally 
-					    // if we won't do that - tiny won't be moved around and it will look bad.
-						log::info("Ally check passed");
+				if (sizedifference < 0.9 || IsDead || stamina <= 2.0 || !GotTiny) {
+					if (HuggingAlly) { 
+						// this is needed to still attach the actor while we have ally hugged
+					    // It fixes the Tiny not being moved around during Gentle Release animation for friendlies
 						Hugs_ManageFriendlyTiny(gianthandle, tinyhandle);
 						return true;
 					}
 					AbortHugAnimation(giantref, tinyref);
-					log::info("Aborting task and hug animation");
 					return false;
 				}
 			} else if (IsHugCrushing(giantref) && !TinyAbsorbed) {
-				if (IsDead || !HugShrink::GetHuggiesActor(giantref) || (!HugShrink::GetHuggiesActor(giantref) && !HuggingAlly)) {
+				if (IsDead || !GotTiny) {
 					AbortHugAnimation(giantref, tinyref);
-					log::info("Condition 2 not passed, cancelling the task");
 					return false;
 				}
 			}
