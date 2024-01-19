@@ -173,9 +173,8 @@ namespace {
 		if (visual_scale <= 1e-5) {
 			return;
 		}
-		float ref_scale = get_ref_scale(actor); // GetScale() basically
 		float initialScale = GetInitialScale(actor); // Incorperate the NIF scale into our edits
-		set_scale(actor, visual_scale * initialScale * ref_scale);
+		set_scale(actor, visual_scale * initialScale);
 	}
 
 	void apply_speed(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data, bool force = false) {
