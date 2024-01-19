@@ -399,7 +399,7 @@ namespace Gts {
 				return false;
 			}
 			if (giantref->formID == 0x14) {
-				GrabStaminaDrain(giantref, tinyref, sizedifference * 2.6);
+				GrabStaminaDrain(giantref, tinyref, sizedifference * 3.0);
 			}
 			ModSizeExperience(giantref, 0.00005);
 

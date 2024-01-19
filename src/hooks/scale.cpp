@@ -7,14 +7,14 @@ using namespace SKSE;
 
 
 // Possible hooks that may benefit from scaling: All info for Special Edition (SE)
-// - Character::GetEyeHeight_140601E40  									(Headtracking?)
-// - Actor::Jump_1405D1F80              									(Maybe jump height)
+// - Character::GetEyeHeight_140601E40  									(Not headtracking. F.)
+// - Actor::Jump_1405D1F80              									Jump Height. We already hook that.
 // - Pathing::sub_140474420             									(perhaps pathing fix)  [Looks like it does nothing, there's no prints]
-// - TESObjectREFR::sub_140619040       									(? unknown, something node-related)
+// - TESObjectREFR::sub_140619040       									 Offset: -0x17E        37323
 // - IAnimationGraphManagerHolder::Func7_140609D50      					 Offset: -0xBD
 // - FUN_1405513a0                                      					(Something attack angle related)
 // - NiNode::sub_1402AA350(NiNode *param_1)                           		 Offset: -0xBC
-// - TESObject::LoadGraphics_140220DD0(TESObject *param_1)                  Offset: -0x1FC
+// - TESObject::LoadGraphics_140220DD0(TESObject *param_1)                   Offset: -0x1FC
 
 namespace Hooks {
 
@@ -92,5 +92,22 @@ namespace Hooks {
 		    }
 		    return result;
 		});*/
+
+		static CallHook<float(TESObjectREFR* ref)> Skyrim_sub_140619040(RELOCATION_ID(37323, 37323),  REL::Relocate(-0x17E, -0x17E), // crashes the game
+		[](auto* ref) {
+		    float result = Skyrim_sub_140619040(ref);
+			log::info("Original Ref Value: {}", result);
+		    if (ref) {
+				Actor* giant = skyrim_cast<Actor*>(ref);
+				if (giant) {
+					float scale = get_visual_scale(giant);
+					result *= scale;
+				}
+				
+				log::info("Ref New Scale: {}", result);
+		    }
+		    return result;
+		});
+		
 	}
 }

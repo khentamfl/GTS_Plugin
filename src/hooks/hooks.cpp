@@ -42,7 +42,7 @@ namespace Hooks
 		Hook_Jumping::Hook(trampoline);
 		Hook_Damage::Hook(trampoline);
 
-		//Hook_Scale::Hook(trampoline);
+		Hook_Scale::Hook(trampoline);
 		//Hook_ActorRotation::Hook(trampoline);
 		HookCameraStates();
 
