@@ -59,13 +59,13 @@ namespace {
 			UpdateFriendlyHugs(giant, tiny, true); // set GTS_IsFollower (tiny) and GTS_HuggingTeammate (GTS) bools to false
 			Hugs_FixAnimationDesync(giant, tiny, true); // reset anim speed override so .dll won't use it
 
-			ForceRagdoll(tiny, false);
+			/*ForceRagdoll(tiny, false);
 			auto charcont = tiny->GetCharController();
 			if (charcont) {
 				charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actor won't fall down.
-			}
+			}*/
 		}
-
+		log::info("Calling Abort Hug_Friendly");
 		std::string name = std::format("Huggies_{}", giant->formID);
 		TaskManager::Cancel(name);
 		HugShrink::Release(giant);
