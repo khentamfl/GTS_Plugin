@@ -451,7 +451,7 @@ namespace Gts {
 					if (!HuggingAlly) { // this is needed to still attach the actor while we gentle release ally 
 					    // if we won't do that - tiny won't be moved around and it will look bad.
 						log::info("Ally check passed");
-						Hugs_ManageFriendlyTiny(giantref, tinyref);
+						Hugs_ManageFriendlyTiny(gianthandle, tinyhandle);
 						return true;
 					}
 					AbortHugAnimation(giantref, tinyref);
