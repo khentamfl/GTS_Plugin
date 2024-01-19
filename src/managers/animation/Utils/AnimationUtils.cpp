@@ -111,9 +111,9 @@ namespace Gts {
 	}
 
 	void UpdateFriendlyHugs(Actor* giant, Actor* tiny, bool force) {
-		bool perk = Runtime::HasPerkTeam(giant, "HugCrush_LovingEmbrace");
 		bool hostile = IsHostile(tiny, giant);
-		bool teammate = IsTeammate(tiny);
+		bool teammate = IsTeammate(tiny) || tiny->formID == 0x14;
+		bool perk = Runtime::HasPerkTeam(giant, "HugCrush_LovingEmbrace");
 
 		if (perk && !hostile && teammate && !force) {
 			tiny->SetGraphVariableBool("GTS_IsFollower", true);
@@ -204,7 +204,7 @@ namespace Gts {
 
 		if (Friendly) { // If friendly, we don't want to push/release actor
 			AnimationManager::StartAnim("Huggies_Spare", tiny);
-			return; // GTS_Hug_Release event handles that in this case.
+			return; // GTS_Hug_Release event (HugHeal.cpp) handles it instead.
 		}
 
 		if (tiny) {
