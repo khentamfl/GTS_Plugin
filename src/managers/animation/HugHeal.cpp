@@ -58,7 +58,14 @@ namespace {
 			SetBeingHeld(tiny, false);
 			UpdateFriendlyHugs(giant, tiny, true); // set GTS_IsFollower (tiny) and GTS_HuggingTeammate (GTS) bools to false
 			Hugs_FixAnimationDesync(giant, tiny, true); // reset anim speed override so .dll won't use it
+
+			ForceRagdoll(tiny, false);
+			auto charcont = tiny->GetCharController();
+			if (charcont) {
+				charcont->SetLinearVelocityImpl((0.0, 0.0, 0.0, 0.0)); // Needed so Actor won't fall down.
+			}
 		}
+
 		HugShrink::Release(giant);
 	}
 
