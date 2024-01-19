@@ -190,17 +190,18 @@ namespace Gts {
 
 	// Cancels all hug-related things
 	void AbortHugAnimation(Actor* giant, Actor* tiny) {
-		AnimationManager::StartAnim("Huggies_Spare", giant); // Start "Release" animation on Giant
-		AnimationManager::StartAnim("Huggies_Spare", tiny);
+		bool Friendly;
+		giant->GetGraphVariableBool("GTS_HuggingTeammate", Friendly);
 
 		AdjustFacialExpression(giant, 0, 0.0, "phenome");
 		AdjustFacialExpression(giant, 0, 0.0, "modifier");
 		AdjustFacialExpression(giant, 1, 0.0, "modifier");
 
-		bool Friendly;
-		giant->GetGraphVariableBool("GTS_HuggingTeammate", Friendly);
-
+		
+		AnimationManager::StartAnim("Huggies_Spare", giant); // Start "Release" animation on Giant
+		
 		if (Friendly) { // If friendly, we don't want to push/release actor
+			AnimationManager::StartAnim("Huggies_Spare", tiny);
 			return; // GTS_Hug_Release event handles that in this.
 		}
 
