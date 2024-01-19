@@ -113,7 +113,6 @@ namespace {
 		if (actor->formID == 0x14) {
 			result = get_npcnode_scale(actor); // else get node
 		}
-		//auto result = get_ref_scale(actor);
 		return result;
 	}
 	bool ModHybridScale(StaticFunctionTag*, Actor* actor, float amt) {

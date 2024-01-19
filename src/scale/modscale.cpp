@@ -46,9 +46,9 @@ namespace {
 }
 
 namespace Gts {
-  // @ Sermit, do not call Get_Other_Scale, call get_natural_scale instead
-  // get_natural_scale is much faster and safer as it uses the cache
-  //
+	// @ Sermit, do not call Get_Other_Scale, call get_natural_scale instead
+	// get_natural_scale is much faster and safer as it uses the cache
+	//
 	// Get the current physical value for all nodes of the player
 	// that we don't alter
 	//
@@ -131,8 +131,6 @@ namespace Gts {
 		bool result = false;
 
     	UpdateInitScale(actor); // This will update the inital scales BEFORE we alter them
-
-		target_scale *= get_ref_scale(actor);
 
 		auto model = actor->Get3D(false);
 		if (model) {
@@ -224,20 +222,19 @@ namespace Gts {
 			return -1.0;
 		}
 
-		float scale = get_ref_scale(actor);
 		auto model = actor->Get3D(false);
 		if (model) {
-			return model->local.scale * scale;
+			return model->local.scale;
 		}
 		auto first_model = actor->Get3D(true);
 		if (first_model) {
-			return first_model->local.scale * scale;
+			return first_model->local.scale;
 		}
 		return -1.0;
 	}
 
 	float get_ref_scale(Actor* actor) {
-		// This will set the scale of the root npc node
+		// This function reports same values as GetScale() in the console, so it is a value from SetScale() command
 		if (actor->formID == 0x14 || IsTeammate(actor)) {
 			log::info("Ref scale of {} is {}", actor->GetDisplayFullName(), static_cast<float>(actor->GetReferenceRuntimeData().refScale) / 100.0F);
 		}
