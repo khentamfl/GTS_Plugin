@@ -235,6 +235,8 @@ namespace Gts {
 
 	float get_ref_scale(Actor* actor) {
 		// This function reports same values as GetScale() in the console, so it is a value from SetScale() command
+		// Used inside: GtsManager.cpp - apply_height
+		//              Scale.cpp   -  get_natural_scale   
 		if (actor->formID == 0x14 || IsTeammate(actor)) {
 			log::info("Ref scale of {} is {}", actor->GetDisplayFullName(), static_cast<float>(actor->GetReferenceRuntimeData().refScale) / 100.0F);
 		}
