@@ -393,8 +393,14 @@ namespace Gts {
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 
+			float DrainReduction = 1.0;
+
 			bool HuggingAlly;
-			giantref->GetGraphVariableBool("GTS_HuggingTeammate", HuggingAlly);
+			tinyref->GetGraphVariableBool("GTS_IsFollower", HuggingAlly);
+
+			if (HuggingAlly) {
+				DrainReduction = 1.8; // less stamina drain for friendlies
+			}
 
 			ShutUp(tinyref);
 			ShutUp(giantref);
@@ -407,7 +413,7 @@ namespace Gts {
 				return false;
 			}
 			
-			GrabStaminaDrain(giantref, tinyref, sizedifference * 3.6);
+			GrabStaminaDrain(giantref, tinyref, sizedifference * DrainReduction);
 			
 			ModSizeExperience(giantref, 0.00005);
 
@@ -435,10 +441,12 @@ namespace Gts {
 			if (!IsHugCrushing(giantref)) {
 				if (sizedifference < 0.9 || IsDead || stamina <= 2.0 || (!HugShrink::GetHuggiesActor(giantref) && !HuggingAlly)) {
 					if (HuggingAlly) {
+						log::info("Ally check passed");
 						AbortHugAnimation_AnimsOnly(giantref, tinyref);
 						return true;
 					}
 					AbortHugAnimation(giantref, tinyref);
+					log::info("Aborting task and hug animation");
 					return false;
 				}
 			} else if (IsHugCrushing(giantref) && !TinyAbsorbed) {
