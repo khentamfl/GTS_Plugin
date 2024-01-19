@@ -130,7 +130,9 @@ namespace Gts {
 		}
 		bool result = false;
 
-    UpdateInitScale(actor); // This will update the inital scales BEFORE we alter them
+    	UpdateInitScale(actor); // This will update the inital scales BEFORE we alter them
+
+		target_scale *= get_ref_scale(actor);
 
 		auto model = actor->Get3D(false);
 		if (model) {
@@ -245,7 +247,7 @@ namespace Gts {
 		auto& size_method = Persistent::GetSingleton().size_method;
 		switch (size_method) {
 			case SizeMethod::ModelScale:
-				return get_model_scale(actor) * get_ref_scale(actor);
+				return get_model_scale(actor);
 				break;
 			case SizeMethod::RootScale:
 				return get_npcnode_scale(actor);

@@ -61,7 +61,7 @@ namespace Hooks {
         );*/
 
 									//(Pathing *param_1,undefined param_2,undefined param_3,undefined param_4, uint64 param_5)
-		static FunctionHook<float(uintptr_t* param_1, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4, uintptr_t param_5)> Skyrim_Pathing_140474420( 
+		static FunctionHook<void(uintptr_t* param_1, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4, uintptr_t param_5)> Skyrim_Pathing_140474420( 
 			 // 29837 = 140474420 (SE), AE = ???
             REL::RelocationID(29837, 29837),
             [](auto* param_1, auto param_2, auto param_3, auto param_4, auto param_5) {
