@@ -16,9 +16,11 @@ using namespace SKSE;
 // - FUN_1405513a0                                      					(Something attack angle related)
 // -[x] NiNode::sub_1402AA350(NiNode *param_1)                           	 Offset:  0xBC
 // - TESObject::LoadGraphics_140220DD0(TESObject *param_1)                   Offset:  0x1FC
-// - TESObjectREFR::sub_1407BA9C0                                            offset:  0x57         46015     
-// - TESObjectREFR::sub_1407BA910                                            offset:  0x94         46014 
-// - TESObjectREFR::sub_1407BA8B0                                            offset:  0x44         46013  
+// -[x] TESObjectREFR::sub_1407BA9C0                                            offset:  0x57         46015     
+// -[x] TESObjectREFR::sub_1407BA910                                            offset:  0x94         46014 
+// -[x] TESObjectREFR::sub_1407BA8B0                                            offset:  0x44         46013  
+//    ^ These 3 subs seem to do literally nothing.
+//      TESObjectREFR::sub_1406AA410                                           offset: 0xC1           39477
 
 namespace Hooks {
 
@@ -97,7 +99,7 @@ namespace Hooks {
 		    return result;
 		});*/
 
-		static CallHook<float(TESObjectREFR* ref)> Skyrim_sub_140619040(RELOCATION_ID(37323, 37323),  REL::Relocate(0x17E, 0x17E), // Prints stuff but unsure what it does. 
+		/*static CallHook<float(TESObjectREFR* ref)> Skyrim_sub_140619040(RELOCATION_ID(37323, 37323),  REL::Relocate(0x17E, 0x17E), // Prints stuff but unsure what it does. 
 		// Seems to be applied when new objects (actors?) are loaded into the scene, almost always reports negative value after * scale
 		[](auto* ref) {
 			// No idea what it does, rarely prints something.
@@ -132,12 +134,18 @@ namespace Hooks {
 				}
 			}
 		    return result;
-		});
+		});*/
 
-		static CallHook<float(TESObjectREFR* ref)> Skyrim_Ref_sub_1407BA9C0(RELOCATION_ID(46015, 46015),  REL::Relocate(0x57, 0x57),
-		[](auto* ref) {
-		    float result = Skyrim_Ref_sub_1407BA9C0(ref);
-			log::info("Sub 9C0: Original Ref_Sub Value: {}", result);
+		static CallHook<float(TESObjectREFR* ref, uintptr_t param_2, uintptr_t param_3, uintptr_t Character, uintptr_t param_5)> 
+		Skyrim_Ref_sub_1406AA410(RELOCATION_ID(39477, 39477),  REL::Relocate(0xC1, 0xC1),
+		[](auto* ref, auto param_2, auto param_3, auto Character, auto param_5) {
+		    float result = Skyrim_Ref_sub_1406AA410(ref);
+			log::info("Sub A410: Original Ref_Sub Value: {}", result);
+			log::info("Param 1 Raw Name: {}", GetRawName(ref));
+			log::info("Param 2 Raw Name: {}", GetRawName(param_2));
+			log::info("Param 3 Raw Name: {}", GetRawName(param_3));
+			log::info("Param 4 Raw Name: {}", GetRawName(Character));
+			log::info("Param 5 Raw Name: {}", GetRawName(param_5));
 			Actor* giant = skyrim_cast<Actor*>(ref);
 			if (giant) {
 				if (giant->formID == 0x14 || IsTeammate(giant)) {
@@ -147,45 +155,7 @@ namespace Hooks {
 						log::info("Found Actor: {}, scale: {}", giant->GetDisplayFullName(), scale);
 					}
 
-				log::info("Sub 9C0: New Ref Sub Value: {}", result);
-				}
-			}
-		    return result;
-		});
-
-		static CallHook<float(TESObjectREFR* ref)> Skyrim_Ref_sub_1407BA910(RELOCATION_ID(46014, 46014),  REL::Relocate(0x94, 0x94),
-		[](auto* ref) {
-		    float result = Skyrim_Ref_sub_1407BA910(ref);
-			log::info("Sub 910: Original Ref_Sub Value: {}", result);
-			Actor* giant = skyrim_cast<Actor*>(ref);
-			if (giant) {
-				if (giant->formID == 0x14 || IsTeammate(giant)) {
-					float scale = get_visual_scale(giant);
-					if (scale > 0.0) {
-						result *= scale;
-						log::info("Found Actor: {}, scale: {}", giant->GetDisplayFullName(), scale);
-					}
-
-				log::info("Sub 910: New Ref Sub Value: {}", result);
-				}
-			}
-		    return result;
-		});
-
-		static CallHook<float(TESObjectREFR* ref)> Skyrim_Ref_sub_1407BA8B(RELOCATION_ID(46013, 46013),  REL::Relocate(0x44, 0x44),
-		[](auto* ref) {
-		    float result = Skyrim_Ref_sub_1407BA8B(ref);
-			log::info("Sub A8B: Original Ref_Sub Value: {}", result);
-			Actor* giant = skyrim_cast<Actor*>(ref);
-			if (giant) {
-				if (giant->formID == 0x14 || IsTeammate(giant)) {
-					float scale = get_visual_scale(giant);
-					if (scale > 0.0) {
-						result *= scale;
-						log::info("Found Actor: {}, scale: {}", giant->GetDisplayFullName(), scale);
-					}
-
-				log::info("Sub A8B: New Ref Sub Value: {}", result);
+				log::info("Sub A410: New Ref Sub Value: {}", result);
 				}
 			}
 		    return result;
