@@ -153,7 +153,7 @@ namespace Gts {
 		string node_name = "NPC Root [Root]";
 		bool result = false;
 
-    UpdateInitScale(actor); // This will update the inital scales BEFORE we alter them
+    	UpdateInitScale(actor); // This will update the inital scales BEFORE we alter them
 
 		auto node = find_node(actor, node_name, false);
 		if (node) {
@@ -234,14 +234,18 @@ namespace Gts {
 
 	float get_ref_scale(Actor* actor) {
 		// This will set the scale of the root npc node
+		if (actor->formID == 0x14 || IsTeammate(actor)) {
+			log::info("Ref scale of {} is {}", actor->GetDisplayFullName(), static_cast<float>(actor->GetReferenceRuntimeData().refScale) / 100.0F);
+		}
 		return static_cast<float>(actor->GetReferenceRuntimeData().refScale) / 100.0F;
+		
 	}
 
 	float get_scale(Actor* actor) {
 		auto& size_method = Persistent::GetSingleton().size_method;
 		switch (size_method) {
 			case SizeMethod::ModelScale:
-				return get_model_scale(actor);
+				return get_model_scale(actor) * get_ref_scale(actor);
 				break;
 			case SizeMethod::RootScale:
 				return get_npcnode_scale(actor);

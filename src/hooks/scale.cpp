@@ -59,5 +59,21 @@ namespace Hooks {
                 return result;
             }
         );*/
+
+									//(Pathing *param_1,undefined param_2,undefined param_3,undefined param_4, uint64 param_5)
+		static FunctionHook<float(uintptr_t* param_1, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4, uintptr_t param_5)> Skyrim_Pathing_140474420( 
+			 // 29837 = 140474420 (SE), AE = ???
+            REL::RelocationID(29837, 29837),
+            [](auto* param_1, auto param_2, auto param_3, auto param_4, auto param_5) {
+                
+				log::info("Param 1: {}", GetRawName(param_1)); 
+				log::info("Param 2: {}", GetRawName(param_2)); 
+				log::info("Param 3: {}", GetRawName(param_3)); 
+				log::info("Param 4: {}", GetRawName(param_4)); 
+				log::info("Param 5: {}", GetRawName(param_5)); 
+
+                return Skyrim_Pathing_140474420(param_1, param_2, param_3, param_4, param_5);
+            }
+        );
 	}
 }
