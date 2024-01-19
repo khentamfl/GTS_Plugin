@@ -401,13 +401,13 @@ namespace Gts {
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 
-			float DrainReduction = 1.0;
+			float DrainReduction = 3.6;
 
 			bool HuggingAlly;
 			tinyref->GetGraphVariableBool("GTS_IsFollower", HuggingAlly);
 
 			if (HuggingAlly) {
-				DrainReduction = 1.8; // less stamina drain for friendlies
+				DrainReduction *= 1.8; // less stamina drain for friendlies
 			}
 
 			ShutUp(tinyref);
