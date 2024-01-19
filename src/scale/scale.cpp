@@ -131,9 +131,9 @@ namespace Gts {
 
 	float get_natural_scale(Actor& actor) {
 		auto actor_data = Transient::GetSingleton().GetData(&actor);
-		float GetScale = get_ref_scale(&actor); // GetScale() value from console, similar to SetScale() from Papyrus
+		//float GetScale = get_ref_scale(&actor); // GetScale() value from console, similar to SetScale() from Papyrus
 		if (actor_data) {
-		    float initialScale = GetInitialScale(&actor) * GetScale;
+		    float initialScale = GetInitialScale(&actor);
 				return actor_data->otherScales * initialScale;
 		}
 		return 1.0;
