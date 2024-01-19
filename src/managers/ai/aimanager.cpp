@@ -103,6 +103,7 @@ namespace {
 
 			if (!HugShrink::GetHuggiesActor(giantref)) {
 				if (!AllyHugged) {
+					log::info("Ally isn't hugged, aborting and pushing");
 					PushActorAway(giantref, tinyref, 1.0);
 				}
 				return false;
