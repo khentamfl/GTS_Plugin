@@ -80,7 +80,7 @@ namespace Hooks {
             }
         );*/
 
-		/*static CallHook<float(NiNode* node)> Skyrim_NiNode(RELOCATION_ID(19889, 19889),  REL::Relocate(-0xBC, -0xBC), // crashes the game
+		static CallHook<float(NiNode* node)> Skyrim_NiNode(RELOCATION_ID(19889, 19889),  REL::Relocate(0xBC, 0xBC),
 		[](auto* node) {
 		    float result = Skyrim_NiNode(node);
 			log::info("Original Node Value: {}", result);
@@ -91,10 +91,11 @@ namespace Hooks {
 				log::info("Node Value: {}", result);
 		    }
 		    return result;
-		});*/
+		});
 
 		static CallHook<float(TESObjectREFR* ref)> Skyrim_sub_140619040(RELOCATION_ID(37323, 37323),  REL::Relocate(0x17E, 0x17E), // crashes the game
 		[](auto* ref) {
+			// No idea what it does, rarely prints something.
 		    float result = Skyrim_sub_140619040(ref);
 			log::info("Original Ref Value: {}", result);
 		    if (ref) {
@@ -108,6 +109,24 @@ namespace Hooks {
 		    }
 		    return result;
 		});
-		
+
+		static CallHook<float(IAnimationGraphManagerHolder* graph)> Skyrim_AnimGraph_140609D50(RELOCATION_ID(36957, 36957),  REL::Relocate(0xBD, 0xBD),
+		[](auto* ref) {
+		    float result = Skyrim_AnimGraph_140609D50(graph);
+			log::info("Original Graph Value: {}", result);
+			Actor* giant = skyrim_cast<Actor*>(graph);
+			if (giant) {
+				if (giant->formID == 0x14 || IsTeammate(giant)) {
+					float scale = get_visual_scale(giant);
+					if (scale > 0.0) {
+						result *= scale;
+						log::info("Found Actor: {}, scale: {}", actor->GetDisplayFullName(), scale);
+					}
+
+				log::info("Graph New Scale: {}", result);
+				}
+			}
+		    return result;
+		});
 	}
 }
