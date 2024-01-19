@@ -28,7 +28,8 @@ namespace {
 	const float PI = 3.14159;
 
 	void HealOrShrink(Actor* giant, Actor* tiny, int rng) {
-		if (rng <= 1) { // chance to get drained by follower
+		bool hostile = IsHostile(giant, tiny);
+		if (hostile || rng <= 1) { // chance to get drained by follower
 			AnimationManager::StartAnim("Huggies_Shrink", giant);
 			AnimationManager::StartAnim("Huggies_Shrink_Victim", tiny);
 		} else { // else heal

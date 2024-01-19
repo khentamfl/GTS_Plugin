@@ -92,7 +92,8 @@ namespace Hooks {
 
 
 		
-		static CallHook<float(Actor*)> SkyrimJumpHeight(RELOCATION_ID(37257, 37257),  REL::Relocate(0x17F, 0x17F),
+		static CallHook<float(Actor*)> SkyrimJumpHeight(RELOCATION_ID(36271, 37257),  REL::Relocate(0xBE, 0x17F),
+		// SE: 0x1405d2110 -0 x1405d1f80   = 0x190 (offset) .  36271 = 5D1F80
 		[](auto* actor) {
 		    float result = SkyrimJumpHeight(actor);
 			log::info("Original jump height: {}", result);
@@ -101,6 +102,7 @@ namespace Hooks {
 				log::info("form id is of the player");
 			  }
 			  log::info("Raw Name: {}", GetRawName(actor));
+			  log::info("Value: {}", result);
 		    }
 		    return result;
 		});
