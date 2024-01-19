@@ -448,7 +448,7 @@ namespace Gts {
 
 			if (!IsHugCrushing(giantref)) {
 				if (sizedifference < 0.9 || IsDead || stamina <= 2.0 || (!HugShrink::GetHuggiesActor(giantref) && !HuggingAlly)) {
-					if (!HuggingAlly) { // this is needed to still attach the actor while we gentle release ally 
+					if (HuggingAlly) { // this is needed to still attach the actor while we gentle release ally 
 					    // if we won't do that - tiny won't be moved around and it will look bad.
 						log::info("Ally check passed");
 						Hugs_ManageFriendlyTiny(gianthandle, tinyhandle);
