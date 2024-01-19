@@ -93,7 +93,7 @@ namespace Hooks {
 		    return result;
 		});*/
 
-		static CallHook<float(TESObjectREFR* ref)> Skyrim_sub_140619040(RELOCATION_ID(37323, 37323),  REL::Relocate(-0x17E, -0x17E), // crashes the game
+		static CallHook<float(TESObjectREFR* ref)> Skyrim_sub_140619040(RELOCATION_ID(37323, 37323),  REL::Relocate(0x17E, 0x17E), // crashes the game
 		[](auto* ref) {
 		    float result = Skyrim_sub_140619040(ref);
 			log::info("Original Ref Value: {}", result);
