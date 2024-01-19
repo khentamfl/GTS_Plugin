@@ -92,7 +92,7 @@ namespace {
 			float Scale_A = get_visual_scale(actor_a);
 			float Scale_B = get_visual_scale(actor_b) * GetScaleAdjustment(actor_b);
 			float sizedifference = Scale_A/Scale_B;
-			if (sizedifference >= 3.0) {
+			if (sizedifference >= 2.5) {
 				return true;
 			}
 		}
