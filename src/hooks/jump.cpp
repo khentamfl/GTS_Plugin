@@ -75,7 +75,7 @@ namespace Hooks {
 						if (actor) {
 							const float CRITICALHEIGHT = 9.70;
 							const float ACTORHEIGHT = 1.8*70.0;
-							const float FACTOR = 0.35;
+							const float FACTOR = 0.30;
 							float scale = get_visual_scale(actor);
 							float newCriticalHeight = ACTORHEIGHT*scale*FACTOR;
 

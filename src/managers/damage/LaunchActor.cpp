@@ -105,7 +105,7 @@ namespace {
 		float DamageMult = 0.6;
 		float giantSize = get_visual_scale(giant);
 
-		float startpower = 6.0; // determines default power of launching someone
+		float startpower = 12.0; // determines default power of launching someone
 
 		float threshold = 6.0;
 		float SMT = 1.0;

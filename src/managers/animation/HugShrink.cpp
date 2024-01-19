@@ -397,6 +397,7 @@ namespace Gts {
 			ModSizeExperience(giantref, 0.00005);
 
 			DamageAV(tinyref, ActorValue::kStamina, 0.125 * TimeScale()); // Drain Tiny Stamina
+			DamageAV(giantref, ActorValue::kStamina, 0.125 * TimeScale()); // Drain Tiny Stamina
 
 			bool TinyAbsorbed;
 			giantref->GetGraphVariableBool("GTS_TinyAbsorbed", TinyAbsorbed);

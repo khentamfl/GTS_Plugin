@@ -29,12 +29,35 @@ namespace {
 
 	void HealOrShrink(Actor* giant, Actor* tiny, int rng) {
 		bool hostile = IsHostile(giant, tiny);
+		
 		if (hostile || rng <= 1) { // chance to get drained by follower
 			AnimationManager::StartAnim("Huggies_Shrink", giant);
 			AnimationManager::StartAnim("Huggies_Shrink_Victim", tiny);
 		} else { // else heal
 			StartHealingAnimation(giant, tiny);
 		}
+	}
+
+	bool CanHugCrush(Actor* giant, Actor* tiny, int rng) {
+		int crush_rng = rand() % 4;
+
+		float health = GetHealthPercentage(tiny);
+		float HpThreshold = GetHugCrushThreshold(giant);
+
+		bool low_hp = (health <= HpThreshold);
+		bool allow_perform = (tiny->formID != 0x14 && IsHostile(giant, tiny)) || (rng <= 1);
+		bool Can_HugCrush = (low_hp && allow_perform);
+
+		float stamina = GetStaminaPercentage(giant);
+		bool Can_Force = Runtime::HasPerkTeam(giant, "HugCrush_MightyCuddles") && IsHostile(giant, tiny);
+
+		if (Can_Force && crush_rng <= 1 && stamina >= 0.50) {
+			return true;
+		}
+		if (Can_HugCrush) {
+			return true;
+		}
+		return false;
 	}
 
 	void DoSandwich(Actor* pred) {
@@ -82,14 +105,12 @@ namespace {
 			if (ActionTimer.ShouldRunFrame()) {
 				int rng = rand() % 20;
 				if (rng < 12) {
-					float health = GetHealthPercentage(tinyref);
-					float HpThreshold = GetHugCrushThreshold(giantref);
-
+					
 					if (!Runtime::HasPerkTeam(giantref, "HugCrush_LovingEmbrace")) {
 						rng = 1; // always force crush and always shrink
 					}	
 					
-					if (health <= HpThreshold && (tinyref->formID != 0x14 || IsHostile(giantref, tinyref) || rng <= 1)) {
+					if (CanHugCrush(giantref, tinyref, rng)) {
 						AnimationManager::StartAnim("Huggies_HugCrush", giantref);
 						AnimationManager::StartAnim("Huggies_HugCrush_Victim", tinyref);
 					} else {

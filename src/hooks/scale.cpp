@@ -79,5 +79,18 @@ namespace Hooks {
                 return Skyrim_Pathing_140474420(param_1, param_2, param_3, param_4, param_5);
             }
         );*/
+
+		/*static CallHook<float(NiNode* node)> Skyrim_NiNode(RELOCATION_ID(19889, 19889),  REL::Relocate(-0xBC, -0xBC), // crashes the game
+		[](auto* node) {
+		    float result = Skyrim_NiNode(node);
+			log::info("Original Node Value: {}", result);
+		    if (node) {
+				float scale = 10.0;
+				result *= scale;
+				
+				log::info("Node Value: {}", result);
+		    }
+		    return result;
+		});*/
 	}
 }
