@@ -9,7 +9,7 @@ using namespace SKSE;
 // Possible hooks that may benefit from scaling: (SE)
 // - Character::GetEyeHeight_140601E40  (Headtracking?)
 // - Actor::Jump_1405D1F80              (Maybe jump height)
-// - Pathing::sub_140474420             (perhaps pathing fix)
+// - Pathing::sub_140474420             (perhaps pathing fix)  [Looks like it does nothing, there's no prints]
 // - TESObject::LoadGraphics_140220DD0  (Model render distance?)
 
 
@@ -61,7 +61,8 @@ namespace Hooks {
         );*/
 
 									//(Pathing *param_1,undefined param_2,undefined param_3,undefined param_4, uint64 param_5)
-		static FunctionHook<void(uintptr_t* param_1, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4, uintptr_t param_5)> Skyrim_Pathing_140474420( 
+		/*static FunctionHook<void(uintptr_t* param_1, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4, uintptr_t param_5)> Skyrim_Pathing_140474420( 
+			// This hook seems to do nothing.
 			 // 29837 = 140474420 (SE), AE = ???
             REL::RelocationID(29837, 29837),
             [](auto* param_1, auto param_2, auto param_3, auto param_4, auto param_5) {
@@ -74,6 +75,6 @@ namespace Hooks {
 
                 return Skyrim_Pathing_140474420(param_1, param_2, param_3, param_4, param_5);
             }
-        );
+        );*/
 	}
 }

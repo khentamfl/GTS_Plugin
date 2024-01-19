@@ -223,13 +223,15 @@ namespace Gts {
 		if (!actor->Is3DLoaded()) {
 			return -1.0;
 		}
+
+		float scale = get_ref_scale(actor);
 		auto model = actor->Get3D(false);
 		if (model) {
-			return model->local.scale;
+			return model->local.scale * scale;
 		}
 		auto first_model = actor->Get3D(true);
 		if (first_model) {
-			return first_model->local.scale;
+			return first_model->local.scale * scale;
 		}
 		return -1.0;
 	}
