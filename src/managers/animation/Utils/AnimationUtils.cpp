@@ -875,7 +875,7 @@ namespace Gts {
 					if (nodeCollisions > 0) {
 						bool allow = sizemanager.IsHandDamaging(otherActor);
 						if (!allow) {
-							float aveForce = std::clamp(force, 0.15f, 0.70f);
+							float aveForce = std::clamp(force, 0.06f, 0.70f);
 							float pushForce = std::clamp(force, 0.04f, 0.10f);
 							float audio = 1.0;
 							if (SMT) {

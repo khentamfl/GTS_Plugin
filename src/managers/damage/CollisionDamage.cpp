@@ -232,7 +232,7 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
-								float aveForce = std::clamp(force, 0.15f, 0.70f);///nodeCollisions;
+								float aveForce = std::clamp(force, 0.06f, 0.70f);///nodeCollisions;
 								CollisionDamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult, crush_threshold, Cause);
 							}
 						}
@@ -344,7 +344,7 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
-								float aveForce = std::clamp(force, 0.15f, 0.70f);///nodeCollisions;
+								float aveForce = std::clamp(force, 0.06f, 0.70f);///nodeCollisions;
 								CollisionDamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult, crush_threshold, Cause);
 							}
 						}
@@ -425,7 +425,6 @@ namespace Gts {
 		// ^ Chance to break bonues and inflict additional damage, as well as making target more vulerable to size damage
 
 		damage_result *= damagebonus;
-		log::info("Damage Result of {} is {}", giant->GetDisplayFullName(), damage_result);
 
 		if (!tiny->IsDead()) {
 			float experience = std::clamp(damage_result/500, 0.0f, 0.05f);
