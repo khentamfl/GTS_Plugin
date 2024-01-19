@@ -142,10 +142,10 @@ namespace Hooks {
 		    float result = Skyrim_Ref_sub_1406AA410(ref, param_2, param_3, Character, param_5);
 			log::info("Sub A410: Original Ref_Sub Value: {}", result);
 			log::info("Param 1 Raw Name: {}", GetRawName(ref));
-			log::info("Param 2 Raw Name: {}", GetRawName(param_2));
-			log::info("Param 3 Raw Name: {}", GetRawName(param_3));
-			log::info("Param 4 Raw Name: {}", GetRawName(Character));
-			log::info("Param 5 Raw Name: {}", GetRawName(param_5));
+			//log::info("Param 2 Raw Name: {}", GetRawName(param_2));
+			//log::info("Param 3 Raw Name: {}", GetRawName(param_3));
+			//log::info("Param 4 Raw Name: {}", GetRawName(Character));
+			//log::info("Param 5 Raw Name: {}", GetRawName(param_5));
 			Actor* giant = skyrim_cast<Actor*>(ref);
 			if (giant) {
 				if (giant->formID == 0x14 || IsTeammate(giant)) {
