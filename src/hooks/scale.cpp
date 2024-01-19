@@ -120,7 +120,7 @@ namespace Hooks {
 					float scale = get_visual_scale(giant);
 					if (scale > 0.0) {
 						result *= scale;
-						log::info("Found Actor: {}, scale: {}", actor->GetDisplayFullName(), scale);
+						log::info("Found Actor: {}, scale: {}", giant->GetDisplayFullName(), scale);
 					}
 
 				log::info("Graph New Scale: {}", result);
