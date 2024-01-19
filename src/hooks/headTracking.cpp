@@ -58,6 +58,7 @@ namespace Hooks
 						log::info("Scaled Eye Height of {} is {}, scale: {}", actor->GetDisplayFullName(), result, scale);
 					}
 				}
+				log::info("EyeHeight hook is working");
 				return result;
 			}
 		);

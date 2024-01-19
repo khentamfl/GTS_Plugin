@@ -90,16 +90,6 @@ namespace {
 		return 76.0 * bonus;
 	}
 
-	void BoostJump(Actor* actor) {
-		// TODO: Write a real hook inside skyrims GETINI FLOAT
-		if (actor->formID != 0x14) {
-			return;
-		}
-		float new_jump = JumpHeight(actor);
-
-		SetINIFloat("fJumpHeightMin", new_jump);
-	}
-
 	// Todo unify the functions
 	void UpdateActors(Actor* actor) {
 		if (!actor) {
@@ -109,9 +99,6 @@ namespace {
 		static Timer jumptimer = Timer(0.50);
 		float size = get_giantess_scale(actor);
 
-		if (jumptimer.ShouldRunFrame()) {
-			BoostJump(actor);
-		}
 		if (timer.ShouldRunFrame()) { // Run once per 0.05 sec
 			ManagePerkBonuses(actor);
 
@@ -220,7 +207,7 @@ namespace Gts {
 				}
 			}
 			case ActorValue::kJumpingBonus: {
-				float power = Runtime::GetFloat("bonusJumpHeightMultiplier");
+				float power = 1.0;
 				float defaultjump = 1.0 + (1.0 * (scale - 1) * power);
 				if (scale > 1.0) {
 					return defaultjump;
