@@ -16,7 +16,6 @@
 #include "magic/effects/shrink_other.hpp"
 #include "magic/effects/slow_grow.hpp"
 #include "magic/effects/sword_of_size.hpp"
-#include "magic/effects/vore_growth.hpp"
 #include "magic/effects/SmallMassiveThreat.hpp"
 #include "magic/effects/Potions/GrowthPotion.hpp"
 #include "magic/effects/Potions/SizePotion.hpp"

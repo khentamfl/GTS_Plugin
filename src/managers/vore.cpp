@@ -150,7 +150,6 @@ namespace {
 		float start_time = Time::WorldTimeElapsed();
 
 		float recorded_scale = get_visual_scale(tiny);
-		float gain_power = recorded_scale * mealEffiency * growth;
 		float restore_power = 0.0;
 
 		std::string_view tiny_name = tiny->GetDisplayFullName();
@@ -183,6 +182,8 @@ namespace {
 		if (Runtime::HasPerkTeam(giant, "Gluttony")) {
 			restore_power = GetMaxAV(tiny, ActorValue::kHealth) * 4 * mealEffiency;
 		}
+
+		float gain_power = recorded_scale * mealEffiency * growth; // power of most buffs that we start
 
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		std::string name = std::format("Vore_Buff_{}_{}", giant->formID, tiny->formID);
