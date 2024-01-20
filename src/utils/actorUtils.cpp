@@ -807,7 +807,7 @@ namespace Gts {
 	float GetScaleAdjustment(Actor* tiny) {
 		float sc = get_giantess_height(tiny);
 		
-		log::info("Giantess Height of {} is {}", tiny->GetDisplayFullName(), sc);
+		//log::info("Giantess Height of {} is {}", tiny->GetDisplayFullName(), sc);
 
 		auto min = tiny->GetBoundMin();
 		auto max = tiny->GetBoundMax();
@@ -815,12 +815,12 @@ namespace Gts {
 		auto dim = max-min;
 		auto volume = dim.x * dim.y * dim.z;
 
-		log::info("{} BB: {}, Volume: {}", tiny->GetDisplayFullName(), Vector2Str(dim), volume);
+		//log::info("{} BB: {}, Volume: {}", tiny->GetDisplayFullName(), Vector2Str(dim), volume);
 		auto nif_bb = get_bound(tiny);
 		if (nif_bb) {
 			auto nif_dim = nif_bb->extents;
 			auto nif_volume = nif_dim.x * nif_dim.y * nif_dim.z;
-			log::info("{} Nif BB: {}, Volume: {}", tiny->GetDisplayFullName(), Vector2Str(nif_dim), nif_volume);
+			//log::info("{} Nif BB: {}, Volume: {}", tiny->GetDisplayFullName(), Vector2Str(nif_dim), nif_volume);
 		}
 		
 		return sc;
