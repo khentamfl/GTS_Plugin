@@ -12,23 +12,25 @@
 #include "managers/highheel.hpp"
 #include "managers/footstep.hpp"
 #include "utils/actorUtils.hpp"
-#include "utils/looting.hpp"
+#include "colliders/actor.hpp"
 #include "managers/Rumble.hpp"
 #include "utils/findActor.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
+#include "utils/looting.hpp"
+#include "scale/height.hpp"
 #include "data/runtime.hpp"
-#include "spring.hpp"
-#include "scale/scale.hpp"
 #include "colliders/RE.hpp"
-#include "colliders/actor.hpp"
-#include "profiler.hpp"
-#include "timer.hpp"
-#include "node.hpp"
-#include "utils/av.hpp"
-#include "colliders/RE.hpp"
-#include "UI/DebugAPI.hpp"
 #include "rays/raycast.hpp"
+#include "scale/scale.hpp"
+#include "UI/DebugAPI.hpp"
+#include "utils/av.hpp"
+#include "profiler.hpp"
+#include "spring.hpp"
+#include "timer.hpp"
+
+#include "node.hpp"
+
 #include <vector>
 #include <string>
 
@@ -811,16 +813,10 @@ namespace Gts {
 
 	float GetScaleAdjustment(Actor* tiny) {
 		float sc = 1.0;
-		if (tiny->formID != 0x14) { // for non player actors only, always return 1.0 in player case
-			if (IsDragon(tiny)) {
-				sc = 6.0;
-			} else if (IsMammoth(tiny)) {
-				sc = 6.0;
-			} else if (IsGiant(tiny)) {
-				sc = 2.0;
-			}
-			return sc;
-		}
+		
+		sc = get_visual_height(tiny);
+		log::info("Visual Height of {} is {}", tiny->GetDisplayFullName(), sc);
+		
 		return sc;
 	}
 

@@ -89,12 +89,12 @@ namespace {
 		Actor* actor_a = skyrim_cast<Actor*>(actor);
 		Actor* actor_b = skyrim_cast<Actor*>(otherActor);
 		if (actor_a && actor_b) {
-			float Scale_A = get_visual_scale(actor_a); // A is usually GTS
-			float Scale_B = get_visual_scale(actor_b) * GetScaleAdjustment(actor_b); // B is usually a tiny
-			// Actors vary though, so it is a good idea to pass size difference from both POV's
+			float Scale_A = get_visual_scale(actor_a) * GetScaleAdjustment(actor_a); // A is usually GTS, but can be TIny as well
+			float Scale_B = get_visual_scale(actor_b) * GetScaleAdjustment(actor_b); // B is usually a tiny but can be GTS as well
+			// Because actors vary, it is a good idea to pass size difference from both POV's
 			float sizedifference_gts = Scale_A/Scale_B;
 			float sizedifference_tiny = Scale_B/Scale_A;
-			if (sizedifference_gts >= 2.25 || sizedifference_tiny <= 0.44) {
+			if (sizedifference_gts >= 2.5 || sizedifference_tiny <= 0.4) {
 				return true;
 			}
 		}
