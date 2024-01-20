@@ -80,10 +80,10 @@ namespace Gts {
 		this->data.try_emplace(actor);
 		auto& hhData = this->data[actor];
 		float speedup = 1.0;
-		if (IsCrawling(actor) || IsProning(actor)) {
+		if (IsCrawling(actor) || IsProning(actor) || BehaviorGraph_DisableHH(actor)) {
 			speedup = 4.0; // To shift down a lot faster
-		} if (BehaviorGraph_DisableHH(actor)) {
-			speedup = 8.0; // even faster
+		} if (!IsGtsBusy(actor)) {
+			speedup = 2.5;
 		}
 		// Should disable HH?
 		bool disableHH = DisableHighHeels(actor);
