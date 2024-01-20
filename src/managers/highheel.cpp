@@ -82,7 +82,7 @@ namespace Gts {
 		float speedup = 1.0;
 		if (IsCrawling(actor) || IsProning(actor) || BehaviorGraph_DisableHH(actor)) {
 			speedup = 4.0; // To shift down a lot faster
-		} if (!IsGtsBusy(actor)) {
+		} else if (!IsGtsBusy(actor)) {
 			speedup = 2.5;
 		}
 		// Should disable HH?
