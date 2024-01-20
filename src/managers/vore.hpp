@@ -57,46 +57,6 @@ namespace Gts
 			bool allGrabbed = false;
 	};
 
-	enum VoreBuffState {
-		Starting,
-		RampUp,
-		Running,
-		RampDown,
-		Finishing,
-		Done,
-	};
-	struct VoreBuff {
-		VoreBuffState state = VoreBuffState::Starting;
-		ActorHandle giant;
-		ActorHandle tiny;
-		float duration;
-		float restorePower = 0.0; // Amount of health to restore TOTAL
-		float sizePower = 0.0; // Amount of size to gain TOTAL
-		float tinySize = 0.0;
-		float naturalsize = 0.0;
-		bool WasDragon = false;
-		bool WasLiving = false;
-		bool WasGiant = false;
-		std::string tiny_name;
-
-
-		// Used to track how much time has passed (abusing Spring code)
-		// The half life will tell the half the duration
-		Spring factor = Spring(0.0, 15.0);
-		float appliedFactor = 0.0;
-
-		// Create the buff
-		//
-		// This also calculates the restorePower etc and the duration
-		VoreBuff(Actor* giant, Actor* tiny);
-
-		// Called every frame until we are done
-		void Update();
-
-		// Reports true when done so that it can be removed
-		bool Done();
-	};
-
 	class Vore : public EventListener
 	{
 		public:
@@ -145,10 +105,7 @@ namespace Gts
 			// Gets the current vore data of a giant
 			VoreData& GetVoreData(Actor* giant);
 
-			void AddVoreBuff(ActorHandle giant, ActorHandle tiny);
-
 		private:
 			std::unordered_map<FormID, VoreData> data;
-			std::unordered_map<FormID, VoreBuff> buffs;
 	};
 }

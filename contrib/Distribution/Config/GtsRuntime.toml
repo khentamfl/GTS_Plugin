@@ -120,8 +120,6 @@ CrushGrowthMGEF = "GTS.esp|2028B6"
 # Utility
 GtsMarkAlly = "GTS.esp|29F82E"
 TrackSize = "GTS.esp|3B0E75"
-# Vore
-GlobalVoreGrowth = "GTS.esp|216CCC"
 # Damage
 SizeRelatedDamage0 = "GTS.esp|00A441"
 SizeRelatedDamage1 = "GTS.esp|00A9A8"

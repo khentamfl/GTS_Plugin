@@ -252,7 +252,6 @@ namespace Gts {
 		RegisterMagic<GrowOtherButton>("GrowAllySizeButton");
 		RegisterMagic<ShrinkBack>("ShrinkBack");
 		RegisterMagic<ShrinkBackOther>("ShrinkBackNPC");
-		RegisterMagic<VoreGrowth>("GlobalVoreGrowth");
 		RegisterMagic<Absorb>("AbsorbMGEF");
 		RegisterMagic<Absorb>("TrueAbsorb");
 		RegisterMagic<ExplosiveGrowth>("explosiveGrowth1");

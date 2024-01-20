@@ -80,6 +80,19 @@ namespace Gts {
 		float scale;
 		std::vector<NiAVObject*> nodes;
 	};
+
+	struct VoreInformation {
+		Actor* giantess;
+		bool WasGiant;
+		bool WasDragon;
+		bool WasMammoth;
+		bool WasLiving;
+		float Scale;
+		float Vore_Power;
+		float Natural_Scale;
+		std::string_view Tiny_Name;
+	};
+
 	struct UnderFoot {
 		Actor* giant;
 		Actor* tiny;

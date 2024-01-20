@@ -66,10 +66,6 @@ namespace {
 		}
 	}
 
-	void Vore_TransferItems(Actor* pred, Actor* prey) {
-		TransferInventory(prey, pred, 1.0, false, true, DamageSource::Vored, true);
-	}
-
 	void VoreMessage_SwallowedAbsorbing(Actor* pred, Actor* prey) {
 		if (!pred) {
 			return;
@@ -110,6 +106,114 @@ namespace {
 			AdvanceQuestProgression(pred, tiny, 6, 1, true);
 		}
 	}
+
+	void Task_Vore_FinishVoreBuff(const VoreInformation& VoreInfo) {
+
+		Actor* giant = VoreInfo.giantess;
+		bool WasGiant = VoreInfo.WasGiant;
+		bool WasDragon = VoreInfo.WasDragon;
+		bool WasLiving = VoreInfo.WasLiving;
+
+		float sizePower = VoreInfo.Vore_Power;
+
+		float tinySize = VoreInfo.Scale;
+		float natural_scale = VoreInfo.Natural_Scale;
+		std::string_view tiny_name = VoreInfo.Tiny_Name;
+		
+		if (!AllowDevourment()) {
+			if (giant) {
+				ModSizeExperience(giant, 0.28 + (tinySize * 0.02));
+				VoreMessage_Absorbed(giant, tiny_name, WasDragon, WasGiant);
+				CallGainWeight(giant, 3.0 * tinySize);
+				BuffAttributes(giant, tinySize);
+				update_target_scale(giant, sizePower * 0.4, SizeEffectType::kGrow);
+				AdjustSizeReserve(giant, sizePower);
+				if (giant->formID == 0x14) {
+					AdjustSizeLimit(0.0260, giant);
+					AdjustMassLimit(0.0106, giant);
+					SurvivalMode_AdjustHunger(giant, tinySize, natural_scale, WasDragon, WasLiving, 1);
+				}
+				GRumble::Once("GrowthRumble", giant, 2.45, 0.30);
+				GRumble::Once("VoreShake", giant, sizePower * 4, 0.05);
+				if (Vore::GetSingleton().GetVoreData(giant).GetTimer() == true) {
+					PlayMoanSound(giant, 1.0);
+				}
+			}
+		}
+	}
+
+	void Task_Vore_StartVoreBuff(Actor* giant, Actor* tiny) {
+		float default_duration = 40.0;
+		float mealEffiency = 0.2; // Normal pred has 20% efficent stomach
+		float growth = 2.0;
+
+		float start_time = Time::WorldTimeElapsed();
+
+		float recorded_scale = get_visual_scale(tiny);
+		float gain_power = recorded_scale * mealEffiency * growth;
+		float restore_power = 0.0;
+
+		std::string_view tiny_name = tiny->GetDisplayFullName();
+
+		VoreInformation VoreInfo = VoreInformation {
+			.giantess = giant;
+			.Vore_Power = gain_power;
+			.WasGiant = IsGiant(tiny);
+			.WasDragon = IsDragon(tiny);
+			.WasMammoth = IsMammoth(tiny);
+			.WasLiving = IsLiving(tiny);
+			.Scale = get_visual_scale(tiny);
+			.Natural_Scale = get_natural_scale(tiny);
+			.Tiny_Name = tiny->GetDisplayFullName();
+		};
+
+		if (Runtime::HasPerkTeam(giant, "Gluttony")) {
+			default_duration = 20.0;
+			mealEffiency += 0.2;
+		}
+		if (Runtime::HasPerkTeam(giant, "AdditionalGrowth")) {
+			growth *= 1.25;
+		}
+		if (IsDragon(tiny) || IsMammoth(tiny)) {
+			mealEffiency *= 6.0;
+		}
+		if (IsGiant(tiny)) {
+			mealEffiency *= 2.6;
+		}
+		if (Runtime::HasPerkTeam(giant, "Gluttony")) {
+			restore_power = GetMaxAV(tiny, ActorValue::kHealth) * 4 * mealEffiency;
+		}
+
+		ActorHandle gianthandle = giant->CreateRefHandle();
+		std::string name = std::format("Vore_Buff_{}_{}", giant->formID, tiny->formID);
+
+		Vore_AdvanceQuest(giant, tiny, IsDragon(tiny), IsGiant(tiny));
+
+		TaskManager::RunFor(name, default_duration, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			auto giantref = gianthandle.get().get();
+			float timepassed = Time::WorldTimeElapsed() - Start;
+			
+			float regenlimit = GetMaxAV(giantref, ActorValue::kHealth) * 0.0014; // Limit it per frame
+			float healthToApply = std::clamp(restore_power/4000.f, 0.0f, regenlimit);
+			float sizeToApply = gain_power/5500;
+
+			DamageAV(giantref, ActorValue::kHealth, -healthToApply * TimeScale());
+			DamageAV(giantref, ActorValue::kStamina, -healthToApply * TimeScale());
+
+			update_target_scale(giantref, sizeToApply * TimeScale(), SizeEffectType::kGrow);
+			AddStolenAttributes(giantref, sizeToApply * TimeScale());
+
+			if (timepassed >= default_duration) {
+				Task_Vore_FinishVoreBuff(VoreInfo);
+				return false;
+			}
+
+			return true;
+		});
+	}
 }
 
 namespace Gts {
@@ -128,7 +232,7 @@ namespace Gts {
 		for (auto& [key, tinyref]: this->tinies) {
 			auto tiny = tinyref.get().get();
 			auto giant = this->giant.get().get();
-			Vore::GetSingleton().AddVoreBuff(this->giant, tinyref);
+			Task_Vore_StartVoreBuff(this->giant, tinyref);
 			VoreMessage_SwallowedAbsorbing(giant, tiny);
 
 			if (giant->formID == 0x14) {
@@ -169,7 +273,7 @@ namespace Gts {
 					}
 					auto giant = giantref.get().get();
 					auto smoll = tinyref.get().get();
-					Vore_TransferItems(giant, smoll);
+					TransferInventory(smol, giant, 1.0, false, true, DamageSource::Vored, true);
 				});
 			}
 		}
@@ -227,110 +331,6 @@ namespace Gts {
 		}
 	}
 
-	VoreBuff::VoreBuff(Actor* giant, Actor* tiny) : factor(Spring(0.0, 1.0)), giant(giant ? giant->CreateRefHandle() : ActorHandle()), tiny(tiny ? tiny->CreateRefHandle() : ActorHandle()) {
-		this->duration = 40.0;
-		float mealEffiency = 0.2; // Normal pred has 20% efficent stomach
-		float growth = 2.0;
-		if (Runtime::HasPerkTeam(giant, "Gluttony")) {
-			this->duration = 20.0;
-			mealEffiency += 0.2;
-		}
-		if (Runtime::HasPerkTeam(giant, "AdditionalGrowth")) {
-			growth *= 1.25;
-		}
-		if (IsDragon(tiny) || IsMammoth(tiny)) {
-			mealEffiency *= 6.0;
-		}
-		if (IsGiant(tiny)) {
-			mealEffiency *= 2.6;
-		}
-		this->appliedFactor = 0.0;
-		this->state = VoreBuffState::Starting;
-
-		if (tiny) {
-			float tiny_scale = get_visual_scale(tiny);
-			// Amount of health we apply depends on their vitality
-			// and their size
-			if (Runtime::HasPerkTeam(giant, "Gluttony")) {
-				this->restorePower = GetMaxAV(tiny, ActorValue::kHealth) * 4 * mealEffiency;
-			} else {
-				this->restorePower = 0.0;
-			}
-			this->WasGiant = IsGiant(tiny);
-			this->WasDragon = IsDragon(tiny);
-			this->WasLiving = IsLiving(tiny);
-			this->sizePower = tiny_scale * mealEffiency * growth;
-			this->tinySize = tiny_scale;
-			this->naturalsize = get_natural_scale(tiny);
-			this->tiny_name = tiny->GetDisplayFullName();
-		}
-	}
-	void VoreBuff::Update() {
-		auto giant = this->giant.get().get();
-		if (!this->giant) {
-			this->state = VoreBuffState::Done;
-			return;
-		}
-		switch (this->state) {
-			case VoreBuffState::Starting: {
-				this->factor.value = 0.0;
-				this->factor.velocity = 0.0;
-				this->factor.target = 1.0;
-				this->factor.halflife = this->duration * 0.5;
-				this->state = VoreBuffState::Running;
-
-				Vore_AdvanceQuest(giant, this->tiny.get().get(), this->WasDragon, this->WasGiant); // advance quest
-				break;
-			}
-			case VoreBuffState::Running: {
-				float regenlimit = GetMaxAV(giant, ActorValue::kHealth) * 0.0014; // Limit it per frame
-				float healthToApply = std::clamp(this->restorePower/4000.f, 0.0f, regenlimit);
-				float sizeToApply = this->sizePower/5500;
-
-				DamageAV(giant, ActorValue::kHealth, -healthToApply * TimeScale());
-				DamageAV(giant, ActorValue::kStamina, -healthToApply * TimeScale());
-
-				update_target_scale(giant, sizeToApply * TimeScale(), SizeEffectType::kGrow);
-				AddStolenAttributes(giant, sizeToApply * TimeScale());
-				if (this->factor.value >= 0.99) {
-					this->state = VoreBuffState::Finishing;
-				}
-				break;
-			}
-			case VoreBuffState::Finishing: {
-				if (!AllowDevourment()) {
-					if (this->giant) {
-						ModSizeExperience(giant, 0.28 + (this->tinySize * 0.02));
-						VoreMessage_Absorbed(giant, this->tiny_name, this->WasDragon, this->WasGiant);
-						CallGainWeight(giant, 3.0 * this->tinySize);
-						BuffAttributes(giant, this->tinySize);
-						update_target_scale(giant, this->sizePower * 0.4, SizeEffectType::kGrow);
-						AdjustSizeReserve(giant, this->sizePower);
-						if (giant->formID == 0x14) {
-							AdjustSizeLimit(0.0260, giant);
-							AdjustMassLimit(0.0106, giant);
-							SurvivalMode_AdjustHunger(giant, this->tinySize, this->naturalsize,this->WasDragon, this->WasLiving, 1);
-						}
-						GRumble::Once("GrowthRumble", giant, 2.45, 0.30);
-						GRumble::Once("VoreShake", giant, this->sizePower * 4, 0.05);
-						if (Vore::GetSingleton().GetVoreData(giant).GetTimer() == true) {
-							PlayMoanSound(giant, 1.0);
-						}
-					}
-				}
-
-				this->state = VoreBuffState::Done;
-				break;
-			}
-			case VoreBuffState::Done: {
-			}
-		}
-	}
-
-	bool VoreBuff::Done() {
-		return this->state == VoreBuffState::Done;
-	}
-
 	Vore& Vore::GetSingleton() noexcept {
 		static Vore instance;
 		return instance;
@@ -367,12 +367,6 @@ namespace Gts {
 
 		for (auto& [key, voreData]: this->data) {
 			voreData.Update();
-		}
-		for (auto& [key, voreBuff]: this->buffs) {
-			voreBuff.Update();
-			if (voreBuff.Done()) {
-				this->buffs.erase(key);
-			}
 		}
 	}
 
@@ -740,11 +734,5 @@ namespace Gts {
 		this->data.try_emplace(giant->formID, giant);
 
 		return this->data.at(giant->formID);
-	}
-
-	void Vore::AddVoreBuff(ActorHandle giantref, ActorHandle tinyref) {
-		auto giant = giantref.get().get();
-		auto tiny = tinyref.get().get();
-		this->buffs.try_emplace(tiny->formID, giant, tiny);
 	}
 }

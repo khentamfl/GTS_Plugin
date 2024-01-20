@@ -62,7 +62,11 @@ namespace {
 
 		if (!force_cancel) {
 			float perk = Perk_GetCostReduction(giantref);
-			DamageAV(giantref, ActorValue::kStamina, 0.12 * TimeScale() * perk);
+			float damage = 0.12 * TimeScale() * perk;
+			if (giantref->formID != 0x14) {
+				damage *= 0.5; // less stamina drain for NPC's
+			}
+			DamageAV(giantref, ActorValue::kStamina, damage);
 		}
 
 		if (sp <= 1.0 || force_cancel) {
