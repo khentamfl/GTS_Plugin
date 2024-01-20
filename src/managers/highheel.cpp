@@ -83,7 +83,7 @@ namespace Gts {
 		if (IsCrawling(actor) || IsProning(actor) || BehaviorGraph_DisableHH(actor)) {
 			speedup = 4.0; // To shift down a lot faster
 		} else if (!IsGtsBusy(actor)) {
-			speedup = 2.5;
+			speedup = 3.0;
 		}
 		// Should disable HH?
 		bool disableHH = DisableHighHeels(actor);

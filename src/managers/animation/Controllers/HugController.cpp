@@ -20,7 +20,7 @@
 
 namespace {
 
-	const float MINIMUM_HUG_DISTANCE = 95.0;
+	const float MINIMUM_HUG_DISTANCE = 110.0;
 	const float MINIMUM_HUG_SCALE_RATIO = 0.9;
 	const float GRAB_ANGLE = 70;
 	const float PI = 3.14159;

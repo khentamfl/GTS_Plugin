@@ -91,8 +91,12 @@ namespace {
 		if (actor_a && actor_b) {
 			float Scale_A = get_visual_scale(actor_a);
 			float Scale_B = get_visual_scale(actor_b) * GetScaleAdjustment(actor_b);
+			log::info("Actor A: {}", actor_a->GetDisplayFullName());
+			log::info("Actor B: {}", actor_b->GetDisplayFullName());
 			float sizedifference = Scale_A/Scale_B;
-			if (sizedifference >= 2.5) {
+			log::info("Size Difference between {} and {}", actor_a->GetDisplayFullName(), actor_b->GetDisplayFullName());
+			log::info("Size Difference ^: {}", sizedifference);
+			if (sizedifference >= 2.25) {
 				return true;
 			}
 		}
