@@ -192,19 +192,20 @@ namespace {
 			.Tiny_Name = tiny->GetDisplayFullName(),
 		};
 
-		TaskManager::RunFor(name, default_duration, [=](auto& progressData) {
+		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
 			}
 			auto giantref = gianthandle.get().get();
-			float timepassed = Time::WorldTimeElapsed() - Start;
+			float timepassed = Time::WorldTimeElapsed() - start_time;
 			
-			float regenlimit = GetMaxAV(giantref, ActorValue::kHealth) * 0.0014; // Limit it per frame
+			float regenlimit = GetMaxAV(giantref, ActorValue::kHealth) * 0.0010; // Limit it per frame
 			float healthToApply = std::clamp(restore_power/4000.f, 0.0f, regenlimit);
 			float sizeToApply = gain_power/5500;
 
 			DamageAV(giantref, ActorValue::kHealth, -healthToApply * TimeScale());
-			DamageAV(giantref, ActorValue::kStamina, -healthToApply * TimeScale());
+			DamageAV(giantref, ActorValue::kStamina, -healthToApply * TimeScale()); 
+			// Restore HP and Stamina for GTS
 
 			update_target_scale(giantref, sizeToApply * TimeScale(), SizeEffectType::kGrow);
 			AddStolenAttributes(giantref, sizeToApply * TimeScale());
@@ -221,7 +222,6 @@ namespace {
 
 namespace Gts {
 	VoreData::VoreData(Actor* giant) : giant(giant? giant->CreateRefHandle() : ActorHandle()) {
-
 	}
 
 	void VoreData::AddTiny(Actor* tiny) {
@@ -235,7 +235,7 @@ namespace Gts {
 		for (auto& [key, tinyref]: this->tinies) {
 			auto tiny = tinyref.get().get();
 			auto giant = this->giant.get().get();
-			Task_Vore_StartVoreBuff(this->giant, tinyref);
+			Task_Vore_StartVoreBuff(giant, tiny);
 			VoreMessage_SwallowedAbsorbing(giant, tiny);
 
 			if (giant->formID == 0x14) {
