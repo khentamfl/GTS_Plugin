@@ -89,14 +89,12 @@ namespace {
 		Actor* actor_a = skyrim_cast<Actor*>(actor);
 		Actor* actor_b = skyrim_cast<Actor*>(otherActor);
 		if (actor_a && actor_b) {
-			float Scale_A = get_visual_scale(actor_a);
-			float Scale_B = get_visual_scale(actor_b) * GetScaleAdjustment(actor_b);
-			log::info("Actor A: {}", actor_a->GetDisplayFullName());
-			log::info("Actor B: {}", actor_b->GetDisplayFullName());
-			float sizedifference = Scale_A/Scale_B;
-			log::info("Size Difference between {} and {}", actor_a->GetDisplayFullName(), actor_b->GetDisplayFullName());
-			log::info("Size Difference ^: {}", sizedifference);
-			if (sizedifference >= 2.25) {
+			float Scale_A = get_visual_scale(actor_a); // A is usually GTS
+			float Scale_B = get_visual_scale(actor_b) * GetScaleAdjustment(actor_b); // B is usually a tiny
+			// Actors vary though, so it is a good idea to pass size difference from both POV's
+			float sizedifference_gts = Scale_A/Scale_B;
+			float sizedifference_tiny = Scale_B/Scale_A;
+			if (sizedifference_gts >= 2.25 || sizedifference_tiny <= 0.44) {
 				return true;
 			}
 		}
@@ -141,9 +139,7 @@ namespace Hooks
 						auto objB = GetTESObjectREFR(a_collidableB);
 						if (objB) {
 							if (objA != objB) {
-								//log::info("Collsion between: {} and {}", objA->GetDisplayFullName(), objB->GetDisplayFullName());
 								if (IsCollisionDisabledBetween(objA, objB)) {
-									//log::info("Collision is disabled");
 									*a_result = false;
 								}
 							}
