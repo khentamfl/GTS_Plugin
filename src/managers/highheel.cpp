@@ -81,7 +81,9 @@ namespace Gts {
 		auto& hhData = this->data[actor];
 		float speedup = 1.0;
 		if (IsCrawling(actor) || IsProning(actor)) {
-			speedup = 4.00; // To shift down a lot faster
+			speedup = 4.0; // To shift down a lot faster
+		} if (BehaviorGraph_DisableHH(actor)) {
+			speedup = 8.0; // even faster
 		}
 		// Should disable HH?
 		bool disableHH = DisableHighHeels(actor);

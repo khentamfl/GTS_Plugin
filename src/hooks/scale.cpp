@@ -7,8 +7,8 @@ using namespace SKSE;
 
 
 // Possible hooks that may benefit from scaling: All info for Special Edition (SE)
-//     [x] = attempted to hook it
-// -[x] Character::GetEyeHeight_140601E40  									(Not headtracking. F.)  
+//  [x] = attempted to hook it
+// -[x] Character::GetEyeHeight_140601E40  									(Barely prints anything with unknown conditions. Useless)  
 // -[x] Actor::Jump_1405D1F80              									Jump Height. We already hook that.
 // -[x] Pathing::sub_140474420             									(perhaps pathing fix)  [Looks like it does nothing, there's no prints]
 // -[x] TESObjectREFR::sub_140619040       									 Offset:  0x17E        37323     
@@ -16,10 +16,10 @@ using namespace SKSE;
 // - FUN_1405513a0                                      					(Something attack angle related)
 // -[x] NiNode::sub_1402AA350(NiNode *param_1)                           	 Offset:  0xBC
 // - TESObject::LoadGraphics_140220DD0(TESObject *param_1)                   Offset:  0x1FC
-// -[x] TESObjectREFR::sub_1407BA9C0                                            offset:  0x57         46015     
-// -[x] TESObjectREFR::sub_1407BA910                                            offset:  0x94         46014 
-// -[x] TESObjectREFR::sub_1407BA8B0                                            offset:  0x44         46013  
-// -[x] TESObjectREFR::sub_1406AA410                                            offset:  0xC1         39477
+// -[x] TESObjectREFR::sub_1407BA9C0                                         offset:  0x57         46015     
+// -[x] TESObjectREFR::sub_1407BA910                                         offset:  0x94         46014 
+// -[x] TESObjectREFR::sub_1407BA8B0                                         offset:  0x44         46013  
+// -[x] TESObjectREFR::sub_1406AA410                                         offset:  0xC1         39477
 // ^ These 4 subs seem to do literally nothing.
 
 namespace Hooks {
