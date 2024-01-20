@@ -276,7 +276,7 @@ namespace Gts {
 					}
 					auto giant = giantref.get().get();
 					auto smoll = tinyref.get().get();
-					TransferInventory(smol, giant, 1.0, false, true, DamageSource::Vored, true);
+					TransferInventory(smoll, giant, 1.0, false, true, DamageSource::Vored, true);
 				});
 			}
 		}
