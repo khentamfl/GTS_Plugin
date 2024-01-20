@@ -207,11 +207,6 @@ namespace Gts {
 						auto changes = ref->GetInventoryChanges();
 						if (changes) {
 							quantity = GetItemCount(changes, a_object); // obtain item count
-							log::info("Found quantity for {}, quantity: {}", a_object->GetName(), quantity);
-							if (quantity < 1.0) {
-								quantity = 1.0;
-								log::info("Error: weird quantity for {}. New quantity: {}", a_object->GetName(), quantity);
-							}
 						}
 					}
 
@@ -299,11 +294,6 @@ namespace Gts {
 						auto changes = ref->GetInventoryChanges();
 						if (changes) {
 							quantity = GetItemCount(changes, a_object); // obtain item count
-							log::info("Found quantity for {}, quantity: {}", a_object->GetName(), quantity);
-							if (quantity < 1.0) {
-								quantity = 1.0;
-								log::info("Error: weird quantity for {}. New quantity: {}", a_object->GetName(), quantity);
-							}
 						}
 					}
 

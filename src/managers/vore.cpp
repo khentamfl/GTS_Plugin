@@ -119,7 +119,7 @@ namespace {
 		float tinySize = VoreInfo.Scale;
 		float sizePower = VoreInfo.Vore_Power;
 		float natural_scale = VoreInfo.Natural_Scale;
-		
+
 		std::string_view tiny_name = VoreInfo.Tiny_Name;
 		
 		if (!AllowDevourment()) {
@@ -156,18 +156,6 @@ namespace {
 
 		std::string_view tiny_name = tiny->GetDisplayFullName();
 
-		VoreInformation VoreInfo = VoreInformation {
-			.giantess = giant,
-			.WasGiant = IsGiant(tiny),
-			.WasDragon = IsDragon(tiny),
-			.WasMammoth = IsMammoth(tiny),
-			.WasLiving = IsLiving(tiny),
-			.Scale = get_visual_scale(tiny),
-			.Vore_Power = gain_power,
-			.Natural_Scale = get_natural_scale(tiny),
-			.Tiny_Name = tiny->GetDisplayFullName(),
-		};
-
 		if (Runtime::HasPerkTeam(giant, "Gluttony")) {
 			default_duration = 20.0;
 			mealEffiency += 0.2;
@@ -185,12 +173,24 @@ namespace {
 			restore_power = GetMaxAV(tiny, ActorValue::kHealth) * 4 * mealEffiency;
 		}
 
+		ActorHandle gianthandle = giant->CreateRefHandle();
 		float gain_power = recorded_scale * mealEffiency * growth; // power of most buffs that we start
 
-		ActorHandle gianthandle = giant->CreateRefHandle();
 		std::string name = std::format("Vore_Buff_{}_{}", giant->formID, tiny->formID);
 
 		Vore_AdvanceQuest(giant, tiny, IsDragon(tiny), IsGiant(tiny)); // Progress quest
+
+		VoreInformation VoreInfo = VoreInformation { // create Vore Info
+			.giantess = giant,
+			.WasGiant = IsGiant(tiny),
+			.WasDragon = IsDragon(tiny),
+			.WasMammoth = IsMammoth(tiny),
+			.WasLiving = IsLiving(tiny),
+			.Scale = get_visual_scale(tiny),
+			.Vore_Power = gain_power,
+			.Natural_Scale = get_natural_scale(tiny),
+			.Tiny_Name = tiny->GetDisplayFullName(),
+		};
 
 		TaskManager::RunFor(name, default_duration, [=](auto& progressData) {
 			if (!gianthandle) {
