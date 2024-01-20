@@ -59,7 +59,7 @@ namespace {
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
 						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale * 3) {
-							PrintDeathSource(player, &data.giant, DamageSource::Booty);
+							PrintDeathSource(giant, otherActor, DamageSource::Booty);
 							CrushManager::Crush(giant, otherActor);
 						}
 					}
