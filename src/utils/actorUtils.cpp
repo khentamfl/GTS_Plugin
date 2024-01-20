@@ -6,6 +6,7 @@
 #include "managers/animation/Grab.hpp"
 #include "magic/effects/common.hpp"
 #include "managers/Attributes.hpp"
+#include "utils/debug.hpp"
 #include "utils/papyrusUtils.hpp"
 #include "managers/explosion.hpp"
 #include "utils/DeathReport.hpp"
@@ -816,6 +817,20 @@ namespace Gts {
 		
 		sc = get_visual_height(tiny);
 		log::info("Visual Height of {} is {}", tiny->GetDisplayFullName(), sc);
+
+		auto min = tiny->GetBoundMin();
+		auto max = tiny->GetBoundMax();
+
+		auto dim = max-min;
+		auto volume = dim.x * dim.y * dim.z;
+
+		log::info("BB: {}, Volume: {}", Vector2Str(dim), volume);
+		auto nif_bb = get_bound(tiny);
+		if (nif_bb) {
+			auto nif_dim = nif_bb->extents;
+			auto nif_volume = nif_dim.x * nif_dim.y * nif_dim.z;
+			log::info("Nif BB: {}, Volume: {}", Vector2Str(nif_dim), nif_volume);
+		}
 		
 		return sc;
 	}
