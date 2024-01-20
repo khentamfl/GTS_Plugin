@@ -6,7 +6,6 @@
 #include "managers/animation/Grab.hpp"
 #include "magic/effects/common.hpp"
 #include "managers/Attributes.hpp"
-#include "utils/debug.hpp"
 #include "utils/papyrusUtils.hpp"
 #include "managers/explosion.hpp"
 #include "utils/DeathReport.hpp"
@@ -25,6 +24,7 @@
 #include "rays/raycast.hpp"
 #include "scale/scale.hpp"
 #include "UI/DebugAPI.hpp"
+#include "utils/debug.hpp"
 #include "utils/av.hpp"
 #include "profiler.hpp"
 #include "spring.hpp"
@@ -815,8 +815,8 @@ namespace Gts {
 	float GetScaleAdjustment(Actor* tiny) {
 		float sc = 1.0;
 		
-		sc = get_visual_height(tiny);
-		log::info("Visual Height of {} is {}", tiny->GetDisplayFullName(), sc);
+		sc = get_giantess_height(tiny);
+		log::info("Giantess Height of {} is {}", tiny->GetDisplayFullName(), sc);
 
 		auto min = tiny->GetBoundMin();
 		auto max = tiny->GetBoundMax();
@@ -824,12 +824,12 @@ namespace Gts {
 		auto dim = max-min;
 		auto volume = dim.x * dim.y * dim.z;
 
-		log::info("BB: {}, Volume: {}", Vector2Str(dim), volume);
+		log::info("{} BB: {}, Volume: {}", tiny->GetDisplayFullName(), Vector2Str(dim), volume);
 		auto nif_bb = get_bound(tiny);
 		if (nif_bb) {
 			auto nif_dim = nif_bb->extents;
 			auto nif_volume = nif_dim.x * nif_dim.y * nif_dim.z;
-			log::info("Nif BB: {}, Volume: {}", Vector2Str(nif_dim), nif_volume);
+			log::info("{} Nif BB: {}, Volume: {}", tiny->GetDisplayFullName(), Vector2Str(nif_dim), nif_volume);
 		}
 		
 		return sc;

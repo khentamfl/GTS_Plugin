@@ -16,6 +16,6 @@ namespace Gts {
 	void mod_max_height(Actor* actor, float amt);
 
 	float get_visual_height(Actor* actor);
-
+	float get_giantess_height(Actor* actor);
 	float get_base_height(Actor* actor);
 }

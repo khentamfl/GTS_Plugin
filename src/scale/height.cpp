@@ -73,6 +73,11 @@ namespace Gts {
 		return scale_to_height(actor, scale);
 	}
 
+	float get_giantess_height(Actor* actor) {
+		float scale = get_giantess_scale(actor);
+		return scale_to_height(actor, scale);
+	}
+
 	float get_base_height(Actor* actor) {
 		auto temp_actor_data = Transient::GetSingleton().GetData(actor);
 		if (!temp_actor_data) {
