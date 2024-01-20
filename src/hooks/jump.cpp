@@ -84,10 +84,8 @@ namespace Hooks {
 								log::info("Multi velocity by factor: {}", jump_factor);
 								log::info("Actor: {}", actor->GetDisplayFullName());
 							}
-							if (actor->formID == 0x14) {
-								a_in *= jump_factor;
-								log::info(" new V: {}", a_in);
-							}
+							a_in *= jump_factor;
+							log::info(" new V: {}", a_in);
 						}
 					}
 				}

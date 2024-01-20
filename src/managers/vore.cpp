@@ -155,15 +155,15 @@ namespace {
 		std::string_view tiny_name = tiny->GetDisplayFullName();
 
 		VoreInformation VoreInfo = VoreInformation {
-			.giantess = giant;
-			.Vore_Power = gain_power;
-			.WasGiant = IsGiant(tiny);
-			.WasDragon = IsDragon(tiny);
-			.WasMammoth = IsMammoth(tiny);
-			.WasLiving = IsLiving(tiny);
-			.Scale = get_visual_scale(tiny);
-			.Natural_Scale = get_natural_scale(tiny);
-			.Tiny_Name = tiny->GetDisplayFullName();
+			.giantess = giant,
+			.Vore_Power = gain_power,
+			.WasGiant = IsGiant(tiny),
+			.WasDragon = IsDragon(tiny),
+			.WasMammoth = IsMammoth(tiny),
+			.WasLiving = IsLiving(tiny),
+			.Scale = get_visual_scale(tiny),
+			.Natural_Scale = get_natural_scale(tiny),
+			.Tiny_Name = tiny->GetDisplayFullName(),
 		};
 
 		if (Runtime::HasPerkTeam(giant, "Gluttony")) {
