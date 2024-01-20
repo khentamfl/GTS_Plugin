@@ -809,7 +809,7 @@ namespace Gts {
 		
 		//log::info("Giantess Height of {} is {}", tiny->GetDisplayFullName(), sc);
 
-		auto min = tiny->GetBoundMin();
+		auto min = tiny->GetBoundMin(); 
 		auto max = tiny->GetBoundMax();
 
 		auto dim = max-min;
