@@ -94,7 +94,7 @@ namespace {
 			// Because actors vary, it is a good idea to pass size difference from both POV's
 			float sizedifference_gts = Scale_A/Scale_B;
 			float sizedifference_tiny = Scale_B/Scale_A;
-			if (sizedifference_gts >= 2.5 || sizedifference_tiny <= 0.4) {
+			if (sizedifference_gts >= 2.6 || sizedifference_tiny <= 0.38) {
 				return true;
 			}
 		}

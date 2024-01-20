@@ -800,11 +800,6 @@ namespace {
 
 
 
-
-
-
-
-
 namespace Gts {
 	Grab& Grab::GetSingleton() noexcept {
 		static Grab instance;
@@ -849,7 +844,7 @@ namespace Gts {
 			}
 
 			// Exit on death
-			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
+			float sizedifference = GetSizeDifference(giantref, tinyref);
 
 			ForceRagdoll(tinyref, false);
 
