@@ -80,7 +80,7 @@ namespace {
 		}
 	}
 
-	void VoreMessage_Absorbed(Actor* pred, std::string_view prey, bool WasDragon, bool WasGiant) {
+	void VoreMessage_Absorbed(Actor* pred, std::string_view prey) {
 		if (!pred) {
 			return;
 		}
@@ -110,20 +110,22 @@ namespace {
 	void Task_Vore_FinishVoreBuff(const VoreInformation& VoreInfo) {
 
 		Actor* giant = VoreInfo.giantess;
+
 		bool WasGiant = VoreInfo.WasGiant;
 		bool WasDragon = VoreInfo.WasDragon;
+		bool WasMammoth = VoreInfo.WasMammoth;
 		bool WasLiving = VoreInfo.WasLiving;
 
-		float sizePower = VoreInfo.Vore_Power;
-
 		float tinySize = VoreInfo.Scale;
+		float sizePower = VoreInfo.Vore_Power;
 		float natural_scale = VoreInfo.Natural_Scale;
+		
 		std::string_view tiny_name = VoreInfo.Tiny_Name;
 		
 		if (!AllowDevourment()) {
 			if (giant) {
 				ModSizeExperience(giant, 0.28 + (tinySize * 0.02));
-				VoreMessage_Absorbed(giant, tiny_name, WasDragon, WasGiant);
+				VoreMessage_Absorbed(giant, tiny_name);
 				CallGainWeight(giant, 3.0 * tinySize);
 				BuffAttributes(giant, tinySize);
 				update_target_scale(giant, sizePower * 0.4, SizeEffectType::kGrow);
@@ -136,7 +138,7 @@ namespace {
 				GRumble::Once("GrowthRumble", giant, 2.45, 0.30);
 				GRumble::Once("VoreShake", giant, sizePower * 4, 0.05);
 				if (Vore::GetSingleton().GetVoreData(giant).GetTimer() == true) {
-					PlayMoanSound(giant, 1.0);
+					PlayMoanSound(giant, 1.0); // play timed sound. Timer is a must else we moan 10 times at once for example.
 				}
 			}
 		}
@@ -156,12 +158,12 @@ namespace {
 
 		VoreInformation VoreInfo = VoreInformation {
 			.giantess = giant,
-			.Vore_Power = gain_power,
 			.WasGiant = IsGiant(tiny),
 			.WasDragon = IsDragon(tiny),
 			.WasMammoth = IsMammoth(tiny),
 			.WasLiving = IsLiving(tiny),
 			.Scale = get_visual_scale(tiny),
+			.Vore_Power = gain_power,
 			.Natural_Scale = get_natural_scale(tiny),
 			.Tiny_Name = tiny->GetDisplayFullName(),
 		};
@@ -188,7 +190,7 @@ namespace {
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		std::string name = std::format("Vore_Buff_{}_{}", giant->formID, tiny->formID);
 
-		Vore_AdvanceQuest(giant, tiny, IsDragon(tiny), IsGiant(tiny));
+		Vore_AdvanceQuest(giant, tiny, IsDragon(tiny), IsGiant(tiny)); // Progress quest
 
 		TaskManager::RunFor(name, default_duration, [=](auto& progressData) {
 			if (!gianthandle) {
