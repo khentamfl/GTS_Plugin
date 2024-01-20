@@ -139,9 +139,9 @@ namespace Gts {
 				bonus *= 0.5;
 			}
 			if (actor->AsActorState()->IsSprinting()) {
-				bonus *= 1.50;
+				bonus *= 1.33;
 				if (Runtime::HasPerkTeam(actor, "LethalSprint")) {
-					bonus *= 1.5;
+					bonus *= 1.50;
 				}
 			}
 
@@ -154,7 +154,7 @@ namespace Gts {
 				}
 				//                     ^          ^
 				//                 Damage         Radius
-				DoLaunch(actor, 0.70 * bonus, 1.0 * bonus, kind);
+				DoLaunch(actor, 0.95 * bonus, 1.10 * bonus, kind);
 				//               ^ radius      ^ push power
 				return; // don't check further
 			} else if (kind == FootEvent::JumpLand) {
@@ -177,8 +177,8 @@ namespace Gts {
 						DoDamageEffect(giant, 1.10 * damage, 6.6, 20, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 						DoDamageEffect(giant, 1.10 * damage, 6.6, 20, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 
-						DoLaunch(giant, 0.9 * perk, 1.75, FootEvent::Left);
-						DoLaunch(giant, 0.9 * perk, 1.75, FootEvent::Right);
+						DoLaunch(giant, 1.0 * perk, 1.75, FootEvent::Left);
+						DoLaunch(giant, 1.0 * perk, 1.75, FootEvent::Right);
 						return false;
 					}
 					return true;

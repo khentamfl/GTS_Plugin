@@ -46,7 +46,10 @@ namespace {
 			return;
 		}
 		float BASE_CHECK_DISTANCE = 90.0;
-		float SCALE_RATIO = 0.0;
+		float SCALE_RATIO = 3.0;
+		if (HasSMT(giant)) {
+			SCALE_RATIO = 0.8;
+		}
 		float giantScale = get_visual_scale(giant);
 		NiPoint3 giantLocation = giant->GetPosition();
 		for (auto otherActor: find_actors()) {
@@ -55,7 +58,8 @@ namespace {
 					float tinyScale = get_visual_scale(otherActor);
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
-						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
+						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale * 3) {
+							PrintDeathSource(player, &data.giant, DamageSource::Booty);
 							CrushManager::Crush(giant, otherActor);
 						}
 					}
@@ -160,22 +164,18 @@ namespace {
 
 	
 
-	void GTScrush_caster(AnimationEventData& data) {
+	void GTScrush_caster(AnimationEventData& data) { 
+		// Compatibility with Thick Thighs Take Lives mod, this compatibility probably needs a revision.
+		// Mainly just need to call damage similar to how we do it with DoDamageAtPoint() function
+		// 21.01.2024
 		//data.stage = 0;
 		TriggerKillZone(&data.giant);
 	}
 
-	void GTScrush_victim(AnimationEventData& data) {
+	void GTScrush_victim(AnimationEventData& data) { // Compatibility with Thick Thighs Take Lives mod
 		//data.stage = 0;
 		if (data.giant.formID != 0x14) {
-			auto player = PlayerCharacter::GetSingleton();
-			float giantscale = get_visual_scale(player);
-			float tinyscale = get_visual_scale(&data.giant);
-			float sizedifference = giantscale/tinyscale;
-			if (sizedifference >= 0.0) {
-				CrushManager::Crush(player, &data.giant);
-				PrintDeathSource(player, &data.giant, DamageSource::CrushedLeft);
-			}
+			TriggerKillZone(PlayerCharacter::GetSingleton());
 		}
 	}
 
@@ -189,8 +189,8 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 1.0, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.80, 1.35, FootEvent::Right);
-		DoLaunch(&data.giant, 0.80, 1.35, FootEvent::Left);
+		DoLaunch(&data.giant, 0.90, 1.35, FootEvent::Right);
+		DoLaunch(&data.giant, 0.90, 1.35, FootEvent::Left);
 	}
 	void MCO_DodgeSound(AnimationEventData& data) {
 		data.stage = 0;
@@ -202,8 +202,8 @@ namespace {
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 1.0, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.80, 1.35, FootEvent::Right);
-		DoLaunch(&data.giant, 0.80, 1.35, FootEvent::Left);
+		DoLaunch(&data.giant, 0.90, 1.35, FootEvent::Right);
+		DoLaunch(&data.giant, 0.90, 1.35, FootEvent::Left);
 	}
 
 	void GTS_DiveSlide_ON(AnimationEventData& data) {

@@ -145,7 +145,7 @@ namespace {
 	}
 
 	void Task_Vore_StartVoreBuff(Actor* giant, Actor* tiny) {
-		float default_duration = 40.0;
+		float default_duration = 80.0;
 		float mealEffiency = 0.2; // Normal pred has 20% efficent stomach
 		float growth = 2.0;
 
@@ -157,7 +157,7 @@ namespace {
 		std::string_view tiny_name = tiny->GetDisplayFullName();
 
 		if (Runtime::HasPerkTeam(giant, "Gluttony")) {
-			default_duration = 20.0;
+			default_duration *= 0.5;
 			mealEffiency += 0.2;
 		}
 		if (Runtime::HasPerkTeam(giant, "AdditionalGrowth")) {
@@ -199,8 +199,8 @@ namespace {
 			auto giantref = gianthandle.get().get();
 			float timepassed = Time::WorldTimeElapsed() - start_time;
 			
-			float regenlimit = GetMaxAV(giantref, ActorValue::kHealth) * 0.0010; // Limit it per frame
-			float healthToApply = std::clamp(restore_power/4000.f, 0.0f, regenlimit);
+			float regenlimit = GetMaxAV(giantref, ActorValue::kHealth) * 0.0006; // Limit it per frame
+			float healthToApply = std::clamp(restore_power/4000.0f, 0.0f, regenlimit);
 			float sizeToApply = gain_power/5500;
 
 			DamageAV(giantref, ActorValue::kHealth, -healthToApply * TimeScale());

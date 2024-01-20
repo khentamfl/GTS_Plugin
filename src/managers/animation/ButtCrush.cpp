@@ -182,7 +182,7 @@ namespace {
 		DoDamageEffect(&data.giant, 1.4, 1.45, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.65 * perk, 1.3, FootEvent::Right);
+		DoLaunch(&data.giant, 0.70 * perk, 1.3, FootEvent::Right);
 	}
 
 	void GTSButtCrush_FootstepL(AnimationEventData& data) {
@@ -197,7 +197,7 @@ namespace {
 		DoDamageEffect(&data.giant, 1.4, 1.45, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.65 * perk, 1.3, FootEvent::Left);
+		DoLaunch(&data.giant, 0.70 * perk, 1.3, FootEvent::Left);
 	}
 
 	void GTSButtCrush_HandImpactR(AnimationEventData& data) {
