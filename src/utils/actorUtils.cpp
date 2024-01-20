@@ -770,7 +770,7 @@ namespace Gts {
 	}
 
 	float GetSizeDifference(Actor* giant, Actor* tiny) {
-		float GiantScale = get_visual_scale(giant) * GetScaleAdjustment(tiny);;
+		float GiantScale = get_visual_scale(giant) * GetScaleAdjustment(tiny);
 		float TinyScale = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
 		if (HasSMT(giant)) {
 			GiantScale += 7.8;
@@ -813,7 +813,7 @@ namespace Gts {
 	}
 
 	float GetScaleAdjustment(Actor* tiny) {
-		float sc = get_visual_height(tiny);
+		float sc = get_giantess_height(tiny);
 		
 		log::info("Giantess Height of {} is {}", tiny->GetDisplayFullName(), sc);
 

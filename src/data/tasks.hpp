@@ -276,6 +276,12 @@ namespace Gts {
 					);
 			}
 
+			static void CancelAllTasks() {
+				auto& me = TaskManager::GetSingleton();
+				me.taskings.clear();
+				log::info("Canceled all task manager tasks");
+			}
+
 			std::unordered_map<std::string, BaseTask*> taskings;
 	};
 }
