@@ -27,13 +27,20 @@ namespace {
 		FootEvent foot_kind = FootEvent::Unknown;
 		bool is_jumping = actor ? IsJumping(actor) : false;
 		bool in_air = actor ? actor->IsInMidair() : false;
-		if (matches(tag, ".*Foot.*Left.*") && !is_jumping && !in_air) {
+		bool hugging = actor ? IsHuggingFriendly(actor) : false;
+
+		bool allow = ((!is_jumping && !in_air) || hugging);
+		if (actor && actor->formID == 0x14 || IsTeammate(actor)) {
+			log::info("{} In Air: {}, Jumping: {}, hugged: {}", actor->GetDisplayFullName(), in_air, is_jumping, huging);
+		}
+
+		if (matches(tag, ".*Foot.*Left.*") && allow) {
 			foot_kind = FootEvent::Left;
-		} else if (matches(tag, ".*Foot.*Right.*") && !is_jumping && !in_air) {
+		} else if (matches(tag, ".*Foot.*Right.*") && allow) {
 			foot_kind = FootEvent::Right;
-		} else if (matches(tag, ".*Foot.*Front.*") && !is_jumping && !in_air) {
+		} else if (matches(tag, ".*Foot.*Front.*") && allow) {
 			foot_kind = FootEvent::Front;
-		} else if (matches(tag, ".*Foot.*Back.*") && !is_jumping && !in_air) {
+		} else if (matches(tag, ".*Foot.*Back.*") && allow) {
 			foot_kind = FootEvent::Back;
 		} else if (matches(tag, ".*Jump.*(Down|Land).*")) {
 			foot_kind = FootEvent::JumpLand;

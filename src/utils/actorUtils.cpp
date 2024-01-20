@@ -292,13 +292,6 @@ namespace Gts {
 		return ragdoll;
 	}
 
-	bool IsInJumpState(Actor* actor) {
-		bool jump;
-		actor->GetGraphVariableBool("bInJumpState", jump);
-
-		return jump;
-	}
-
 	bool IsProning(Actor* actor) {
 		bool prone;
 		auto transient = Transient::GetSingleton().GetData(actor);
@@ -332,6 +325,12 @@ namespace Gts {
 		return IsHugHealing;
 	}
 
+	bool IsHuggingFriendly(Actor* actor) {
+		bool friendly;
+		actor->GetGraphVariableBool("GTS_IsFollower", friendly);
+		return friendly;
+	}
+
 	bool IsTransitioning(Actor* actor) { // reports sneak transition to crawl
 		bool transition;
 		actor->GetGraphVariableBool("GTS_Transitioning", transition);
@@ -351,16 +350,9 @@ namespace Gts {
 	}
 
 	bool IsJumping(Actor* actor) {
-		auto profiler = Profilers::Profile("ActorUtils: IsJumping");
-		if (!actor) {
-			return false;
-		}
-		if (!actor->Is3DLoaded()) {
-			return false;
-		}
-		bool result = false;
-		actor->GetGraphVariableBool("bInJumpState", result);
-		return result;
+		bool jumping = false;
+		actor->GetGraphVariableBool("bInJumpState", jumping);
+		return jumping;
 	}
 
 	bool IsBeingHeld(Actor* tiny) {

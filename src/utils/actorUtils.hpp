@@ -31,7 +31,6 @@ namespace Gts {
 	bool IsEquipBusy(Actor* actor);
 	
 	bool IsRagdolled(Actor* actor);
-	bool IsInJumpState(Actor* actor);
 
 	bool IsFootGrinding(Actor* actor);
 	bool isTrampling(Actor* actor);
@@ -39,6 +38,7 @@ namespace Gts {
 	bool IsCrawling(Actor* actor);
 	bool IsHugCrushing(Actor* actor);
 	bool IsHugHealing(Actor* actor);
+	bool IsHuggingFriendly(Actor* actor);
 	bool IsTransitioning(Actor* actor);
 	bool IsJumping(Actor* actor);
 	bool IsBeingHeld(Actor* tiny);

@@ -26,7 +26,7 @@ namespace {
 	const float PI = 3.14159;
 
 	bool DisallowHugs(Actor* actor) {
-		bool jumping = IsInJumpState(actor);
+		bool jumping = IsJumping(actor);
 		bool ragdolled = IsRagdolled(actor);
 		bool busy = IsGtsBusy(actor);
 		return jumping || ragdolled || busy;
