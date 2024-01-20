@@ -679,12 +679,10 @@ namespace Gts {
 
 	void Vore::Reset() {
 		this->data.clear();
-		this->buffs.clear();
 	}
 
 	void Vore::ResetActor(Actor* actor) {
 		this->data.erase(actor->formID);
-		this->buffs.erase(actor->formID);
 	}
 
 	void Vore::StartVore(Actor* pred, Actor* prey) {
