@@ -164,7 +164,8 @@ namespace Gts {
 		}
 
 		StaggerActor(prey, 100.0f);
-		ShrinkUntil(pred, prey, 10.0);
+		ShrinkUntil(pred, prey, 12.0);
+
 		Grab::GetSingleton().GrabActor(pred, prey);
 		
 		AnimationManager::StartAnim("GrabSomeone", pred);

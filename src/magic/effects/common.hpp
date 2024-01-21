@@ -33,12 +33,20 @@ namespace Gts {
 		}
 	}
 
-	inline float GetStealEfficiency(Actor* tiny) {
+	inline float GetShrinkEfficiency(Actor* tiny) { // for shrinking another
 		float reduction = GetScaleAdjustment(tiny);
 		if (IsUndead(tiny)) {
-			reduction *= 1.6;
+			reduction *= 3.0;
 		}
 		return reduction;
+	}
+
+	inline float GetStealEfficiency(Actor* tiny) { // for gaining size
+		float increase = GetScaleAdjustment(tiny);
+		if (IsUndead(tiny)) {
+			increase /= 3.0;
+		}
+		return increase;
 	}
 
 	inline void ModSizeExperience(Actor* Caster, float value) { // Adjust Matter Of Size skill
@@ -144,7 +152,7 @@ namespace Gts {
 
 		float Scale_Resistance = std::clamp(get_visual_scale(target), 1.0f, 9999.0f); // Calf_power makes shrink effects stronger based on scale, this fixes that.
 
-		efficiency /= GetStealEfficiency(target);// take bounding box of actor into account
+		efficiency /= GetShrinkEfficiency(target);// take bounding box of actor into account
 
 		if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
 			efficiency *= 0.25;
@@ -204,26 +212,6 @@ namespace Gts {
 		return true;
 	}
 
-	inline void Steal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency, ShrinkSource source) {
-		effeciency = clamp(0.01, 1.0, effeciency);
-		float effeciency_noscale = clamp(0.01, 1.0, CalcEffeciency(to, from, false));
-		//log::info("Efficiency is: {}", effeciency_noscale);
-		float amount = CalcPower(from, scale_factor, bonus, true);
-		float amountnomult = CalcPower(from, scale_factor, bonus, false);
-		float target_scale = get_visual_scale(from);
-		ModSizeExperience(to, 0.52 * scale_factor * target_scale);
-		update_target_scale(from, -amountnomult * 0.55 * effeciency_noscale, SizeEffectType::kShrink);
-		update_target_scale(to, amount*effeciency, SizeEffectType::kGrow);
-
-		if (source == ShrinkSource::hugs) {
-			AdvanceQuestProgression(to, 1.0, amountnomult * 0.55 * effeciency_noscale);
-		} else {
-			AdvanceQuestProgression(to, 2.0, amountnomult * 0.55 * effeciency_noscale);
-		}
-
-		AddStolenAttributes(to, amount*effeciency);
-	}
-
 	inline void AbsorbSteal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency) {
 		effeciency = clamp(0.0, 1.0, effeciency);
 		float amount = CalcPower(from, scale_factor, bonus, true);
@@ -235,10 +223,6 @@ namespace Gts {
 		update_target_scale(to, amount*effeciency/10, SizeEffectType::kGrow); // < 10 times weaker size steal towards caster. Absorb exclusive.
 	}
 
-	inline void Transfer(Actor* from, Actor* to, float scale_factor, float bonus) {
-		Steal(from, to, scale_factor, bonus, 1.0, ShrinkSource::other); // 100% efficent for friendly steal
-	}
-
 	inline void Grow_Ally(Actor* from, Actor* to, float receiver, float caster) {
 		float receive = CalcPower(from, receiver, 0, true);
 		float lose = CalcPower(from, receiver, 0, true);
@@ -247,6 +231,28 @@ namespace Gts {
 			update_target_scale(from, -lose, SizeEffectType::kShrink);
 		}
 		update_target_scale(to, receive, SizeEffectType::kGrow);
+	}
+
+	inline void Steal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency, ShrinkSource source) {
+		effeciency = clamp(0.01, 1.0, effeciency);
+		float effeciency_noscale = clamp(0.01, 1.0, CalcEffeciency(to, from, false));
+		float amount = CalcPower(from, scale_factor, bonus, true);
+		float amountnomult = CalcPower(from, scale_factor, bonus, false);
+		float visual_scale = get_visual_scale(from);
+		ModSizeExperience(to, 0.52 * scale_factor * visual_scale);
+
+		float receive_amount = amount*effeciency*visual_scale * GetStealEfficiency(from);
+
+		update_target_scale(from, -amountnomult * 0.55 * effeciency_noscale, SizeEffectType::kShrink);
+		update_target_scale(to, receive_amount, SizeEffectType::kGrow);
+
+		if (source == ShrinkSource::hugs) {
+			AdvanceQuestProgression(to, 1.0, amountnomult * 0.55 * effeciency_noscale);
+		} else {
+			AdvanceQuestProgression(to, 2.0, amountnomult * 0.55 * effeciency_noscale);
+		}
+
+		AddStolenAttributes(to, amount*effeciency);
 	}
 
 	inline void TransferSize(Actor* caster, Actor* target, bool dual_casting, float power, float transfer_effeciency, bool smt, ShrinkSource source) {
@@ -296,7 +302,7 @@ namespace Gts {
 		float bbscale = GetScaleAdjustment(target);
 		float target_scale = get_visual_scale(target);
 
-		float SHRINK_TO_NOTHING_SCALE = 0.08 / bbscale;
+		float SHRINK_TO_NOTHING_SCALE = 0.06 / bbscale;
 		if (!caster) {
 			return false;
 		}

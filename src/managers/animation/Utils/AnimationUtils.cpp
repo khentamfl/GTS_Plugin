@@ -401,13 +401,12 @@ namespace Gts {
 		}
 	}
 
-	void DoFootTrample_Left(Actor* giant, Actor* tiny, bool SMT) {
+	void DoFootTrample_Left(Actor* giant, Actor* tiny) {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
 
-		if (SMT) {
-			ShrinkUntil(giant, tiny, 3.6);
-		}
+		ShrinkUntil(giant, tiny, 3.6);
+		
 
 		std::string name = std::format("FootTrample_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
@@ -444,13 +443,12 @@ namespace Gts {
 		});
 
 	}
-	void DoFootTrample_Right(Actor* giant, Actor* tiny, bool SMT) {
+	void DoFootTrample_Right(Actor* giant, Actor* tiny) {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
 
-		if (SMT) {
-			ShrinkUntil(giant, tiny, 3.6);
-		}
+		ShrinkUntil(giant, tiny, 3.6);
+
 
 		std::string name = std::format("FootTrample_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
@@ -487,13 +485,11 @@ namespace Gts {
 		});
 	}
 
-	void DoFootGrind_Left(Actor* giant, Actor* tiny, bool SMT) {
+	void DoFootGrind_Left(Actor* giant, Actor* tiny) {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
 
-		if (SMT) {
-			ShrinkUntil(giant, tiny, 3.6);
-		}
+		ShrinkUntil(giant, tiny, 3.6);
 
 		std::string name = std::format("FootGrind_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
@@ -530,13 +526,12 @@ namespace Gts {
 		});
 	}
 
-	void DoFootGrind_Right(Actor* giant, Actor* tiny, bool SMT) {
+	void DoFootGrind_Right(Actor* giant, Actor* tiny) {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
 
-		if (SMT) {
-			ShrinkUntil(giant, tiny, 3.6);
-		}
+		ShrinkUntil(giant, tiny, 3.6);
+		
 
 		std::string name = std::format("FootGrind_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
@@ -582,11 +577,9 @@ namespace Gts {
 		const float BASE_DISTANCE = 6.0;
 		const float SCALE_RATIO = 3.0;
 
-		bool SMT = false;
 
 		if (HasSMT(actor)) {
 			giantScale += 3.5;
-			SMT = true;
 		}
 
 		// Get world HH offset
@@ -688,12 +681,12 @@ namespace Gts {
 
 									if (aveForce >= 0.00 && !tiny->IsDead()) {
 										if (!strong) {
-											DoFootGrind_Left(giant, tiny, SMT);
+											DoFootGrind_Left(giant, tiny);
 											SetBeingGrinded(tiny, true);
 											AnimationManager::StartAnim("GrindLeft", giant);
 										} else {
 											AnimationManager::StartAnim("TrampleStartL", giant);
-											DoFootTrample_Left(giant, tiny, SMT);
+											DoFootTrample_Left(giant, tiny);
 										}
 									}
 								});
@@ -715,11 +708,9 @@ namespace Gts {
 		const float BASE_DISTANCE = 6.0;
 		const float SCALE_RATIO = 3.0;
 
-		bool SMT = false;
 
 		if (HasSMT(actor)) {
 			giantScale += 3.60;
-			SMT = true;
 		}
 
 		// Get world HH offset
@@ -823,12 +814,12 @@ namespace Gts {
 
 									if (aveForce >= 0.00 && !tiny->IsDead()) {
 										if (!strong) {
-											DoFootGrind_Right(giant, tiny, SMT);
+											DoFootGrind_Right(giant, tiny);
 											SetBeingGrinded(tiny, true);
 											AnimationManager::StartAnim("GrindRight", giant);
 										} else {
 											AnimationManager::StartAnim("TrampleStartR", giant);
-											DoFootTrample_Right(giant, tiny, SMT);
+											DoFootTrample_Right(giant, tiny);
 										}
 									}
 								});
