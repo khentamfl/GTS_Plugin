@@ -103,7 +103,7 @@ namespace {
 				if (select >= 2.0) {
 					PlayMoanSound(giant, 1.0);
 					GrowAfterTheKill(giant, target);
-					MoanEmotionTask(giantref, 2.0, "Crush");
+					MoanEmotionTask(giant, 2.0, "Crush");
 				} else {
 					PlayLaughSound(giant, 1.0, 2);
 				}
