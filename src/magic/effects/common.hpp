@@ -349,7 +349,7 @@ namespace Gts {
 		float task_duration = 3.0;
 		std::string name = std::format("{}_STN_Check_{}_{}", naming, giant->formID, tiny->formID);
 
-		TaskManager::RunFor(name, duration, [=](auto& progressData) {
+		TaskManager::RunFor(name, task_duration, [=](auto& progressData) {
 			if (!giantHandle) {
 				return false;
 			}
