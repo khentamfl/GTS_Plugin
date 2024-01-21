@@ -266,9 +266,9 @@ namespace Gts {
 	void PlayLaughSound(Actor* actor, float volume, int type) {
 		if (IsFemale(actor) && IsHuman(actor)) {
 			if (type == 2) {
-				Runtime::PlaySoundAtNode("LaughSound_Type2", giant, 1.0, 1.0, "NPC Head [Head]");
+				Runtime::PlaySoundAtNode("LaughSound_Type2", actor, volume, 1.0, "NPC Head [Head]");
 			} else {
-				Runtime::PlaySoundAtNode("LaughSound_Type1", giant, 1.0, 1.0, "NPC Head [Head]");
+				Runtime::PlaySoundAtNode("LaughSound_Type1", actor, volume, 1.0, "NPC Head [Head]");
 			}
 		}
 	}
