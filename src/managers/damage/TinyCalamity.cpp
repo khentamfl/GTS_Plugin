@@ -68,7 +68,7 @@ namespace {
 
     void RefreshDuration(Actor* giant) {
         if (Runtime::HasPerk(giant, "NoSpeedLoss")) {
-            AttributeManager::GetSingleton().OverrideSMTBonus(0.65); // Reduce speed after crush
+            AttributeManager::GetSingleton().OverrideSMTBonus(0.75); // Reduce speed after crush
         } else {
             AttributeManager::GetSingleton().OverrideSMTBonus(0.35); // Reduce more speed after crush
         }
