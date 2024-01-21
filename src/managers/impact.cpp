@@ -30,9 +30,6 @@ namespace {
 		bool hugging = actor ? IsHuggingFriendly(actor) : false;
 
 		bool allow = ((!is_jumping && !in_air) || hugging);
-		if (actor && actor->formID == 0x14 || IsTeammate(actor)) {
-			log::info("{} In Air: {}, Jumping: {}, hugged: {}", actor->GetDisplayFullName(), in_air, is_jumping, hugging);
-		}
 
 		if (matches(tag, ".*Foot.*Left.*") && allow) {
 			foot_kind = FootEvent::Left;
