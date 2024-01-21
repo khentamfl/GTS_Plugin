@@ -142,7 +142,7 @@ namespace Gts {
 
 		float Scale_Resistance = std::clamp(get_visual_scale(target), 1.0f, 9999.0f); // Calf_power makes shrink effects stronger based on scale, this fixes that.
 
-		efficiency /= GetStealEfficiency(target);
+		efficiency /= GetStealEfficiency(target);// take bounding box of actor into account
 		if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
 			efficiency *= 0.25;
 		}
