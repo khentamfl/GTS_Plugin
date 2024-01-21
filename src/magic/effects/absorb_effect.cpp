@@ -25,7 +25,7 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
-		StaggerActor(target, 25.0f * GetSizeDifference(caster, target));
+		StaggerActor(target, 0.25f * GetSizeDifference(caster, target));
 	}
 
 	void Absorb::OnUpdate() {
@@ -57,7 +57,7 @@ namespace Gts {
 			size_difference = 3.0;
 		} // Cap Size Difference
 
-		TransferSize(caster, target, true, 0.0008 * size_difference, 0.025, false, ShrinkSource::magic);
+		TransferSize(caster, target, true, 0.0080 * size_difference, 0.025, false, ShrinkSource::magic);
 
 		static Timer MoanTimer = Timer(10.0);
 		auto random = rand() % 8;
