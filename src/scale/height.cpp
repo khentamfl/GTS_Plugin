@@ -93,7 +93,7 @@ namespace Gts {
 			float x = nif_dim.x;
 			float y = nif_dim.y;
 			float z = nif_dim.z;
-			float box = pow(x*y*z/(22*14*64),1/3);
+			float box = pow(x*y*z/(22*14*64), 1.0f/3.0f);
 			log::info("Found bounds for {}, bounds :{}", actor->GetDisplayFullName(), Vector2Str(nif_dim));
 			log::info("Value: {}", box);
 			return box;

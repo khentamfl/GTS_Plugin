@@ -135,7 +135,7 @@ namespace Gts {
 		}
 		float casterlevel = clamp(1.0, 500.0, caster->GetLevel());
 		float targetlevel = clamp(1.0, 500.0, target->GetLevel());
-		float GigantismCaster = 1.0 + Ench_Aspect_GetPower(caster);
+		float GigantismCaster = 1.0 + (Ench_Aspect_GetPower(caster) * 0.25);
 		float SizeHunger = 1.0 + Ench_Hunger_GetPower(caster);
 		float GigantismTarget = 1.0 + Ench_Aspect_GetPower(target);  // May go negative needs fixing with a smooth clamp
 		float efficiency = clamp(0.50, 1.0, (casterlevel/targetlevel)) * progression_multiplier;
