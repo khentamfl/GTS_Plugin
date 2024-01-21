@@ -2,9 +2,12 @@
 #include "magic/effects/absorb_effect.hpp"
 #include "magic/effects/common.hpp"
 #include "utils/actorUtils.hpp"
+#include "data/runtime.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
-#include "data/runtime.hpp"
+
+
+#include "timer.hpp"
 
 namespace Gts {
 	std::string Absorb::GetName() {
