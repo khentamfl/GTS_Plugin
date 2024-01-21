@@ -216,7 +216,7 @@ namespace Gts {
 	}
 
 	inline void Steal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency, ShrinkSource source) {
-		effeciency = clamp(0.01, 1.0, effeciency);
+		effeciency = clamp(0.0, 1.0, effeciency);
 		float visual_scale = get_visual_scale(from);
 
 		float amount = CalcPower(from, scale_factor, bonus, false);
@@ -229,6 +229,8 @@ namespace Gts {
 
 		update_target_scale(from, -shrink_amount, SizeEffectType::kShrink);
 		update_target_scale(to, growth_amount, SizeEffectType::kGrow);
+
+		log::info("Steal efficiency: {} - {}, : {}", from->GetDisplayFullName(), to->GetDisplayFullName(), effeciency);
 
 		if (source == ShrinkSource::hugs) { // quest: shrink by 2 and 5 meters worth of size in total (stage 1 / 2) 
 			AdvanceQuestProgression(to, 1.0, shrink_amount);

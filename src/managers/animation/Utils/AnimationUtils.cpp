@@ -1027,6 +1027,7 @@ namespace Gts {
 				AdjustFacialExpression(giantref, 0, 0.0, "modifier"); // blink L
 				AdjustFacialExpression(giantref, 1, 0.0, "modifier"); // blink R
 				AdjustFacialExpression(giantref, 0, 0.0, "phenome"); // close mouth
+				return false;
 			}
 			return true;
 		});
