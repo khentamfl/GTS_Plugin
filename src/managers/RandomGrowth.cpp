@@ -90,7 +90,7 @@ namespace Gts {
 					float Volume = clamp(0.20, 2.0, scale/4);
 
 					PlayMoanSound(actor, 1.0);
-					MoanEmotionTask(actor, 2.0, "RandomGrow");
+					Task_FacialEmotionTask(actor, 2.0, "RandomGrow");
 					Runtime::PlaySoundAtNode("xlRumbleL", actor, base_power, 1.0, "NPC COM [COM ]");
 					Runtime::PlaySoundAtNode("growthSound", actor, Volume, 1.0, "NPC Pelvis [Pelv]");
 

@@ -969,7 +969,7 @@ namespace Gts {
 				if (node) {
 					NiPoint3 pos = node->world.translate;
 					SpawnParticle(giantref, 4.60, "GTS/Magic/Soul_Drain.nif", NiMatrix3(), pos, get_visual_scale(giantref), 7, nullptr);
-					MoanEmotionTask(giantref, 2.0, "Absorb");
+					Task_FacialEmotionTask(giantref, 2.0, "Absorb");
 				}
 			}	
 		}

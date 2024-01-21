@@ -153,7 +153,7 @@ namespace {
 				static Timer timergrowth = Timer(3.00);
 				if (timergrowth.ShouldRunFrame()) {
 					Runtime::PlaySoundAtNode("growthSound", player, Cache->SizeReserve/50 * duration, 1.0, "NPC Pelvis [Pelv]");
-					MoanEmotionTask(player, 2.0, "SizeReserve");
+					Task_FacialEmotionTask(player, 2.0, "SizeReserve");
 					PlayMoanSound(player, Volume);
 				}
 

@@ -172,7 +172,7 @@ namespace Gts {
 						}
 						if (((StrongGrowthChance >= 19 && Random >= 19.0) || (StrongGrowthChance >= 19 && MegaGrowth >= 19.0)) && Runtime::GetFloat("AllowMoanSounds") == 1.0) {
 							PlayMoanSound(actor, targetScale/4);
-							MoanEmotionTask(actor, 2.0, "GameMode");
+							Task_FacialEmotionTask(actor, 2.0, "GameMode");
 						}
 						if (targetScale < maxScale) {
 							update_target_scale(actor, GrowthPower, SizeEffectType::kGrow);
