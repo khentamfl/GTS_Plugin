@@ -1,5 +1,6 @@
-#include "managers/GtsSizeManager.hpp"
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "magic/effects/absorb_effect.hpp"
+#include "managers/GtsSizeManager.hpp"
 #include "magic/effects/common.hpp"
 #include "utils/actorUtils.hpp"
 #include "data/runtime.hpp"
