@@ -1,3 +1,4 @@
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/CollisionDamage.hpp"
 #include "managers/GtsSizeManager.hpp"

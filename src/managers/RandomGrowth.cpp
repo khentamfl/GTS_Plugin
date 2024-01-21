@@ -1,3 +1,4 @@
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/RandomGrowth.hpp"
 #include "magic/effects/common.hpp"

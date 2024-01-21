@@ -1,3 +1,4 @@
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "magic/effects/smallmassivethreat.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "managers/CrushManager.hpp"
