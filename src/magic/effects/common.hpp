@@ -174,7 +174,7 @@ namespace Gts {
 		if (shrink) {
 			size_cap = 0.02;
 		}
-		float scale = clamp(cap, 999999.0, get_visual_scale(actor));
+		float scale = clamp(size_cap, 999999.0, get_visual_scale(actor));
 		return (scale * scale_factor + bonus) * progress_mult * MASTER_POWER * TimeScale();
 	}
 
