@@ -263,6 +263,16 @@ namespace Gts {
 		}
 	}
 
+	void PlayLaughSound(Actor* actor, float volume, int type) {
+		if (IsFemale(actor) && IsHuman(actor)) {
+			if (type == 2) {
+				Runtime::PlaySoundAtNode("LaughSound_Type2", giant, 1.0, 1.0, "NPC Head [Head]");
+			} else {
+				Runtime::PlaySoundAtNode("LaughSound_Type1", giant, 1.0, 1.0, "NPC Head [Head]");
+			}
+		}
+	}
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                                 G T S   ST A T E S  B O O L S                                                                      //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

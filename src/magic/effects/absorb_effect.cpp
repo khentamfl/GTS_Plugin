@@ -53,8 +53,18 @@ namespace Gts {
 		} // Cap Size Difference
 
 		TransferSize(caster, target, true, 0.0008 * size_difference, 0.025, false, ShrinkSource::magic);
-		if (ShrinkToNothing(caster, target)) {
-			//
+
+		static Timer MoanTimer = Timer(10.0);
+		auto random = rand() % 8;
+
+		if (ShrinkToNothing(caster, target) && random < 2) { // chance to receive more size xp and grow even bigger
+			if (MoanTimer.ShouldRunFrame()) {
+				shake_camera_at_node(caster, "NPC COM [COM ]", 24.0, 0.20);
+				SpawnProgressionParticle(target, true);
+				ModSizeExperience(caster, 0.14);
+				PlayMoanSound(caster, 1.0);
+				Grow(caster, 0, 0.10);	
+			}
 		}
 	}
 	

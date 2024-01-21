@@ -134,7 +134,7 @@ namespace {
 			}
 		}
 		if (SizeDifference >= 4.0 && LaughChance >= 11 && laughtimer.ShouldRunFrame()) {
-			Runtime::PlaySoundAtNode("LaughSound", receiver, 1.0, 0.5, "NPC Head [Head]");
+			PlayLaughSound(receiver, 1.0, 1);
 		}
 	}
 

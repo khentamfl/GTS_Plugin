@@ -104,7 +104,7 @@ namespace {
 					PlayMoanSound(giant, 1.0);
 					GrowAfterTheKill(giant, target);
 				} else {
-					Runtime::PlaySoundAtNode("LaughSound_Part2", giant, 1.0, 1.0, "NPC Head [Head]");
+					PlayLaughSound(giant, 1.0, 2);
 				}
 			}
 		}

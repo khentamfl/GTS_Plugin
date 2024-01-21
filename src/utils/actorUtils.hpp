@@ -24,6 +24,7 @@ namespace Gts {
 
 	void StartResetTask(Actor* tiny);
 	void PlayMoanSound(Actor* actor, float volume);
+	void PlayLaughSound(Actor* actor, float volume, int type);
 
 
 	// GTS State Bools
