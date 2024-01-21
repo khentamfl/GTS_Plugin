@@ -118,7 +118,7 @@ namespace {
 		static Timer soundtimer = Timer(1.5);
 		static Timer laughtimer = Timer(4.0);
 
-		float Dragon = 1.0 * GetScaleAdjustment(attacker);
+		float Adjustment = 1.0 * GetScaleAdjustment(attacker);
 
 		DoHitShake(receiver, GrowthValue * 10);
 		update_target_scale(receiver, GrowthValue, SizeEffectType::kShrink);
@@ -127,10 +127,10 @@ namespace {
 			Runtime::PlaySoundAtNode("growthSound", receiver, GrowthValue * 2, 1.0, "NPC Pelvis [Pelv]");
 		}
 		if (ShrinkChance >= 2) {
-			update_target_scale(attacker, -GrowthValue/(6.0 * Dragon*BalanceMode), SizeEffectType::kShrink); // Shrink Attacker
-			update_target_scale(receiver, GrowthValue/(2.0 * Dragon*BalanceMode), SizeEffectType::kGrow); // Grow receiver
-			if (get_target_scale(attacker) <= 0.12/Dragon) {
-				set_target_scale(attacker, 0.12/Dragon);
+			update_target_scale(attacker, -GrowthValue/(6.0 * Adjustment*BalanceMode), SizeEffectType::kShrink); // Shrink Attacker
+			update_target_scale(receiver, GrowthValue/(2.0 * Adjustment*BalanceMode), SizeEffectType::kGrow); // Grow receiver
+			if (get_target_scale(attacker) <= 0.12/Adjustment) {
+				set_target_scale(attacker, 0.12/Adjustment);
 			}
 		}
 		if (SizeDifference >= 4.0 && LaughChance >= 11 && laughtimer.ShouldRunFrame()) {

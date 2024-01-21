@@ -34,7 +34,7 @@ namespace Gts {
 	}
 
 	inline float GetStealEfficiency(Actor* tiny) {
-		float eff = get_bounding_box_to_mult(tiny);
+		float eff = GetScaleAdjustment(tiny);
 		if (IsUndead(tiny)) {
 			eff *= 0.6;
 		}
@@ -135,8 +135,10 @@ namespace Gts {
 		}
 		float casterlevel = clamp(1.0, 500.0, caster->GetLevel());
 		float targetlevel = clamp(1.0, 500.0, target->GetLevel());
-		float Gigantism_Caster = 1.0 + (Ench_Aspect_GetPower(caster) * 0.25); // get GTS Aspect Of Giantess
+
 		float SizeHunger = 1.0 + Ench_Hunger_GetPower(caster);
+
+		float Gigantism_Caster = 1.0 + (Ench_Aspect_GetPower(caster) * 0.25); // get GTS Aspect Of Giantess
 		float Gigantism_Target = 1.0 + Ench_Aspect_GetPower(target);  // get Tiny Aspect Of Giantess
 		float efficiency = clamp(0.50, 1.0, (casterlevel/targetlevel)) * progression_multiplier;
 
@@ -290,16 +292,12 @@ namespace Gts {
 	}
 
 	inline bool ShrinkToNothing(Actor* caster, Actor* target) {
-		float SHRINK_TO_NOTHING_SCALE = 0.08;
+		float bbscale = GetScaleAdjustment(target);
 		float target_scale = get_visual_scale(target);
+
+		float SHRINK_TO_NOTHING_SCALE = 0.08 / bbscale;
 		if (!caster) {
 			return false;
-		}
-		if (IsDragon(target) || IsMammoth(target)) {
-			SHRINK_TO_NOTHING_SCALE = 0.024;
-		}
-		if (IsGiant(target)) {
-			SHRINK_TO_NOTHING_SCALE = 0.044;
 		}
 
 		if (target_scale <= SHRINK_TO_NOTHING_SCALE && !Runtime::HasMagicEffect(target,"ShrinkToNothing") && !target->IsPlayerTeammate()) {
@@ -318,13 +316,7 @@ namespace Gts {
 			AdjustSizeLimit(0.0060, caster);
 			AdjustMassLimit(0.0060, caster);
 
-			auto Cache = Persistent::GetSingleton().GetData(caster);
-
-			if (!Cache) {
-				return false;
-			}
-
-			AdjustSizeReserve(caster, target_scale/25);
+			AdjustSizeReserve(caster, target_scale * bbscale/25);
 			PrintDeathSource(caster, target, DamageSource::Shrinked);
 			ShrinkToNothingManager::Shrink(caster, target);
 			return true;
@@ -333,36 +325,23 @@ namespace Gts {
 	}
 
 	inline void CrushBonuses(Actor* caster, Actor* target) {
-		float target_scale = get_target_scale(target);
-		float caster_scale = get_target_scale(caster);
-		if (IsDragon(target)) {
-			target_scale *= 2.0;
-		}
-		auto player = PlayerCharacter::GetSingleton();
-		float sizedifference = caster_scale/target_scale;
-		float instacrushrequirement = 24.0;
+		float target_scale = get_visual_scale(target) * GetScaleAdjustment(target);
 
-		if (IsEssential(target)) {
-			return;
-		}
 		int Random = rand() % 8;
 		if (Random >= 8 && Runtime::HasPerk(caster, "GrowthDesirePerk")) {
 			PlayMoanSound(caster, 1.0);
 		}
 
-		bool GTSBusy;
-		caster->GetGraphVariableBool("GTS_Busy", GTSBusy);
-
 		auto Cache = Persistent::GetSingleton().GetData(caster); // TODO: Fix this properly
 		if (!Cache) {
 			return;
 		}
-		if (caster == player) {
+		if (caster->formID == 0x14) {
 			AdjustSizeReserve(caster, target_scale/25);
 			AdjustSizeLimit(0.0066 * target_scale, caster);
 			AdjustMassLimit(0.0066 * target_scale, caster);
 			if (Runtime::HasPerk(caster, "ExtraGrowth") && HasGrowthSpurt(caster)) {
-				auto CrushGrowthStorage = Runtime::GetFloat("CrushGrowthStorage");
+				float CrushGrowthStorage = Runtime::GetFloat("CrushGrowthStorage");
 				Runtime::SetFloat("CrushGrowthStorage", CrushGrowthStorage + (target_scale/75) / SizeManager::GetSingleton().BalancedMode());
 			}
 			// Slowly increase Crush Growth Limit after crushing someone while Growth Spurt is active.

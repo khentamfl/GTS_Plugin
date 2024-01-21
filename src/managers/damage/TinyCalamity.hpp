@@ -16,4 +16,7 @@ namespace Gts {
     void TinyCalamity_SeekActors(Actor* giant);
     void TinyCalamity_CrushCheck(Actor* giant, Actor* tiny);
     void TinyCalamity_BonusSpeed(Actor* giant);
+
+    private:
+        bool Allow_Message = true;
 }

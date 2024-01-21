@@ -27,7 +27,9 @@ namespace {
 		FootEvent foot_kind = FootEvent::Unknown;
 		bool is_jumping = actor ? IsJumping(actor) : false;
 		bool in_air = actor ? actor->IsInMidair() : false;
-		bool hugging = actor ? IsHuggingFriendly(actor) : false;
+		bool hugging = actor ? IsHuggingFriendly(actor) : false; 
+		// Hugging is needed to fix missing footsteps once we do friendly release
+		// Footsteps aren't seen by the dll without it (because actor is in air)
 
 		bool allow = ((!is_jumping && !in_air) || hugging);
 

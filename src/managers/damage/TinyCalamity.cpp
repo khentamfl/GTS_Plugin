@@ -265,6 +265,9 @@ namespace Gts {
 				currentspeed = 0.0;
 			} 
 		}
-        log::info("Current speed of {} is {}", giant->GetDisplayFullName(), currentspeed);
+    }
+
+    void TinyCalamity_ReachedSpeed(Actor* giant) {
+        
     }
 }
