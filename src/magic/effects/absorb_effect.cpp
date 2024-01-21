@@ -58,7 +58,7 @@ namespace Gts {
 			size_difference = 2.0;
 		} // Cap Size Difference
 
-		float shrink_power = 24.0 * size_difference;
+		float shrink_power = 28.0 * size_difference;
 		float gain_size = 0.005;
 
 		TransferSize(caster, target, true, shrink_power, gain_size, false, ShrinkSource::magic);

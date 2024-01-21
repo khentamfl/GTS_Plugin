@@ -955,6 +955,83 @@ namespace Gts {
 		return targetPoint;
 	}
 
+	void AbsorbShout_BuffCaster(Actor* giantref, Actor* tinyref) {
+		static Timer MoanTimer = Timer(10.0);
+		auto random = rand() % 8;
+		if (random <= 4) {
+			if (MoanTimer.ShouldRunFrame()) {
+				shake_camera_at_node(giantref, "NPC COM [COM ]", 24.0, 0.20);
+				auto node = find_node(giantref, "NPC COM [COM ]");
+				ModSizeExperience(giantref, 0.14);
+				PlayMoanSound(giantref, 1.0);
+				Grow(giantref, 0, 0.10);
+
+				if (node) {
+					NiPoint3 pos = node->world.translate;
+					SpawnParticle(giantref, 4.60, "GTS/Magic/Soul_Drain.nif", NiMatrix3(), pos, get_visual_scale(giantref), 7, nullptr);
+					MoanEmotionTask(giantref, 2.0, "Absorb");
+				}
+			}	
+		}
+	}
+
+	void Task_TrackSizeTask(Actor* giant, Actor* tiny, std::string_view naming) { 
+		// A fail-safe task. The goal of it is to kill actor
+		// if half-life puts actor below shrink to nothing threshold, so we won't have < x0.01 actors
+		ActorHandle giantHandle = giant->CreateRefHandle();
+		ActorHandle tinyHandle = tiny->CreateRefHandle();
+		
+		float task_duration = 3.0;
+		std::string name = std::format("{}_STN_Check_{}_{}", naming, giant->formID, tiny->formID);
+
+		TaskManager::RunFor(name, task_duration, [=](auto& progressData) {
+			if (!giantHandle) {
+				return false;
+			}
+			if (!tinyHandle) {
+				return false;
+			}
+			auto giantref = giantHandle.get().get();
+			auto tinyref = tinyHandle.get().get();
+
+			float size = get_visual_scale(tinyref);
+			if (ShrinkToNothing(giantref, tinyref)) {
+				if (naming == "Absorb") {
+					AbsorbShout_BuffCaster(giantref, tinyref);
+				}
+				return false;
+			}
+
+			return true;
+		});
+	}
+
+	void Task_FacialEmotionTask(Actor* giant, float duration, std::string_view naming) {
+		ActorHandle giantHandle = giant->CreateRefHandle();
+
+		float start = Time::WorldTimeElapsed();
+		std::string name = std::format("{}_Facial_{}", naming, giant->formID);
+
+		AdjustFacialExpression(giant, 0, 1.0, "modifier"); // blink L
+		AdjustFacialExpression(giant, 1, 1.0, "modifier"); // blink R
+		AdjustFacialExpression(giant, 0, 0.75, "phenome"); // open mouth
+
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!giantHandle) {
+				return false;
+			}
+			float finish = Time::WorldTimeElapsed();
+			auto giantref = giantHandle.get().get();
+			float timepassed = finish - Start;
+			if (timepassed >= duration) {
+				AdjustFacialExpression(giantref, 0, 0.0, "modifier"); // blink L
+				AdjustFacialExpression(giantref, 1, 0.0, "modifier"); // blink R
+				AdjustFacialExpression(giantref, 0, 0.0, "phenome"); // close mouth
+			}
+			return true;
+		});
+	}
+
 
 	float GetHugStealRate(Actor* actor) {
 		float steal = 0.18;

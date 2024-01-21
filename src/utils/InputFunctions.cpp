@@ -149,9 +149,10 @@ namespace {
 				float SizeCalculation = duration - 1.2;
 				float gigantism = 1.0 + Ench_Aspect_GetPower(player);
 				float Volume = clamp(0.10, 2.0, get_visual_scale(player) * Cache->SizeReserve/10);
-				static Timer timergrowth = Timer(2.00);
+				static Timer timergrowth = Timer(3.00);
 				if (timergrowth.ShouldRunFrame()) {
 					Runtime::PlaySoundAtNode("growthSound", player, Cache->SizeReserve/50 * duration, 1.0, "NPC Pelvis [Pelv]");
+					MoanEmotionTask(giantref, 2.0, "SizeReserve");
 					PlayMoanSound(player, Volume);
 				}
 
