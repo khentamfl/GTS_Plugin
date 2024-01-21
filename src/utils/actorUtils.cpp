@@ -766,8 +766,8 @@ namespace Gts {
 	}
 
 	float GetSizeDifference(Actor* giant, Actor* tiny) {
-		float GiantScale = get_visual_scale(giant) * GetScaleAdjustment(tiny);
-		float TinyScale = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
+		float GiantScale = get_visual_scale(giant) * GetSizeFromBoundingBox(tiny);
+		float TinyScale = get_visual_scale(tiny) * GetSizeFromBoundingBox(tiny);
 		if (HasSMT(giant)) {
 			GiantScale += 7.8;
 		} if (tiny->formID == 0x14 && HasSMT(tiny)) {
@@ -808,8 +808,8 @@ namespace Gts {
 		return height;
 	}
 
-	float GetScaleAdjustment(Actor* tiny) {
-		auto profiler = Profilers::Profile("ActorUtils: GetScaleAdjustment");
+	float GetSizeFromBoundingBox(Actor* tiny) {
+		auto profiler = Profilers::Profile("ActorUtils: GetSizeFromBoundingBox");
 		float sc = get_giantess_height(tiny);
 		sc *= get_bounding_box_to_mult(tiny);
 		return sc;
@@ -1904,7 +1904,7 @@ namespace Gts {
 
 		float shrinkpower = (shrink * 0.35) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, tiny);
 
-		float Adjustment = GetScaleAdjustment(tiny);
+		float Adjustment = GetSizeFromBoundingBox(tiny);
 		float giantScale = get_visual_scale(giant);
 		float tinyScale = get_visual_scale(tiny);
 
@@ -2298,14 +2298,14 @@ namespace Gts {
 
 	void ShrinkUntil(Actor* giant, Actor* tiny, float expected) {
 		if (HasSMT(giant)) {
-			float Adjustment = GetScaleAdjustment(tiny);
+			float Adjustment = GetSizeFromBoundingBox(tiny);
 			float predscale = get_target_scale(giant);
 			float preyscale = get_target_scale(tiny) * Adjustment;
 			expected *= Adjustment;
 			float targetScale = predscale/expected;
 			if (preyscale >= targetScale) { // Apply ONLY if target is bigger than requirement
 				set_target_scale(tiny, targetScale);
-				AddSMTPenalty(giant, 5.0 * GetScaleAdjustment(tiny));
+				AddSMTPenalty(giant, 5.0 * GetSizeFromBoundingBox(tiny));
 				StaggerActor(tiny, 0.25f);
 			}
 		}
@@ -2534,7 +2534,7 @@ namespace Gts {
 				if (queststage < 10 || queststage >= 100) {
 					return;
 				}
-				float bonus = GetScaleAdjustment(tiny);
+				float bonus = GetSizeFromBoundingBox(tiny);
 				if (stage == 1) {
 					Persistent::GetSingleton().HugStealCount += value;
 				} else if (stage == 2) {
@@ -2571,7 +2571,7 @@ namespace Gts {
 
 
 	void SpawnProgressionParticle(Actor* tiny, bool vore) {
-		float scale = 1.0 * GetScaleAdjustment(tiny);
+		float scale = 1.0 * GetSizeFromBoundingBox(tiny);
 		auto node = find_node(tiny, "NPC Root [Root]");
 		log::info("Spawning particle");
 		if (node) {

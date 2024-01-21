@@ -33,22 +33,22 @@ namespace Gts {
 		}
 	}
 
-	inline float GetShrinkEfficiency(Actor* tiny) { // for shrinking another
-		float reduction = GetScaleAdjustment(tiny);
+	inline float Shrink_GetPower(Actor* tiny) { // for shrinking another
+		float reduction = 1.0 / GetSizeFromBoundingBox(tiny);
 		if (IsUndead(tiny, false)) {
-			reduction *= 3.0;
+			reduction *= 0.33;
 		} else if (IsMechanical(tiny)) {
-			reduction *= 4.5;
+			reduction *= 0.22;
 		}
 		return reduction;
 	}
 
-	inline float GetStealEfficiency(Actor* tiny) { // for gaining size
-		float increase = GetScaleAdjustment(tiny);
+	inline float SizeSteal_GetPower(Actor* tiny) { // for gaining size
+		float increase = GetSizeFromBoundingBox(tiny);
 		if (IsUndead(tiny, false)) {
-			increase /= 3.0;
+			increase *= 0.33;
 		} else if (IsMechanical(tiny)) {
-			increase /= 4.5;
+			increase *= 0.22;
 		}
 		return increase;
 	}
@@ -160,36 +160,29 @@ namespace Gts {
 		efficiency /= Gigantism_Target; // resistance from Aspect Of Giantess (on Tiny)
 		efficiency /= Scale_Resistance;
 
-		efficiency /= GetShrinkEfficiency(target);// take bounding box of actor into account
+		efficiency *= Shrink_GetPower(target);// take bounding box of actor into account
 
 		log::info("efficiency between {} and {} is {}", caster->GetDisplayFullName(), target->GetDisplayFullName(), efficiency);
 
 		return efficiency;
 	}
 
-	inline float CalcPower(Actor* actor, float scale_factor, float bonus, bool mult) {
-		float progression_multiplier = 1.0;
-		if (mult) {
-			progression_multiplier = Persistent::GetSingleton().progression_multiplier;
-		}
+	inline float CalcPower(Actor* actor, float scale_factor, float bonus, bool shrink) {
+
+		progression_multiplier = Persistent::GetSingleton().progression_multiplier;
+		float cap = 0.5;
 		// y = mx +c
 		// power = scale_factor * scale + bonus
-		float scale = clamp(0.5, 999999.0, get_visual_scale(actor));
+		if (shrink) {
+			cap = 0.02;
+		}
+		float scale = clamp(cap, 999999.0, get_visual_scale(actor));
 		return (scale * scale_factor + bonus) * progression_multiplier * MASTER_POWER * TimeScale();
 	}
 
 	inline void Grow(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		update_target_scale(actor, CalcPower(actor, scale_factor, bonus, true), SizeEffectType::kGrow);
-	}
-
-	inline void CrushGrow(Actor* actor, float scale_factor, float bonus) {
-		// amount = scale * a + b
-		float modifier = SizeManager::GetSingleton().BalancedMode();
-		scale_factor /= modifier;
-		bonus /= modifier;
-		update_target_scale(actor, CalcPower(actor, scale_factor, bonus, true), SizeEffectType::kGrow);
-		AddStolenAttributes(actor, CalcPower(actor, scale_factor, bonus, true));
+		update_target_scale(actor, CalcPower(actor, scale_factor, bonus, false), SizeEffectType::kGrow);
 	}
 
 	inline void ShrinkActor(Actor* actor, float scale_factor, float bonus) {
@@ -199,7 +192,7 @@ namespace Gts {
 
 	inline bool Revert(Actor* actor, float scale_factor, float bonus) {
 		// amount = scale * a + b
-		float amount = CalcPower(actor, scale_factor, bonus, true);
+		float amount = CalcPower(actor, scale_factor, bonus, false);
 		float target_scale = get_target_scale(actor);
 		float natural_scale = get_neutral_scale(actor);
 
@@ -214,20 +207,9 @@ namespace Gts {
 		return true;
 	}
 
-	inline void AbsorbSteal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency) {
-		effeciency = clamp(0.0, 1.0, effeciency);
-		float amount = CalcPower(from, scale_factor, bonus, true);
-		float target_scale = get_visual_scale(from);
-		AdjustSizeLimit(0.0012 * scale_factor * target_scale, to);
-		AdjustMassLimit(0.0012 * scale_factor* target_scale, to);
-		ModSizeExperience(to, 0.52 * scale_factor * target_scale);
-		update_target_scale(from, -amount, SizeEffectType::kShrink);
-		update_target_scale(to, amount*effeciency/10, SizeEffectType::kGrow); // < 10 times weaker size steal towards caster. Absorb exclusive.
-	}
-
 	inline void Grow_Ally(Actor* from, Actor* to, float receiver, float caster) {
-		float receive = CalcPower(from, receiver, 0, true);
-		float lose = CalcPower(from, receiver, 0, true);
+		float receive = CalcPower(from, receiver, 0, false);
+		float lose = CalcPower(from, receiver, 0, false);
 		float CasterScale = get_target_scale(from);
 		if (CasterScale > 1.0) { // We don't want to scale the caster below this limit!
 			update_target_scale(from, -lose, SizeEffectType::kShrink);
@@ -239,12 +221,13 @@ namespace Gts {
 		effeciency = clamp(0.01, 1.0, effeciency);
 		float visual_scale = get_visual_scale(from);
 
-		ModSizeExperience(to, 0.52 * scale_factor * visual_scale);
+		float amount = CalcPower(from, scale_factor, bonus, false);
+		float amount_shrink = CalcPower(from, scale_factor, bonus, true);
 
-		float amount = CalcPower(from, scale_factor, bonus, true);
+		float shrink_amount = (amount*1.10*effeciency);
+		float growth_amount = (amount_shrink*0.33*effeciency) * SizeSteal_GetPower(from);
 
-		float shrink_amount = (amount*effeciency);
-		float growth_amount = (amount*0.50*effeciency*visual_scale) * GetStealEfficiency(from);
+		ModSizeExperience(to, 0.14 * scale_factor * visual_scale * SizeSteal_GetPower(from));
 
 		update_target_scale(from, -shrink_amount, SizeEffectType::kShrink);
 		update_target_scale(to, growth_amount, SizeEffectType::kGrow);
@@ -268,10 +251,10 @@ namespace Gts {
 			return;
 		}
 
-		transfer_effeciency = clamp(0.0, 1.0, transfer_effeciency); // Ensure we cannot grow more than they shrink
-
 		float target_scale = get_visual_scale(target);
 		float caster_scale = get_visual_scale(caster);
+
+		transfer_effeciency = clamp(0.0, 1.0, transfer_effeciency); // Ensure we cannot grow more than they shrink
 
 		power *= BASE_POWER * CalcEffeciency(caster, target);
 
@@ -302,7 +285,7 @@ namespace Gts {
 	}
 
 	inline bool ShrinkToNothing(Actor* caster, Actor* target) {
-		float bbscale = GetScaleAdjustment(target);
+		float bbscale = GetSizeFromBoundingBox(target);
 		float target_scale = get_visual_scale(target);
 
 		float SHRINK_TO_NOTHING_SCALE = 0.06 / bbscale;
@@ -335,7 +318,7 @@ namespace Gts {
 	}
 
 	inline void CrushBonuses(Actor* caster, Actor* target) {
-		float target_scale = get_visual_scale(target) * GetScaleAdjustment(target);
+		float target_scale = get_visual_scale(target) * GetSizeFromBoundingBox(target);
 
 		int Random = rand() % 8;
 		if (Random >= 8 && Runtime::HasPerk(caster, "GrowthDesirePerk")) {

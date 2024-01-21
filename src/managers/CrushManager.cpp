@@ -21,6 +21,15 @@ using namespace Gts;
 
 namespace {
 
+	void CrushGrow(Actor* actor, float scale_factor, float bonus) {
+		// amount = scale * a + b
+		float modifier = SizeManager::GetSingleton().BalancedMode();
+		scale_factor /= modifier;
+		bonus /= modifier;
+		update_target_scale(actor, CalcPower(actor, scale_factor, bonus, false), SizeEffectType::kGrow);
+		AddStolenAttributes(actor, CalcPower(actor, scale_factor, bonus, false));
+	}
+
 	void ScareChance(Actor* actor) {
 		int voreFearRoll = rand() % 5;
 		if (HasSMT(actor)) {
@@ -81,7 +90,7 @@ namespace {
 				Rate *= 1.6;
 				caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 25.0);
 			}
-			CrushGrow(caster, 0, Rate);
+			CrushGrow(caster, 0, Rate * GetStealEfficiency(target));
 		}
 		PleasureText(caster);
 	}

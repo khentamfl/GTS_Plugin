@@ -118,7 +118,7 @@ namespace {
 		static Timer soundtimer = Timer(1.5);
 		static Timer laughtimer = Timer(4.0);
 
-		float Adjustment = 1.0 * GetScaleAdjustment(attacker);
+		float Adjustment = 1.0 * GetSizeFromBoundingBox(attacker);
 
 		DoHitShake(receiver, GrowthValue * 10);
 		update_target_scale(receiver, GrowthValue, SizeEffectType::kShrink);

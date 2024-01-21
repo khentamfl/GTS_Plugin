@@ -110,7 +110,7 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
-		float sizediff = get_visual_scale(caster)/get_visual_scale(target);
+		float sizediff = GetSizeDifference(caster, target);
 		if (this->power >= 18.00 && sizediff > 4.0) {
 			StaggerActor(target, 100.0f);
 		}
@@ -160,20 +160,11 @@ namespace Gts {
 			balancemodebonus = 2.0;
 		}
 
-		float weakness = 1.0;//std::clamp(GetShrinkWeakness(target), 1.0f, 10.0f);
-
 		if (IsEssential(target)) {
 			return; // Disallow shrinking Essentials
 		}
-		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus * weakness, gainpower * balancemodebonus, false, ShrinkSource::magic);
+		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus, gainpower * balancemodebonus, false, ShrinkSource::magic);
 
-		// 20.11.2023: TO-DO:
-
-		// 1) Power * 2, cost * 2 too, decreasing time to shrink.
-		// 2) Remove stacking debuff thing
-		// 3) Reduce shrink penalty at low scales to be 0.5 as a max, instead of being penalty = scale
-
-		// 09.12.2023: Done.
 		if (ShrinkToNothing(caster, target)) {
 		}
 	}

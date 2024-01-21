@@ -640,7 +640,7 @@ namespace Gts {
 			NiPoint3 giantLocation = actor->GetPosition();
 			for (auto otherActor: find_actors()) {
 				if (otherActor != actor) {
-					float tinyScale = get_visual_scale(otherActor) * GetScaleAdjustment(otherActor);
+					float tinyScale = get_visual_scale(otherActor) * GetSizeFromBoundingBox(otherActor);
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
 
@@ -773,7 +773,7 @@ namespace Gts {
 			NiPoint3 giantLocation = actor->GetPosition();
 			for (auto otherActor: find_actors()) {
 				if (otherActor != actor) {
-					float tinyScale = get_visual_scale(otherActor) * GetScaleAdjustment(otherActor);
+					float tinyScale = get_visual_scale(otherActor) * GetSizeFromBoundingBox(otherActor);
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
 
@@ -865,7 +865,7 @@ namespace Gts {
 				float tinyScale = get_visual_scale(otherActor);
 				NiPoint3 actorLocation = otherActor->GetPosition();
 				if ((actorLocation - giantLocation).Length() < maxDistance * 6.0) {
-					tinyScale *= GetScaleAdjustment(otherActor); // take Giant/Dragon scale into account
+					tinyScale *= GetSizeFromBoundingBox(otherActor); // take Giant/Dragon scale into account
 					int nodeCollisions = 0;
 					float force = 0.0;
 

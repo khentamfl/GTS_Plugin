@@ -8,7 +8,6 @@
 #include "magic/effects/tracksize.hpp"
 #include "magic/effects/grow_other_button.hpp"
 #include "magic/effects/growth.hpp"
-#include "magic/effects/CrushGrowth.hpp"
 #include "magic/effects/shrink.hpp"
 #include "magic/effects/shrink_back.hpp"
 #include "magic/effects/shrink_back_other.hpp"
@@ -222,7 +221,6 @@ namespace Gts {
 		RegisterMagic<ShrinkPotion>("SizeDrainPotion");
 		RegisterMagic<Shrink_Poison>("ShrinkPoison");
 		//
-		RegisterMagic<CrushGrowth>("CrushGrowthMGEF");
 		RegisterMagic<TrackSize>("TrackSize");
 		RegisterMagic<ShrinkFoe>("ShrinkEnemy");
 		RegisterMagic<ShrinkFoe>("ShrinkEnemyAOE");

@@ -396,7 +396,7 @@ namespace Gts {
 			return false;
 		}
 		float pred_scale = get_visual_scale(pred);
-		float prey_scale = get_visual_scale(prey) * GetScaleAdjustment(prey);
+		float prey_scale = get_visual_scale(prey) * GetSizeFromBoundingBox(prey);
 
 		float bonus = 1.0;
 		if (IsCrawling(pred)) {

@@ -7,12 +7,6 @@
 #include "data/runtime.hpp"
 
 namespace Gts {
-	Absorb::Absorb(ActiveEffect* effect) : Magic(effect) {
-		auto base_spell = GetBaseEffect();
-
-		this->true_absorb = (base_spell == Runtime::GetMagicEffect("TrueAbsorb"));
-	}
-
 	std::string Absorb::GetName() {
 		return "Absorb";
 	}
@@ -21,8 +15,11 @@ namespace Gts {
 		auto target = GetTarget();
 		if (!target) {
 			return;
+		} auto caster = GetCaster();
+		if (!caster) {
+			return;
 		}
-		StaggerActor(target, 100.0f);
+		StaggerActor(target, 25.0f * GetSizeDifference(caster, target));
 	}
 
 	void Absorb::OnUpdate() {
@@ -42,7 +39,6 @@ namespace Gts {
 		}
 
 		float size_difference = GetSizeDifference(caster, target);
-		float gigantism = 1.0 + Ench_Aspect_GetPower(caster);
 		if (IsEssential(target)) {
 			return; // Disallow shrinking Essentials
 		}
@@ -55,8 +51,7 @@ namespace Gts {
 			size_difference = 3.0;
 		} // Cap Size Difference
 
-		
-		AbsorbSteal(target, caster, (0.0008 * size_difference) * gigantism, 0.0, 0.20);
+		TransferSize(caster, target, true, (0.0008 * size_difference), 0.0, 0.025, false, ShrinkSource::magic);
 		if (ShrinkToNothing(caster, target)) {
 			//
 		}

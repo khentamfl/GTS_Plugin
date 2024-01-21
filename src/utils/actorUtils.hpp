@@ -101,7 +101,7 @@ namespace Gts {
 	float GetSizeDifference(Actor* giant, Actor* tiny);
 	float GetActorWeight(Actor* giant, bool metric);
 	float GetActorHeight(Actor* giant, bool metric);
-	float GetScaleAdjustment(Actor* tiny);
+	float GetSizeFromBoundingBox(Actor* tiny);
 	float GetRoomStateScale(Actor* giant);
 	float GetProneAdjustment();
 

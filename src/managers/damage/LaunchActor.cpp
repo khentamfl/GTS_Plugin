@@ -118,7 +118,7 @@ namespace {
 			threshold = 0.8;
 			force += 0.20;
 		}
-		float Adjustment = GetScaleAdjustment(tiny);
+		float Adjustment = GetSizeFromBoundingBox(tiny);
 		float tinySize = get_visual_scale(tiny) * Adjustment;
 		float sizeRatio = giantSize/tinySize;
 

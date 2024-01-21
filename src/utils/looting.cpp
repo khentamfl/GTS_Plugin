@@ -222,7 +222,7 @@ namespace Gts {
 
 	void TransferInventoryToDropbox(Actor* giant, Actor* actor, const float scale, bool removeQuestItems, DamageSource Cause, bool Resurrected) {
 		bool soul = false;
-		float Scale = std::clamp(scale * GetScaleAdjustment(actor), 0.40f, 4.4f);
+		float Scale = std::clamp(scale * GetSizeFromBoundingBox(actor), 0.40f, 4.4f);
 
 		if (Resurrected) {
 			//Cprint("Task Aborted, target was resurrected");

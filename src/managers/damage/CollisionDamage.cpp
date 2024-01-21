@@ -78,7 +78,7 @@ namespace {
 			return;
 		}
 		float giantscale = get_visual_scale(giant);
-		float tinyscale = get_visual_scale(tiny) * GetScaleAdjustment(tiny);
+		float tinyscale = get_visual_scale(tiny) * GetSizeFromBoundingBox(tiny);
 		float size_difference = giantscale/tinyscale;
 		float BonusShrink = (IsJumping(giant) * 3.0) + 1.0;
 

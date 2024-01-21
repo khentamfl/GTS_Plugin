@@ -85,7 +85,7 @@ namespace Gts {
 		static Timer timer = Timer(0.25);
 
 		float attackerscale = get_visual_scale(attacker);
-		float receiverscale = get_visual_scale(receiver) * GetScaleAdjustment(receiver);
+		float receiverscale = get_visual_scale(receiver) * GetSizeFromBoundingBox(receiver);
 
 		float size_difference = attackerscale/receiverscale;
 
