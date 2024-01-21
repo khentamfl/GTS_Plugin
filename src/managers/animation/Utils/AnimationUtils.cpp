@@ -1022,7 +1022,7 @@ namespace Gts {
 			}
 			float finish = Time::WorldTimeElapsed();
 			auto giantref = giantHandle.get().get();
-			float timepassed = finish - Start;
+			float timepassed = finish - start;
 			if (timepassed >= duration) {
 				AdjustFacialExpression(giantref, 0, 0.0, "modifier"); // blink L
 				AdjustFacialExpression(giantref, 1, 0.0, "modifier"); // blink R
