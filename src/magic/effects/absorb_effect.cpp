@@ -57,7 +57,10 @@ namespace Gts {
 			size_difference = 3.0;
 		} // Cap Size Difference
 
-		TransferSize(caster, target, true, 0.0080 * size_difference, 0.025, false, ShrinkSource::magic);
+		float shrink_power = 4.0 * size_difference;
+		float gain_size = 0.025;
+
+		TransferSize(caster, target, true, shrink_power, gain_size, false, ShrinkSource::magic);
 
 		static Timer MoanTimer = Timer(10.0);
 		auto random = rand() % 8;
