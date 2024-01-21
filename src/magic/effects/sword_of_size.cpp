@@ -28,6 +28,6 @@ namespace Gts {
 	void SwordOfSize::OnFinish() {
 		auto Caster = GetCaster();
 		auto Target = GetTarget();
-		CastTrackSize(Caster, Target);
+		Task_TrackSizeTask(Caster, Target, "Sword");
 	}
 }

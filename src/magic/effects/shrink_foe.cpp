@@ -173,6 +173,6 @@ namespace Gts {
 		auto Caster = GetCaster();
 		auto Target = GetTarget();
 		//DecreaseWeaknessTask(Target);
-		CastTrackSize(Caster, Target);
+		Task_TrackSizeTask(Caster, Target, "Spell");
 	}
 }

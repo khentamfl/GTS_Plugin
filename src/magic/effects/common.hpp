@@ -340,7 +340,31 @@ namespace Gts {
 	}
 
 
-	inline void CastTrackSize(Actor* caster, Actor* target) {
-		Runtime::CastSpell(caster, target, "TrackSizeSpell");
+	inline void Task_TrackSizeTask(Actor* giant, Actor* tiny, std::string_view naming) { 
+		// A fail-safe task. The goal of it is to kill actor
+		// if half-life puts actor below shrink to nothing threshold, so we won't have < x0.01 actors
+		ActorHandle giantHandle = giant->CreateRefHandle();
+		ActorHandle tinyHandle = tiny->CreateRefHandle();
+		
+		float task_duration = 3.0;
+		std::string name = std::format("{}_STN_Check_{}_{}", naming, giant->formID, tiny->formID);
+
+		TaskManager::RunFor(name, duration, [=](auto& progressData) {
+			if (!giantHandle) {
+				return false;
+			}
+			if (!tinyHandle) {
+				return false;
+			}
+			auto giantref = giantHandle.get().get();
+			auto tinyref = tinyHandle.get().get();
+
+			float size = get_visual_scale(tinyref);
+			if (ShrinkToNothing(giantref, tinyref)) {
+				return false;
+			}
+
+			return true;
+		});
 	}
 }

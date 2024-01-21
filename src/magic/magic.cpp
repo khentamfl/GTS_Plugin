@@ -5,8 +5,6 @@
 #include "magic/effects/explosive_growth.hpp"
 #include "magic/effects/EnchGigantism.hpp"
 #include "magic/effects/grow_other.hpp"
-#include "magic/effects/tracksize.hpp"
-#include "magic/effects/grow_other_button.hpp"
 #include "magic/effects/growth.hpp"
 #include "magic/effects/shrink.hpp"
 #include "magic/effects/shrink_back.hpp"
@@ -221,7 +219,6 @@ namespace Gts {
 		RegisterMagic<ShrinkPotion>("SizeDrainPotion");
 		RegisterMagic<Shrink_Poison>("ShrinkPoison");
 		//
-		RegisterMagic<TrackSize>("TrackSize");
 		RegisterMagic<ShrinkFoe>("ShrinkEnemy");
 		RegisterMagic<ShrinkFoe>("ShrinkEnemyAOE");
 		RegisterMagic<ShrinkFoe>("ShrinkEnemyAOEMast");

@@ -10,6 +10,8 @@ using namespace RE;
 namespace Gts {
 	class Absorb : public Magic {
 		public:
+			Absorb(ActiveEffect* effect);
+
 			virtual void OnStart() override;
 
 			virtual void OnUpdate() override;

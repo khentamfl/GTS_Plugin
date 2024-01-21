@@ -118,9 +118,7 @@ GrowAllyExpert = "GTS.esp|452F16"
 GrowAllySizeButton = "GTS.esp|123BE3"
 ShrinkAllySizeButton = "GTS.esp|123BE4"
 CrushGrowthMGEF = "GTS.esp|2028B6"
-# Utility
-GtsMarkAlly = "GTS.esp|29F82E"
-TrackSize = "GTS.esp|3B0E75"
+
 # Damage
 SizeRelatedDamage0 = "GTS.esp|00A441"
 SizeRelatedDamage1 = "GTS.esp|00A9A8"
@@ -154,7 +152,6 @@ HealthBoost = "GTS.esp|518645"
 GtsVoreFearSpell = "GTS.esp|026D15"
 SmallMassiveThreatSpell = "GTS.esp|1A2566"
 CrushGrowthSpell = "GTS.esp|2028B7"
-TrackSizeSpell = "GTS.esp|3B0E73"
 TrueAbsorbSpell = "GTS.esp|22B0D6"
 StartVoreFake = "GTS.esp|319056"
 StartVore = "GTS.esp|31905C"

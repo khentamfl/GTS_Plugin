@@ -10,6 +10,8 @@
 #include "timer.hpp"
 
 namespace Gts {
+	Absorb::Absorb(ActiveEffect* effect) : Magic(effect) {}
+
 	std::string Absorb::GetName() {
 		return "Absorb";
 	}
@@ -75,6 +77,6 @@ namespace Gts {
 	void Absorb::OnFinish() {
 		auto caster = GetCaster();
 		auto target = GetTarget();
-		CastTrackSize(caster, target);
+		Task_TrackSizeTask(caster, target);
 	}
 }
