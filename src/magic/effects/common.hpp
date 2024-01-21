@@ -34,11 +34,11 @@ namespace Gts {
 	}
 
 	inline float GetStealEfficiency(Actor* tiny) {
-		float eff = GetScaleAdjustment(tiny);
+		float reduction = GetScaleAdjustment(tiny);
 		if (IsUndead(tiny)) {
-			eff *= 0.6;
+			reduction *= 1.6;
 		}
-		return eff;
+		return reduction;
 	}
 
 	inline void ModSizeExperience(Actor* Caster, float value) { // Adjust Matter Of Size skill
@@ -145,6 +145,7 @@ namespace Gts {
 		float Scale_Resistance = std::clamp(get_visual_scale(target), 1.0f, 9999.0f); // Calf_power makes shrink effects stronger based on scale, this fixes that.
 
 		efficiency /= GetStealEfficiency(target);// take bounding box of actor into account
+
 		if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
 			efficiency *= 0.25;
 		}
