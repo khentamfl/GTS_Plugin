@@ -53,7 +53,7 @@ namespace Gts {
 
 	void AbsorbShout_BuffCaster(Actor* giantref, Actor* tinyref);
 	void Task_TrackSizeTask(Actor* giant, Actor* tiny, std::string_view naming);
-	void Task_FacialEmotionTask(Actor* giant, float duration, std::string_view naming)
+	void Task_FacialEmotionTask(Actor* giant, float duration, std::string_view naming);
 
 	float GetHugStealRate(Actor* actor);
 	float GetHugShrinkThreshold(Actor* actor);
