@@ -37,6 +37,7 @@ namespace Gts {
 		bool dragon_was_eaten;
 		bool can_be_vored;
 		bool being_foot_grinded;
+		bool SMT_ReachedFullSpeed;
 		bool OverrideCamera;
 		bool WasReanimated;
 		bool FPCrawling;

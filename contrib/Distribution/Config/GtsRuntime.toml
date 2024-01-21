@@ -37,6 +37,7 @@ SwingImpact = "GTS.esp|68F0AD"
 
 TinyCalamity_Impact = "GTS.esp|76DCD2"
 TinyCalamity_Crush = "GTS.esp|76DCD3"
+TinyCalamity_ReachedSpeed = "GTS.esp|7820D7"
 
 Magic_ProtectTinies = "GTS.esp|772DD4"
 Magic_BreakTinyProtection = "GTS.esp|777ED6"
