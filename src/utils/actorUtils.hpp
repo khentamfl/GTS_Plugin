@@ -75,7 +75,7 @@ namespace Gts {
 	bool IsGiant(Actor* actor);
 	bool IsMammoth(Actor* actor);
 	bool IsLiving(Actor* actor);
-	bool IsUndead(Actor* actor);
+	bool IsUndead(Actor* actor, bool PerformCheck);
 	bool WasReanimated(Actor* actor);
 	bool IsHeadtracking(Actor* giant);
 	bool IsHostile(Actor* giant, Actor* tiny);

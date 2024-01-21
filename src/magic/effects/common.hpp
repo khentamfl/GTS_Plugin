@@ -35,16 +35,20 @@ namespace Gts {
 
 	inline float GetShrinkEfficiency(Actor* tiny) { // for shrinking another
 		float reduction = GetScaleAdjustment(tiny);
-		if (IsUndead(tiny)) {
+		if (IsUndead(tiny, false)) {
 			reduction *= 3.0;
+		} else if (IsMechanical(tiny)) {
+			reduction *= 4.5;
 		}
 		return reduction;
 	}
 
 	inline float GetStealEfficiency(Actor* tiny) { // for gaining size
 		float increase = GetScaleAdjustment(tiny);
-		if (IsUndead(tiny)) {
+		if (IsUndead(tiny, false)) {
 			increase /= 3.0;
+		} else if (IsMechanical(tiny)) {
+			increase /= 4.5;
 		}
 		return increase;
 	}
@@ -136,11 +140,7 @@ namespace Gts {
 		}
 	}
 
-	inline float CalcEffeciency(Actor* caster, Actor* target, bool progression) {
-		float progression_multiplier = 1.0;
-		if (progression) {
-			progression_multiplier = Persistent::GetSingleton().progression_multiplier;
-		}
+	inline float CalcEffeciency(Actor* caster, Actor* target) {
 		float casterlevel = clamp(1.0, 500.0, caster->GetLevel());
 		float targetlevel = clamp(1.0, 500.0, target->GetLevel());
 
@@ -148,11 +148,9 @@ namespace Gts {
 
 		float Gigantism_Caster = 1.0 + (Ench_Aspect_GetPower(caster) * 0.25); // get GTS Aspect Of Giantess
 		float Gigantism_Target = 1.0 + Ench_Aspect_GetPower(target);  // get Tiny Aspect Of Giantess
-		float efficiency = clamp(0.50, 1.0, (casterlevel/targetlevel)) * progression_multiplier;
+		float efficiency = clamp(0.50, 1.0, (casterlevel/targetlevel));
 
 		float Scale_Resistance = std::clamp(get_visual_scale(target), 1.0f, 9999.0f); // Calf_power makes shrink effects stronger based on scale, this fixes that.
-
-		efficiency /= GetShrinkEfficiency(target);// take bounding box of actor into account
 
 		if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
 			efficiency *= 0.25;
@@ -161,6 +159,10 @@ namespace Gts {
 		efficiency *= Gigantism_Caster * SizeHunger; // amplity it by Aspect Of Giantess (on gts) and size hunger potion bonus
 		efficiency /= Gigantism_Target; // resistance from Aspect Of Giantess (on Tiny)
 		efficiency /= Scale_Resistance;
+
+		efficiency /= GetShrinkEfficiency(target);// take bounding box of actor into account
+
+		log::info("efficiency between {} and {} is {}", caster->GetDisplayFullName(), target->GetDisplayFullName(), effeciency);
 
 		return efficiency;
 	}
@@ -235,21 +237,22 @@ namespace Gts {
 
 	inline void Steal(Actor* from, Actor* to, float scale_factor, float bonus, float effeciency, ShrinkSource source) {
 		effeciency = clamp(0.01, 1.0, effeciency);
-		float effeciency_noscale = clamp(0.01, 1.0, CalcEffeciency(to, from, false));
-		float amount = CalcPower(from, scale_factor, bonus, true);
-		float amountnomult = CalcPower(from, scale_factor, bonus, false);
 		float visual_scale = get_visual_scale(from);
+
 		ModSizeExperience(to, 0.52 * scale_factor * visual_scale);
 
-		float receive_amount = amount*effeciency*visual_scale * GetStealEfficiency(from);
+		float amount = CalcPower(from, scale_factor, bonus, true);
 
-		update_target_scale(from, -amountnomult * 0.55 * effeciency_noscale, SizeEffectType::kShrink);
-		update_target_scale(to, receive_amount, SizeEffectType::kGrow);
+		float shrink_amount = (amount*0.55*effeciency);
+		float growth_amount = (amount*0.55*effeciency*visual_scale) * GetStealEfficiency(from);
 
-		if (source == ShrinkSource::hugs) {
-			AdvanceQuestProgression(to, 1.0, amountnomult * 0.55 * effeciency_noscale);
+		update_target_scale(from, -shrink_amount, SizeEffectType::kShrink);
+		update_target_scale(to, growth_amount, SizeEffectType::kGrow);
+
+		if (source == ShrinkSource::hugs) { // quest: shrink by 2 and 5 meters worth of size in total (stage 1 / 2) 
+			AdvanceQuestProgression(to, 1.0, shrink_amount);
 		} else {
-			AdvanceQuestProgression(to, 2.0, amountnomult * 0.55 * effeciency_noscale);
+			AdvanceQuestProgression(to, 2.0, shrink_amount);
 		}
 
 		AddStolenAttributes(to, amount*effeciency);
@@ -270,7 +273,7 @@ namespace Gts {
 		float target_scale = get_visual_scale(target);
 		float caster_scale = get_visual_scale(caster);
 
-		power *= BASE_POWER * CalcEffeciency(caster, target, true);
+		power *= BASE_POWER * CalcEffeciency(caster, target);
 
 		if (dual_casting) {
 			power *= DUAL_CAST_BONUS;

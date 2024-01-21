@@ -629,10 +629,10 @@ namespace Gts {
 		return true;
 	}
 
-	bool IsUndead(Actor* actor) {
+	bool IsUndead(Actor* actor, bool PerformCheck) {
 		bool IsDraugr = Runtime::HasKeyword(actor, "UndeadKeyword");
 		bool Check = Persistent::GetSingleton().AllowUndeadVore;
-		if (Check) {
+		if (Check && PerformCheck) {
 			return false;
 		}
 		return IsDraugr;
@@ -809,6 +809,7 @@ namespace Gts {
 	}
 
 	float GetScaleAdjustment(Actor* tiny) {
+		auto profiler = Profilers::Profile("ActorUtils: GetScaleAdjustment");
 		float sc = get_giantess_height(tiny);
 		sc *= get_bounding_box_to_mult(tiny);
 		return sc;
@@ -1901,7 +1902,7 @@ namespace Gts {
 		bool DarkArts1 = Runtime::HasPerk(giant, "DarkArts_Aug");
 		bool DarkArts2 = Runtime::HasPerk(giant, "DarkArts_Aug2");
 
-		float shrinkpower = (shrink * 0.70) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, tiny, true);
+		float shrinkpower = (shrink * 0.35) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, tiny);
 
 		float Adjustment = GetScaleAdjustment(tiny);
 		float giantScale = get_visual_scale(giant);
