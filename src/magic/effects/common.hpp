@@ -162,7 +162,7 @@ namespace Gts {
 
 		efficiency /= GetShrinkEfficiency(target);// take bounding box of actor into account
 
-		log::info("efficiency between {} and {} is {}", caster->GetDisplayFullName(), target->GetDisplayFullName(), effeciency);
+		log::info("efficiency between {} and {} is {}", caster->GetDisplayFullName(), target->GetDisplayFullName(), efficiency);
 
 		return efficiency;
 	}
