@@ -1,3 +1,4 @@
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "magic/effects/sword_of_size.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/magic.hpp"

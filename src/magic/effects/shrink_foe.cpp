@@ -1,3 +1,4 @@
+#include "managers/animation/Utils/AnimationUtils.hpp"
 #include "magic/effects/shrink_foe.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "magic/effects/common.hpp"
