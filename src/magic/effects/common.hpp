@@ -61,7 +61,6 @@ namespace Gts {
 		auto GtsSkillRatio = Runtime::GetGlobal("GtsSkillRatio");
 		auto GtsSkillProgress = Runtime::GetGlobal("GtsSkillProgress");
 
-
 		int random = (100 + (rand()% 25 + 1)) / 100;
 
 		if (GtsSkillLevel->value >= 100.0) {
@@ -168,16 +167,15 @@ namespace Gts {
 	}
 
 	inline float CalcPower(Actor* actor, float scale_factor, float bonus, bool shrink) {
-
-		progression_multiplier = Persistent::GetSingleton().progression_multiplier;
-		float cap = 0.5;
+		float size_cap = 0.5;
+		float progress_mult = Persistent::GetSingleton().progression_multiplier;
 		// y = mx +c
 		// power = scale_factor * scale + bonus
 		if (shrink) {
-			cap = 0.02;
+			size_cap = 0.02;
 		}
 		float scale = clamp(cap, 999999.0, get_visual_scale(actor));
-		return (scale * scale_factor + bonus) * progression_multiplier * MASTER_POWER * TimeScale();
+		return (scale * scale_factor + bonus) * progress_mult * MASTER_POWER * TimeScale();
 	}
 
 	inline void Grow(Actor* actor, float scale_factor, float bonus) {

@@ -15,7 +15,8 @@ namespace Gts {
 		auto target = GetTarget();
 		if (!target) {
 			return;
-		} auto caster = GetCaster();
+		} 
+		auto caster = GetCaster();
 		if (!caster) {
 			return;
 		}
