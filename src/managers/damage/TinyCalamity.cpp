@@ -89,6 +89,20 @@ namespace {
             return false;
         }
     }
+
+    void FullSpeed_ApplyEffect(Actor* giant, float speed) {
+        auto transient = Transient::GetSingleton().GetData(giant);
+		if (transient) {
+            bool& CanApplyEffect = transient->SMT_ReachedFullSpeed;
+            if (speed < 1.0) {
+                CanApplyEffect = true;
+            } else if (speed >= 1.0 && CanApplyEffect) {
+                CanApplyEffect = false;
+                shake_camera_at_node(giant, "NPC COM [COM ]", 24.0, 0.15);
+                Runtime::PlaySoundAtNode("TinyCalamity_ReachedSpeed", giant, 1.0, 1.0, "NPC COM [COM ]");
+            } 
+        }
+    }
 }
 
 namespace Gts {
@@ -259,7 +273,7 @@ namespace Gts {
 				currentspeed = cap;
 			}
 
-            TinyCalamity_CheckSpeed(giant, currentspeed);
+            FullSpeed_ApplyEffect(giant, currentspeed);
 
 		} else { // else decay bonus speed over time
 			if (currentspeed > 0.0) {
@@ -268,19 +282,5 @@ namespace Gts {
 				currentspeed = 0.0;
 			} 
 		}
-    }
-
-    void TinyCalamity_CheckSpeed(Actor* giant, float speed) {
-        auto transient = Transient::GetSingleton().GetData(giant);
-		if (transient) {
-            bool& CanApplyEffect = transient->SMT_ReachedFullSpeed;
-            if (speed < 1.0) {
-                CanApplyEffect = true;
-            } else if (speed >= 1.0 && CanApplyEffect) {
-                CanApplyEffect = false;
-                shake_camera_at_node(giant, "NPC COM [COM ]", 24.0, 0.15);
-                Runtime::PlaySoundAtNode("TinyCalamity_ReachedSpeed", giant, 1.0, 1.0, "NPC COM [COM ]");
-            } 
-        }
     }
 }
