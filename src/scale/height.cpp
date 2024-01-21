@@ -85,4 +85,19 @@ namespace Gts {
 		}
 		return temp_actor_data->base_height;
 	}
+
+	float get_bounding_box_to_mult(Actor* actor) {
+		auto nif_bb = get_bound(actor);
+		if (nif_bb) {
+			auto nif_dim = nif_bb->extents;
+			float x = nif_dim.x;
+			float y = nif_dim.y;
+			float z = nif_dim.z;
+			float box = pow(x*y*z/(22*14*64),1/3);
+			log::info("Found bounds for {}, bounds :{}", actor->GetDisplayFullName(), Vector2Str(nif_dim));
+			log::info("Value: {}", eff);
+			return box;
+		}
+		return 1.0;
+	}
 }

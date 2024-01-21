@@ -5,8 +5,10 @@
 #include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "data/runtime.hpp"
-#include "data/time.hpp"
+#include "scale/height.hpp"
 #include "scale/scale.hpp"
+#include "data/time.hpp"
+
 #include "events.hpp"
 #include "node.hpp"
 // Module that handles various magic effects
@@ -32,16 +34,9 @@ namespace Gts {
 	}
 
 	inline float GetStealEfficiency(Actor* tiny) {
-		float eff = 1.0;
-		auto nif_bb = get_bound(tiny);
-		if (nif_bb) {
-			auto nif_dim = nif_bb->extents;
-			float x = nif_dim.x;
-			float y = nif_dim.y;
-			float z = nif.dim.z;
-			eff = pow(x*y*z/(22*14*64),1/3);
-			log::info("Found bounds of {}, bounds :{}", tiny->GetDisplayFullName(), Vector2Str(nif_dim));
-			log::info("Value: {}", eff);
+		float eff = get_bounding_box_to_mult(tiny);
+		if (IsUndead(tiny)) {
+			eff *= 0.6;
 		}
 		return eff;
 	}
