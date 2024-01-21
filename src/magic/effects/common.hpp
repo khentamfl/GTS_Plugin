@@ -32,14 +32,15 @@ namespace Gts {
 
 	inline float GetStealEfficiency(Actor* tiny) {
 		float eff = 1.0;
-		if (IsDragon(tiny)) {
-			eff *= 0.20;
-		} else if (IsMammoth(tiny)) {
-			eff *= 0.35;
-		} else if (IsGiant(tiny)) {
-			eff *= 0.50;
-		} else if (IsUndead(tiny)) {
-			eff *= 0.60;
+		auto nif_bb = get_bound(tiny);
+		if (nif_bb) {
+			auto nif_dim = nif_bb->extents;
+			float x = nif_dim.x;
+			float y = nif_dim.y;
+			float z = nif.dim.z;
+			eff = pow(x*y*z/(22*14*64),1/3);
+			log::info("Found bounds of {}, bounds :{}", tiny->GetDisplayFullName(), Vector2Str(nif_dim));
+			log::info("Value: {}", eff);
 		}
 		return eff;
 	}
@@ -145,7 +146,7 @@ namespace Gts {
 
 		float Scale_Resistance = std::clamp(get_visual_scale(target), 1.0f, 9999.0f); // Calf_power makes shrink effects stronger based on scale, this fixes that.
 
-		efficiency *= GetStealEfficiency(target);
+		efficiency /= GetStealEfficiency(target);
 		if (Runtime::HasMagicEffect(target, "ResistShrinkPotion")) {
 			efficiency *= 0.25;
 		}

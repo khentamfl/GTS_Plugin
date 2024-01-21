@@ -825,6 +825,7 @@ namespace Gts {
 			auto nif_dim = nif_bb->extents;
 			auto nif_volume = nif_dim.x * nif_dim.y * nif_dim.z;
 			log::info("{} Nif BB: {}, Volume: {}", tiny->GetDisplayFullName(), Vector2Str(nif_dim), nif_volume);
+			log::info("{} Pow BB: {}", );
 		}
 		
 		return sc;
