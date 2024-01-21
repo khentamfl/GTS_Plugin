@@ -243,8 +243,8 @@ namespace Gts {
 
 		float amount = CalcPower(from, scale_factor, bonus, true);
 
-		float shrink_amount = (amount*0.55*effeciency);
-		float growth_amount = (amount*0.55*effeciency*visual_scale) * GetStealEfficiency(from);
+		float shrink_amount = (amount*effeciency);
+		float growth_amount = (amount*0.50*effeciency*visual_scale) * GetStealEfficiency(from);
 
 		update_target_scale(from, -shrink_amount, SizeEffectType::kShrink);
 		update_target_scale(to, growth_amount, SizeEffectType::kGrow);
