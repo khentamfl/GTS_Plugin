@@ -4,6 +4,7 @@
 #include "managers/Attributes.hpp"
 #include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
+#include "data/transient.hpp"
 #include "utils/looting.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
