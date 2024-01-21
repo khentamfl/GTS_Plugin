@@ -135,9 +135,9 @@ namespace Gts {
 		}
 		float casterlevel = clamp(1.0, 500.0, caster->GetLevel());
 		float targetlevel = clamp(1.0, 500.0, target->GetLevel());
-		float Gigantism_Caster = 1.0 + (Ench_Aspect_GetPower(caster) * 0.25);
+		float Gigantism_Caster = 1.0 + (Ench_Aspect_GetPower(caster) * 0.25); // get GTS Aspect Of Giantess
 		float SizeHunger = 1.0 + Ench_Hunger_GetPower(caster);
-		float Gigantism_Target = 1.0 + Ench_Aspect_GetPower(target);  // May go negative needs fixing with a smooth clamp
+		float Gigantism_Target = 1.0 + Ench_Aspect_GetPower(target);  // get Tiny Aspect Of Giantess
 		float efficiency = clamp(0.50, 1.0, (casterlevel/targetlevel)) * progression_multiplier;
 
 		float Scale_Resistance = std::clamp(get_visual_scale(target), 1.0f, 9999.0f); // Calf_power makes shrink effects stronger based on scale, this fixes that.
@@ -147,7 +147,7 @@ namespace Gts {
 			efficiency *= 0.25;
 		}
 
-		efficiency *= Gigantism_Caster * SizeHunger; // amplity it by Aspect Of Giantess (on gts) and size hunger potion
+		efficiency *= Gigantism_Caster * SizeHunger; // amplity it by Aspect Of Giantess (on gts) and size hunger potion bonus
 		efficiency /= Gigantism_Target; // resistance from Aspect Of Giantess (on Tiny)
 		efficiency /= Scale_Resistance;
 
