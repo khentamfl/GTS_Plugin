@@ -8,6 +8,7 @@
 #include "data/time.hpp"
 #include "scale/scale.hpp"
 #include "events.hpp"
+#include "node.hpp"
 // Module that handles various magic effects
 
 namespace {
