@@ -157,8 +157,8 @@ namespace Gts {
 			gainpower *= 0.20;
 		}
 
-		if (caster->formID == 0x14 && SizeManager::GetSingleton().BalancedMode() == 2.0) { // This is checked only if Balance Mode is enabled. Size requirement is bigger with it.
-			balancemodebonus = 2.0;
+		if (caster->formID == 0x14 && SizeManager::GetSingleton().BalancedMode() == 2.0) { // This is checked only if Balance Mode is enabled.
+			balancemodebonus = 0.5;
 		}
 
 		if (IsEssential(target)) {

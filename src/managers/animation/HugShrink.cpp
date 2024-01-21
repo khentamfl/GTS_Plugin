@@ -351,7 +351,7 @@ namespace Gts {
 			float threshold = GetHugShrinkThreshold(giantref);
 			float stamina = 0.35;
 			float steal = GetHugStealRate(giantref);
-			float shrink = 5.0;
+			float shrink = 7.0;
 			if (Runtime::HasPerkTeam(giantref, "HugCrush_Greed")) {
 				shrink *= 1.25;
 				stamina *= 0.75;

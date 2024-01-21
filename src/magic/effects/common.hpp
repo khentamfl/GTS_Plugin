@@ -222,7 +222,7 @@ namespace Gts {
 		float amount = CalcPower(from, scale_factor, bonus, false);
 		float amount_shrink = CalcPower(from, scale_factor, bonus, true);
 
-		float shrink_amount = (amount*1.10*effeciency);
+		float shrink_amount = (amount*0.22);
 		float growth_amount = (amount_shrink*0.33*effeciency) * SizeSteal_GetPower(from);
 
 		ModSizeExperience(to, 0.14 * scale_factor * visual_scale * SizeSteal_GetPower(from));
