@@ -339,6 +339,17 @@ namespace Gts {
 		}
 	}
 
+	inline void AbsorbShout_BuffCaster(Actor* giantref, Actor* tinyref) {
+		static Timer MoanTimer = Timer(10.0);
+		auto random = rand() % 8;
+		if (random < 2) {
+			shake_camera_at_node(giantref, "NPC COM [COM ]", 24.0, 0.20);
+			SpawnProgressionParticle(tinyref, true);
+			ModSizeExperience(giantref, 0.14);
+			PlayMoanSound(giantref, 1.0);
+			Grow(giantref, 0, 0.10);	
+		}
+	}
 
 	inline void Task_TrackSizeTask(Actor* giant, Actor* tiny, std::string_view naming) { 
 		// A fail-safe task. The goal of it is to kill actor
@@ -361,6 +372,9 @@ namespace Gts {
 
 			float size = get_visual_scale(tinyref);
 			if (ShrinkToNothing(giantref, tinyref)) {
+				if (naming == "Absorb") {
+					AbsorbShout_BuffCaster(giantref, tinyref);
+				}
 				return false;
 			}
 

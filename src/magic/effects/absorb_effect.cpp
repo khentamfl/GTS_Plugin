@@ -43,11 +43,12 @@ namespace Gts {
 		if (target == caster) {
 			return;
 		}
-
-		float size_difference = GetSizeDifference(caster, target);
 		if (IsEssential(target)) {
 			return; // Disallow shrinking Essentials
 		}
+
+		float size_difference = GetSizeDifference(caster, target);
+
 		if (HasSMT(caster)) {
 			size_difference += SMT_BONUS;
 		} // More shrink with SMT
@@ -57,22 +58,13 @@ namespace Gts {
 			size_difference = 3.0;
 		} // Cap Size Difference
 
-		float shrink_power = 4.0 * size_difference;
+		float shrink_power = 28.0 * size_difference;
 		float gain_size = 0.025;
 
 		TransferSize(caster, target, true, shrink_power, gain_size, false, ShrinkSource::magic);
 
-		static Timer MoanTimer = Timer(10.0);
-		auto random = rand() % 8;
-
-		if (ShrinkToNothing(caster, target) && random < 2) { // chance to receive more size xp and grow even bigger
-			if (MoanTimer.ShouldRunFrame()) {
-				shake_camera_at_node(caster, "NPC COM [COM ]", 24.0, 0.20);
-				SpawnProgressionParticle(target, true);
-				ModSizeExperience(caster, 0.14);
-				PlayMoanSound(caster, 1.0);
-				Grow(caster, 0, 0.10);	
-			}
+		if (ShrinkToNothing(caster, target)) { // chance to receive more size xp and grow even bigger
+			AbsorbShout_BuffCaster(caster, target);
 		}
 	}
 	
