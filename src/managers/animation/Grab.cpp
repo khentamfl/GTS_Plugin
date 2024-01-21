@@ -740,7 +740,7 @@ namespace {
 			if (!grabbedActor) {
 				return;
 			}
-			if (IsInsect(grabbedActor, true) || IsBlacklisted(grabbedActor) || IsUndead(grabbedActor)) {
+			if (IsInsect(grabbedActor, true) || IsBlacklisted(grabbedActor) || IsUndead(grabbedActor, true)) {
 				return; // Same rules as with Vore
 			}
 			AnimationManager::StartAnim("GrabEatSomeone", player);
