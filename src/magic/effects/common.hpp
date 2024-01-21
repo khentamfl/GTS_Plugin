@@ -342,12 +342,19 @@ namespace Gts {
 	inline void AbsorbShout_BuffCaster(Actor* giantref, Actor* tinyref) {
 		static Timer MoanTimer = Timer(10.0);
 		auto random = rand() % 8;
-		if (random < 2) {
-			shake_camera_at_node(giantref, "NPC COM [COM ]", 24.0, 0.20);
-			SpawnProgressionParticle(tinyref, true);
-			ModSizeExperience(giantref, 0.14);
-			PlayMoanSound(giantref, 1.0);
-			Grow(giantref, 0, 0.10);	
+		if (random <= 4) {
+			if (MoanTimer.ShouldRunFrame()) {
+				shake_camera_at_node(giantref, "NPC COM [COM ]", 24.0, 0.20);
+				auto node = find_node(giantref, "NPC COM [COM ]");
+				ModSizeExperience(giantref, 0.14);
+				PlayMoanSound(giantref, 1.0);
+				Grow(giantref, 0, 0.10);
+
+				if (node) {
+					NiPoint3 pos = node->world.translate;
+					SpawnParticle(giantref, 4.60, "GTS/Magic/Soul_Drain.nif", NiMatrix3(), pos, 1.0, 7, node);
+				}
+			}	
 		}
 	}
 
