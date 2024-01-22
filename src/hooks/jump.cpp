@@ -60,12 +60,12 @@ namespace Hooks {
 						auto actor = skyrim_cast<Actor*>(graph);
 						if (actor) {
 							const float CRITICALHEIGHT = 9.70;
-							const float ACTORHEIGHT = 1.8*70.0;
-							const float FACTOR = 0.30;
-							float scale = get_visual_scale(actor);
+							const float ACTORHEIGHT = 1.82*70.0;
+							const float FACTOR = 0.20;
+							float scale = get_giantess_scale(actor);
 							float newCriticalHeight = ACTORHEIGHT*scale*FACTOR;
 
-							float jump_factor =  pow(CRITICALHEIGHT/newCriticalHeight,0.5);
+							float jump_factor = pow(CRITICALHEIGHT/newCriticalHeight,0.5);
 							if (actor->formID == 0x14) {
 								log::info("Multi velocity by factor: {}", jump_factor);
 								log::info("Actor: {}", actor->GetDisplayFullName());
@@ -86,13 +86,13 @@ namespace Hooks {
 		// So offset is = 0x190 .  36271 = 5D1F80
 		[](auto* actor) {
 		    float result = SkyrimJumpHeight(actor);
-			log::info("Original jump height: {}", result);
+			//log::info("Original jump height: {}", result);
 		    if (actor) {
 				if (actor->formID == 0x14) {
 					float scale = get_giantess_scale(actor);
 					result *= scale;
 				}
-				log::info("Value: {}", result);
+				//log::info("Value: {}", result);
 		    }
 		    return result;
 		});
