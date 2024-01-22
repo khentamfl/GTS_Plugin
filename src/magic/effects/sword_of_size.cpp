@@ -36,6 +36,13 @@ namespace Gts {
 	SwordOfSize::SwordOfSize(ActiveEffect* effect) : Magic(effect) {
 	}
 
+	void SwordOfSize::OnStart() {
+		auto caster = GetCaster();
+		if (caster) {
+			this->power = GetActiveEffect()->magnitude;
+		}
+	}
+
 	void SwordOfSize::OnUpdate() {
 		auto caster = GetCaster();
 		if (!caster) {
@@ -46,7 +53,7 @@ namespace Gts {
 			return;
 		}
 		float gain_value = 0.02;
-		float base_shrink = std::clamp(this->power * 0.10 * Ench_AbsorbSize_GetPower(this->power * 0.10), 0.0f, 8.0f);
+		float base_shrink = std::clamp(this->power * 0.10 * Ench_AbsorbSize_GetPower(this->power * 0.10), 1.0f, 8.0f);
 		float shrink_value = base_shrink * 3;
 
 		// balanced around default value of 3.0 
