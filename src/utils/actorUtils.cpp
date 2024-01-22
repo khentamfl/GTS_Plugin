@@ -776,7 +776,7 @@ namespace Gts {
 	}
 
 	float GetSizeDifference(Actor* giant, Actor* tiny) {
-		float GiantScale = get_visual_scale(giant) * GetSizeFromBoundingBox(tiny);
+		float GiantScale = get_visual_scale(giant) * GetSizeFromBoundingBox(giant);
 		float TinyScale = get_visual_scale(tiny) * GetSizeFromBoundingBox(tiny);
 		if (HasSMT(giant)) {
 			GiantScale += 7.8;
@@ -887,7 +887,7 @@ namespace Gts {
 			for (auto otherActor: find_actors()) {
 				if (otherActor != giant) {
 					if (otherActor->Is3DLoaded() && !otherActor->IsDead()) {
-						float tinyScale = get_visual_scale(otherActor);
+						float tinyScale = get_visual_scale(otherActor) * GetSizeFromBoundingBox(otherActor);
 						float difference = GetSizeDifference(giant, otherActor);
 						if (difference > 5.8 || huggedActor) {
 							NiPoint3 actorLocation = otherActor->GetPosition();
@@ -1915,10 +1915,8 @@ namespace Gts {
 		float shrinkpower = (shrink * 0.35) * (1.0 + (GetGtsSkillLevel() * 0.005)) * CalcEffeciency(giant, tiny);
 
 		float Adjustment = GetSizeFromBoundingBox(tiny);
-		float giantScale = get_visual_scale(giant);
-		float tinyScale = get_visual_scale(tiny);
 
-		float sizedifference = giantScale/tinyScale;
+		float sizedifference = GetSizeDifference(giant, tiny);
 		if (DarkArts1) {
 			giant->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 8.0);
 		}
@@ -1986,7 +1984,6 @@ namespace Gts {
 		NiPoint3 giantLocation = giant->GetPosition();
 		for (auto otherActor: find_actors()) {
 			if (otherActor != giant) {
-				float tinyScale = get_visual_scale(otherActor);
 				NiPoint3 actorLocation = otherActor->GetPosition();
 				if ((actorLocation - giantLocation).Length() < BASE_DISTANCE*giantScale*radius*3) {
 					int nodeCollisions = 0;
@@ -2186,6 +2183,9 @@ namespace Gts {
 	}
 
 	void StaggerActor(Actor* receiver, float power) {
+		if (receiver->IsDead() || GetAV(receiver, ActorValue::kHealth) <= 0.0) {
+			return;
+		}
 		receiver->SetGraphVariableFloat("staggerMagnitude", power);
 		receiver->NotifyAnimationGraph("staggerStart");
 	}

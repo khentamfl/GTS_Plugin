@@ -26,7 +26,9 @@ namespace Gts {
 		if (!caster) {
 			return;
 		}
+		
 		StaggerActor(target, 0.25f * GetSizeDifference(caster, target));
+		
 	}
 
 	void Absorb::OnUpdate() {

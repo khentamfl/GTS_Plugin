@@ -964,7 +964,9 @@ namespace Gts {
 				auto node = find_node(giantref, "NPC COM [COM ]");
 				ModSizeExperience(giantref, 0.14);
 				PlayMoanSound(giantref, 1.0);
-				Grow(giantref, 0, 0.025 * (1 + random));
+				Grow(giantref, 0, 0.016 * (1 + random));
+
+				Runtime::CastSpell(giantref, giantref, "GtsVoreFearSpell");
 
 				if (node) {
 					NiPoint3 pos = node->world.translate;
