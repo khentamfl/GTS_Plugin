@@ -61,7 +61,7 @@ namespace Hooks {
 						if (actor) {
 							const float CRITICALHEIGHT = 9.70;
 							const float ACTORHEIGHT = 1.82*70.0;
-							const float FACTOR = 0.20;
+							const float FACTOR = 0.25;
 							float scale = get_giantess_scale(actor);
 							float newCriticalHeight = ACTORHEIGHT*scale*FACTOR;
 
