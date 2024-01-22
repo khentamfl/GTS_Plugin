@@ -68,6 +68,8 @@ namespace Gts {
 			gain_value *= 0.20;
 		}
 
+		log::info("Shrink Value: {}", shrink_value);
+
 		TransferSize(caster, target, false, shrink_value, gain_value, false, ShrinkSource::magic);
 	}
 

@@ -31,14 +31,14 @@ namespace Hooks {
 			REL::RelocationID(76430, 78269),
 			[](auto* a_this){
 			float result = GetFallDistance(a_this);
-			// log::info("GetFallDistance: {}", result);
+			log::info("GetFallDistance: {}", result);
 			auto actor = FindActor(a_this);
 			if (actor) {
 				if (actor->formID == 0x14) {// Apply to Player only
 					float scale = get_giantess_scale(actor);
 					if (scale > 1e-4) {
 						result /= scale;
-						//log::info("  - Changed to {} for {}", result, actor->GetDisplayFullName());
+						log::info("  - Changed to {} for {}", result, actor->GetDisplayFullName());
 					}
 				}
 			}
