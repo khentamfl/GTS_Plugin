@@ -22,8 +22,14 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
+		float gain = 0.02;
+		float shrink = 3.0;
+		if (target->IsDead())  {
+			shrink *= 2.5;
+			gain *= 0.20;
+		}
 
-		TransferSize(caster, target, false, 12.00, 0.40, false, ShrinkSource::magic);
+		TransferSize(caster, target, false, 3.00, 0.02, false, ShrinkSource::magic);
 	}
 
 	void SwordOfSize::OnFinish() {
@@ -32,3 +38,4 @@ namespace Gts {
 		Task_TrackSizeTask(Caster, Target, "Sword");
 	}
 }
+

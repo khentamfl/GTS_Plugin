@@ -71,13 +71,12 @@ namespace Gts {
 		const float SHRINK_EFFIC = 0.16; // Efficiency = size steal efficiency.
 		const float SHRINK_AOE_POWER = 2.40;
 		const float SHRINK_AOE_EFFIC = 0.18;
-		const float SHRINK_AOE_MASTER_POWER = 2.75;
+		const float SHRINK_AOE_MASTER_POWER = 2.70;
 		const float SHRINK_AOE_MASTER_EFFIC = 0.20;
-		const float SHRINK_BOLT_POWER = 17.50;
+		const float SHRINK_BOLT_POWER = 6.0;
 		const float SHRINK_BOLT_EFFIC = 0.06;
-		const float SHRINK_STORM_POWER = 34.50;
-		const float SHRINK_STORM_EFFIC = 0.12;
-
+		const float SHRINK_STORM_POWER = 12.0;
+		const float SHRINK_STORM_EFFIC = 0.03;
 
 		auto base_spell = GetBaseEffect();
 

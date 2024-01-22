@@ -964,7 +964,7 @@ namespace Gts {
 				auto node = find_node(giantref, "NPC COM [COM ]");
 				ModSizeExperience(giantref, 0.14);
 				PlayMoanSound(giantref, 1.0);
-				Grow(giantref, 0, 0.10);
+				Grow(giantref, 0, 0.025 * (1 + random));
 
 				if (node) {
 					NiPoint3 pos = node->world.translate;
