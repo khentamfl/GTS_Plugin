@@ -9,10 +9,12 @@ using namespace SKSE;
 
 namespace {
 	Actor* FindActor(bhkCharacterController* charCont) {
-		auto actor = skyrim_cast<Actor*>(charCont);
+		Actor* actor = skyrim_cast<Actor*>(charCont);
 		if (actor) {
+			log::info("Static cast succeed");
 			return actor;
 		}
+		log::info("Static cast failed");
 		/*for (auto actor: find_actors()) {
 			if (charCont == actor->GetCharController()) {
 				return actor;
