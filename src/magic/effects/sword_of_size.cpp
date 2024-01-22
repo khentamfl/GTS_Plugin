@@ -53,7 +53,10 @@ namespace Gts {
 			return;
 		}
 		float gain_value = 0.02;
-		float base_shrink = std::clamp(this->power * 0.10 * Ench_AbsorbSize_GetPower(this->power * 0.10), 1.0f, 8.0f);
+		float ench_power = this->power * 0.10;
+
+		float calc_power = ench_power * Ench_AbsorbSize_GetPower(ench_power);
+		float base_shrink = std::clamp(calc_power, 1.0f, 8.0f);
 		float shrink_value = base_shrink * 3;
 
 		// balanced around default value of 3.0 
