@@ -111,7 +111,7 @@ namespace Gts {
 			// Update fall behavor of player
 			auto charCont = player->GetCharController();
 			if (charCont) {
-				player->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_visual_scale(player));
+				player->SetGraphVariableFloat("GiantessVelocity", (charCont->outVelocity.quad.m128_f32[2] * 100)/get_giantess_scale(player));
 			}
 		}
 	}
