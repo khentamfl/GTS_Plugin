@@ -138,12 +138,12 @@ namespace Gts {
 			if (actor_data) {
 				actor_data->half_life = 0.25; // Faster shrink, less smooth.
 			}
-			SizeDifference = 1.0 / std::clamp((get_visual_scale(target)), 0.25f, 1.0f);
+			SizeDifference = 1.0 / std::clamp((get_visual_scale(target) * GetSizeFromBoundingBox(target)), 0.25f, 1.0f);
 		} else if (this->power >= 10.0) {
 			if (actor_data) {
 				actor_data->half_life = 0.50; // Faster shrink, less smooth.
 			}
-			SizeDifference = 1.0 / std::clamp((get_visual_scale(target)), 0.50f, 1.0f);
+			SizeDifference = 1.0 / std::clamp((get_visual_scale(target) * GetSizeFromBoundingBox(target)), 0.50f, 1.0f);
 		} else {
 			if (actor_data) {
 				//AddShrinkWeakness(target, 0.0085 * TimeScale());

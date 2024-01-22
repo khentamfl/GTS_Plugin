@@ -395,7 +395,7 @@ namespace Gts {
 		if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore || !CanPerformAnimationOn(pred, prey)) {
 			return false;
 		}
-		float pred_scale = get_visual_scale(pred);
+		float pred_scale = get_visual_scale(pred) * GetSizeFromBoundingBox(pred);
 		float prey_scale = get_visual_scale(prey) * GetSizeFromBoundingBox(prey);
 
 		float bonus = 1.0;

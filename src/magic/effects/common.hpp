@@ -35,11 +35,15 @@ namespace Gts {
 
 	inline float Shrink_GetPower(Actor* tiny) { // for shrinking another
 		float reduction = 1.0 / GetSizeFromBoundingBox(tiny);
+		log::info("Default Shrink power for {} is {}", tiny->GetDisplayFullName(), reduction);
 		if (IsUndead(tiny, false)) {
 			reduction *= 0.33;
+		} else if (IsGiant(tiny)) {
+			reduction *= 0.75;
 		} else if (IsMechanical(tiny)) {
 			reduction *= 0.22;
 		}
+		log::info("Total Shrink power for {} is {}", tiny->GetDisplayFullName(), reduction);
 		return reduction;
 	}
 
@@ -172,7 +176,7 @@ namespace Gts {
 		// y = mx +c
 		// power = scale_factor * scale + bonus
 		if (shrink) {
-			size_cap = 0.02;
+			size_cap = 0.02; // up to 98% shrink resistance
 		}
 		float scale = clamp(size_cap, 999999.0, get_visual_scale(actor));
 		return (scale * scale_factor + bonus) * progress_mult * MASTER_POWER * TimeScale();
@@ -251,8 +255,8 @@ namespace Gts {
 			return;
 		}
 
-		float target_scale = get_visual_scale(target);
-		float caster_scale = get_visual_scale(caster);
+		float target_scale = get_visual_scale(target); // used for xp only
+		float caster_scale = get_visual_scale(caster); // used for xp only
 
 		transfer_effeciency = clamp(0.0, 1.0, transfer_effeciency); // Ensure we cannot grow more than they shrink
 
