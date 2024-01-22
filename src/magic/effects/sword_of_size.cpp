@@ -14,10 +14,11 @@ namespace {
 		float s = 1.0;
 		float result = k*pow(s*(value-a), n);
 		log::info("Shrink Result: {}, Value {}", result, value);
-		if (value < 1.0) {
+		if (result < 1.0) {
+			log::info("value is < 1");
 			return 1.0;
 		}
-		return value;
+		return result;
 	}
 
 	float Ench_AbsorbSize_GetPower(float power) {
@@ -39,7 +40,7 @@ namespace Gts {
 	void SwordOfSize::OnStart() {
 		auto caster = GetCaster();
 		if (caster) {
-			this->power = GetActiveEffect()->magnitude;
+			this->power = GetActiveEffect()->magnitude * 0.10;
 		}
 	}
 
@@ -53,7 +54,7 @@ namespace Gts {
 			return;
 		}
 		float gain_value = 0.02;
-		float ench_power = this->power * 0.10;
+		float ench_power = this->power;
 
 		float calc_power = ench_power * Ench_AbsorbSize_GetPower(ench_power);
 		float base_shrink = std::clamp(calc_power, 1.0f, 8.0f);
