@@ -9,26 +9,16 @@ using namespace SKSE;
 
 namespace {
 	Actor* FindActor(bhkCharacterController* charCont) {
-		for (auto actor: find_actors()) {
+		auto actor = skyrim_cast<Actor*>(charCont);
+		if (actor) {
+			return actor;
+		}
+		/*for (auto actor: find_actors()) {
 			if (charCont == actor->GetCharController()) {
 				return actor;
 			}
-		}
+		}*/
 		return nullptr;
-	}
-
-	float FallModifier(float scale) {
-		float k = 1.0;
-		float a = 0.0;
-		float n = 0.75;
-		float s = 1.0;
-		// https://www.desmos.com/calculator/ygoxbe7hjg
-		float result = k*pow(s*(scale-a), n);
-		log::info("Result: {}, scale {}", result, scale);
-		if (scale < 1.0) {
-			return 1.0;
-		}
-		return result;
 	}
 }
 
