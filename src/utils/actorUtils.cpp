@@ -820,8 +820,7 @@ namespace Gts {
 
 	float GetSizeFromBoundingBox(Actor* tiny) {
 		auto profiler = Profilers::Profile("ActorUtils: GetSizeFromBoundingBox");
-		float sc = get_giantess_height(tiny);
-		sc *= get_bounding_box_to_mult(tiny);
+		float sc = get_bounding_box_to_mult(tiny);
 		return sc;
 	}
 
@@ -880,9 +879,6 @@ namespace Gts {
 			if (IsDebugEnabled()) {
 				DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), CheckDistance, 60, {0.5, 1.0, 0.0, 0.5});
 			}
-
-			// TO-DO:
-			// Disallow it to work on actors that are vored or being interracted with
 
 			for (auto otherActor: find_actors()) {
 				if (otherActor != giant) {
