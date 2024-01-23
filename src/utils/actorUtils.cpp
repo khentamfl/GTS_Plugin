@@ -2632,7 +2632,7 @@ namespace Gts {
 			.Action_Grab = 8.0,
 			.Action_Hug = 0.92,
 		};*/
-		ThresholdData& Data = new ThresholdData;
+		ThresholdData& Data = new ThresholdData&;
 		return Data;
 	}
 
