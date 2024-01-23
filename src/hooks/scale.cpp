@@ -83,8 +83,8 @@ namespace Hooks {
                 
 				log::info("3120: Param 1: {}", GetRawName(param_1)); 
 				log::info("3120: Param 2: {}", GetRawName(param_2)); 
-				log::info("3120: Param 3: {}", GetRawName(param_3)); 
-				log::info("3120: Param 4: {}", GetRawName(param_4)); 
+				log::info("3120: Param 3: {}", param_3); 
+				log::info("3120: Param 4: {}", param_4); 
 
                 return Skyrim_Pathing_140473120(param_1, param_2, param_3, param_4);
             }
@@ -92,7 +92,7 @@ namespace Hooks {
 
 		static FunctionHook<void(uintptr_t* param_1, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4, uintptr_t param_5)> Skyrim_Pathing_140473490( 
             REL::RelocationID(29824, 29824),
-            [](auto* param_1, auto param_2, auto param_3, auto param_4) {
+            [](auto* param_1, auto param_2, auto param_3, auto param_4, auto param_5) {
                 
 				log::info("3490: Param 1: {}", GetRawName(param_1)); 
 				log::info("3490: Param 2: {}", GetRawName(param_2)); 
@@ -109,9 +109,9 @@ namespace Hooks {
             [](auto* param_1, auto param_2, auto param_3, auto param_4) {
                 
 				log::info("3200: Param 1: {}", GetRawName(param_1)); 
-				log::info("3200: Param 2: {}", GetRawName(param_2)); 
-				log::info("3200: Param 3: {}", GetRawName(param_3)); 
-				log::info("3200: Param 4: {}", GetRawName(param_4)); 
+				log::info("3200: Param 2: {}", param_2); 
+				log::info("3200: Param 3: {}", param_3); 
+				log::info("3200: Param 4: {}", param_4); 
 
                 return Skyrim_Pathing_140473200(param_1, param_2, param_3, param_4);
             }
