@@ -2632,8 +2632,8 @@ namespace Gts {
 			.Action_Grab = 8.0,
 			.Action_Hug = 0.92,
 		};*/
-		ThresholdData& Info = new& ThresholdData;
-		return Info;
+		ThresholdData Info = new ThresholdData;
+		return &Info;
 	}
 
 	// RE Fun
