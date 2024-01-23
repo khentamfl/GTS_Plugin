@@ -2623,8 +2623,8 @@ namespace Gts {
 		}
 	}
 
-	ThresholdData& Action_GetSizeThreshold() {
-		ThresholdData& Info = ThresholdData { // create Info
+	const ThresholdData& Action_GetSizeThreshold() {
+		ThresholdData Info = ThresholdData { // create Info
 			.Action_Sandwich = 6.0, // used for sandwich only
 			.Action_Crush = 10.0,
 			.Action_Booty = 2.0, // for butt and cleavage crush
