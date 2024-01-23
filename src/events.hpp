@@ -82,7 +82,7 @@ namespace Gts {
 	};
 
 	struct ThresholdData {
-		float Action_Sandwich; // used for sandwich only
+		float Action_Sandwich = 6.0; // used for sandwich only
 		float Action_Crush; 
 		float Action_Booty; // for butt and cleavage crush
 		float Action_Vore;
