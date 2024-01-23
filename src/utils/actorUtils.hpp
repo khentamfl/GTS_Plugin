@@ -239,7 +239,7 @@ namespace Gts {
 	float GetQuestProgression(float stage);
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value);
 
-	const ThresholdData& Action_GetSizeThreshold();
+	ThresholdData Action_GetSizeThreshold();
 	// RE Fun:
 	void SetCriticalStage(Actor* actor, int stage);
 	void Attacked(Actor* victim, Actor* agressor);
