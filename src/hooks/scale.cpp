@@ -50,14 +50,12 @@ namespace Hooks {
 
 		static CallHook<float(uintptr_t* cam)> Skyrim_Camera_posX(RELOCATION_ID(69271, 70641),  REL::Relocate(0x11, 0x11),
 		[](auto* cam) { // 0x140C66710 - 0x140c66721 (fVar18) = 0x11 . No AE rel
-			if (cam) {
-				float result = Skyrim_Camera_posX(cam);
-				log::info("Pos X: {}", result);
-				return result;
-			}
+			float result = Skyrim_Camera_posX(cam);
+			log::info("Pos X: {}", result);
+			return result;
 		});
 
-		static CallHook<float(uintptr_t* cam)> Skyrim_Camera_posY(RELOCATION_ID(69271, 70641),  REL::Relocate(0x64, 0x64),
+		/*static CallHook<float(uintptr_t* cam)> Skyrim_Camera_posY(RELOCATION_ID(69271, 70641),  REL::Relocate(0x64, 0x64),
 		[](auto* cam) { // 0x140C66710 - 0x140c66774 (fVar14) = 0x64 . No AE rel.
 			if (cam) {
 				float result = Skyrim_Camera_posY(cam);
@@ -73,7 +71,7 @@ namespace Hooks {
 				//log::info("Pos Z: {}", result);
 				return result;
 			}
-		});
+		});*/
 
 		// AE 1402bc7c3
 		// SE 1402aa40c
