@@ -81,8 +81,6 @@ namespace Gts {
 		std::vector<NiAVObject*> nodes;
 	};
 
-	enum class 
-
 	struct ThresholdData {
 		float Action_Sandwich; // used for sandwich only
 		float Action_Crush; 
