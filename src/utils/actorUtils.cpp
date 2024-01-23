@@ -941,7 +941,7 @@ namespace Gts {
 										} else if (!IsGtsBusy(giant) && difference >= Action_Grab) {
 											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Grab.nif", NiMatrix3(), Position, iconScale, 7, node); // Spawn 'Can be grabbed/vored'
 										} else if (!IsGtsBusy(giant) && difference >= Action_Sandwich) {
-											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Sandwich.nif", NiMatrix3(), Position, iconScale, 7, node); // Spawn 'Can be grabbed/vored'
+											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Sandwich.nif", NiMatrix3(), Position, iconScale, 7, node); // Spawn 'Can be grabbed/vored'
 										} 
 									}
 								}
