@@ -5,6 +5,15 @@
 using namespace RE;
 
 namespace {
+
+	void UpdateWorldToScaleCalculation(NiCamera* Camera)
+	{
+		using func_t = decltype(&UpdateWorldToScaleCalculation);
+		REL::Relocation<func_t> func{ REL::RelocationID(69271, 70641)};
+		//SE: C66710
+		func(Camera);
+	}
+
 	enum class CameraDataMode {
 		State,
 		Transform,
@@ -380,11 +389,4 @@ namespace Gts {
 		}
 	}
 
-	void UpdateWorldToScaleCalculation(NiCamera* Camera)
-	{
-		using func_t = decltype(&UpdateWorldToScaleCalculation);
-		REL::Relocation<func_t> func{ REL::RelocationID(69271, 70641)};
-		//SE: C66710
-		func(Camera);
-	}
 }
