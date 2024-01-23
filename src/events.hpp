@@ -88,15 +88,6 @@ namespace Gts {
 		std::vector<NiAVObject*> nodes;
 	};
 
-	struct ThresholdData {
-		float Action_Sandwich = 6.0; // used for sandwich only
-		float Action_Crush = 10.0; 
-		float Action_Booty = 2.0; // for butt and cleavage crush
-		float Action_Vore = 8.0;
-		float Action_Grab = 8.0;
-		float Action_Hug = 0.90;
-	};
-
 	struct VoreInformation {
 		Actor* giantess;
 		bool WasGiant;
