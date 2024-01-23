@@ -33,8 +33,8 @@ namespace {
 
 	float get_endless_height(Actor* giant) {
 		float endless = 0.0;
-		if (Runtime::HasPerk(actor, "ColossalGrowth")) {
-			endless = 99999999.0
+		if (Runtime::HasPerk(giant, "ColossalGrowth")) {
+			endless = 99999999.0;
 		}
 		return endless;
 	}
