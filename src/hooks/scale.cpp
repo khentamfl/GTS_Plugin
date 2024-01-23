@@ -48,21 +48,21 @@ namespace Hooks {
 
 	void Hook_Scale::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
 
-		static CallHook<float(NiCamera* cam)> Skyrim_Camera_posX(RELOCATION_ID(69271, 70641),  REL::Relocate(0x11, 0x11),
+		static CallHook<float(uintptr_t* cam)> Skyrim_Camera_posX(RELOCATION_ID(69271, 70641),  REL::Relocate(0x11, 0x11),
 		[](auto* cam) { // 0x140C66710 - 0x140c66721 (fVar18) = 0x11 . No AE rel
 		    float result = Skyrim_Camera_posX(cam);
 			log::info("Pos X: {}", result);
 		    return result;
 		});
 
-		static CallHook<float(NiCamera* cam)> Skyrim_Camera_posY(RELOCATION_ID(69271, 70641),  REL::Relocate(0x64, 0x64),
+		static CallHook<float(uintptr_t* cam)> Skyrim_Camera_posY(RELOCATION_ID(69271, 70641),  REL::Relocate(0x64, 0x64),
 		[](auto* cam) { // 0x140C66710 - 0x140c66774 (fVar14) = 0x64 . No AE rel.
 		    float result = Skyrim_Camera_posY(cam);
 			log::info("Pos Y: {}", result);
 		    return result;
 		});
 
-		static CallHook<float(NiCamera* cam)> Skyrim_Camera_posZ(RELOCATION_ID(69271, 70641),  REL::Relocate(0x19, 0x19),
+		static CallHook<float(uintptr_t* cam)> Skyrim_Camera_posZ(RELOCATION_ID(69271, 70641),  REL::Relocate(0x19, 0x19),
 		[](auto* cam) { // 0x140C66710 - 0x140c66729 (fVar15) = 0x19 . No AE rel.
 		    float result = Skyrim_Camera_posZ(cam);
 			log::info("Pos Z: {}", result);
