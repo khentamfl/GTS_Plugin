@@ -175,7 +175,7 @@ namespace Gts {
 		float progress_mult = Persistent::GetSingleton().progression_multiplier;
 		// y = mx +c
 		// power = scale_factor * scale + bonus
-		if (shrink) {
+		if (shrink) { // allow for more size resistance when we need it
 			size_cap = 0.02; // up to 98% shrink resistance
 		}
 		float scale = clamp(size_cap, 999999.0, get_visual_scale(actor));

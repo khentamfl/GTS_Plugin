@@ -164,6 +164,7 @@ namespace Gts {
 
         float hpcalc = (giantHp * 0.75f)/800.0;
         float xp = std::clamp(hpcalc, 0.0f, 0.12f);
+        update_target_scale(tiny, -0.06);
         ModSizeExperience(giant, xp);
 
         Runtime::PlaySoundAtNode("TinyCalamity_Impact", giant, 1.0, 1.0, "NPC COM [COM ]");
