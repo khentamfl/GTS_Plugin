@@ -2624,16 +2624,15 @@ namespace Gts {
 	}
 
 	ThresholdData& Action_GetSizeThreshold() {
-		/*ThresholdData Info = ThresholdData { // create Info
+		ThresholdData Info = ThresholdData { // create Info
 			.Action_Sandwich = 6.0, // used for sandwich only
 			.Action_Crush = 10.0,
 			.Action_Booty = 2.0, // for butt and cleavage crush
 			.Action_Vore = 8.0,
 			.Action_Grab = 8.0,
 			.Action_Hug = 0.92,
-		};*/
-		ThresholdData& Data = new ThresholdData&;
-		return Data;
+		};
+		return Info;
 	}
 
 	// RE Fun
