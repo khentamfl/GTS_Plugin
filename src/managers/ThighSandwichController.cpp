@@ -289,7 +289,7 @@ namespace Gts {
 
 		float sizedifference = GetSizeDifference(pred, prey);
 
-		float MINIMUM_SANDWICH_SCALE = ThresholdData.t_Sandwich;
+		float MINIMUM_SANDWICH_SCALE = ThresholdData[0];
 		log::info("Min Sandwich Scale: {}", MINIMUM_SANDWICH_SCALE);
 		float MINIMUM_DISTANCE = MINIMUM_SANDWICH_DISTANCE;
 
