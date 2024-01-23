@@ -55,8 +55,9 @@ namespace Hooks {
 				log::info("Pos X: {}", result);
 				return result;
 			}
+			result = 0.0;
 			log::info("Pos X is 0");
-			return 0.0;
+			return result;
 		});
 
 		/*static CallHook<float(uintptr_t* cam)> Skyrim_Camera_posY(RELOCATION_ID(69271, 70641),  REL::Relocate(0x64, 0x64),
