@@ -365,6 +365,12 @@ namespace Gts {
 							UpdatePlayerCamera(targetLocationLocalShifted);
 							UpdateNiCamera(targetLocationLocalShifted);
 
+							NiCamera* = GetNiCamera();
+
+							if (NiCamera) {
+								UpdateWorldToScaleCalculation(GetNiCamera());
+							}
+
 							//UpdateSceneManager(targetLocationLocalShifted);
 							//UpdateRenderManager(targetLocationLocalShifted);
 						}
@@ -372,5 +378,13 @@ namespace Gts {
 				}
 			}
 		}
+	}
+
+	void UpdateWorldToScaleCalculation(NiCamera* Camera)
+	{
+		using func_t = decltype(&UpdateWorldToScaleCalculation);
+		REL::Relocation<func_t> func{ REL::RelocationID(69271, 70641)};
+		//SE: C66710
+		func(Camera);
 	}
 }

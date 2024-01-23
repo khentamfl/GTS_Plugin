@@ -33,22 +33,41 @@ using namespace SKSE;
 //      FUN_14085c290(uint64 param_1,char *param_2,uint64 param_3,uint64 param_4)
 //      ^ 50179
 
+namespace {
+	float camera_getplayersize() {
+		auto player = PlayerCharacter::GetSingleton();
+		if (player) {
+			float size = get_giantess_scale(player);
+			return size;
+		}
+		return 1.0;
+	}
+}
+
 namespace Hooks {
 
 	void Hook_Scale::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
 
-		static FunctionHook<void(uintptr_t param_1, uintptr_t* param_2, uintptr_t param_3, uintptr_t param_4)> Skyrim_14085c290( 
-            REL::RelocationID(50179, 50179),
-            [](auto param_1, auto* param_2, auto param_3, auto param_4) {
-                
-				log::info("3120: Param 1: {}", param_1); 
-				log::info("3120: Param 2: {}", GetRawName(param_2)); 
-				log::info("3120: Param 3: {}", param_3); 
-				log::info("3120: Param 4: {}", param_4); 
+		static CallHook<float(NiCamera* cam)> Skyrim_Camera_posX(RELOCATION_ID(69271, 70641),  REL::Relocate(0x11, 0x11),
+		[](auto* cam) { // 0x140C66710 - 0x140c66721 (fVar18) = 0x11 . No AE rel
+		    float result = Skyrim_Camera_posX(cam);
+			log::info("Pos X: {}", result);
+		    return result;
+		});
 
-                return Skyrim_14085c290(param_1, param_2, param_3, param_4);
-            }
-        );
+		static CallHook<float(NiCamera* cam)> Skyrim_Camera_posY(RELOCATION_ID(69271, 70641),  REL::Relocate(0x64, 0x64),
+		[](auto* cam) { // 0x140C66710 - 0x140c66774 (fVar14) = 0x64 . No AE rel.
+		    float result = Skyrim_Camera_posY(cam);
+			log::info("Pos Y: {}", result);
+		    return result;
+		});
+
+		static CallHook<float(NiCamera* cam)> Skyrim_Camera_posZ(RELOCATION_ID(69271, 70641),  REL::Relocate(0x19, 0x19),
+		[](auto* cam) { // 0x140C66710 - 0x140c66729 (fVar15) = 0x19 . No AE rel.
+		    float result = Skyrim_Camera_posZ(cam);
+			log::info("Pos Z: {}", result);
+		    return result;
+		});
 
 		// AE 1402bc7c3
 		// SE 1402aa40c
