@@ -14,6 +14,7 @@
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "events.hpp"
 #include "spring.hpp"
 #include "node.hpp"
 
@@ -147,7 +148,7 @@ namespace Gts {
 
 		float sizedifference = pred_scale/prey_scale;
 
-		float MINIMUM_HUG_SCALE = Action_GetSizeThreshold().Action_Hug;
+		float MINIMUM_HUG_SCALE = Action_Hug;
 		float MINIMUM_DISTANCE = MINIMUM_HUG_DISTANCE;
 
 		float balancemode = SizeManager::GetSingleton().BalancedMode();

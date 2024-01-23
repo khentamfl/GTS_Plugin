@@ -27,6 +27,7 @@
 #include "utils/debug.hpp"
 #include "utils/av.hpp"
 #include "profiler.hpp"
+#include "events.hpp"
 #include "spring.hpp"
 #include "timer.hpp"
 
@@ -935,10 +936,12 @@ namespace Gts {
 											}
 										} else if (!IsGtsBusy(giant) && IsEssential(otherActor)) {
 											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Essential.nif", NiMatrix3(), Position, iconScale, 7, node); // Spawn Essential
-										} else if (!IsGtsBusy(giant) && difference >= Action_GetSizeThreshold().Action_Crush) {
+										} else if (!IsGtsBusy(giant) && difference >= Action_Crush) {
 											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush_All.nif", NiMatrix3(), Position, iconScale, 7, node); // Spawn 'can be crushed'
-										} else if (!IsGtsBusy(giant) && difference >= Action_GetSizeThreshold().Action_Grab) {
+										} else if (!IsGtsBusy(giant) && difference >= Action_Grab) {
 											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Grab.nif", NiMatrix3(), Position, iconScale, 7, node); // Spawn 'Can be grabbed/vored'
+										} else if (!IsGtsBusy(giant) && difference >= Action_Sandwich) {
+											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Sandwich.nif", NiMatrix3(), Position, iconScale, 7, node); // Spawn 'Can be grabbed/vored'
 										} 
 									}
 								}
@@ -2621,11 +2624,6 @@ namespace Gts {
 			value *= levelbonus;
 			ApplyDamage(attacker, receiver, value * difficulty * GetDamageSetting());
 		}
-	}
-
-	ThresholdData Action_GetSizeThreshold() {
-		ThresholdData Info = ThresholdData {};
-		return Info;
 	}
 
 	// RE Fun

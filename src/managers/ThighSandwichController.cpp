@@ -15,6 +15,7 @@
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "data/time.hpp"
+#include "events.hpp"
 #include "spring.hpp"
 #include "node.hpp"
 
@@ -289,8 +290,8 @@ namespace Gts {
 
 		float sizedifference = GetSizeDifference(pred, prey);
 
-		float MINIMUM_SANDWICH_SCALE = Action_GetSizeThreshold().Action_Sandwich;
-		
+		float MINIMUM_SANDWICH_SCALE = Action_Sandwich;
+
 		log::info("Min Sandwich Scale: {}", MINIMUM_SANDWICH_SCALE);
 		float MINIMUM_DISTANCE = MINIMUM_SANDWICH_DISTANCE;
 

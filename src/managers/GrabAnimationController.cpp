@@ -14,6 +14,7 @@
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "events.hpp"
 #include "spring.hpp"
 #include "node.hpp"
 
@@ -130,7 +131,7 @@ namespace Gts {
 
 		float sizedifference = GetSizeDifference(pred, prey);
 
-		float MINIMUM_GRAB_SCALE = Action_GetSizeThreshold().Action_Grab;
+		float MINIMUM_GRAB_SCALE = Action_Grab;
 		float MINIMUM_DISTANCE = MINIMUM_GRAB_DISTANCE;
 
 		if (HasSMT(pred)) {

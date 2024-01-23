@@ -14,6 +14,7 @@
 #include "managers/Rumble.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
+#include "events.hpp"
 #include "spring.hpp"
 #include "node.hpp"
 
@@ -190,7 +191,7 @@ namespace Gts {
 		float pred_scale = get_visual_scale(pred);
 		float sizedifference = GetSizeDifference(pred, prey);
 
-		float MINIMUM_BUTTCRUSH_SCALE = Action_GetSizeThreshold().Action_Booty;
+		float MINIMUM_BUTTCRUSH_SCALE = Action_Booty;
 		float MINIMUM_DISTANCE = MINIMUM_BUTTCRUSH_DISTANCE;
 		if (IsCrawling(pred)) {
 			MINIMUM_BUTTCRUSH_SCALE *= 2.0;

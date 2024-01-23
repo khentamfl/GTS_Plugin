@@ -22,6 +22,7 @@
 #include "data/time.hpp"
 #include "profiler.hpp"
 #include "Config.hpp"
+#include "events.hpp"
 #include "timer.hpp"
 #include "node.hpp"
 #include <vector>
@@ -453,7 +454,7 @@ namespace Gts {
 		);
 		
 		if (CanBeCrushed) {
-			if (size_difference > Action_GetSizeThreshold().Action_Crush * crush_threshold && CrushManager::CanCrush(giant, tiny)) {
+			if (size_difference > Action_Crush * crush_threshold && CrushManager::CanCrush(giant, tiny)) {
 				ModSizeExperience_Crush(giant, tiny, true);
 
 				if (!tiny->IsDead()) {
