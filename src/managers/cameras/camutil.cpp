@@ -365,10 +365,10 @@ namespace Gts {
 							UpdatePlayerCamera(targetLocationLocalShifted);
 							UpdateNiCamera(targetLocationLocalShifted);
 
-							NiCamera* = GetNiCamera();
+							NiCamera* NiCame = GetNiCamera();
 
-							if (NiCamera) {
-								UpdateWorldToScaleCalculation(GetNiCamera());
+							if (NiCame) {
+								UpdateWorldToScaleCalculation(NiCam);
 							}
 
 							//UpdateSceneManager(targetLocationLocalShifted);
