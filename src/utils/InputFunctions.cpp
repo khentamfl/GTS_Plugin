@@ -27,7 +27,7 @@ namespace {
 
 	void TotalControlGrowEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (Runtime::HasPerk(player, "TotalControl")) {
+		if (Runtime::HasPerk(player, "ColossalGrowth")) {
 			float scale = get_visual_scale(player);
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
 
@@ -36,7 +36,7 @@ namespace {
 			DamageAV(player, ActorValue::kStamina, 0.15 * perk * (scale * 0.5 + 0.5) * stamina * TimeScale());
 			Grow(player, 0.0010 * stamina, 0.0);
 			float Volume = clamp(0.20, 2.0, get_visual_scale(player)/16);
-			GRumble::Once("TotalControl", player, scale/10, 0.05);
+			GRumble::Once("ColossalGrowth", player, scale/10, 0.05);
 			static Timer timergrowth = Timer(2.00);
 			if (timergrowth.ShouldRun()) {
 				Runtime::PlaySoundAtNode("growthSound", player, Volume, 1.0, "NPC Pelvis [Pelv]");
@@ -45,7 +45,7 @@ namespace {
 	}
 	void TotalControlShrinkEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (Runtime::HasPerk(player, "TotalControl")) {
+		if (Runtime::HasPerk(player, "ColossalGrowth")) {
 			float scale = get_visual_scale(player);
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(player));
 
@@ -59,7 +59,7 @@ namespace {
 			}
 
 			float Volume = clamp(0.10, 1.0, get_visual_scale(player) * 0.10);
-			GRumble::Once("TotalControl", player, scale/14, 0.05);
+			GRumble::Once("ColossalGrowth", player, scale/14, 0.05);
 			static Timer timergrowth = Timer(2.00);
 			if (timergrowth.ShouldRun()) {
 				Runtime::PlaySound("shrinkSound", player, Volume, 1.0);
@@ -68,7 +68,7 @@ namespace {
 	}
 	void TotalControlGrowOtherEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (Runtime::HasPerk(player, "TotalControl")) {
+		if (Runtime::HasPerk(player, "ColossalGrowth")) {
 			for (auto actor: find_actors()) {
 				if (!actor) {
 					continue;
@@ -93,7 +93,7 @@ namespace {
 	}
 	void TotalControlShrinkOtherEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (Runtime::HasPerk(player, "TotalControl")) {
+		if (Runtime::HasPerk(player, "ColossalGrowth")) {
 			for (auto actor: find_actors()) {
 				if (!actor) {
 					continue;
@@ -119,7 +119,7 @@ namespace {
 
 	void RapidGrowthEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!Runtime::HasPerk(player, "TotalControl")) {
+		if (!Runtime::HasPerk(player, "ColossalGrowth")) {
 			return;
 		}
 		if (IsCrawling(player) || !player->IsSneaking()) {
@@ -128,7 +128,7 @@ namespace {
 	}
 	void RapidShrinkEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!Runtime::HasPerk(player, "TotalControl")) {
+		if (!Runtime::HasPerk(player, "ColossalGrowth")) {
 			return;
 		}
 		if (IsCrawling(player) || !player->IsSneaking()) {

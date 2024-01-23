@@ -12,7 +12,7 @@ namespace Gts {
 	#define Action_Booty 2.0f // for butt and cleavage crush
 	#define Action_Vore 8.0f
 	#define Action_Grab 8.0f
-	#define Action_Hug 0.90f
+	#define Action_Hug 0.9f
 
 	enum class FootEvent {
 		Left,

@@ -30,6 +30,14 @@ namespace {
 	const double SCARE_COOLDOWN = 6.0;
 	const float LAUNCH_DAMAGE_BASE = 1.0f;
 	const float LAUNCH_KNOCKBACK_BASE = 0.02f;
+
+	float get_endless_height(Actor* giant) {
+		float endless = 0.0;
+		if (Runtime::HasPerk(actor, "ColossalGrowth")) {
+			endless = 99999999.0
+		}
+		return endless;
+	}
 }
 
 namespace Gts {
@@ -45,28 +53,35 @@ namespace Gts {
 	void SizeManager::Update() {
 		auto profiler = Profilers::Profile("SizeManager: Update");
 		for (auto actor: find_actors()) {
-			// TODO move away from polling
+			// 2023: TODO: move away from polling
 			float Endless = 0.0;
-			if (actor->formID == 0x14 && Runtime::HasPerk(actor, "TotalControl")) {
-				Endless = 999999.0;
+			if (actor->formID == 0x14) {
+				Endless = get_endless_height(actor);
 			}
 			float NaturalScale = get_neutral_scale(actor);
-			float QuestStage = Runtime::GetStage("MainQuest");
 			float Gigantism = Ench_Aspect_GetPower(actor);
 
-			float GetLimit = clamp(NaturalScale, 99999999.0, NaturalScale + ((Runtime::GetFloat("sizeLimit") - 1.0) * NaturalScale)); // Default size limit
+			float QuestStage = Runtime::GetStage("MainQuest");
 			auto Persistent = Persistent::GetSingleton().GetData(actor);
+			
+			float GetLimit = clamp(NaturalScale, 99999999.0, NaturalScale + ((Runtime::GetFloat("sizeLimit") - 1.0) * NaturalScale)); // Default size limit
+			
 			float Persistent_Size = 0.0;
-			if (Persistent) {
-				Persistent_Size = Persistent->bonus_max_size;
-			}
 			float SelectedFormula = Runtime::GetInt("SelectedSizeFormula");
 
 			float FollowerLimit = Runtime::GetFloat("FollowersSizeLimit"); // 0 by default
 			float NPCLimit = Runtime::GetFloat("NPCSizeLimit"); // 0 by default
 
+			if (Persistent) {
+				Persistent_Size = Persistent->bonus_max_size;
+			}
+
 			if (SelectedFormula >= 1.0 && actor->formID == 0x14) { // Apply Player Mass-Based max size
-				GetLimit = clamp(NaturalScale, 99999999.0, NaturalScale + (Runtime::GetFloat("GtsMassBasedSize") * NaturalScale));
+				float low_limit = get_endless_height(actor);
+				if (low_limit < 2) {
+					low_limit = Runtime::GetFloat("sizeLimit");
+				}
+				GetLimit = clamp(NaturalScale, low_limit, NaturalScale + (Runtime::GetFloat("GtsMassBasedSize") * NaturalScale));
 			} else if (QuestStage > 100 && FollowerLimit > 0.0 && FollowerLimit != 1.0 && actor->formID != 0x14 && IsTeammate(actor)) { // Apply Follower Max Size
 				GetLimit = clamp(NaturalScale * FollowerLimit, 99999999.0, NaturalScale + ((Runtime::GetFloat("FollowersSizeLimit") - 1.0) * NaturalScale)); // Apply only if Quest is done.
 			} else if (QuestStage > 100 && NPCLimit > 0.0 && NPCLimit != 1.0 && actor->formID != 0x14 && !IsTeammate(actor)) { // Apply Other NPC's max size

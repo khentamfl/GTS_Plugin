@@ -349,8 +349,9 @@ namespace Gts {
 			auto tinyref = tinyhandle.get().get();
 			float sizedifference = get_target_scale(giantref)/get_target_scale(tinyref);
 			float threshold = GetHugShrinkThreshold(giantref);
+			float steal = GetHugStealRate(giantref) * 0.75;
+			
 			float stamina = 0.35;
-			float steal = GetHugStealRate(giantref);
 			float shrink = 7.0;
 			if (Runtime::HasPerkTeam(giantref, "HugCrush_Greed")) {
 				shrink *= 1.25;

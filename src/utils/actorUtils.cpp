@@ -678,17 +678,17 @@ namespace Gts {
 		bool Teammate = IsTeammate(tiny);
 		bool essential = IsEssential(tiny);
 		bool hostile = IsHostile(giant, tiny);
-		bool protection = Persistent::GetSingleton().FollowerInteractions;
-		bool allow_teammate = (protection && IsTeammate(tiny) && IsTeammate(giant));
-		if (essential) { // disallow to perform on essentials
+		bool no_protection = Persistent::GetSingleton().FollowerInteractions;
+		bool allow_teammate = (giant->formID != 0x14 && no_protection && IsTeammate(tiny) && IsTeammate(giant));
+		if (allow_teammate) { // allow if type is (teammate - teammate), and if bool is true
+			return true;
+		} else if (essential) { // disallow to perform on essentials
 			return false;
 		} else if (hostile) { // always allow for non-essential enemies. Will return true if Teammate is hostile towards someone (even player)
 			return true;
 		} else if (!Teammate) { // always allow for non-teammates
 			return true;
-		} else if (giant->formID != 0x14 && !allow_teammate) { // disallow if type is (teammate - teammate), and if bool is false
-			return false;
-		} else {
+		}  else {
 			return true; // else allow
 		}
 	}
@@ -910,7 +910,7 @@ namespace Gts {
 										auto grabbedActor = Grab::GetHeldActor(giant);
 										float correction = 0; 
 										if (tinyScale < 1.0) {
-											correction = (18.0 / tinyScale) - 18.0;
+											correction = std::clamp((18.0f / tinyScale) - 18.0f, 0.0f, 160.0f);
 										} else {
 											correction = (18.0 * tinyScale) - 18.0;
 										}
@@ -935,14 +935,31 @@ namespace Gts {
 												SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Hug_Crush.nif", NiMatrix3(), Position, iconScale, 7, node); // Spawn 'can be hug crushed'
 											}
 										} else if (!IsGtsBusy(giant) && IsEssential(otherActor)) {
-											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Essential.nif", NiMatrix3(), Position, iconScale, 7, node); // Spawn Essential
+											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Essential.nif", NiMatrix3(), Position, iconScale, 7, node); 
+											// Spawn Essential icon
 										} else if (!IsGtsBusy(giant) && difference >= Action_Crush) {
-											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush_All.nif", NiMatrix3(), Position, iconScale, 7, node); // Spawn 'can be crushed'
+											if (CanPerformAnimation(giant, 3)) {
+												SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush_All.nif", NiMatrix3(), Position, iconScale, 7, node); 
+												// Spawn 'can be crushed and any action can be done'
+											} else {
+												SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Crush.nif", NiMatrix3(), Position, iconScale, 7, node); 
+												// just spawn can be crushed, can happen at any quest stage
+											}
 										} else if (!IsGtsBusy(giant) && difference >= Action_Grab) {
-											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Grab.nif", NiMatrix3(), Position, iconScale, 7, node); // Spawn 'Can be grabbed/vored'
-										} else if (!IsGtsBusy(giant) && difference >= Action_Sandwich) {
-											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Sandwich.nif", NiMatrix3(), Position, iconScale, 7, node); // Spawn 'Can be grabbed/vored'
+											if (CanPerformAnimation(giant, 3)) {
+												SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Vore_Grab.nif", NiMatrix3(), Position, iconScale, 7, node); 
+												// Spawn 'Can be grabbed/vored'
+											} else if (CanPerformAnimation(giant, 2)) {
+												SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Grab.nif", NiMatrix3(), Position, iconScale, 7, node); 
+												// Spawn 'Can be grabbed'
+											}
+										} else if (!IsGtsBusy(giant) && difference >= Action_Sandwich && CanPerformAnimation(giant, 2)) {
+											SpawnParticle(otherActor, 3.00, "GTS/UI/Icon_Sandwich.nif", NiMatrix3(), Position, iconScale, 7, node); // Spawn 'Can be sandwiched'
 										} 
+										// 1 = stomps and kicks
+										// 2 = Grab and Sandwich
+										// 3 = Vore
+										// 5 = Others
 									}
 								}
 							}

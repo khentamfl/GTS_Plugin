@@ -296,7 +296,7 @@ void GtsManager::Update() {
 
 void GtsManager::OnAddPerk(const AddPerkEvent& evt) {
 	if (evt.actor->formID == 0x14) {
-		if (evt.perk == Runtime::GetPerk("TotalControl")) {
+		if (evt.perk == Runtime::GetPerk("ColossalGrowth")) {
 			CallHelpMessage();
 		}
 		if (evt.perk == Runtime::GetPerk("FastShrink") && !Runtime::HasSpell(evt.actor, "ShrinkBolt")) {
