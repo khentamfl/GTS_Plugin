@@ -20,9 +20,7 @@
 
 
 namespace {
-
 	const float MINIMUM_SANDWICH_DISTANCE = 70.0;
-	const float MINIMUM_SANDWICH_SCALE_RATIO = 6.0;
 	const float SANDWICH_ANGLE = 60;
 	const float PI = 3.14159;
 }
@@ -291,7 +289,8 @@ namespace Gts {
 
 		float sizedifference = GetSizeDifference(pred, prey);
 
-		float MINIMUM_SANDWICH_SCALE = MINIMUM_SANDWICH_SCALE_RATIO;
+		float MINIMUM_SANDWICH_SCALE = SIZE_THRESHOLD_DATA.THIGH_SANDWICH_THRESHOLD;
+		log::info("Min Sandwich Scale: {}", MINIMUM_SANDWICH_SCALE);
 		float MINIMUM_DISTANCE = MINIMUM_SANDWICH_DISTANCE;
 
 		if (HasSMT(pred)) {

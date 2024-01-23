@@ -81,6 +81,15 @@ namespace Gts {
 		std::vector<NiAVObject*> nodes;
 	};
 
+	struct SIZE_THRESHOLD_DATA {
+		float THIGH_SANDWICH_THRESHOLD = 6.0;
+		float BUTT_BREAST_THRESHOLD = 2.0;
+		float CRUSH_THRESHOLD = 10.0;
+		float VORE_THRESHOLD = 8.0;
+		float GRAB_THRESHOLD = 8.0;
+		float HUG_THRESHOLD = 0.92;
+	}
+
 	struct VoreInformation {
 		Actor* giantess;
 		bool WasGiant;

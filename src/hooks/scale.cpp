@@ -48,14 +48,15 @@ namespace Hooks {
 
 	void Hook_Scale::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
 
-		static FunctionHook<void(NiCamera* camera)> Skyrim_Camera( 
+		static FunctionHook<void(NiCamera* camera)> Skyrim_Camera(  // camera hook works just fine that way
             REL::RelocationID(69271, 70641),
             [](auto* camera) {
-				log::info("Camera hook is running");
+				//log::info("Camera hook is running");
                 return Skyrim_Camera(camera);
             }
         );
 
+		// Yet the one below CTD's. Sigh.
 		/*static CallHook<double(const NiCamera* camera)> Skyrim_Camera_posX(RELOCATION_ID(69271, 70641),  REL::Relocate(0x11, 0x11), // ctd, ctd and ctd.
 		[](const NiCamera* camera) { // 0x140C66710 - 0x140c66b70 (fVar18) = 0x11 . No AE rel
 			log::info("Trying to hook camera");
