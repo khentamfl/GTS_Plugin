@@ -51,13 +51,9 @@ namespace Hooks {
 		static CallHook<double(const NiCamera* camera)> Skyrim_Camera_posX(RELOCATION_ID(69271, 70641),  REL::Relocate(0x11, 0x11),
 		[](const NiCamera* camera) { // 0x140C66710 - 0x140c66b70 (fVar18) = 0x11 . No AE rel
 			log::info("Trying to hook camera");
-			auto result = Skyrim_Camera_posX(camera);
+			//auto result = Skyrim_Camera_posX(camera);
 			log::info("Hooked camera");
-			if (result) {
-				log::info("Pos X: {}", result);
-				return result;
-			}
-			result = 0.0;
+			double result = 0.0;
 			log::info("Pos X is 0");
 			return result;
 		});
