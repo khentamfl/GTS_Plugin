@@ -48,12 +48,16 @@ namespace Hooks {
 
 	void Hook_Scale::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
 
-		/*static CallHook<float(uintptr_t* cam)> Skyrim_Camera_posX(RELOCATION_ID(69271, 70641),  REL::Relocate(0x11, 0x11), crashes, crashes and crashes.
-		[](auto* cam) { // 0x140C66710 - 0x140c66b70 (fVar18) = 0x11 . No AE rel
-			auto result = Skyrim_Camera_posX(cam);
-			log::info("Pos X: {}", result);
-			return result;
-		});*/ 
+		static CallHook<float(const NiCamera* camera)> Skyrim_Camera_posX(RELOCATION_ID(69271, 70641),  REL::Relocate(0x11, 0x11),
+		[](const NiCamera* camera) { // 0x140C66710 - 0x140c66b70 (fVar18) = 0x11 . No AE rel
+			auto result = Skyrim_Camera_posX(camera);
+			if (result) {
+				log::info("Pos X: {}", result);
+				return result;
+			}
+			log::info("Pos X is 0");
+			return 0.0;
+		});
 
 		/*static CallHook<float(uintptr_t* cam)> Skyrim_Camera_posY(RELOCATION_ID(69271, 70641),  REL::Relocate(0x64, 0x64),
 		[](auto* cam) { // 0x140C66710 - 0x140c66774 (fVar14) = 0x64 . No AE rel.
