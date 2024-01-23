@@ -48,7 +48,7 @@ namespace Hooks {
 
 	void Hook_Scale::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
 
-		static CallHook<double(const NiCamera* camera)> Skyrim_Camera_posX(RELOCATION_ID(69271, 70641),  REL::Relocate(0x11, 0x11),
+		static CallHook<double(const NiCamera* camera)> Skyrim_Camera_posX(RELOCATION_ID(69271, 70641),  REL::Relocate(0x11, 0x11), // ctd, ctd and ctd.
 		[](const NiCamera* camera) { // 0x140C66710 - 0x140c66b70 (fVar18) = 0x11 . No AE rel
 			log::info("Trying to hook camera");
 			//auto result = Skyrim_Camera_posX(camera);

@@ -6,6 +6,14 @@ using namespace RE;
 
 namespace {
 
+	void UpdateWorldToScaleCalculation(NiCamera* Camera)
+	{
+		using func_t = decltype(&UpdateWorldToScaleCalculation);
+		REL::Relocation<func_t> func{ REL::RelocationID(69271, 70641), REL::Relocate(0x11, 0x11)};
+		//SE: C66710
+		func(Camera, 0.0);
+	}
+
 	enum class CameraDataMode {
 		State,
 		Transform,
@@ -365,6 +373,13 @@ namespace Gts {
 
 							UpdatePlayerCamera(targetLocationLocalShifted);
 							UpdateNiCamera(targetLocationLocalShifted);
+
+							NiCamera* NiCam = GetNiCamera();
+
+							if (NiCam) {
+								UpdateWorldToScaleCalculation(NiCam);
+							}
+
 							//UpdateSceneManager(targetLocationLocalShifted);
 							//UpdateRenderManager(targetLocationLocalShifted);
 						}
