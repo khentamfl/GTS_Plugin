@@ -453,7 +453,7 @@ namespace Gts {
 		);
 		
 		if (CanBeCrushed) {
-			if (size_difference > 8.0 * crush_threshold && CrushManager::CanCrush(giant, tiny)) {
+			if (size_difference > Action_GetSizeThreshold().Action_Crush * crush_threshold && CrushManager::CanCrush(giant, tiny)) {
 				ModSizeExperience_Crush(giant, tiny, true);
 
 				if (!tiny->IsDead()) {

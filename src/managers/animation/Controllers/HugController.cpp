@@ -21,7 +21,6 @@
 namespace {
 
 	const float MINIMUM_HUG_DISTANCE = 110.0;
-	const float MINIMUM_HUG_SCALE_RATIO = 0.9;
 	const float GRAB_ANGLE = 70;
 	const float PI = 3.14159;
 
@@ -148,7 +147,7 @@ namespace Gts {
 
 		float sizedifference = pred_scale/prey_scale;
 
-		float MINIMUM_HUG_SCALE = MINIMUM_HUG_SCALE_RATIO;
+		float MINIMUM_HUG_SCALE = Action_GetSizeThreshold().Action_Hug;
 		float MINIMUM_DISTANCE = MINIMUM_HUG_DISTANCE;
 
 		float balancemode = SizeManager::GetSingleton().BalancedMode();

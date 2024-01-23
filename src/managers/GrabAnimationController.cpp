@@ -21,7 +21,6 @@
 namespace {
 
 	const float MINIMUM_GRAB_DISTANCE = 85.0;
-	const float MINIMUM_GRAB_SCALE_RATIO = 6.0;
 	const float GRAB_ANGLE = 70;
 	const float PI = 3.14159;
 }
@@ -131,7 +130,7 @@ namespace Gts {
 
 		float sizedifference = GetSizeDifference(pred, prey);
 
-		float MINIMUM_GRAB_SCALE = MINIMUM_GRAB_SCALE_RATIO;
+		float MINIMUM_GRAB_SCALE = Action_GetSizeThreshold().Action_Grab;
 		float MINIMUM_DISTANCE = MINIMUM_GRAB_DISTANCE;
 
 		if (HasSMT(pred)) {

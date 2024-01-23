@@ -21,7 +21,6 @@
 namespace {
 
 	const float MINIMUM_BUTTCRUSH_DISTANCE = 95.0;
-	const float MINIMUM_BUTTCRUSH_SCALE_RATIO = 2.0;
 	const float BUTTCRUSH_ANGLE = 70;
 	const float PI = 3.14159;
 
@@ -191,7 +190,7 @@ namespace Gts {
 		float pred_scale = get_visual_scale(pred);
 		float sizedifference = GetSizeDifference(pred, prey);
 
-		float MINIMUM_BUTTCRUSH_SCALE = MINIMUM_BUTTCRUSH_SCALE_RATIO;
+		float MINIMUM_BUTTCRUSH_SCALE = Action_GetSizeThreshold().Action_Booty;
 		float MINIMUM_DISTANCE = MINIMUM_BUTTCRUSH_DISTANCE;
 		if (IsCrawling(pred)) {
 			MINIMUM_BUTTCRUSH_SCALE *= 2.0;

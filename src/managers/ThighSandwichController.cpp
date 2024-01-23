@@ -290,6 +290,7 @@ namespace Gts {
 		float sizedifference = GetSizeDifference(pred, prey);
 
 		float MINIMUM_SANDWICH_SCALE = Action_GetSizeThreshold().Action_Sandwich;
+		
 		log::info("Min Sandwich Scale: {}", MINIMUM_SANDWICH_SCALE);
 		float MINIMUM_DISTANCE = MINIMUM_SANDWICH_DISTANCE;
 
