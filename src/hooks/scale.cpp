@@ -29,10 +29,27 @@ using namespace SKSE;
 //      ^ 29824
 //      Pathing::sub_140473200(Pathing *param_1,uint64 param_2,Character *param_3,uint64 param_4)
 //      ^ 29820
+//      PlayerCamera::Update_14084AB90
+//      FUN_14085c290(uint64 param_1,char *param_2,uint64 param_3,uint64 param_4)
+//      ^ 50179
 
 namespace Hooks {
 
 	void Hook_Scale::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
+
+		static FunctionHook<void(uintptr_t param_1, uintptr_t* param_2, uintptr_t param_3, uintptr_t param_4)> Skyrim_14085c290( 
+            REL::RelocationID(50179, 50179),
+            [](auto param_1, auto* param_2, auto param_3, auto param_4) {
+                
+				log::info("3120: Param 1: {}", param_1); 
+				log::info("3120: Param 2: {}", GetRawName(param_2)); 
+				log::info("3120: Param 3: {}", param_3); 
+				log::info("3120: Param 4: {}", param_4); 
+
+                return Skyrim_14085c290(param_1, param_2, param_3, param_4);
+            }
+        );
+
 		// AE 1402bc7c3
 		// SE 1402aa40c
 		//
@@ -77,7 +94,7 @@ namespace Hooks {
             }
         );*/
 
-		static FunctionHook<void(uintptr_t* param_1, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4)> Skyrim_Pathing_140473120( 
+		/*static FunctionHook<void(uintptr_t* param_1, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4)> Skyrim_Pathing_140473120( 
             REL::RelocationID(29819, 29819),
             [](auto* param_1, auto param_2, auto param_3, auto param_4) {
                 
@@ -115,7 +132,7 @@ namespace Hooks {
 
                 return Skyrim_Pathing_140473200(param_1, param_2, param_3, param_4);
             }
-        );
+        );*/
 
 		/*static CallHook<float(NiNode* node)> Skyrim_NiNode(RELOCATION_ID(19889, 19889),  REL::Relocate(0xBC, 0xBC), // Prints nothing
 		[](auto* node) {
