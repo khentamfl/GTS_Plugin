@@ -9,7 +9,7 @@ using namespace SKSE;
 
 namespace {
 	Actor* FindActor(bhkCharacterController* charCont) {
-		Actor* ref = static_cast<Actor*>(charCont);
+		Actor* ref = dynamic_cast<Actor*>(charCont);
 		if (ref) {
 			log::info("Actor found!");
 		} else {

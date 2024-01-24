@@ -101,11 +101,11 @@ namespace Gts {
 		});
 	}
 	
-	void Vore_Grab_Or_AttachToRHand(Actor* giant, Actor* tiny, const VoreData& VoreData) {
+	void Vore_Grab_Or_AttachToRHand(Actor* giant, Actor* tiny, const VoreData& Data) {
 		if (IsTransferingTiny(giant)) {
 			Vore_AttachToRightHandTask(giant, tiny); // launch task
 		} else {
-			VoreData.GrabAll();
+			Data.GrabAll();
 		}
 	}
 
