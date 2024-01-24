@@ -9,7 +9,7 @@
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/ai/headtracking.hpp"
-#include "managers/ai/AiManager.hpp"
+#include "managers/ai/ai_Manager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/OverkillManager.hpp"
 #include "managers/RandomGrowth.hpp"
