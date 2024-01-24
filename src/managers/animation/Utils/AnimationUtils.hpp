@@ -17,7 +17,7 @@ namespace Gts {
 
 	void UpdateFriendlyHugs(Actor* giant, Actor* tiny, bool force);
 
-	bool Vore_Grab_Or_AttachToRHand(Actor* giant, Actor* tiny, const VoreData& Data);
+	void Vore_Grab_Or_AttachToRHand(Actor* giant, Actor* tiny, VoreData& Data);
 
 	void HugCrushOther(Actor* giant, Actor* tiny);
 
