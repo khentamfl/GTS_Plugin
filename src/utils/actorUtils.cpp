@@ -127,6 +127,7 @@ namespace {
 	}
 
 	void Task_AdjustHalfLifeTask(Actor* tiny, float halflife) {
+		auto& Persist = Persistent::GetSingleton();
 		auto actor_data = Persist.GetData(tiny);
 		float old_halflife = 0.0;
 		if (actor_data) {
