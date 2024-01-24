@@ -159,7 +159,7 @@ namespace Gts {
 			return;
 		}
 		if (!pred->IsInCombat() && persist.vore_combatonly) {
-			return false;
+			return;
 		}
 		if (prey->formID != 0x14 && !IsHostile(pred, prey) && !IsTeammate(pred)) {
 			return;
