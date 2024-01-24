@@ -126,6 +126,34 @@ namespace {
 		return Result;
 	}
 
+	void Task_AdjustHalfLifeTask(Actor* tiny, float halflife) {
+		auto actor_data = Persist.GetData(tiny);
+		float old_halflife = 0.0;
+		if (actor_data) {
+			old_halflife = actor_data->half_life; // record old half life
+			actor_data->half_life = halflife;
+		}
+
+		auto Start = Time::FramesElapsed();
+		ActorHandle tinyhandle = tiny->CreateRefHandle();
+		std::string name = std::format("AdjustHalfLife_{}", tiny->formID);
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!tinyhandle) {
+				return false;
+			}
+			auto tinyref = tinyhandle.get().get();
+			float timepassed = Time::FramesElapsed() - Start;
+			if (timepassed > 1.2) {
+				if (actor_data) {
+					actor_data->half_life = old_halflife;
+				}
+				return false;
+			}
+
+			return true;
+		});
+	}
+
 	ExtraDataList* CreateExDataList() {
 		size_t a_size;
 		if (SKYRIM_REL_CONSTEXPR (REL::Module::IsAE()) && (REL::Module::get().version() >= SKSE::RUNTIME_SSE_1_6_629)) {
@@ -2328,6 +2356,9 @@ namespace Gts {
 			float preyscale = get_target_scale(tiny) * Adjustment;
 			expected *= Adjustment;
 			float targetScale = predscale/expected;
+
+			Task_AdjustHalfLifeTask(tiny, 1.0 / expected); // to make them shrink faster
+
 			if (preyscale >= targetScale) { // Apply ONLY if target is bigger than requirement
 				set_target_scale(tiny, targetScale);
 				AddSMTPenalty(giant, 5.0 * GetSizeFromBoundingBox(tiny));
