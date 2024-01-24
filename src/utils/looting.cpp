@@ -283,7 +283,6 @@ namespace Gts {
 
 	void MoveItemsTowardsDropbox(Actor* actor, TESObjectREFR* dropbox, bool removeQuestItems) {
 		int32_t quantity = 1.0;
-		log::info("Launching item transfer");
 		for (auto &[a_object, invData]: actor->GetInventory()) { // transfer loot
 			if (a_object->GetPlayable() && a_object->GetFormType() != FormType::LeveledItem) { // We don't want to move Leveled Items
 				if ((!invData.second->IsQuestObject() || removeQuestItems)) {

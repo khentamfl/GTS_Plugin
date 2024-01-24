@@ -352,55 +352,8 @@ namespace Gts {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& persist = Persistent::GetSingleton();
 
-		static Timer timer = Timer(2.50); // Random Vore once per 2.5 sec
-		if (timer.ShouldRunFrame()) { //Try to not call it too often
-			std::vector<Actor*> AbleToVore = {};
-			for (auto actor: find_actors()) {
-				if (actor->formID != 0x14 && IsTeammate(actor) && (actor->IsInCombat() || !persist.vore_combatonly) || (EffectsForEveryone(actor) && IsFemale(actor))) {
-					AbleToVore.push_back(actor);
-				}
-			}
-			if (!AbleToVore.empty()) {
-				int idx = rand() % AbleToVore.size();
-				Actor* voreActor = AbleToVore[idx];
-				if (voreActor) {
-					RandomVoreAttempt(voreActor);
-				}
-			}
-		}
-
 		for (auto& [key, voreData]: this->data) {
 			voreData.Update();
-		}
-	}
-
-	void Vore::RandomVoreAttempt(Actor* pred) {
-		if (!Persistent::GetSingleton().Vore_Ai) {
-			return;
-		}
-		auto& VoreManager = Vore::GetSingleton();
-		if (IsGtsBusy(pred)) {
-			return; // No Vore attempts if in GTS_Busy
-		}
-
-		std::size_t numberOfPrey = 1;
-		if (Runtime::HasPerkTeam(pred, "MassVorePerk")) {
-			numberOfPrey = 1 + (get_visual_scale(pred)/3);
-		}
-		for (auto actor: find_actors()) {
-			if (!actor->Is3DLoaded() || actor->IsDead()) {
-				return;
-			}
-			int Requirement = 8.0 * SizeManager::GetSingleton().BalancedMode();
-
-			int random = rand() % Requirement;
-			int trigger_threshold = 2;
-			if (random <= trigger_threshold) {
-				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
-				for (auto prey: preys) {
-					VoreManager.StartVore(pred, prey);
-				}
-			}
 		}
 	}
 

@@ -28,6 +28,7 @@ namespace Gts {
 			virtual void Reset() override;
 			virtual void ResetActor(Actor* actor) override;
 
+			static void RandomVoreAttempt(Actor* pred);
 			std::vector<Actor*> RandomStomp(Actor* pred, std::size_t numberOfPrey);
 			bool CanStomp(Actor* pred, Actor* prey);
 

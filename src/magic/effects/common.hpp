@@ -280,7 +280,7 @@ namespace Gts {
 		power *= PERK_BONUS; // multiply power by perk bonuses
 
 		AdjustSizeLimit(0.0300 * target_scale * power, caster);
-		AdjustMassLimit(0.0160 * target_scale * power, caster);
+		AdjustMassLimit(0.0040 * target_scale * power, caster);
 
 		auto GtsSkillLevel = GetGtsSkillLevel();
 

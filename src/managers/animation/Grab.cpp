@@ -225,7 +225,7 @@ namespace {
 
 		if (grabbedActor) {
 			Attacked(grabbedActor, giant); // force combat
-			float sizeDiff = get_visual_scale(giant)/get_visual_scale(grabbedActor);
+			float sizeDiff = GetSizeDifference(giant, grabbedActor);
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
 			float damage = (1.600 * sizeDiff) * power * additionaldamage * additionaldamage;
@@ -272,11 +272,14 @@ namespace {
 						Runtime::PlaySoundAtNode("SoftHandAttack", giantess, 1.0, 1.0, "NPC L Hand [LHnd]");
 					}
 					Runtime::PlaySoundAtNode("GtsCrushSound", giantess, 1.0, 1.0, "NPC L Hand [LHnd]");
-					SetBetweenBreasts(giantess, false);
 					AdjustSizeReserve(giantess, get_visual_scale(tiny)/10);
+					SpawnHurtParticles(giantess, tiny, 3.0, 1.6);
+					SpawnHurtParticles(giantess, tiny, 3.0, 1.6);
+					
+					SetBetweenBreasts(giantess, false);
+					
 					AdvanceQuestProgression(giantess, tiny, 5, 1.0, false);
-					SpawnHurtParticles(giantess, tiny, 3.0, 1.6);
-					SpawnHurtParticles(giantess, tiny, 3.0, 1.6);
+					
 					PrintDeathSource(giantess, tiny, DamageSource::HandCrushed);
 					Grab::DetachActorTask(giantess);
 					Grab::Release(giantess);

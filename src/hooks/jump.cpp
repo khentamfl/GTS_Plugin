@@ -9,6 +9,12 @@ using namespace SKSE;
 
 namespace {
 	Actor* FindActor(bhkCharacterController* charCont) {
+		Actor* ref = static_cast<Actor*>(charCont);
+		if (ref) {
+			log::info("Actor found!");
+		} else {
+			log::info("Static Cast failed");
+		}
 		for (auto actor: find_actors()) {
 			if (charCont == actor->GetCharController()) {
 				return actor;
@@ -27,7 +33,6 @@ namespace Hooks {
 			REL::RelocationID(76430, 78269),
 			[](auto* a_this){
 			float result = GetFallDistance(a_this);
-			log::info("GetFallDistance: {}", result);
 			auto actor = FindActor(a_this);
 			if (actor) {
 				if (actor->formID == 0x14) {// Apply to Player only

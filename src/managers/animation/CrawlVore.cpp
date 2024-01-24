@@ -83,9 +83,7 @@ namespace {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
 		for (auto& tiny: VoreData.GetVories()) {
-			if (!Vore_ShouldAttachToRHand(giant, tiny)) {
-				VoreData.GrabAll();
-			}
+			Vore_Grab_Or_AttachToRHand(giant, tiny, VoreData)
 			tiny->NotifyAnimationGraph("JumpFall");
 			SetBeingHeld(tiny, true);
 			Attacked(tiny, giant);

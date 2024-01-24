@@ -26,6 +26,53 @@ namespace {
 	const float MINIMUM_STOMP_SCALE_RATIO = 1.75;
 	const float STOMP_ANGLE = 50;
 	const float PI = 3.14159;
+
+	void AI_PerformRandomVore(Actor* pred) {
+		if (!Persistent::GetSingleton().Vore_Ai) {
+			return;
+		}
+		auto& VoreManager = Vore::GetSingleton();
+		if (IsGtsBusy(pred)) {
+			return; // No Vore attempts if in GTS_Busy
+		}
+
+		std::size_t numberOfPrey = 1;
+		if (Runtime::HasPerkTeam(pred, "MassVorePerk")) {
+			numberOfPrey = 1 + (get_visual_scale(pred)/3);
+		}
+		for (auto actor: find_actors()) {
+			if (!actor->Is3DLoaded() || actor->IsDead()) {
+				return;
+			}
+			int Requirement = 8.0 * SizeManager::GetSingleton().BalancedMode();
+
+			int random = rand() % Requirement;
+			int trigger_threshold = 2;
+			if (random <= trigger_threshold) {
+				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
+				for (auto prey: preys) {
+					VoreManager.StartVore(pred, prey);
+				}
+			}
+		}
+	}	
+
+	void AI_ChanceToStartVore() {
+		std::vector<Actor*> AbleToVore = {};
+		for (auto actor: find_actors()) {
+			if (actor->formID != 0x14 && IsTeammate(actor) && (actor->IsInCombat() || !persist.vore_combatonly) || (EffectsForEveryone(actor) && IsFemale(actor))) {
+				AbleToVore.push_back(actor);
+			}
+		}
+		if (!AbleToVore.empty()) {
+			int idx = rand() % AbleToVore.size();
+			Actor* voreActor = AbleToVore[idx];
+			if (voreActor) {
+				AI_PerformRandomVore(voreActor);
+			}
+		}
+	}
+
 }
 
 
@@ -45,6 +92,10 @@ namespace Gts {
 	void AiManager::Update() {
 		auto profiler = Profilers::Profile("Ai: Update");
 		static Timer ActionTimer = Timer(0.80);
+		static Timer VoreTimer = Timer(2.50); // Random Vore once per 2.5 sec
+		if (VoreTimer.ShouldRunFrame()) {
+			AI_ChanceToStartVore();
+		}
 		if (ActionTimer.ShouldRun()) {
 			auto& persist = Persistent::GetSingleton();
 			for (auto actor: find_actors()) {
@@ -66,7 +117,6 @@ namespace Gts {
 			}
 		}
 	}
-
 
 	std::vector<Actor*> AiManager::RandomStomp(Actor* pred, std::size_t numberOfPrey) {
 		// Get targets in front
