@@ -349,9 +349,6 @@ namespace Gts {
 	}
 
 	void Vore::Update() {
-		auto player = PlayerCharacter::GetSingleton();
-		auto& persist = Persistent::GetSingleton();
-
 		for (auto& [key, voreData]: this->data) {
 			voreData.Update();
 		}

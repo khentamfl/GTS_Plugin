@@ -6,15 +6,15 @@
 #include "managers/animation/HugShrink.hpp"
 #include "managers/ai/ai_SelectAction.hpp"
 #include "managers/GtsSizeManager.hpp"
+#include "managers/ai/ai_Manager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
-#include "managers/ai/ai_Manager.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
 #include "utils/actorUtils.hpp"
-#include "data/persistent.hpp"
 #include "managers/tremor.hpp"
 #include "managers/Rumble.hpp"
+#include "data/persistent.hpp"
 #include "managers/vore.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
@@ -60,6 +60,8 @@ namespace {
 
 	void AI_ChanceToStartVore() {
 		std::vector<Actor*> AbleToVore = {};
+		auto& persist = Persistent::GetSingleton();
+		
 		for (auto actor: find_actors()) {
 			if (actor->formID != 0x14 && IsTeammate(actor) && (actor->IsInCombat() || !persist.vore_combatonly) || (EffectsForEveryone(actor) && IsFemale(actor))) {
 				AbleToVore.push_back(actor);
