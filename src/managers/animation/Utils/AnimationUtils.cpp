@@ -101,11 +101,12 @@ namespace Gts {
 		});
 	}
 	
-	void Vore_Grab_Or_AttachToRHand(Actor* giant, Actor* tiny, VoreData& Data) {
+	bool Vore_ShouldAttachToRHand(Actor* giant, Actor* tiny) {
 		if (IsTransferingTiny(giant)) {
-			Vore_AttachToRightHandTask(giant, tiny); // launch task
+			Vore_AttachToRightHandTask(giant, tiny); // start "attach to hand" task outside of vore.cpp
+			return true;
 		} else {
-			Data.GrabAll();
+			return false;
 		}
 	}
 
