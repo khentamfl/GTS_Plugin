@@ -134,8 +134,8 @@ namespace {
 					AdjustMassLimit(0.0106, giant);
 					SurvivalMode_AdjustHunger(giant, tinySize, natural_scale, WasDragon, WasLiving, 1);
 				}
-				GRumble::Once("GrowthRumble", giant, 2.45, 0.30);
-				GRumble::Once("VoreShake", giant, sizePower * 4, 0.05);
+				GRumble::Once("GrowthRumble", giant, 1.25, 0.30);
+				GRumble::Once("VoreShake", giant, sizePower * 1, 0.05);
 				if (Vore::GetSingleton().GetVoreData(giant).GetTimer() == true) {
 					PlayMoanSound(giant, 1.0); // play timed sound. Timer is a must else we moan 10 times at once for example.
 					Task_FacialEmotionTask(giant, 2.0, "Vore");
@@ -254,6 +254,7 @@ namespace Gts {
 			for (auto& [key, tinyref]: this->tinies) {
 				auto tiny = tinyref.get().get();
 				auto giantref = this->giant;
+				SetBeingHeld(tiny, false);
 				AddSMTDuration(giantref.get().get(), 6.0);
 				if (tiny->formID != 0x14) {
 					KillActor(giantref.get().get(), tiny);

@@ -133,6 +133,7 @@ namespace {
 		for (auto& tiny: VoreData.GetVories()) {
 			AllowToBeCrushed(tiny, false);
 			DisableCollisions(tiny, giant);
+			SetBeingHeld(tiny, true);
 		}
 		if (Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			EnableFreeCamera();
@@ -289,7 +290,7 @@ namespace {
 	}
 
 	void GTSvore_impactRS(AnimationEventData& data) {
-		GRumble::Once("StompRS", &data.giant, 0.55, 0.10, RNode);
+		GRumble::Once("StompRS", &data.giant, 0.90, 0.10, RNode);
 		float perk = GetPerkBonus_Basics(&data.giant);
 		DoFootstepSound(&data.giant, 0.90, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 0.90, FootEvent::Right, RNode);

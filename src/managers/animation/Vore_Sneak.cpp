@@ -37,6 +37,7 @@ namespace {
 		for (auto& tiny: VoreData.GetVories()) {
 			AllowToBeCrushed(tiny, false);
 			DisableCollisions(tiny, giant);
+            SetBeingHeld(tiny, true);
 		}
     }
     void GTS_Sneak_Vore_Grab(AnimationEventData& data) {
@@ -46,7 +47,6 @@ namespace {
 				VoreData.GrabAll();
 			}
 			tiny->NotifyAnimationGraph("JumpFall");
-			SetBeingHeld(tiny, true);
 			Attacked(tiny, &data.giant);
 		}
 		if (IsTransferingTiny(&data.giant)) {

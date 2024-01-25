@@ -28,10 +28,15 @@ namespace {
 	const float STOMP_ANGLE = 50;
 	const float PI = 3.14159;
 
-	void AI_PerformRandomVore(Actor* pred) {
-		if (!Persistent::GetSingleton().Vore_Ai) {
-			return;
+	bool ProtectFollowers(Actor* giant, Actor* tiny) {
+		bool NPC = Persistent::GetSingleton().NPCEffectImmunity;
+		if (tiny->formID != 0x14 && NPC && (IsTeammate(giant)) && (IsTeammate(tiny))) {
+			return true; // Disallow NPC's to perform stomps on followers
 		}
+		return false;
+	}
+
+	void AI_PerformRandomVore(Actor* pred) {
 		if (IsGtsBusy(pred)) {
 			return; // No Vore attempts if in GTS_Busy
 		}
@@ -62,6 +67,9 @@ namespace {
 	}	
 
 	void AI_ChanceToStartVore() {
+		if (!Persistent::GetSingleton().Vore_Ai) {
+			return;
+		}
 		std::vector<Actor*> AbleToVore = {};
 		auto& persist = Persistent::GetSingleton();
 		
@@ -200,6 +208,10 @@ namespace Gts {
 
 	bool AiManager::CanStomp(Actor* pred, Actor* prey) {
 		if (pred == prey) {
+			return false;
+		}
+		if (ProtectFollowers(pred, prey)) {
+			log::info("{} is protected", prey->GetDisplayFullName());
 			return false;
 		}
 		if (IsGtsBusy(pred)) {

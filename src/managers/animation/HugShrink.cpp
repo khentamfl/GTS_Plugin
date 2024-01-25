@@ -446,7 +446,7 @@ namespace Gts {
 			bool IsDead = (giantref->IsDead() || tinyref->IsDead());
 			
 			if (!IsHugCrushing(giantref)) {
-				if (sizedifference < 0.9 || IsDead || stamina <= 2.0 || !GotTiny) {
+				if (sizedifference < Action_Hug || IsDead || stamina <= 2.0 || !GotTiny) {
 					if (HuggingAlly) { 
 						// this is needed to still attach the actor while we have ally hugged
 					    // It fixes the Tiny not being moved around during Gentle Release animation for friendlies

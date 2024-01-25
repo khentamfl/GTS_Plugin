@@ -71,6 +71,7 @@ namespace {
 		for (auto& tiny: VoreData.GetVories()) {
 			AllowToBeCrushed(tiny, false);
 			DisableCollisions(tiny, giant);
+			SetBeingHeld(tiny, true);
 		}
 	}
 
@@ -87,7 +88,6 @@ namespace {
 				VoreData.GrabAll();
 			}
 			tiny->NotifyAnimationGraph("JumpFall");
-			SetBeingHeld(tiny, true);
 			Attacked(tiny, giant);
 		}
 		if (IsTransferingTiny(giant)) {
