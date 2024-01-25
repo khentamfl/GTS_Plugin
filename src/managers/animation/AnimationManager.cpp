@@ -9,7 +9,7 @@
 #include "managers/animation/FootGrind.hpp"
 #include "managers/animation/Vore_Standing.hpp"
 #include "managers/animation/Vore_Sneak.hpp"
-#include "managers/animation/Vore_Crawl"
+#include "managers/animation/Vore_Crawl.hpp"
 #include "managers/animation/HugShrink.hpp"
 #include "managers/animation/Crawling.hpp"
 #include "managers/animation/HugHeal.hpp"
