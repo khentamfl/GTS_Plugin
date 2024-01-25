@@ -62,20 +62,22 @@ namespace {
 		AdjustFacialExpression(&data.giant, 1, 0.80, "modifier"); // blink R
     }
     void GTS_Sneak_Vore_Swallow(AnimationEventData& data) {
-        auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+        Actor* giant = &data.giant;
+
+        auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
 		for (auto& tiny: VoreData.GetVories()) {
 			AllowToBeCrushed(tiny, true);
 			if (tiny->formID == 0x14) {
-				PlayerCamera::GetSingleton()->cameraTarget = &data.giant->CreateRefHandle();
+				PlayerCamera::GetSingleton()->cameraTarget = giant->CreateRefHandle();
 			}
 			if (AllowDevourment()) {
-				CallDevourment(&data.giant, tiny);
+				CallDevourment(giant, tiny);
 				SetBeingHeld(tiny, false);
 				VoreData.AllowToBeVored(true);
 			} else {
 				VoreData.Swallow();
 				tiny->SetAlpha(0.0);
-				Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
+				Runtime::PlaySoundAtNode("VoreSwallow", giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
 			}
 		}
     }
