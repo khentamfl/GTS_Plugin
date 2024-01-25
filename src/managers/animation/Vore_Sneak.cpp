@@ -52,6 +52,7 @@ namespace {
 				// make behaviors read the value to blend between anims
 
 				if (!IsVoring(giantref)) {
+					log::info("! Is voring, task cancelled");
 					return false; // just a fail-safe to cancel the task if we're outside of Vore anim
 				}
 				
@@ -147,7 +148,7 @@ namespace {
 		Cprint("SmileON fired");
     }
     void GTS_Sneak_Vore_SmileOff(AnimationEventData& data) {
-        AdjustFacialExpression(&data.giant, 2, 0.0, 0.24, 0.48 "expression");
+        AdjustFacialExpression(&data.giant, 2, 0.0, 0.24, 0.48, "expression");
 		AdjustFacialExpression(&data.giant, 3, 0.0, 0.24, 0.48, "phenome");
 
 		Task_HighHeel_SyncVoreAnim(&data.giant, true); // cancel the task
