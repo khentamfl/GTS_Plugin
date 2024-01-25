@@ -25,7 +25,6 @@ using namespace Gts;
 
 namespace {
 	const float MINIMUM_VORE_DISTANCE = 94.0;
-	const float MINIMUM_VORE_SCALE_RATIO = 6.0;
 	const float VORE_ANGLE = 76;
 	const float PI = 3.14159;
 
@@ -591,7 +590,7 @@ namespace Gts {
 				return false;
 			}
 		}
-		float MINIMUM_VORE_SCALE = MINIMUM_VORE_SCALE_RATIO;
+		float MINIMUM_VORE_SCALE = Action_Vore;
 		float MINIMUM_DISTANCE = MINIMUM_VORE_DISTANCE;
 
 		if (HasSMT(pred)) {
@@ -600,7 +599,6 @@ namespace Gts {
 		float pred_scale = get_visual_scale(pred);
 		float sizedifference = GetSizeDifference(pred, prey);
 
-		float balancemode = SizeManager::GetSingleton().BalancedMode();
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 
 		if (IsInsect(prey, true) || IsBlacklisted(prey) || IsUndead(prey, true)) {
@@ -609,9 +607,6 @@ namespace Gts {
 			return false;
 		}
 
-		if (balancemode == 2.0) { // This is checked only if Balance Mode is enabled. Size requirement is bigger with it.
-			MINIMUM_VORE_SCALE *= 1.15;
-		}
 		if (prey_distance <= (MINIMUM_DISTANCE * pred_scale) && sizedifference < MINIMUM_VORE_SCALE) {
 			if (pred->formID == 0x14) {
 				Notify("{} is too big to be eaten.", prey->GetDisplayFullName());
@@ -639,6 +634,9 @@ namespace Gts {
 	}
 
 	void Vore::StartVore(Actor* pred, Actor* prey) {
+		if (!CanVore(pred, prey)) {
+			return;
+		}
 		float pred_scale = get_visual_scale(pred);
 		float prey_scale = get_visual_scale(prey);
 
@@ -651,9 +649,6 @@ namespace Gts {
 			wastestamina = 30; // Less tamina drain for non Player
 		}
 
-		if (!CanVore(pred, prey)) {
-			return;
-		}
 		if (!Runtime::HasPerkTeam(pred, "VorePerk")) { // Damage stamina if we don't have perk
 			if (staminacheck < wastestamina) {
 				Notify("{} is too tired for vore.", pred->GetDisplayFullName());

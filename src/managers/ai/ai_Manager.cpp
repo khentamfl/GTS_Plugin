@@ -32,10 +32,11 @@ namespace {
 		if (!Persistent::GetSingleton().Vore_Ai) {
 			return;
 		}
-		auto& VoreManager = Vore::GetSingleton();
 		if (IsGtsBusy(pred)) {
 			return; // No Vore attempts if in GTS_Busy
 		}
+		log::info("PerformRandomVore started");
+		auto& VoreManager = Vore::GetSingleton();
 
 		std::size_t numberOfPrey = 1;
 		if (Runtime::HasPerkTeam(pred, "MassVorePerk")) {
@@ -53,6 +54,7 @@ namespace {
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
 					VoreManager.StartVore(pred, prey);
+					log::info("StartVore called, can vore: {}", CanVore(pred, prey));
 				}
 			}
 		}
@@ -72,6 +74,7 @@ namespace {
 			Actor* voreActor = AbleToVore[idx];
 			if (voreActor) {
 				AI_PerformRandomVore(voreActor);
+				log::info("Found actor for vore");
 			}
 		}
 	}

@@ -847,13 +847,15 @@ namespace Gts {
 			}
 
 			// Exit on death
-			float sizedifference = GetSizeDifference(giantref, tinyref);
+			float scale_gts = get_target_scale(giant) * GetSizeFromBoundingBox(giant);
+			float scale_tiny = get_target_scale(tiny) * GetSizeFromBoundingBox(tiny);
+			float sizedifference = scale_gts/scale_tiny;
 
-			ForceRagdoll(tinyref, false);
+			ForceRagdoll(tinyref, false); 
 
 			ShutUp(tinyref);
 
-			if (giantref->IsDead() || tinyref->IsDead() || GetAV(tinyref, ActorValue::kHealth) <= 0.0 || sizedifference < 6.0 || GetAV(giantref, ActorValue::kStamina) < 2.0) {
+			if (giantref->IsDead() || tinyref->IsDead() || GetAV(tinyref, ActorValue::kHealth) <= 0.0 || sizedifference < Action_Grab || GetAV(giantref, ActorValue::kStamina) < 2.0) {
 				PushActorAway(giantref, tinyref, 1.0);
 				tinyref->SetGraphVariableBool("GTSBEH_T_InStorage", false);
 				SetBetweenBreasts(giantref, false);
