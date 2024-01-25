@@ -26,6 +26,12 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
+	bool IsVoring(Actor* giant) {
+		bool Voring;
+		giant->GetGraphVariableBool("GTS_IsVoring", Voring);
+		return Voring;
+	}
+
     void Task_HighHeel_SyncVoreAnim(Actor* giant, bool cancel) {
 		// Purpose of this task is to blend between 2 animations based on value.
 		// The problem: hand that grabs the tiny is becomming offset if we equip High Heels
@@ -44,6 +50,10 @@ namespace {
 			
 				giantref->SetGraphVariableFloat("GTS_HHoffset", hh_offset);
 				// make behaviors read the value to blend between anims
+
+				if (!IsVoring(giantref)) {
+					return false; // just a fail-safe to cancel the task if we're outside of Vore anim
+				}
 				
 				return true;
 			});
