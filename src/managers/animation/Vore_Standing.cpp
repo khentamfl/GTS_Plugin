@@ -1,7 +1,7 @@
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/emotions/EmotionManager.hpp"
-#include "managers/animation/ActorVore.hpp"
+#include "managers/animation/Vore_Default.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "managers/CrushManager.hpp"
@@ -312,31 +312,31 @@ namespace {
 
 namespace Gts
 {
-	void AnimationActorVore::RegisterEvents() {
-		AnimationManager::RegisterEvent("GTSvore_attachactor_AnimObject_A", "ActorVore", GTSvore_attachactor_AnimObject_A);
-		AnimationManager::RegisterEvent("GTSvore_detachactor_AnimObject_A", "ActorVore", GTSvore_detachactor_AnimObject_A);
-		AnimationManager::RegisterEvent("GTSvore_handR_reposition_S", "ActorVore", GTSvore_handR_reposition_S);
-		AnimationManager::RegisterEvent("GTSvore_handL_reposition_S", "ActorVore", GTSvore_handL_reposition_S);
-		AnimationManager::RegisterEvent("GTSvore_handR_reposition_E", "ActorVore", GTSvore_handR_reposition_E);
-		AnimationManager::RegisterEvent("GTSvore_handL_reposition_E", "ActorVore", GTSvore_handL_reposition_E);
-		AnimationManager::RegisterEvent("GTSvore_bringactor_start", "ActorVore", GTSvore_bringactor_start);
-		AnimationManager::RegisterEvent("GTSvore_bringactor_end", "ActorVore", GTSvore_bringactor_end);
-		AnimationManager::RegisterEvent("GTSvore_swallow_sound", "ActorVore", GTSvore_swallow_sound);
-		AnimationManager::RegisterEvent("GTSvore_standup_start", "ActorVore", GTSvore_standup_start);
-		AnimationManager::RegisterEvent("GTSvore_hand_extend", "ActorVore", GTSvore_hand_extend);
-		AnimationManager::RegisterEvent("GTSvore_close_mouth", "ActorVore", GTSvore_close_mouth);
-		AnimationManager::RegisterEvent("GTSvore_standup_end", "ActorVore", GTSvore_standup_end);
-		AnimationManager::RegisterEvent("GTSvore_open_mouth", "ActorVore", GTSvore_open_mouth);
-		AnimationManager::RegisterEvent("GTSvore_hand_grab", "ActorVore", GTSvore_hand_grab);
-		AnimationManager::RegisterEvent("GTSvore_sit_start", "ActorVore", GTSvore_sit_start);
-		AnimationManager::RegisterEvent("GTSvore_eat_actor", "ActorVore", GTSvore_eat_actor);
-		AnimationManager::RegisterEvent("GTSvore_impactRS", "ActorVore", GTSvore_impactRS);
-		AnimationManager::RegisterEvent("GTSvore_impactLS", "ActorVore", GTSvore_impactLS);
-		AnimationManager::RegisterEvent("GTSvore_sit_end", "ActorVore", GTSvore_sit_end);
-		AnimationManager::RegisterEvent("GTSvore_swallow", "ActorVore", GTSvore_swallow);
+	void Animation_VoreStanding::RegisterEvents() {
+		AnimationManager::RegisterEvent("GTSvore_attachactor_AnimObject_A", "Vore", GTSvore_attachactor_AnimObject_A);
+		AnimationManager::RegisterEvent("GTSvore_detachactor_AnimObject_A", "Vore", GTSvore_detachactor_AnimObject_A);
+		AnimationManager::RegisterEvent("GTSvore_handR_reposition_S", "Vore", GTSvore_handR_reposition_S);
+		AnimationManager::RegisterEvent("GTSvore_handL_reposition_S", "Vore", GTSvore_handL_reposition_S);
+		AnimationManager::RegisterEvent("GTSvore_handR_reposition_E", "Vore", GTSvore_handR_reposition_E);
+		AnimationManager::RegisterEvent("GTSvore_handL_reposition_E", "Vore", GTSvore_handL_reposition_E);
+		AnimationManager::RegisterEvent("GTSvore_bringactor_start", "Vore", GTSvore_bringactor_start);
+		AnimationManager::RegisterEvent("GTSvore_bringactor_end", "Vore", GTSvore_bringactor_end);
+		AnimationManager::RegisterEvent("GTSvore_swallow_sound", "Vore", GTSvore_swallow_sound);
+		AnimationManager::RegisterEvent("GTSvore_standup_start", "Vore", GTSvore_standup_start);
+		AnimationManager::RegisterEvent("GTSvore_hand_extend", "Vore", GTSvore_hand_extend);
+		AnimationManager::RegisterEvent("GTSvore_close_mouth", "Vore", GTSvore_close_mouth);
+		AnimationManager::RegisterEvent("GTSvore_standup_end", "Vore", GTSvore_standup_end);
+		AnimationManager::RegisterEvent("GTSvore_open_mouth", "Vore", GTSvore_open_mouth);
+		AnimationManager::RegisterEvent("GTSvore_hand_grab", "Vore", GTSvore_hand_grab);
+		AnimationManager::RegisterEvent("GTSvore_sit_start", "Vore", GTSvore_sit_start);
+		AnimationManager::RegisterEvent("GTSvore_eat_actor", "Vore", GTSvore_eat_actor);
+		AnimationManager::RegisterEvent("GTSvore_impactRS", "Vore", GTSvore_impactRS);
+		AnimationManager::RegisterEvent("GTSvore_impactLS", "Vore", GTSvore_impactLS);
+		AnimationManager::RegisterEvent("GTSvore_sit_end", "Vore", GTSvore_sit_end);
+		AnimationManager::RegisterEvent("GTSvore_swallow", "Vore", GTSvore_swallow);
 	}
 
-	void AnimationActorVore::RegisterTriggers() {
-		AnimationManager::RegisterTrigger("StartVore", "ActorVore", "GTSBEH_StartVore");
+	void Animation_VoreStanding::RegisterTriggers() {
+		AnimationManager::RegisterTrigger("StartVore", "Vore", "GTSBEH_StartVore");
 	}
 }

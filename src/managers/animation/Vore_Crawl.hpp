@@ -7,10 +7,8 @@ using namespace RE;
 namespace Gts
 {
 
-	class AnimationActorVore {
+	class Animation_VoreCrawl {
 		public:
 			static void RegisterEvents();
-
-			static void RegisterTriggers();
 	};
 }

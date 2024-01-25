@@ -7,8 +7,9 @@
 #include "managers/animation/ButtCrush.hpp"
 #include "managers/animation/BoobCrush.hpp"
 #include "managers/animation/FootGrind.hpp"
-#include "managers/animation/ActorVore.hpp"
-#include "managers/animation/CrawlVore.hpp"
+#include "managers/animation/Vore_Standing.hpp"
+#include "managers/animation/Vore_Sneak.hpp"
+#include "managers/animation/Vore_Crawl"
 #include "managers/animation/HugShrink.hpp"
 #include "managers/animation/Crawling.hpp"
 #include "managers/animation/HugHeal.hpp"
@@ -62,8 +63,11 @@ namespace Gts {
 		AnimationCrawling::RegisterEvents();
 		AnimationCrawling::RegisterTriggers();
 
-		AnimationActorVore::RegisterEvents();
-		AnimationActorVore::RegisterTriggers();
+		Animation_VoreStanding::RegisterEvents();
+		Animation_VoreStanding::RegisterTriggers();
+
+		Animation_VoreCrawl::RegisterEvents();
+		Animation_VoreSneak::RegisterEvents();
 
 		AnimationButtCrush::RegisterEvents();
 		AnimationButtCrush::RegisterTriggers();
@@ -72,7 +76,7 @@ namespace Gts {
 
 		AnimationBoobCrush::RegisterEvents();
 
-		AnimationCrawlVore::RegisterEvents();
+		
 
 		AnimationFootGrind::RegisterEvents();
 		AnimationFootGrind::RegisterTriggers();

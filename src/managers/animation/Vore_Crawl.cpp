@@ -2,7 +2,7 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/Utils/CrawlUtils.hpp"
 #include "managers/emotions/EmotionManager.hpp"
-#include "managers/animation/CrawlVore.hpp"
+#include "managers/animation/Vore_Crawl"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "managers/CrushManager.hpp"
@@ -64,7 +64,7 @@ namespace {
 		"NPC L RearCalf [RrClf]",
 	};
 
-	void GTSCrawlVore_Start(AnimationEventData& data) {
+	void GTSBeh_CrawlVoring(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
 		VoreData.AllowToBeVored(false);
@@ -144,6 +144,7 @@ namespace {
 	void GTSCrawlVore_Swallow(AnimationEventData& data) {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
+
 		for (auto& tiny: VoreData.GetVories()) {
 			AllowToBeCrushed(tiny, true);
 			if (tiny->formID == 0x14) {
@@ -179,13 +180,11 @@ namespace {
 	}
 
 	void GTSCrawlVore_SmileOff(AnimationEventData& data) {
-		auto giant = &data.giant;
 		AdjustFacialExpression(&data.giant, 2, 0.0, "expression");
 		AdjustFacialExpression(&data.giant, 3, 0.0, "phenome");
 	}
 
 	void GTSBEH_CrawlVoreExit(AnimationEventData& data) {
-		auto giant = &data.giant;
 		//BlockFirstPerson(&data.giant, false);
 	}
 }
@@ -193,8 +192,8 @@ namespace {
 
 namespace Gts
 {
-	void AnimationCrawlVore::RegisterEvents() {
-		AnimationManager::RegisterEvent("GTSCrawlVore_Start", "CrawlVore", GTSCrawlVore_Start);
+	void Animation_VoreCrawl::RegisterEvents() { 
+		AnimationManager::RegisterEvent("GTSBeh_CrawlVoring", "CrawlVore", GTSBeh_CrawlVoring);
 		AnimationManager::RegisterEvent("GTSCrawlVore_SmileOn", "CrawlVore", GTSCrawlVore_SmileOn);
 		AnimationManager::RegisterEvent("GTSCrawlVore_Grab", "CrawlVore", GTSCrawlVore_Grab);
 		AnimationManager::RegisterEvent("GTSCrawl_ButtImpact", "CrawlVore", GTSCrawl_ButtImpact);
