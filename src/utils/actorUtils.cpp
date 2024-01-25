@@ -808,7 +808,7 @@ namespace Gts {
 		float GiantScale = get_visual_scale(giant) * GetSizeFromBoundingBox(giant);
 		float TinyScale = get_visual_scale(tiny) * GetSizeFromBoundingBox(tiny);
 		if (HasSMT(giant)) {
-			GiantScale += 7.8;
+			GiantScale += 9.8;
 		} if (tiny->formID == 0x14 && HasSMT(tiny)) {
 			TinyScale += 1.25;
 		}

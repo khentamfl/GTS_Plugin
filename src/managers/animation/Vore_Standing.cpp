@@ -154,7 +154,7 @@ namespace {
 			tiny->NotifyAnimationGraph("GTS_EnterFear");
 		}
 		VoreData.AllowToBeVored(false);
-		GRumble::Once("StompLS", &data.giant, 0.45, 0.10, LNode);
+		GRumble::Once("StompLS", &data.giant, 0.95, 0.05, LNode);
 		DoFootstepSound(&data.giant, 0.90, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, 0.90, FootEvent::Left, LNode);
 		DoDamageEffect(&data.giant, 0.5, 1.0, 30, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
@@ -290,7 +290,7 @@ namespace {
 	}
 
 	void GTSvore_impactRS(AnimationEventData& data) {
-		GRumble::Once("StompRS", &data.giant, 0.90, 0.10, RNode);
+		GRumble::Once("StompRS", &data.giant, 0.95, 0.05, RNode);
 		float perk = GetPerkBonus_Basics(&data.giant);
 		DoFootstepSound(&data.giant, 0.90, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 0.90, FootEvent::Right, RNode);
