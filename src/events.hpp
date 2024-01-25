@@ -88,6 +88,15 @@ namespace Gts {
 		std::vector<NiAVObject*> nodes;
 	};
 
+	struct EmotionInfo {
+		Actor* giantess;
+		int ph_id;
+		float speed_1;
+		float speed_2;
+		std::string_view task_name;
+		std::string_view task_type;
+	};
+
 	struct VoreInformation {
 		Actor* giantess;
 		bool WasGiant;

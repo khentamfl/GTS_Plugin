@@ -376,6 +376,27 @@ namespace Gts {
 		}
 	}
 
+	void AdjustFacialExpression(Actor* giant, int ph, float power, float speed_1, float speed_2, std::string_view type) {
+		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
+		float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
+
+		if (type == "phenome") {
+			Emotions.OverridePhenome(ph, 0.0, speed_1/AnimSpeed, power);
+		}
+		if (type == "expression") {
+			auto fgen = giant->GetFaceGenAnimationData();
+			if (fgen) {
+				fgen->exprOverride = false;
+				fgen->SetExpressionOverride(ph, power);
+				fgen->expressionKeyFrame.SetValue(ph, power); // Expression doesn't need Spring since it is already smooth by default
+				fgen->exprOverride = true;
+			}
+		}
+		if (type == "modifier") {
+			Emotions.OverrideModifier(ph, 0.0, speed_2/AnimSpeed, power);
+		}
+	}
+
 	float GetWasteMult(Actor* giant) {
 		float WasteMult = 1.0;
 		if (Runtime::HasPerk(giant, "DestructionBasics")) {

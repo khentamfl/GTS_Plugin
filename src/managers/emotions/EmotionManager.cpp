@@ -81,9 +81,6 @@ namespace Gts { // To-do: rework it into Task manager. Not sure how to do it.
 			this->Modifier1.target = tg;
 			this->Modifier1.halflife = hl;
 		}
-		//this->Modifiers[number].value = power;
-		//this->Modifiers[number].halflife = hl;
-		//this->Modifiers[number].target = tg;
 	}
 
 	void EmotionData::Update() {

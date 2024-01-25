@@ -164,7 +164,7 @@ namespace Gts {
 		}
 
 		StaggerActor(prey, 100.0f);
-		ShrinkUntil(pred, prey, 12.0, 0.22);
+		ShrinkUntil(pred, prey, 12.0, 0.20);
 
 		Grab::GetSingleton().GrabActor(pred, prey);
 		

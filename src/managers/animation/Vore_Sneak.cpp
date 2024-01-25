@@ -56,10 +56,10 @@ namespace {
 		}
     }
     void GTS_Sneak_Vore_OpenMouth(AnimationEventData& data) {
-        AdjustFacialExpression(&data.giant, 0, 1.0, "phenome"); // Start opening mouth
-		AdjustFacialExpression(&data.giant, 1, 0.5, "phenome"); // Open it wider
-		AdjustFacialExpression(&data.giant, 0, 0.80, "modifier"); // blink L
-		AdjustFacialExpression(&data.giant, 1, 0.80, "modifier"); // blink R
+        AdjustFacialExpression(&data.giant, 0, 1.0, 0.24, 0.48, "phenome"); // Start opening mouth
+		AdjustFacialExpression(&data.giant, 1, 0.5, 0.24, 0.48, "phenome"); // Open it wider
+		AdjustFacialExpression(&data.giant, 0, 0.8, 0.24, 0.48, "modifier"); // blink L
+		AdjustFacialExpression(&data.giant, 1, 0.8, 0.24, 0.48, "modifier"); // blink R
     }
     void GTS_Sneak_Vore_Swallow(AnimationEventData& data) {
         Actor* giant = &data.giant;
@@ -83,10 +83,10 @@ namespace {
     }
 
     void GTS_Sneak_Vore_CloseMouth(AnimationEventData& data) {
-		AdjustFacialExpression(&data.giant, 0, 0.0, "phenome"); // Start opening mouth
-		AdjustFacialExpression(&data.giant, 1, 0.0, "phenome"); // Open it wider
-		AdjustFacialExpression(&data.giant, 0, 0.0, "modifier"); // blink L
-		AdjustFacialExpression(&data.giant, 1, 0.0, "modifier"); // blink R
+		AdjustFacialExpression(&data.giant, 0, 0.0, 0.24, 0.48, "phenome"); // Start opening mouth
+		AdjustFacialExpression(&data.giant, 1, 0.0, 0.24, 0.48, "phenome"); // Open it wider
+		AdjustFacialExpression(&data.giant, 0, 0.0, 0.24, 0.48, "modifier"); // blink L
+		AdjustFacialExpression(&data.giant, 1, 0.0, 0.24, 0.48, "modifier"); // blink R
     }
 
     void GTS_Sneak_Vore_KillAll(AnimationEventData& data) {
@@ -107,12 +107,12 @@ namespace {
     }
 
     void GTS_Sneak_Vore_SmileOn(AnimationEventData& data) {
-        AdjustFacialExpression(&data.giant, 2, 1.0, "expression");
-		AdjustFacialExpression(&data.giant, 3, 0.8, "phenome");
+        AdjustFacialExpression(&data.giant, 2, 1.0, 0.24, 0.48, "expression");
+		AdjustFacialExpression(&data.giant, 3, 0.8, 0.24, 0.48, "phenome");
     }
     void GTS_Sneak_Vore_SmileOff(AnimationEventData& data) {
-        AdjustFacialExpression(&data.giant, 2, 0.0, "expression");
-		AdjustFacialExpression(&data.giant, 3, 0.0, "phenome");
+        AdjustFacialExpression(&data.giant, 2, 0.0, 0.24, 0.48 "expression");
+		AdjustFacialExpression(&data.giant, 3, 0.0, 0.24, 0.48, "phenome");
     }
 }
 
