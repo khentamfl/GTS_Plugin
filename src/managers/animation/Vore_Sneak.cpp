@@ -29,7 +29,7 @@ namespace {
     void Task_HighHeel_SyncVoreAnim(Actor* giant, bool cancel) {
 		// Purpose of this task is to blend between 2 animations based on value.
 		// The problem: hand that grabs the tiny is becomming offset if we equip High Heels
-		// This task fixes that (by, again, blending with anim that has hand lower).
+		// This task fixes that (by, again, blending with anim that has hand placed lower).
 		std::string name = std::format("Vore_AdjustHH_{}", giant->formID);
 		if (!cancel) {
 			ActorHandle gianthandle = giant->CreateRefHandle();
@@ -42,7 +42,8 @@ namespace {
 				float hh_value = HighHeelManager::GetBaseHHOffset(giantref)[2]/100;
 				float hh_offset = std::clamp(hh_value * 4.5f, 0.0f, 1.0f); // reach max HH at 0.22 offset (highest i've seen)
 			
-				giantref->SetGraphVariableFloat("GTS_HHoffset", hh_offset)
+				giantref->SetGraphVariableFloat("GTS_HHoffset", hh_offset);
+				// make behaviors read the value to blend between anims
 				
 				return true;
 			});
