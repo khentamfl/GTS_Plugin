@@ -29,7 +29,7 @@ namespace {
 	const float PI = 3.14159;
 
 	bool ProtectFollowers(Actor* giant, Actor* tiny) {
-		bool NPC = Persistent::GetSingleton().NPCEffectImmunity;
+		bool NPC = Persistent::GetSingleton().FollowerProtection;
 		if (tiny->formID != 0x14 && NPC && (IsTeammate(giant)) && (IsTeammate(tiny))) {
 			return true; // Disallow NPC's to perform stomps on followers
 		}
