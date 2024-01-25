@@ -226,7 +226,7 @@ namespace Gts {
 		if (CanDoButtCrush(pred) && !IsBeingHeld(prey)) {
 			prey->NotifyAnimationGraph("GTS_EnterFear");
 			auto camera = PlayerCamera::GetSingleton();
-			ShrinkUntil(pred, prey, 3.0);
+			ShrinkUntil(pred, prey, 3.0, 0.25);
 			DisableCollisions(prey, pred);
 
 			float WasteStamina = 60.0 * GetButtCrushCost(pred);

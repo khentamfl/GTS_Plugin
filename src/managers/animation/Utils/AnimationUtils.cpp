@@ -405,7 +405,7 @@ namespace Gts {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
 
-		ShrinkUntil(giant, tiny, 3.6);
+		ShrinkUntil(giant, tiny, 3.6, 0.22);
 		
 
 		std::string name = std::format("FootTrample_{}", tiny->formID);
@@ -447,7 +447,7 @@ namespace Gts {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
 
-		ShrinkUntil(giant, tiny, 3.6);
+		ShrinkUntil(giant, tiny, 3.6, 0.22);
 
 
 		std::string name = std::format("FootTrample_{}", tiny->formID);
@@ -489,7 +489,7 @@ namespace Gts {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
 
-		ShrinkUntil(giant, tiny, 3.6);
+		ShrinkUntil(giant, tiny, 3.6, 0.22);
 
 		std::string name = std::format("FootGrind_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
@@ -530,7 +530,7 @@ namespace Gts {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
 
-		ShrinkUntil(giant, tiny, 3.6);
+		ShrinkUntil(giant, tiny, 3.6, 0.22);
 		
 
 		std::string name = std::format("FootGrind_{}", tiny->formID);

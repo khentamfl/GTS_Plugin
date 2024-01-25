@@ -325,7 +325,7 @@ namespace Gts {
 		if (IsBeingHeld(prey)) {
 			return;
 		}
-		ShrinkUntil(pred, prey, 6.0);
+		ShrinkUntil(pred, prey, 6.0, 0.22);
 		
 		auto& data = sandwiching.GetSandwichingData(pred);
 		data.AddTiny(prey);

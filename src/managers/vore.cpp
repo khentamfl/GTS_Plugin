@@ -663,7 +663,7 @@ namespace Gts {
 			DamageAV(pred, ActorValue::kStamina, wastestamina);
 		}
 
-		ShrinkUntil(pred, prey, 12.0); // Shrink if we have SMT to allow 'same-size' vore
+		ShrinkUntil(pred, prey, 12.0, 0.18); // Shrink if we have SMT to allow 'same-size' vore
 
 		StaggerActor(prey, 0.25f);
 

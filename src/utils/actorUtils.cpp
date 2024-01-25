@@ -2350,7 +2350,7 @@ namespace Gts {
 		}
 	}
 
-	void ShrinkUntil(Actor* giant, Actor* tiny, float expected) {
+	void ShrinkUntil(Actor* giant, Actor* tiny, float expected, float halflife) {
 		if (HasSMT(giant)) {
 			float Adjustment = GetSizeFromBoundingBox(tiny);
 			float predscale = get_target_scale(giant);
@@ -2358,7 +2358,7 @@ namespace Gts {
 			expected *= Adjustment;
 			float targetScale = predscale/expected;
 
-			Task_AdjustHalfLifeTask(tiny, 0.20); // to make them shrink faster
+			Task_AdjustHalfLifeTask(tiny, halflife); // to make them shrink faster
 
 			if (preyscale >= targetScale) { // Apply ONLY if target is bigger than requirement
 				set_target_scale(tiny, targetScale);
