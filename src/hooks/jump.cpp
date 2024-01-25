@@ -9,12 +9,6 @@ using namespace SKSE;
 
 namespace {
 	Actor* FindActor(bhkCharacterController* charCont) {
-		Actor* ref = dynamic_cast<Actor*>(charCont);
-		if (ref) {
-			log::info("Actor found!");
-		} else {
-			log::info("Static Cast failed");
-		}
 		for (auto actor: find_actors()) {
 			if (charCont == actor->GetCharController()) {
 				return actor;

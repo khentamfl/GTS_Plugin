@@ -46,11 +46,12 @@ namespace {
 			if (!actor->Is3DLoaded() || actor->IsDead()) {
 				return;
 			}
-			int Requirement = 8.0 * SizeManager::GetSingleton().BalancedMode();
+			int Requirement = 8 * SizeManager::GetSingleton().BalancedMode();
 
 			int random = rand() % Requirement;
 			int trigger_threshold = 2;
 			if (random <= trigger_threshold) {
+				log::info("Random < threshold");
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
 					VoreManager.StartVore(pred, prey);
