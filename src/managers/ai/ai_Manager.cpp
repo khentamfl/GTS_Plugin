@@ -54,7 +54,7 @@ namespace {
 				std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 				for (auto prey: preys) {
 					VoreManager.StartVore(pred, prey);
-					log::info("StartVore called, can vore: {}", CanVore(pred, prey));
+					log::info("StartVore called, can vore: {}", VoreManager.CanVore(pred, prey));
 				}
 			}
 		}
