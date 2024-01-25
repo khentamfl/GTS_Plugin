@@ -146,6 +146,17 @@ namespace {
         AdjustFacialExpression(&data.giant, 2, 1.0, 0.32, 0.72, "expression");
 		AdjustFacialExpression(&data.giant, 3, 0.8, 0.32, 0.72, "phenome");
 		Cprint("SmileON fired");
+		// TODO: Remove it once GTS_Sneak_Vore_Start will work
+		auto giant = &data.giant;
+		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
+		VoreData.AllowToBeVored(false);
+		for (auto& tiny: VoreData.GetVories()) {
+			AllowToBeCrushed(tiny, false);
+			DisableCollisions(tiny, giant);
+            SetBeingHeld(tiny, true);
+		}
+
+		Task_HighHeel_SyncVoreAnim(giant, false);
     }
     void GTS_Sneak_Vore_SmileOff(AnimationEventData& data) {
         AdjustFacialExpression(&data.giant, 2, 0.0, 0.32, 0.72, "expression");
