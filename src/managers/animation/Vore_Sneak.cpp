@@ -26,8 +26,29 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-    void Task_HighHeel_SyncVoreAnim(Actor* giant) {
+    void Task_HighHeel_SyncVoreAnim(Actor* giant, bool cancel) {
+		// Purpose of this task is to blend between 2 animations based on value.
+		// The problem: hand that grabs the tiny is becomming offset if we equip High Heels
+		// This task fixes that (by, again, blending with anim that has hand lower).
+		std::string name = std::format("Vore_AdjustHH_{}", giant->formID);
+		if (!cancel) {
+			ActorHandle gianthandle = giant->CreateRefHandle();
+			TaskManager::Run(name, [=](auto& progressData) {
+				if (!gianthandle) {
+					return false;
+				}
+				Actor* giantref = gianthandle.get().get();
 
+				float hh_value = HighHeelManager::GetBaseHHOffset(giantref)[2]/100;
+				float hh_offset = std::clamp(hh_value * 4.5f, 0.0f, 1.0f); // reach max HH at 0.22 offset (highest i've seen)
+			
+				giantref->SetGraphVariableFloat("GTS_HHoffset", hh_offset)
+				
+				return true;
+			});
+		} else {
+			TaskManager::Cancel(name);
+		}
     }
 
     void GTS_Sneak_Vore_Start(AnimationEventData& data) {
@@ -39,6 +60,8 @@ namespace {
 			DisableCollisions(tiny, giant);
             SetBeingHeld(tiny, true);
 		}
+
+		Task_HighHeel_SyncVoreAnim(giant, false);
     }
     void GTS_Sneak_Vore_Grab(AnimationEventData& data) {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
@@ -60,6 +83,7 @@ namespace {
 		AdjustFacialExpression(&data.giant, 1, 0.5, 0.24, 0.48, "phenome"); // Open it wider
 		AdjustFacialExpression(&data.giant, 0, 0.8, 0.24, 0.48, "modifier"); // blink L
 		AdjustFacialExpression(&data.giant, 1, 0.8, 0.24, 0.48, "modifier"); // blink R
+		Cprint("OpenMouth fired");
     }
     void GTS_Sneak_Vore_Swallow(AnimationEventData& data) {
         Actor* giant = &data.giant;
@@ -109,10 +133,15 @@ namespace {
     void GTS_Sneak_Vore_SmileOn(AnimationEventData& data) {
         AdjustFacialExpression(&data.giant, 2, 1.0, 0.24, 0.48, "expression");
 		AdjustFacialExpression(&data.giant, 3, 0.8, 0.24, 0.48, "phenome");
+		Cprint("SmileON fired");
     }
     void GTS_Sneak_Vore_SmileOff(AnimationEventData& data) {
         AdjustFacialExpression(&data.giant, 2, 0.0, 0.24, 0.48 "expression");
 		AdjustFacialExpression(&data.giant, 3, 0.0, 0.24, 0.48, "phenome");
+
+		Task_HighHeel_SyncVoreAnim(&data.giant, true); // cancel the task
+
+		Cprint("SmileOFF fired");
     }
 }
 
