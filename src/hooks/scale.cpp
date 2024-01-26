@@ -48,13 +48,29 @@ namespace Hooks {
 
 	void Hook_Scale::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
 
-		static FunctionHook<void(NiCamera* camera)> Skyrim_Camera(  // camera hook works just fine that way
+		/*static FunctionHook<void(NiCamera* camera)> Skyrim_Camera(  // camera hook works just fine that way
             REL::RelocationID(69271, 70641),
             [](auto* camera) {
 				//log::info("Camera hook is running");
-				auto result = Skyrim_Camera(camera);
-				log::info("Hook Result: {}", Vector2Str(result));
+				//auto result = Skyrim_Camera(camera);
+				//log::info("Hook Result: {}", Vector2Str(result));
                 return Skyrim_Camera(camera);
+            }
+        );*/
+
+		typedef void(*Skyrim_CameraOffset)(PlayerCamera* camera, NiPoint3& pos);
+		using Skyrim_CameraOffsetDetour = TypedDetour<Skyrim_CameraOffset>;
+		static eastl::unique_ptr<Skyrim_CameraOffsetDetour> Skyrim_SetCameraOffset;
+
+		static FunctionHook<void(PlayerCamera* camera)> Skyrim_DefineCameraOffset(  // camera hook works just fine that way
+            REL::RelocationID(49866, 50799),
+            [](auto* camera) {
+				log::info("Camera hook is running");
+				NiPoint3& Pos_offset = NiPoint3(0.0, 0.0, 250.0);
+				Skyrim_SetCameraOffset(camera, Pos_offset);
+				log::info("Setting offset");
+				//log::info("Hook Result: {}", Vector2Str(result));
+                return Skyrim_DefineCameraOffset(camera);
             }
         );
 
