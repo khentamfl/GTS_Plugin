@@ -54,7 +54,7 @@ namespace Hooks {
 				//log::info("Camera hook is running");
 				auto result = Skyrim_Camera(camera);
 				log::info("Hook Result: {}", Vector2Str(result));
-                return result;
+                return Skyrim_Camera(camera);
             }
         );
 
