@@ -2363,7 +2363,7 @@ namespace Gts {
 			if (preyscale >= targetScale) { // Apply ONLY if target is bigger than requirement
 				set_target_scale(tiny, targetScale);
 				AddSMTPenalty(giant, 5.0 * GetSizeFromBoundingBox(tiny));
-				if (giant->IsSneaking() && !IsCrawling(pred)) {
+				if (giant->IsSneaking() && !IsCrawling(giant)) {
 					return;
 				} else {
 					StaggerActor(tiny, 0.25f);
