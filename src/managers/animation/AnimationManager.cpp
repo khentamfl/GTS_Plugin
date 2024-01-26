@@ -215,11 +215,14 @@ namespace Gts {
 		try {
 			auto& me = AnimationManager::GetSingleton();
 			// Find the behavior for this trigger exit on catch if not
-			bool Busy = IsGtsBusy(&giant);
+			/*bool Busy = IsGtsBusy(&giant);
 			if (Busy) {
 				log::info("GTS is currently busy");
-				return;
-			}
+				return; // < fixes an issue with animations that repeat self if we spam animations 
+				// (press stomp, hold kick = perform stomps for example).
+				// Current downside: this method breaks most anims that depend on that bool/set it to True (Hugs, Thigh Sandwich, Trampling, etc)
+				// TO-DO: somehow fix it
+			}*/
 
 			auto& behavorToPlay = me.triggers.at(std::string(trigger));
 			auto& group = behavorToPlay.group;
