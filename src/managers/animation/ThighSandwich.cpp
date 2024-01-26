@@ -341,30 +341,34 @@ namespace {
 
 	void ThighSandwichAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		float WasteStamina = 20.0;
-		if (Runtime::HasPerk(player, "KillerThighs")) {
-			WasteStamina *= 0.65;
-		}
-		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-			AnimationManager::StartAnim("ThighAttack", player);
-		} else {
-			if (IsGtsBusy(player) && IsThighSandwiching(player)) {
-				TiredSound(player, "You're too tired to perform thigh sandwich");
+		if IsGtsBusy(player) {
+			float WasteStamina = 20.0;
+			if (Runtime::HasPerk(player, "KillerThighs")) {
+				WasteStamina *= 0.65;
+			}
+			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+				AnimationManager::StartAnim("ThighAttack", player);
+			} else {
+				if (IsThighSandwiching(player)) {
+					TiredSound(player, "You're too tired to perform thigh sandwich");
+				}
 			}
 		}
 	}
 
 	void ThighSandwichHeavyAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		float WasteStamina = 35.0;
-		if (Runtime::HasPerk(player, "KillerThighs")) {
-			WasteStamina *= 0.65;
-		}
-		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-			AnimationManager::StartAnim("ThighAttack_Heavy", player);
-		} else {
-			if (IsGtsBusy(player) && IsThighSandwiching(player)) {
-				TiredSound(player, "You're too tired to perform strong thigh sandwich");
+		if IsGtsBusy(player) {
+			float WasteStamina = 35.0;
+			if (Runtime::HasPerk(player, "KillerThighs")) {
+				WasteStamina *= 0.65;
+			}
+			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+				AnimationManager::StartAnim("ThighAttack_Heavy", player);
+			} else {
+				if (IsThighSandwiching(player)) {
+					TiredSound(player, "You're too tired to perform strong thigh sandwich");
+				}
 			}
 		}
 	}
@@ -372,7 +376,9 @@ namespace {
 	void ThighSandwichExitEvent(const InputEventData& data) {
 		if (!IsFreeCameraEnabled()) {
 			auto player = PlayerCharacter::GetSingleton();
-			AnimationManager::StartAnim("ThighExit", player);
+			if IsGtsBusy(player) (
+				AnimationManager::StartAnim("ThighExit", player);
+			)
 		}
 	}
 }

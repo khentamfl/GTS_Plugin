@@ -57,15 +57,15 @@ namespace Gts {
 		} // More shrink with SMT
 
 		
-		if (size_difference >= 2.0) {
-			size_difference = 2.0;
+		if (size_difference >= 3.0) {
+			size_difference = 3.0;
 		} // Cap Size Difference
 
-		float shrink_power = 2.0 * size_difference;
+		float shrink_power = 2.25 * size_difference;
 		float gain_size = 0.0025;
 
 		if (target->IsDead()) {
-			shrink_power *= 2.5;
+			shrink_power *= 3.0;
 			gain_size *= 0.20;
 		}
 

@@ -23,6 +23,11 @@ namespace Gts {
 		return Time::WorldTimeDelta() * BASE_FPS;
 	}
 
+	inline bool CanBendLifeless(Actor* giant) {
+		bool allow = Runtime::HasPerkTeam(giant, "BendLifeless");
+		return allow;
+	}
+
 	inline void AdjustSizeReserve(Actor* giant, float value) {
 		if (!Runtime::HasPerk(giant, "SizeReserve")) {
 			return;
@@ -33,26 +38,38 @@ namespace Gts {
 		}
 	}
 
-	inline float Shrink_GetPower(Actor* tiny) { // for shrinking another
+	inline float Shrink_GetPower(Actor* giant, Actor* tiny) { // for shrinking another
 		float reduction = 1.0 / GetSizeFromBoundingBox(tiny);
 		log::info("Default Shrink power for {} is {}", tiny->GetDisplayFullName(), reduction);
 		if (IsUndead(tiny, false)) {
-			reduction *= 0.33;
+			if (CanBendLifeless(giant)) {
+				reduction *= 0.31;
+			} else {
+				reduction *= 0.22;
+			}
 		} else if (IsGiant(tiny)) {
 			reduction *= 0.75;
 		} else if (IsMechanical(tiny)) {
-			reduction *= 0.22;
+			if (CanBendLifeless(giant)) {
+				reduction *= 0.12;
+			} else {
+				reduction *= 0.0;
+			}
 		}
 		log::info("Total Shrink power for {} is {}", tiny->GetDisplayFullName(), reduction);
 		return reduction;
 	}
 
-	inline float SizeSteal_GetPower(Actor* tiny) { // for gaining size
+	inline float SizeSteal_GetPower(Actor* giant, Actor* tiny) { // for gaining size
 		float increase = GetSizeFromBoundingBox(tiny);
 		if (IsUndead(tiny, false)) {
-			increase *= 0.33;
+			if (CanBendLifeless(giant)) {
+				increase *= 0.31;
+			} else {
+				increase *= 0.22;
+			}
 		} else if (IsMechanical(tiny)) {
-			increase *= 0.22;
+			increase *= 0.0;
 		}
 		return increase;
 	}
@@ -163,7 +180,7 @@ namespace Gts {
 		efficiency /= Gigantism_Target; // resistance from Aspect Of Giantess (on Tiny)
 		efficiency /= Scale_Resistance;
 
-		efficiency *= Shrink_GetPower(target);// take bounding box of actor into account
+		efficiency *= Shrink_GetPower(caster, target);// take bounding box of actor into account
 
 		log::info("efficiency between {} and {} is {}", caster->GetDisplayFullName(), target->GetDisplayFullName(), efficiency);
 
@@ -227,9 +244,9 @@ namespace Gts {
 		float amount_shrink = CalcPower(from, scale_factor, bonus, true);
 
 		float shrink_amount = (amount*0.22);
-		float growth_amount = (amount_shrink*0.33*effeciency) * SizeSteal_GetPower(from);
+		float growth_amount = (amount_shrink*0.33*effeciency) * SizeSteal_GetPower(to, from);
 
-		ModSizeExperience(to, 0.14 * scale_factor * visual_scale * SizeSteal_GetPower(from));
+		ModSizeExperience(to, 0.14 * scale_factor * visual_scale * SizeSteal_GetPower(to, from));
 
 		update_target_scale(from, -shrink_amount, SizeEffectType::kShrink);
 		update_target_scale(to, growth_amount, SizeEffectType::kGrow);

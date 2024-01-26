@@ -267,15 +267,17 @@ namespace {
 
 	void ThighCrushKillEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		float WasteStamina = 40.0;
-		if (Runtime::HasPerk(player, "KillerThighs")) {
-			WasteStamina *= 0.65;
-		}
-		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-			AnimationManager::StartAnim("ThighLoopAttack", player);
-		} else {
-			if (IsGtsBusy(player) && IsThighCrushing(player)) {
-				TiredSound(player, "You're too tired to perform thighs attack");
+		if IsGtsBusy(player) {
+			float WasteStamina = 40.0;
+			if (Runtime::HasPerk(player, "KillerThighs")) {
+				WasteStamina *= 0.65;
+			}
+			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
+				AnimationManager::StartAnim("ThighLoopAttack", player);
+			} else {
+				if (IsThighCrushing(player)) {
+					TiredSound(player, "You're too tired to perform thighs attack");
+				}
 			}
 		}
 	}
@@ -283,7 +285,9 @@ namespace {
 	void ThighCrushSpareEvent(const InputEventData& data) {
 		if (!IsFreeCameraEnabled()) {
 			auto player = PlayerCharacter::GetSingleton();
-			AnimationManager::StartAnim("ThighLoopExit", player);
+			if IsGtsBusy(player) {
+				AnimationManager::StartAnim("ThighLoopExit", player);
+			}
 		}
 	}
 }

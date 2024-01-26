@@ -40,6 +40,9 @@ namespace {
 			std::size_t numberOfPrey = 1;
 			if (Runtime::HasPerk(pred, "MassVorePerk")) {
 				numberOfPrey = 1 + (get_visual_scale(pred)/3);
+				if (HasSMT(pred)) {
+					numberOfPrey += 4.0;
+				}
 			}
 			std::vector<Actor*> preys = VoreManager.GetVoreTargetsInFront(pred, numberOfPrey);
 			for (auto prey: preys) {
@@ -127,7 +130,7 @@ namespace {
 				VoreMessage_Absorbed(giant, tiny_name);
 				CallGainWeight(giant, 3.0 * tinySize);
 				BuffAttributes(giant, tinySize);
-				update_target_scale(giant, sizePower * 0.4, SizeEffectType::kGrow);
+				update_target_scale(giant, sizePower * 0.8, SizeEffectType::kGrow);
 				AdjustSizeReserve(giant, sizePower);
 				if (giant->formID == 0x14) {
 					AdjustSizeLimit(0.0260, giant);
@@ -664,9 +667,9 @@ namespace Gts {
 		}
 
 		if (pred->IsSneaking() && !IsCrawling(pred)) {
-			ShrinkUntil(pred, prey, 12.0, 0.12); // Shrink if we have SMT to allow 'same-size' vore
+			ShrinkUntil(pred, prey, 10.0, 0.12); // Shrink if we have SMT to allow 'same-size' vore
 		} else {
-			ShrinkUntil(pred, prey, 12.0, 0.18); // Shrink if we have SMT to allow 'same-size' vore
+			ShrinkUntil(pred, prey, 10.0, 0.18); // Shrink if we have SMT to allow 'same-size' vore
 			StaggerActor(prey, 0.25f);
 		}
 

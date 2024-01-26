@@ -91,7 +91,7 @@ namespace {
 				Rate *= 1.6;
 				caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 25.0);
 			}
-			CrushGrow(caster, 0, Rate * SizeSteal_GetPower(target));
+			CrushGrow(caster, 0, Rate * SizeSteal_GetPower(caster, target));
 		}
 		PleasureText(caster);
 	}

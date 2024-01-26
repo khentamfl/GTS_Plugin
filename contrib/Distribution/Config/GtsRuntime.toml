@@ -186,6 +186,7 @@ Survival_HungerStage5 = "ccQDRSSE001-SurvivalMode.esl|000885"
 
 [perks]
 TalkToActor = "GTS.esp|5F7265"
+BendLifeless = "GTS.esp|7913D9"
 SmallMassiveThreatSizeSteal = "GTS.esp|2496E8"
 VorePerk = "GTS.esp|355C68"
 CalamityPerk = "GTS.esp|18E161"
