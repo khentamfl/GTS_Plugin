@@ -257,7 +257,7 @@ namespace {
 		if (!CanPerformAnimation(player, 1)) {
 			return;
 		}
-		if (IsCrawling(player)) {
+		if (player->IsSneaking()) {
 			float WasteStamina = 25.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 				//player->SetGraphVariableBool("GTS_Busy", true);
@@ -272,7 +272,7 @@ namespace {
 		if (!CanPerformAnimation(player, 1)) {
 			return;
 		}
-		if (IsCrawling(player)) {
+		if (player->IsSneaking()) {
 			float WasteStamina = 25.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
 				//player->SetGraphVariableBool("GTS_Busy", true);
@@ -288,10 +288,9 @@ namespace {
 		if (!CanPerformAnimation(player, 1)) {
 			return;
 		}
-		if (IsCrawling(player)) {
+		if (player->IsSneaking()) {
 			float WasteStamina = 70.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-				//player->SetGraphVariableBool("GTS_Busy", true);
 				AnimationManager::StartAnim("SwipeHeavy_Left", player);
 			} else {
 				TiredSound(player, "You're too tired for hand swipe");
@@ -303,10 +302,9 @@ namespace {
 		if (!CanPerformAnimation(player, 1)) {
 			return;
 		}
-		if (IsCrawling(player)) {
+		if (player->IsSneaking()) {
 			float WasteStamina = 70.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-				//player->SetGraphVariableBool("GTS_Busy", true);
 				AnimationManager::StartAnim("SwipeHeavy_Right", player);
 			} else {
 				TiredSound(player, "You're too tired for hand swipe");

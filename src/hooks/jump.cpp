@@ -9,7 +9,6 @@ using namespace SKSE;
 
 namespace {
 	Actor* FindActor(bhkCharacterController* charCont) {
-		
 		NiRefObject* ref = skyrim_cast<NiRefObject*>(charCont);
 		if (ref) {
 			log::info("Ref found!");
