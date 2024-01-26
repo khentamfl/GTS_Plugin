@@ -215,6 +215,12 @@ namespace Gts {
 		try {
 			auto& me = AnimationManager::GetSingleton();
 			// Find the behavior for this trigger exit on catch if not
+			bool CanStart = IsGtsBusy(&giant);
+			if (!CanStart) {
+				log::info("GTS is currently busy");
+				return;
+			}
+
 			auto& behavorToPlay = me.triggers.at(std::string(trigger));
 			auto& group = behavorToPlay.group;
 			// Try to create anim data for actor
