@@ -40,25 +40,6 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	void Test(Actor* giant) {
-		if (giant->formID == 0x14) {
-			auto charCont = giant->GetCharController();
-			if (charCont) {
-				NiRefObject* ref = skyrim_cast<NiRefObject*>(charCont);
-				if (ref) {
-					log::info("NiRef found");
-					auto Model = ref->model.get();
-					if (Model) {
-						log::info("Model found!");
-						std::uint32_t unk00 = Model->unk00;
-						std::uint32_t pad04 = Model->pad04;
-						log::info("Pad00: {}, pad04: {}", unk00, pad04);
-					}
-				}
-			}
-		}
-	}
-
 	void FixActorFade(Actor* actor) {
 		auto profiler = Profilers::Profile("Manager: Fade Fix");
 		if (get_visual_scale(actor) < 1.5) {
@@ -283,7 +264,6 @@ void GtsManager::Update() {
 		}
 
 		FixActorFade(actor);
-		Test(actor);
 
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
