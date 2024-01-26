@@ -53,6 +53,7 @@ namespace {
 
 			if (!IsVoring(giantref)) {
 				log::info("! Is voring, task cancelled");
+				giantref->SetGraphVariableFloat("GTS_HHoffset", 0.0);
 				return false; // just a fail-safe to cancel the task if we're outside of Vore anim
 			}
 			log::info("HH offset task is running");

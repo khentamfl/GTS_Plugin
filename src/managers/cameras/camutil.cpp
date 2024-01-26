@@ -316,7 +316,7 @@ namespace Gts {
 	NiPoint3 CompuleLookAt(float zoomScale) {
 		NiPoint3 cameraTrans = GetCameraPosition();
 
-		NiMatrix3 cameraRotMat = GetCameraRotation();
+		NiMatrix3 cameraRotMat = NiMatrix3();//GetCameraRotation();
 
 		float zoomOffset = ZoomFactor() * MaxZoom() * zoomScale;
 		NiPoint3 zoomOffsetVec = NiPoint3(0.0, zoomOffset, 0.0);
