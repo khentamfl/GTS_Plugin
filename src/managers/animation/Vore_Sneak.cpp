@@ -32,35 +32,33 @@ namespace {
 		return Voring;
 	}
 
-    void Task_HighHeel_SyncVoreAnim(Actor* giant, bool cancel) {
+    void Task_HighHeel_SyncVoreAnim(Actor* giant) {
 		// Purpose of this task is to blend between 2 animations based on value.
 		// The problem: hand that grabs the tiny is becomming offset if we equip High Heels
 		// This task fixes that (by, again, blending with anim that has hand placed lower).
 		std::string name = std::format("Vore_AdjustHH_{}", giant->formID);
-		if (!cancel) {
-			ActorHandle gianthandle = giant->CreateRefHandle();
-			TaskManager::Run(name, [=](auto& progressData) {
-				if (!gianthandle) {
-					return false;
-				}
-				Actor* giantref = gianthandle.get().get();
+		log::info("SyncHH started");
+		ActorHandle gianthandle = giant->CreateRefHandle();
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			Actor* giantref = gianthandle.get().get();
 
-				float hh_value = HighHeelManager::GetBaseHHOffset(giantref)[2]/100;
-				float hh_offset = std::clamp(hh_value * 4.5f, 0.0f, 1.0f); // reach max HH at 0.22 offset (highest i've seen)
+			float hh_value = HighHeelManager::GetBaseHHOffset(giantref)[2]/100;
+			float hh_offset = std::clamp(hh_value * 4.5f, 0.0f, 1.0f); // reach max HH at 0.22 offset (highest i've seen)
+		
+			giantref->SetGraphVariableFloat("GTS_HHoffset", hh_offset);
+			// make behaviors read the value to blend between anims
+
+			if (!IsVoring(giantref)) {
+				log::info("! Is voring, task cancelled");
+				return false; // just a fail-safe to cancel the task if we're outside of Vore anim
+			}
+			log::info("HH offset task is running");
 			
-				giantref->SetGraphVariableFloat("GTS_HHoffset", hh_offset);
-				// make behaviors read the value to blend between anims
-
-				if (!IsVoring(giantref)) {
-					log::info("! Is voring, task cancelled");
-					return false; // just a fail-safe to cancel the task if we're outside of Vore anim
-				}
-				
-				return true;
-			});
-		} else {
-			TaskManager::Cancel(name);
-		}
+			return true;
+		});
     }
 
     void GTS_Sneak_Vore_Start(AnimationEventData& data) {
@@ -73,7 +71,7 @@ namespace {
             SetBeingHeld(tiny, true);
 		}
 
-		Task_HighHeel_SyncVoreAnim(giant, false);
+		Task_HighHeel_SyncVoreAnim(giant);
     }
     void GTS_Sneak_Vore_Grab(AnimationEventData& data) {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
@@ -145,24 +143,12 @@ namespace {
     void GTS_Sneak_Vore_SmileOn(AnimationEventData& data) {
         AdjustFacialExpression(&data.giant, 2, 1.0, 0.32, 0.72, "expression");
 		AdjustFacialExpression(&data.giant, 3, 0.8, 0.32, 0.72, "phenome");
-		Cprint("SmileON fired");
-		// TODO: Remove it once GTS_Sneak_Vore_Start will work
-		auto giant = &data.giant;
-		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
-		VoreData.AllowToBeVored(false);
-		for (auto& tiny: VoreData.GetVories()) {
-			AllowToBeCrushed(tiny, false);
-			DisableCollisions(tiny, giant);
-            SetBeingHeld(tiny, true);
-		}
 
-		Task_HighHeel_SyncVoreAnim(giant, false);
+		Cprint("SmileON fired");
     }
     void GTS_Sneak_Vore_SmileOff(AnimationEventData& data) {
         AdjustFacialExpression(&data.giant, 2, 0.0, 0.32, 0.72, "expression");
 		AdjustFacialExpression(&data.giant, 3, 0.0, 0.32, 0.72, "phenome");
-
-		Task_HighHeel_SyncVoreAnim(&data.giant, true); // cancel the task
 
 		Cprint("SmileOFF fired");
     }
@@ -171,6 +157,7 @@ namespace {
 namespace Gts
 {
 	void Animation_VoreSneak::RegisterEvents() { 
+		AnimationManager::RegisterEvent("GTS_Sneak_Vore_Start", "SneakVore", GTS_Sneak_Vore_Start);
 		AnimationManager::RegisterEvent("GTS_Sneak_Vore_Grab", "SneakVore", GTS_Sneak_Vore_Grab);
         AnimationManager::RegisterEvent("GTS_Sneak_Vore_OpenMouth", "SneakVore", GTS_Sneak_Vore_OpenMouth);
         AnimationManager::RegisterEvent("GTS_Sneak_Vore_Swallow", "SneakVore", GTS_Sneak_Vore_Swallow);
