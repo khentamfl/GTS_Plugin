@@ -239,7 +239,7 @@ namespace {
 
 	void RightStrongStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!CanPerformAnimation(player, 1)) {
+		if (!CanPerformAnimation(player, 1) || IsGtsBusy(player)) {
 			return;
 		}
 		float WasteStamina = 70.0 * GetWasteMult(player);
@@ -253,7 +253,7 @@ namespace {
 
 	void LeftStrongStompEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!CanPerformAnimation(player, 1)) {
+		if (!CanPerformAnimation(player, 1) || IsGtsBusy(player)) {
 			return;
 		}
 		float WasteStamina = 70.0 * GetWasteMult(player);

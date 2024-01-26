@@ -136,7 +136,7 @@ namespace {
 	// ======================================================================================
 	void LightKickLeftEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!CanPerformAnimation(player, 1)) {
+		if (!CanPerformAnimation(player, 1) || IsGtsBusy(player)) {
 			return;
 		}
 		if (!player->IsSneaking() && !player->AsActorState()->IsSprinting()) {
@@ -151,7 +151,7 @@ namespace {
 
 	void LightKickRightEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!CanPerformAnimation(player, 1)) {
+		if (!CanPerformAnimation(player, 1) || IsGtsBusy(player)) {
 			return;
 		}
 		if (!player->IsSneaking() && !player->AsActorState()->IsSprinting()) {
@@ -166,7 +166,7 @@ namespace {
 
 	void HeavyKickLeftEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!CanPerformAnimation(player, 1)) {
+		if (!CanPerformAnimation(player, 1) || IsGtsBusy(player)) {
 			return;
 		}
 		if (!player->IsSneaking() && !player->AsActorState()->IsSprinting()) {
@@ -180,7 +180,7 @@ namespace {
 	}
 	void HeavyKickRightEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!CanPerformAnimation(player, 1)) {
+		if (!CanPerformAnimation(player, 1) || IsGtsBusy(player)) {
 			return;
 		}
 		if (!player->IsSneaking() && !player->AsActorState()->IsSprinting()) {

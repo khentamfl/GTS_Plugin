@@ -218,7 +218,7 @@ namespace {
 
 	void TrampleLeftEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!CanPerformAnimation(player, 1)) {
+		if (!CanPerformAnimation(player, 1) || IsGtsBusy(player)) {
 			return;
 		}
 		if (IsCrawling(player) || player->IsSneaking() || IsProning(player)) {
@@ -235,7 +235,7 @@ namespace {
 
 	void TrampleRightEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if (!CanPerformAnimation(player, 1)) {
+		if (!CanPerformAnimation(player, 1) || IsGtsBusy(player)) {
 			return;
 		}
 		if (IsCrawling(player) || player->IsSneaking() || IsProning(player)) {

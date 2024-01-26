@@ -19,7 +19,7 @@ using namespace SKSE;
 using namespace RE;
 using namespace Gts;
 
-namespace {
+namespace { // WIP
 
 	void EnableHandTracking(Actor* giant, CrawlEvent kind, bool decide) {
 		if (AllowFeetTracking() && giant->formID == 0x14) {

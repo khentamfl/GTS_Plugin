@@ -19,7 +19,7 @@ using namespace SKSE;
 using namespace RE;
 using namespace Gts;
 
-namespace {
+namespace { // WIP
 	void TriggerHandCollision_Right(Actor* actor, float power, float crush, float pushpower) {
 		std::string name = std::format("HandCollide_R_{}", actor->formID);
 		auto gianthandle = actor->CreateRefHandle();

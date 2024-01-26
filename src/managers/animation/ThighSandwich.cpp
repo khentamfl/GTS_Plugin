@@ -341,7 +341,7 @@ namespace {
 
 	void ThighSandwichAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if IsGtsBusy(player) {
+		if (!IsGtsBusy(player)) {
 			float WasteStamina = 20.0;
 			if (Runtime::HasPerk(player, "KillerThighs")) {
 				WasteStamina *= 0.65;
@@ -358,7 +358,7 @@ namespace {
 
 	void ThighSandwichHeavyAttackEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if IsGtsBusy(player) {
+		if (!IsGtsBusy(player)) {
 			float WasteStamina = 35.0;
 			if (Runtime::HasPerk(player, "KillerThighs")) {
 				WasteStamina *= 0.65;
@@ -376,7 +376,7 @@ namespace {
 	void ThighSandwichExitEvent(const InputEventData& data) {
 		if (!IsFreeCameraEnabled()) {
 			auto player = PlayerCharacter::GetSingleton();
-			if IsGtsBusy(player) (
+			if (!IsGtsBusy(player)) (
 				AnimationManager::StartAnim("ThighExit", player);
 			)
 		}

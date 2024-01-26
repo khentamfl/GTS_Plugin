@@ -267,7 +267,7 @@ namespace {
 		if (IsFirstPerson()) {
 			return;
 		}
-		if (!CanPerformAnimation(player, 2)) {
+		if (!CanPerformAnimation(player, 2) || IsGtsBusy(player)) {
 			return;
 		}
 		auto grabbedActor = Grab::GetHeldActor(player);
@@ -303,7 +303,7 @@ namespace {
 		if (IsFirstPerson()) {
 			return;
 		}
-		if (!CanPerformAnimation(player, 2)) {
+		if (!CanPerformAnimation(player, 2) || IsGtsBusy(player)) {
 			return;
 		}
 		auto grabbedActor = Grab::GetHeldActor(player);

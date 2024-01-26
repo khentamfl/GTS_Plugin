@@ -267,7 +267,7 @@ namespace {
 
 	void ThighCrushKillEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		if IsGtsBusy(player) {
+		if (!IsGtsBusy(player)) {
 			float WasteStamina = 40.0;
 			if (Runtime::HasPerk(player, "KillerThighs")) {
 				WasteStamina *= 0.65;
@@ -285,7 +285,7 @@ namespace {
 	void ThighCrushSpareEvent(const InputEventData& data) {
 		if (!IsFreeCameraEnabled()) {
 			auto player = PlayerCharacter::GetSingleton();
-			if IsGtsBusy(player) {
+			if (!IsGtsBusy(player)) {
 				AnimationManager::StartAnim("ThighLoopExit", player);
 			}
 		}
