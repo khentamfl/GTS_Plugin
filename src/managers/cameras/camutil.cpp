@@ -200,7 +200,7 @@ namespace Gts {
 
 	NiMatrix3 GetCameraRotation() {
 		NiMatrix3 cameraRot;
-		switch (currentMode) {
+		/*switch (currentMode) {
 			case CameraDataMode::State: {
 				log::info("Camera State: State");
 				auto camera = PlayerCamera::GetSingleton();
@@ -223,7 +223,17 @@ namespace Gts {
 					}
 				}
 			}
+		}*/
+		auto camera = PlayerCamera::GetSingleton();
+		if (camera) {
+			auto currentState = camera->currentState;
+			if (currentState) {
+				NiQuaternion cameraQuat;
+				currentState->GetRotation(cameraQuat);
+				cameraRot = QuatToMatrix(cameraQuat);
+			}
 		}
+			
 		return cameraRot;
 	}
 

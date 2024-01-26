@@ -8,6 +8,8 @@
 #include "managers/animation/BoobCrush.hpp"
 #include "managers/animation/FootGrind.hpp"
 #include "managers/animation/Vore_Standing.hpp"
+#include "managers/animation/Sneak_Swipes.hpp"
+#include "managers/animation/Sneak_Slams.hpp"
 #include "managers/animation/Vore_Sneak.hpp"
 #include "managers/animation/Vore_Crawl.hpp"
 #include "managers/animation/HugShrink.hpp"
@@ -68,6 +70,9 @@ namespace Gts {
 
 		Animation_VoreCrawl::RegisterEvents();
 		Animation_VoreSneak::RegisterEvents();
+
+		Animation_SneakSwipes::RegisterEvents();
+		Animation_SneakSlams::RegisterEvents();
 
 		AnimationButtCrush::RegisterEvents();
 		AnimationButtCrush::RegisterTriggers();

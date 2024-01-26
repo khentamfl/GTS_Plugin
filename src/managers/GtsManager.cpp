@@ -89,7 +89,7 @@ namespace {
 					persi_actor_data->target_scale_v,
 					max_scale,
 					persi_actor_data->half_life*1.5,
-					Time::WorldTimeDelta()
+					1.0 / Time::WorldTimeDelta()
 					);
 			}
 		} else {
@@ -128,8 +128,8 @@ namespace {
 					persi_actor_data->visual_scale,
 					persi_actor_data->visual_scale_v,
 					target_scale,
-					persi_actor_data->half_life,
-					Time::WorldTimeDelta()
+					persi_actor_data->half_life / TimeScale(),
+					1.0 / Time::WorldTimeDelta()
 					);
 			}
 		}
