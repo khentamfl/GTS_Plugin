@@ -7,12 +7,12 @@ using namespace RE;
 using namespace SKSE;
 
 namespace Gts {
-	#define Action_Sandwich 6.0f // used for sandwich only
-	#define Action_Crush 10.0f
-	#define Action_Booty 2.0f // for butt and cleavage crush
-	#define Action_Vore 8.0f
-	#define Action_Grab 8.0f
-	#define Action_Hug 0.9f
+	const float Action_Sandwich = 6.0f; // used for sandwich only
+	const float Action_Crush = 10.0f;
+	const float Action_Booty = 2.0f; // for butt and cleavage crush
+	const float Action_Vore = 8.0f;
+	const float Action_Grab = 8.0f;
+	const float Action_Hug = 0.9f;
 
 	enum class FootEvent {
 		Left,
