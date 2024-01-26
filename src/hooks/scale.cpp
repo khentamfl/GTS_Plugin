@@ -58,22 +58,6 @@ namespace Hooks {
             }
         );*/
 
-		typedef void(*Skyrim_CameraOffset)(PlayerCamera* camera, NiPoint3& pos);
-		using Skyrim_CameraOffsetDetour = TypedDetour<Skyrim_CameraOffset>;
-		static eastl::unique_ptr<Skyrim_CameraOffsetDetour> Skyrim_SetCameraOffset;
-
-		static FunctionHook<void(PlayerCamera* camera)> Skyrim_DefineCameraOffset(  // camera hook works just fine that way
-            REL::RelocationID(49866, 50799),
-            [](auto* camera) {
-				log::info("Camera hook is running");
-				NiPoint3& Pos_offset = NiPoint3(0.0, 0.0, 250.0);
-				Skyrim_SetCameraOffset(camera, Pos_offset);
-				log::info("Setting offset");
-				//log::info("Hook Result: {}", Vector2Str(result));
-                return Skyrim_DefineCameraOffset(camera);
-            }
-        );
-
 		// Yet the one below CTD's. Sigh.
 		/*static CallHook<float(const NiCamera* camera)> Skyrim_Camera_posX(RELOCATION_ID(69271, 70641),  REL::Relocate(0x11, 0x11), // ctd, ctd and ctd.
 		[](const NiCamera* camera) { // 0x140C66710 - 0x140c66b70 (fVar18) = 0x11 . No AE rel
