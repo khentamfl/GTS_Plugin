@@ -3,7 +3,7 @@
 #include "managers/animation/Utils/CrawlUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/CollisionDamage.hpp"
-#include "managers/animation/SneakCrush.hpp"
+#include "managers/animation/Sneak_ButtCrush.hpp"
 #include "managers/damage/LaunchActor.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "managers/animation/Grab.hpp"

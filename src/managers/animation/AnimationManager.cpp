@@ -3,7 +3,7 @@
 #include "managers/animation/StrongStomp.hpp"
 #include "managers/animation/FootTrample.hpp"
 #include "managers/animation/ThighCrush.hpp"
-#include "managers/animation/SneakCrush.hpp"
+#include "managers/animation/Sneak_ButtCrush.hpp"
 #include "managers/animation/ButtCrush.hpp"
 #include "managers/animation/BoobCrush.hpp"
 #include "managers/animation/FootGrind.hpp"

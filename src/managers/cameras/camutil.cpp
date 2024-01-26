@@ -202,6 +202,7 @@ namespace Gts {
 		NiMatrix3 cameraRot;
 		switch (currentMode) {
 			case CameraDataMode::State: {
+				log::info("Camera State: State");
 				auto camera = PlayerCamera::GetSingleton();
 				if (camera) {
 					auto currentState = camera->currentState;
@@ -213,6 +214,7 @@ namespace Gts {
 				}
 			}
 			case CameraDataMode::Transform: {
+				log::info("Camera State: Transform");
 				auto camera = PlayerCamera::GetSingleton();
 				if (camera) {
 					auto cameraRoot = camera->cameraRoot;
@@ -316,7 +318,7 @@ namespace Gts {
 	NiPoint3 CompuleLookAt(float zoomScale) {
 		NiPoint3 cameraTrans = GetCameraPosition();
 
-		NiMatrix3 cameraRotMat = NiMatrix3();//GetCameraRotation();
+		NiMatrix3 cameraRotMat = GetCameraRotation();
 
 		float zoomOffset = ZoomFactor() * MaxZoom() * zoomScale;
 		NiPoint3 zoomOffsetVec = NiPoint3(0.0, zoomOffset, 0.0);
