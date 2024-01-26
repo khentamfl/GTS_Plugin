@@ -376,9 +376,9 @@ namespace {
 	void ThighSandwichExitEvent(const InputEventData& data) {
 		if (!IsFreeCameraEnabled()) {
 			auto player = PlayerCharacter::GetSingleton();
-			if (!IsGtsBusy(player)) (
+			if (!IsGtsBusy(player)) {
 				AnimationManager::StartAnim("ThighExit", player);
-			)
+			}
 		}
 	}
 }
