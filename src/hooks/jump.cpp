@@ -9,6 +9,18 @@ using namespace SKSE;
 
 namespace {
 	Actor* FindActor(bhkCharacterController* charCont) {
+		
+		TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(charCont);
+		if (ref) {
+			log::info("Ref found!");
+			Actor* Giant = skyrim_cast<Actor*>(ref);
+			if (Giant) {
+				log::info("Giant found!");
+			} 
+		} else {
+			log::info("Ref not found.");
+		}
+
 		for (auto actor: find_actors()) {
 			if (charCont == actor->GetCharController()) {
 				return actor;

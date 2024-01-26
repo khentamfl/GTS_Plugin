@@ -215,8 +215,8 @@ namespace Gts {
 		try {
 			auto& me = AnimationManager::GetSingleton();
 			// Find the behavior for this trigger exit on catch if not
-			bool CanStart = IsGtsBusy(&giant);
-			if (!CanStart) {
+			bool Busy = IsGtsBusy(&giant);
+			if (Busy) {
 				log::info("GTS is currently busy");
 				return;
 			}
