@@ -164,9 +164,6 @@ namespace {
 			}
 		}
 
-		log::info("TimeDelta of World: {}", Time::WorldTimeDelta());
-
-
 		// Is scale correct already?
 		if (fabs(visual_scale - scale) <= 1e-5 && !force) {
 			return;
