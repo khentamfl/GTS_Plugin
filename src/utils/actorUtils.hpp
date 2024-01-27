@@ -239,6 +239,8 @@ namespace Gts {
 	float GetQuestProgression(float stage);
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value);
 
+	float Sound_GetFallOff(NiAVObject* source, float mult);
+
 	// RE Fun:
 	void SetCriticalStage(Actor* actor, int stage);
 	void Attacked(Actor* victim, Actor* agressor);

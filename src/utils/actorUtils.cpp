@@ -288,7 +288,8 @@ namespace Gts {
 
 	void PlayMoanSound(Actor* actor, float volume) {
 		if (IsFemale(actor) && IsHuman(actor)) {
-			Runtime::PlaySoundAtNode("MoanSound", actor, volume, 1.0, "NPC Head [Head]");
+			float falloff = 0.1 * get_visual_scale(actor);
+			Runtime::PlaySoundAtNode_FallOff("MoanSound", actor, volume, 1.0, "NPC Head [Head]", falloff);
 		}
 	}
 
@@ -2677,6 +2678,15 @@ namespace Gts {
 			value *= levelbonus;
 			ApplyDamage(attacker, receiver, value * difficulty * GetDamageSetting());
 		}
+	}
+
+	float Sound_GetFallOff(NiAVObject* source, float mult) {
+		if (source) {
+			float distance_to_camera = unit_to_meter(get_distance_to_camera(source));
+			// Camera distance based volume falloff
+			return soft_core(distance_to_camera, 0.024 / mult, 2.0, 0.8, 0.0, 0.0);
+		}
+		return 1.0;
 	}
 
 	// RE Fun

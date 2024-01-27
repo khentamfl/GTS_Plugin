@@ -54,7 +54,7 @@ namespace {
 	};
 }
 
-namespace Gts {
+namespace Gts { 
 	Runtime& Runtime::GetSingleton() noexcept {
 		static Runtime instance;
 		return instance;
@@ -141,6 +141,15 @@ namespace Gts {
 		}
 	}
 
+	void Runtime::PlaySoundAtNode_FallOff(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, const std::string_view& node, float Falloff) {
+		Runtime::PlaySoundAtNode_FallOff(tag, actor, volume, frequency, find_node(actor, node), Falloff);
+	}
+	void Runtime::PlaySoundAtNode_FallOff(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, NiAVObject* node, float Falloff) {
+		if (node) {
+			Runtime::PlaySoundAtNode_FallOff(tag, actor, volume, frequency, *node, Falloff);
+		}
+	}
+
 	void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, const std::string_view& node) {
 		Runtime::PlaySoundAtNode(tag, actor, volume, frequency, find_node(actor, node));
 	}
@@ -149,6 +158,30 @@ namespace Gts {
 			Runtime::PlaySoundAtNode(tag, actor, volume, frequency, *node);
 		}
 	}
+
+	void Runtime::PlaySoundAtNode_FallOff(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, NiAVObject& node, float Falloff) {
+		auto soundDescriptor = Runtime::GetSound(tag);
+		if (!soundDescriptor) {
+			log::error("Sound invalid: {}", tag);
+			return;
+		}
+		auto audioManager = BSAudioManager::GetSingleton();
+		if (!audioManager) {
+			log::error("Audio Manager invalid");
+			return;
+		}
+		BSSoundHandle soundHandle;
+		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
+		if (success) {
+			float falloff = falloff_function(node, FallOff);
+			soundHandle.SetVolume(volume * falloff);
+			soundHandle.SetObjectToFollow(&node);
+			soundHandle.Play();
+		} else {
+			log::error("Could not build sound");
+		}
+	}
+
 	void Runtime::PlaySoundAtNode(const std::string_view& tag, Actor* actor, const float& volume, const float& frequency, NiAVObject& node) {
 		auto soundDescriptor = Runtime::GetSound(tag);
 		if (!soundDescriptor) {
