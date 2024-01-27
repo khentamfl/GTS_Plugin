@@ -61,10 +61,7 @@ namespace Hooks {
 						log::info("Value post: {}", X);
 					}
 				}
-				
-				//auto result = Skyrim_Camera(camera);
-				//log::info("Hook Result: {}", Vector2Str(result));
-                return Skyrim_SetAngleX(ref, X);
+                return Skyrim_SetAngleX(ref, 120.0);
             }
         );
 
