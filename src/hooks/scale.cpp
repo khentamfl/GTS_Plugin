@@ -63,10 +63,11 @@ namespace Hooks {
 			REL::RelocationID(36758, 36758), REL::Relocate(0x2D4, 0x2D4), // altering Character::GetEquippedWeight_1406195D0
 			[](auto* param_1) {
 				float result = CalculateDetection_1405FD870_5D0(param_1);
-				if (param_1->formID == 0x14 || IsTeammate) {
+				if (param_1->formID == 0x14 || IsTeammate(param_1)) {
 					log::info("Hook Weight Result for {} is {}", param_1->GetDisplayFullName(), result);
-					log::info("New result: {}", result);
 					result -= 50.0;
+					log::info("New result: {}", result);
+					
 				}
 				return result;
             }
