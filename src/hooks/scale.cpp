@@ -57,11 +57,11 @@ namespace Hooks {
 						float random = rand()% 100;
 						log::info("SetAngle X is called for {}", actor->GetDisplayFullName());
 						log::info("Value pre: {}", X);
-						X = random;
-						log::info("Value post: {}", X);
+						//X = random;
+						//log::info("Value post: {}", X);
 					}
 				}
-                return Skyrim_SetAngleX(ref, 120.0);
+                return Skyrim_SetAngleX(ref, X);
             }
         );
 

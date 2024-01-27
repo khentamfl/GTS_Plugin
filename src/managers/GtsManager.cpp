@@ -44,10 +44,11 @@ namespace {
 		if (actor->formID != 0x14) {
 			TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
 			if (ref) {
-				float random = rand()% 100;
+				float random = rand()% 10;
 				NiPoint3 rotation = NiPoint3(random, 0.0, 0.0);
 				NiPoint3& send = rotation;
-				SetObjectRotation_X(ref, 120);
+				//SetObjectRotation_X(ref, 120);
+				actor->SetRotationX(random);
 				log::info("Setting random rotation X for {}, {}", actor->GetDisplayFullName(), random);
 			}
 		}
