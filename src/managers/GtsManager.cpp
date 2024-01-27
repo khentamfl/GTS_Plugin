@@ -44,7 +44,7 @@ namespace {
 		if (actor->formID != 0x14) {
 			TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
 			if (ref) {
-				int random = rand()% 100;
+				float random = rand()% 100.0;
 				NiPoint3 rotation = NiPoint3(random, 0.0, 0.0);
 				NiPoint3& send = rotation;
 				SetObjectRotation_X(ref, random);

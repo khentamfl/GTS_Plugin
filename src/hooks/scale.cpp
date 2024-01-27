@@ -51,8 +51,14 @@ namespace Hooks {
 		static FunctionHook<void(TESObjectREFR* ref, float X)>Skyrim_SetAngleX( 
             REL::RelocationID(19360, 19360),
             [](auto* ref, auto X) {
-				log::info("SetAngle X is called"); // never seen it being called.
-				log::info("Value: {}", X);
+				Actor* actor = skyrim_cast<Actor*>(ref);
+				if (actor) {
+					if (actor->formID != 0x14 && IsTeammate(actor)) {
+						log::info("SetAngle X is called for {}", actor->GetDisplayFullName());
+						log::info("Value: {}", X);
+					}
+				}
+				
 				//auto result = Skyrim_Camera(camera);
 				//log::info("Hook Result: {}", Vector2Str(result));
                 return Skyrim_SetAngleX(ref, X);
