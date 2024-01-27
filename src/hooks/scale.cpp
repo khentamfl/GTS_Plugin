@@ -59,11 +59,10 @@ namespace Hooks {
             }
         );
 
-		static CallHook<float(Actor* param_1, uintptr_t param_2,uintptr_t param_3,uintptr_t param_4, uintptr_t param_5,
-			uintptr_t param_6, uintptr_t param_7, uintptr_t param_8, uintptr_t param_9, uintptr_t param_10)>CalculateDetection_1405FD870(
+		static CallHook<float(Actor* param_1)>CalculateDetection_1405FD870(
 			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0),
-			[](auto* param_1, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6, auto param_7, auto param_8, auto param_9, auto param_10) {
-				float result = CalculateDetection_1405FD870(param_1, param_2, param_3, param_4, param_5, param_6, param_7, param_8, param_9, param_10);
+			[](auto* param_1) {
+				float result = CalculateDetection_1405FD870(param_1);
 				log::info("Hook Result for {} is {}", param_1->GetDisplayFullName(), result);
 				return result;
             }
