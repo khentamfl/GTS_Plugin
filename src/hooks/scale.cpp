@@ -72,7 +72,12 @@ namespace Hooks {
 			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0), // altering ActorValueOwner::sub_1403E5250
 			[](auto* param_1) {
 				float result = CalculateDetection_1405FD870_sub950(param_1);
-				log::info("Hook Value Result for {} is {}", param_1->GetDisplayFullName(), result);
+				Actor* ch = skyrim_cast<Actor*>(param_1);
+				if (ch) {
+					log::info("Hook Value Result for {} is {}", ch->GetDisplayFullName(), result);
+				} else {
+					log::info("Hook Value Result: {}", result);
+				}
 				return result;
             }
         );
