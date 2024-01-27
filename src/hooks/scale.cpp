@@ -68,20 +68,6 @@ namespace Hooks {
             }
         );
 
-		static CallHook<float(ActorValueOwner* param_1)>CalculateDetection_1405FD870_sub950(
-			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0), // altering ActorValueOwner::sub_1403E5250
-			[](auto* param_1) {
-				float result = CalculateDetection_1405FD870_sub950(param_1);
-				Actor* ch = skyrim_cast<Actor*>(param_1);
-				if (ch) {
-					log::info("Hook Value Result for {} is {}", ch->GetDisplayFullName(), result);
-				} else {
-					log::info("Hook Value Result: {}", result);
-				}
-				return result;
-            }
-        );
-
 		/*static FunctionHook<void(TESObjectREFR* ref, float X)>Skyrim_SetAngleX(  
             REL::RelocationID(19360, 19360), // 19360 = 140296680
             [](auto* ref, auto X) {
