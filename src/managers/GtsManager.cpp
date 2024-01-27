@@ -55,7 +55,7 @@ namespace {
 					if (mid) {
 						log::info("- Mid found for {}", actor->GetDisplayFullName());
 						NiPoint3 Rotation = mid->rotation;
-						mid->rotation.x = random/127;
+						mid->rotation.x = random;
 						log::info(" - Rotation of {} is {}", actor->GetDisplayFullName(), Vector2Str(Rotation));
 					}
 				}
