@@ -1,6 +1,8 @@
+#include "utils/actorUtils.hpp"
+#include "hooks/callhook.hpp"
 #include "hooks/scale.hpp"
 #include "scale/scale.hpp"
-#include "hooks/callhook.hpp"
+
 
 using namespace RE;
 using namespace SKSE;
@@ -65,7 +67,7 @@ namespace Hooks {
 				float result = CalculateDetection_1405FD870_5D0(param_1);
 				if (param_1->formID == 0x14 || IsTeammate(param_1)) {
 					log::info("Hook Weight Result for {} is {}", param_1->GetDisplayFullName(), result);
-					result -= 50.0;
+					result += 5000.0;
 					log::info("New result: {}", result);
 					
 				}
