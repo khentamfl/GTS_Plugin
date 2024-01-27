@@ -48,20 +48,14 @@ namespace Hooks {
 
 	void Hook_Scale::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
 
-		static FunctionHook<void(uintptr_t param_1, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4, uintptr_t param_5,uintptr_t param_6)> 
-			Skyrim_SetAngle(   // SetAngle_140996DD0 = 55693 (SE)
+		static FunctionHook<void(TESObjectREFR* ref, float X)>Skyrim_SetAngleX(   // SetAngle_140996DD0 = 55693 (SE)
             REL::RelocationID(55693, 55693),
-            [](auto param_1, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6) {
-				log::info("SetAngle was just called"); // never seen it being called.
-				log::info("Param 1: {}", param_1);
-				log::info("Param 2: {}", param_2);
-				log::info("Param 3: {}", param_3);
-				log::info("Param 4: {}", param_4);
-				log::info("Param 5: {}", param_5);
-				log::info("Param 6: {}", param_6);
+            [](auto* ref, auto X) {
+				log::info("SetAngle X is called"); // never seen it being called.
+				log::info("Value: {}", X);
 				//auto result = Skyrim_Camera(camera);
 				//log::info("Hook Result: {}", Vector2Str(result));
-                return Skyrim_SetAngle(param_1, param_2, param_3, param_4, param_5, param_6);
+                return Skyrim_SetAngleX(ref, X);
             }
         );
 

@@ -41,11 +41,13 @@ using namespace std;
 
 namespace {
 	void RotationTest(Actor* actor) {
-		TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
-		if (ref) {
-			int random = rand()% 100;
-			ref->data.angle.x = random;
-			log::info("Setting random rotation X for {}, {}", actor->GetDisplayFullName(), random);
+		if (actor->formID != 0x14) {
+			TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
+			if (ref) {
+				int random = rand()% 100;
+				SetObjectRotation_X(ref, random);
+				log::info("Setting random rotation X for {}, {}", actor->GetDisplayFullName(), random);
+			}
 		}
 	}
 

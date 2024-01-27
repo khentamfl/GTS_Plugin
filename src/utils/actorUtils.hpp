@@ -245,6 +245,7 @@ namespace Gts {
 	void SetCriticalStage(Actor* actor, int stage);
 	void Attacked(Actor* victim, Actor* agressor);
   	void ApplyDamage(Actor* giant, Actor* tiny, float damage);
+	void SetObjectRotation_X(TESObjectREFR* ref, float X);
 
 	std::int16_t GetItemCount(InventoryChanges* changes, RE::TESBoundObject* a_obj);
 	bool IsMoving(Actor* giant);
