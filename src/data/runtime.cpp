@@ -1,3 +1,4 @@
+#include "utils/actorUtils.hpp"
 #include "data/runtime.hpp"
 #include "Config.hpp"
 #include "rays/raycast.hpp"
@@ -173,7 +174,7 @@ namespace Gts {
 		BSSoundHandle soundHandle;
 		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
 		if (success) {
-			float falloff = falloff_function(node, Falloff);
+			float falloff = Sound_GetFallOff(node, Falloff);
 			soundHandle.SetVolume(volume * falloff);
 			soundHandle.SetObjectToFollow(&node);
 			soundHandle.Play();
