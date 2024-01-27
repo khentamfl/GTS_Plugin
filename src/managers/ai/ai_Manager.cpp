@@ -211,7 +211,6 @@ namespace Gts {
 			return false;
 		}
 		if (ProtectFollowers(pred, prey)) {
-			log::info("{} is protected", prey->GetDisplayFullName());
 			return false;
 		}
 		if (IsGtsBusy(pred)) {

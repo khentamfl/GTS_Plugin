@@ -239,7 +239,9 @@ namespace {
 
 	void SBODiveEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
-		AnimationManager::StartAnim("SBO_Dive", player);
+		if (player->IsSneaking()) {
+			AnimationManager::StartAnim("SBO_Dive", player);
+		}
 	}
 }
 

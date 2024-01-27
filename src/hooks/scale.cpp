@@ -48,6 +48,23 @@ namespace Hooks {
 
 	void Hook_Scale::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
 
+		static FunctionHook<void(uintptr_t param_1, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4, uintptr_t param_5,uintptr_t param_6)> 
+			Skyrim_SetAngleX(   // SetAngle_140996DD0 = 55693 (SE)
+            REL::RelocationID(55693, 55693),
+            [](auto param_1, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6) {
+				log::info("SetAngleX was just called");
+				log::info("Param 1: {}", GetRawName(param_1));
+				log::info("Param 2: {}", GetRawName(param_2));
+				log::info("Param 3: {}", GetRawName(param_3));
+				log::info("Param 4: {}", GetRawName(param_4));
+				log::info("Param 5: {}", GetRawName(param_5));
+				log::info("Param 6: {}", GetRawName(param_6));
+				//auto result = Skyrim_Camera(camera);
+				//log::info("Hook Result: {}", Vector2Str(result));
+                return Skyrim_SetAngleX(param_1, param_2, param_3, param_4, param_5, param_6);
+            }
+        );
+
 		/*static FunctionHook<void(NiCamera* camera)> Skyrim_Camera(  // camera hook works just fine that way
             REL::RelocationID(69271, 70641),
             [](auto* camera) {
