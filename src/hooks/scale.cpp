@@ -55,26 +55,17 @@ namespace Hooks {
 
 				log::info("Detection of {} is {}", ref->GetDisplayFullName(), result);
 				
-                return result;
+                return 0.0;
             }
         );
 
-		static FunctionHook<void(Actor* param_1, uintptr_t param_2,uintptr_t param_3,uintptr_t param_4, uintptr_t param_5,
+		static CallHook<float(Actor* param_1, uintptr_t param_2,uintptr_t param_3,uintptr_t param_4, uintptr_t param_5,
 			uintptr_t param_6, uintptr_t param_7, uintptr_t param_8, uintptr_t param_9, uintptr_t param_10)>CalculateDetection_1405FD870(
-			REL::RelocationID(36758, 36758),
+			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0),
 			[](auto* param_1, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6, auto param_7, auto param_8, auto param_9, auto param_10) {
-				log::info("Detection Level hook for {}", param_1->GetDisplayFullName());
-				log::info("Param_2: {}", static_cast<float>(param_2));
-				log::info("Param_3: {}", static_cast<float>(param_3));
-				log::info("Param_4: {}", static_cast<float>(param_4));
-				log::info("Param_5: {}", static_cast<float>(param_5));
-				log::info("Param_6: {}", static_cast<float>(param_6));
-				log::info("Param_7: {}", static_cast<float>(param_7));
-				log::info("Param_8: {}", static_cast<float>(param_8));
-				log::info("Param_9: {}", static_cast<float>(param_9));
-				log::info("Param_10: {}", static_cast<float>(param_10));
-			
-				return CalculateDetection_1405FD870(param_1, param_2, param_3, param_4, param_5, param_6, param_7, param_8, param_9, param_10);
+				float result = CalculateDetection_1405FD870(param_1, param_2, param_3, param_4, param_5, param_6, param_7, param_8, param_9, param_10);
+				log::info("Hook Result for {} is {}", param_1->GetDisplayFullName(), result);
+				return result;
             }
         );
 
