@@ -45,8 +45,8 @@ namespace {
 			TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
 			if (ref) {
 				int random = rand()% 100;
-				NiPoint3* rotation = *NiPoint3(random, 0.0, 0.0);
-				SetObjectRotation_X(ref, rotation);
+				NiPoint3 rotation = NiPoint3(random, 0.0, 0.0);
+				SetObjectRotation_X(ref, *rotation);
 				log::info("Setting random rotation X for {}, {}", actor->GetDisplayFullName(), random);
 			}
 		}
