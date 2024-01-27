@@ -40,6 +40,15 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
+	void RotationTest(Actor* actor) {
+		TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
+		if (ref) {
+			int random = rand()% 100;
+			ref->data.angle.x = random;
+			log::info("Setting random rotation X for {}, {}", actor->GetDisplayFullName(), random);
+		}
+	}
+
 	void FixActorFade(Actor* actor) {
 		auto profiler = Profilers::Profile("Manager: Fade Fix");
 		if (get_visual_scale(actor) < 1.5) {
@@ -275,6 +284,8 @@ void GtsManager::Update() {
 			ClothManager::GetSingleton().CheckRip();
 			TinyCalamity_SeekActors(actor);
 			SpawnActionIcon(actor);
+
+			RotationTest(actor);
 
 			if (IsCrawling(actor)) {
 				ApplyAllCrawlingDamage(actor, 1.0, 1000, 0.25);

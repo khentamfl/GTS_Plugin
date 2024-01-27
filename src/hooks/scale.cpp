@@ -52,7 +52,7 @@ namespace Hooks {
 			Skyrim_SetAngle(   // SetAngle_140996DD0 = 55693 (SE)
             REL::RelocationID(55693, 55693),
             [](auto param_1, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6) {
-				log::info("SetAngle was just called");
+				log::info("SetAngle was just called"); // never seen it being called.
 				log::info("Param 1: {}", param_1);
 				log::info("Param 2: {}", param_2);
 				log::info("Param 3: {}", param_3);
@@ -69,12 +69,12 @@ namespace Hooks {
 			Skyrim_SetAngle_2(   // SetAngle_1402F3A20 = 21569 (SE)
             REL::RelocationID(21569, 21569),
             [](auto param_1, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6, auto param_7, auto param_8) {
-				log::info("SetAngle_2 was just called");
+				log::info("SetAngle_2 was just called"); // this hook works but prints make no sense.
 				log::info("Param 1: {}", param_1);
 				log::info("Param 2: {}", param_2);
 				log::info("Param 3: {}", param_3);
 				log::info("Param 4: {}", param_4);
-				log::info("Param 5: {}", param_5);
+				log::info("Param 5: {}", param_5); // only this parameter seems to change after setangle x/y/z value, reports nonsense like 2497396705664
 				log::info("Param 6: {}", param_6);
 				log::info("Param 7: {}", param_7);
 				log::info("Param 8: {}", param_8);
