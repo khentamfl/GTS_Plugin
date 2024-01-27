@@ -2713,7 +2713,7 @@ namespace Gts {
 	void SetObjectRotation_X(TESObjectREFR* ref, float X) {
 		typedef void (*DefSetRotX)(TESObjectREFR* ref, float X);
 		REL::Relocation<DefSetRotX> SetObjectRotation_X{ RELOCATION_ID(19360, 19360) }; // 140296680 (SE)
-		SetObjectRotation_X(ref, x);
+		SetObjectRotation_X(ref, X);
 	}
 
 	std::int16_t GetItemCount(InventoryChanges* changes, RE::TESBoundObject* a_obj)
