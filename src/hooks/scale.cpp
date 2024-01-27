@@ -59,11 +59,20 @@ namespace Hooks {
             }
         );
 
-		static CallHook<float(Actor* param_1)>CalculateDetection_1405FD870(
-			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0),
+		static CallHook<float(Actor* param_1)>CalculateDetection_1405FD870_5D0(
+			REL::RelocationID(36758, 36758), REL::Relocate(0x2D4, 0x2D4), // altering Character::GetEquippedWeight_1406195D0
 			[](auto* param_1) {
-				float result = CalculateDetection_1405FD870(param_1);
-				log::info("Hook Result for {} is {}", param_1->GetDisplayFullName(), result);
+				float result = CalculateDetection_1405FD870_5D0(param_1);
+				log::info("Hook Weight Result for {} is {}", param_1->GetDisplayFullName(), result);
+				return result;
+            }
+        );
+
+		static CallHook<float(Actor* param_1)>CalculateDetection_1405FD870_sub950(
+			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0), // altering ActorValueOwner::sub_1403E5250
+			[](auto* param_1) {
+				float result = CalculateDetection_1405FD870_sub950(param_1->AsActorValueOwner());
+				log::info("Hook Value Result for {} is {}", param_1->GetDisplayFullName(), result);
 				return result;
             }
         );
