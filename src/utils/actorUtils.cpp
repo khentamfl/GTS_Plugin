@@ -2710,10 +2710,9 @@ namespace Gts {
 		Skyrim_ApplyDamage(tiny, damage, nullptr, nullptr, nullptr);
 	}
 
-	void SetObjectRotation_X(TESObjectREFR* ref, float X) {
-		typedef void (*DefSetRotX)(TESObjectREFR* ref, NiPoint3 rotation);
+	void SetObjectRotation_X(TESObjectREFR* ref, NiPoint3* rot) {
+		typedef void (*DefSetRotX)(TESObjectREFR* ref, NiPoint3* rotation);
 		REL::Relocation<DefSetRotX> SetObjectRotation_X{ RELOCATION_ID(19360, 19360) }; // 140296680 (SE)
-		NiPoint3* rot = const NiPoint3(X, 0.0, 0.0); 
 		SetObjectRotation_X(ref, rot);
 	}
 
