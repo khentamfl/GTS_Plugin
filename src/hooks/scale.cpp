@@ -48,7 +48,7 @@ namespace Hooks {
 
 	void Hook_Scale::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
 
-		static FunctionHook<float(Actor* ref)>GetDetectionCalculatedValue( 
+		/*static FunctionHook<float(Actor* ref)>GetDetectionCalculatedValue( 
             REL::RelocationID(36748, 36748),
             [](auto* ref) {
 				float result = 0.0;//GetDetectionCalculatedValue(ref);
@@ -57,16 +57,30 @@ namespace Hooks {
 				
                 return result;
             }
-        );
+        );*/// works but unknown what it does
 
 		static CallHook<float(Actor* param_1)>CalculateDetection_1405FD870_5D0(
 			REL::RelocationID(36758, 36758), REL::Relocate(0x2D4, 0x2D4), // altering Character::GetEquippedWeight_1406195D0
 			[](auto* param_1) {
 				float result = CalculateDetection_1405FD870_5D0(param_1);
-				log::info("Hook Weight Result for {} is {}", param_1->GetDisplayFullName(), result);
+				if (param_1->formID == 0x14 || IsTeammate) {
+					log::info("Hook Weight Result for {} is {}", param_1->GetDisplayFullName(), result);
+					log::info("New result: {}", result);
+					result -= 50.0;
+				}
 				return result;
             }
         );
+
+		/*static CallHook<float(Actor* param_1, uintptr_t param_2,uintptr_t param_3,uintptr_t param_4, uintptr_t param_5,
+			uintptr_t param_6, uintptr_t param_7, uintptr_t param_8, uintptr_t param_9, uintptr_t param_10)>CalculateDetection_1405FD870(
+			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0),
+			[](auto* param_1, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6, auto param_7, auto param_8, auto param_9, auto param_10) {
+				float result = CalculateDetection_1405FD870(param_1, param_2, param_3, param_4, param_5, param_6, param_7, param_8, param_9, param_10);
+				log::info("Hook Result for {} is {}", param_1->GetDisplayFullName(), result);
+				return result;
+            }
+        );*/
 
 		/*static FunctionHook<void(TESObjectREFR* ref, float X)>Skyrim_SetAngleX(  
             REL::RelocationID(19360, 19360), // 19360 = 140296680
