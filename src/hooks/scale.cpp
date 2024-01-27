@@ -48,11 +48,11 @@ namespace Hooks {
 
 	void Hook_Scale::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
 
-		static FunctionHook<void(TESObjectREFR* ref, NiPoint3* X)>Skyrim_SetAngleX(   // SetAngle_140996DD0 = 55693 (SE)
-            REL::RelocationID(55693, 55693),
-            [](auto* ref, auto* X) {
+		static FunctionHook<void(TESObjectREFR* ref, float X)>Skyrim_SetAngleX( 
+            REL::RelocationID(19360, 19360),
+            [](auto* ref, auto X) {
 				log::info("SetAngle X is called"); // never seen it being called.
-				log::info("Value: {}", Vector2Str(X));
+				log::info("Value: {}", X);
 				//auto result = Skyrim_Camera(camera);
 				//log::info("Hook Result: {}", Vector2Str(result));
                 return Skyrim_SetAngleX(ref, X);
