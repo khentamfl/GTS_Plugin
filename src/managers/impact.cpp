@@ -53,7 +53,7 @@ namespace {
 		const std::string_view left_foot = "NPC L Foot [Lft ]";
 		const std::string_view right_foot = "NPC R Foot [Rft ]";
 		const std::string_view left_arm = "NPC L Hand [LHnd]";
-		const std::string_view right_arm = "NPC R Hand [LHnd]";
+		const std::string_view right_arm = "NPC R Hand [RHnd]";
 
 		NiAVObject* result;
 		switch (foot_kind) {

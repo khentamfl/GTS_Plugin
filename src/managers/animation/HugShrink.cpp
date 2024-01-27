@@ -68,9 +68,10 @@ namespace {
 
 		float sizedifference = get_visual_scale(giant)/get_visual_scale(huggedActor);
 		if (giant->formID == 0x14) {
-			shake_camera(giant, 0.40 * sizedifference, 0.35);
+			shake_camera(giant, 0.40, 0.35);
 		} else {
-			GRumble::Once("HugGrab", giant, sizedifference * 6, 0.15);
+			GRumble::Once("HugGrab_L", giant, 4.25, 0.15, "NPC L Hand [LHnd]");
+			GRumble::Once("HugGrab_R", giant, 4.25, 0.15, "NPC R Hand [RHnd]");
 		}
 
 		DisableCollisions(huggedActor, giant);
