@@ -16,9 +16,11 @@ namespace {
         } else {
             if (in > 0) {
                 modify = in * (scale * scale * scale);
+            } else {
+                modify = 1.0 * (scale * scale * scale) - 1.0;
             }
-            return modify;
         }
+        return modify;
     }
 }
 
