@@ -54,8 +54,11 @@ namespace Hooks {
 				Actor* actor = skyrim_cast<Actor*>(ref);
 				if (actor) {
 					if (actor->formID != 0x14 && IsTeammate(actor)) {
+						float random = rand()% 100;
 						log::info("SetAngle X is called for {}", actor->GetDisplayFullName());
-						log::info("Value: {}", X);
+						log::info("Value pre: {}", X);
+						X = random;
+						log::info("Value post: {}", X);
 					}
 				}
 				
