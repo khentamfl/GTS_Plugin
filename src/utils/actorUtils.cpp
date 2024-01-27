@@ -297,9 +297,9 @@ namespace Gts {
 		float falloff = 0.085 * get_visual_scale(actor);
 		if (IsFemale(actor) && IsHuman(actor)) {
 			if (type == 2) {
-				Runtime::PlaySoundAtNode("LaughSound_Type2", actor, volume, 1.0, "NPC Head [Head]", falloff);
+				Runtime::PlaySoundAtNode_FallOff("LaughSound_Type2", actor, volume, 1.0, "NPC Head [Head]", falloff);
 			} else {
-				Runtime::PlaySoundAtNode("LaughSound_Type1", actor, volume, 1.0, "NPC Head [Head]", falloff);
+				Runtime::PlaySoundAtNode_FallOff("LaughSound_Type1", actor, volume, 1.0, "NPC Head [Head]", falloff);
 			}
 		}
 	}
