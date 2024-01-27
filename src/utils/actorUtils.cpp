@@ -2710,10 +2710,8 @@ namespace Gts {
 		Skyrim_ApplyDamage(tiny, damage, nullptr, nullptr, nullptr);
 	}
 
-	void SetObjectRotation_X(TESObjectREFR* ref, NiPoint3* rot) {
-		typedef void (*DefSetRotX)(TESObjectREFR* ref, NiPoint3* rotation);
-		REL::Relocation<DefSetRotX> SetObjectRotation_X{ RELOCATION_ID(19360, 19360) }; // 140296680 (SE)
-		SetObjectRotation_X(ref, rot);
+	void SetObjectRotation_X(TESObjectREFR* ref, float X) {
+		return _generic_foo_<19360, decltype(SetObjectRotation_X)>::eval(ref, X);
 	}
 
 	std::int16_t GetItemCount(InventoryChanges* changes, RE::TESBoundObject* a_obj)
