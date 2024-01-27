@@ -2713,8 +2713,8 @@ namespace Gts {
 	void SetObjectRotation_X(TESObjectREFR* ref, float X) {
 		typedef void (*DefSetRotX)(TESObjectREFR* ref, NiPoint3* rotation);
 		REL::Relocation<DefSetRotX> SetObjectRotation_X{ RELOCATION_ID(19360, 19360) }; // 140296680 (SE)
-		NiPoint3* rot; 
-		rot[0] = X;
+		NiPoint3 original = NiPoint3(X, 0.0, 0.0);
+		NiPoint3* rot = original; 
 		SetObjectRotation_X(ref, rot);
 	}
 
