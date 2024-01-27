@@ -174,7 +174,7 @@ namespace Gts {
 		BSSoundHandle soundHandle;
 		bool success = audioManager->BuildSoundDataFromDescriptor(soundHandle, soundDescriptor);
 		if (success) {
-			float falloff = Sound_GetFallOff(node, Falloff);
+			float falloff = Sound_GetFallOff(&node, Falloff);
 			soundHandle.SetVolume(volume * falloff);
 			soundHandle.SetObjectToFollow(&node);
 			soundHandle.Play();
