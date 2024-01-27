@@ -72,7 +72,7 @@ namespace Hooks {
 					float random = rand()% 160;
 					log::info("- SetRotation X is called for {}", ref->GetDisplayFullName());
 					log::info("- Value pre: {}", X);
-					X = random;
+					X = -random;
 					log::info("- Value post: {}", X);
 				}
 				

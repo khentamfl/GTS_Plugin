@@ -48,7 +48,7 @@ namespace {
 				NiPoint3 rotation = NiPoint3(random, 0.0, 0.0);
 				NiPoint3& send = rotation;
 				//SetObjectRotation_X(ref, 120);
-				actor->SetRotationX(random);
+				actor->SetRotationX(-random);
 				log::info("Setting random rotation X for {}, {}", actor->GetDisplayFullName(), random);
 			}
 		}
