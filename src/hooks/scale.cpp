@@ -68,10 +68,10 @@ namespace Hooks {
             }
         );
 
-		static CallHook<float(Actor* param_1)>CalculateDetection_1405FD870_sub950(
+		static CallHook<float(ActorValueOwner* param_1)>CalculateDetection_1405FD870_sub950(
 			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0), // altering ActorValueOwner::sub_1403E5250
 			[](auto* param_1) {
-				float result = CalculateDetection_1405FD870_sub950(param_1->AsActorValueOwner());
+				float result = CalculateDetection_1405FD870_sub950(param_1);
 				log::info("Hook Value Result for {} is {}", param_1->GetDisplayFullName(), result);
 				return result;
             }
