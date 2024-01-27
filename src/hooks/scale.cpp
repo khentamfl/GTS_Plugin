@@ -51,11 +51,11 @@ namespace Hooks {
 		static FunctionHook<float(Actor* ref)>GetDetectionCalculatedValue( 
             REL::RelocationID(36748, 36748),
             [](auto* ref) {
-				float result = GetDetectionCalculatedValue(ref);
+				float result = 0.0;//GetDetectionCalculatedValue(ref);
 
 				log::info("Detection of {} is {}", ref->GetDisplayFullName(), result);
 				
-                return 0.0;
+                return result;
             }
         );
 
