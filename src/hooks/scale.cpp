@@ -64,15 +64,15 @@ namespace Hooks {
 			REL::RelocationID(36758, 36758),
 			[](auto* param_1, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6, auto param_7, auto param_8, auto param_9, auto param_10) {
 				log::info("Detection Level hook for {}", param_1->GetDisplayFullName());
-				log::info("Param_2: {}", param_2);
-				log::info("Param_3: {}", param_3);
-				log::info("Param_4: {}", param_4);
-				log::info("Param_5: {}", param_5);
-				log::info("Param_6: {}", param_6);
-				log::info("Param_7: {}", param_7);
-				log::info("Param_8: {}", param_8);
-				log::info("Param_9: {}", param_9);
-				log::info("Param_10: {}", param_10);
+				log::info("Param_2: {}", static_cast<float>(param_2));
+				log::info("Param_3: {}", static_cast<float>(param_3));
+				log::info("Param_4: {}", static_cast<float>(param_4));
+				log::info("Param_5: {}", static_cast<float>(param_5));
+				log::info("Param_6: {}", static_cast<float>(param_6));
+				log::info("Param_7: {}", static_cast<float>(param_7));
+				log::info("Param_8: {}", static_cast<float>(param_8));
+				log::info("Param_9: {}", static_cast<float>(param_9));
+				log::info("Param_10: {}", static_cast<float>(param_10));
 			
 				return CalculateDetection_1405FD870(param_1, param_2, param_3, param_4, param_5, param_6, param_7, param_8, param_9, param_10);
             }
