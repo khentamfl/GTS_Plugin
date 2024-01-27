@@ -69,11 +69,8 @@ namespace Hooks {
             REL::RelocationID(36602, 37610),
             [](auto* ref, auto X) {
 				if (ref->formID != 0x14 && IsTeammate(ref)) {
-					float random = rand()% 160;
 					log::info("- SetRotation X is called for {}", ref->GetDisplayFullName());
-					log::info("- Value pre: {}", X);
-					X = -random;
-					log::info("- Value post: {}", X);
+					log::info("- Value: {}", X);
 				}
 				
                 return Skyrim_SetRotationX(ref, X);
