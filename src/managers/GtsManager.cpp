@@ -40,29 +40,6 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	void RotationTest(Actor* actor) {
-		if (actor->formID != 0x14) {
-			TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
-			if (ref) {
-				float random = rand()% 200 + 1;
-				actor->SetRotationX(random/127);
-				actor->Update3DPosition(true);
-				log::info("Setting random rotation X for {}, {}", actor->GetDisplayFullName(), random);
-
-				auto ai = actor->GetActorRuntimeData().currentProcess;
-				if (ai) {
-					auto mid = ai->middleHigh;
-					if (mid) {
-						log::info("- Mid found for {}", actor->GetDisplayFullName());
-						NiPoint3 Rotation = mid->rotation;
-						mid->rotation.x = random;
-						log::info(" - Rotation of {} is {}", actor->GetDisplayFullName(), Vector2Str(Rotation));
-					}
-				}
-			}
-		}
-	}
-
 	void FixActorFade(Actor* actor) {
 		auto profiler = Profilers::Profile("Manager: Fade Fix");
 		if (get_visual_scale(actor) < 1.5) {
@@ -298,8 +275,6 @@ void GtsManager::Update() {
 			ClothManager::GetSingleton().CheckRip();
 			TinyCalamity_SeekActors(actor);
 			SpawnActionIcon(actor);
-
-			RotationTest(actor);
 
 			if (IsCrawling(actor)) {
 				ApplyAllCrawlingDamage(actor, 1.0, 1000, 0.25);

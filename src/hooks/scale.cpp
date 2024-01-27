@@ -25,7 +25,7 @@ using namespace SKSE;
 //      TESObjectREFR::sub_1405FE650
 //      Pathing::sub_140473120(Pathing *param_1,uint64 param_2,Character *param_3,uint64 param_4) (Seems to be called in lots of places
 //      ^ 29819
-//      Pathing::sub_140473490(Pathing *param_1,undefined param_2,undefined param_3,undefined param_4, uint64 param_5)
+//      Pathing::sub_140473490(Pathing *param_1,uintptr_t param_2,uintptr_t param_3,uintptr_t param_4, uint64 param_5)
 //      ^ 29824
 //      Pathing::sub_140473200(Pathing *param_1,uint64 param_2,Character *param_3,uint64 param_4)
 //      ^ 29820
@@ -48,7 +48,40 @@ namespace Hooks {
 
 	void Hook_Scale::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
 
-		static FunctionHook<void(TESObjectREFR* ref, float X)>Skyrim_SetAngleX(  
+		static FunctionHook<float(Actor* ref)>GetDetectionCalculatedValue( 
+            REL::RelocationID(36748, 36748),
+            [](auto* ref) {
+				float result = GetDetectionCalculatedValue(ref);
+
+				log::info("Detection of {} is {}", ref->GetDisplayFullName(), result);
+				
+                return result;
+            }
+        );
+
+		static FunctionHook<void(Actor* param_1, uintptr_t param_2,uintptr_t param_3,uintptr_t param_4, uintptr_t param_5,
+               uintptr_t param_6, uintptr_t param_7, uintptr_t param_8, uintptr_t param_9, uintptr_t param_10)
+			   	>CalculateDetection_1405FD870(
+				REL::RelocationID(36758, 36758),
+            	[](auto* param_1, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6, auto param_7, auto param_8, auto param_9, auto param_10) {
+				float result = GetDetectionCalculatedValue(ref);
+
+				log::info("Detection Level hook for {}", param_1->GetDisplayFullName());
+				log::info("Param_2: {}", param_2);
+				log::info("Param_3: {}", param_3);
+				log::info("Param_4: {}", param_4);
+				log::info("Param_5: {}", param_5);
+				log::info("Param_6: {}", param_6);
+				log::info("Param_7: {}", param_7);
+				log::info("Param_8: {}", param_8);
+				log::info("Param_9: {}", param_9);
+				log::info("Param_10: {}", param_10);
+				
+                return CalculateDetection_1405FD870(param_1, param_2, param_3, param_4, param_5, param_6, param_7, param_8, param_9, param_10);
+            }
+        );
+
+		/*static FunctionHook<void(TESObjectREFR* ref, float X)>Skyrim_SetAngleX(  
             REL::RelocationID(19360, 19360), // 19360 = 140296680
             [](auto* ref, auto X) {
 				Actor* actor = skyrim_cast<Actor*>(ref);
@@ -73,7 +106,7 @@ namespace Hooks {
 				
                 return Skyrim_SetRotationX(ref, X);
             }
-        );
+        );*/
 
 		/*static FunctionHook<void(NiCamera* camera)> Skyrim_Camera(  // camera hook works just fine that way
             REL::RelocationID(69271, 70641),

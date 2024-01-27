@@ -248,5 +248,6 @@ namespace Gts {
 	void SetObjectRotation_X(TESObjectREFR* ref, float X);
 
 	std::int16_t GetItemCount(InventoryChanges* changes, RE::TESBoundObject* a_obj);
+	int GetCombatState(Actor* actor);
 	bool IsMoving(Actor* giant);
 }

@@ -2723,6 +2723,13 @@ namespace Gts {
 		return func(changes, a_obj);
 	}
 
+	int GetCombatState(Actor* actor) { // Needs AE address
+        using func_t = decltype(GetCombatState);
+        REL::Relocation<func_t> func{ RELOCATION_ID(37603) };
+        return func(actor);
+		// 0 = non combat, 1 = combat, 2 = search
+    }
+
 	bool IsMoving(Actor* giant) { // New CommonLib version copy-paste
 		using func_t = decltype(&IsMoving);
 		REL::Relocation<func_t> func{ RELOCATION_ID(36928, 37953) };
