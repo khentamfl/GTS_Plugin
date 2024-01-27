@@ -65,7 +65,7 @@ namespace Hooks {
             }
         );
 
-		static FunctionHook<void(uintptr_t param_1, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4, uintptr_t param_5,uintptr_t param_6)> 
+		static FunctionHook<void(uintptr_t param_1, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4, uintptr_t param_5,uintptr_t param_6, uintptr_t param_7, uintptr_t param_8)> 
 			Skyrim_SetAngle_2(   // SetAngle_1402F3A20 = 21569 (SE)
             REL::RelocationID(21569, 21569),
             [](auto param_1, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6, auto param_7, auto param_8) {
