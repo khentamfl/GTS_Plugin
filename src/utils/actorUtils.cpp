@@ -2725,7 +2725,7 @@ namespace Gts {
 
 	int GetCombatState(Actor* actor) { // Needs AE address
         using func_t = decltype(GetCombatState);
-        REL::Relocation<func_t> func{ RELOCATION_ID(37603) };
+        REL::Relocation<func_t> func{ RELOCATION_ID(37603, 37603) };
         return func(actor);
 		// 0 = non combat, 1 = combat, 2 = search
     }
