@@ -2,6 +2,7 @@
 #include "hooks/main.hpp"
 #include "hooks/headTracking.hpp"
 #include "hooks/actorRotation.hpp"
+#include "hooks/Stealth.hpp"
 #include "hooks/impact.hpp"
 #include "hooks/vm.hpp"
 #include "hooks/havok.hpp"
@@ -43,6 +44,7 @@ namespace Hooks
 		Hook_Damage::Hook(trampoline);
 
 		Hook_Scale::Hook(trampoline);
+		Hook_Stealth::Hook(trampoline);
 		//Hook_ActorRotation::Hook(trampoline);
 		HookCameraStates();
 
