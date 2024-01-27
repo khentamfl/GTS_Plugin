@@ -48,20 +48,18 @@ namespace Hooks {
 
 	void Hook_Scale::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
 
-		static FunctionHook<void(TESObjectREFR* ref, float X)>Skyrim_SetAngleX( 
-            REL::RelocationID(19360, 19360),
+		static FunctionHook<void(TESObjectREFR* ref, float X)>Skyrim_SetAngleX(  
+            REL::RelocationID(19360, 19360), // 19360 = 140296680
             [](auto* ref, auto X) {
 				Actor* actor = skyrim_cast<Actor*>(ref);
 				if (actor) {
 					if (actor->formID != 0x14 && IsTeammate(actor)) {
-						float random = rand()% 100;
-						log::info("SetAngle X is called for {}", actor->GetDisplayFullName());
-						log::info("Value: {}", X);
 						//X = random;
-						//log::info("Value post: {}", X);
+						log::info("Value post: {}", X);
 					}
 				}
                 return Skyrim_SetAngleX(ref, X);
+				// rotation is capped between 1.57 and - 1.57 based on prints
             }
         );
 
@@ -74,25 +72,6 @@ namespace Hooks {
 				}
 				
                 return Skyrim_SetRotationX(ref, X);
-            }
-        );
-
-		static FunctionHook<void(uintptr_t param_1, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4, uintptr_t param_5,uintptr_t param_6, uintptr_t param_7, uintptr_t param_8)> 
-			Skyrim_SetAngle_2(   // SetAngle_1402F3A20 = 21569 (SE)
-            REL::RelocationID(21569, 21569),
-            [](auto param_1, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6, auto param_7, auto param_8) {
-				log::info("SetAngle_2 was just called"); // this hook works but prints make no sense.
-				log::info("Param 1: {}", param_1);
-				log::info("Param 2: {}", param_2);
-				log::info("Param 3: {}", param_3);
-				log::info("Param 4: {}", param_4);
-				log::info("Param 5: {}", param_5); // only this parameter seems to change after setangle x/y/z value, reports nonsense like 2497396705664
-				log::info("Param 6: {}", param_6);
-				log::info("Param 7: {}", param_7);
-				log::info("Param 8: {}", param_8);
-				//auto result = Skyrim_Camera(camera);
-				//log::info("Hook Result: {}", Vector2Str(result));
-                return Skyrim_SetAngle_2(param_1, param_2, param_3, param_4, param_5, param_6, param_7, param_8);
             }
         );
 

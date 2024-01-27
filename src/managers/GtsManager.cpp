@@ -45,11 +45,19 @@ namespace {
 			TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(actor);
 			if (ref) {
 				float random = rand()% 200 + 1;
-				NiPoint3 rotation = NiPoint3(random, 0.0, 0.0);
-				NiPoint3& send = rotation;
-				//SetObjectRotation_X(ref, 120);
 				actor->SetRotationX(random/127);
+				actor->Update3DPosition(true);
 				log::info("Setting random rotation X for {}, {}", actor->GetDisplayFullName(), random);
+
+				auto ai = actor->GetActorRuntimeData().currentProcess;
+				if (ai) {
+					auto mid = ai->middleHigh;
+					if (mid) {
+						log::info("- Mid found for {}", actor->GetDisplayFullName());
+						NiPoint3 Rotation = mid->rotation;
+						log::info(" - Rotation of {} is {}", actor->GetDisplayFullName(), Vector2Str(Rotation));
+					}
+				}
 			}
 		}
 	}
