@@ -66,50 +66,68 @@ namespace { // WIP
 		TaskManager::Cancel(name2);
 	}
 
-	void GTS_Crawl_Swipe_ArmSfx_Start(AnimationEventData& data) {
+	void GTS_Sneak_Swipe_ArmSfx_Start(AnimationEventData& data) {
 	}
-	void GTS_Crawl_Swipe_ArmSfx_End(AnimationEventData& data) {
-	}
-
-	void GTS_Crawl_Swipe_On_R(AnimationEventData& data) {
-		TriggerHandCollision_Right(&data.giant, 1.4, 1.6, 0.75);
-		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", true, 4.0);
-	}
-	void GTS_Crawl_Swipe_On_L(AnimationEventData& data) {
-		TriggerHandCollision_Left(&data.giant, 1.4, 1.6, 0.75);
-		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", true, 4.0);
-	}
-	void GTS_Crawl_Swipe_Off_R(AnimationEventData& data) {
-		DisableHandCollisions(&data.giant);
-		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", false, 4.0);
-	}
-	void GTS_Crawl_Swipe_Off_L(AnimationEventData& data) {
-		DisableHandCollisions(&data.giant);
-		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", false, 4.0);
+	void GTS_Sneak_Swipe_ArmSfx_End(AnimationEventData& data) {
 	}
 
-	void GTS_Crawl_Swipe_Power_On_R(AnimationEventData& data) {
-		TriggerHandCollision_Right(&data.giant, 3.6, 1.3, 1.4);
-		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", true, 10.0);
+	////////////////light
+
+	void GTS_Sneak_Swipe_On_R(AnimationEventData& data) {
+		TriggerHandCollision_Right(&data.giant, 1.4, 1.6, 1.0);
+		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", true, 4.0);
 	}
-	void GTS_Crawl_Swipe_Power_On_L(AnimationEventData& data) {
-		TriggerHandCollision_Left(&data.giant, 3.6, 1.3, 1.4);
-		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", true, 10.0);
+	void GTS_Sneak_Swipe_On_L(AnimationEventData& data) {
+		TriggerHandCollision_Left(&data.giant, 1.4, 1.6, 1.0);
+		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", true, 4.0);
 	}
-	void GTS_Crawl_Swipe_Power_Off_R(AnimationEventData& data) {
+	void GTS_Sneak_Swipe_Off_R(AnimationEventData& data) {
+		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", false, 4.0);
 		DisableHandCollisions(&data.giant);
-		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", false, 10.0);
+		
 	}
-	void GTS_Crawl_Swipe_Power_Off_L(AnimationEventData& data) {
+	void GTS_Sneak_Swipe_Off_L(AnimationEventData& data) {
+		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", false, 4.0);
 		DisableHandCollisions(&data.giant);
+		
+	}
+
+	///////////////strong
+
+	void GTS_Sneak_Swipe_Power_On_R(AnimationEventData& data) {
+		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", true, 10.0);
+		TriggerHandCollision_Right(&data.giant, 4.2, 1.15, 2.0);
+		
+	}
+	void GTS_Sneak_Swipe_Power_On_L(AnimationEventData& data) {
+		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", true, 10.0);
+		TriggerHandCollision_Left(&data.giant, 4.2, 1.15, 2.0);
+		
+	}
+	void GTS_Sneak_Swipe_Power_Off_R(AnimationEventData& data) {
 		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", false, 10.0);
+		DisableHandCollisions(&data.giant);
+		
+	}
+	void GTS_Sneak_Swipe_Power_Off_L(AnimationEventData& data) {
+		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", false, 10.0);
+		DisableHandCollisions(&data.giant);
+		
 	}
 }
 
 namespace Gts {
     
     void Animation_SneakSwipes::RegisterEvents() {
-		//AnimationManager::RegisterEvent("GTSstompimpactR", "Stomp", GTSstompimpactR);
-		//AnimationManager::RegisterEvent("GTSstompimpactL", "Stomp", GTSstompimpactL);
+		AnimationManager::RegisterEvent("GTS_Sneak_Swipe_On_R", "Sneak", GTS_Sneak_Swipe_On_R);
+		AnimationManager::RegisterEvent("GTS_Sneak_Swipe_On_L", "Sneak", GTS_Sneak_Swipe_On_L);
+		AnimationManager::RegisterEvent("GTS_Sneak_Swipe_Off_R", "Sneak", GTS_Sneak_Swipe_Off_R);
+		AnimationManager::RegisterEvent("GTS_Sneak_Swipe_Off_L", "Sneak", GTS_Sneak_Swipe_Off_L);
+
+
+		AnimationManager::RegisterEvent("GTS_Sneak_Swipe_Power_On_R", "Sneak", GTS_Sneak_Swipe_Power_On_R);
+		AnimationManager::RegisterEvent("GTS_Sneak_Swipe_Power_On_L", "Sneak", GTS_Sneak_Swipe_Power_On_L);
+		AnimationManager::RegisterEvent("GTS_Sneak_Swipe_Power_Off_R", "Sneak", GTS_Sneak_Swipe_Power_Off_R);
+		AnimationManager::RegisterEvent("GTS_Sneak_Swipe_Power_Off_L", "Sneak", GTS_Sneak_Swipe_Power_Off_L);
     }
 }
