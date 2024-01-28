@@ -112,7 +112,7 @@ namespace Hooks {
 				//log::info("Camera hook is running");
 				float result = Skyrim_Camera(camera);
 				log::info("Hook Result: {}", result);
-                return result * 10;
+                return result * 1000;
             }
         );
 
