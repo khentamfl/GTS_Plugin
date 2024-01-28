@@ -11,25 +11,37 @@ using namespace SKSE;
 namespace {
     float modify_detection(float in) {
         float modify = 1.0;
-        if (in > 0.01) {
+        if (in > 1e-6) {
             auto player = PlayerCharacter::GetSingleton();
-            modify = 1.0 / get_visual_scale(player);
+            float scale = get_visual_scale(player);
+            if (scale > 1.0) {
+                modify = 1.0 / scale;
+            } else if (scale < 1.0) {
+                modify = 1.0 / (scale * scale); // more efficient for < 1.0 scales
+            }
+            
         }
         return modify;
     }
     float modify_footstep_detection(Actor* giant, float in) {
         float scale = get_visual_scale(giant);
+        float massscale = (scale * scale * scale);
         float modify = 0.0;
         if (HasSMT(giant)) {
             modify = (in * 4.0 + 80) * scale;
         } else {
-            if (in > 0) {
-                modify = in * (scale * scale * scale);
+            if (in > 1e-6) {
+                modify = in * massscale;
             } else {
-                modify = 1.0 * (scale * scale * scale);
-                modify -= 1.0;
+                modify = (1.0 * massscale) - 1.0;
             }
         }
+
+        if (scale < 1.0) {
+            modify += in * massscale;
+            modify -= 1.0 / (scale * scale * scale); // harder to hear small player
+        }
+
         return modify;
     }
 }
@@ -39,7 +51,7 @@ namespace Hooks {
 	void Hook_Stealth::Hook(Trampoline& trampoline) { 
         
         // NEEDS AE OFFSET AND REL!
-        /*static CallHook<float(Actor* giant)>CalculateFootstepDetection_1405FD870_5D0(
+        static CallHook<float(Actor* giant)>CalculateFootstepDetection_1405FD870_5D0(
 			REL::RelocationID(36758, 36758), REL::Relocate(0x2D4, 0x2D4), 
             //  0x1405FD870 (func) - 0x1405fdb44 (weight) = -0x2D4 (just remove -)
             // altering Character::GetEquippedWeight_1406195D0
@@ -53,7 +65,7 @@ namespace Hooks {
 				}
 				return result;
             }
-        );*/
+        );
 
        /* static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading(
 			REL::RelocationID(36758, 36758), REL::Relocate(0x71E, 0x71E), 
@@ -73,7 +85,6 @@ namespace Hooks {
             //  altering Character::GetHeading_1405FD780
 			[](auto* giant, auto* param_1) {
 				log::info("-- Heading_2 Result for {}", giant->GetDisplayFullName());
-                log::info("-------Heading_2 param_1: {}", Vector2Str(param_1));
                 float result = CalculateHeading_var2(giant, param_1);
                 log::info("-------Heading_2 Result: {}", CalculateHeading_var2(giant, param_1));
                 result *= modify_detection(result);
@@ -88,7 +99,6 @@ namespace Hooks {
             //  altering Character::GetHeading_1405FD780
 			[](auto* giant, auto* param_1) {
 				log::info("-- Heading 3 Result for {}", giant->GetDisplayFullName());
-                log::info("-------Heading 3 param_1: {}", Vector2Str(param_1));
                 float result = CalculateHeading_var3(giant, param_1);
                 log::info("-------Heading 3 Result: {}", result);
                 result *= modify_detection(result);
