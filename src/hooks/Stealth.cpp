@@ -47,16 +47,32 @@ namespace Hooks {
             }
         );
 
-        static CallHook<NiPoint3(Actor* giant, NiPoint3* param_1, NiPoint3* param_2, float param_4)>CalculateLOS(
-			REL::RelocationID(36758, 36758), REL::Relocate(0x5B0, 0x5B0), 
-            //  0x1405FD870 (func) - 0x1405fdf35 (LOS) = -0x5B0 (just remove -)
+        static CallHook<NiAVObject*(Actor* giant, NiPoint3* param_1, NiPoint3* param_2, float param_3)>CalculateLOS(
+			REL::RelocationID(36758, 36758), REL::Relocate(0x6C5, 0x6C5), 
+            //  0x1405FD870 (func) - 0x1405fdf35 (LOS) = -0x6C5 (just remove -)
             // altering CalculateLOS_1405FD2C0
-			[](auto* giant, auto* param_1, auto* param_2, float param_4) {
-				NiPoint3 result = CalculateLOS(giant, param_1, param_2, param_4); //
-				log::info("LOS Result for {} is {}", giant->GetDisplayFullName(), Vector2Str(result));
-				return result;
+			[](auto* giant, auto* param_1, auto* param_2, float param_3) {
+				log::info("-- LOS Result for {}", giant->GetDisplayFullName());
+                log::info("-------LOS param_1: {}", Vector2Str(param_1));
+                log::info("-------LOS param_2: {}", Vector2Str(param_2));
+                log::info("-------LOS param_3: {}", param_3);
+				return CalculateLOS(giant, param_1, param_2, param_3);
             }
         );
+
+        static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading(
+			REL::RelocationID(36758, 36758), REL::Relocate(0x71E, 0x71E), 
+            //  0x1405fdf8e - 0x1405FD870 = 0x71E
+            //  altering Character::GetHeading_1405FD780
+			[](auto* giant, auto* param_1) {
+				log::info("-- Heading Result for {}", giant->GetDisplayFullName());
+                log::info("-------Heading param_1: {}", Vector2Str(param_1));
+				return CalculateHeading(giant, param_1);
+            }
+        );
+
+
+        
 
 
        /*static FunctionHook<void(Actor* giant, uintptr_t param_2,uintptr_t param_3,uintptr_t param_4, uintptr_t param_5,
