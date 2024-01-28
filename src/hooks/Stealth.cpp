@@ -48,9 +48,9 @@ namespace Hooks {
         );
 
         static CallHook<NiPoint3(Actor* giant, NiPoint3* param_1, NiPoint3* param_2, float param_4)>CalculateLOS(
-			REL::RelocationID(36758, 36758), REL::Relocate(0x6C5, 0x6C5), 
-            //  0x1405FD870 (func) - 0x1405fdf35 (LOS) = -0x2D4 (just remove -)
-            // altering  CalculateLOS_1405FD2C0
+			REL::RelocationID(36758, 36758), REL::Relocate(0x5B0, 0x5B0), 
+            //  0x1405FD870 (func) - 0x1405fdf35 (LOS) = -0x5B0 (just remove -)
+            // altering CalculateLOS_1405FD2C0
 			[](auto* giant, auto* param_1, auto* param_2, float param_4) {
 				NiPoint3 result = CalculateLOS(giant, param_1, param_2, param_4); //
 				log::info("LOS Result for {} is {}", giant->GetDisplayFullName(), Vector2Str(result));
