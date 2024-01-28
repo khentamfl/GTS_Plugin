@@ -63,8 +63,6 @@ namespace Gts {
 			float basehp = 0.0;
 			float Hug_AnimSpeed = 1.0;
 
-			NiPoint3 CameraOffset = NiPoint3();
-
 			bool can_do_vore = true;
 			bool can_be_crushed = true;
 			bool dragon_was_eaten = false;
@@ -112,9 +110,6 @@ namespace Gts {
 			result.SMT_Bonus_Duration = SMT_Bonus_Duration;
 			result.SMT_Penalty_Duration = SMT_Penalty_Duration;
 			result.basehp = basehp;
-
-			result.CameraOffset = CameraOffset;
-
 			result.Hug_AnimSpeed = Hug_AnimSpeed;
 			result.can_do_vore = can_do_vore;
 			result.can_be_crushed = can_be_crushed;

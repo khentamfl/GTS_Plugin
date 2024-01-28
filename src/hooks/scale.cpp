@@ -49,10 +49,12 @@ namespace {
 	NiPoint3 camera_getplayeroffset(NiPoint3 in) {
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
-			auto transient = Transient::GetSingleton().GetData(player);
-			if (transient) {
-				return transient->CameraOffset;
-			}
+			float scale = get_visual_scale(player);
+			float ns = get_natural_scale(player);
+
+			float offset = 70.0 * (scale - ns);
+
+			NiPoint3 adjust = NiPoint3(offset, 0.0, offset);
 		}
 		return NiPoint3();
 	}

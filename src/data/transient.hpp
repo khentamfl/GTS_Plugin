@@ -21,9 +21,6 @@ namespace Gts {
 		float carryweight_boost;
 		float basehp;
 		float Hug_AnimSpeed;
-
-		NiPoint3 CameraOffset;
-
 		float otherScales;
 		float WorldFov_Default;
 		float FpFov_Default;
