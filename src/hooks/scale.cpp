@@ -114,9 +114,22 @@ namespace Hooks {
 				//log::info("Camera hook is running");
 				float result = Skyrim_Camera(camera);
 				log::info("Hook Result: {}", result);
-                return result * 1000;
+                return result;
             }
         );*/
+
+		static FunctionHook<NiPoint3(PlayerCamera* camera)> Skyrim_FactorCameraOffset(  // camera hook works just fine that way
+            REL::RelocationID(49866, 50799),
+            [](auto* camera) {
+				//log::info("Camera hook is running");
+				NiPoint3 result = Skyrim_FactorCameraOffset(camera);
+				log::info("Hook Result: {}", result);
+				result.x += 5.0;
+				result *= camera_getplayersize();
+				log::info("Hook Result altered: {}", result);
+                return result;
+            }
+        );
 
 		/*static FunctionHook<NiPoint3(PlayerCamera* camera)> Skyrim_UpdateCamera(  // camera hook works just fine that way
             REL::RelocationID(49852, 49852), // PlayerCamera::Update_14084AB90
