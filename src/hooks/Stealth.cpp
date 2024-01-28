@@ -37,9 +37,9 @@ namespace {
             }
         }
 
-        if (scale < 1.0) {
+        if (scale < get_natural_scale(giant)) {
             modify += in * massscale;
-            modify -= 1.0 / (scale * scale * scale); // harder to hear small player
+            modify -= 1.0 / massscale; // harder to hear small player
         }
 
         return modify;
