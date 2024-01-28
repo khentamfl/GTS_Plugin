@@ -2,6 +2,7 @@
 #include "hooks/callhook.hpp"
 #include "hooks/Stealth.hpp"
 #include "scale/scale.hpp"
+#include "utils/debug.hpp"
 
 
 using namespace RE;
@@ -46,22 +47,26 @@ namespace Hooks {
             }
         );
 
+        static CallHook<NiPoint3(Actor* giant)>CalculateLOS(
+			REL::RelocationID(36758, 36758), REL::Relocate(0x6C5, 0x6C5), 
+            //  0x1405FD870 (func) - 0x1405fdf35 (LOS) = -0x2D4 (just remove -)
+            // altering  CalculateLOS_1405FD2C0
+			[](auto* giant) {
+				NiPoint3 result = CalculateLOS(giant); // Makes footsteps lounder for AI, works nicely so far
+				if (giant->formID == 0x14 || IsTeammate(giant)) {
+					log::info("LOS Result for {} is {}", giant->GetDisplayFullName(), Vector2Str(result));
+				}
+				return result;
+            }
+        );
 
-        static FunctionHook<void(Actor* giant, uintptr_t param_2,uintptr_t param_3,uintptr_t param_4, uintptr_t param_5,
+
+       /* static FunctionHook<void(Actor* giant, uintptr_t param_2,uintptr_t param_3,uintptr_t param_4, uintptr_t param_5,
 			uintptr_t param_6, uintptr_t param_7, uintptr_t param_8, uintptr_t param_9, uintptr_t param_10)>
             CalculateDetection_1405FD870( REL::RelocationID(36758, 36758),
 			[](auto* giant, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6, auto param_7, auto param_8, auto param_9, auto param_10) {
                 if (giant->formID == 0x14 || IsTeammate(giant)) {
                     log::info("- Hook Results for {}", giant->GetDisplayFullName());
-                    param_2 = 99999999990.0;
-                    param_3 = 99999999990.0;
-                    param_4 = 99999999990.0;
-                    param_5 = 99999999990.0;
-                    param_6 = 99999999990.0;
-                    param_7 = 99999999990.0;
-                    param_8 = 99999999990.0;
-                    param_9 = 99999999990.0;
-                    param_10 =99999999990.0;
                     log::info("------ Param_2 {}", param_2);
                     log::info("------ Param_3 {}", param_3);
                     log::info("------ Param_4 {}", param_4);
@@ -75,7 +80,7 @@ namespace Hooks {
 				
 				return CalculateDetection_1405FD870(giant, param_2, param_3, param_4, param_5, param_6, param_7, param_8, param_9, param_10);
             }
-        ); // The general stealth hook.
+        );/* // The general stealth hook.
 
         /*static FunctionHook<float(Actor* ref)>GetDetectionCalculatedValue( 
             REL::RelocationID(36748, 36748),
