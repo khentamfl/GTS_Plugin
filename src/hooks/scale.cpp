@@ -118,7 +118,7 @@ namespace Hooks {
             }
         );*/
 
-		static FunctionHook<NiPoint3(PlayerCamera* camera)> Skyrim_UpdateCamera(  // camera hook works just fine that way
+		/*static FunctionHook<NiPoint3(PlayerCamera* camera)> Skyrim_UpdateCamera(  // camera hook works just fine that way
             REL::RelocationID(49852, 49852), // PlayerCamera::Update_14084AB90
             [](auto* camera) {
 				//log::info("Camera hook is running");
@@ -128,7 +128,7 @@ namespace Hooks {
 				log::info("Hook Result Post: {}", Vector2Str(result));
                 return result;
             }
-        );
+        );/*
 
 		// Yet the one below CTD's. Sigh.
 		/*static CallHook<float(const NiCamera* camera)> Skyrim_Camera_posX(RELOCATION_ID(69271, 70641),  REL::Relocate(0x11, 0x11), // ctd, ctd and ctd.
