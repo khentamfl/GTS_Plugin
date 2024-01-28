@@ -14,12 +14,7 @@ namespace {
         if (in > 1e-6) {
             auto player = PlayerCharacter::GetSingleton();
             float scale = get_visual_scale(player);
-            if (scale > 1.0) {
-                modify = 1.0 / scale;
-            } else if (scale < 1.0) {
-                modify = 1.0 / (scale * scale); // more efficient for < 1.0 scales
-            }
-            
+            modify = 1.0 / scale;
         }
         return modify;
     }
