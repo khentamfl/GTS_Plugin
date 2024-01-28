@@ -46,7 +46,7 @@ namespace {
 		return 1.0;
 	}
 
-	NiPoint3 camera_getplayeroffset() {
+	NiPoint3* camera_getplayeroffset() {
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
 			float scale = get_visual_scale(player);
@@ -54,10 +54,11 @@ namespace {
 
 			float offset = 70.0 * (scale - ns);
 
-			NiPoint3 adjust = NiPoint3(offset, 0.0, offset);
-			return adjust;
+			NiPoint3& adjust = NiPoint3(offset, 0.0, offset);
+			return &adjust;
 		}
-		return NiPoint3(0.0, 0.0, 0.0);
+		NiPoint3& adjust = NiPoint3(0.0, 0.0, 0.0);
+		return &adjust;
 	}
 }
 
