@@ -31,7 +31,7 @@ namespace Hooks {
 	void Hook_Stealth::Hook(Trampoline& trampoline) { 
         
         // NEEDS AE OFFSET AND REL!
-        static CallHook<float(Actor* giant)>CalculateFootstepDetection_1405FD870_5D0(
+        /*static CallHook<float(Actor* giant)>CalculateFootstepDetection_1405FD870_5D0(
 			REL::RelocationID(36758, 36758), REL::Relocate(0x2D4, 0x2D4), 
             //  0x1405FD870 (func) - 0x1405fdb44 (weight) = -0x2D4 (just remove -)
             // altering Character::GetEquippedWeight_1406195D0
@@ -45,7 +45,7 @@ namespace Hooks {
 				}
 				return result;
             }
-        );
+        );*/
 
         static CallHook<NiAVObject*(Actor* giant, NiPoint3* param_1, NiPoint3* param_2, float param_3)>CalculateLOS(
 			REL::RelocationID(36758, 36758), REL::Relocate(0x6C5, 0x6C5), 
