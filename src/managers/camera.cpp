@@ -23,7 +23,7 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		auto transient = Transient::GetSingleton().GetData(player);
 		if (transient) {
-			transient->CameraOffset = Result;
+			transient->CameraOffset = result;
 		}
 	}
 
