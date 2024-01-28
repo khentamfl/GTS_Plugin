@@ -46,23 +46,18 @@ namespace {
 		return 1.0;
 	}
 
-	NiPoint3 camera_getplayeroffset() {
+	NiPoint3 camera_getplayeroffset(NiPoint3 in) {
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
 			float scale = get_visual_scale(player);
 			float ns = get_natural_scale(player);
 			if (scale > 0) {
 				float offset = 70.0 * (scale - ns);
-
-				NiPoint3 in = NiPoint3(offset, 0.0, offset);
-
-				NiPoint3 adjust = in;
+				NiPoint3 adjust = NiPoint3(offset, 0.0, offset) + in;
 				return adjust;
 			}
 		}
-		NiPoint3 in = NiPoint3(0.0, 0.0, 0.0);
-		NiPoint3 adjust = in;
-		return adjust;
+		return in;
 	}
 }
 
@@ -118,10 +113,10 @@ namespace Hooks {
 				NiPoint3 result = Skyrim_Camera(camera);
 				log::info("Hook Result: {}", Vector2Str(result));
 				//result += camera_getplayeroffset();
-				NiPoint3 offset = camera_getplayeroffset();
+				NiPoint3 offset = camera_getplayeroffset(result);
 				log::info("Hook Result After: {}", Vector2Str(result));
 				log::info("Offset: {}", Vector2Str(offset));
-                return result;
+                return offset;
             }
         );
 
