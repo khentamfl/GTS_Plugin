@@ -51,7 +51,7 @@ namespace Hooks {
 			REL::RelocationID(36758, 36758), REL::Relocate(0x6C5, 0x6C5), 
             //  0x1405FD870 (func) - 0x1405fdf35 (LOS) = -0x2D4 (just remove -)
             // altering  CalculateLOS_1405FD2C0
-			[](auto* giant) {
+			[](auto* giant, auto* param_1, auto* param_2, float param_4) {
 				NiPoint3 result = CalculateLOS(giant, param_1, param_2, param_4); //
 				log::info("LOS Result for {} is {}", giant->GetDisplayFullName(), Vector2Str(result));
 				return result;
