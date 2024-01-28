@@ -87,7 +87,7 @@ namespace Hooks {
                 log::info("-------Heading_2 Result: {}", CalculateHeading_var2(giant, param_1));
 				return CalculateHeading_var2(giant, param_1);
             }
-        );
+        );*/
 
         static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading_var3(
 			REL::RelocationID(36758, 36758), REL::Relocate(0x217, 0x217), 
@@ -96,16 +96,19 @@ namespace Hooks {
 			[](auto* giant, auto* param_1) {
 				log::info("-- Heading 3 Result for {}", giant->GetDisplayFullName());
                 log::info("-------Heading 3 param_1: {}", Vector2Str(param_1));
-                log::info("-------Heading 3 Result: {}", CalculateHeading_var3(giant, param_1));
+                float result = CalculateHeading_var3(giant, param_1);
+                log::info("-------Heading 3 Result: {}", result);
+                result = 6.0;
+                log::info("-------Heading 3 Result Post: {}", result);
 				return CalculateHeading_var3(giant, param_1);
             }
-        );*/
+        );
 
 
         
 
 
-       static FunctionHook<float(Actor* giant, uintptr_t param_2,uintptr_t param_3,uintptr_t param_4, uintptr_t param_5,
+      /* static FunctionHook<float(Actor* giant, uintptr_t param_2,uintptr_t param_3,uintptr_t param_4, uintptr_t param_5,
 			uintptr_t param_6, uintptr_t param_7, uintptr_t param_8, uintptr_t param_9, uintptr_t param_10)>
             CalculateDetection_1405FD870( REL::RelocationID(36758, 36758),
 			[](auto* giant, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6, auto param_7, auto param_8, auto param_9, auto param_10) {
@@ -127,7 +130,7 @@ namespace Hooks {
 				log::info("Hook Result: {}", result);
 				return result;
             }
-        ); // The general stealth hook.
+        );*/ // The general stealth hook.
 
         /*static FunctionHook<float(Actor* ref)>GetDetectionCalculatedValue( 
             REL::RelocationID(36748, 36748),
