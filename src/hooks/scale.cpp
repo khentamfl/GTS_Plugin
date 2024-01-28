@@ -110,7 +110,7 @@ namespace Hooks {
             REL::RelocationID(69271, 70641),
             [](auto* camera) {
 				//log::info("Camera hook is running");
-				NiPoint33 result = Skyrim_Camera(camera);
+				NiPoint3 result = Skyrim_Camera(camera);
 				log::info("Hook Result: {}", Vector2Str(result));
 				result[0] *= camera_getplayersize();
 				log::info("Hook Result After: {}", Vector2Str(result));
