@@ -95,7 +95,7 @@ namespace Hooks
 		_RemovePerk(a_this, a_perk);
 	}
 
-	float Hook_Actor::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Carry Weight and Sneak Noise
+	float Hook_Actor::GetActorValue(ActorValueOwner* a_owner, ActorValue a_akValue) { // Override Carry Weight
 		float value = _GetActorValue(a_owner, a_akValue);
 		if (Plugin::InGame()) {
 			Actor* a_this = skyrim_cast<Actor*>(a_owner);

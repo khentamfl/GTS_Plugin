@@ -62,12 +62,23 @@ namespace Hooks {
 
         static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading(
 			REL::RelocationID(36758, 36758), REL::Relocate(0x71E, 0x71E), 
-            //  0x1405fdf8e - 0x1405FD870 = 0x71E
+            //  0x1405fe19d - 0x1405FD870 = 0x71E (line 296)
             //  altering Character::GetHeading_1405FD780
 			[](auto* giant, auto* param_1) {
 				log::info("-- Heading Result for {}", giant->GetDisplayFullName());
                 log::info("-------Heading param_1: {}", Vector2Str(param_1));
 				return CalculateHeading(giant, param_1);
+            }
+        );
+
+        static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading_var2(
+			REL::RelocationID(36758, 36758), REL::Relocate(0x92D, 0x92D), 
+            //  0x1405fe19d - 0x1405FD870 = 0x92D (line 370)
+            //  altering Character::GetHeading_1405FD780
+			[](auto* giant, auto* param_1) {
+				log::info("-- Heading_2 Result for {}", giant->GetDisplayFullName());
+                log::info("-------Heading_2 param_1: {}", Vector2Str(param_1));
+				return CalculateHeading_var2(giant, param_1);
             }
         );
 
