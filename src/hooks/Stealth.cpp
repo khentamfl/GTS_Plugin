@@ -13,7 +13,7 @@ namespace {
         float modify = 1.0;
         if (in > 0.01) {
             auto player = PlayerCharacter::GetSingleton();
-            modify = get_visual_scale(player);
+            modify = 1.0 / get_visual_scale(player);
         }
         return modify;
     }
@@ -55,19 +55,6 @@ namespace Hooks {
             }
         );*/
 
-        static CallHook<NiAVObject*(Actor* giant, NiPoint3* param_1, NiPoint3* param_2, float param_3)>CalculateLOS(
-			REL::RelocationID(36758, 36758), REL::Relocate(0x6C5, 0x6C5), 
-            //  0x1405FD870 (func) - 0x1405fdf35 (LOS) = -0x6C5 (just remove -)
-            // altering CalculateLOS_1405FD2C0
-			[](auto* giant, auto* param_1, auto* param_2, float param_3) {
-				log::info("-- LOS Result for {}", giant->GetDisplayFullName());
-                log::info("-------LOS param_1: {}", Vector2Str(param_1));
-                log::info("-------LOS param_2: {}", Vector2Str(param_2));
-                log::info("-------LOS param_3: {}", param_3);
-				return CalculateLOS(giant, param_1, param_2, param_3);
-            }
-        );
-
        /* static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading(
 			REL::RelocationID(36758, 36758), REL::Relocate(0x71E, 0x71E), 
             //  0x1405fe19d - 0x1405FD870 = 0x71E (line 296)
@@ -87,7 +74,10 @@ namespace Hooks {
 			[](auto* giant, auto* param_1) {
 				log::info("-- Heading_2 Result for {}", giant->GetDisplayFullName());
                 log::info("-------Heading_2 param_1: {}", Vector2Str(param_1));
+                float result = CalculateHeading_var2(giant, param_1);
                 log::info("-------Heading_2 Result: {}", CalculateHeading_var2(giant, param_1));
+                result *= modify_detection(result);
+                log::info("-------Heading_2 Result Alter: {}", CalculateHeading_var2(giant, param_1));
 				return CalculateHeading_var2(giant, param_1);
             }
         );
@@ -101,14 +91,11 @@ namespace Hooks {
                 log::info("-------Heading 3 param_1: {}", Vector2Str(param_1));
                 float result = CalculateHeading_var3(giant, param_1);
                 log::info("-------Heading 3 Result: {}", result);
+                result *= modify_detection(result);
                 log::info("-------Heading 3 Result Post: {}", result);
 				return result;
             }
         );
-
-
-        
-
 
       /* static FunctionHook<float(Actor* giant, uintptr_t param_2,uintptr_t param_3,uintptr_t param_4, uintptr_t param_5,
 			uintptr_t param_6, uintptr_t param_7, uintptr_t param_8, uintptr_t param_9, uintptr_t param_10)>
