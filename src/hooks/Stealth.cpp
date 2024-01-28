@@ -9,6 +9,11 @@ using namespace RE;
 using namespace SKSE;
 
 namespace {
+    float modify_detection() {
+        auto player = PlayerCharacter::GetSingleton();
+        float modify = get_visual_scale(player);
+        return modify;
+    }
     float modify_footstep_detection(Actor* giant, float in) {
         float scale = get_visual_scale(giant);
         float modify = 0.0;
@@ -60,7 +65,7 @@ namespace Hooks {
             }
         );
 
-        static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading(
+       /* static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading(
 			REL::RelocationID(36758, 36758), REL::Relocate(0x71E, 0x71E), 
             //  0x1405fe19d - 0x1405FD870 = 0x71E (line 296)
             //  altering Character::GetHeading_1405FD780
@@ -94,7 +99,7 @@ namespace Hooks {
                 log::info("-------Heading 3 Result: {}", CalculateHeading_var3(giant, param_1));
 				return CalculateHeading_var3(giant, param_1);
             }
-        );
+        );*/
 
 
         
@@ -118,6 +123,7 @@ namespace Hooks {
                 }
 
                 float result = CalculateDetection_1405FD870(giant, param_2, param_3, param_4, param_5, param_6, param_7, param_8, param_9, param_10);
+                result = 0.0;
 				log::info("Hook Result: {}", result);
 				return result;
             }
