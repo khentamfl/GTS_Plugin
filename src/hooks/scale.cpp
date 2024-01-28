@@ -121,7 +121,7 @@ namespace Hooks {
             [](auto* camera) {
 				//log::info("Camera hook is running");
 				NiPoint3 result = Skyrim_UpdateCamera(camera);
-				log::info("Hook Result: {}", result);
+				log::info("Hook Result: {}", Vector2Str(result));
                 return result;
             }
         );
