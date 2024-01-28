@@ -40,8 +40,8 @@ namespace {
 	float camera_getplayersize() {
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
+			float size = get_visual_scale(player);
 			if (size > 1e-6) {
-				float size = get_visual_scale(player);
 				return size;
 			}
 		}
