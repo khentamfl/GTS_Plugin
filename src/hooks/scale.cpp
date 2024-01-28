@@ -111,9 +111,7 @@ namespace Hooks {
             [](auto* camera) {
 				//log::info("Camera hook is running");
 				NiPoint3 result = Skyrim_Camera(camera);
-				log::info("Hook Result: {}", Vector2Str(result));
-				result[0] *= camera_getplayersize();
-				log::info("Hook Result After: {}", Vector2Str(result));
+				log::info("Hook Result: {}", GetRawName(result));
                 return result;
             }
         );
