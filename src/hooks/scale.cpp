@@ -1,5 +1,6 @@
 #include "utils/actorUtils.hpp"
 #include "hooks/callhook.hpp"
+#include "data/transient.hpp"
 #include "hooks/scale.hpp"
 #include "scale/scale.hpp"
 
@@ -43,6 +44,15 @@ namespace {
 			return size;
 		}
 		return 1.0;
+	}
+
+	NiPoint3 camera_getplayeroffset(NiPoint3 in) {
+		auto player = PlayerCharacter::GetSingleton();
+		auto transient = Transient::GetSingleton().GetData(player);
+		if (transient) {
+			return in + transient->CameraOffset;
+		}
+		return in;
 	}
 }
 
@@ -97,6 +107,8 @@ namespace Hooks {
 				//log::info("Camera hook is running");
 				NiPoint3 result = Skyrim_Camera(camera);
 				log::info("Hook Result: {}", Vector2Str(result));
+				result += camera_getplayeroffset(result);
+				log::info("Hook Result After: {}", Vector2Str(result));
                 return result;
             }
         );

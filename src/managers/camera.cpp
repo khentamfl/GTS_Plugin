@@ -18,6 +18,15 @@ using namespace Gts;
 
 
 namespace {
+
+	void AdjustTransientCamera(NiPoint3 result) {
+		auto player = PlayerCharacter::GetSingleton();
+		auto transient = Transient::GetSingleton().GetData(player);
+		if (transient) {
+			transient->CameraOffset = Result;
+		}
+	}
+
 	void HorizontalResetEvent(const InputEventData& data) {
 		auto& camera = CameraManager::GetSingleton();
 		camera.ResetLeftRight();
@@ -143,9 +152,9 @@ namespace Gts {
 
 			NiPoint3 playerLocalOffset = currentState->GetPlayerLocalOffset(cameraPosLocal, IsCurrentlyCrawling);
 
-			if (currentState->PermitManualEdit()) {
+			/*if (currentState->PermitManualEdit()) {
 				this->smoothOffset.target = this->manualEdit;
-			}
+			}*/
 
 			offset += this->smoothOffset.value;
 			this->smoothScale.target = scale;
@@ -275,15 +284,19 @@ namespace Gts {
 
 	void CameraManager::AdjustUpDown(float amt) {
 		this->manualEdit.z += amt;
+		AdjustTransientCamera(this->manualEdit);
 	}
 	void CameraManager::ResetUpDown() {
 		this->manualEdit.z = 0.0;
+		AdjustTransientCamera(this->manualEdit);
 	}
 
 	void CameraManager::AdjustLeftRight(float amt) {
 		this->manualEdit.x += amt;
+		AdjustTransientCamera(this->manualEdit);
 	}
 	void CameraManager::ResetLeftRight() {
 		this->manualEdit.x = 0.0;
+		AdjustTransientCamera(this->manualEdit);
 	}
 }
