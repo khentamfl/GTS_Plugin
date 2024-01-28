@@ -12,7 +12,7 @@ namespace {
         float scale = get_visual_scale(giant);
         float modify = 0.0;
         if (HasSMT(giant)) {
-            modify = in * 4.0 + (120.0 * scale);
+            modify = (in * 4.0 + 80) * scale;
         } else {
             if (in > 0) {
                 modify = in * (scale * scale * scale);
@@ -53,15 +53,15 @@ namespace Hooks {
 			[](auto* giant, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6, auto param_7, auto param_8, auto param_9, auto param_10) {
                 if (giant->formID == 0x14 || IsTeammate(giant)) {
                     log::info("- Hook Results for {}", giant->GetDisplayFullName());
-                    param_2 = 0.0;
-                    param_3 = 0.0;
-                    param_4 = 0.0;
-                    param_5 = 0.0;
-                    param_6 = 0.0;
-                    param_7 = 0.0;
-                    param_8 = 0.0;
-                    param_9 = 0.0;
-                    param_10 = 0.0;
+                    param_2 = 99999999990.0;
+                    param_3 = 99999999990.0;
+                    param_4 = 99999999990.0;
+                    param_5 = 99999999990.0;
+                    param_6 = 99999999990.0;
+                    param_7 = 99999999990.0;
+                    param_8 = 99999999990.0;
+                    param_9 = 99999999990.0;
+                    param_10 =99999999990.0;
                     log::info("------ Param_2 {}", param_2);
                     log::info("------ Param_3 {}", param_3);
                     log::info("------ Param_4 {}", param_4);
