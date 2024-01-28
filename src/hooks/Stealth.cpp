@@ -100,7 +100,7 @@ namespace Hooks {
         
 
 
-       /*static FunctionHook<void(Actor* giant, uintptr_t param_2,uintptr_t param_3,uintptr_t param_4, uintptr_t param_5,
+       static FunctionHook<float(Actor* giant, uintptr_t param_2,uintptr_t param_3,uintptr_t param_4, uintptr_t param_5,
 			uintptr_t param_6, uintptr_t param_7, uintptr_t param_8, uintptr_t param_9, uintptr_t param_10)>
             CalculateDetection_1405FD870( REL::RelocationID(36758, 36758),
 			[](auto* giant, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6, auto param_7, auto param_8, auto param_9, auto param_10) {
@@ -116,8 +116,10 @@ namespace Hooks {
                     log::info("------ Param_9 {}", param_9);
                     log::info("------ Param_10 {}", param_10);
                 }
-				
-				return CalculateDetection_1405FD870(giant, param_2, param_3, param_4, param_5, param_6, param_7, param_8, param_9, param_10);
+
+                float result = CalculateDetection_1405FD870(giant, param_2, param_3, param_4, param_5, param_6, param_7, param_8, param_9, param_10);
+				log::info("Hook Result: {}", result);
+				return result;
             }
         ); // The general stealth hook.
 
