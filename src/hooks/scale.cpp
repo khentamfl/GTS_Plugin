@@ -122,7 +122,7 @@ namespace Hooks {
 				//log::info("Camera hook is running");
 				NiPoint3 result = Skyrim_UpdateCamera(camera);
 				log::info("Hook Result: {}", Vector2Str(result));
-                return result;
+                return result * 15;
             }
         );
 
