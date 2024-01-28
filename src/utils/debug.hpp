@@ -11,12 +11,6 @@ namespace Gts {
 
 	std::string Vector2Str(const hkVector4* vector);
 
-	/*std::string Vector2Str_matrixToAngles(const NiMatrix3& matrix);
-	std::string Vector2Str_matrixToAngles(const NiMatrix3* matrix);
-
-	std::string Vector2Str(const NiMatrix3& matrix);
-	std::string Vector2Str(const NiMatrix3* matrix);*/
-
 	std::string Vector2Str(const NiPoint3& vector);
 
 	std::string Vector2Str(const NiPoint3* vector);

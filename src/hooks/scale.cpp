@@ -123,10 +123,10 @@ namespace Hooks {
             [](auto* camera) {
 				//log::info("Camera hook is running");
 				NiPoint3 result = Skyrim_FactorCameraOffset(camera);
-				log::info("Hook Result: {}", result);
+				log::info("Hook Result: {}", Vector2Str(result));
 				result.x += 5.0;
 				result *= camera_getplayersize();
-				log::info("Hook Result altered: {}", result);
+				log::info("Hook Result altered: {}", Vector2Str(result));
                 return result;
             }
         );
