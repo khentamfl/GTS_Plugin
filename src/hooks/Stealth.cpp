@@ -9,9 +9,12 @@ using namespace RE;
 using namespace SKSE;
 
 namespace {
-    float modify_detection() {
-        auto player = PlayerCharacter::GetSingleton();
-        float modify = get_visual_scale(player);
+    float modify_detection(float in) {
+        float modify = 1.0;
+        if (in > 0.01) {
+            auto player = PlayerCharacter::GetSingleton();
+            modify = get_visual_scale(player);
+        }
         return modify;
     }
     float modify_footstep_detection(Actor* giant, float in) {
@@ -75,7 +78,7 @@ namespace Hooks {
                 log::info("-------Heading Result: {}", CalculateHeading(giant, param_1));
 				return CalculateHeading(giant, param_1);
             }
-        );
+        );*/
 
         static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading_var2(
 			REL::RelocationID(36758, 36758), REL::Relocate(0x92D, 0x92D), 
@@ -87,7 +90,7 @@ namespace Hooks {
                 log::info("-------Heading_2 Result: {}", CalculateHeading_var2(giant, param_1));
 				return CalculateHeading_var2(giant, param_1);
             }
-        );*/
+        );
 
         static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading_var3(
 			REL::RelocationID(36758, 36758), REL::Relocate(0x217, 0x217), 
@@ -98,7 +101,6 @@ namespace Hooks {
                 log::info("-------Heading 3 param_1: {}", Vector2Str(param_1));
                 float result = CalculateHeading_var3(giant, param_1);
                 log::info("-------Heading 3 Result: {}", result);
-                result = 6.0;
                 log::info("-------Heading 3 Result Post: {}", result);
 				return result;
             }
