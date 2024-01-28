@@ -106,13 +106,23 @@ namespace Hooks {
             }
         );*/
 
-		static FunctionHook<float(NiCamera* camera)> Skyrim_Camera(  // camera hook works just fine that way
+		/*static FunctionHook<float(NiCamera* camera)> Skyrim_Camera(  // camera hook works just fine that way
             REL::RelocationID(69271, 70641),
             [](auto* camera) {
 				//log::info("Camera hook is running");
 				float result = Skyrim_Camera(camera);
 				log::info("Hook Result: {}", result);
                 return result * 1000;
+            }
+        );*/
+
+		static FunctionHook<NiPoint3(PlayerCamera* camera)> Skyrim_UpdateCamera(  // camera hook works just fine that way
+            REL::RelocationID(49852, 49852), // PlayerCamera::Update_14084AB90
+            [](auto* camera) {
+				//log::info("Camera hook is running");
+				NiPoint3 result = Skyrim_UpdateCamera(camera);
+				log::info("Hook Result: {}", result);
+                return result;
             }
         );
 
