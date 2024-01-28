@@ -38,13 +38,13 @@ namespace Gts {
 
 	std::string Vector2Str_matrixToAngles(const NiMatrix3& matrix) {
 		NiPoint3 angles;
-		matrix->ToEulerAnglesXYZ(angles);
+		matrix.ToEulerAnglesXYZ(angles);
 		return std::format("{:.2f},{:.2f},{:.2f}", angles);
 	}
 
 	std::string Vector2Str_matrixToAngles(const NiMatrix3* matrix) {
 		NiPoint3 angles;
-		matrix->ToEulerAnglesXYZ(angles);
+		matrix.ToEulerAnglesXYZ(angles);
 		return std::format("{:.2f},{:.2f},{:.2f}", angles);
 	}
 
