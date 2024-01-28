@@ -100,7 +100,7 @@ namespace Hooks {
                 log::info("-------Heading 3 Result: {}", result);
                 result = 6.0;
                 log::info("-------Heading 3 Result Post: {}", result);
-				return CalculateHeading_var3(giant, param_1);
+				return result;
             }
         );
 
