@@ -12,12 +12,13 @@ namespace {
         float scale = get_visual_scale(giant);
         float modify = 0.0;
         if (HasSMT(giant)) {
-            modify = in * 4 + (120.0 * scale);
+            modify = in * 4.0 + (120.0 * scale);
         } else {
             if (in > 0) {
                 modify = in * (scale * scale * scale);
             } else {
-                modify = 1.0 * (scale * scale * scale) - 1.0;
+                modify = 1.0 * (scale * scale * scale);
+                modify -= 1.0;
             }
         }
         return modify;
@@ -38,7 +39,7 @@ namespace Hooks {
 				if (giant->formID == 0x14 || IsTeammate(giant)) {
 					log::info("Hook Weight Result for {} is {}", giant->GetDisplayFullName(), result);
 					float alter = modify_footstep_detection(giant, result);
-					log::info("New result: {}", result);
+					log::info("New result: {}", alter);
 					result = alter;
 				}
 				return result;
@@ -55,6 +56,12 @@ namespace Hooks {
                     param_2 = 0.0;
                     param_3 = 0.0;
                     param_4 = 0.0;
+                    param_5 = 0.0;
+                    param_6 = 0.0;
+                    param_7 = 0.0;
+                    param_8 = 0.0;
+                    param_9 = 0.0;
+                    param_10 = 0.0;
                     log::info("------ Param_2 {}", param_2);
                     log::info("------ Param_3 {}", param_3);
                     log::info("------ Param_4 {}", param_4);
