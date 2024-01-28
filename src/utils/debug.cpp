@@ -36,6 +36,39 @@ namespace Gts {
 		}
 	}
 
+	std::string Vector2Str_matrixToAngles(const NiMatrix3& matrix) {
+		NiPoint3 angles;
+		matrix->ToEulerAnglesXYZ(angles);
+		return std::format("{:.2f},{:.2f},{:.2f}", angles);
+	}
+
+	std::string Vector2Str_matrixToAngles(const NiMatrix3* matrix) {
+		NiPoint3 angles;
+		matrix->ToEulerAnglesXYZ(angles);
+		return std::format("{:.2f},{:.2f},{:.2f}", angles);
+	}
+
+	std::string Vector2Str(const NiMatrix3* matrix) {
+		return std::format("{:.2f},{:.2f},{:.2f} ; {:.2f},{:.2f},{:.2f}; {:.2f},{:.2f},{:.2f}", matrix.entry[0][0], matrix.entry[0][1], matrix.entry[0][2],
+		matrix.entry[1][0], matrix.entry[1][1], matrix.entry[1][2],
+		matrix.entry[2][0], matrix.entry[2][1], matrix.entry[2][2]
+		);
+	}
+
+	std::string Vector2Str(const NiMatrix3& matrix) {
+		return std::format("{:.2f},{:.2f},{:.2f} ; {:.2f},{:.2f},{:.2f}; {:.2f},{:.2f},{:.2f}", matrix.entry[0][0], matrix.entry[0][1], matrix.entry[0][2],
+		matrix.entry[1][0], matrix.entry[1][1], matrix.entry[1][2],
+		matrix.entry[2][0], matrix.entry[2][1], matrix.entry[2][2]
+		);
+	}
+
+	std::string Vector2Str(const NiMatrix3* matrix) {
+		return std::format("{:.2f},{:.2f},{:.2f} ; {:.2f},{:.2f},{:.2f}; {:.2f},{:.2f},{:.2f}", matrix.entry[0][0], matrix.entry[0][1], matrix.entry[0][2],
+		matrix.entry[1][0], matrix.entry[1][1], matrix.entry[1][2],
+		matrix.entry[2][0], matrix.entry[2][1], matrix.entry[2][2]
+		);
+	}
+
 	std::string Vector2Str(const NiPoint3& vector) {
 		return std::format("{:.2f},{:.2f},{:.2f}", vector.x, vector.y, vector.z);
 	}
