@@ -23,6 +23,7 @@ namespace {
 		auto player = PlayerCharacter::GetSingleton();
 		auto transient = Transient::GetSingleton().GetData(player);
 		if (transient) {
+			log::info("Setting camera to {}", Vector2Str(result));
 			transient->CameraOffset = result;
 		}
 	}
@@ -152,9 +153,9 @@ namespace Gts {
 
 			NiPoint3 playerLocalOffset = currentState->GetPlayerLocalOffset(cameraPosLocal, IsCurrentlyCrawling);
 
-			/*if (currentState->PermitManualEdit()) {
+			if (currentState->PermitManualEdit()) {
 				this->smoothOffset.target = this->manualEdit;
-			}*/
+			}
 
 			offset += this->smoothOffset.value;
 			this->smoothScale.target = scale;
