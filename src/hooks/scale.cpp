@@ -48,11 +48,13 @@ namespace {
 
 	NiPoint3 camera_getplayeroffset(NiPoint3 in) {
 		auto player = PlayerCharacter::GetSingleton();
-		auto transient = Transient::GetSingleton().GetData(player);
-		if (transient) {
-			return in + transient->CameraOffset;
+		if (player) {
+			auto transient = Transient::GetSingleton().GetData(player);
+			if (transient) {
+				return transient->CameraOffset;
+			}
 		}
-		return in;
+		return NiPoint3();
 	}
 }
 
