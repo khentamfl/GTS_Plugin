@@ -40,8 +40,10 @@ namespace {
 	float camera_getplayersize() {
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
-			float size = get_giantess_scale(player) * 10.0;
-			return size;
+			if (size > 1e-6) {
+				float size = get_visual_scale(player);
+				return size;
+			}
 		}
 		return 1.0;
 	}
@@ -122,7 +124,9 @@ namespace Hooks {
 				//log::info("Camera hook is running");
 				NiPoint3 result = Skyrim_UpdateCamera(camera);
 				log::info("Hook Result: {}", Vector2Str(result));
-                return result * 15;
+				result *= camera_getplayersize();
+				log::info("Hook Result Post: {}", Vector2Str(result));
+                return result;
             }
         );
 
