@@ -118,7 +118,7 @@ namespace Hooks {
             }
         );*/
 
-		static FunctionHook<NiPoint3(PlayerCamera* camera)> Skyrim_FactorCameraOffset(  // camera hook works just fine that way
+		/*static FunctionHook<NiPoint3(PlayerCamera* camera)> Skyrim_FactorCameraOffset(  // camera hook works just fine that way
             REL::RelocationID(49866, 50799),
             [](auto* camera) {
 				//log::info("Camera hook is running");
@@ -129,7 +129,7 @@ namespace Hooks {
 				log::info("Hook Result altered: {}", Vector2Str(result));
                 return result;
             }
-        );
+        );*/
 
 		/*static FunctionHook<NiPoint3(PlayerCamera* camera)> Skyrim_UpdateCamera(  // camera hook works just fine that way
             REL::RelocationID(49852, 49852), // PlayerCamera::Update_14084AB90
