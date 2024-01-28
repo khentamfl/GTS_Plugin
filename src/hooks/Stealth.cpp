@@ -67,6 +67,7 @@ namespace Hooks {
 			[](auto* giant, auto* param_1) {
 				log::info("-- Heading Result for {}", giant->GetDisplayFullName());
                 log::info("-------Heading param_1: {}", Vector2Str(param_1));
+                log::info("-------Heading Result: {}", CalculateHeading(giant, param_1));
 				return CalculateHeading(giant, param_1);
             }
         );
@@ -78,7 +79,20 @@ namespace Hooks {
 			[](auto* giant, auto* param_1) {
 				log::info("-- Heading_2 Result for {}", giant->GetDisplayFullName());
                 log::info("-------Heading_2 param_1: {}", Vector2Str(param_1));
+                log::info("-------Heading_2 Result: {}", CalculateHeading_var2(giant, param_1));
 				return CalculateHeading_var2(giant, param_1);
+            }
+        );
+
+        static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading_var3(
+			REL::RelocationID(36758, 36758), REL::Relocate(0x217, 0x217), 
+            //  0x1405fda87 - 0x1405FD870 = 0x217 (line ~150)
+            //  altering Character::GetHeading_1405FD780
+			[](auto* giant, auto* param_1) {
+				log::info("-- Heading 3 Result for {}", giant->GetDisplayFullName());
+                log::info("-------Heading 3 param_1: {}", Vector2Str(param_1));
+                log::info("-------Heading 3 Result: {}", CalculateHeading_var3(giant, param_1));
+				return CalculateHeading_var3(giant, param_1);
             }
         );
 
@@ -92,15 +106,6 @@ namespace Hooks {
 			[](auto* giant, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6, auto param_7, auto param_8, auto param_9, auto param_10) {
                 if (giant->formID == 0x14 || IsTeammate(giant)) {
                     log::info("- Hook Results for {}", giant->GetDisplayFullName());
-                    param_2 *= 20;
-                    param_3 *= 20;
-                    param_4 *= 20;
-                    param_5 *= 20;
-                    param_6 *= 20;
-                    param_7 *= 20;
-                    param_8 *= 20;
-                    param_9 *= 20;
-                    param_10 *= 20;
                     log::info("------ Param_2 {}", param_2);
                     log::info("------ Param_3 {}", param_3);
                     log::info("------ Param_4 {}", param_4);
@@ -114,7 +119,7 @@ namespace Hooks {
 				
 				return CalculateDetection_1405FD870(giant, param_2, param_3, param_4, param_5, param_6, param_7, param_8, param_9, param_10);
             }
-        );/* // The general stealth hook.
+        ); // The general stealth hook.
 
         /*static FunctionHook<float(Actor* ref)>GetDetectionCalculatedValue( 
             REL::RelocationID(36748, 36748),
