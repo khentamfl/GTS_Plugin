@@ -471,7 +471,12 @@ namespace Gts {
 		auto profiler = Profilers::Profile("ActorUtils: IsGtsBusy");
 		bool GTSBusy;
 		actor->GetGraphVariableBool("GTS_Busy", GTSBusy);
-		return GTSBusy;
+
+		bool Busy = GTSBusy && !CanDoCombo(actor);
+
+		log::info("{} is GTS Busy: {}, GTSBusy b: {}, CanCombo b: {}", actor->GetDisplayFullName(), Busy, GTSBusy, !CanDoCombo(actor));
+
+		return Busy;
 	}
 
 	bool CanDoCombo(Actor* actor) {
