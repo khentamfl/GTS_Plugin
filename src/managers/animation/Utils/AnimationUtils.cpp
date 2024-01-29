@@ -29,6 +29,17 @@ using namespace SKSE;
 using namespace RE;
 using namespace Gts;
 
+
+namespace {
+	float GetStaggerThreshold(DamageSource Cause) {
+		float StaggerThreshold = 1.0;
+		if (Cause == DamageSource::HandSwipeRight || Cause == DamageSource::HandSwipeLeft) {
+			StaggerThreshold = 1.4; // harder to stagger with hand swipes
+		}
+		return StaggerThreshold;
+	}
+}
+
 namespace Gts {
 
 	const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
@@ -930,22 +941,18 @@ namespace Gts {
 								tinyScale *= 0.6;
 							}
 
-							
-
 							float difference = giantScale / tinyScale;
+							float Threshold = GetStaggerThreshold(Cause);
 
 							int RagdollChance = rand() % 30 + 1.0;
-							bool roll = RagdollChance <= 13.0 * difference;
+							bool roll = (RagdollChance <= (13.0 / Threshold) * difference);
+							log::info("Roll: {}, value: {}", roll, (13.0 / Threshold) * difference);
 							//eventually it becomes 100% chance to ragdoll an actor
 
-							float StaggerThreshold = 1.0;
-							if (Cause == DamageSource::HandSwipeRight || Cause == DamageSource::HandSwipeLeft) {
-								StaggerThreshold = 1.4; // harder to stagger with hand swipes
-							}
 
 							if (difference > 1.50 && (roll || otherActor->IsDead())) {
 								PushTowards(giant, otherActor, node, pushForce * pushpower, true);
-							} else if (difference > 0.88 * StaggerThreshold) {
+							} else if (difference > 0.88 * Threshold) {
 								float push = std::clamp(0.25f * (difference - 0.25f), 0.25f, 1.0f);
 								StaggerActor(otherActor, push);
 							}
