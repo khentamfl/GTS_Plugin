@@ -260,7 +260,7 @@ namespace {
 		if (player->IsSneaking()) {
 			float WasteStamina = 25.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-				Utils_UpdateHighHeelBlend(giantref, false);
+				Utils_UpdateHighHeelBlend(player, false);
 				AnimationManager::StartAnim("SwipeLight_Left", player);
 			} else {
 				TiredSound(player, "You're too tired for hand swipe");
@@ -275,7 +275,7 @@ namespace {
 		if (player->IsSneaking()) {
 			float WasteStamina = 25.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-				Utils_UpdateHighHeelBlend(giantref, false);
+				Utils_UpdateHighHeelBlend(player, false);
 				AnimationManager::StartAnim("SwipeLight_Right", player);
 			} else {
 				TiredSound(player, "You're too tired for hand swipe");
@@ -291,7 +291,7 @@ namespace {
 		if (player->IsSneaking()) {
 			float WasteStamina = 70.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-				Utils_UpdateHighHeelBlend(giantref, false);
+				Utils_UpdateHighHeelBlend(player, false);
 				AnimationManager::StartAnim("SwipeHeavy_Left", player);
 			} else {
 				TiredSound(player, "You're too tired for hand swipe");
@@ -306,7 +306,7 @@ namespace {
 		if (player->IsSneaking()) {
 			float WasteStamina = 70.0 * GetWasteMult(player);
 			if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-				Utils_UpdateHighHeelBlend(giantref, false);
+				Utils_UpdateHighHeelBlend(player, false);
 				AnimationManager::StartAnim("SwipeHeavy_Right", player);
 			} else {
 				TiredSound(player, "You're too tired for hand swipe");

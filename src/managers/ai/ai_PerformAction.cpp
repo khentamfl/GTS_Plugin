@@ -59,12 +59,16 @@ namespace Gts {
             return;
         }
         if (rng <= 3) {
+            Utils_UpdateHighHeelBlend(pred, false);
             AnimationManager::StartAnim("SwipeHeavy_Right", pred);
         } else if (rng <= 4) {
+            Utils_UpdateHighHeelBlend(pred, false);
             AnimationManager::StartAnim("SwipeHeavy_Left", pred);
         } else if (rng <= 6) {
+            Utils_UpdateHighHeelBlend(pred, false);
             AnimationManager::StartAnim("SwipeLight_Left", pred);
         } else {
+            Utils_UpdateHighHeelBlend(pred, false);
             AnimationManager::StartAnim("SwipeLight_Right", pred);
         }
     }
