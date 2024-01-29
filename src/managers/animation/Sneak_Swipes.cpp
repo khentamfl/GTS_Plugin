@@ -19,9 +19,13 @@ using namespace SKSE;
 using namespace RE;
 using namespace Gts;
 
-namespace { // WIP
+namespace { 
+	void DisableCameraTracking(Actor* giant) {
+		ManageCamera(giant, true, 4.0); // right hand
+		ManageCamera(giant, true, 7.0); // left hand
+	}
 	void TriggerHandCollision_Right(Actor* actor, float power, float crush, float pushpower) {
-		std::string name = std::format("HandCollide_R_{}", actor->formID);
+		std::string name = std::format("SwipeCollide_R_{}", actor->formID);
 		auto gianthandle = actor->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
@@ -41,7 +45,7 @@ namespace { // WIP
 	}
 
 	void TriggerHandCollision_Left(Actor* actor, float power, float crush, float pushpower) {
-		std::string name = std::format("HandCollide_L_{}", actor->formID);
+		std::string name = std::format("SwipeCollide_L_{}", actor->formID);
 		auto gianthandle = actor->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
@@ -60,8 +64,8 @@ namespace { // WIP
 		});
 	}
 	void DisableHandCollisions(Actor* actor) {
-		std::string name = std::format("HandCollide_L_{}", actor->formID);
-		std::string name2 = std::format("HandCollide_R_{}", actor->formID);
+		std::string name = std::format("SwipeCollide_L_{}", actor->formID);
+		std::string name2 = std::format("SwipeCollide_R_{}", actor->formID);
 		TaskManager::Cancel(name);
 		TaskManager::Cancel(name2);
 	}
@@ -74,45 +78,47 @@ namespace { // WIP
 	////////////////light
 
 	void GTS_Sneak_Swipe_On_R(AnimationEventData& data) {
+		ManageCamera(&data.giant, true, 7.0);
 		TriggerHandCollision_Right(&data.giant, 1.4, 1.6, 1.0);
 		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", true, 4.0);
 	}
 	void GTS_Sneak_Swipe_On_L(AnimationEventData& data) {
+		ManageCamera(&data.giant, true, 4.0);
 		TriggerHandCollision_Left(&data.giant, 1.4, 1.6, 1.0);
 		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", true, 4.0);
 	}
 	void GTS_Sneak_Swipe_Off_R(AnimationEventData& data) {
 		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", false, 4.0);
+		DisableCameraTracking(&data.giant);
 		DisableHandCollisions(&data.giant);
-		
 	}
 	void GTS_Sneak_Swipe_Off_L(AnimationEventData& data) {
 		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", false, 4.0);
+		DisableCameraTracking(&data.giant);
 		DisableHandCollisions(&data.giant);
-		
 	}
 
 	///////////////strong
 
 	void GTS_Sneak_Swipe_Power_On_R(AnimationEventData& data) {
 		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", true, 10.0);
-		TriggerHandCollision_Right(&data.giant, 4.2, 1.15, 2.0);
-		
+		TriggerHandCollision_Right(&data.giant, 4.2, 1.15, 2.35);
+		ManageCamera(&data.giant, true, 4.0);
 	}
 	void GTS_Sneak_Swipe_Power_On_L(AnimationEventData& data) {
 		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", true, 10.0);
-		TriggerHandCollision_Left(&data.giant, 4.2, 1.15, 2.0);
-		
+		TriggerHandCollision_Left(&data.giant, 4.2, 1.15, 2.35);
+		ManageCamera(&data.giant, true, 7.0);
 	}
 	void GTS_Sneak_Swipe_Power_Off_R(AnimationEventData& data) {
 		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", false, 10.0);
+		DisableCameraTracking(&data.giant);
 		DisableHandCollisions(&data.giant);
-		
 	}
 	void GTS_Sneak_Swipe_Power_Off_L(AnimationEventData& data) {
 		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", false, 10.0);
+		DisableCameraTracking(&data.giant);
 		DisableHandCollisions(&data.giant);
-		
 	}
 }
 

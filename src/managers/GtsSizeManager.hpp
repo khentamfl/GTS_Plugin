@@ -24,7 +24,7 @@ namespace Gts {
 		bool IsThighCrushing = false;
 		bool IsThighSandwiching = false;
 		bool AlterSandwichCamera = false;
-		bool ShouldTrackHand = false;
+		bool TrackRightHand = false;
 		bool IsVoring = false;
 
 		bool TrackLeftFeet = false;
