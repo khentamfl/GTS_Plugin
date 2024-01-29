@@ -20,9 +20,16 @@ using namespace RE;
 using namespace Gts;
 
 namespace { 
-	void DisableCameraTracking(Actor* giant) {
-		ManageCamera(giant, false, 4.0); // right hand
-		ManageCamera(giant, false, 7.0); // left hand
+	void Utils_UpdateHighHeelsBlend(Actor* giant, bool reset) { // needed to blend between 2 animations so hand will go lower
+		// Similar to Sneak_Vore.cpp blending
+		if (!reset) {
+			float hh_value = HighHeelManager::GetBaseHHOffset(giant)[2]/100;
+			float hh_offset = std::clamp(hh_value * 4.5f, 0.0f, 1.0f); // reach max HH at 0.22 offset (highest i've seen)
+		
+			giantref->SetGraphVariableFloat("GTS_HHoffset", hh_offset);
+		} else {
+			giantref->SetGraphVariableFloat("GTS_HHoffset", 0.0); // reset it
+		}
 	}
 	void TriggerHandCollision_Right(Actor* actor, float power, float crush, float pushpower) {
 		std::string name = std::format("SwipeCollide_R_{}", actor->formID);
@@ -60,10 +67,15 @@ namespace {
 			if (Arm) {
 				DoDamageAtPoint_Cooldown(giant, 19, 80.0 * power, Arm, 10, 0.30, crush, pushpower, DamageSource::HandSwipeLeft);
 			}
+
+			Utils_UpdateHighHeelsBlend(giant, false);
+
 			return true;
 		});
 	}
 	void DisableHandCollisions(Actor* actor) {
+		Utils_UpdateHighHeelsBlend(actor, true);
+
 		std::string name = std::format("SwipeCollide_L_{}", actor->formID);
 		std::string name2 = std::format("SwipeCollide_R_{}", actor->formID);
 		TaskManager::Cancel(name);
