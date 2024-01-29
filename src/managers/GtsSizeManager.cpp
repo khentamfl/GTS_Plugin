@@ -26,7 +26,7 @@ using namespace SKSE;
 namespace {
 	const double LAUNCH_COOLDOWN = 3.0;
 	const double DAMAGE_COOLDOWN = 2.0;
-	const double HANDDAMAGE_COOLDOWN = 1.0;
+	const double HANDDAMAGE_COOLDOWN = 0.6;
 	const double SCARE_COOLDOWN = 6.0;
 	const float LAUNCH_DAMAGE_BASE = 1.0f;
 	const float LAUNCH_KNOCKBACK_BASE = 0.02f;

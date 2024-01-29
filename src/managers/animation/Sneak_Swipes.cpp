@@ -66,8 +66,6 @@ namespace {
 		});
 	}
 	void DisableHandCollisions(Actor* actor) {
-		Utils_UpdateHighHeelBlend(actor, true);
-
 		std::string name = std::format("SwipeCollide_L_{}", actor->formID);
 		std::string name2 = std::format("SwipeCollide_R_{}", actor->formID);
 		TaskManager::Cancel(name);

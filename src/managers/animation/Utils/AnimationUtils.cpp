@@ -930,12 +930,20 @@ namespace Gts {
 								tinyScale *= 0.6;
 							}
 							
-							if (giantScale / tinyScale > 2.25) {
+							float difference = giantScale / tinyScale;
+
+							int RagdollChance = rand() % 30 + 1.0;
+							bool roll = RagdollChance <= 13.0 * difference;
+							//eventually it becomes 100% chance to ragdoll an actor
+
+
+
+							if (giantScale / tinyScale > 1.50 && (roll || otherActor->IsDead())) {
 								PushTowards(giant, otherActor, node, pushForce * pushpower, true);
 							} else {
 								Utils_PushCheck(giant, otherActor, aveForce + 0.08f);
 							}
-							float Volume = clamp(0.25, 1.0, (giantScale/tinyScale)*pushForce);
+							float Volume = clamp(0.15, 1.0, difference*pushForce);
 
 							auto node = find_node(giant, GetDeathNodeName(Cause));
 							if (node) {

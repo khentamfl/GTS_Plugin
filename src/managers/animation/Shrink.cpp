@@ -48,6 +48,12 @@ namespace {
 		float Start = Time::WorldTimeElapsed();
 		ActorHandle gianthandle = actor->CreateRefHandle();
 		std::string name = std::format("ManualShrink_{}", actor->formID);
+
+		float scale = get_visual_scale(actor);
+		float Volume = clamp(0.10, 1.0, scale * 0.10);
+			
+		Runtime::PlaySoundAtNode("shrinkSound", actor, Volume, 1.0,"NPC Pelvis [Pelv]");
+
 		SetHalfLife(actor, 0.0);
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {

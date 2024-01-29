@@ -80,7 +80,6 @@ namespace {
 			float scale = get_visual_scale(targetRef);
 			float Volume = clamp(0.10, 1.0, scale * 0.10);
 			
-			KnockAreaEffect(targetRef, 3, 30 * scale);
 			Runtime::PlaySound("shrinkSound", targetRef, Volume, 1.0);
 			
 
@@ -174,7 +173,6 @@ namespace {
 		float scale = get_visual_scale(casterRef);
 		float Volume = clamp(0.10, 1.0, scale * 0.10);
 
-		KnockAreaEffect(casterRef, 3, 30 * scale);
 		Runtime::PlaySound("shrinkSound", casterRef, Volume, 1.0);
 	
 		// Thread safe handles

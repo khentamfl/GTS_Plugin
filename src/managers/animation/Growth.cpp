@@ -48,6 +48,10 @@ namespace {
 		float Start = Time::WorldTimeElapsed();
 		ActorHandle gianthandle = actor->CreateRefHandle();
 		std::string name = std::format("ManualGrowth_{}", actor->formID);
+
+		float Volume = clamp(0.20, 1.0, get_visual_scale(actor)/8);
+		Runtime::PlaySoundAtNode("growthSound", actor, Volume, 1.0, "NPC Pelvis [Pelv]");
+
 		SetHalfLife(actor, 0.0);
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
@@ -63,8 +67,8 @@ namespace {
 			float caster_scale = get_visual_scale(caster);
 			float stamina = clamp(0.05, 1.0, GetStaminaPercentage(caster));
 
-			float perk = Perk_GetCostReduction(caster);
-
+			float perk = Perk_GetCostReduction(caster);  
+			
 			DamageAV(caster, ActorValue::kStamina, 0.60 * perk * caster_scale * stamina * TimeScale() * multiply);
 			Grow(caster, 0.0080 * stamina * multiply * animspeed, 0.0);
 			// value*scale ^  ; ^ static value, not affected by scale

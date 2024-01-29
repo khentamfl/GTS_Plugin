@@ -102,9 +102,15 @@ namespace {
 				static Timer protect = Timer(60.00);
 				if (protect.ShouldRunFrame()) {
 					float maxhp = GetMaxAV(receiver, ActorValue::kHealth);
+					float target = get_target_scale(receiver);
+					float natural = get_natural_scale(receiver);
+
 					float scale = get_visual_scale(receiver);
 
 					update_target_scale(receiver, -0.35 * scale, SizeEffectType::kShrink);
+					if (target < natural) {
+						set_target_scale(receiver, natural); // to prevent becoming < natural scale
+					}
 					GRumble::For("CheatDeath", receiver, 240.0, 0.10, "NPC COM [COM ]", 1.50);
 					Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.5);
 					receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
