@@ -929,20 +929,27 @@ namespace Gts {
 							if (otherActor->IsDead()) {
 								tinyScale *= 0.6;
 							}
+
 							
+
 							float difference = giantScale / tinyScale;
 
 							int RagdollChance = rand() % 30 + 1.0;
 							bool roll = RagdollChance <= 13.0 * difference;
 							//eventually it becomes 100% chance to ragdoll an actor
 
-
-
-							if (giantScale / tinyScale > 1.50 && (roll || otherActor->IsDead())) {
-								PushTowards(giant, otherActor, node, pushForce * pushpower, true);
-							} else {
-								Utils_PushCheck(giant, otherActor, aveForce + 0.08f);
+							float StaggerThreshold = 1.0;
+							if (Cause == DamageSource::HandSwipeRight || Cause == DamageSource::HandSwipeLeft) {
+								StaggerThreshold = 1.4; // harder to stagger with hand swipes
 							}
+
+							if (difference > 1.50 && (roll || otherActor->IsDead())) {
+								PushTowards(giant, otherActor, node, pushForce * pushpower, true);
+							} else if (difference > 0.88 * StaggerThreshold) {
+								float push = std::clamp(0.25f * (difference - 0.25f), 0.25f, 1.0f);
+								StaggerActor(otherActor, push);
+							}
+
 							float Volume = clamp(0.15, 1.0, difference*pushForce);
 
 							auto node = find_node(giant, GetDeathNodeName(Cause));
