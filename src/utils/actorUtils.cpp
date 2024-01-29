@@ -468,7 +468,7 @@ namespace Gts {
 	}
 
 	bool IsGtsBusy(Actor* actor) {
-		auto profiler = Profilers::Profile("ActorUtils: IsGtsBusy");
+		auto profiler = Profilers::Profile("ActorUtils: IsGtsBusy"); 
 		bool GTSBusy;
 		actor->GetGraphVariableBool("GTS_Busy", GTSBusy);
 
