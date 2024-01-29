@@ -237,6 +237,18 @@ namespace Gts {
 		giant->SetGraphVariableFloat("GTS_SizeDifference", NewValue); // pass Tiny / Giant size diff POV to GTS
     }
 
+	void Utils_UpdateHighHeelBlend(Actor* giant, bool reset) { // needed to blend between 2 animations so hand will go lower
+		// Similar to Sneak_Vore.cpp blending
+		if (!reset) {
+			float hh_value = HighHeelManager::GetBaseHHOffset(giant)[2]/100;
+			float hh_offset = std::clamp(hh_value * 4.5f, 0.0f, 1.0f); // reach max HH at 0.22 offset (highest i've seen)
+		
+			giant->SetGraphVariableFloat("GTS_HHoffset", hh_offset);
+		} else {
+			giant->SetGraphVariableFloat("GTS_HHoffset", 0.0); // reset it
+		}
+	}
+
 	void StartHealingAnimation(Actor* giant, Actor* tiny) {
 		UpdateFriendlyHugs(giant, tiny, false);
 		AnimationManager::StartAnim("Huggies_Heal", giant);

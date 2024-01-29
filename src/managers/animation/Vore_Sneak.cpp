@@ -45,15 +45,12 @@ namespace {
 			}
 			Actor* giantref = gianthandle.get().get();
 
-			float hh_value = HighHeelManager::GetBaseHHOffset(giantref)[2]/100;
-			float hh_offset = std::clamp(hh_value * 4.5f, 0.0f, 1.0f); // reach max HH at 0.22 offset (highest i've seen)
-		
-			giantref->SetGraphVariableFloat("GTS_HHoffset", hh_offset);
+			Utils_UpdateHighHeelBlend(giantref, false);
 			// make behaviors read the value to blend between anims
 
 			if (!IsVoring(giantref)) {
 				log::info("! Is voring, task cancelled");
-				giantref->SetGraphVariableFloat("GTS_HHoffset", 0.0);
+				Utils_UpdateHighHeelBlend(giantref, true);
 				return false; // just a fail-safe to cancel the task if we're outside of Vore anim
 			}
 			log::info("HH offset task is running");
