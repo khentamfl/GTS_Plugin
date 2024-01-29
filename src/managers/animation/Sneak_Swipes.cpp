@@ -26,9 +26,9 @@ namespace {
 			float hh_value = HighHeelManager::GetBaseHHOffset(giant)[2]/100;
 			float hh_offset = std::clamp(hh_value * 4.5f, 0.0f, 1.0f); // reach max HH at 0.22 offset (highest i've seen)
 		
-			giantref->SetGraphVariableFloat("GTS_HHoffset", hh_offset);
+			giant->SetGraphVariableFloat("GTS_HHoffset", hh_offset);
 		} else {
-			giantref->SetGraphVariableFloat("GTS_HHoffset", 0.0); // reset it
+			giant->SetGraphVariableFloat("GTS_HHoffset", 0.0); // reset it
 		}
 	}
 	void TriggerHandCollision_Right(Actor* actor, float power, float crush, float pushpower) {
