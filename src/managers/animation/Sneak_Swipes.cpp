@@ -21,8 +21,8 @@ using namespace Gts;
 
 namespace { 
 	void DisableCameraTracking(Actor* giant) {
-		ManageCamera(giant, true, 4.0); // right hand
-		ManageCamera(giant, true, 7.0); // left hand
+		ManageCamera(giant, false, 4.0); // right hand
+		ManageCamera(giant, false, 7.0); // left hand
 	}
 	void TriggerHandCollision_Right(Actor* actor, float power, float crush, float pushpower) {
 		std::string name = std::format("SwipeCollide_R_{}", actor->formID);
