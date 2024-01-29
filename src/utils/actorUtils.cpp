@@ -474,6 +474,12 @@ namespace Gts {
 		return GTSBusy;
 	}
 
+	bool CanDoCombo(Actor* actor) {
+		bool Combo;
+		actor->GetGraphVariableBool("GTS_CanCombo", Combo);
+		return Combo;
+	}
+
 	bool IsCameraEnabled(Actor* actor) {
 		bool Camera;
 		actor->GetGraphVariableBool("GTS_VoreCamera", Camera);

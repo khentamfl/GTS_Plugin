@@ -53,6 +53,7 @@ namespace Gts {
 	bool IsStomping(Actor* actor);
 	bool IsBeingEaten(Actor* tiny);
 	bool IsGtsBusy(Actor* actor);
+	bool CanDoCombo(Actor* actor);
 	bool IsCameraEnabled(Actor* actor);
 	bool IsCrawlVoring(Actor* actor);
 	bool IsButtCrushing(Actor* actor);
