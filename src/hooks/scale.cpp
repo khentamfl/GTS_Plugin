@@ -274,7 +274,7 @@ namespace Hooks {
 				// 39540 V
 				// 0x1406b0aab - 0x1406b0a00 = 0xAB
 				log::info("(14) FUN_1406b0a00 Hooked");
-				float result = FUN_1406b0a00(param_1) * 10.0;
+				float result = FUN_1406b0a00(param_1);
 				return result;
             }
         );
@@ -286,7 +286,7 @@ namespace Hooks {
 				// 39477  V
 				// 0x1406aa4d1 - 0x1406AA410 = 0xC1
 				log::info("(15) sub_1406AA410 Hooked");
-				float result = sub_1406AA410(param_1) * 10.0;
+				float result = sub_1406AA410(param_1);
 				return result;
             }
         );
@@ -304,7 +304,7 @@ namespace Hooks {
 			[](auto* param_1) {
 				// 38564
 				// 0x14065c552 - 0x14065c4a0 = 0xB2
-				float result = FUN_14065c4a0(param_1) * 10.0;
+				float result = FUN_14065c4a0(param_1);
 				log::info("(16) FUN_14065c4a0 Hooked");
 				return result;
             }
@@ -316,7 +316,7 @@ namespace Hooks {
 			[](auto* param_1) {
 				// 37752
 				// 0x14062e4d3 - 0x14062E390 = 0x143
-				float result = sub_14062E390(param_1) * 10.0;
+				float result = sub_14062E390(param_1);
 				log::info("(17) sub_14062E390 Hooked");
 				return result;
             }
@@ -366,7 +366,7 @@ namespace Hooks {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		static CallHook<float(TESObjectREFR* param_1)>Scale_AlterMovementSpeed(  // Seems to be movement speed alteration
+		static CallHook<float(TESObjectREFR* param_1)>Scale_AlterMovementSpeed(  // Movement speed alteration
 			REL::RelocationID(37013, 37013), REL::Relocate(0x1A, 0x1A),
 			[](auto* param_1) {
 				// sub_14060EEF0 : 37013
@@ -568,7 +568,7 @@ namespace Hooks {
         );
 		//^ Hook 35
 
-		static CallHook<float(TESObjectREFR* param_1)>GetScaledBoundSize_1405E1300_2(  // Probably affects distance
+		static CallHook<float(TESObjectREFR* param_1)>GetScaledBoundSize_1405E1300_2(  // Probably affects attack (?) distance
 			REL::RelocationID(36448, 36448), REL::Relocate(0x75, 0x75),
 			// 36448
 			// 0x1405e1375 - 0x1405E1300 = 0x75
@@ -629,7 +629,7 @@ namespace Hooks {
 			// 33678
 			// 0x1405513f0 - 0x1405513a0 = 0x50
 			[](auto* param_1) {
-				float result = FUN_1405513a0(param_1) * 10.0;
+				float result = FUN_1405513a0(param_1);
 				log::info("(40) FUN_1405513a0 Hooked");
 				return result;
             }
@@ -662,8 +662,9 @@ namespace Hooks {
 				// 31951
 				// 0x1404e6d29 - 0x1404E6B30 = 0x1F9
 				float result = sub_1404E6B30_1(param_1);
+				float Alter = affect_by_scale(param_1, result);
 				log::info("(42 - 1) sub_1404E6B30 Hooked");
-				return result;
+				return Alter;
             }
         );
 		//^ Hook 42
@@ -674,8 +675,9 @@ namespace Hooks {
 				// 31951
 				// 0x1404e6c0d - 0x1404E6B30 = 0xDD
 				float result = sub_1404E6B30_2(param_1);
+				float Alter = affect_by_scale(param_1, result);
 				log::info("(42 - 2) sub_1404E6B30 Hooked");
-				return result;
+				return Alter;
             }
         );
 		//^ Hook 43
@@ -687,8 +689,9 @@ namespace Hooks {
 				// 31951
 				// 0x1404e6b8b - 0x1404E6B30 = 0x5B
 				float result = sub_1404E6B30_3(param_1);
+				float Alter = affect_by_scale(param_1, result);
 				log::info("(42 - 3) sub_1404E6B30 Hooked");
-				return result;
+				return Alter;
             }
         );
 		//^ Hook 44
@@ -702,7 +705,7 @@ namespace Hooks {
 			[](auto* param_1) {
 				float result = sub_1404E6360(param_1);
 				float Adjust = affect_by_scale(param_1, result);
-				//log::info("(45) sub_1404E6360 Hooked");
+				log::info("(45) sub_1404E6360 Hooked");
 				return Adjust;
             }
         );
@@ -829,14 +832,14 @@ namespace Hooks {
         );
 		//^ Hook 54
 
-		static CallHook<float(TESObjectREFR* param_1)>sub_140239B20(       
+		static CallHook<float(TESObjectREFR* param_1)>sub_140239B20(       // supposedly applies on dealing damage
 			REL::RelocationID(17807, 17807), REL::Relocate(0x95, 0x95),
 			// 17807
-			// 0x140239bb5 - 0x140239B20 = 
+			// 0x140239bb5 - 0x140239B20 = 0x95
 			[](auto* param_1) {
 				float result = sub_140239B20(param_1);
 				log::info("(55) sub_140239B20 Hooked");
-				return result;
+				return result * 100;
             }
         );
 		//^ Hook 55
