@@ -55,7 +55,7 @@ namespace Hooks {
 			[](auto* graph, const auto& a_variableName, auto a_in) {
 				if (a_variableName == "VelocityZ") {
 					if (a_in < 0) {
-						log::info("Found Velocity: {}", a_in);
+						//log::info("Found Velocity: {}", a_in);
 						auto actor = skyrim_cast<Actor*>(graph);
 						if (actor) {
 							const float CRITICALHEIGHT = 9.70;
@@ -66,11 +66,11 @@ namespace Hooks {
 
 							float jump_factor = pow(CRITICALHEIGHT/newCriticalHeight,0.5);
 							if (actor->formID == 0x14) {
-								log::info("Multi velocity by factor: {}", jump_factor);
-								log::info("Actor: {}", actor->GetDisplayFullName());
+								//log::info("Multi velocity by factor: {}", jump_factor);
+								//log::info("Actor: {}", actor->GetDisplayFullName());
 							}
 							a_in *= jump_factor;
-							log::info(" new V: {}", a_in);
+							//log::info(" new V: {}", a_in);
 						}
 					}
 				}

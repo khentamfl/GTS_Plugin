@@ -944,13 +944,13 @@ namespace Gts {
 							float difference = giantScale / tinyScale;
 							float Threshold = GetStaggerThreshold(Cause);
 
-							int RagdollChance = rand() % 30 + 1.0;
-							bool roll = (RagdollChance <= (13.0 / Threshold) * difference);
-							log::info("Roll: {}, value: {}", roll, (13.0 / Threshold) * difference);
-							//eventually it becomes 100% chance to ragdoll an actor
+							int Random = rand() % 100 + 1;
+							int RagdollChance = (-16 + (32 / Threshold) * difference);
+							bool roll = RagdollChance > Random;
+							log::info("Roll: {}, RandomChance {}, Threshold: {}", roll, RagdollChance, Random);
+							//eventually it reaches 100% chance to ragdoll an actor (at ~x3.0 size difference)
 
-
-							if (difference > 1.50 && (roll || otherActor->IsDead())) {
+							if (difference > 1.25 && (roll || otherActor->IsDead())) {
 								PushTowards(giant, otherActor, node, pushForce * pushpower, true);
 							} else if (difference > 0.88 * Threshold) {
 								float push = std::clamp(0.25f * (difference - 0.25f), 0.25f, 1.0f);
