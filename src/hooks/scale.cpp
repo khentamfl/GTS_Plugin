@@ -116,12 +116,12 @@ namespace Hooks {
         );
 		//^ Hook 3 ( Uses it 2 times)
 
-		static CallHook<float(TESObjectREFR* param_1)>sub_1407BEB90( // Uses GetScale() 2 times
+		static CallHook<float(TESObjectREFR* param_1)>sub_1407BEB90_2( // Uses GetScale() 2 times
 			// 46068
 			// 0x1407bebce - 0x1407BEB90 = 0x3E
 			REL::RelocationID(46068, 46068), REL::Relocate(0x3E, 0x3E),
 			[](auto* param_1) {
-				float result = sub_1407BEB90(param_1);
+				float result = sub_1407BEB90_2(param_1);
 				log::info("(4) sub_1407BEB90_2 Hooked");
 				return result * 10;
             }
@@ -158,11 +158,11 @@ namespace Hooks {
             }
         );
 		//^ Hook 6 (uses it 2 times)
-		static CallHook<float(TESObjectREFR* param_1)>sub_1407BA9C0(    // May crash
+		static CallHook<float(TESObjectREFR* param_1)>sub_1407BA9C0_2(    // May crash
 			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0),
 			[](auto* param_1) {
-				float result = sub_1407BA9C0(param_1);
-				log::info("(7 - 6) sub_1407BA9C0_2 Hooked");
+				float result = sub_1407BA9C0_2(param_1);
+				log::info("(7 - 6) sub_1407BA9C0 Hooked");
 				return result;
             }
         );
