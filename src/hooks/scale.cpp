@@ -219,8 +219,8 @@ namespace Hooks {
 				// 43241
 				// 0x14076001e - 0x14075ffa0 = 0x7E
 				log::info("(11) FUN_14075ffa0 Hooked");
-				float result = FUN_14075ffa0(param_1) * 10.0;
-				return result;
+				float result = FUN_14075ffa0(param_1);
+				return result * 10;
             }
         );
 		//^ Hook 11
@@ -245,8 +245,8 @@ namespace Hooks {
 				// 41683
 				// 0x14071b261 - 0x14071b230 = 0x31
 				log::info("(13) FUN_14071b230 Hooked");
-				float result = FUN_14071b230(param_1) * 10.0;
-				return result;
+				float result = FUN_14071b230(param_1);
+				return result * 10;
             }
         );
 		//^ Hook 13
@@ -257,8 +257,8 @@ namespace Hooks {
 				// 39540
 				// 0x1406b0aab - 0x1406b0a00 = 0xAB
 				log::info("(14) FUN_1406b0a00 Hooked");
-				float result = FUN_1406b0a00(param_1) * 10.0;
-				return result;
+				float result = FUN_1406b0a00(param_1);
+				return result * 10;
             }
         );
 		//^ Hook 14
@@ -269,8 +269,8 @@ namespace Hooks {
 				// 39477
 				// 0x1406aa4d1 - 0x1406AA410 = 0xC1
 				log::info("(15) sub_1406AA410 Hooked");
-				float result = sub_1406AA410(param_1) * 10.0;
-				return result;
+				float result = sub_1406AA410(param_1);
+				return result * 10;
             }
         );
 
