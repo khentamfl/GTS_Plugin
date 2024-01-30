@@ -491,7 +491,7 @@ namespace Hooks {
 
 //-----------------------------------------------------------------------------------------------------------
 
-		static CallHook<float(TESObjectREFR* param_1)>sub_1405ED870_1(   // something player related
+		/*static CallHook<float(TESObjectREFR* param_1)>sub_1405ED870_1(   // something player related
 			REL::RelocationID(36595, 36595), REL::Relocate(0xDE, 0xDE),
 			[](auto* param_1) {
 				// 36595
@@ -512,7 +512,7 @@ namespace Hooks {
 				log::info("(30 - 2) sub_1405ED870 Hooked");
 				return result;
             }
-        );
+        );*/
 		//^ Hook 31
 //-----------------------------------------------------------------------------------------------------------
 
@@ -564,9 +564,10 @@ namespace Hooks {
 			// 36448
 			// 0x1405e13db - 0x1405E1300 = 0xDB
 			[](auto* param_1) {
-				float result = GetScaledBoundSize_1405E1300(param_1) * 25.0;
+				float result = GetScaledBoundSize_1405E1300(param_1);
+				float Alter = affect_by_scale(param_1, result);
 				log::info("(35 - 1) GetScaledBoundSize_1405E1300 Hooked");
-				return result;
+				return Alter;
             }
         );
 		//^ Hook 35
@@ -576,9 +577,10 @@ namespace Hooks {
 			// 36448
 			// 0x1405e1375 - 0x1405E1300 = 0x75
 			[](auto* param_1) {
-				float result = GetScaledBoundSize_1405E1300_2(param_1) * 25.0;
+				float result = GetScaledBoundSize_1405E1300_2(param_1);
+				float Alter = affect_by_scale(param_1, result);
 				log::info("(35 - 2) GetScaledBoundSize_1405E1300 Hooked");
-				return result;
+				return Alter;
             }
         );
 		//^ Hook 36
@@ -707,8 +709,8 @@ namespace Hooks {
 			// 0x1404e68ba - 0x1404E6360 = 0x55A
 			[](auto* param_1) {
 				float result = sub_1404E6360(param_1);
-				float Adjust = affect_by_scale(param_1, result);
-				log::info("(45) Hooked");
+				float Adjust = affect_by_scale(param_1, result) * 10;
+				//log::info("(45) Hooked");
 				return Adjust;
             }
         );
@@ -722,9 +724,10 @@ namespace Hooks {
 			// 29837
 			// 0x14047461a - 0x140474420 = 0x1FA
 			[](auto* param_1) {
-				float result = sub_140474420(param_1) * 10.0;
+				float result = sub_140474420(param_1);
 				log::info("(46 - 1) sub_140474420 Hooked");
-				return result;
+				float Adjust = affect_by_scale(param_1, result);
+				return Adjust;
             }
         );
 		//^ Hook 46
@@ -734,9 +737,10 @@ namespace Hooks {
 			// 29837
 			// 0x140474570 - 0x140474420 = 0x150
 			[](auto* param_1) {
-				float result = sub_140474420_2(param_1) * 10.0;
+				float result = sub_140474420_2(param_1);
 				log::info("(46 - 2) sub_140474420 Hooked");
-				return result;
+				float Adjust = affect_by_scale(param_1, result);
+				return Adjust;
             }
         );
 		//^ Hook 47
@@ -789,7 +793,7 @@ namespace Hooks {
 			// 19889
 			// 0x1402aa40c - 0x1402AA350 = 0xBC
 			[](auto* param_1) {
-				float result = sub_1402AA350(param_1) * 10.0;
+				float result = sub_1402AA350(param_1) * 50.0;
 				log::info("(51) sub_1402AA350 Hooked");
 				return result;
             }
@@ -803,7 +807,7 @@ namespace Hooks {
 			// 19866
 			// 0x1402a97ee - 0x1402A9740 = 0xAE
 			[](auto* param_1) {
-				float result = sub_1402A9740(param_1) * 10.0;
+				float result = sub_1402A9740(param_1) * 50.0;
 				log::info("(52) sub_1402A9740 Hooked");
 				return result;
             }
@@ -823,12 +827,12 @@ namespace Hooks {
         );
 		//^ Hook 53
 
-		static CallHook<float(TESObjectREFR* param_1)>FUN_140278070(        
+		static CallHook<float(TESObjectREFR* param_1)>FUN_140278070(          // seems to be applied on save load
 			REL::RelocationID(18836, 18836), REL::Relocate(0x20E, 0x20E),
 			// 18836
 			// 0x14027827e - 0x140278070 = 0x20E
 			[](auto* param_1) {
-				float result = FUN_140278070(param_1) * 100;
+				float result = FUN_140278070(param_1) * 20;
 				log::info("(54) FUN_140278070 Hooked");
 				return result;
             }
@@ -840,7 +844,7 @@ namespace Hooks {
 			// 17807
 			// 0x140239bb5 - 0x140239B20 = 0x95
 			[](auto* param_1) {
-				float result = sub_140239B20(param_1) * 10.0;
+				float result = sub_140239B20(param_1) * 25;
 				//log::info("(55) sub_140239B20 Hooked");
 				return result;
             }
@@ -910,12 +914,12 @@ namespace Hooks {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		static CallHook<float(TESObjectREFR* param_1)>sub_140220CA0(       
+		static CallHook<float(TESObjectREFR* param_1)>sub_140220CA0(        // seems to be called during save load only
 			REL::RelocationID(17259, 17259), REL::Relocate(0x60, 0x60),
 			// 17259
 			// 0x140220d00 - 0x140220CA0 = 0x60
 			[](auto* param_1) {
-				float result = sub_140220CA0(param_1) * 10.0;
+				float result = sub_140220CA0(param_1) * 25;
 				log::info("(60) sub_140220CA0");
 				return result;
             }
@@ -940,7 +944,7 @@ namespace Hooks {
 			// 17206
 			// 0x14021eda9 - 0x14021ecb0 = 0xF9
 			[](auto* param_1) {
-				float result = UndefinedFunction_14021ecb0(param_1);
+				float result = UndefinedFunction_14021ecb0(param_1) * 50;
 				log::info("(62) UndefinedFunction_14021ecb0");
 				return result;
             }
