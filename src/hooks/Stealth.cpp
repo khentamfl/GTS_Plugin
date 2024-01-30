@@ -93,11 +93,11 @@ namespace Hooks {
             //  0x1405fda87 - 0x1405FD870 = 0x217 (line ~150)
             //  altering Character::GetHeading_1405FD780
 			[](auto* giant, auto* param_1) {
-				log::info("-- Heading 3 Result for {}", giant->GetDisplayFullName());
+				//log::info("-- Heading 3 Result for {}", giant->GetDisplayFullName());
                 float result = CalculateHeading_var3(giant, param_1);
-                log::info("-------Heading 3 Result: {}", result);
+                //log::info("-------Heading 3 Result: {}", result);
                 result *= modify_detection(result);
-                log::info("-------Heading 3 Result Post: {}", result);
+                //log::info("-------Heading 3 Result Post: {}", result);
 				return result;
             }
         );
