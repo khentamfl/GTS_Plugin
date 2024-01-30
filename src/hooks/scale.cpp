@@ -876,12 +876,12 @@ namespace Hooks {
 
 //-----------------------------------------------------------------------------------------------------------
 */
-		static CallHook<float(TESObjectREFR* param_1)>LoadGraphics_140220DD0(       
+		/*static CallHook<float(TESObjectREFR* param_1)>LoadGraphics_140220DD0(       
 			REL::RelocationID(17260, 17260), REL::Relocate(0x1FC, 0x1FC),
 			// 17260
 			// 0x140220fcc - 0x140220DD0 = 0x1FC
 			[](auto* param_1) {
-				float result = LoadGraphics_140220DD0(param_1) * 10.0;
+				float result = LoadGraphics_140220DD0(param_1);
 				log::info("(58 - 1) LoadGraphics_140220DD0 Hooked");
 				return result;
             }
@@ -893,12 +893,12 @@ namespace Hooks {
 			// 17260
 			// 0x140220f89 - 0x140220DD0 = 0x1B9
 			[](auto* param_1) {
-				float result = LoadGraphics_140220DD0_2(param_1) * 10.0;
+				float result = LoadGraphics_140220DD0_2(param_1);
 				log::info("(58 - 2) LoadGraphics_140220DD0 Hooked");
 				return result;
             }
         );
-		//^ Hook 59
+		//^ Hook 59*/
 //-----------------------------------------------------------------------------------------------------------		
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
