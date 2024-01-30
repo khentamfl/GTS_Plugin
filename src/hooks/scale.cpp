@@ -307,7 +307,7 @@ namespace Hooks {
 			[](auto* param_1) {
 				// 37588
 				// 0x140623f7b - 0x140623F10 = 0x6B
-				float result = sub_140623F10(param_1);
+				float result = sub_140623F10(param_1) * 10.0;
 				log::info("(18) sub_140623F10 Hooked");
 				return result;
             }
@@ -319,7 +319,7 @@ namespace Hooks {
 			[](auto* param_1) {
 				// 37323
 				// 0x1406191be - 0x140619040 = 0x17E
-				float result = sub_140619040(param_1);
+				float result = sub_140619040(param_1) * 10.0;
 				log::info("(19) sub_140619040 Hooked");
 				return result;
             }
@@ -331,7 +331,7 @@ namespace Hooks {
 			[](auto* param_1) {
 				// 37129
 				// 0x140615054 - 0x140615030 = 0x24
-				float result = FUN_140615030(param_1);
+				float result = FUN_140615030(param_1) * 10.0;
 				log::info("(20) FUN_140615030 Hooked");
 				return result;
             }
