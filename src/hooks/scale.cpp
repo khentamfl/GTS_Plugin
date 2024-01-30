@@ -916,7 +916,7 @@ namespace Hooks {
 		//^ Hook 60
 
 		static CallHook<float(TESObjectREFR* param_1)>sub_140220A30(       // something TESForm related, probably damage
-			REL::RelocationID(36758, 36758), REL::Relocate(0x53, 0x53),
+			REL::RelocationID(17256, 17256), REL::Relocate(0x53, 0x53),
 			// 17256
 			// 0x140220a83 - 0x140220A30 = 0x53
 			[](auto* param_1) {
