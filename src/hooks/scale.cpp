@@ -568,12 +568,12 @@ namespace Hooks {
         );
 		//^ Hook 35
 
-		static CallHook<float(TESObjectREFR* param_1)>GetScaledBoundSize_1405E1300(  // may crash
+		static CallHook<float(TESObjectREFR* param_1)>GetScaledBoundSize_1405E1300_2(  // may crash
 			REL::RelocationID(36448, 36448), REL::Relocate(0x75, 0x75),
 			// 36448
 			// 0x1405e1375 - 0x1405E1300 = 0x75
 			[](auto* param_1) {
-				float result = GetScaledBoundSize_1405E1300(param_1) * 10.0;
+				float result = GetScaledBoundSize_1405E1300_2(param_1) * 10.0;
 				log::info("(35 - 2) GetScaledBoundSize_1405E1300 Hooked");
 				return result;
             }
