@@ -451,7 +451,7 @@ namespace Hooks {
 				// 36841
                 // 0x140601ba8 - 0x140601B50 = 0x58
 				float result = sub_140601B50(param_1) * 10.0;
-				//log::info("(27) sub_140601B50 Hooked");
+				log::info("(27) sub_140601B50 Hooked");
 				return result;
             }
         );
@@ -748,7 +748,7 @@ namespace Hooks {
 			// 0x140359a95 - 0x140359960 = 0x135
 			[](auto* param_1) {
 				float result = sub_140359960(param_1);
-				//log::info("(48) sub_140359960 Hooked");
+				log::info("(48) sub_140359960 Hooked");
 				return result;
             }
         );
@@ -803,12 +803,12 @@ namespace Hooks {
             }
         );
 		//^ Hook 52
-
-		/* <<<<<<<<<<< DISABLED HERE	
+	
 
 		static CallHook<float(TESObjectREFR* param_1)>InitializeAfterAllFormsAreReadFromFile_1402850E0(        // Probably dangerous to alter
-			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0),
-			// 1402853e5
+			REL::RelocationID(19105, 19105), REL::Relocate(0x305, 0x305),
+			// 19105
+			// 0x1402853e5 - 0x1402850E0 = 0x305
 			[](auto* param_1) {
 				float result = InitializeAfterAllFormsAreReadFromFile_1402850E0(param_1);
 				log::info("(53) InitializeAfterAllFormsAreReadFromFile_1402850E0 Hooked");
@@ -818,8 +818,9 @@ namespace Hooks {
 		//^ Hook 53
 
 		static CallHook<float(TESObjectREFR* param_1)>FUN_140278070(        
-			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0),
-			// 14027827e
+			REL::RelocationID(18836, 18836), REL::Relocate(0x20E, 0x20E),
+			// 18836
+			// 0x14027827e - 0x140278070 = 0x20E
 			[](auto* param_1) {
 				float result = FUN_140278070(param_1);
 				log::info("(54) FUN_140278070 Hooked");
@@ -829,8 +830,9 @@ namespace Hooks {
 		//^ Hook 54
 
 		static CallHook<float(TESObjectREFR* param_1)>sub_140239B20(       
-			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0),
-			// 140239bb5
+			REL::RelocationID(17807, 17807), REL::Relocate(0x95, 0x95),
+			// 17807
+			// 0x140239bb5 - 0x140239B20 = 
 			[](auto* param_1) {
 				float result = sub_140239B20(param_1);
 				log::info("(55) sub_140239B20 Hooked");
@@ -845,7 +847,7 @@ namespace Hooks {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------------------------------------------------
-		static CallHook<float(TESObjectREFR* param_1)>Clone3D_140222410(       // Probably a bad idea to hook it in general
+		/*static CallHook<float(TESObjectREFR* param_1)>Clone3D_140222410(       // Probably a bad idea to hook it in general
 			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0),
 			// 140222642
 			[](auto* param_1) {
@@ -864,7 +866,7 @@ namespace Hooks {
 				log::info("(56 - 2) Clone3D_140222410 Hooked");
 				return result;
             }
-        );
+        );*/
 		//^ Hook 57
 //-----------------------------------------------------------------------------------------------------------		
 		
@@ -875,7 +877,6 @@ namespace Hooks {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------------------------------------------------
-*/
 		/*static CallHook<float(TESObjectREFR* param_1)>LoadGraphics_140220DD0(       
 			REL::RelocationID(17260, 17260), REL::Relocate(0x1FC, 0x1FC),
 			// 17260
