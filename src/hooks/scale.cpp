@@ -438,7 +438,7 @@ namespace Hooks {
 			[](auto* param_1) {
 				// 36842
 				// 0x140601c64 - 0x140601C20 = 0x44
-				float result = sub_140601C20(param_1) * 10.0;
+				float result = sub_140601C20(param_1);
 				//log::info("(26) sub_140601C20 Hooked");
 				return result;
             }
@@ -450,7 +450,7 @@ namespace Hooks {
 			[](auto* param_1) {
 				// 36841
                 // 0x140601ba8 - 0x140601B50 = 0x58
-				float result = sub_140601B50(param_1) * 10.0;
+				float result = sub_140601B50(param_1);
 				log::info("(27) sub_140601B50 Hooked");
 				return result;
             }
@@ -462,7 +462,7 @@ namespace Hooks {
 			[](auto* param_1) {
 				// 36838
 				// 0x140601902 - 0x1406018a0 = 0x62
-				float result = UndefinedFunction_1406018a0(param_1) * 10.0;
+				float result = UndefinedFunction_1406018a0(param_1);
 				log::info("(28) UndefinedFunction_1406018a0 Hooked");
 				return result;
             }
@@ -474,7 +474,7 @@ namespace Hooks {
 			[](auto* param_1) {
 				// 36628
 				// 0x1405f1f4c - 0x1405F1DE0 = 0x16C
-				float result = sub_1405F1DE0(param_1) * 10.0;
+				float result = sub_1405F1DE0(param_1);
 				log::info("(29) sub_1405F1DE0 Hooked");
 				return result;
             }
@@ -825,7 +825,7 @@ namespace Hooks {
 			// 18836
 			// 0x14027827e - 0x140278070 = 0x20E
 			[](auto* param_1) {
-				float result = FUN_140278070(param_1);
+				float result = FUN_140278070(param_1) * 100;
 				log::info("(54) FUN_140278070 Hooked");
 				return result;
             }
@@ -837,9 +837,9 @@ namespace Hooks {
 			// 17807
 			// 0x140239bb5 - 0x140239B20 = 0x95
 			[](auto* param_1) {
-				float result = sub_140239B20(param_1);
-				log::info("(55) sub_140239B20 Hooked");
-				return result * 100;
+				float result = sub_140239B20(param_1) * 10.0;
+				//log::info("(55) sub_140239B20 Hooked");
+				return result;
             }
         );
 		//^ Hook 55
@@ -925,6 +925,7 @@ namespace Hooks {
 			// 0x140220a83 - 0x140220A30 = 0x53
 			[](auto* param_1) {
 				float result = sub_140220A30(param_1);
+				float Alter = affect_by_scale(param_1, result);
 				log::info("(61) sub_140220A30");
 				return result;
             }
