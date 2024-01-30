@@ -38,6 +38,14 @@ using namespace SKSE;
 //      ^ 50179
 
 namespace {
+	float affect_by_scale(TESObjectREFR* ref, float original) {
+		Actor* giant = skyrim_cast<Actor*>(ref);
+		if (giant) {
+			float scale = get_giantess_scale(giant);
+			return scale;
+		}
+		return original;
+	}
 	float camera_getplayersize() {
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
@@ -326,23 +334,27 @@ namespace Hooks {
         );
 		//^ Hook 19
 
-		static CallHook<float(TESObjectREFR* param_1)>FUN_140615030(
+		static CallHook<float(TESObjectREFR* param_1)>Alter_Headtracking(  /// HEADTRACKING HOOK!
 			REL::RelocationID(37129, 37129), REL::Relocate(0x24, 0x24),
 			[](auto* param_1) {
 				// 37129
 				// 0x140615054 - 0x140615030 = 0x24
-				float result = FUN_140615030(param_1) * 10.0;
+				// FUN_140615030
+				float result = Alter_Headtracking(param_1);
+				float Alter = affect_by_scale(param_1, result);
 				log::info("(20) FUN_140615030 Hooked");
-				return result;
+				return Alter;
             }
         );
-		/*    -<<<<<<<<<< DISABLED HERE
 		//^ Hook 20
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		static CallHook<float(TESObjectREFR* param_1)>sub_14060EEF0(
-			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0),
+			REL::RelocationID(37013, 37013), REL::Relocate(0x1A, 0x1A),
 			[](auto* param_1) {
-				float result = sub_14060EEF0(param_1);
+				// 37013
+				// 0x14060ef0a - 0x14060EEF0 = 0x1A
+				float result = sub_14060EEF0(param_1) * 10.0;
 				log::info("(21) sub_14060EEF0 Hooked");
 				return result;
             }
@@ -350,9 +362,11 @@ namespace Hooks {
 		//^ Hook 21
 
 		static CallHook<float(TESObjectREFR* param_1)>Func7_140609D50( // Something AnimationGraphManager related
-			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0),
+			REL::RelocationID(36957, 36957), REL::Relocate(0xBD, 0xBD),
 			[](auto* param_1) {
-				float result = Func7_140609D50(param_1);
+				// 36957
+				// 0x140609e0d - 0x140609D50 = 0xBD
+				float result = Func7_140609D50(param_1) * 10.0;
 				log::info("(22) Func7_140609D50 Hooked");
 				return result;
             }
@@ -360,19 +374,23 @@ namespace Hooks {
 		//^ Hook 22
 
 		static CallHook<float(TESObjectREFR* param_1)>GetEyeHeight_140601E40(  // Get Eye Height
-			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0),
+			REL::RelocationID(36845, 36845), REL::Relocate(0x71, 0x71),
 			[](auto* param_1) {
-				float result = GetEyeHeight_140601E40(param_1);
+				// 36845
+				// 0x140601eb1 - 0x140601E40 = 0x71
+				float result = GetEyeHeight_140601E40(param_1) * 10.0;
 				log::info("(23) GetEyeHeight_140601E40 Hooked");
 				return result;
             }
         );
 		//^ Hook 23
 
-		static CallHook<float(TESObjectREFR* param_1)>sub_140601D80(  // Get Eye Height
-			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0),
+		static CallHook<float(TESObjectREFR* param_1)>sub_140601D80(
+			REL::RelocationID(36844, 36844), REL::Relocate(0x47, 0x47),
 			[](auto* param_1) {
-				float result = sub_140601D80(param_1);
+				// 36844
+				// 0x140601dc7 - 0x140601D80 = 0x47
+				float result = sub_140601D80(param_1) * 10.0;
 				log::info("(24) sub_140601D80 Hooked");
 				return result;
             }
@@ -380,13 +398,16 @@ namespace Hooks {
 		//^ Hook 24
 
 		static CallHook<float(TESObjectREFR* param_1)>sub_140601CD0(
-			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0),
+			REL::RelocationID(36843, 36843), REL::Relocate(0x44, 0x44),
 			[](auto* param_1) {
-				float result = sub_140601CD0(param_1);
+				// 36843
+				// 0x140601d14 - 0x140601CD0 = 0x44
+				float result = sub_140601CD0(param_1) * 10.0;
 				log::info("(25) sub_140601CD0 Hooked");
 				return result;
             }
         );
+		/*    -<<<<<<<<<< DISABLED HERE
 		//^ Hook 25
 
 		static CallHook<float(TESObjectREFR* param_1)>sub_140601C20(

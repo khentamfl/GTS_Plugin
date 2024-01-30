@@ -42,9 +42,11 @@ namespace Hooks
 		Hook_Sinking::Hook(trampoline);
 		Hook_Jumping::Hook(trampoline);
 		Hook_Damage::Hook(trampoline);
-
-		Hook_Scale::Hook(trampoline);
-		Hook_Stealth::Hook(trampoline);
+		
+		if (REL::Module::IsSE()) {
+			Hook_Scale::Hook(trampoline);
+			Hook_Stealth::Hook(trampoline);
+		}
 		//Hook_ActorRotation::Hook(trampoline);
 		HookCameraStates();
 
