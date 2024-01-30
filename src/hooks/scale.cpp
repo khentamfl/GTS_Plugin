@@ -915,20 +915,20 @@ namespace Hooks {
         );
 		//^ Hook 60
 
-		/*static CallHook<float(TESObjectREFR* param_1)>sub_140220A30(       // something TESForm related, probably damage
+		static CallHook<float(TESObjectREFR* param_1)>sub_140220A30(       // something TESForm related, probably damage
 			REL::RelocationID(17256, 17256), REL::Relocate(0x53, 0x53),      // probably leads to crashes
 			// 17256
 			// 0x140220a83 - 0x140220A30 = 0x53
 			[](auto* param_1) {
-				float result = sub_140220A30(param_1) * 30.0;
+				float result = sub_140220A30(param_1);
 				log::info("(61) sub_140220A30");
 				return result;
             }
-        );*/
+        );
 		//^ Hook 61
 		
 
-		/*static CallHook<float(TESObjectREFR* param_1)>UndefinedFunction_14021ecb0(
+		static CallHook<float(TESObjectREFR* param_1)>UndefinedFunction_14021ecb0(
 			REL::RelocationID(17206, 17206), REL::Relocate(0xF9, 0xF9),
 			// 17206
 			// 0x14021eda9 - 0x14021ecb0 = 0xF9
@@ -937,7 +937,7 @@ namespace Hooks {
 				log::info("(62) UndefinedFunction_14021ecb0");
 				return result;
             }
-        );*/
+        );
 		//^ Hook 62
 
 		static CallHook<float(TESObjectREFR* param_1)>FUN_1401aa570(
