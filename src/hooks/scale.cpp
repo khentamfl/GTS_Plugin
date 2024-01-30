@@ -438,7 +438,7 @@ namespace Hooks {
 			[](auto* param_1) {
 				// 36842
 				// 0x140601c64 - 0x140601C20 = 0x44
-				float result = sub_140601C20(param_1);
+				float result = sub_140601C20(param_1) * 30;
 				//log::info("(26) sub_140601C20 Hooked");
 				return result;
             }
@@ -833,7 +833,7 @@ namespace Hooks {
 		//^ Hook 54
 
 		static CallHook<float(TESObjectREFR* param_1)>sub_140239B20(       // supposedly applies on dealing damage
-			REL::RelocationID(17807, 17807), REL::Relocate(0x95, 0x95),
+			REL::RelocationID(17807, 17807), REL::Relocate(0x95, 0x95),   // Called almost every frame which is weird, yet does nothing.
 			// 17807
 			// 0x140239bb5 - 0x140239B20 = 0x95
 			[](auto* param_1) {
@@ -927,7 +927,7 @@ namespace Hooks {
 				float result = sub_140220A30(param_1);
 				float Alter = affect_by_scale(param_1, result);
 				log::info("(61) sub_140220A30");
-				return result;
+				return Alter;
             }
         );
 		//^ Hook 61
