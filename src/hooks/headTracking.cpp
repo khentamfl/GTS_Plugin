@@ -5,32 +5,15 @@
 using namespace RE;
 using namespace SKSE;
 
-namespace {
-	void SetHeadtrackTargetImpl(Actor* actor, NiPoint3& target) {
-		if (!actor) {
-			return;
-		}
-		if (IsHeadtracking(actor)) { // Needed to fix TDM bugs with deforming Meshes of Actors when we lock onto someone
-			return;
-		}
-		// log::info("Actor: {}", actor->GetDisplayFullName());
-		auto headPos = actor->GetLookingAtLocation();
-		// log::info("headPos: {}", Vector2Str(headPos));
-		auto model = actor->Get3D();
-		if (!model) {
-			return;
-		}
-		auto trans = model->world;
-		auto transInv = trans.Invert();
-		auto scale = get_visual_scale(actor);
 
-		// log::info("headPos (local): {}", Vector2Str(transInv*headPos));
-		auto unscaledHeadPos = trans * (transInv*headPos * (1.0/scale));
-		// log::info("unscaledHeadPos: {}", Vector2Str(unscaledHeadPos));
-		// log::info("unscaledHeadPos (local): {}", Vector2Str(transInv*headPos));
-		auto direction = target - headPos;
-		// log::info("direction: {}", Vector2Str(direction));
-		target = unscaledHeadPos + direction;
+namespace {
+	float affect_by_scale(TESObjectREFR* ref, float original) {
+		Actor* giant = skyrim_cast<Actor*>(ref);
+		if (giant) {
+			float scale = get_giantess_scale(giant);
+			return scale;
+		}
+		return original;
 	}
 }
 
@@ -38,29 +21,29 @@ namespace Hooks
 {
 
 	void Hook_HeadTracking::Hook(Trampoline& trampoline) {
-		static FunctionHook<void(AIProcess* a_this, Actor* a_owner, NiPoint3& a_targetPosition)> SetHeadtrackTarget(RELOCATION_ID(38850, 39887),
-				[](auto* a_this, auto* a_owner, auto& a_targetPosition) {
-				SetHeadtrackTargetImpl(a_owner, a_targetPosition);
-				SetHeadtrackTarget(a_this, a_owner, a_targetPosition);
-				return;
-			}
-		);
+		static CallHook<float(TESObjectREFR* param_1)>Alter_Headtracking( 
+			REL::RelocationID(37129, 37129), REL::Relocate(0x24, 0x24),
+			[](auto* param_1) {
+				// 37129
+				// 0x140615054 - 0x140615030 = 0x24
+				// FUN_140615030
+				float result = Alter_Headtracking(param_1);
+				float Alter = affect_by_scale(param_1, result);
+				//log::info("(20) Alter_Headtracking Hooked");
+				return Alter;
+            }
+        );
 
-		/*static FunctionHook<float(Actor* actor)> GetEyeHeight_140601E40(
-			REL::RelocationID(36845, 36845), // It works but very rarely, not reliable.
-			[](auto* actor){
-				float result = GetEyeHeight_140601E40(actor);
-				if (actor) {
-					if (actor->formID == 0x14 || IsTeammate(actor)) {
-						float scale = get_visual_scale(actor);
-						log::info("Unscaled Eye Height of {} is {}", actor->GetDisplayFullName(), result);
-						result *= scale;
-						log::info("Scaled Eye Height of {} is {}, scale: {}", actor->GetDisplayFullName(), result, scale);
-					}
-				}
-				log::info("EyeHeight hook is working");
-				return result;
-			}
-		);*/
+		static CallHook<float(TESObjectREFR* param_1)>GetEyeHeight_140601E40(  // Get Eye Height, rarely called
+			REL::RelocationID(36845, 36845), REL::Relocate(0x71, 0x71),
+			[](auto* param_1) {
+				// 36845
+				// 0x140601eb1 - 0x140601E40 = 0x71
+				float result = GetEyeHeight_140601E40(param_1);
+				float Alter = affect_by_scale(param_1, result);
+				log::info("(23) GetEyeHeight_140601E40 Hooked");
+				return Alter;
+            }
+        );
 	}
 }

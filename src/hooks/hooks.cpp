@@ -10,6 +10,7 @@
 #include "hooks/hkbBehaviorGraph.hpp"
 #include "hooks/cameraState.hpp"
 #include "hooks/playerCamera.hpp"
+#include "hooks/Movement.hpp"
 #include "hooks/playerCharacter.hpp"
 #include "hooks/actor.hpp"
 #include "hooks/character.hpp"
@@ -33,7 +34,6 @@ namespace Hooks
 		Hook_BGSImpactManager::Hook();
 		Hook_VM::Hook();
 		Hook_Havok::Hook(trampoline);
-											//Hook_HeadTracking::Hook(trampoline);
 		//Hook_MagicTarget::Hook();
 		Hook_hkbBehaviorGraph::Hook();
 		Hook_PlayerCharacter::Hook();
@@ -43,9 +43,11 @@ namespace Hooks
 		Hook_Jumping::Hook(trampoline);
 		Hook_Damage::Hook(trampoline);
 		
-		if (REL::Module::IsSE()) {
+		if (REL::Module::IsSE()) { // Not RE'd for AE for now
 			Hook_Scale::Hook(trampoline);
 			Hook_Stealth::Hook(trampoline);
+			Hook_Movement::Hook(trampoline);
+			Hook_HeadTracking::Hook(trampoline);
 		}
 		//Hook_ActorRotation::Hook(trampoline);
 		HookCameraStates();
