@@ -502,8 +502,8 @@ namespace Hooks {
 				return result;
             }
         );
-		//^ Hook 39*/
-
+		//^ Hook 39
+		
 		static CallHook<float(TESObjectREFR* param_1)>FUN_1405513a0(   // Possible headtracking? angle stuff
 			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0),
 			// 1405513f0
@@ -814,6 +814,10 @@ namespace Hooks {
             }
         );
 		//^ Hook 66
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 		/*static CallHook<float(Actor* param_1, uintptr_t param_2,uintptr_t param_3,uintptr_t param_4, uintptr_t param_5,
 			uintptr_t param_6, uintptr_t param_7, uintptr_t param_8, uintptr_t param_9, uintptr_t param_10)>CalculateDetection_1405FD870(
