@@ -53,9 +53,9 @@ namespace Hooks {
 			[](auto* giant) {
 				float result = CalculateFootstepDetection_1405FD870_5D0(giant); // Makes footsteps lounder for AI, works nicely so far
 				if (giant->formID == 0x14 || IsTeammate(giant)) {
-					log::info("Hook Weight Result for {} is {}", giant->GetDisplayFullName(), result);
+					//log::info("Hook Weight Result for {} is {}", giant->GetDisplayFullName(), result);
 					float alter = modify_footstep_detection(giant, result);
-					log::info("New result: {}", alter);
+					//log::info("New result: {}", alter);
 					result = alter;
 				}
 				return result;
@@ -79,11 +79,11 @@ namespace Hooks {
             //  0x1405fe19d - 0x1405FD870 = 0x92D (line 370)
             //  altering Character::GetHeading_1405FD780
 			[](auto* giant, auto* param_1) {
-				log::info("-- Heading_2 Result for {}", giant->GetDisplayFullName());
+				//log::info("-- Heading_2 Result for {}", giant->GetDisplayFullName());
                 float result = CalculateHeading_var2(giant, param_1);
-                log::info("-------Heading_2 Result: {}", CalculateHeading_var2(giant, param_1));
+               // log::info("-------Heading_2 Result: {}", CalculateHeading_var2(giant, param_1));
                 result *= modify_detection(result);
-                log::info("-------Heading_2 Result Alter: {}", CalculateHeading_var2(giant, param_1));
+                //log::info("-------Heading_2 Result Alter: {}", CalculateHeading_var2(giant, param_1));
 				return CalculateHeading_var2(giant, param_1);
             }
         );
