@@ -903,7 +903,7 @@ namespace Hooks {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		/static CallHook<float(TESObjectREFR* param_1)>sub_140220CA0(       
+		static CallHook<float(TESObjectREFR* param_1)>sub_140220CA0(       
 			REL::RelocationID(17259, 17259), REL::Relocate(0x60, 0x60),
 			// 17259
 			// 0x140220d00 - 0x140220CA0 = 0x60
