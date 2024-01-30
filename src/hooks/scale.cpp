@@ -920,14 +920,13 @@ namespace Hooks {
 		//^ Hook 60
 
 		static CallHook<float(TESObjectREFR* param_1)>sub_140220A30(       // something TESForm related, probably damage
-			REL::RelocationID(17256, 17256), REL::Relocate(0x53, 0x53),      // probably leads to crashes
+			REL::RelocationID(17256, 17256), REL::Relocate(0x53, 0x53),    //  leads to crashe on save load if we alter it.
 			// 17256
 			// 0x140220a83 - 0x140220A30 = 0x53
 			[](auto* param_1) {
 				float result = sub_140220A30(param_1);
-				float Alter = affect_by_scale(param_1, result);
 				log::info("(61) sub_140220A30");
-				return Alter;
+				return result;
             }
         );
 		//^ Hook 61
