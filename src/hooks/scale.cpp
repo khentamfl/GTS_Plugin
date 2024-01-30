@@ -757,9 +757,9 @@ namespace Hooks {
 		static CallHook<float(TESObjectREFR* param_1)>ModScale_1402F4710(
 			REL::RelocationID(21586, 21586), REL::Relocate(0x5D, 0x5D),
 			// 21586
-			// 0x1402f476d - 0x1402F4710 = 
+			// 0x1402f476d - 0x1402F4710 = 0x5D
 			[](auto* param_1) {
-				float result = ModScale_1402F4710(param_1) * 10.0;
+				float result = ModScale_1402F4710(param_1);
 				log::info("(49) ModScale_1402F4710 Hooked");
 				return result;
             }
@@ -771,7 +771,7 @@ namespace Hooks {
 			// 20971
 			// 0x1402d4f18 - 0x1402D4EC0 = 0x58
 			[](auto* param_1) {
-				float result = GetScale_1402D4EC0(param_1) * 10.0;
+				float result = GetScale_1402D4EC0(param_1);
 				log::info("(50) GetScale_1402D4EC0 Hooked");
 				return result;
             }
