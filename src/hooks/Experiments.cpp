@@ -74,12 +74,15 @@ namespace {
 
 namespace Hooks {
 
-	void Hook_Scale::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
+	void Hook_Experiments::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
 
 		static CallHook<float(TESObjectREFR* param_1)>FUN_14080d560(        // rarely called             
 			REL::RelocationID(48146, 48146), REL::Relocate(0x10D, 0x10D),
 			// 48146
 			// 0x14080d66d - 0x14080d560 = 0x10D
+			//  AE
+			// 
+			// FUN_140838890 ???
 			[](auto* param_1) {
 				float result = FUN_14080d560(param_1);
 				log::info("(0) FUN_14080d560 Hooked");
@@ -119,7 +122,7 @@ namespace Hooks {
 			[](auto* param_1) {
 				float result = sub_1407BEB90(param_1);
 				log::info("(3 - 1) sub_1407BEB90_1 Hooked"); // not sure what they do, seem to be called rarely
-				return result * 10;
+				return result;
             }
         );
 		//^ Hook 3 ( Uses it 2 times)
@@ -131,7 +134,7 @@ namespace Hooks {
 			[](auto* param_1) {
 				float result = sub_1407BEB90_2(param_1);
 				log::info("(3 - 2) sub_1407BEB90_2 Hooked");
-				return result * 10;
+				return result;
             }
         );
 		//^ Hook 4 ( Second part of hook above)
@@ -140,8 +143,8 @@ namespace Hooks {
 
 
 
-		static CallHook<float(TESObjectREFR* param_1)>sub_1407BAB40(     // Seems to work after hitting someone/when we're detected. Disabling hostile actor stops prints.
-			REL::RelocationID(46018, 46018), REL::Relocate(0x15, 0x15), 
+		/*static CallHook<float(TESObjectREFR* param_1)>sub_1407BAB40(     // Seems to work after hitting someone/when we're detected. Disabling hostile actor stops prints.
+			REL::RelocationID(46018, 46018), REL::Relocate(0x15, 0x15),   // USED INSIDE MOVEMENT.CPP
 			// 46018
 			// 0x1407bab55 - 0x1407BAB40 = 0x15
 			[](auto* param_1) {
@@ -149,7 +152,7 @@ namespace Hooks {
 				//log::info("(5) sub_1407BAB40 Hooked");	
 				return result * 10;
             }
-        ); 
+        ); */
 
 		//^ Hook 5
 
@@ -161,25 +164,25 @@ namespace Hooks {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------------------------------------------------
-		static CallHook<float(TESObjectREFR* param_1)>sub_1407BA9C0(     // May crash
+		static CallHook<float(TESObjectREFR* param_1)>sub_1407BA9C0(     // Not sure that it works at all
 			REL::RelocationID(46015, 46015), REL::Relocate(0x9C, 0x9C),
 			// 46015
 			// 0x1407baa5c - 0x1407BA9C0 = 0x9C
 			[](auto* param_1) {
 				float result = sub_1407BA9C0(param_1);
 				log::info("(6 - 1) sub_1407BA9C0_1 Hooked");
-				return result * 10;
+				return result;
             }
         );
 		//^ Hook 6 
-		static CallHook<float(TESObjectREFR* param_1)>sub_1407BA9C0_2(    // May crash
+		static CallHook<float(TESObjectREFR* param_1)>sub_1407BA9C0_2(    // Not sure that it works at all
 			REL::RelocationID(46015, 46015), REL::Relocate(0x57, 0x57),
 			[](auto* param_1) {
 				// 46015
 				// 0x1407baa17 - 0x1407BA9C0 = 0x57
 				float result = sub_1407BA9C0_2(param_1);
 				log::info("(6 - 2) sub_1407BA9C0 Hooked");
-				return result * 10;
+				return result;
             }
         );
 		//^ Hook 7 
@@ -188,25 +191,25 @@ namespace Hooks {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	
-		static CallHook<float(TESObjectREFR* param_1)>sub_1407BA910(            // May Crash
+		static CallHook<float(TESObjectREFR* param_1)>sub_1407BA910(        
 			REL::RelocationID(46014, 46014), REL::Relocate(0x94, 0x94),
 			[](auto* param_1) {
 				// 46014
 				// 0x1407ba9a4 - 0x1407BA910 = 0x94
 				float result = sub_1407BA910(param_1);
 				log::info("(8) sub_1407BA910 Hooked");
-				return result * 10;
+				return result;
             }
         );
 		//^ Hook 8
-		static CallHook<float(TESObjectREFR* param_1)>sub_1407BA8B0(            // May Crash
+		static CallHook<float(TESObjectREFR* param_1)>sub_1407BA8B0(           
 			REL::RelocationID(46013, 46013), REL::Relocate(0x44, 0x44),
 			[](auto* param_1) {
 				// 46013
 				// 0x1407ba8f4 - 0x1407BA8B0 = 0x44
 				float result = sub_1407BA8B0(param_1);
 				log::info("(9) sub_1407BA8B0 Hooked");
-				return result * 10;
+				return result;
             }
         );
 		//^ Hook 9
@@ -218,7 +221,7 @@ namespace Hooks {
 				// 0x1407600c4 - 0x140760070 = 0x54
 				float result = FUN_140760070(param_1);
 				log::info("(10) FUN_140760070 Hooked");
-				return result * 10;
+				return result;
             }
         ); 
 		
@@ -236,19 +239,19 @@ namespace Hooks {
 				// 43241  V
 				// 0x14076001e - 0x14075ffa0 = 0x7E
 				log::info("(11) FUN_14075ffa0 Hooked");
-				float result = FUN_14075ffa0(param_1) * 10.0;
+				float result = FUN_14075ffa0(param_1);
 				return result;
             }
         );
 		//^ Hook 11
 
 
-		static CallHook<float(TESObjectREFR* param_1)>Handle_140723320(      // Something jump handle related , may CTD
+		static CallHook<float(TESObjectREFR* param_1)>Handle_140723320(      // Something jump handle related 
 			REL::RelocationID(41811, 41811), REL::Relocate(0x4D, 0x4D),
 			[](auto* param_1) {
 				// 41811 V
 				// 0x14072336d - 0x140723320 = 0x4D
-				float result = Handle_140723320(param_1) * 10.0;
+				float result = Handle_140723320(param_1);
 				log::info("(12) Handle_140723320 Hooked");
 				return result;
             }
@@ -383,7 +386,7 @@ namespace Hooks {
 			[](auto* param_1) {
 				// 36957
 				// 0x140609e0d - 0x140609D50 = 0xBD
-				float result = Func7_140609D50(param_1) * 10.0;
+				float result = Func7_140609D50(param_1);
 				log::info("(22) Func7_140609D50 Hooked");
 				return result;
             }
@@ -391,7 +394,7 @@ namespace Hooks {
 		//^ Hook 22
 
 		/*static CallHook<float(TESObjectREFR* param_1)>GetEyeHeight_140601E40(  // Get Eye Height, rarely called
-			REL::RelocationID(36845, 36845), REL::Relocate(0x71, 0x71),
+			REL::RelocationID(36845, 36845), REL::Relocate(0x71, 0x71),         // USED INSIDE HEADTRACKING.cpp
 			[](auto* param_1) {
 				// 36845
 				// 0x140601eb1 - 0x140601E40 = 0x71
@@ -407,7 +410,7 @@ namespace Hooks {
 			[](auto* param_1) {
 				// 36844
 				// 0x140601dc7 - 0x140601D80 = 0x47
-				float result = sub_140601D80(param_1) * 10.0;
+				float result = sub_140601D80(param_1);
 				log::info("(24) sub_140601D80 Hooked");
 				return result;
             }
@@ -419,7 +422,7 @@ namespace Hooks {
 			[](auto* param_1) {
 				// 36843
 				// 0x140601d14 - 0x140601CD0 = 0x44
-				float result = sub_140601CD0(param_1) * 10.0;
+				float result = sub_140601CD0(param_1);
 				log::info("(25) sub_140601CD0 Hooked");
 				return result;
             }
@@ -450,7 +453,7 @@ namespace Hooks {
 			[](auto* param_1) {
 				// 36841
                 // 0x140601ba8 - 0x140601B50 = 0x58
-				float result = sub_140601B50(param_1) * 50;
+				float result = sub_140601B50(param_1);
 				log::info("(27) sub_140601B50 Hooked");
 				return result;
             }
@@ -474,7 +477,7 @@ namespace Hooks {
 			[](auto* param_1) {
 				// 36628
 				// 0x1405f1f4c - 0x1405F1DE0 = 0x16C
-				float result = sub_1405F1DE0(param_1) * 50;
+				float result = sub_1405F1DE0(param_1);
 				log::info("(29) sub_1405F1DE0 Hooked");
 				return result;
             }
@@ -561,8 +564,8 @@ namespace Hooks {
 			// 36448
 			// 0x1405e13db - 0x1405E1300 = 0xDB
 			[](auto* param_1) {
-				float result = GetScaledBoundSize_1405E1300(param_1);
-				//log::info("(35 - 1) GetScaledBoundSize_1405E1300 Hooked");
+				float result = GetScaledBoundSize_1405E1300(param_1) * 25.0;
+				log::info("(35 - 1) GetScaledBoundSize_1405E1300 Hooked");
 				return result;
             }
         );
@@ -573,8 +576,8 @@ namespace Hooks {
 			// 36448
 			// 0x1405e1375 - 0x1405E1300 = 0x75
 			[](auto* param_1) {
-				float result = GetScaledBoundSize_1405E1300_2(param_1);
-				//log::info("(35 - 2) GetScaledBoundSize_1405E1300 Hooked");
+				float result = GetScaledBoundSize_1405E1300_2(param_1) * 25.0;
+				log::info("(35 - 2) GetScaledBoundSize_1405E1300 Hooked");
 				return result;
             }
         );

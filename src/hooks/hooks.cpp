@@ -16,7 +16,7 @@
 #include "hooks/character.hpp"
 #include "hooks/sink.hpp"
 #include "hooks/jump.hpp"
-#include "hooks/scale.hpp"
+#include "hooks/Experiments.hpp"
 #include "hooks/damage.hpp"
 
 using namespace RE;
@@ -44,8 +44,8 @@ namespace Hooks
 		Hook_Damage::Hook(trampoline);
 		
 		if (REL::Module::IsSE()) { // Not RE'd for AE for now
-			Hook_Scale::Hook(trampoline);
-			Hook_Stealth::Hook(trampoline);
+			Hook_Experiments::Hook(trampoline);
+			//Hook_Stealth::Hook(trampoline);
 			Hook_Movement::Hook(trampoline);
 			Hook_HeadTracking::Hook(trampoline);
 		}

@@ -10,7 +10,7 @@ using namespace SKSE;
 
 namespace Hooks
 {
-	class Hook_Scale
+	class Hook_Experiments
 	{
 		public:
 			static void Hook(Trampoline& trampoline);

@@ -26,8 +26,8 @@ namespace Hooks
         static CallHook<float(TESObjectREFR* param_1)>Scale_AlterMovementSpeed(  // Movement speed alteration
             REL::RelocationID(37013, 37013), REL::Relocate(0x1A, 0x1A),          
             [](auto* param_1) {
-                // sub_14060EEF0 : 37013
-                // 0x14060ef0a - 0x14060EEF0 = 0x1A
+                // sub_14060EEF0 : 37013            ;    sub_
+                // 0x14060ef0a - 0x14060EEF0 = 0x1A ;      
                 float result = 1.0; // force it to 1.0. We DON'T want the SetScale() to affect it.
                 return result;
             }
@@ -38,7 +38,7 @@ namespace Hooks
             [](auto* param_1) {                                         // Not sure.
                 // 37588
                 // 0x140623f7b - 0x140623F10 = 0x6B
-                float result = sub_140623F10(param_1) * 10.0;
+                float result = sub_140623F10(param_1) * 100.0;
                 log::info("(18) sub_140623F10 Hooked");
                 return result;
             }
@@ -84,5 +84,16 @@ namespace Hooks
             }
         );
         //^ Hook 44
+
+        static CallHook<float(TESObjectREFR* param_1)>sub_1407BAB40(     // Seems to work after hitting someone/when we're detected. Disabling hostile actor stops prints.
+			REL::RelocationID(46018, 46018), REL::Relocate(0x15, 0x15), 
+			// 46018
+			// 0x1407bab55 - 0x1407BAB40 = 0x15
+			[](auto* param_1) {
+				float result = sub_1407BAB40(param_1) * 0.0001;
+				log::info("(5) sub_1407BAB40 Hooked");	
+				return result;
+            }
+        ); 
     }
 }

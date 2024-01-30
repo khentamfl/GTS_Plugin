@@ -27,6 +27,14 @@ namespace Hooks
 				// 37129
 				// 0x140615054 - 0x140615030 = 0x24
 				// FUN_140615030
+
+				// AE:
+				// FUN_1407ea630 ? (48 89 5c 24 08)
+				// FUN_140601E40 ? (48 89 5c 24 08)
+				// FUN_14078e130 ? (48 89 5c 24 08)
+				// FUN_14078e060....
+				// FUN_1404feff0....
+				// FUN_14022f300....
 				float result = Alter_Headtracking(param_1);
 				float Alter = affect_by_scale(param_1, result);
 				//log::info("(20) Alter_Headtracking Hooked");
@@ -39,6 +47,10 @@ namespace Hooks
 			[](auto* param_1) {
 				// 36845
 				// 0x140601eb1 - 0x140601E40 = 0x71
+
+				//AE: (99% correct, seems to match the function)
+				// FUN_140629d00 (48 83 ec 58)
+				// 0x140629d71 - 0x140629d00 = 
 				float result = GetEyeHeight_140601E40(param_1);
 				float Alter = affect_by_scale(param_1, result);
 				log::info("(23) GetEyeHeight_140601E40 Hooked");
