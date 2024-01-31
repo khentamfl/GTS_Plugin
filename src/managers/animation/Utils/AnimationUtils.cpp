@@ -556,7 +556,7 @@ namespace Gts {
 		
 		std::string name = std::format("FootGrind_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
-		auto coordinates = AttachToObjectB_GetCoords(giant, tiny);
+		auto coordinates = AttachToObjectA_GetCoords(giant, tiny);
 		if (coordinates == NiPoint3(0,0,0)) {
 			return;
 		}
@@ -571,7 +571,7 @@ namespace Gts {
 			auto giantref = gianthandle.get().get();
 			auto tinyref = tinyhandle.get().get();
 			auto FrameB = Time::FramesElapsed() - FrameA;
-			if (FrameB <= 4.0) {
+			if (FrameB <= 3.0) {
 				return true;
 			}
 
@@ -655,8 +655,6 @@ namespace Gts {
 								});
 							}
 							if (nodeCollisions > 0) {
-								float aveForce = std::clamp(force, 0.06f, 0.70f);
-
 								SetBeingGrinded(otherActor, true);
 								if (Right) {
 									DoFingerGrind(giant, otherActor);

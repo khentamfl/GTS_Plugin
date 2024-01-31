@@ -115,11 +115,11 @@ namespace {
 	}
 
 	void GTS_Kick_HitBox_Power_On_R(AnimationEventData& data) {
-		StartDamageAt_R(&data.giant, 1.4, 1.8, 1.8, "NPC R Toe0 [RToe]");
+		StartDamageAt_R(&data.giant, 2.6, 1.8, 1.8, "NPC R Toe0 [RToe]");
 		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 8.0);
 	}
 	void GTS_Kick_HitBox_Power_On_L(AnimationEventData& data) {
-		StartDamageAt_L(&data.giant, 1.4, 1.8, 1.8, "NPC L Toe0 [LToe]");
+		StartDamageAt_L(&data.giant, 2.6, 1.8, 1.8, "NPC L Toe0 [LToe]");
 		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 8.0);
 	}
 	void GTS_Kick_HitBox_Power_Off_R(AnimationEventData& data) {

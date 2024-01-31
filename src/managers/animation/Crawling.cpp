@@ -156,10 +156,10 @@ namespace {
 			auto Uarm = find_node(giant, "NPC R Forearm [RLar]");
 			auto Arm = find_node(giant, "NPC R Hand [RHnd]");
 			if (Uarm) {
-				DoDamageAtPoint_Cooldown(giant, 17, 80.0 * power, Uarm, 10, 0.30, crush, pushpower, DamageSource::HandSwipeRight);
+				DoDamageAtPoint_Cooldown(giant, 17, 160.0 * power, Uarm, 10, 0.30, crush, pushpower, DamageSource::HandSwipeRight);
 			}
 			if (Arm) {
-				DoDamageAtPoint_Cooldown(giant, 19, 80.0 * power, Arm, 10, 0.30, crush, pushpower, DamageSource::HandSwipeRight);
+				DoDamageAtPoint_Cooldown(giant, 19, 160.0 * power, Arm, 10, 0.30, crush, pushpower, DamageSource::HandSwipeRight);
 			}
 			return true;
 		});
