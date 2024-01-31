@@ -134,7 +134,7 @@ namespace { // WIP
 								if (get_target_scale(otherActor) > 0.06 / GetSizeFromBoundingBox(otherActor)) {
 									update_target_scale(otherActor, -0.001, SizeEffectType::kShrink);
 								}
-								CollisionDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
+								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
 							}
 						}
 					}

@@ -1027,7 +1027,7 @@ namespace Gts {
 							
 							ApplyShakeAtPoint(giant, 3.0 * pushpower * audio, node->world.translate, 1.5);
 							sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
-							CollisionDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
+							CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
 						}
 					}
 				}

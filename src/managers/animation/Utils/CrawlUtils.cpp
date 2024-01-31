@@ -193,7 +193,7 @@ namespace Gts {
 								float aveForce = std::clamp(force, 0.06f, 0.70f);
 
 								Utils_PushCheck(giant, otherActor, aveForce); 
-								CollisionDamage::GetSingleton().ApplySizeEffect(giant, otherActor, damage, random, bbmult, crushmult, Cause);
+								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, random, bbmult, crushmult, Cause);
 							}
 						}
 					}
