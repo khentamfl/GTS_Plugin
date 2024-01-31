@@ -53,7 +53,7 @@ namespace Hooks
                 // 0x1404e6d29 - 0x1404E6B30 = 0x1F9
                 float result = sub_1404E6B30_1(param_1);
                 float Alter = affect_by_scale(param_1, result);
-                log::info("(42 - 1) sub_1404E6B30 Hooked");
+                //log::info("(42 - 1) sub_1404E6B30 Hooked");
                 return Alter;
             }
         );
@@ -66,7 +66,7 @@ namespace Hooks
                 // 0x1404e6c0d - 0x1404E6B30 = 0xDD
                 float result = sub_1404E6B30_2(param_1);
                 float Alter = affect_by_scale(param_1, result);
-                log::info("(42 - 2) sub_1404E6B30 Hooked");
+                //log::info("(42 - 2) sub_1404E6B30 Hooked");
                 return Alter;
             }
         );
@@ -79,8 +79,8 @@ namespace Hooks
                 // 31951
                 // 0x1404e6b8b - 0x1404E6B30 = 0x5B
                 float result = sub_1404E6B30_3(param_1);
-                float Alter = affect_by_scale(param_1, result) * 10;
-                log::info("(42 - 3) sub_1404E6B30 Hooked");
+                float Alter = affect_by_scale(param_1, result);
+                //log::info("(42 - 3) sub_1404E6B30 Hooked");
                 return Alter;
             }
         );
@@ -91,9 +91,10 @@ namespace Hooks
 			// 46018
 			// 0x1407bab55 - 0x1407BAB40 = 0x15
 			[](auto* param_1) {
-				float result = sub_1407BAB40(param_1) * 35;
-				log::info("(5) sub_1407BAB40 Hooked");	
-				return result;
+				float result = sub_1407BAB40(param_1)
+                float Alter = affect_by_scale(param_1, result);
+				//log::info("(5) sub_1407BAB40 Hooked");	
+				return Alter;
             }
         ); 
     }

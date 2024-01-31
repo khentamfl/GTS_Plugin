@@ -68,7 +68,7 @@ namespace {
 	}
 
 	void Utils_move_under_Foot(Actor* giant, std::string_view node) {
-		auto footNode = find_node(&data.giant, RNode);
+		auto footNode = find_node(giant, RNode);
 		if (footNode) {
 			auto footPos = footNode->world.translate;
 			for (auto tiny: Utils_findSquished(giant)) {
