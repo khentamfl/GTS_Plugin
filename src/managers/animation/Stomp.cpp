@@ -76,7 +76,7 @@ namespace {
 				float dx = dist(e2);
 				float dy = dist(e2);
 				auto randomOffset = NiPoint3(dx, dy, 0.0);
-				tiny->SetPosition(footPos + randomOffset);
+				tiny->SetPosition(footPos + randomOffset, true);
 			}
 		}
 	}
