@@ -47,7 +47,7 @@ namespace {
 		bool Crush = (cause == DamageSource::CrushedRight || cause == DamageSource::CrushedLeft);
 		bool Kick = (cause == DamageSource::KickedLeft || cause == DamageSource::KickedRight);
 		bool Knee = (cause == DamageSource::KneeRight || cause == DamageSource::KneeLeft);
-		bool booty = (cause == DamageSource::Booty);
+		bool Booty = (cause == DamageSource::Booty);
 
 		bool ApplyBoost = (Crush || Kick || Knee || Booty);
 		log::info("ApplyDamage: {}", ApplyBoost);
@@ -412,8 +412,8 @@ namespace Gts {
 		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
 		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.30, 0.30, 999999.0);
 		float highheelsdamage = 1.0;
-		if (ApplyHighHeelbonus(giant, cause)) {
-			highheelsdamage = 1.0 + (GetHighHeelsBonusDamage(giant) * 5)
+		if (ApplyHighHeelBonus(giant, Cause)) {
+			highheelsdamage = 1.0 + (GetHighHeelsBonusDamage(giant) * 5);
 		}
 		float sprintdamage = 1.0; // default Sprint damage of 1.0
 		// fall damage is unused since it is always = 1.0
