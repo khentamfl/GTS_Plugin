@@ -659,10 +659,10 @@ namespace Gts {
 
 								SetBeingGrinded(otherActor, true);
 								if (Right) {
-									DoFingerGrind(giant, otherActor, true);
+									DoFingerGrind(giant, otherActor);
 									AnimationManager::StartAnim("GrindRight", giant);
 								} else {
-									DoFingerGrind(giant, otherActor, false);
+									DoFingerGrind(giant, otherActor);
 									AnimationManager::StartAnim("GrindLeft", giant);
 								}
 							}
