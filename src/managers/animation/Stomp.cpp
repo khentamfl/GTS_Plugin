@@ -57,7 +57,7 @@ namespace {
 					// 3.5 times bigger
 					auto tinyLoc = tiny->GetPosition();
 					auto distance = (giantLoc - tinyLoc).Length();
-					if (distance < giantScale * 15) {
+					if (distance < giantScale * 70) {
 						// About 1.5 the foot size
 						result.push_back(tiny);
 					}
