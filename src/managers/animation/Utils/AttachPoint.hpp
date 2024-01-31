@@ -347,9 +347,20 @@ namespace Gts {
 			"R Breast02"
 		};
 
-		NiPoint3 clevagePos = NiPoint3();
+		std::vector<std::string_view> front_bone_names = {
+			"L Breast01",
+			"R Breast01"
+		};
 
-		std::uint32_t bone_count = bone_names.size();
+		std::vector<std::string_view> up_bone_names = {
+			"NPC L Clavicle [LClv]",
+			"NPC R Clavicle [RClv]"
+		};
+
+		NiPoint3 clevagePos = NiPoint3();
+		NiPoint3 centerBonePos = NiPoint3();
+		NiPoint3 upBonePos = NiPoint3();
+
 		for (auto bone_name: bone_names) {
 			auto bone = find_node(giant, bone_name);
 			if (!bone) {
@@ -360,26 +371,36 @@ namespace Gts {
 			if (IsDebugEnabled()) {
 				DebugAPI::DrawSphere(glm::vec3(bone->world.translate.x, bone->world.translate.y, bone->world.translate.z), 2.0, 10, {1.0, 1.0, 1.0, 1.0});
 			}
-			clevagePos += (bone->world * NiPoint3()) * (1.0/bone_count);
+			clevagePos += (bone->world * NiPoint3()) * 0.5;
 		}
 
 		// Center bone
-		std::string_view centerBoneName = "NPC Spine2 [Spn2]";
-		auto centerBone = find_node(giant, centerBoneName);
-		if (!centerBone) {
-			Notify("ERROR: NPC Spine2 bone not found");
-			return false;
+		for (auto bone_name: front_bone_names) {
+			auto bone = find_node(giant, bone_name);
+			if (!bone) {
+				Notify("ERROR: Breast 01 bones not found");
+				Notify("Install 3BB/XPMS32");
+				return false;
+			}
+			if (IsDebugEnabled()) {
+				DebugAPI::DrawSphere(glm::vec3(bone->world.translate.x, bone->world.translate.y, bone->world.translate.z), 2.0, 10, {1.0, 1.0, 1.0, 1.0});
+			}
+			centerBonePos += bone->world.translate * 0.5;
 		}
-		auto centerBonePos = centerBone->world.translate;
 
 		// Up bone
-		std::string_view upBoneName = "NPC Neck [Neck]";
-		auto upBone = find_node(giant, upBoneName);
-		if (!upBone) {
-			Notify("ERROR: NPC Neck bone not found");
-			return false;
+		for (auto bone_name: front_bone_names) {
+			auto bone = find_node(giant, bone_name);
+			if (!bone) {
+				Notify("ERROR: Clavicle bones not found");
+				Notify("Install 3BB/XPMS32");
+				return false;
+			}
+			if (IsDebugEnabled()) {
+				DebugAPI::DrawSphere(glm::vec3(bone->world.translate.x, bone->world.translate.y, bone->world.translate.z), 2.0, 10, {1.0, 1.0, 1.0, 1.0});
+			}
+			upBonePos += bone->world.translate * 0.5;
 		}
-		auto upBonePos = upBone->world.translate;
 
 		// Forward
 		NiPoint3 forward = (clevagePos - centerBonePos);
@@ -397,9 +418,9 @@ namespace Gts {
 		NiMatrix3 breastRotation = NiMatrix3(sideways, forward, up);
 
 
-		
-		float offset_Y = Runtime::GetFloatOr("Cleavage_OffsetY", 1.0) - 1.0;
-		float offset_Z = Runtime::GetFloatOr("Cleavage_OffsetZ", 1.0) - 1.0;
+		// Manual offsets
+		float offset_Y = Runtime::GetFloatOr("Cleavage_OffsetY", 1.0);
+		float offset_Z = Runtime::GetFloatOr("Cleavage_OffsetZ", 1.0);
 
 		// Sermite: Offset adjustment HERE
 		NiPoint3 offset = NiPoint3(0.0, offset_Y, offset_Z);
@@ -408,6 +429,7 @@ namespace Gts {
 		// Global space offset
 		NiPoint3 globalOffset = breastRotation * offset;
 
+		// rotate tiny to face the same direction as gts
 		tiny->data.angle.z = giant->data.angle.z;
 
 		clevagePos += globalOffset;

@@ -793,9 +793,10 @@ namespace Hooks {
 			// 19889
 			// 0x1402aa40c - 0x1402AA350 = 0xBC
 			[](auto* param_1) {
-				float result = sub_1402AA350(param_1) * 50.0;
+				float result = sub_1402AA350(param_1);
+				float Alter = affect_by_scale(param_1, result);
 				log::info("(51) sub_1402AA350 Hooked");
-				return result;
+				return Alter;
             }
         );
 		//^ Hook 51
