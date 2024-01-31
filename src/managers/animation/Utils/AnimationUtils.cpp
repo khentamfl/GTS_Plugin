@@ -590,10 +590,10 @@ namespace Gts {
 		});
 	}
 
-	void FingerGrindCheck(Actor* giant, CrawlEvent kind, float radius) {
+	void FingerGrindCheck(Actor* giant, CrawlEvent kind, bool Right, float radius) {
 		std::string_view name = GetImpactNode(kind);
 
-		auto node = find_node(actor, name);
+		auto node = find_node(giant, name);
 		if (!node) {
 			return; // Make sure to return if node doesn't exist, no CTD in that case
 		}
@@ -639,6 +639,9 @@ namespace Gts {
 					NiPoint3 actorLocation = otherActor->GetPosition();
 					for (auto point: CrawlPoints) {
 						if ((actorLocation-giantLocation).Length() <= maxDistance * 2.5) {
+							int nodeCollisions = 0;
+							float force = 0.0;
+
 							auto model = otherActor->GetCurrent3D();
 							if (model) {
 								VisitNodes(model, [&nodeCollisions, &force, NodePosition, maxDistance](NiAVObject& a_obj) {
@@ -654,7 +657,7 @@ namespace Gts {
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.06f, 0.70f);
 
-								SetBeingGrinded(tiny, true);
+								SetBeingGrinded(otherActor, true);
 								if (Right) {
 									DoFingerGrind(giant, otherActor, true);
 									AnimationManager::StartAnim("GrindRight", giant);
