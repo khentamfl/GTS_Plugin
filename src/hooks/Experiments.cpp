@@ -75,8 +75,42 @@ namespace {
 namespace Hooks {
 
 	void Hook_Experiments::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
+ 
+		//							  																
+		//																							
+		//  HitFrameHandler::Handle_1407211B0 & BSTaskPool_HandleTask_1405C6EE0 -> Actor::sub_140627930 
+		//  CalculateCurrentHitTargetForWeaponSwing_140629090
+		//  Character::HitData_140628C20 ( called by Actor::sub_140627930 )
+		//  DoCombatSpellApply_1406282E0
+		//  FUN_14062b870                         															
+		//	Actor::sub_140627930
 
-		static CallHook<float(TESObjectREFR* param_1)>FUN_14080d560(        // rarely called             
+
+		static FunctionHook<float(Actor* param_1)>Actor_sub_140627930 (   // supposedly affects Weapon Damage                 
+			REL::RelocationID(37650, 37650),
+			[](auto* param_1) {
+				//37650
+				float result = Actor_sub_140627930(param_1);
+				log::info("Actor_sub_140627930 Hooked");
+				return result * 10;
+            }
+        );
+
+
+		static CallHook<float(Actor* param_1)>CalculateCurrentHitTargetForWeaponSwing_140629090 (   // supposedly affects Weapon Damage                 
+			REL::RelocationID(37674, 37674), REL::Relocate(0x2DD, 0x2DD),
+			// sub_140627930 -> this function
+			// 37674
+			// 0x140627c0d - 0x140627930 = 0x2DD
+			[](auto* param_1) {
+				float result = CalculateCurrentHitTargetForWeaponSwing_140629090(param_1);
+				log::info("CalculateCurrentHitTargetForWeaponSwing_140629090 Hooked");
+				return result * 10;
+            }
+        );
+		
+
+		/*static CallHook<float(TESObjectREFR* param_1)>FUN_14080d560(        // rarely called             
 			REL::RelocationID(48146, 48146), REL::Relocate(0x10D, 0x10D),
 			// 48146
 			// 0x14080d66d - 0x14080d560 = 0x10D
@@ -152,7 +186,7 @@ namespace Hooks {
 				//log::info("(5) sub_1407BAB40 Hooked");	
 				return result * 10;
             }
-        ); */
+        ); 
 
 		//^ Hook 5
 
@@ -268,7 +302,7 @@ namespace Hooks {
 				float result = FUN_14071b230(param_1);
 				return result;
             }
-        );*/
+        );
 		//^ Hook 13
 
 		static CallHook<float(TESObjectREFR* param_1)>FUN_1406b0a00(  // bone stuff again?
@@ -335,7 +369,7 @@ namespace Hooks {
 				log::info("(18) sub_140623F10 Hooked");
 				return result;
             }
-        );*/
+        );
 		//^ Hook 18
 
 		static CallHook<float(TESObjectREFR* param_1)>sub_140619040( // No clue what it does, called rarely
@@ -378,7 +412,7 @@ namespace Hooks {
 				//log::info("(21) Scale_AlterMovementSpeed Hooked");
 				return result;
             }
-        );*/
+        );
 		//^ Hook 21
 
 		static CallHook<float(TESObjectREFR* param_1)>Func7_140609D50( // Something AnimationGraphManager related
@@ -402,7 +436,7 @@ namespace Hooks {
 				log::info("(23) GetEyeHeight_140601E40 Hooked");
 				return result;
             }
-        );*/
+        );
 		//^ Hook 23
 
 		static CallHook<float(TESObjectREFR* param_1)>sub_140601D80(
@@ -512,7 +546,7 @@ namespace Hooks {
 				log::info("(30 - 2) sub_1405ED870 Hooked");
 				return result;
             }
-        );*/
+        );
 		//^ Hook 31
 //-----------------------------------------------------------------------------------------------------------
 
@@ -626,7 +660,7 @@ namespace Hooks {
 				log::info("(39) Jump_1405D1F80 Hooked");
 				return result;
             }
-        );*/
+        );
 		//^ Hook 39
 		
 		static CallHook<float(TESObjectREFR* param_1)>FUN_1405513a0(   // Possible headtracking? angle stuff or something
@@ -698,7 +732,7 @@ namespace Hooks {
 				log::info("(42 - 3) sub_1404E6B30 Hooked");
 				return Alter;
             }
-        );*/
+        );
 		//^ Hook 44
 //-----------------------------------------------------------------------------------------------------------		
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -910,7 +944,7 @@ namespace Hooks {
 				return result;
             }
         );
-		//^ Hook 59*/ 
+		//^ Hook 59
 //-----------------------------------------------------------------------------------------------------------		
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////// 
