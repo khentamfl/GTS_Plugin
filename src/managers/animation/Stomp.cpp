@@ -36,6 +36,52 @@ using namespace Gts;
 namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
+	std::random_device rd;
+	std::mt19937 e2(rd());
+
+	std::vector<Actor*> Utils_findSquished(Actor* giant) {
+		/*
+		Find actor that are being pressed underfoot
+		*/
+		std::vector<Actor*> result = {};
+		if (!giant) {
+			return result;
+		}
+		float giantScale = get_visual_scale(giant);
+		auto giantLoc = giant->GetPosition();
+		for (auto tiny: find_actors()) {
+			if (tiny) {
+				float tinyScale = get_visual_scale(tiny) * GetSizeFromBoundingBox(tiny);
+				float scaleRatio = giantScale / tinyScale;
+				if (scaleRatio > 3.5) {
+					// 3.5 times bigger
+					auto tinyLoc = tiny->GetPosition();
+					auto distance = (giantLoc - tinyLoc).Length();
+					if (distance < giantScale * 70) {
+						// nearish
+						result.push_back(tiny);
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	void Utils_move_under_Foot(Actor* giant, std::string_view node) {
+		auto footNode = find_node(&data.giant, RNode);
+		if (footNode) {
+			auto footPos = footNode->world.translate;
+			for (auto tiny: Utils_findSquished(giant)) {
+				std::uniform_real_distribution<> dist(-10, 10);
+				float dx = dist(e2);
+				float dy = dist(e2);
+				auto randomOffset = NiPoint3(dx, dy, 0.0);
+				tiny->SetPosition(footPos + randomOffset);
+			}
+		}
+	}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////// Events
 
 	void GTSstompstartR(AnimationEventData& data) {
 		data.stage = 1;
@@ -74,6 +120,9 @@ namespace {
 			dust = 1.45;
 		}
 		GRumble::Once("StompR", &data.giant, 2.20 * shake, 0.0, RNode);
+
+		Utils_move_under_Foot(&data.giant, RNode);
+
 		DoDamageEffect(&data.giant, (2.2 + data.animSpeed/8) * launch * perk, (1.45 + data.animSpeed/4) * launch, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/8, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust + (data.animSpeed * 0.05), FootEvent::Right, RNode);
@@ -93,6 +142,9 @@ namespace {
 			dust = 1.45;
 		}
 		GRumble::Once("StompL", &data.giant, 2.20 * shake, 0.0, LNode);
+
+		Utils_move_under_Foot(&data.giant, LNode);
+
 		DoDamageEffect(&data.giant, (2.2 + data.animSpeed/8) * launch * perk, (1.45 + data.animSpeed/4) * launch, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust + (data.animSpeed * 0.05), FootEvent::Left, LNode);

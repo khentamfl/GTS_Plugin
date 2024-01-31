@@ -45,13 +45,17 @@ namespace {
 
 	bool ApplyHighHeelBonus(Actor* giant, DamageSource cause) {
 		bool Crush = (cause == DamageSource::CrushedRight || cause == DamageSource::CrushedLeft);
+		if (Crush) {
+			log::info("ApplyDamage true");
+			return true;
+		}
 		bool Kick = (cause == DamageSource::KickedLeft || cause == DamageSource::KickedRight);
-		bool Knee = (cause == DamageSource::KneeRight || cause == DamageSource::KneeLeft);
+		if (Kick) {
+			log::info("ApplyDamage true");
+			return true;
+		}
 
-		bool ApplyBoost = (Crush || Kick || Knee || Booty);
-		log::info("ApplyDamage: {}", ApplyBoost);
-
-		return ApplyBoost;
+		return false;
 	}
 
 	bool CanDoDamage(Actor* giant, Actor* tiny) {
