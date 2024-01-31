@@ -39,7 +39,7 @@ namespace {
 	std::random_device rd;
 	std::mt19937 e2(rd());
 
-	std::vector<Actor*> Utils_findSquished(Actor* giant) {
+	std::vector<Actor*> FindSquished(Actor* giant) {
 		/*
 		Find actor that are being pressed underfoot
 		*/
@@ -67,17 +67,35 @@ namespace {
 		return result;
 	}
 
-	void Utils_move_under_Foot(Actor* giant, std::string_view node) {
+	void MoveUnderFoot(Actor* giant, std::string_view node) {
 		auto footNode = find_node(giant, RNode);
 		if (footNode) {
 			auto footPos = footNode->world.translate;
-			for (auto tiny: Utils_findSquished(giant)) {
+			for (auto tiny: FindSquished(giant)) {
 				std::uniform_real_distribution<> dist(-10, 10);
 				float dx = dist(e2);
 				float dy = dist(e2);
 				auto randomOffset = NiPoint3(dx, dy, 0.0);
 				tiny->SetPosition(footPos + randomOffset, true);
 			}
+		}
+	}
+
+	/*
+	Will keep the tiny in place for a second
+	*/
+	void KeepInPlace(Actor* giant) {
+		for (auto tiny: FindSquished(giant)) {
+			auto giantRef = giant->CreateRefHandle();
+			auto tinyRef = tiny->CreateRefHandle();
+			auto currentPos = tiny->GetPosition();
+			TaskManager::RunFor(1.5, [](const auto& data){
+				if (!tinyRef) {
+					return false;	
+				}
+				AttachTo(giantRef, tinyRef, currentPos);
+				return true;
+			});
 		}
 	}
 
@@ -121,7 +139,7 @@ namespace {
 		}
 		GRumble::Once("StompR", &data.giant, 2.20 * shake, 0.0, RNode);
 
-		Utils_move_under_Foot(&data.giant, RNode);
+		MoveUnderFoot(&data.giant, RNode);
 
 		DoDamageEffect(&data.giant, (2.2 + data.animSpeed/8) * launch * perk, (1.45 + data.animSpeed/4) * launch, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/8, FootEvent::Right, RNode);
@@ -143,7 +161,7 @@ namespace {
 		}
 		GRumble::Once("StompL", &data.giant, 2.20 * shake, 0.0, LNode);
 
-		Utils_move_under_Foot(&data.giant, LNode);
+		MoveUnderFoot(&data.giant, LNode);
 
 		DoDamageEffect(&data.giant, (2.2 + data.animSpeed/8) * launch * perk, (1.45 + data.animSpeed/4) * launch, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Left, LNode);
@@ -164,6 +182,7 @@ namespace {
 			dust = 1.35;
 			shake = 4.0;
 		}
+		KeepInPlace(&data.giant);
 		GRumble::Once("StompRL", &data.giant, 1.25 * shake, 0.05, RNode);
 		DoDamageEffect(&data.giant, 2.0 * perk, 1.45, 25, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Right, RNode);
@@ -182,6 +201,7 @@ namespace {
 			dust = 1.35;
 			shake = 4.0;
 		}
+		KeepInPlace(&data.giant);
 		GRumble::Once("StompLL", &data.giant, 1.25 * shake, 0.05, LNode);
 		DoDamageEffect(&data.giant, 2.0 * perk, 1.45, 25, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Left, LNode);
