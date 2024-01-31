@@ -21,7 +21,6 @@ namespace Gts {
 			virtual std::string DebugName() override;
 
 			void DoFootCollision(Actor* actor, float damage, float radius, int random, float bbmult, float crush_threshold, DamageSource Cause, bool right);
-			void ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult, float crush_threshold, DamageSource Cause);
 			void DoSizeDamage(Actor* giant, Actor* tiny, float damage, float bbmult, float crush_threshold, int random, DamageSource Cause);
 
 			static void CrushCheck(Actor* giant, Actor* tiny, float size_difference, float crush_threshold, DamageSource Cause);

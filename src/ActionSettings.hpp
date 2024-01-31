@@ -51,7 +51,7 @@ namespace Gts {
 //////Default effect radius variables
 
     const float Radius_Walk_Default = 9.8f;
-    const float Radius_Jump_Default = 22.0f; 
+    const float Radius_Jump_Default = 12.0f; 
 
     const float Radius_Stomp = 12.0f;
     const float Radius_Stomp_Strong = 13.2f;

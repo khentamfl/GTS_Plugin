@@ -17,6 +17,7 @@
 #include "managers/tremor.hpp"
 #include "managers/Rumble.hpp"
 #include "data/transient.hpp"
+#include "ActionSettings.hpp"
 #include "managers/vore.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"

@@ -20,6 +20,7 @@
 #include "managers/Rumble.hpp"
 #include "scale/modscale.hpp"
 #include "data/transient.hpp"
+#include "ActionSettings.hpp"
 #include "rays/raycast.hpp"
 #include "data/runtime.hpp"
 #include "utils/camera.hpp"

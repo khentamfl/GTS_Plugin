@@ -112,6 +112,54 @@ namespace {
 		}
 	}
 
+	void Stomp_DoEverything(Actor* giant, bool right, float animSpeed, FootEvent Event, DamageSource Source, std::string_view Node, std::string_view rumble) {
+		float perk = GetPerkBonus_Basics(giant);
+		float shake = 1.0;
+		float dust = 1.25;
+		if (HasSMT(giant)) {
+			shake = 4.0;
+			dust = 1.45;
+		}
+
+		GRumble::Once("StompR", giant, 2.20 * shake, 0.0, Node);
+
+		MoveUnderFoot(giant, Node);
+
+		DoDamageEffect(giant, Damage_Stomp * perk, Radius_Stomp, 10, 0.25, Event, 1.0, Source);
+		DoDustExplosion(giant, dust + (animSpeed * 0.05), Event, Node);
+		DoFootstepSound(giant, 1.0 + animSpeed/8, Event, Node);
+		
+		DrainStamina(giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.8);
+
+		DoLaunch(giant, 0.80 * perk, 1.35 * animSpeed, Event);
+
+		if (right) {
+			FootGrindCheck_Right(giant, 1.45, false);
+		} else {
+			FootGrindCheck_Left(giant, 1.45, false);
+		}
+	}
+
+	void Stomp_Land_DoEverything(Actor* giant, float animSpeed, FootEvent Event, DamageSource Source, std::string_view Node, std::string_view rumble) {
+		float perk = GetPerkBonus_Basics(giant);
+		float shake = 1.0;
+		float dust = 0.85;
+		
+		if (HasSMT(giant)) {
+			dust = 1.35;
+			shake = 4.0;
+		}
+		
+		GRumble::Once(rumble, giant, 1.25 * shake, 0.05, Node);
+		DoDamageEffect(giant, Damage_Stomp * perk, Radius_Stomp, 25, 0.25, Event, 1.0, DamageSource::CrushedRight);
+		DoDustExplosion(giant, dust + (animSpeed * 0.05), Event, Node);
+		DoFootstepSound(giant, 1.0 + animSpeed/14, Event, RNode);
+		
+		DoLaunch(giant, 0.75 * perk, 1.5 + animSpeed/4, Event);
+		KeepInPlace(giant);
+		
+	}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////// Events
 
 	void GTSstompstartR(AnimationEventData& data) {
@@ -122,9 +170,9 @@ namespace {
 			data.animSpeed = 1.33 + GetRandomBoost()/2;
 		}
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.8);
-		ManageCamera(&data.giant, true, 6.0);
 		GRumble::Start("StompR", &data.giant, 0.35, 0.15, RNode);
-		//log::info("StompStartR true");
+		ManageCamera(&data.giant, true, 6.0);
+
 	}
 
 	void GTSstompstartL(AnimationEventData& data) {
@@ -135,91 +183,24 @@ namespace {
 			data.animSpeed = 1.33 + GetRandomBoost()/2;
 		}
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.8);
+		GRumble::Start("StompL", &data.giant, 0.45, 0.15, LNode);
 		ManageCamera(&data.giant, true, 5.0);
-		GRumble::Start("StompL", &data.giant, 0.45, 0.15, LNode); // Start stonger effect
-		//log::info("StompStartL true");
 	}
 
 	void GTSstompimpactR(AnimationEventData& data) {
-		float shake = 1.0;
-		float launch = 1.0;
-		float dust = 1.25;
-		float perk = GetPerkBonus_Basics(&data.giant);
-		if (HasSMT(&data.giant)) {
-			shake = 4.0;
-			launch = 1.2;
-			dust = 1.45;
-		}
-		GRumble::Once("StompR", &data.giant, 2.20 * shake, 0.0, RNode);
-
-		MoveUnderFoot(&data.giant, RNode);
-
-		DoDamageEffect(&data.giant, (2.2 + data.animSpeed/8) * launch * perk, (1.45 + data.animSpeed/4) * launch, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
-		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/8, FootEvent::Right, RNode);
-		DoDustExplosion(&data.giant, dust + (data.animSpeed * 0.05), FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.80 * perk, 1.35 * data.animSpeed, FootEvent::Right);
-		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.8);
-		FootGrindCheck_Right(&data.giant, 1.45, false);
+		Stomp_DoEverything(&data.giant, true, data.animSpeed, FootEvent::Right, DamageSource::CrushedRight, RNode, "StompR");
 	}
 
 	void GTSstompimpactL(AnimationEventData& data) {
-		float shake = 1.0;
-		float launch = 1.0;
-		float dust = 1.25;
-		float perk = GetPerkBonus_Basics(&data.giant);
-		if (HasSMT(&data.giant)) {
-			shake = 4.0;
-			launch = 1.2;
-			dust = 1.45;
-		}
-		GRumble::Once("StompL", &data.giant, 2.20 * shake, 0.0, LNode);
-
-		MoveUnderFoot(&data.giant, LNode);
-
-		DoDamageEffect(&data.giant, (2.2 + data.animSpeed/8) * launch * perk, (1.45 + data.animSpeed/4) * launch, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
-		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Left, LNode);
-		DoDustExplosion(&data.giant, dust + (data.animSpeed * 0.05), FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.80 * perk, 1.35 * data.animSpeed, FootEvent::Left);
-		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.8);
-		FootGrindCheck_Left(&data.giant, 1.45, false);
+		Stomp_DoEverything(&data.giant, false, data.animSpeed, FootEvent::Left, DamageSource::CrushedLeft, LNode, "StompL");
 	}
 
 	void GTSstomplandR(AnimationEventData& data) {
-		//data.stage = 2;
-		float shake = 1.0;
-		float bonus = 1.0;
-		float dust = 0.85;
-		float perk = GetPerkBonus_Basics(&data.giant);
-		if (HasSMT(&data.giant)) {
-			bonus = 1.3;
-			dust = 1.35;
-			shake = 4.0;
-		}
-		KeepInPlace(&data.giant);
-		GRumble::Once("StompRL", &data.giant, 1.25 * shake, 0.05, RNode);
-		DoDamageEffect(&data.giant, 2.0 * perk, 1.45, 25, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
-		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Right, RNode);
-		DoDustExplosion(&data.giant, dust + (data.animSpeed * 0.05), FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.75 * perk, 1.5 + data.animSpeed/4, FootEvent::Right);
+		Stomp_Land_DoEverything(&data.giant, data.animSpeed, FootEvent::Right, DamageSource::CrushedRight, RNode, "StompR_L");
 	}
 
 	void GTSstomplandL(AnimationEventData& data) {
-		//data.stage = 2;
-		float shake = 1.0;
-		float bonus = 1.0;
-		float dust = 0.85;
-		float perk = GetPerkBonus_Basics(&data.giant);
-		if (HasSMT(&data.giant)) {
-			bonus = 1.3;
-			dust = 1.35;
-			shake = 4.0;
-		}
-		KeepInPlace(&data.giant);
-		GRumble::Once("StompLL", &data.giant, 1.25 * shake, 0.05, LNode);
-		DoDamageEffect(&data.giant, 2.0 * perk, 1.45, 25, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
-		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Left, LNode);
-		DoDustExplosion(&data.giant, dust + data.animSpeed/4, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.75 * perk, 1.5 + data.animSpeed/4, FootEvent::Left);
+		Stomp_Land_DoEverything(&data.giant, data.animSpeed, FootEvent::Right, DamageSource::CrushedRight, RNode, "StompL_L");
 	}
 
 	void GTSStompendR(AnimationEventData& data) {

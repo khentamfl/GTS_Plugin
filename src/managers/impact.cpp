@@ -7,6 +7,7 @@
 #include "utils/actorUtils.hpp"
 #include "managers/impact.hpp"
 #include "managers/tremor.hpp"
+#include "ActionSettings.hpp"
 #include "data/runtime.hpp"
 #include "UI/DebugAPI.hpp"
 #include "scale/scale.hpp"
@@ -138,22 +139,22 @@ namespace Gts {
 				bonus *= 0.5;
 			}
 			if (actor->AsActorState()->IsSprinting()) {
-				bonus *= 1.33;
+				bonus *= 1.15;
 				if (Runtime::HasPerkTeam(actor, "LethalSprint")) {
-					bonus *= 1.50;
+					bonus *= 1.25;
 				}
 			}
 
 			if (kind != FootEvent::JumpLand) {
 				if (kind == FootEvent::Left) {
-					DoDamageEffect(actor, 1.45, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedLeft);
+					DoDamageEffect(actor, Damage_Walk_Defaut, Radius_Walk_Default * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedLeft);
 				}
 				if (kind == FootEvent::Right) {
-					DoDamageEffect(actor, 1.45, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedRight);
+					DoDamageEffect(actor, Damage_Walk_Defaut, Radius_Walk_Default * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedRight);
 				}
 				//                     ^          ^
 				//                 Damage         Radius
-				DoLaunch(actor, 0.95 * bonus, 1.10 * bonus, kind);
+				DoLaunch(actor, 1.05 * bonus, 1.10 * bonus, kind);
 				//               ^ radius      ^ push power
 				return; // don't check further
 			} else if (kind == FootEvent::JumpLand) {
@@ -161,9 +162,10 @@ namespace Gts {
 				auto& sizemanager = SizeManager::GetSingleton();
 				float damage = sizemanager.GetSizeAttribute(actor, 2); // get jump damage boost
 
+				float Start = Time::WorldTimeElapsed();
 				ActorHandle gianthandle = actor->CreateRefHandle();
 				std::string name = std::format("JumpLandT_{}", actor->formID);
-				float Start = Time::WorldTimeElapsed();
+				
 
 				TaskManager::Run(name, [=](auto& progressData) { // Delay it a bit since it often happens in air
 					if (!gianthandle) {
@@ -173,11 +175,11 @@ namespace Gts {
 					float timepassed = Time::WorldTimeElapsed() - Start;
 
 					if (timepassed >= 0.15) {
-						DoDamageEffect(giant, 1.25 * damage, 6.8, 20, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
-						DoDamageEffect(giant, 1.25 * damage, 6.8, 20, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+						DoDamageEffect(giant, Damage_Jump_Default * damage, Radius_Jump_Default, 20, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+						DoDamageEffect(giant, Damage_Jump_Default * damage, Radius_Jump_Default, 20, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 
-						DoLaunch(giant, 1.0 * perk, 1.75, FootEvent::Left);
-						DoLaunch(giant, 1.0 * perk, 1.75, FootEvent::Right);
+						DoLaunch(giant, 1.20 * perk, 1.75, FootEvent::Left);
+						DoLaunch(giant, 1.20 * perk, 1.75, FootEvent::Right);
 						return false;
 					}
 					return true;

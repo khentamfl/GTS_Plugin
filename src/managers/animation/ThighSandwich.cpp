@@ -42,6 +42,7 @@
 #include "managers/tremor.hpp"
 #include "managers/Rumble.hpp"
 #include "data/persistent.hpp"
+#include "ActionSettings.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "events.hpp"
