@@ -1819,9 +1819,9 @@ namespace Gts {
 		}
 		if (kind == FootEvent::Right) {
 			CollisionDamage::GetSingleton().DoFootCollision(giant, damage, radius, random, bonedamage, crushmult, Cause, true);
-			//                                                                                         ^        ^           ^ - - - - Normal Crush
-			//                                                               Chance to trigger bone crush   Damage of            Threshold multiplication
-			//                                                                                             Bone Crush
+			//                                                                                  ^        ^           ^ - - - - Normal Crush
+			//                                                       Chance to trigger bone crush   Damage of            Threshold multiplication
+			//                                                                                      Bone Crush
 		}
 	}
 
