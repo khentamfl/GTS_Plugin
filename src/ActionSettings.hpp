@@ -39,8 +39,8 @@ namespace Gts {
 
     ////////////////Butt Crush
 
-	const float Damage_ButtCrush_Impact = 50.0f;
-    const float Damage_ButtCrush_Hand = 8.0f;
+	const float Damage_ButtCrush_ButtImpact = 50.0f;
+    const float Damage_ButtCrush_HandImpact = 6.0f;
 
     const float Damage_ButtCrush_FootImpact = 6.0f;
 
