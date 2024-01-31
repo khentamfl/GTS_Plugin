@@ -146,10 +146,10 @@ namespace Gts {
 
 			if (kind != FootEvent::JumpLand) {
 				if (kind == FootEvent::Left) {
-					DoDamageEffect(actor, 1.45, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedLeft, true);
+					DoDamageEffect(actor, 1.45, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedLeft);
 				}
 				if (kind == FootEvent::Right) {
-					DoDamageEffect(actor, 1.45, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedRight, true);
+					DoDamageEffect(actor, 1.45, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedRight);
 				}
 				//                     ^          ^
 				//                 Damage         Radius
