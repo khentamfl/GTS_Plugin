@@ -7,12 +7,13 @@
 #include "managers/ai/aifunctions.hpp"
 #include "managers/CrushManager.hpp"
 #include "utils/papyrusUtils.hpp"
-#include "utils/actorUtils.hpp"
-#include "data/persistent.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
+#include "utils/actorUtils.hpp"
+#include "data/persistent.hpp"
 #include "managers/Rumble.hpp"
 #include "managers/tremor.hpp"
+#include "ActionSettings.hpp"
 #include "data/transient.hpp"
 #include "managers/vore.hpp"
 #include "data/runtime.hpp"
@@ -113,8 +114,8 @@ namespace {
 		auto ButtL = find_node(giant, "NPC L Butt");
 		if (ButtR && ButtL) {
 			if (ThighL && ThighR) {
-				DoDamageAtPoint(giant, 22, 300.0, ThighL, 10, 0.70, 0.95, DamageSource::Booty);
-				DoDamageAtPoint(giant, 22, 300.0, ThighR, 10, 0.70, 0.95, DamageSource::Booty);
+				DoDamageAtPoint(giant, Radius_Crawl_Vore_ButtImpact, Damage_Crawl_Vore_Butt_Impact * perk, ThighL, 10, 0.70, 0.95, DamageSource::Booty);
+				DoDamageAtPoint(giant, Radius_Crawl_Vore_ButtImpact, Damage_Crawl_Vore_Butt_Impact * perk, ThighR, 10, 0.70, 0.95, DamageSource::Booty);
 				DoDustExplosion(giant, 1.8 * dust, FootEvent::Right, "NPC R Butt");
 				DoDustExplosion(giant, 1.8 * dust, FootEvent::Left, "NPC L Butt");
 				DoFootstepSound(giant, 1.2, FootEvent::Right, RNode);
@@ -184,9 +185,7 @@ namespace {
 		AdjustFacialExpression(&data.giant, 3, 0.0, "phenome");
 	}
 
-	void GTSBEH_CrawlVoreExit(AnimationEventData& data) {
-		//BlockFirstPerson(&data.giant, false);
-	}
+	void GTSBEH_CrawlVoreExit(AnimationEventData& data) {} // unused
 }
 
 

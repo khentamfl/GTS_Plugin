@@ -137,8 +137,12 @@ namespace Gts {
 		if (IsCrawling(pred) || IsTransitioning(pred) || IsBeingHeld(prey)) {
 			return false;
 		}
-		if (DisallowHugs(pred) || DisallowHugs(prey)) {
+		if (DisallowHugs(pred) || DisallowHugs(prey) ) {
 			return false;
+		}
+
+		if (pred->AsActorState()->GetSitSleepState() == SIT_SLEEP_STATE::kIsSitting) { // disallow doing it when using furniture
+			return false;	
 		}
 
 		float pred_scale = get_visual_scale(pred);

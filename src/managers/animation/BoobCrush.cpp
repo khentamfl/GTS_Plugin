@@ -169,7 +169,7 @@ namespace {
 				auto Node = find_node(giantref, Nodes);
 				if (Node) {
 					std::string rumbleName = std::format("Node: {}", Nodes);
-					DoDamageAtPoint(giant, 15, 0.45 * damage, Node, 400, 0.10, 1.33, DamageSource::BodyCrush);
+					DoDamageAtPoint(giant, Radius_BreastCrush_BodyDOT, Damage_BreastCrush_BodyDOT * damage, Node, 400, 0.10, 1.33, DamageSource::BodyCrush);
 					GRumble::Once(rumbleName, giant, 0.06, 0.02, Nodes);
 				}
 			}
@@ -177,14 +177,14 @@ namespace {
 			if (BreastL03 && BreastR03) {
 				GRumble::Once("BreastDot_L", giantref, 0.06, 0.025, "L Breast03");
 				GRumble::Once("BreastDot_R", giantref, 0.06, 0.025, "R Breast03");
-				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastL03, 400, 0.10, 1.33, DamageSource::BreastImpact);
-				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastR03, 400, 0.10, 1.33, DamageSource::BreastImpact);
+				DoDamageAtPoint(giant, Radius_BreastCrush_BreastDOT, Damage_BreastCrush_BreastDOT * damage, BreastL03, 400, 0.10, 1.33, DamageSource::BreastImpact);
+				DoDamageAtPoint(giant, Radius_BreastCrush_BreastDOT, Damage_BreastCrush_BreastDOT * damage, BreastR03, 400, 0.10, 1.33, DamageSource::BreastImpact);
 				return true;
 			} else if (BreastL && BreastR) {
 				GRumble::Once("BreastDot_L", giantref, 0.06, 0.025, "NPC L Breast");
 				GRumble::Once("BreastDot_R", giantref, 0.06, 0.025, "NPC R Breast");
-				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastL, 400, 0.10, 1.33, DamageSource::BreastImpact);
-				DoDamageAtPoint(giant, 14, 0.6 * damage, BreastR, 400, 0.10, 1.33, DamageSource::BreastImpact);
+				DoDamageAtPoint(giant, Radius_BreastCrush_BreastDOT, Damage_BreastCrush_BreastDOT * damage, BreastL, 400, 0.10, 1.33, DamageSource::BreastImpact);
+				DoDamageAtPoint(giant, Radius_BreastCrush_BreastDOT, Damage_BreastCrush_BreastDOT * damage, BreastR, 400, 0.10, 1.33, DamageSource::BreastImpact);
 				return true;
 			}
 			return false;
@@ -227,7 +227,7 @@ namespace {
 			auto Node = find_node(giant, Nodes);
 			if (Node) {
 				std::string rumbleName = std::format("Node: {}", Nodes);
-				DoDamageAtPoint(giant, 21, 100.0 * damage, Node, 400, 0.10, 0.85, DamageSource::BodyCrush);
+				DoDamageAtPoint(giant, Radius_BreastCrush_BodyImpact, Damage_BreastCrush_Body * damage, Node, 400, 0.10, 0.85, DamageSource::BodyCrush);
 				DoLaunch(giant, 1.20 * perk, 4.20, Node);
 				GRumble::Once(rumbleName, giant, 1.00 * damage, 0.02, Nodes);
 			}
@@ -252,8 +252,8 @@ namespace {
 		auto BreastR03 = find_node(giant, "R Breast03");
 
 		if (BreastL03 && BreastR03) {
-			DoDamageAtPoint(giant, 24, 300.0 * damage, BreastL03, 4, 0.70, 0.85, DamageSource::BreastImpact);
-			DoDamageAtPoint(giant, 24, 300.0 * damage, BreastR03, 4, 0.70, 0.85, DamageSource::Breast);
+			DoDamageAtPoint(giant, Radius_BreastCrush_BreastImpact, Damage_BreastCrush_Impact * damage, BreastL03, 4, 0.70, 0.85, DamageSource::BreastImpact);
+			DoDamageAtPoint(giant, Radius_BreastCrush_BreastImpact, Damage_BreastCrush_Impact * damage, BreastR03, 4, 0.70, 0.85, DamageSource::Breast);
 			DoDustExplosion(giant, 1.25 * dust + damage/10, FootEvent::Right, "L Breast03");
 			DoDustExplosion(giant, 1.25 * dust + damage/10, FootEvent::Left, "R Breast03");
 			DoFootstepSound(giant, 1.25, FootEvent::Right, "R Breast03");
@@ -264,8 +264,8 @@ namespace {
 			ModGrowthCount(giant, 0, true); // Reset limit
 			return;
 		} else if (BreastL && BreastR) {
-			DoDamageAtPoint(giant, 24, 300.0 * damage, BreastL, 4, 0.70, 0.85, DamageSource::BreastImpact);
-			DoDamageAtPoint(giant, 24, 300.0 * damage, BreastR, 4, 0.70, 0.85, DamageSource::BreastImpact);
+			DoDamageAtPoint(giant, Radius_BreastCrush_BreastImpact, Damage_BreastCrush_Impact * damage, BreastL, 4, 0.70, 0.85, DamageSource::BreastImpact);
+			DoDamageAtPoint(giant, Radius_BreastCrush_BreastImpact, Damage_BreastCrush_Impact * damage, BreastR, 4, 0.70, 0.85, DamageSource::BreastImpact);
 			DoDustExplosion(giant, 1.25 * dust + damage/10, FootEvent::Right, "NPC L Breast");
 			DoDustExplosion(giant, 1.25 * dust + damage/10, FootEvent::Left, "NPC R Breast");
 			DoFootstepSound(giant, 1.25, FootEvent::Right, "NPC R Breast");

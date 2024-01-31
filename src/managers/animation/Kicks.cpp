@@ -39,7 +39,7 @@ namespace {
 			auto giant = gianthandle.get().get();
 			auto Leg = find_node(giant, node);
 			if (Leg) {
-				DoDamageAtPoint_Cooldown(giant, 28, 80.0 * power, Leg, 10, 0.30, crush, pushpower, DamageSource::KickedLeft);
+				DoDamageAtPoint_Cooldown(giant, Radius_Kick, power, Leg, 10, 0.30, crush, pushpower, DamageSource::KickedLeft);
 			}
 			return true;
 		});
@@ -55,7 +55,7 @@ namespace {
 			auto giant = gianthandle.get().get();
 			auto Leg = find_node(giant, node);
 			if (Leg) {
-				DoDamageAtPoint_Cooldown(giant, 28, 80.0 * power, Leg, 10, 0.30, crush, pushpower, DamageSource::KickedRight);
+				DoDamageAtPoint_Cooldown(giant, Radius_Kick, power, Leg, 10, 0.30, crush, pushpower, DamageSource::KickedRight);
 			}
 			return true;
 		});
@@ -87,11 +87,11 @@ namespace {
 	}
 
 	void GTS_Kick_HitBox_On_R(AnimationEventData& data) {
-		StartDamageAt_R(&data.giant, 0.7, 1.8, 0.50, "NPC R Toe0 [RToe]");
+		StartDamageAt_R(&data.giant, Damage_Kick, 1.8, 0.50, "NPC R Toe0 [RToe]");
 		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 4.0);
 	}
 	void GTS_Kick_HitBox_On_L(AnimationEventData& data) {
-		StartDamageAt_L(&data.giant, 0.7, 1.8, 0.50, "NPC L Toe0 [LToe]");
+		StartDamageAt_L(&data.giant, Damage_Kick, 1.8, 0.50, "NPC L Toe0 [LToe]");
 		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 4.0);
 	}
 	void GTS_Kick_HitBox_Off_R(AnimationEventData& data) {
@@ -102,11 +102,11 @@ namespace {
 	}
 
 	void GTS_Kick_HitBox_Power_On_R(AnimationEventData& data) {
-		StartDamageAt_R(&data.giant, 2.6, 1.8, 1.8, "NPC R Toe0 [RToe]");
+		StartDamageAt_R(&data.giant, Damage_Kick_Strong, 1.8, 1.8, "NPC R Toe0 [RToe]");
 		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 8.0);
 	}
 	void GTS_Kick_HitBox_Power_On_L(AnimationEventData& data) {
-		StartDamageAt_L(&data.giant, 2.6, 1.8, 1.8, "NPC L Toe0 [LToe]");
+		StartDamageAt_L(&data.giant, Damage_Kick_Strong, 1.8, 1.8, "NPC L Toe0 [LToe]");
 		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 8.0);
 	}
 	void GTS_Kick_HitBox_Power_Off_R(AnimationEventData& data) {

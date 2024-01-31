@@ -306,7 +306,6 @@ namespace Gts {
 		}
 
 		float sprintdamage = 1.0; // default Sprint damage of 1.0
-		// fall damage is unused since it is always = 1.0
 		float weightdamage = 1.0 + (giant->GetWeight()*0.01);
 
 		SizeModifications(giant, tiny, highheels);
@@ -317,15 +316,13 @@ namespace Gts {
 			damage *= 1.5;
 		}
 
-		float damage_result = (damage * size_difference) * (normaldamage * sprintdamage) * (highheelsdamage * weightdamage) * vulnerability;
+		float damage_result = (damage * size_difference * damagebonus) * (normaldamage * sprintdamage) * (highheelsdamage * weightdamage) * vulnerability;
 		if (giant->IsSneaking()) {
 			damage_result *= 0.70;
 		}
 
 		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, damage_result * bbmult, random);
 		// ^ Chance to break bonues and inflict additional damage, as well as making target more vulerable to size damage
-
-		damage_result *= damagebonus;
 
 		if (!tiny->IsDead()) {
 			float experience = std::clamp(damage_result/500, 0.0f, 0.05f);
@@ -346,7 +343,7 @@ namespace Gts {
 		ModVulnerability(giant, tiny, damage_result);
 		InflictSizeDamage(giant, tiny, damage_result);
 
-		CollisionDamage::CrushCheck(giant, tiny, size_difference, crush_threshold, Cause);
+		this->CrushCheck(giant, tiny, size_difference, crush_threshold, Cause);
 	}
 
 	void CollisionDamage::CrushCheck(Actor* giant, Actor* tiny, float size_difference, float crush_threshold, DamageSource Cause) {

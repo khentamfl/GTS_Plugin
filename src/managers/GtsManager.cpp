@@ -278,7 +278,7 @@ void GtsManager::Update() {
 			SpawnActionIcon(actor);
 
 			if (IsCrawling(actor)) {
-				ApplyAllCrawlingDamage(actor, 1.0, 1000, 0.25);
+				ApplyAllCrawlingDamage(actor, 1000, 0.25);
 			}
 
 			GameModeManager::GetSingleton().GameMode(actor); // Handle Game Modes

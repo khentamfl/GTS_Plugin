@@ -229,7 +229,7 @@ namespace {
 			float sizeDiff = GetSizeDifference(giant, grabbedActor);
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
-			float damage = (1.600 * sizeDiff) * power * additionaldamage * additionaldamage;
+			float damage = (Damage_Grab_Attack * sizeDiff) * power * additionaldamage * additionaldamage;
 			float experience = std::clamp(damage/800, 0.0f, 0.06f);
 			if (HasSMT(giant)) {
 				damage *= 1.60;

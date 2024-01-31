@@ -131,14 +131,14 @@ namespace {
 		DoDustExplosion(giant, dust + (animSpeed * 0.05), Event, Node);
 		DoFootstepSound(giant, 1.0 + animSpeed/8, Event, Node);
 		
-		DrainStamina(giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.8);
+		DrainStamina(giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.8); // cancel stamina drain
 
 		DoLaunch(giant, 0.80 * perk, 1.35 * animSpeed, Event);
 
 		if (right) {
-			FootGrindCheck_Right(giant, 1.45, false);
+			FootGrindCheck_Right(giant, Radius_Stomp, false);
 		} else {
-			FootGrindCheck_Left(giant, 1.45, false);
+			FootGrindCheck_Left(giant, Radius_Stomp, false);
 		}
 	}
 

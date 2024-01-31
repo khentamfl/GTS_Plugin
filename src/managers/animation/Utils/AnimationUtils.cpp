@@ -343,7 +343,7 @@ namespace Gts {
 		DamageAV(giant, ActorValue::kStamina, WasteStamina);
 	}
 
-	void DrainStamina(Actor* giant, std::string_view TaskName, std::string_view perk, bool decide, float power) {
+	void DrainStamina(Actor* giant, std::string_view TaskName, std::string_view perk, bool enable, float power) {
 		float WasteMult = 1.0;
 		if (Runtime::HasPerkTeam(giant, perk)) {
 			WasteMult -= 0.35;
@@ -351,7 +351,7 @@ namespace Gts {
 		WasteMult *= Perk_GetCostReduction(giant);
 
 		std::string name = std::format("StaminaDrain_{}_{}", TaskName, giant->formID);
-		if (decide) {
+		if (enable) {
 			ActorHandle GiantHandle = giant->CreateRefHandle();
 			TaskManager::Run(name, [=](auto& progressData) {
 				if (!GiantHandle) {
@@ -959,7 +959,7 @@ namespace Gts {
 		float maxDistance = radius * giantScale;
 
 		if (IsDebugEnabled() && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
-			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), maxDistance);
+			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), maxDistance, 400.0);
 		}
 
 		NiPoint3 giantLocation = giant->GetPosition();
@@ -970,6 +970,7 @@ namespace Gts {
 				NiPoint3 actorLocation = otherActor->GetPosition();
 				if ((actorLocation - giantLocation).Length() < maxDistance * 6.0) {
 					tinyScale *= GetSizeFromBoundingBox(otherActor); // take Giant/Dragon scale into account
+
 					int nodeCollisions = 0;
 					float force = 0.0;
 

@@ -147,9 +147,6 @@ namespace {
 
 	void GTSvore_impactLS(AnimationEventData& data) {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
-		float scale = get_visual_scale(&data.giant);
-		float volume = scale * 0.20 * (data.animSpeed * data.animSpeed);
-		//AllowToDoVore(&data.giant, false); // Disallow repeating Vore for NPC's
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("GTS_EnterFear");
 		}

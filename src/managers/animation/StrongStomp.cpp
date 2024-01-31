@@ -1,22 +1,3 @@
-// Animation: Strong Stomp
-//  - Stages
-/*
-   GTS_StrongStomp_Start
-   GTS_StrongStomp_LR_Start
-   GTS_StrongStomp_LL_Start
-   GTS_StrongStomp_LR_Middle
-   GTS_StrongStomp_LL_Middle
-   GTS_StrongStomp_LR_End
-   GTS_StrongStomp_LL_End
-   GTS_StrongStomp_ImpactR
-   GTS_StrongStomp_ImpactL
-   GTS_StrongStomp_ReturnRL_Start
-   GTS_StrongStomp_ReturnLL_Start
-   GTS_StrongStomp_ReturnRL_End
-   GTS_StrongStomp_ReturnLL_End
-   GTS_StrongStomp_End
- */
-
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/StrongStomp.hpp"
@@ -109,7 +90,7 @@ namespace {
 		Runtime::PlaySoundAtNode("xlRumbleR", giant, 0.14 * bonus * scale * animspeed, 1.0, feet);
 	}
 
-	void StrongStomp_DoEverything(Actor* giant, float animSpeed, FootEvent Event, DamageSource Source, std::string_view Node) {
+	void StrongStomp_DoEverything(Actor* giant, float animSpeed, FootEvent Event, DamageSource Source, std::string_view Node, std::string_view rumble) {
 		float perk = GetPerkBonus_Basics(giant);
 		float SMT = 1.0;
 		float damage = 1.0;
@@ -118,7 +99,7 @@ namespace {
 			damage = 1.25;
 		}
 		DoDamageEffect(giant, Damage_Stomp_Strong * damage * perk, Radius_Stomp_Strong, 5, 0.35, Event, 1.0, Source);
-		DoImpactRumble(giant, SMT * animSpeed - (0.55 * 2), Node, "HeavyStomp");
+		DoImpactRumble(giant, SMT * animSpeed - (0.55 * 2), Node, rumble);
 		DoDustExplosion(giant, 0.25 + SMT + (animSpeed * 0.05), Event, Node);
 
 		DrainStamina(giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 3.4);
@@ -128,6 +109,10 @@ namespace {
 
 		DoSounds(giant, 1.15 + animSpeed/20, Node);
 	}
+
+	///////////////////////////////////////////////////////////////////////
+	//      EVENTS
+	//////////////////////////////////////////////////////////////////////
 
 	void GTS_StrongStomp_Start(AnimationEventData& data) {
 		data.stage = 1;
@@ -182,14 +167,14 @@ namespace {
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 
-		StrongStomp_DoEverything(&data.giant, data.animSpeed, FootEvent::Right, DamageSource::CrushedRight, RNode);
+		StrongStomp_DoEverything(&data.giant, data.animSpeed, FootEvent::Right, DamageSource::CrushedRight, RNode, "HeavyStompR");
 	}
 	void GTS_StrongStomp_ImpactL(AnimationEventData& data) {
 		data.stage = 0;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
 
-		StrongStomp_DoEverything(&data.giant, data.animSpeed, FootEvent::Left, DamageSource::CrushedLeft, LNode);
+		StrongStomp_DoEverything(&data.giant, data.animSpeed, FootEvent::Left, DamageSource::CrushedLeft, LNode, "HeavyStompL");
 	}
 
 	void GTS_StrongStomp_ReturnRL_Start(AnimationEventData& data) {StartLegRumble("StrongStompR", data.giant, 0.25, 0.10, "Right");}

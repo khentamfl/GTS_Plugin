@@ -26,6 +26,7 @@
 #include "managers/footstep.hpp"
 #include "managers/tremor.hpp"
 #include "managers/Rumble.hpp"
+#include "ActionSettings.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "node.hpp"
@@ -106,10 +107,6 @@ namespace {
 			if (!gianthandle) {
 				return false;
 			}
-			/*auto FrameB = Time::FramesElapsed() - FrameA;
-			   if (FrameB <= 60.0) {
-			        return true;
-			   }*/
 			auto giantref = gianthandle.get().get();
 			auto ThighL = find_node(giantref, "NPC L Thigh [LThg]");
 			auto ThighR = find_node(giantref, "NPC R Thigh [RThg]");
@@ -118,13 +115,30 @@ namespace {
 				return false; //Disable it once we leave Thigh Crush state
 			}
 			if (ThighL && ThighR) {
-				DoDamageAtPoint(giantref, 16, 0.5 * TimeScale(), ThighL, 100, 0.20, 2.5, DamageSource::Booty);
-				DoDamageAtPoint(giantref, 16, 0.5 * TimeScale(), ThighR, 100, 0.20, 2.5, DamageSource::Booty);
+				DoDamageAtPoint(giantref, Radius_ThighCrush_Butt_DOT, Damage_ThighCrush_Butt_DOT * TimeScale(), ThighL, 100, 0.20, 2.5, DamageSource::Booty);
+				DoDamageAtPoint(giantref, Radius_ThighCrush_Butt_DOT, Damage_ThighCrush_Butt_DOT * TimeScale(), ThighR, 100, 0.20, 2.5, DamageSource::Booty);
 				return true;
 			}
 			return false; // Cancel it if we don't have these bones
 		});
 	}
+
+	void ThighCrush_GetUpDamage(Actor* giant, float animSpeed, float mult, FootEvent Event, DamageSource Source, std::string_view Node, std::string_view rumble) {
+		float scale = get_visual_scale(giant);
+		float speed = animSpeed;
+		float volume = scale * 0.10 * speed;
+		float perk = GetPerkBonus_Thighs(giant);
+
+		DoDamageEffect(giant, Damage_ThighCrush_Stand_Up * mult * perk, Radius_ThighCrush_Stand_Up, 25, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+		DoLaunch(giant, 0.65 * mult * perk, 1.55 * animSpeed, FootEvent::Right);
+		GRumble::Once(rumble, giant, volume * 4, 0.10, RNode);
+		DoFootstepSound(giant, 1.05, FootEvent::Right, RNode);
+		DoDustExplosion(giant, 1.1, FootEvent::Right, RNode);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////
+	//// EVENTS
+	///////////////////////////////////////////////////////////////////////////////////
 
 	void GTStosit(AnimationEventData& data) {
 		float scale = get_visual_scale(data.giant);
@@ -132,7 +146,6 @@ namespace {
 		StartLegRumble("ThighCrush", data.giant, 0.10, 0.10);
 		ManageCamera(&data.giant, true, 0.0); // Track feet
 		RunButtCollisionTask(&data.giant);
-		//BlockFirstPerson(&data.giant, true);
 		data.stage = 1;
 	}
 
@@ -198,50 +211,23 @@ namespace {
 	}
 
 	void GTSstandR(AnimationEventData& data) {
-		float scale = get_visual_scale(data.giant);
-		float speed = data.animSpeed;
-		float volume = scale * 0.10 * speed;
-		float perk = GetPerkBonus_Thighs(&data.giant);
-
-		GRumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
-		DoFootstepSound(&data.giant, 1.05, FootEvent::Right, RNode);
-		DoDustExplosion(&data.giant, 1.1, FootEvent::Right, RNode);
-		DoDamageEffect(&data.giant, 2.2 * perk, 1.4, 25, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
-		DoLaunch(&data.giant, 0.65 * perk, 1.55 * data.animSpeed, FootEvent::Right);
+		// do stand up damage
+		ThighCrush_GetUpDamage(&data.giant, data.animSpeed, 1.0, FootEvent::Right, DamageSource::CrushedRight, RNode, "ThighCrushStompR");
 		data.stage = 9;
-		//Cprint("ThighCrush: GTSstandR");
 	}
 
 	void GTSstandL(AnimationEventData& data) {
-		float scale = get_visual_scale(data.giant);
-		float speed = data.animSpeed;
-		float volume = scale * 0.10 * speed;
-		float perk = GetPerkBonus_Thighs(&data.giant);
-
-		GRumble::Once("ThighCrushStompL", &data.giant, volume * 4, 0.10, LNode);
-		DoFootstepSound(&data.giant, 1.05, FootEvent::Left, LNode);
-		DoDustExplosion(&data.giant, 1.1, FootEvent::Left, LNode);
-		DoDamageEffect(&data.giant, 2.2 * perk, 1.4, 25, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
-		DoLaunch(&data.giant, 0.65 * perk, 1.55 * data.animSpeed, FootEvent::Left);
+		// do stand up damage
+		ThighCrush_GetUpDamage(&data.giant, data.animSpeed, 1.0, FootEvent::Left, DamageSource::CrushedLeft, LNode, "ThighCrushStompL");
 		data.stage = 9;
-		//Cprint("ThighCrush: GTSstandL");
 	}
 
 	void GTSstandRS(AnimationEventData& data) {
-		float scale = get_visual_scale(data.giant);
-		float speed = data.animSpeed;
-		float volume = scale * 0.05 * speed;
-		float perk = GetPerkBonus_Thighs(&data.giant);
-
-		GRumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
-		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
-		DoDustExplosion(&data.giant, 1.1, FootEvent::Right, RNode);
-		DoDamageEffect(&data.giant, 1.8 * perk, 1.3, 25, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
-		DoLaunch(&data.giant, 0.45 * perk, 1.55 * data.animSpeed, FootEvent::Right);
+		// do weaker stand up damage
+		ThighCrush_GetUpDamage(&data.giant, data.animSpeed, 0.8, FootEvent::Right, DamageSource::CrushedRight, RNode, "ThighCrushStompR_S");
 		data.stage = 9;
 	}
 	void GTSBEH_Next(AnimationEventData& data) {
-		// Inbetween stages
 		data.animSpeed = 1.0;
 		data.canEditAnimSpeed = false;
 	}
@@ -249,7 +235,6 @@ namespace {
 		// Going to exit
 		StopLegRumble("BodyRumble", data.giant);
 		ManageCamera(&data.giant, false, 0.0); // Un-track feet
-		//BlockFirstPerson(&data.giant, false);
 	}
 	void GTSBEH_Exit(AnimationEventData& data) {
 		// Final exit
@@ -261,7 +246,6 @@ namespace {
 		if (!CanPerformAnimation(player, 2)) {
 			return;
 		}
-		//BlockFirstPerson(player, true);
 		AnimationManager::StartAnim("ThighLoopEnter", player);
 	}
 

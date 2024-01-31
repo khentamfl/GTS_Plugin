@@ -12,6 +12,7 @@
 #include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
 #include "managers/tremor.hpp"
+#include "ActionSettings.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
 #include "node.hpp"
@@ -45,7 +46,7 @@ namespace {
 			}
 			auto giantref = gianthandle.get().get();
 			GRumble::Once("FootGrindL", giantref, 1.0, 0.025, LNode);
-			DoDamageEffect(giantref, 0.014, 1.5, 10000, 0.05, FootEvent::Left, 2.5, DamageSource::FootGrindedLeft);
+			DoDamageEffect(giantref, Damage_Foot_Grind_DOT, Radius_Foot_Grind_DOT, 10000, 0.05, FootEvent::Left, 2.5, DamageSource::FootGrindedLeft);
 			return true;
 		});
 	}
@@ -59,7 +60,7 @@ namespace {
 			}
 			auto giantref = gianthandle.get().get();
 			GRumble::Once("FootGrindR", giantref, 1.0, 0.025, RNode);
-			DoDamageEffect(giantref, 0.014, 1.5, 10000, 0.05, FootEvent::Right, 2.5, DamageSource::FootGrindedRight);
+			DoDamageEffect(giantref, Damage_Foot_Grind_DOT, Radius_Foot_Grind_DOT, 10000, 0.05, FootEvent::Right, 2.5, DamageSource::FootGrindedRight);
 			return true;
 		});
 	}
@@ -70,6 +71,22 @@ namespace {
 		TaskManager::Cancel(Right);
 		TaskManager::Cancel(Left);
 	}
+
+	void Footgrind_DoImpact(Actor* giant, FootEvent Event, DamageSource Source, std::string_view Node, std::string_view rumble) {
+		float perk = GetPerkBonus_Basics(giant);
+		ApplyDustRing(giant, Event, Node, 1.05);
+		DoFootstepSound(giant, 1.0, Event, Node);
+		DoLaunch(giant, 0.75 * perk, 1.35 * perk, Event);
+		DoDamageEffect(giant, Damage_Foot_Grind_Impact, Radius_Foot_Grind_Impact, 20, 0.15, Event, 1.0, Source);
+
+		DamageAV(giant, ActorValue::kStamina, 30 * GetWasteMult(giant));
+
+		GRumble::Once(rumble, giant, 1.25, 0.05, Node);
+	}
+
+	//////////////////////////////////////////////////////////////////
+	/// Events
+	//////////////////////////////////////////////////////////////////
 
 	void GTSstomp_FootGrindL_Enter(AnimationEventData& data) {
 		data.stage = 1;
@@ -106,27 +123,11 @@ namespace {
 	}
 
 	void GTSstomp_FootGrindR_Impact(AnimationEventData& data) { // When foot hits the ground after lifting the leg up. R Foot
-		float perk = GetPerkBonus_Basics(&data.giant);
-		ApplyDustRing(&data.giant, FootEvent::Right, RNode, 1.05);
-		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.75 * perk, 1.35 * perk, FootEvent::Right);
-		DoDamageEffect(&data.giant, 2.6, 1.70, 20, 0.15, FootEvent::Right, 1.0, DamageSource::FootGrindedRight);
-
-		DamageAV(&data.giant, ActorValue::kStamina, 30 * GetWasteMult(&data.giant));
-
-		GRumble::Once("GrindStompR", &data.giant, 1.25, 0.05, RNode);
+		Footgrind_DoImpact(&data.giant, FootEvent::Right, DamageSource::FootGrindedRight, RNode, "GrindStompR");
 	}
 
 	void GTSstomp_FootGrindL_Impact(AnimationEventData& data) { // When foot hits the ground after lifting the leg up. L Foot
-		float perk = GetPerkBonus_Basics(&data.giant);
-		ApplyDustRing(&data.giant, FootEvent::Left, LNode, 1.05);
-		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.75 * perk, 1.35 * perk, FootEvent::Left);
-		DoDamageEffect(&data.giant, 2.6, 1.70, 20, 0.15, FootEvent::Left, 1.0, DamageSource::FootGrindedLeft);
-
-		DamageAV(&data.giant, ActorValue::kStamina, 30 * GetWasteMult(&data.giant));
-
-		GRumble::Once("GrindStompL", &data.giant, 1.25, 0.05, LNode);
+		Footgrind_DoImpact(&data.giant, FootEvent::Left, DamageSource::FootGrindedLeft, LNode, "GrindStompL");
 	}
 
 	void GTSstomp_FootGrindR_Exit(AnimationEventData& data) { // Remove foot from enemy: Right

@@ -159,7 +159,7 @@ namespace Gts {
 		}
 		if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone(giant))) {
 			for (auto point: CrawlPoints) {
-				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance);
+				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance, 400.0);
 			}
 		}
 
@@ -202,7 +202,7 @@ namespace Gts {
 		}
 	}
 
-	void ApplyAllCrawlingDamage(Actor* giant, float damage, int random, float bonedamage) { // Applies damage to all 4 crawl bones at once
+	void ApplyAllCrawlingDamage(Actor* giant, int random, float bonedamage) { // Applies damage to all 4 crawl bones at once
 		auto LC = find_node(giant, "NPC L Calf [LClf]");
 		auto RC = find_node(giant, "NPC R Calf [RClf]");
 		auto LH = find_node(giant, "NPC L Finger20 [LF20]");
@@ -221,13 +221,13 @@ namespace Gts {
 		} // CTD protection
 
 
-		DoDamageAtPoint(giant, 10, damage, LC, random, bonedamage, 2.5, DamageSource::KneeLeft);                // Call Left Calf
-		DoDamageAtPoint(giant, 10, damage, RC, random, bonedamage, 2.5, DamageSource::KneeRight);        // Call Right Calf
+		DoDamageAtPoint(giant, Radius_Crawl_KneeIdle, Damage_Crawl_Idle, LC, random, bonedamage, 2.5, DamageSource::KneeLeft);                // Call Left Calf
+		DoDamageAtPoint(giant, Radius_Crawl_KneeIdle, Damage_Crawl_Idle, RC, random, bonedamage, 2.5, DamageSource::KneeRight);        // Call Right Calf
 
 		if (!IsTransferingTiny(giant)) { // Only do if we don't have someone in our left hand
-			DoDamageAtPoint(giant, 8, damage, LH, random, bonedamage, 2.5, DamageSource::HandCrawlLeft);   // Call Left Hand
+			DoDamageAtPoint(giant, Radius_Crawl_HandIdle, Damage_Crawl_Idle, LH, random, bonedamage, 2.5, DamageSource::HandCrawlLeft);   // Call Left Hand
 		}
 
-		DoDamageAtPoint(giant, 8, damage, RH, random, bonedamage, 2.5, DamageSource::HandCrawlRight);   // Call Right Hand
+		DoDamageAtPoint(giant, Radius_Crawl_HandIdle, Damage_Crawl_Idle, RH, random, bonedamage, 2.5, DamageSource::HandCrawlRight);   // Call Right Hand
 	}
 }
