@@ -62,7 +62,7 @@ namespace Gts {
     ////////////////kick
 
 	const float Damage_Kick = 8.0f;
-	const float Damage_Kick_Strong = 18.0f;
+	const float Damage_Kick_Strong = 16.0f;
 
     ////////////////crawl
 

@@ -43,11 +43,11 @@ namespace {
 	}
 
 	void FootTrample_Stage1(Actor* giant, bool Right, FootEvent Event, DamageSource Source, std::string_view Node, std::string_view rumble) {
-		float perk = GetPerkBonus_Basics(&data.giant);
+		float perk = GetPerkBonus_Basics(giant);
 		float shake = 1.0;
 		float dust = 1.0;
 		
-		if (HasSMT(&data.giant)) {
+		if (HasSMT(giant)) {
 			shake = 4.0;
 			dust = 1.25;
 		}
@@ -94,7 +94,7 @@ namespace {
 			dust = 1.50;
 		}
 		DoDamageEffect(giant, Damage_Trample_Finisher * perk, Radius_Trample_Finisher, 1, 0.25, Event, 0.85, Source);
-		GRumble::Once(Rumble, giant, 3.20 * shake, 0.0, Node);
+		GRumble::Once(rumble, giant, 3.20 * shake, 0.0, Node);
 		DoLaunch(giant, 1.25 * perk, 3.20 * perk, Event);
 		DoFootstepSound(giant, 1.15, Event, Node);
 		DoDustExplosion(giant, dust, Event, Node);
