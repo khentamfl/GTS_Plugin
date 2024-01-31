@@ -347,7 +347,7 @@ namespace Gts {
 			"R Breast02"
 		};
 
-		std::vector<std::string_view> front_bone_names = {
+		std::vector<std::string_view> center_bone_names = {
 			"L Breast01",
 			"R Breast01"
 		};
@@ -371,11 +371,11 @@ namespace Gts {
 			if (IsDebugEnabled()) {
 				DebugAPI::DrawSphere(glm::vec3(bone->world.translate.x, bone->world.translate.y, bone->world.translate.z), 2.0, 10, {1.0, 1.0, 1.0, 1.0});
 			}
-			clevagePos += (bone->world * NiPoint3()) * 0.5;
+			clevagePos += (bone->world * NiPoint3()) * (1.0f / bone_names.size());
 		}
 
 		// Center bone
-		for (auto bone_name: front_bone_names) {
+		for (auto bone_name: center_bone_names) {
 			auto bone = find_node(giant, bone_name);
 			if (!bone) {
 				Notify("ERROR: Breast 01 bones not found");
@@ -385,7 +385,7 @@ namespace Gts {
 			if (IsDebugEnabled()) {
 				DebugAPI::DrawSphere(glm::vec3(bone->world.translate.x, bone->world.translate.y, bone->world.translate.z), 2.0, 10, {1.0, 1.0, 1.0, 1.0});
 			}
-			centerBonePos += bone->world.translate * 0.5;
+			centerBonePos += bone->world.translate  * (1.0f / center_bone_names.size());
 		}
 
 		// Up bone
@@ -399,7 +399,7 @@ namespace Gts {
 			if (IsDebugEnabled()) {
 				DebugAPI::DrawSphere(glm::vec3(bone->world.translate.x, bone->world.translate.y, bone->world.translate.z), 2.0, 10, {1.0, 1.0, 1.0, 1.0});
 			}
-			upBonePos += bone->world.translate * 0.5;
+			upBonePos += bone->world.translate  * (1.0f / up_bone_names.size());
 		}
 
 		// Forward
