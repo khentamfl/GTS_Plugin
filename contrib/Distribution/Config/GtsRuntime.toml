@@ -304,7 +304,10 @@ NPCSizeEffects = "GTS.esp|3D4587"
 CrushGrowthStorage = "GTS.esp|3D4588"
 ManualGrowthStorage = "GTS.esp|4162CB"
 BalanceMode = "GTS.esp|42F7D3"
-HighHeelDamage = "GTS.esp|271EFF"
+
+Cleavage_OffsetY = "GTS.esp|271EFF"
+Cleavage_OffsetZ = "GTS.esp|142206"
+
 FirstPersonMode = "GTS.esp|2B8D35"
 ProneOffsetFP = "GTS.esp|2C2F38"
 EnableCamera = "GTS.esp|290512"
@@ -344,10 +347,6 @@ GtsEnableLooting = "GTS.esp|2EB748"
 GtsNPCEnableLooting = "GTS.esp|2EB749"
 NormalCameraTarget = "GTS.esp|4B8335"
 AltCameraTarget = "GTS.esp|4B8336"
-
-TotalSprintDamage = "GTS.esp|142206"
-TotalSizeDamage = "GTS.esp|151517"
-TotalFallDamage = "GTS.esp|151516"
 
 EnableColliders = "GTS.esp|42A6D2"
 EnableDebugOverlay = "GTS.esp|42A6D1"

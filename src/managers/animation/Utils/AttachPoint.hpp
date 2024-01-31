@@ -395,8 +395,12 @@ namespace Gts {
 		NiMatrix3 breastRotation = NiMatrix3(sideways, forward, up);
 
 
+		
+		float offset_Y = Runtime::GetFloatOr("Cleavage_OffsetY", 1.0) - 1.0;
+		float offset_Z = Runtime::GetFloatOr("Cleavage_OffsetZ", 1.0) - 1.0;
+
 		// Sermite: Offset adjustment HERE
-		NiPoint3 offset = NiPoint3(0.0, 0.0, 0.0);
+		NiPoint3 offset = NiPoint3(0.0, offset_Y, offset_Z);
 
 
 		// Global space offset
