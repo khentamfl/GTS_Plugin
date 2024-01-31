@@ -89,7 +89,7 @@ namespace {
 			auto giantRef = giant->CreateRefHandle();
 			auto tinyRef = tiny->CreateRefHandle();
 			auto currentPos = tiny->GetPosition();
-			TaskManager::RunFor(1.5, [](const auto& data){
+			TaskManager::RunFor(1.5, [=](const auto& data){
 				if (!tinyRef) {
 					return false;	
 				}
