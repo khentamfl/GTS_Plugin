@@ -93,6 +93,9 @@ namespace {
 				if (!tinyRef) {
 					return false;	
 				}
+				if (!giantRef) {
+					return false;	
+				}
 				AttachTo(giantRef, tinyRef, currentPos);
 				return true;
 			});
