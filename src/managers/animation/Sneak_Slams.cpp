@@ -45,24 +45,24 @@ namespace { // WIP
 		if (node) {
 			float min_scale = 3.5 * threshold;
 			float scale = get_visual_scale(giant);
-			if (scale >= minimal_scale && !actor->AsActorState()->IsSwimming()) {
+			if (scale >= threshold && !giant->AsActorState()->IsSwimming()) {
 				NiPoint3 node_location = node->world.translate;
 
 				NiPoint3 ray_start = node_location + NiPoint3(0.0, 0.0, meter_to_unit(-0.05*scale)); // Shift up a little
 				NiPoint3 ray_direction(0.0, 0.0, -1.0);
 				bool success = false;
 				float ray_length = meter_to_unit(std::max(1.05*scale, 1.05));
-				NiPoint3 explosion_pos = CastRay(actor, ray_start, ray_direction, ray_length, success);
+				NiPoint3 explosion_pos = CastRay(giant, ray_start, ray_direction, ray_length, success);
 
 				if (!success) {
 					explosion_pos = node_location;
-					explosion_pos.z = actor->GetPosition().z;
+					explosion_pos.z = giant->GetPosition().z;
 				}
-				if (actor->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
-					SpawnCrawlParticle(actor, scale * multiplier, explosion_pos);
+				if (giant->formID == 0x14 && Runtime::GetBool("PCAdditionalEffects")) {
+					SpawnParticle(giant, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), explosion_pos, (scale * multiplier) * 1.8, 7, nullptr);
 				}
-				if (actor->formID != 0x14 && Runtime::GetBool("NPCSizeEffects")) {
-					SpawnCrawlParticle(actor, scale * multiplier, explosion_pos);
+				if (giant->formID != 0x14 && Runtime::GetBool("NPCSizeEffects")) {
+					SpawnParticle(giant, 4.60, "GTS/Effects/Footstep.nif", NiMatrix3(), explosion_pos, (scale * multiplier) * 1.8, 7, nullptr);
 				}
 			}
 		}
@@ -206,15 +206,18 @@ namespace { // WIP
 	void GTS_Sneak_FingerGrind_Impact(AnimationEventData& data) {
 		Finger_DoDamage(&data.giant, true, 2.0);
 		Finger_DoSounds(&data.giant, Rfinger, 1.0);
+		Finger_ApplyVisuals(&data.giant, Rfinger, 3.0, 1.25);
 		DrainStamina(&data.giant, "StaminaDrain_FingerGrind", "DestructionBasics", false, 0.8);
 	};
 	void GTS_Sneak_FingerGrind_Rotation(AnimationEventData& data) {
 		Finger_DoDamage(&data.giant, true, 1.0);
+		Finger_ApplyVisuals(&data.giant, Rfinger, 3.0, 0.75);
 	};   
 	void GTS_Sneak_FingerGrind_Finisher(AnimationEventData& data) {
 		StopStaminaDrain(&data.giant);
 		Finger_DoDamage(&data.giant, true, 4.0);
 		Finger_DoSounds(&data.giant, Rfinger, 1.4);
+		Finger_ApplyVisuals(&data.giant, Rfinger, 2.6, 1.5);
 	};
 	void GTS_Sneak_FingerGrind_CameraOff(AnimationEventData& data) {EnableHandTracking(&data.giant, CrawlEvent::RightHand, false);
 }
