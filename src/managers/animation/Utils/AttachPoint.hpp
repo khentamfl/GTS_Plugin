@@ -380,13 +380,17 @@ namespace Gts {
 		auto upBonePos = upBone->world.translate;
 
 		// Forward
-		NiPoint3 forward = (clevagePos - centerBonePos).Unitize();
+		NiPoint3 forward = (clevagePos - centerBonePos);
+		forward.Unitize();
 		// Up
-		NiPoint3 up = (upBonePos - centerBonePos).Unitize();
+		NiPoint3 up = (upBonePos - centerBonePos);
+		up.Unitize();
 		// Sideways
-		NiPoint3 sideways = up.Cross(forward).Unitize();
+		NiPoint3 sideways = up.Cross(forward);
+		sideways.Unitize();
 		// Reorthorg
-		up = ((-1.0 * sideways).Cross(forward)).Unitize();
+		up = ((-1.0 * sideways).Cross(forward));
+		up.Unitize();
 		
 		NiMatrix3 breastRotation = NiMatrix3(sideways, forward, up);
 
