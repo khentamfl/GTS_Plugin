@@ -110,7 +110,7 @@ namespace Gts {
 			return NiPoint3(0,0,0);
 		}
 
-		auto ObjectA = find_node(giant, "AnimObjectA");
+		auto ObjectA = find_node(giant, "NPC R Finger12 [RF12]");
 		if (!ObjectA) {
 			return NiPoint3(0,0,0);
 		}
