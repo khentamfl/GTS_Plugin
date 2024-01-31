@@ -91,6 +91,24 @@ namespace {
 		}
 	}
 
+	void DoImpactRumble(Actor* giant, float force, std::string_view node, std::string_view name) {
+		if (HasSMT(giant)) {
+			force *= 12.0;
+		}
+		GRumble::Once(name, giant, force, 0.05, node);
+	}
+
+	void DoSounds(Actor* giant, float animspeed, std::string_view feet) {
+		float bonus = 1.0;
+		if (HasSMT(giant)) {
+			bonus = 8.0;
+		}
+		float scale = get_visual_scale(giant);
+		Runtime::PlaySoundAtNode("HeavyStompSound", giant, 0.14 * bonus * scale * animspeed, 1.0, feet);
+		Runtime::PlaySoundAtNode("xlFootstepR", giant, 0.14 * bonus * scale * animspeed, 1.0, feet);
+		Runtime::PlaySoundAtNode("xlRumbleR", giant, 0.14 * bonus * scale * animspeed, 1.0, feet);
+	}
+
 	void StrongStomp_DoEverything(Actor* giant, float animSpeed, FootEvent Event, DamageSource Source, std::string_view Node) {
 		float perk = GetPerkBonus_Basics(giant);
 		float SMT = 1.0;
@@ -109,25 +127,6 @@ namespace {
 		DoLaunch(giant, 1.05 * perk, 2.4 + animSpeed/2, Event);
 
 		DoSounds(giant, 1.15 + animSpeed/20, Node);
-	}
-
-
-	void DoImpactRumble(Actor* giant, float force, std::string_view node, std::string_view name) {
-		if (HasSMT(giant)) {
-			force *= 12.0;
-		}
-		GRumble::Once(name, giant, force, 0.05, node);
-	}
-
-	void DoSounds(Actor* giant, float animspeed, std::string_view feet) {
-		float bonus = 1.0;
-		if (HasSMT(giant)) {
-			bonus = 8.0;
-		}
-		float scale = get_visual_scale(giant);
-		Runtime::PlaySoundAtNode("HeavyStompSound", giant, 0.14 * bonus * scale * animspeed, 1.0, feet);
-		Runtime::PlaySoundAtNode("xlFootstepR", giant, 0.14 * bonus * scale * animspeed, 1.0, feet);
-		Runtime::PlaySoundAtNode("xlRumbleR", giant, 0.14 * bonus * scale * animspeed, 1.0, feet);
 	}
 
 	void GTS_StrongStomp_Start(AnimationEventData& data) {
@@ -215,8 +214,8 @@ namespace {
 	}
 
 	void GTSBEH_Exit(AnimationEventData& data) {
-		if (&data.giant->formID == 0x14) {
-			ResetCameraTracking(&data.giant);
+		if (&data.giant.formID == 0x14) {
+			ResetCameraTracking();
 		}
 
 		GRumble::Stop("StompR", &data.giant);
