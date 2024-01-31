@@ -135,14 +135,6 @@ namespace {
 		return protection;
 	}
 
-	float GetDamageMultiplier(Actor* attacker) {
-		return AttributeManager::GetSingleton().GetAttributeBonus(attacker, ActorValue::kAttackDamageMult);
-	}
-
-	float GetDamageResistance(Actor* receiver) {
-		return AttributeManager::GetSingleton().GetAttributeBonus(receiver, ActorValue::kHealth);
-	}
-
 	float HugDamageResistance(Actor* receiver) {
 		float reduction = 1.0;
 		if (HugShrink::GetHuggiesActor(receiver)) {

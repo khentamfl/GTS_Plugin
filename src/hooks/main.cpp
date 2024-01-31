@@ -13,23 +13,9 @@ using namespace Gts;
 
 namespace {
 	void PopulateHook(HitData* a_this, Actor* a_aggressor, Actor* a_target, InventoryEntryData* a_weapon) {
-		//auto& attributes = AttributeManager::GetSingleton();
-		//if (Attributes) {
-		//a_this->totalDamage *= GetAttributeBonus(a_aggressor, ActorValue::kAttackDamageMult);
-		//}
-		//log::info("Actor {} HP before: {}", a_target->GetDisplayFullName(), a_target->GetActorValue(ActorValue::kHealth));
-		//log::info("Before: Att: {}, totalDamage: {}, physical: {}, bonusHealthDamageMult: {}, targetedLimbDamage: {}", a_aggressor->GetDisplayFullName(), a_this->totalDamage, a_this->physicalDamage, a_this->bonusHealthDamageMult, a_this->targetedLimbDamage);
-		a_this->totalDamage *= 0;
-		a_this->physicalDamage *= 0;
-		a_this->bonusHealthDamageMult *= 0;
-		a_this->targetedLimbDamage *= 0;
-		//log::info("Actor {} HP After: {}", a_target->GetDisplayFullName(), a_target->GetActorValue(ActorValue::kHealth));
-		//log::info("After: Att: {}, totalDamage: {}, physical: {}, bonusHealthDamageMult: {}, targetedLimbDamage: {}", a_aggressor->GetDisplayFullName(), a_this->totalDamage, a_this->physicalDamage, a_this->bonusHealthDamageMult, a_this->targetedLimbDamage);
+		
 	}
 
-	//bool CheckHealthGate(Actor* receiver, float damage) {
-
-	//}
 }
 
 

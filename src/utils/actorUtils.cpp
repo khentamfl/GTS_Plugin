@@ -814,6 +814,18 @@ namespace Gts {
 		return hunger;
 	}
 
+	float GetDamageResistance(Actor* actor) {
+		return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kHealth);
+	}
+
+	float GetDamageMultiplier(Actor* actor) {
+		return AttributeManager::GetSingleton().GetAttributeBonus(actor, ActorValue::kAttackDamageMult);
+	}
+
+	float Damage_CalculateSizeDamage(Actor* giant, Actor* tiny) {
+		return GetDamageMultiplier(giant) * GetDamageResistance(tiny);
+	}
+
 	float GetSizeDifference(Actor* giant, Actor* tiny) {
 		float GiantScale = get_visual_scale(giant) * GetSizeFromBoundingBox(giant);
 		float TinyScale = get_visual_scale(tiny) * GetSizeFromBoundingBox(tiny);
@@ -1801,12 +1813,12 @@ namespace Gts {
 	}
 
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind, float crushmult, DamageSource Cause) {
-		radius *= 1.0 + (GetHighHeelsBonusDamage(giant) * 2.5);
+		radius = 1.0;// + (GetHighHeelsBonusDamage(giant) * 2.5);
 		if (kind == FootEvent::Left) {
-			CollisionDamage::GetSingleton().DoFootCollision_Left(giant, (45.0 * damage), radius, random, bonedamage, crushmult, Cause);
+			CollisionDamage::GetSingleton().DoFootCollision(giant, damage, radius, random, bonedamage, crushmult, Cause, false);
 		}
 		if (kind == FootEvent::Right) {
-			CollisionDamage::GetSingleton().DoFootCollision_Right(giant, (45.0 * damage), radius, random, bonedamage, crushmult, Cause);
+			CollisionDamage::GetSingleton().DoFootCollision(giant, damage, radius, random, bonedamage, crushmult, Cause, true);
 			//                                                                                         ^        ^           ^ - - - - Normal Crush
 			//                                                               Chance to trigger bone crush   Damage of            Threshold multiplication
 			//                                                                                             Bone Crush

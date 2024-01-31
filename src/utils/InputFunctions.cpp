@@ -224,7 +224,7 @@ namespace {
 
 		float gigantism = 1.0 + Ench_Aspect_GetPower(player);
 
-		float multi = AttributeManager::GetSingleton().GetAttributeBonus(player, ActorValue::kHealth);
+		float multi = GetDamageResistance(player);
 
 		float healthMax = GetMaxAV(player, ActorValue::kHealth);
 		float healthCur = GetAV(player, ActorValue::kHealth);

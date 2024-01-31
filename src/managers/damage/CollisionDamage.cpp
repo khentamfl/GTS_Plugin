@@ -145,7 +145,7 @@ namespace Gts {
 		return "CollisionDamage";
 	}
 
-	void CollisionDamage::DoFootCollision_Left(Actor* actor, float damage, float radius, int random, float bbmult, float crush_threshold, DamageSource Cause) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+	void CollisionDamage::DoFootCollision(Actor* actor, float damage, float radius, int random, float bbmult, float crush_threshold, DamageSource Cause, bool Right) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		auto profiler = Profilers::Profile("CollisionDamageLeft: DoFootCollision_Left");
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		if (!actor) {
@@ -154,7 +154,6 @@ namespace Gts {
 
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 90.0;
-		const float BASE_DISTANCE = 6.0;
 		float SCALE_RATIO = 1.15;
 		if (HasSMT(actor)) {
 			giantScale += 0.20;
@@ -165,23 +164,37 @@ namespace Gts {
 		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
 		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(actor);
 
-		auto leftFoot = find_node(actor, leftFootLookup);
-		auto leftCalf = find_node(actor, leftCalfLookup);
-		auto leftToe = find_node(actor, leftToeLookup);
-		if (!leftFoot) {
+
+		float offset_side = -1.6;
+
+		std::string_view FootLookup = leftFootLookup;
+		std::string_view CalfLookup = leftCalfLookup;
+		std::string_view ToeLookup = leftToeLookup;
+
+		if (Right) {
+			FootLookup = rightFootLookup;
+			CalfLookup = rightCalfLookup;
+			ToeLookup = rightToeLookup;
+			offset_side = 1.6;
+		}
+
+		auto Foot = find_node(actor, FootLookup);
+		auto Calf = find_node(actor, CalfLookup);
+		auto Toe = find_node(actor, ToeLookup);
+		if (!Foot) {
 			return;
 		}
-		if (!leftCalf) {
+		if (!Calf) {
 			return;
 		}
-		if (!leftToe) {
+		if (!Toe) {
 			return;
 		}
-		NiMatrix3 leftRotMat;
+		NiMatrix3 RotMat;
 		{
-			NiAVObject* foot = leftFoot;
-			NiAVObject* calf = leftCalf;
-			NiAVObject* toe = leftToe;
+			NiAVObject* foot = Foot;
+			NiAVObject* calf = Calf;
+			NiAVObject* toe = Toe;
 			NiTransform inverseFoot = foot->world.Invert();
 			NiPoint3 forward = inverseFoot*toe->world.translate;
 			forward = forward / forward.Length();
@@ -192,20 +205,20 @@ namespace Gts {
 			NiPoint3 right = forward.UnitCross(up);
 			forward = up.UnitCross(right); // Reorthonalize
 
-			leftRotMat = NiMatrix3(right, forward, up);
+			RotMat = NiMatrix3(right, forward, up);
 		}
 
-		float maxFootDistance = BASE_DISTANCE * radius * giantScale;
+		float maxFootDistance = radius * giantScale;
 		float hh = hhOffsetbase[2];
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, hh*0.08, -0.25 +(-hh * 0.25)), // The standard at the foot position
-			NiPoint3(1.6, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward
+			NiPoint3(offset_side, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward and to the side
 			NiPoint3(0.0, (hh/50), -0.25 + (-hh * 1.15)), // Offset for HH
 		};
-		std::tuple<NiAVObject*, NiMatrix3> left(leftFoot, leftRotMat);
+		std::tuple<NiAVObject*, NiMatrix3> adjust(Foot, RotMat);
 
-		for (const auto& [foot, rotMat]: {left}) {
+		for (const auto& [foot, rotMat]: {adjust}) {
 			std::vector<NiPoint3> footPoints = {};
 			for (NiPoint3 point: points) {
 				footPoints.push_back(foot->world*(rotMat*point));
@@ -244,142 +257,13 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
-								float aveForce = std::clamp(force, 0.06f, 0.70f);///nodeCollisions;
-								CollisionDamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult, crush_threshold, Cause);
+								CollisionDamage.DoSizeDamage(actor, otherActor, damage, random, bbmult, crush_threshold, Cause);
 							}
 						}
 					}
 				}
 			}
 		}
-	}
-
-	void CollisionDamage::DoFootCollision_Right(Actor* actor, float damage, float radius, int random, float bbmult, float crush_threshold, DamageSource Cause) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
-		auto profiler = Profilers::Profile("CollisionDamageRight: DoFootCollision_Right");
-		auto& CollisionDamage = CollisionDamage::GetSingleton();
-		if (!actor) {
-			return;
-		}
-
-		float giantScale = get_visual_scale(actor);
-		const float BASE_CHECK_DISTANCE = 90.0;
-		const float BASE_DISTANCE = 6.0;
-		float SCALE_RATIO = 1.15;
-		if (HasSMT(actor)) {
-			giantScale += 0.20;
-			SCALE_RATIO = 0.7;
-		}
-
-		// Get world HH offset
-		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
-		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(actor);
-
-		auto rightFoot = find_node(actor, rightFootLookup);
-		auto rightCalf = find_node(actor, rightCalfLookup);
-		auto rightToe = find_node(actor, rightToeLookup);
-
-
-		if (!rightFoot) {
-			return;
-		}
-		if (!rightCalf) {
-			return;
-		}
-		if (!rightToe) {
-			return;
-		}
-		NiMatrix3 rightRotMat;
-		{
-			NiAVObject* foot = rightFoot;
-			NiAVObject* calf = rightCalf;
-			NiAVObject* toe = rightToe;
-
-			NiTransform inverseFoot = foot->world.Invert();
-			NiPoint3 forward = inverseFoot*toe->world.translate;
-			forward = forward / forward.Length();
-
-			NiPoint3 up = inverseFoot*calf->world.translate;
-			up = up / up.Length();
-
-			NiPoint3 right = up.UnitCross(forward);
-			forward = right.UnitCross(up); // Reorthonalize
-
-			rightRotMat = NiMatrix3(right, forward, up);
-		}
-
-		float maxFootDistance = BASE_DISTANCE * radius * giantScale;
-		float hh = hhOffsetbase[2];
-		// Make a list of points to check
-		std::vector<NiPoint3> points = {
-			NiPoint3(0.0, hh*0.08, -0.25 +(-hh * 0.25)), // The standard at the foot position
-			NiPoint3(-1.6, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward
-			NiPoint3(0.0, (hh/50), -0.25 + (-hh * 1.15)), // Offset for HH
-		};
-		std::tuple<NiAVObject*, NiMatrix3> right(rightFoot, rightRotMat);
-
-		for (const auto& [foot, rotMat]: {right}) {
-			std::vector<NiPoint3> footPoints = {};
-			for (NiPoint3 point: points) {
-				footPoints.push_back(foot->world*(rotMat*point));
-			}
-			if (IsDebugEnabled() && (actor->formID == 0x14 || IsTeammate(actor) || EffectsForEveryone(actor))) {
-				for (auto point: footPoints) {
-					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance);
-				}
-			}
-
-			NiPoint3 giantLocation = actor->GetPosition();
-			for (auto otherActor: find_actors()) {
-				if (otherActor != actor) {
-					float tinyScale = get_visual_scale(otherActor);
-					if (giantScale / tinyScale > SCALE_RATIO) {
-						NiPoint3 actorLocation = otherActor->GetPosition();
-
-						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
-							// Check the tiny's nodes against the giant's foot points
-							int nodeCollisions = 0;
-							float force = 0.0;
-
-							auto model = otherActor->GetCurrent3D();
-
-							if (model) {
-								for (auto point: footPoints) {
-									VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
-										float distance = (point - a_obj.world.translate).Length();
-										if (distance < maxFootDistance) {
-											nodeCollisions += 1;
-											force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-										}
-										return true;
-									});
-								}
-							}
-							if (nodeCollisions > 0) {
-								Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
-								float aveForce = std::clamp(force, 0.06f, 0.70f);///nodeCollisions;
-								CollisionDamage.ApplySizeEffect(actor, otherActor, aveForce * damage, random, bbmult, crush_threshold, Cause);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	void CollisionDamage::ApplySizeEffect(Actor* giant, Actor* tiny, float force, int random, float bbmult, float crush_threshold, DamageSource Cause) {
-		auto profiler = Profilers::Profile("CollisionDamage: ApplySizeEffect");
-		auto& CollisionDamage = CollisionDamage::GetSingleton();
-
-		if (giant->AsActorState()->IsSprinting()) {
-			force *= 1.5;
-			// Force acts as a damage here. 
-			// DoDamageEffect() (ActorUtils.cpp) function sends 45.0 by default and then further multiplies it based on animation damage setting
-			//
-			// So, force = (force * 45 * modifier from animation)             (True only when actors performs animation)
-			// Else force is normal and damage is very low (in case of just standing still)
-		}
-
-		CollisionDamage.DoSizeDamage(giant, tiny, force, bbmult, crush_threshold, random, Cause);
 	}
 
 	void CollisionDamage::DoSizeDamage(Actor* giant, Actor* tiny, float damage, float bbmult, float crush_threshold, int random, DamageSource Cause) { // Applies damage and crushing
@@ -412,12 +296,14 @@ namespace Gts {
 			damagebonus *= 0.25; // A lot less damage to compensate it
 		}
 
-		float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
+		float vulnerability = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
 		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.30, 0.30, 999999.0);
+
 		float highheelsdamage = 1.0;
 		if (ApplyHighHeelBonus(giant, Cause)) {
 			highheelsdamage = 1.0 + (GetHighHeelsBonusDamage(giant) * 5);
 		}
+
 		float sprintdamage = 1.0; // default Sprint damage of 1.0
 		// fall damage is unused since it is always = 1.0
 		float weightdamage = 1.0 + (giant->GetWeight()*0.01);
@@ -427,11 +313,12 @@ namespace Gts {
 
 		if (giant->AsActorState()->IsSprinting()) {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
+			damage *= 1.5;
 		}
 
-		float damage_result = (0.125 * size_difference) * (normaldamage * sprintdamage) * (highheelsdamage * weightdamage * damage) * additionaldamage;
+		float damage_result = (damage * size_difference) * (normaldamage * sprintdamage) * (highheelsdamage * weightdamage) * vulnerability;
 		if (giant->IsSneaking()) {
-			damage_result *= 0.66;
+			damage_result *= 0.70;
 		}
 
 		SizeHitEffects::GetSingleton().BreakBones(giant, tiny, damage_result * bbmult, random);

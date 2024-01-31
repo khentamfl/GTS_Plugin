@@ -269,8 +269,8 @@ void GtsManager::Update() {
 		auto& sizemanager = SizeManager::GetSingleton();
 
 		if (actor->formID == 0x14 || IsTeammate(actor)) {
-			CollisionDamage.DoFootCollision_Left(actor, 0.4 * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedLeft);
-			CollisionDamage.DoFootCollision_Right(actor, 0.4 * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedRight);
+			CollisionDamage.DoFootCollision(actor, Damage_Default_Idle * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedLeft, false);
+			CollisionDamage.DoFootCollision(actor, Damage_Default_Idle * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedRight, true);
 			
 			ClothManager::GetSingleton().CheckRip();
 			TinyCalamity_SeekActors(actor);
@@ -283,9 +283,9 @@ void GtsManager::Update() {
 			GameModeManager::GetSingleton().GameMode(actor); // Handle Game Modes
 		}
 		if (Runtime::GetBool("PreciseDamageOthers")) {
-			if (actor->formID != 0x14 && !actor->IsPlayerTeammate() && !Runtime::InFaction(actor, "FollowerFaction")) {
-				CollisionDamage.DoFootCollision_Left(actor, 0.4 * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedLeft);
-				CollisionDamage.DoFootCollision_Right(actor, 0.4 * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedRight);
+			if (actor->formID != 0x14 && !IsTeammate(actor)) {
+				CollisionDamage.DoFootCollision(actor, Damage_Default_Idle * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedLeft, false);
+				CollisionDamage.DoFootCollision(actor, Damage_Default_Idle * TimeScale(), 1.0, 4000, 0.05, 3.0, DamageSource::CrushedRight, true);
 			}
 		}
 		update_actor(actor);

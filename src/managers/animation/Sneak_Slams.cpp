@@ -190,7 +190,7 @@ namespace { // WIP
 	void GTSSneak_Slam_Impact_R(AnimationEventData& data) {
 		float scale = get_visual_scale(&data.giant);
 		FingerGrindCheck(&data.giant, CrawlEvent::RightHand, true, 22.0);
-		DoCrawlingFunctions(&data.giant, scale, 0.75, 5.2, CrawlEvent::RightHand, "RightHandRumble", 0.80, 22, 1.25, DamageSource::HandSlamLeft);
+		DoCrawlingFunctions(&data.giant, scale, 0.75, 5.2, CrawlEvent::RightHand, "RightHandRumble", 0.80, Radius_Sneak_HandSlam, 1.25, DamageSource::HandSlamLeft);
 	};
 	void GTSSneak_Slam_Impact_L(AnimationEventData& data) {};
 	

@@ -103,7 +103,7 @@ namespace Gts {
 	}
 
 	template<typename T, typename U>
-	NiPoint3 AttachToObjectA_GetCoords(T& anyGiant, U& anyTiny) {
+	NiPoint3 AttachToObjectB_GetCoords(T& anyGiant, U& anyTiny) {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
 			return NiPoint3(0,0,0);
@@ -113,7 +113,7 @@ namespace Gts {
 			return NiPoint3(0,0,0);
 		}
 
-		auto ObjectA = find_node(giant, "NPC R Finger12 [RF12]");
+		auto ObjectA = find_node(giant, "AnimObjectB");
 		if (!ObjectA) {
 			return NiPoint3(0,0,0);
 		}

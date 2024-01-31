@@ -129,7 +129,7 @@ namespace Gts {
 	}
 
 
-	void DoDamageAtPoint(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, DamageSource Cause) { // Apply crawl damage to each bone individually
+	void DoDamageAtPoint(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, DamageSource Cause) { // Apply damage to specific bone
 		auto profiler = Profilers::Profile("Other: CrawlDamage");
 		if (!node) {
 			return;
@@ -193,7 +193,7 @@ namespace Gts {
 								float aveForce = std::clamp(force, 0.06f, 0.70f);
 
 								Utils_PushCheck(giant, otherActor, aveForce); 
-								CollisionDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
+								CollisionDamage::GetSingleton().ApplySizeEffect(giant, otherActor, damage, random, bbmult, crushmult, Cause);
 							}
 						}
 					}

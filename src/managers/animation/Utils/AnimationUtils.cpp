@@ -556,7 +556,7 @@ namespace Gts {
 		
 		std::string name = std::format("FootGrind_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
-		auto coordinates = AttachToObjectA_GetCoords(giant, tiny);
+		auto coordinates = AttachToObjectB_GetCoords(giant, tiny);
 		if (coordinates == NiPoint3(0,0,0)) {
 			return;
 		}

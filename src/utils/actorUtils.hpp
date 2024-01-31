@@ -100,6 +100,10 @@ namespace Gts {
 	float Ench_Aspect_GetPower(Actor* giant);
 	float Ench_Hunger_GetPower(Actor* giant);
 
+	float GetDamageResistance(Actor* actor);
+	float GetDamageMultiplier(Actor* actor);
+	float Damage_CalculateSizeDamage(Actor* giant, Actor* tiny);
+
 	float GetSizeDifference(Actor* giant, Actor* tiny);
 	float GetActorWeight(Actor* giant, bool metric);
 	float GetActorHeight(Actor* giant, bool metric);
