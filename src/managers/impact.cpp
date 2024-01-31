@@ -146,10 +146,10 @@ namespace Gts {
 
 			if (kind != FootEvent::JumpLand) {
 				if (kind == FootEvent::Left) {
-					DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedLeft);
+					DoDamageEffect(actor, 1.45, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedLeft);
 				}
 				if (kind == FootEvent::Right) {
-					DoDamageEffect(actor, 1.25, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedRight);
+					DoDamageEffect(actor, 1.45, 1.65 * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedRight);
 				}
 				//                     ^          ^
 				//                 Damage         Radius
@@ -173,8 +173,8 @@ namespace Gts {
 					float timepassed = Time::WorldTimeElapsed() - Start;
 
 					if (timepassed >= 0.15) {
-						DoDamageEffect(giant, 1.10 * damage, 6.6, 20, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
-						DoDamageEffect(giant, 1.10 * damage, 6.6, 20, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+						DoDamageEffect(giant, 1.25 * damage, 6.8, 20, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+						DoDamageEffect(giant, 1.25 * damage, 6.8, 20, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 
 						DoLaunch(giant, 1.0 * perk, 1.75, FootEvent::Left);
 						DoLaunch(giant, 1.0 * perk, 1.75, FootEvent::Right);

@@ -179,7 +179,7 @@ namespace {
 			dust = 1.25;
 		}
 		GRumble::Once("FS_R", &data.giant, 2.20, 0.0, RNode);
-		DoDamageEffect(&data.giant, 1.4, 1.45, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+		DoDamageEffect(&data.giant, 1.8, 1.45, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.70 * perk, 1.3, FootEvent::Right);
@@ -194,7 +194,7 @@ namespace {
 			dust = 1.25;
 		}
 		GRumble::Once("FS_L", &data.giant, 2.20, 0.0, LNode);
-		DoDamageEffect(&data.giant, 1.4, 1.45, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+		DoDamageEffect(&data.giant, 1.8, 1.45, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.70 * perk, 1.3, FootEvent::Left);
@@ -225,8 +225,8 @@ namespace {
 		auto ButtL = find_node(giant, "NPC L Butt");
 		if (ButtR && ButtL) {
 			if (ThighL && ThighR) {
-				DoDamageAtPoint(giant, 28, 330.0 * damage, ThighL, 4, 0.70, 0.85, DamageSource::Booty);
-				DoDamageAtPoint(giant, 28, 330.0 * damage, ThighR, 4, 0.70, 0.85, DamageSource::Booty);
+				DoDamageAtPoint(giant, 28, 300.0 * damage, ThighL, 4, 0.70, 0.85, DamageSource::Booty);
+				DoDamageAtPoint(giant, 28, 300.0 * damage, ThighR, 4, 0.70, 0.85, DamageSource::Booty);
 				DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC R Butt");
 				DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC L Butt");
 				DoFootstepSound(giant, 1.25, FootEvent::Right, RNode);

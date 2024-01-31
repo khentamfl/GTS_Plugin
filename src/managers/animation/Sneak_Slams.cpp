@@ -152,7 +152,7 @@ namespace { // WIP
 
 		NiAVObject* node = find_node(giant, NodeLookup);
 
-		Finger_DamageAndShrink(giant, 6.0 * mult, 8.0 * mult, node, 50, 0.10, 2.0, source);
+		Finger_DamageAndShrink(giant, 6.0 * mult, 20.0 * mult, node, 50, 0.10, 2.0, source);
 	}
 
 	void StopStaminaDrain(Actor* giant) {
@@ -198,8 +198,14 @@ namespace { // WIP
 	};  
 	void GTSSneak_SlamStrong_Impact_L(AnimationEventData& data) {};    
 
-	void GTSSneak_Slam_Cam_Off_R(AnimationEventData& data) {EnableHandTracking(&data.giant, CrawlEvent::RightHand, false);};        
-	void GTSSneak_Slam_Cam_Off_L(AnimationEventData& data) {EnableHandTracking(&data.giant, CrawlEvent::LeftHand, false);};
+	void GTSSneak_Slam_Cam_Off_R(AnimationEventData& data) {
+		EnableHandTracking(&data.giant, CrawlEvent::RightHand, false);
+		StopStaminaDrain(&data.giant);
+	};        
+	void GTSSneak_Slam_Cam_Off_L(AnimationEventData& data) {
+		EnableHandTracking(&data.giant, CrawlEvent::LeftHand, false);
+		StopStaminaDrain(&data.giant);
+	};
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -210,15 +216,15 @@ namespace { // WIP
 		Finger_DoDamage(&data.giant, true, 2.0);
 		Finger_DoSounds(&data.giant, Rfinger, 1.0);
 		Finger_ApplyVisuals(&data.giant, Rfinger, 3.0, 1.25);
-		DrainStamina(&data.giant, "StaminaDrain_FingerGrind", "DestructionBasics", false, 0.8);
+		DrainStamina(&data.giant, "StaminaDrain_FingerGrind", "DestructionBasics", true, 0.8);
 	};
 	void GTS_Sneak_FingerGrind_Rotation(AnimationEventData& data) {
-		Finger_DoDamage(&data.giant, true, 1.0);
+		Finger_DoDamage(&data.giant, true, 1.75);
 		Finger_ApplyVisuals(&data.giant, Rfinger, 3.0, 0.75);
 	};   
 	void GTS_Sneak_FingerGrind_Finisher(AnimationEventData& data) {
 		StopStaminaDrain(&data.giant);
-		Finger_DoDamage(&data.giant, true, 4.0);
+		Finger_DoDamage(&data.giant, true, 2.5);
 		Finger_DoSounds(&data.giant, Rfinger, 1.4);
 		Finger_ApplyVisuals(&data.giant, Rfinger, 2.6, 1.5);
 	};

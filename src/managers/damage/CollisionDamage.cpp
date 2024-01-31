@@ -47,7 +47,6 @@ namespace {
 		bool Crush = (cause == DamageSource::CrushedRight || cause == DamageSource::CrushedLeft);
 		bool Kick = (cause == DamageSource::KickedLeft || cause == DamageSource::KickedRight);
 		bool Knee = (cause == DamageSource::KneeRight || cause == DamageSource::KneeLeft);
-		bool Booty = (cause == DamageSource::Booty);
 
 		bool ApplyBoost = (Crush || Kick || Knee || Booty);
 		log::info("ApplyDamage: {}", ApplyBoost);

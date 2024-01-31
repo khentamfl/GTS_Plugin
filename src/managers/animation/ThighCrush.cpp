@@ -206,7 +206,7 @@ namespace {
 		GRumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
 		DoFootstepSound(&data.giant, 1.05, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 1.1, FootEvent::Right, RNode);
-		DoDamageEffect(&data.giant, 1.6 * perk, 1.4, 25, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+		DoDamageEffect(&data.giant, 2.2 * perk, 1.4, 25, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoLaunch(&data.giant, 0.65 * perk, 1.55 * data.animSpeed, FootEvent::Right);
 		data.stage = 9;
 		//Cprint("ThighCrush: GTSstandR");
@@ -221,7 +221,7 @@ namespace {
 		GRumble::Once("ThighCrushStompL", &data.giant, volume * 4, 0.10, LNode);
 		DoFootstepSound(&data.giant, 1.05, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, 1.1, FootEvent::Left, LNode);
-		DoDamageEffect(&data.giant, 1.6 * perk, 1.4, 25, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+		DoDamageEffect(&data.giant, 2.2 * perk, 1.4, 25, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoLaunch(&data.giant, 0.65 * perk, 1.55 * data.animSpeed, FootEvent::Left);
 		data.stage = 9;
 		//Cprint("ThighCrush: GTSstandL");
@@ -236,7 +236,7 @@ namespace {
 		GRumble::Once("ThighCrushStompR", &data.giant, volume * 4, 0.10, RNode);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 1.1, FootEvent::Right, RNode);
-		DoDamageEffect(&data.giant, 1.4 * perk, 1.3, 25, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+		DoDamageEffect(&data.giant, 1.8 * perk, 1.3, 25, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoLaunch(&data.giant, 0.45 * perk, 1.55 * data.animSpeed, FootEvent::Right);
 		data.stage = 9;
 	}

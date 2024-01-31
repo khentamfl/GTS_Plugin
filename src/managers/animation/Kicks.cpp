@@ -86,19 +86,6 @@ namespace {
 	void GTS_Kick_SwingLeg_R(AnimationEventData& data) {
 	}
 
-	void GTS_Kick_Stomp_R(AnimationEventData& data) {
-		DoDamageEffect(&data.giant, 1.40, 1.6, 10, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
-		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
-		DoDustExplosion(&data.giant, 1.0, FootEvent::Right, RNode);
-		DoLaunch(&data.giant, 0.8, 1.45, FootEvent::Right);
-	}
-	void GTS_Kick_Stomp_L(AnimationEventData& data) {
-		DoDamageEffect(&data.giant, 1.40, 1.6, 10, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
-		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
-		DoDustExplosion(&data.giant, 1.0, FootEvent::Left, LNode);
-		DoLaunch(&data.giant, 0.8, 1.45, FootEvent::Left);
-	}
-
 	void GTS_Kick_HitBox_On_R(AnimationEventData& data) {
 		StartDamageAt_R(&data.giant, 0.7, 1.8, 0.50, "NPC R Toe0 [RToe]");
 		DrainStamina(&data.giant, "StaminaDrain_StrongKick", "DestructionBasics", true, 4.0);
@@ -209,9 +196,6 @@ namespace Gts
 
 		AnimationManager::RegisterEvent("GTS_Kick_SwingLeg_R", "Kicks", GTS_Kick_SwingLeg_R);
 		AnimationManager::RegisterEvent("GTS_Kick_SwingLeg_L", "Kicks", GTS_Kick_SwingLeg_L);
-
-		AnimationManager::RegisterEvent("GTS_Kick_Stomp_R", "Kicks", GTS_Kick_Stomp_R);
-		AnimationManager::RegisterEvent("GTS_Kick_Stomp_L", "Kicks", GTS_Kick_Stomp_L);
 
 		AnimationManager::RegisterEvent("GTS_Kick_HitBox_On_R", "Kicks", GTS_Kick_HitBox_On_R);
 		AnimationManager::RegisterEvent("GTS_Kick_HitBox_Off_R", "Kicks", GTS_Kick_HitBox_Off_R);

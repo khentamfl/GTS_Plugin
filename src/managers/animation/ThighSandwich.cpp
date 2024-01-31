@@ -301,8 +301,8 @@ namespace {
 		DoFootstepSound(&data.giant, 1.05, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, 2.0, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, 2.0, FootEvent::Left, LNode);
-		DoDamageEffect(&data.giant, 4.0 * perk, 1.6, 10, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
-		DoDamageEffect(&data.giant, 4.0 * perk, 1.6, 10, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+		DoDamageEffect(&data.giant, 6.0 * perk, 1.6, 10, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+		DoDamageEffect(&data.giant, 6.0 * perk, 1.6, 10, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoLaunch(&data.giant, 0.85 * perk, 2.2, FootEvent::Right);
 		DoLaunch(&data.giant, 0.85 * perk, 2.2, FootEvent::Left);
 	}

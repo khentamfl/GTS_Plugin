@@ -18,6 +18,22 @@ namespace {
 	const std::string_view rightToeLookup = "AnimObjectB";
 	const std::string_view bodyLookup = "NPC Spine1 [Spn1]";
 
+	NiPoint3 cleavage_GetForwardOffset(Actor* giant) {
+		if (!giant->Is3DLoaded()) {
+			return NiPoint3(0.0, 0.0, 0.0);
+		}
+		float scale = get_giantess_scale(giant);
+		auto playerRotation = giant->GetCurrent3D()->world.rotate;
+		RE::NiPoint3 localForwardVector{ 0.f, 1.f, 0.f };
+		RE::NiPoint3 globalForwardVector = playerRotation * localForwardVector;
+
+		RE::NiPoint3 direction = globalForwardVector;
+
+		log::info("Direction of GTS: {}", Vector2Str(direction));
+
+		return direction;
+	}
+
 	NiPoint3 CastRayDownwards(Actor* tiny) {
 		bool success = false;
 		NiPoint3 ray_start = tiny->GetPosition();
@@ -367,6 +383,8 @@ namespace Gts {
 		//tiny->data.angle.x = ((RPosX + LPosX) * 70) / 2;
 		//tiny->data.angle.y = giant->data.angle.y;
 		tiny->data.angle.z = giant->data.angle.z;
+
+		clevagePos += cleavage_GetForwardOffset(giant);
 
 		if (IsDebugEnabled()) {
 			DebugAPI::DrawSphere(glm::vec3(clevagePos.x, clevagePos.y, clevagePos.z), 2.0, 10, {1.0, 0.0, 0.0, 1.0});

@@ -183,8 +183,8 @@ namespace {
 		data.stage = 0;
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20;
-		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
-		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+		DoDamageEffect(&data.giant, 2.20, 1.4, 10, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+		DoDamageEffect(&data.giant, 2.20, 1.4, 10, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, 1.0, FootEvent::Right, RNode);
@@ -196,8 +196,8 @@ namespace {
 		data.stage = 0;
 		float scale = get_visual_scale(&data.giant);
 		float volume = scale * 0.20;
-		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
-		DoDamageEffect(&data.giant, 1.20, 1.4, 10, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+		DoDamageEffect(&data.giant, 2.20, 1.4, 10, 0.20, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+		DoDamageEffect(&data.giant, 2.20, 1.4, 10, 0.20, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Right, RNode);
 		DoFootstepSound(&data.giant, 1.0, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, 1.0, FootEvent::Right, RNode);

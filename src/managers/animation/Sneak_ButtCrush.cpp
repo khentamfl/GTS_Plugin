@@ -59,13 +59,13 @@ namespace {
         
         if (right) {
             GRumble::Once("FST_R", giant, 2.20 * power, 0.0, RNode);
-            DoDamageEffect(giant, 1.4 * power, 1.45 * power, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+            DoDamageEffect(giant, 1.6 * power, 1.45 * power, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
             DoFootstepSound(giant, 1.0 * power, FootEvent::Right, RNode);
             DoDustExplosion(giant, dust * power, FootEvent::Right, RNode);
             DoLaunch(giant, 0.65 * perk * power, 1.3 * power, FootEvent::Right);
         } else {
             GRumble::Once("FST_L", giant, 2.20 * power, 0.0, LNode);
-            DoDamageEffect(giant, 1.4 * power, 1.45 * power, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+            DoDamageEffect(giant, 1.6 * power, 1.45 * power, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
             DoFootstepSound(giant, 1.0 * power, FootEvent::Left, LNode);
             DoDustExplosion(giant, dust * power, FootEvent::Left, LNode);
             DoLaunch(giant, 0.65 * perk * power, 1.3 * power, FootEvent::Left);
@@ -129,8 +129,8 @@ namespace {
 		auto LeftKnee = find_node(giant, "NPC L Calf [LClf]");
 		auto RightKnee = find_node(giant, "NPC R Calf [RClf]");
 		if (LeftKnee && RightKnee) {
-            DoDamageAtPoint(giant, 28, 330.0 * damage, LeftKnee, 4, 0.70, 0.85, DamageSource::KneeLeft);
-            DoDamageAtPoint(giant, 28, 330.0 * damage, RightKnee, 4, 0.70, 0.85, DamageSource::KneeRight);
+            DoDamageAtPoint(giant, 28, 300.0 * damage, LeftKnee, 4, 0.70, 0.85, DamageSource::KneeLeft);
+            DoDamageAtPoint(giant, 28, 300.0 * damage, RightKnee, 4, 0.70, 0.85, DamageSource::KneeRight);
 
             DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC L Calf [LClf]");
             DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC R Calf [RClf]");

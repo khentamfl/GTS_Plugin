@@ -74,7 +74,7 @@ namespace {
 			dust = 1.45;
 		}
 		GRumble::Once("StompR", &data.giant, 2.20 * shake, 0.0, RNode);
-		DoDamageEffect(&data.giant, (1.8 + data.animSpeed/8) * launch * perk, (1.45 + data.animSpeed/4) * launch, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+		DoDamageEffect(&data.giant, (2.2 + data.animSpeed/8) * launch * perk, (1.45 + data.animSpeed/4) * launch, 10, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/8, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust + (data.animSpeed * 0.05), FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.80 * perk, 1.35 * data.animSpeed, FootEvent::Right);
@@ -93,7 +93,7 @@ namespace {
 			dust = 1.45;
 		}
 		GRumble::Once("StompL", &data.giant, 2.20 * shake, 0.0, LNode);
-		DoDamageEffect(&data.giant, (1.8 + data.animSpeed/8) * launch * perk, (1.45 + data.animSpeed/4) * launch, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+		DoDamageEffect(&data.giant, (2.2 + data.animSpeed/8) * launch * perk, (1.45 + data.animSpeed/4) * launch, 10, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust + (data.animSpeed * 0.05), FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.80 * perk, 1.35 * data.animSpeed, FootEvent::Left);
@@ -113,7 +113,7 @@ namespace {
 			shake = 4.0;
 		}
 		GRumble::Once("StompRL", &data.giant, 1.25 * shake, 0.05, RNode);
-		DoDamageEffect(&data.giant, 1.6 * perk, 1.45, 25, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+		DoDamageEffect(&data.giant, 2.0 * perk, 1.45, 25, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Right, RNode);
 		DoDustExplosion(&data.giant, dust + (data.animSpeed * 0.05), FootEvent::Right, RNode);
 		DoLaunch(&data.giant, 0.75 * perk, 1.5 + data.animSpeed/4, FootEvent::Right);
@@ -131,7 +131,7 @@ namespace {
 			shake = 4.0;
 		}
 		GRumble::Once("StompLL", &data.giant, 1.25 * shake, 0.05, LNode);
-		DoDamageEffect(&data.giant, 1.6 * perk, 1.45, 25, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+		DoDamageEffect(&data.giant, 2.0 * perk, 1.45, 25, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
 		DoFootstepSound(&data.giant, 1.0 + data.animSpeed/14, FootEvent::Left, LNode);
 		DoDustExplosion(&data.giant, dust + data.animSpeed/4, FootEvent::Left, LNode);
 		DoLaunch(&data.giant, 0.75 * perk, 1.5 + data.animSpeed/4, FootEvent::Left);
