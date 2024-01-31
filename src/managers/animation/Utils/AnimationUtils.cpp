@@ -31,6 +31,20 @@ using namespace Gts;
 
 
 namespace {
+	std::string_view GetImpactNode(CrawlEvent kind) {
+		if (kind == CrawlEvent::RightKnee) {
+			return "NPC R Calf [RClf]";
+		} else if (kind == CrawlEvent::LeftKnee) {
+			return "NPC L Calf [LClf]";
+		} else if (kind == CrawlEvent::RightHand) {
+			return "NPC R Finger20 [RF20]";
+		} else if (kind == CrawlEvent::LeftHand) {
+			return "NPC L Finger20 [LF20]";
+		} else {
+			return "NPC L Finger20 [LF20]";
+		}
+	}
+
 	float GetStaggerThreshold(DamageSource Cause) {
 		float StaggerThreshold = 1.0;
 		if (Cause == DamageSource::HandSwipeRight || Cause == DamageSource::HandSwipeLeft) {
@@ -542,7 +556,7 @@ namespace Gts {
 		
 		std::string name = std::format("FootGrind_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
-		auto coordinates = AttachToObjectB(giant, tiny);
+		auto coordinates = AttachToObjectB_GetCoords(giant, tiny);
 		if (coordinates == NiPoint3(0,0,0)) {
 			return;
 		}

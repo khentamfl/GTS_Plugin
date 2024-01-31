@@ -100,6 +100,28 @@ namespace Gts {
 	}
 
 	template<typename T, typename U>
+	NiPoint3 AttachToObjectB_GetCoords(T& anyGiant, U& anyTiny) {
+		Actor* giant = GetActorPtr(anyGiant);
+		if (!giant) {
+			return NiPoint3(0,0,0);
+		}
+		Actor* tiny = GetActorPtr(anyTiny);
+		if (!tiny) {
+			return NiPoint3(0,0,0);
+		}
+
+		auto ObjectB = find_node(giant, "AnimObjectB");
+		if (!ObjectB) {
+			return NiPoint3(0,0,0);
+		}
+
+		NiPoint3 coords = ObjectB->world.translate;//foot->world*(rotMat*point);
+		coords.z = CastRayDownwards(tiny).z; // Cast ray down to get precise ground position
+		return coords;
+		//return false;
+	}
+
+	template<typename T, typename U>
 	NiPoint3 AttachToUnderFoot_Left(T& anyGiant, U& anyTiny) {
 		Actor* giant = GetActorPtr(anyGiant);
 		if (!giant) {
