@@ -33,7 +33,7 @@ namespace Hooks
             }
         );
 
-        static CallHook<float(TESObjectREFR* param_1)>sub_140623F10( // Seems to be called on attacks. 
+        /*static CallHook<float(TESObjectREFR* param_1)>sub_140623F10( // Seems to be called on attacks. 
             REL::RelocationID(37588, 37588), REL::Relocate(0x6B, 0x6B), // Supposedly moves invisible "Hitbox" zone for weapons more forward or something
             [](auto* param_1) {                                         // Not sure.
                 // 37588
@@ -96,6 +96,6 @@ namespace Hooks
 				//log::info("(5) sub_1407BAB40 Hooked");	
 				return Alter;
             }
-        ); 
+        ); */
     }
 }

@@ -86,15 +86,15 @@ namespace Hooks {
 		//	Actor::sub_140627930
 
 
-		static FunctionHook<float(Actor* param_1)>Actor_sub_140627930 (   // supposedly affects Weapon Damage                 
-			REL::RelocationID(37650, 37650),
+		/*static FunctionHook<float(Actor* param_1)>Actor_sub_140627930 (   // supposedly affects Weapon Damage                 
+			REL::RelocationID(37650, 37650), // works only with direct weapon hits and fist attacks (physical non-arrow damage)
 			[](auto* param_1) {
 				//37650
 				float result = Actor_sub_140627930(param_1);
 				log::info("Actor_sub_140627930 Hooked, result: {}", result);
 				return result;
             }
-        );
+        );*/
 
 
 		/*static CallHook<float(Actor* param_1)>CalculateCurrentHitTargetForWeaponSwing_140629090 (   // supposedly affects Weapon Damage                 
