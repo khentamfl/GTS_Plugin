@@ -9,5 +9,6 @@ namespace Gts
 	class Animation_SneakSlams {
 		public:
 			static void RegisterEvents();
+			static void RegisterTriggers();
 	};
 }

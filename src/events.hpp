@@ -46,6 +46,8 @@ namespace Gts {
 		HandSwipeLeft,
 		HandSlamRight,
 		HandSlamLeft,
+		RightFinger,
+		LeftFinger,
 		KickedRight,
 		KickedLeft,
 		KneeRight,

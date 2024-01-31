@@ -171,15 +171,27 @@ namespace Gts {
 				if (giantScale / tinyScale > SCALE_RATIO) {
 					NiPoint3 actorLocation = otherActor->GetPosition();
 					for (auto point: CrawlPoints) {
-						float distance = (point - actorLocation).Length();
-						if (distance <= maxDistance) {
-							float force = 1.0 - distance / maxDistance;
+						if ((actorLocation-giantLocation).Length() <= maxDistance * 2.5) {
 
-							
-							float aveForce = std::clamp(force, 0.06f, 0.70f);
+							auto model = otherActor->GetCurrent3D();
 
-							Utils_PushCheck(giant, otherActor, aveForce); 
-							CollisionDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
+							if (model) {
+								VisitNodes(model, [&nodeCollisions, &force, NodePosition, maxDistance](NiAVObject& a_obj) {
+									float distance = (NodePosition - a_obj.world.translate).Length();
+									if (distance < maxDistance) {
+										nodeCollisions += 1;
+										force = 1.0 - distance / maxDistance;
+										return false;
+									}
+									return true;
+								});
+							}
+							if (nodeCollisions > 0) {
+								float aveForce = std::clamp(force, 0.06f, 0.70f);
+
+								Utils_PushCheck(giant, otherActor, aveForce); 
+								CollisionDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
+							}
 						}
 					}
 				}

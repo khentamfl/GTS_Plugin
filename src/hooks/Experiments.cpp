@@ -709,7 +709,7 @@ namespace Hooks {
 			// 0x1404e68ba - 0x1404E6360 = 0x55A
 			[](auto* param_1) {
 				float result = sub_1404E6360(param_1);
-				float Adjust = affect_by_scale(param_1, result) * 10;
+				float Adjust = 1.0;//affect_by_scale(param_1, result);
 				//log::info("(45) Hooked");
 				return Adjust;
             }

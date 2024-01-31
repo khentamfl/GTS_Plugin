@@ -47,6 +47,8 @@ namespace Gts {
 	float GetPerkBonus_Thighs(Actor* Giant);
 
 	void DoFootGrind(Actor* giant, Actor* tiny);
+	void DoFingerGrind(Actor* giant, Actor* tiny);
+	void FingerGrindCheck(Actor* giant, CrawlEvent kind, float radius);
 	void FootGrindCheck_Left(Actor* actor, float radius, bool strong);
 	void FootGrindCheck_Right(Actor* actor, float radius, bool strong);
 	void DoDamageAtPoint_Cooldown(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, float pushpower, DamageSource Cause);
