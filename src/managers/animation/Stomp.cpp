@@ -21,6 +21,7 @@
 #include "managers/CrushManager.hpp"
 #include "managers/explosion.hpp"
 #include "managers/footstep.hpp"
+#include "scale/height.hpp"
 #include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
 #include "managers/tremor.hpp"
@@ -51,13 +52,22 @@ namespace {
 		auto giantLoc = giant->GetPosition();
 		for (auto tiny: find_actors()) {
 			if (tiny) {
-				float tinyScale = get_visual_scale(tiny) * GetSizeFromBoundingBox(tiny);
+				float tinyScale = get_visual_scale(tiny);
 				float scaleRatio = giantScale / tinyScale;
+				
+				float actorRadius = 35.0;
+				auto bounds = get_bound(tiny);
+				if (bounds) {
+					actorRadius = (bounds->extents.x + bounds->extents.y + bounds->extents.z) / 6.0;
+				}
+
+				actorRadius *= tinyScale;
+				
 				if (scaleRatio > 3.5) {
 					// 3.5 times bigger
 					auto tinyLoc = tiny->GetPosition();
-					auto distance = (giantLoc - tinyLoc).Length();
-					if (distance < giantScale * 70) {
+					auto distance = (giantLoc - tinyLoc).Length() - actorRadius;
+					if (distance < giantScale * 15.0) {
 						// About 1.5 the foot size
 						result.push_back(tiny);
 					}
