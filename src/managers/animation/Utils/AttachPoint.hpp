@@ -364,17 +364,19 @@ namespace Gts {
 		}
 
 		// Center bone
-		std::string_view centerBoneName = "NPC Spine2";
+		std::string_view centerBoneName = "NPC Spine2 [Spn2]";
 		auto centerBone = find_node(giant, centerBoneName);
 		if (!centerBone) {
+			Notify("ERROR: NPC Spine2 bone not found");
 			return false;
 		}
 		auto centerBonePos = centerBone->world.translate;
 
 		// Up bone
-		std::string_view upBoneName = "NPC Neck";
+		std::string_view upBoneName = "NPC Neck [Neck]";
 		auto upBone = find_node(giant, upBoneName);
 		if (!upBone) {
+			Notify("ERROR: NPC Neck bone not found");
 			return false;
 		}
 		auto upBonePos = upBone->world.translate;
