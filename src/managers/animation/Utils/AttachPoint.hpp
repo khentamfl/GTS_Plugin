@@ -389,7 +389,7 @@ namespace Gts {
 		}
 
 		// Up bone
-		for (auto bone_name: front_bone_names) {
+		for (auto bone_name: up_bone_names) {
 			auto bone = find_node(giant, bone_name);
 			if (!bone) {
 				Notify("ERROR: Clavicle bones not found");
