@@ -214,7 +214,8 @@ namespace {
 	}
 
 	void GTSBEH_Exit(AnimationEventData& data) {
-		if (&data.giant.formID == 0x14) {
+		auto giant = &data.giant;
+		if (giant->formID == 0x14) {
 			ResetCameraTracking();
 		}
 
