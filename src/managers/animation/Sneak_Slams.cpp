@@ -112,6 +112,9 @@ namespace { // WIP
 					for (auto point: CrawlPoints) {
 						if ((actorLocation-giantLocation).Length() <= maxDistance * 2.5) {
 
+							int nodeCollisions = 0;
+							float force = 0.0;
+
 							auto model = otherActor->GetCurrent3D();
 
 							if (model) {
