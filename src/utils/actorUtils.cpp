@@ -16,6 +16,7 @@
 #include "managers/Rumble.hpp"
 #include "utils/findActor.hpp"
 #include "data/persistent.hpp"
+#include "ActionSettings.hpp"
 #include "data/transient.hpp"
 #include "utils/looting.hpp"
 #include "scale/height.hpp"
