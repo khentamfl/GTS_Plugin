@@ -1814,7 +1814,7 @@ namespace Gts {
 	}
 
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind, float crushmult, DamageSource Cause) {
-		radius = 1.0;// + (GetHighHeelsBonusDamage(giant) * 2.5);
+		//radius = 1.0;// + (GetHighHeelsBonusDamage(giant) * 2.5);
 		if (kind == FootEvent::Left) {
 			CollisionDamage::GetSingleton().DoFootCollision(giant, damage, radius, random, bonedamage, crushmult, Cause, false);
 		}

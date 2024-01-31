@@ -49,6 +49,7 @@ namespace Gts {
 	const float Damage_Sneak_HandSwipe_Strong = 14.0f;
 
 //////Default effect radius variables
+    const float Radius_Default_Idle = 9.0f;
 
     const float Radius_Walk_Default = 9.8f;
     const float Radius_Jump_Default = 12.0f; 
