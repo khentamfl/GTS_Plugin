@@ -1,4 +1,6 @@
 #pragma once
+#include "RE/N/NiMatrix3.h"
+#include "RE/N/NiPoint3.h"
 #include "managers/highheel.hpp"
 #include "utils/actorUtils.hpp"
 #include "rays/raycast.hpp"
@@ -18,21 +20,6 @@ namespace {
 	const std::string_view rightToeLookup = "AnimObjectB";
 	const std::string_view bodyLookup = "NPC Spine1 [Spn1]";
 
-	NiPoint3 cleavage_GetForwardOffset(Actor* giant) {
-		if (!giant->Is3DLoaded()) {
-			return NiPoint3(0.0, 0.0, 0.0);
-		}
-		float scale = get_giantess_scale(giant);
-		auto playerRotation = giant->GetCurrent3D()->world.rotate;
-		RE::NiPoint3 localForwardVector{ 0.f, 1.f, 0.f };
-		RE::NiPoint3 globalForwardVector = playerRotation * localForwardVector;
-
-		RE::NiPoint3 direction = globalForwardVector;
-
-		log::info("Direction of GTS: {}", Vector2Str(direction));
-
-		return direction;
-	}
 
 	NiPoint3 CastRayDownwards(Actor* tiny) {
 		bool success = false;
@@ -376,15 +363,44 @@ namespace Gts {
 			clevagePos += (bone->world * NiPoint3()) * (1.0/bone_count);
 		}
 
-		//clevagePos.x *= bonus;
-		//clevagePos.z *= bonus;
+		// Center bone
+		std::string_view centerBoneName = "NPC Spine2";
+		auto centerBone = find_node(giant, centerBoneName);
+		if (!centerBone) {
+			return false;
+		}
+		auto centerBonePos = centerBone->world.translate;
 
-		//tiny->data.angle.x = giant->data.angle.x;//((RPosX + LPosX) * 70) / 2;//
-		//tiny->data.angle.x = ((RPosX + LPosX) * 70) / 2;
-		//tiny->data.angle.y = giant->data.angle.y;
+		// Up bone
+		std::string_view upBoneName = "NPC Neck";
+		auto upBone = find_node(giant, upBoneName);
+		if (!upBone) {
+			return false;
+		}
+		auto upBonePos = upBone->world.translate;
+
+		// Forward
+		NiPoint3 forward = (clevagePos - centerBonePos).Unitize();
+		// Up
+		NiPoint3 up = (upBonePos - centerBonePos).Unitize();
+		// Sideways
+		NiPoint3 sideways = up.Cross(forward).Unitize();
+		// Reorthorg
+		up = ((-1.0 * sideways).Cross(forward)).Unitize();
+		
+		NiMatrix3 breastRotation = NiMatrix3(sideways, forward, up);
+
+
+		// Sermite: Offset adjustment HERE
+		NiPoint3 offset = NiPoint3(0.0, 0.0, 0.0);
+
+
+		// Global space offset
+		NiPoint3 globalOffset = breastRotation * offset;
+
 		tiny->data.angle.z = giant->data.angle.z;
 
-		clevagePos += cleavage_GetForwardOffset(giant);
+		clevagePos += globalOffset;
 
 		if (IsDebugEnabled()) {
 			DebugAPI::DrawSphere(glm::vec3(clevagePos.x, clevagePos.y, clevagePos.z), 2.0, 10, {1.0, 0.0, 0.0, 1.0});
