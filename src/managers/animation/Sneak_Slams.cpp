@@ -130,8 +130,8 @@ namespace { // WIP
 							}
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.12f, 0.70f);
-								if (get_target_scale(otherActor) > 0.06 / get_bounding_box_to_mult(otherActor)) {
-									update_target_scale(otherActor, -0.001);
+								if (get_target_scale(otherActor) > 0.06 / GetSizeFromBoundingBox(otherActor)) {
+									update_target_scale(otherActor, -0.001, SizeEffectType::kShrink);
 								}
 								CollisionDamage::GetSingleton().ApplySizeEffect(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
 							}
@@ -189,7 +189,7 @@ namespace { // WIP
 	
 	void GTSSneak_Slam_Impact_R(AnimationEventData& data) {
 		float scale = get_visual_scale(&data.giant);
-		FingerGrindCheck(&data.giant, 18, CrawlEvent::RightHand);
+		FingerGrindCheck(&data.giant, CrawlEvent::RightHand, 18.0);
 		DoCrawlingFunctions(&data.giant, scale, 0.75, 5.2, CrawlEvent::RightHand, "RightHandRumble", 0.80, 18, 1.25, DamageSource::HandSlamLeft);
 	};
 	void GTSSneak_Slam_Impact_L(AnimationEventData& data) {};
