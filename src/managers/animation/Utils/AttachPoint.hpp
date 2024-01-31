@@ -391,8 +391,8 @@ namespace Gts {
 		NiPoint3 sideways = up.Cross(forward);
 		sideways.Unitize();
 		// Reorthorg
-		up = ((sideways * -1.0).Cross(forward));
-		up.Unitize();
+		forward = up.Cross(sideways * -1.0);
+		forward.Unitize();
 		
 		NiMatrix3 breastRotation = NiMatrix3(sideways, forward, up);
 
