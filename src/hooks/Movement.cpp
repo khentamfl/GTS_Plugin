@@ -91,7 +91,7 @@ namespace Hooks
 			// 46018
 			// 0x1407bab55 - 0x1407BAB40 = 0x15
 			[](auto* param_1) {
-				float result = sub_1407BAB40(param_1)
+				float result = sub_1407BAB40(param_1);
                 float Alter = affect_by_scale(param_1, result);
 				//log::info("(5) sub_1407BAB40 Hooked");	
 				return Alter;
