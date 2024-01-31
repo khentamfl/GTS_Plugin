@@ -97,7 +97,7 @@ namespace Hooks {
         );
 
 
-		static CallHook<float(Actor* param_1)>CalculateCurrentHitTargetForWeaponSwing_140629090 (   // supposedly affects Weapon Damage                 
+		/*static CallHook<float(Actor* param_1)>CalculateCurrentHitTargetForWeaponSwing_140629090 (   // supposedly affects Weapon Damage                 
 			REL::RelocationID(37674, 37674), REL::Relocate(0x2DD, 0x2DD),
 			// sub_140627930 -> this function
 			// 37674
@@ -107,7 +107,7 @@ namespace Hooks {
 				log::info("CalculateCurrentHitTargetForWeaponSwing_140629090 Hooked, result: {}", result);
 				return result;
             }
-        );
+        );*/
 		
 
 		/*static CallHook<float(TESObjectREFR* param_1)>FUN_14080d560(        // rarely called             
