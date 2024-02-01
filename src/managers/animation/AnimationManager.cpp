@@ -1,4 +1,6 @@
+#include "managers/animation/Sneak_Slam_FingerGrind.hpp"
 #include "managers/animation/AnimationManager.hpp"
+#include "managers/animation/Sneak_Slam_Strong.hpp"
 #include "managers/animation/ThighSandwich.hpp"
 #include "managers/animation/StrongStomp.hpp"
 #include "managers/animation/FootTrample.hpp"
@@ -9,7 +11,7 @@
 #include "managers/animation/FootGrind.hpp"
 #include "managers/animation/Vore_Standing.hpp"
 #include "managers/animation/Sneak_Swipes.hpp"
-#include "managers/animation/Sneak_Slams.hpp"
+#include "managers/animation/Sneak_Slam.hpp"
 #include "managers/animation/Vore_Sneak.hpp"
 #include "managers/animation/Vore_Crawl.hpp"
 #include "managers/animation/HugShrink.hpp"
@@ -72,7 +74,9 @@ namespace Gts {
 		Animation_VoreSneak::RegisterEvents();
 
 		Animation_SneakSwipes::RegisterEvents();
-		Animation_SneakSlams::RegisterEvents();
+		Animation_SneakSlam::RegisterEvents();
+		Animation_SneakSlam_Strong::RegisterEvents();
+		Animation_SneakSlam_FingerGrind::RegisterEvents();
 
 		AnimationButtCrush::RegisterEvents();
 		AnimationButtCrush::RegisterTriggers();

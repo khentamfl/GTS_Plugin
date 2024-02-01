@@ -6,9 +6,8 @@ using namespace RE;
 
 namespace Gts
 {
-	class Animation_SneakSlams {
+	class Animation_SneakSlam {
 		public:
 			static void RegisterEvents();
-			static void RegisterTriggers();
 	};
 }

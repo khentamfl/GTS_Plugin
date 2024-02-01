@@ -71,7 +71,7 @@ namespace {
 			}
 
 			float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
-			float speed = 0.25 * AnimSpeed * (halflife/2.0);
+			float speed = 1.0 * AnimSpeed * halflife;
 
 			float value = (pass * speed);
 			auto FaceData = GetFacialData(giantref);
@@ -130,7 +130,7 @@ namespace {
 			}
 
 			float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
-			float speed = 0.08 * AnimSpeed * (halflife/2.0);
+			float speed = 1.0 * AnimSpeed * halflife;
 
 			float value = (pass * speed);
 			auto FaceData = GetFacialData(giantref);
