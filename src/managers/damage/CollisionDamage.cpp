@@ -57,7 +57,7 @@ namespace {
 
 		bool is_walking = (cause == DamageSource::WalkLeft || cause == DamageSource::WalkRight);
 		bool knee_crawling = (cause == DamageSource::KneeLeft || cause == DamageSource::KneeRight);
-		bool hand_crawling = (cause == DamageSource::HandCrawlLeft || DamageSource::HandCrawlRight);
+		bool hand_crawling = (cause == DamageSource::HandCrawlLeft ||cause ==  DamageSource::HandCrawlRight);
 		if (is_walking || knee_crawling || hand_crawling) {
 			// goal of this function is to deal heavily decreased damage on normal walk footsteps to actors
 			// so it won't look silly by dealing 30 damage by briefly colliding with others
@@ -313,7 +313,7 @@ namespace Gts {
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
 		float size_difference = GetSizeDifference(giant, tiny) * highheels;
 
-		if (!Allow_Damage(giant, tiny, Cause, difference)) {
+		if (!Allow_Damage(giant, tiny, Cause, size_difference)) {
 			return; 
 		}
 
