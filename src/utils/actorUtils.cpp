@@ -2696,7 +2696,7 @@ namespace Gts {
 				Attacked(receiver, attacker);
 			}
 			float difficulty = 2.0; // taking Legendary Difficulty as a base
-			float levelbonus = 1.0 + ((GetGtsSkillLevel() * 0.01) * 0.60);
+			float levelbonus = 1.0 + ((GetGtsSkillLevel() * 0.01) * 0.50);
 			value *= levelbonus;
 			ApplyDamage(attacker, receiver, value * difficulty * GetDamageSetting());
 		}

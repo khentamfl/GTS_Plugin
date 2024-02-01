@@ -10,9 +10,11 @@
 #include "managers/footstep.hpp"
 #include "utils/actorUtils.hpp"
 #include "managers/Rumble.hpp"
+#include "ActionSettings.hpp"
+#include "rays/raycast.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
-#include "rays/raycast.hpp"
+
 
 using namespace std;
 using namespace SKSE;
@@ -31,10 +33,10 @@ namespace {
 			auto Uarm = find_node(giant, "NPC R Forearm [RLar]");
 			auto Arm = find_node(giant, "NPC R Hand [RHnd]");
 			if (Uarm) {
-				DoDamageAtPoint_Cooldown(giant, 17, 80.0 * power, Uarm, 10, 0.30, crush, pushpower, DamageSource::HandSwipeRight);
+				DoDamageAtPoint_Cooldown(giant, Radius_Sneak_HandSwipe, power, Uarm, 10, 0.30, crush, pushpower, DamageSource::HandSwipeRight);
 			}
 			if (Arm) {
-				DoDamageAtPoint_Cooldown(giant, 19, 80.0 * power, Arm, 10, 0.30, crush, pushpower, DamageSource::HandSwipeRight);
+				DoDamageAtPoint_Cooldown(giant, Radius_Sneak_HandSwipe, power, Arm, 10, 0.30, crush, pushpower, DamageSource::HandSwipeRight);
 			}
 
 			Utils_UpdateHighHeelBlend(giant, false);
@@ -54,10 +56,10 @@ namespace {
 			auto Uarm = find_node(giant, "NPC L Forearm [LLar]");
 			auto Arm = find_node(giant, "NPC L Hand [LHnd]");
 			if (Uarm) {
-				DoDamageAtPoint_Cooldown(giant, 17, 80.0 * power, Uarm, 10, 0.30, crush, pushpower, DamageSource::HandSwipeLeft);
+				DoDamageAtPoint_Cooldown(giant, Radius_Sneak_HandSwipe, power, Uarm, 10, 0.30, crush, pushpower, DamageSource::HandSwipeLeft);
 			}
 			if (Arm) {
-				DoDamageAtPoint_Cooldown(giant, 19, 80.0 * power, Arm, 10, 0.30, crush, pushpower, DamageSource::HandSwipeLeft);
+				DoDamageAtPoint_Cooldown(giant, Radius_Sneak_HandSwipe, power, Arm, 10, 0.30, crush, pushpower, DamageSource::HandSwipeLeft);
 			}
 
 			Utils_UpdateHighHeelBlend(giant, false);
@@ -81,12 +83,12 @@ namespace {
 
 	void GTS_Sneak_Swipe_On_R(AnimationEventData& data) {
 		//ManageCamera(&data.giant, true, 7.0);
-		TriggerHandCollision_Right(&data.giant, 2.0, 1.6, 1.0);
+		TriggerHandCollision_Right(&data.giant, Damage_Sneak_HandSwipe, 1.6, 1.0);
 		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", true, 4.0);
 	}
 	void GTS_Sneak_Swipe_On_L(AnimationEventData& data) {
 		//ManageCamera(&data.giant, true, 4.0);
-		TriggerHandCollision_Left(&data.giant, 2.0, 1.6, 1.0);
+		TriggerHandCollision_Left(&data.giant, Damage_Sneak_HandSwipe, 1.6, 1.0);
 		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipe", "DestructionBasics", true, 4.0);
 	}
 	void GTS_Sneak_Swipe_Off_R(AnimationEventData& data) {
@@ -104,12 +106,12 @@ namespace {
 
 	void GTS_Sneak_Swipe_Power_On_R(AnimationEventData& data) {
 		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", true, 10.0);
-		TriggerHandCollision_Right(&data.giant, 6.0, 1.15, 2.35);
+		TriggerHandCollision_Right(&data.giant, Damage_Sneak_HandSwipe_Strong, 1.15, 2.35);
 		//ManageCamera(&data.giant, true, 4.0);
 	}
 	void GTS_Sneak_Swipe_Power_On_L(AnimationEventData& data) {
 		DrainStamina(&data.giant, "StaminaDrain_CrawlSwipeStrong", "DestructionBasics", true, 10.0);
-		TriggerHandCollision_Left(&data.giant, 6.0, 1.15, 2.35);
+		TriggerHandCollision_Left(&data.giant, Damage_Sneak_HandSwipe_Strong, 1.15, 2.35);
 		//ManageCamera(&data.giant, true, 7.0);
 	}
 	void GTS_Sneak_Swipe_Power_Off_R(AnimationEventData& data) {

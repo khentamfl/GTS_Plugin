@@ -130,8 +130,8 @@ namespace {
 		auto LeftKnee = find_node(giant, "NPC L Calf [LClf]");
 		auto RightKnee = find_node(giant, "NPC R Calf [RClf]");
 		if (LeftKnee && RightKnee) {
-            DoDamageAtPoint(giant, 28, Damage_KneeCrush * damage, LeftKnee, 4, 0.70, 0.85, DamageSource::KneeLeft);
-            DoDamageAtPoint(giant, 28, Damage_KneeCrush * damage, RightKnee, 4, 0.70, 0.85, DamageSource::KneeRight);
+            DoDamageAtPoint(giant, Radius_Sneak_KneeCrush, Damage_KneeCrush * damage, LeftKnee, 4, 0.70, 0.85, DamageSource::KneeLeft);
+            DoDamageAtPoint(giant, Radius_Sneak_KneeCrush, Damage_KneeCrush * damage, RightKnee, 4, 0.70, 0.85, DamageSource::KneeRight);
 
             DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Left, "NPC L Calf [LClf]");
             DoDustExplosion(giant, 1.45 * dust * damage, FootEvent::Right, "NPC R Calf [RClf]");

@@ -90,6 +90,7 @@ namespace Gts {
     
 
 //-----------------------------------------Default effect radius variables
+
     const float Radius_Default_Idle = 7.0f;
 
     const float Radius_Walk_Default = 7.0f;
@@ -138,7 +139,7 @@ namespace Gts {
 
     ///////Sneaking
     const float Radius_Sneak_HandSwipe = 18.0f;
-    const float Radius_Sneak_KneeCrush = 20.0f;
+    const float Radius_Sneak_KneeCrush = 18.0f;
     const float Radius_Sneak_HandSlam = 12.0f;
     const float Radius_Sneak_HandSlam_Strong = 13.0f;
 
@@ -149,6 +150,4 @@ namespace Gts {
     const float Radius_ThighCrush_ButtImpact = 16.0f;
     const float Radius_ThighCrush_Stand_Up = 7.0f;
 
-    //////Sneak Vore
-    
 }

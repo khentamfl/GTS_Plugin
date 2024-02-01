@@ -10,9 +10,11 @@
 #include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "managers/Rumble.hpp"
+#include "ActionSettings.hpp"
+#include "rays/raycast.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
-#include "rays/raycast.hpp"
+
 
 namespace {
 	void SpawnCrawlParticle(Actor* actor, float scale, NiPoint3 position) {
