@@ -57,12 +57,12 @@ namespace {
 
 		bool is_walking = (cause == DamageSource::WalkLeft || cause == DamageSource::WalkRight);
 		bool knee_crawling = (cause == DamageSource::KneeLeft || cause == DamageSource::KneeRight);
-		bool hand_crawling = (cause == DamageSource::HandCrawlLeft ||cause ==  DamageSource::HandCrawlRight);
+		bool hand_crawling = (cause == DamageSource::HandCrawlLeft ||cause == DamageSource::HandCrawlRight);
 		if (is_walking || knee_crawling || hand_crawling) {
 			// goal of this function is to deal heavily decreased damage on normal walk footsteps to actors
 			// so it won't look silly by dealing 30 damage by briefly colliding with others
 			if (difference > 1.4) {
-				InflictSizeDamage(giant, tiny, difference * 0.1);
+				InflictSizeDamage(giant, tiny, difference * 0.35);
 			} 
 			return false;
 		}

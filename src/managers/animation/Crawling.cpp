@@ -53,12 +53,12 @@ namespace {
 	void GTSCrawl_KneeImpact_L(AnimationEventData& data) {
 		auto giant = &data.giant;
 		float scale = get_visual_scale(giant);
-		DoCrawlingFunctions(giant, scale, 1.25, Damage_Crawl_KneeImpact, CrawlEvent::LeftKnee, "LeftKnee", 0.60, Radius_Crawl_KneeImpact, 1.25, DamageSource::KneeDropLeft);
+		DoCrawlingFunctions(giant, scale, 1.25, Damage_Crawl_KneeImpact, CrawlEvent::LeftKnee, "LeftKnee", 0.60, Radius_Crawl_KneeImpact, 1.25, DamageSource::KneeLeft);
 	}
 	void GTSCrawl_KneeImpact_R(AnimationEventData& data) {
 		auto giant = &data.giant;
 		float scale = get_visual_scale(giant);
-		DoCrawlingFunctions(giant, scale, 1.25, Damage_Crawl_KneeImpact, CrawlEvent::RightKnee, "RightKnee", 0.6, Radius_Crawl_KneeImpact, 1.25, DamageSource::KneeDropRight);
+		DoCrawlingFunctions(giant, scale, 1.25, Damage_Crawl_KneeImpact, CrawlEvent::RightKnee, "RightKnee", 0.6, Radius_Crawl_KneeImpact, 1.25, DamageSource::KneeRight);
 	}
 	void GTSCrawl_HandImpact_L(AnimationEventData& data) {
 		auto giant = &data.giant;
@@ -66,12 +66,12 @@ namespace {
 		if (IsTransferingTiny(giant)) {
 			return; // Prevent effects from left hand
 		}
-		DoCrawlingFunctions(giant, scale, 1.10, Damage_Crawl_HandImpact, CrawlEvent::LeftHand, "LeftHand", 0.55, Radius_Crawl_HandImpact, 1.25, DamageSource::HandDropLeft);
+		DoCrawlingFunctions(giant, scale, 1.10, Damage_Crawl_HandImpact, CrawlEvent::LeftHand, "LeftHand", 0.55, Radius_Crawl_HandImpact, 1.25, DamageSource::HandCrawlLeft);
 	}
 	void GTSCrawl_HandImpact_R(AnimationEventData& data) {
 		auto giant = &data.giant;
 		float scale = get_visual_scale(giant);
-		DoCrawlingFunctions(giant, scale, 1.10, Damage_Crawl_HandImpact, CrawlEvent::RightHand, "RightHand", 0.55, Radius_Crawl_HandImpact, 1.25, DamageSource::HandDropRight);
+		DoCrawlingFunctions(giant, scale, 1.10, Damage_Crawl_HandImpact, CrawlEvent::RightHand, "RightHand", 0.55, Radius_Crawl_HandImpact, 1.25, DamageSource::HandCrawlRight);
 		//                                                                               ^    ^ --- Size Damage Radius
 		//                                                                             Launch
 		//                                                                             Radius

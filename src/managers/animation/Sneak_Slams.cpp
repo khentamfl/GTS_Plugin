@@ -251,19 +251,19 @@ namespace { // WIP
 	void GTS_Sneak_FingerGrind_Impact(AnimationEventData& data) {
 		Finger_DoDamage(&data.giant, true, Radius_Sneak_FingerGrind_Impact, Damage_Sneak_FingerGrind_Impact, 2.4, 1.2);
 		Finger_DoSounds(&data.giant, Rfinger, 1.0);
-		Finger_ApplyVisuals(&data.giant, Rfinger, 3.0, 1.25);
+		Finger_ApplyVisuals(&data.giant, Rfinger, 3.0, 1.0);
 
 		DrainStamina(&data.giant, "StaminaDrain_FingerGrind", "DestructionBasics", true, 0.8);
 	};
 	void GTS_Sneak_FingerGrind_Rotation(AnimationEventData& data) {
 		Finger_DoDamage(&data.giant, true, Radius_Sneak_FingerGrind_DOT, Damage_Sneak_FingerGrind_DOT, 2.8, 1.0);
-		Finger_ApplyVisuals(&data.giant, Rfinger, 3.0, 0.75);
+		Finger_ApplyVisuals(&data.giant, Rfinger, 3.0, 0.60);
 	};   
 	void GTS_Sneak_FingerGrind_Finisher(AnimationEventData& data) {
 		StopStaminaDrain(&data.giant);
 		Finger_DoDamage(&data.giant, true, Radius_Sneak_FingerGrind_Finisher, Damage_Sneak_FingerGrind_Finisher, 1.8, 1.6);
 		Finger_DoSounds(&data.giant, Rfinger, 1.4);
-		Finger_ApplyVisuals(&data.giant, Rfinger, 2.6, 1.5);
+		Finger_ApplyVisuals(&data.giant, Rfinger, 2.6, 2.0);
 	};
 	void GTS_Sneak_FingerGrind_CameraOff(AnimationEventData& data) {EnableHandTracking(&data.giant, CrawlEvent::RightHand, false);
 }

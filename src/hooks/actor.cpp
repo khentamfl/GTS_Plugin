@@ -152,6 +152,11 @@ namespace Hooks
 			return _Move(a_this, a_arg2, a_position); // Do nothing in Kill moves
 		}
 		float bonus = AttributeManager::AlterMovementSpeed(a_this, a_position);
+
+		float move = _Move(a_this, a_arg2, a_position * bonus);
+
+		log::info("Moving {} with the force of {}", a_this->GetDisplayFullName(), move);
+
 		return _Move(a_this, a_arg2, a_position * bonus);
 	}
 
@@ -245,6 +250,7 @@ namespace Hooks
 				bound = bound * scale;
 			}
 		}
+		log::info("Altering Max bound scale for {}", a_this->GetDisplayFullName());
 		return bound;
 	}
 	NiPoint3 Hook_Actor::GetBoundMin(Actor* a_this) {
@@ -255,6 +261,7 @@ namespace Hooks
 				bound = bound * scale;
 			}
 		}
+		log::info("Altering Min Bound scale for {}", a_this->GetDisplayFullName());
 		return bound;
 	}
 }
