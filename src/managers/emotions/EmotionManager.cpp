@@ -38,8 +38,9 @@ namespace {
 
 		std::string name = std::format("Phenome_{}_{}_{}", giant->formID, phenome, target);
 		float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
+		Spring defspring = Spring(0.0, 0.08 * halflife);
 		
-		Spring& PhenomeSpring = Spring(0.0, 0.08 * halflife);
+		Spring& PhenomeSpring = defspring;
 		ActorHandle giantHandle = giant->CreateRefHandle();
 
 		PhenomeSpring.target = target;
@@ -74,7 +75,9 @@ namespace {
 		std::string name = std::format("Modifier_{}_{}_{}", giant->formID, modifier, target);
 		float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
 
-		Spring& ModifierSpring = Spring(0.0, 0.25 * halflife);
+		Spring defspring = Spring(0.0, 0.25 * halflife);
+
+		Spring& ModifierSpring = defspring;
 		ActorHandle giantHandle = giant->CreateRefHandle();
 
 		ModifierSpring.target = target;
