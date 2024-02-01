@@ -195,7 +195,7 @@ namespace Gts {
 							if (nodeCollisions > 0) {
 								float aveForce = std::clamp(force, 0.14f, 0.70f);
 
-								Utils_PushCheck(giant, otherActor, aveForcef); 
+								Utils_PushCheck(giant, otherActor, aveForce); 
 								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause);
 							}
 						}

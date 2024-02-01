@@ -152,7 +152,7 @@ namespace {
 		float value = 1.0;
 		bool perk = Runtime::HasPerkTeam(giant, "hhBonus");
 		bool matches = (Cause == DamageSource::CrushedLeft || Cause == DamageSource::CrushedRight);
-		bool walk = (Cause == DamageSource::WalkRight || Cayse == DamageSource::WalkLeft);
+		bool walk = (Cause == DamageSource::WalkRight || Cause == DamageSource::WalkLeft);
 		if (perk && (matches || walk)) {
 			value += 0.15; // 15% bonus damage if we have High Heels perk
 		}
