@@ -153,7 +153,7 @@ namespace Hooks
 		}
 		float bonus = AttributeManager::AlterMovementSpeed(a_this, a_position);
 
-		log::info("Moving {}: art_2: {}, Pos3: {}, Pos3 * bonus: {}", a_this->GetDisplayFullName(), a_arg2, Vector2Str(a_position), Vector2Str(a_position) * bonus);
+		log::info("Moving {}: art_2: {}, Pos3: {}, Pos3 * bonus: {}", a_this->GetDisplayFullName(), a_arg2, Vector2Str(a_position), Vector2Str(a_position * bonus));
 
 		return _Move(a_this, a_arg2, a_position * bonus);
 	}
