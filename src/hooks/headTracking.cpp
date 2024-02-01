@@ -11,9 +11,12 @@ namespace {
 		Actor* giant = skyrim_cast<Actor*>(ref);
 		if (giant) {
 			float scale = get_giantess_scale(giant);
-			if (IsRagdolled(giant)) {
-				log::info("{} is ragdolled", giant->GetDisplayFullName());
-				scale = 1.0;
+			
+			/*if (IsRagdolled(giant)) { // For some reason breaks tiny ragdoll when they're small so they fly out of map.
+				return original;      // ^ So this check is a must.
+			}*/
+			if (scale <= 0.8) {
+			log::info("original value of {} is {}. New: {}", giant->GetDisplayFullName(), original, scale);
 			}
 			return scale;
 		}
