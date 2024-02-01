@@ -652,13 +652,6 @@ namespace Gts {
 		if (Runtime::IsRace(actor, "dragonRace")) {
 			return true;
 		} 
-		auto ref = skyrim_cast<TESObjectREFR*>(actor);
-		if (ref) {
-			if (ref->HasKeywordWithType(DefaultObjectID::kKeywordDragon)) {
-				log::info("Actor is dragon");
-				return true;
-			}
-		}
 		return false;
 	}
 
