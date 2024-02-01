@@ -389,11 +389,11 @@ namespace Gts {
 	}
 
 	void ToggleEmotionEdit(Actor* giant, bool allow) {
-		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
-		Emotions.AllowEmotionEdit = allow;
+		/*auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
+		Emotions.AllowEmotionEdit = allow;*/
 	}
 	void AdjustFacialExpression(Actor* giant, int ph, float power, std::string_view type) {
-		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
+		auto& Emotions = EmotionManager::GetSingleton();
 
 		if (type == "phenome") {
 			Emotions.OverridePhenome(giant, ph, 0.0, 0.08, power);
@@ -413,7 +413,7 @@ namespace Gts {
 	}
 
 	void AdjustFacialExpression(Actor* giant, int ph, float power, float speed_1, float speed_2, std::string_view type) {
-		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
+		auto& Emotions = EmotionManager::GetSingleton();
 
 		if (type == "phenome") {
 			Emotions.OverridePhenome(giant, ph, 0.0, speed_1, power);
