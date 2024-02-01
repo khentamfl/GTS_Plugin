@@ -16,7 +16,7 @@
 
 namespace {
 
-	GetFaceGenAnimationData* GetFacialData(Actor* giant) {
+	BSFaceGenAnimationData* GetFacialData(Actor* giant) {
 		auto fgen = giant->GetFaceGenAnimationData();
 		if (fgen) {
 			return fgen;
@@ -24,12 +24,12 @@ namespace {
 		return nullptr;
 	}
 
-	void Phenome_ManagePhenomes(GetFaceGenAnimationData* data, std::uint32_t Phenome, float Value) {
+	void Phenome_ManagePhenomes(BSFaceGenAnimationData* data, std::uint32_t Phenome, float Value) {
 		log::info("Applied Phenome. Current value: {}", Value);
 		data->phenomeKeyFrame.SetValue(Phenome, Value);
 	}
 
-	void Phenome_ManageModifiers(GetFaceGenAnimationData* data, std::uint32_t Modifier, float Value) {
+	void Phenome_ManageModifiers(BSFaceGenAnimationData* data, std::uint32_t Modifier, float Value) {
 		log::info("Applied Modifier. Current value: {}", Value);
 		data->phenomeKeyFrame.SetValue(Modifier, Value);
 	}
