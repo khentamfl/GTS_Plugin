@@ -25,12 +25,6 @@ namespace {
     const std::string_view Rfinger = "NPC R Finger12 [RF12]";
 	const std::string_view Lfinger = "NPC L Finger12 [LF12]";
 
-    void StopStaminaDrain(Actor* giant) {
-		DrainStamina(giant, "StaminaDrain_StrongSneakSlam", "DestructionBasics", false, 2.2);
-		DrainStamina(giant, "StaminaDrain_FingerGrind", "DestructionBasics", false, 0.8);
-		DrainStamina(giant, "StaminaDrain_SneakSlam", "DestructionBasics", false, 1.4);
-	}
-
     void Finger_DoSounds(Actor* giant, std::string_view node_name, float mult) {
 		NiAVObject* node = find_node(giant, node_name);
 		if (node) {
@@ -84,11 +78,11 @@ namespace {
     ///////////////////////////////////////////////////////////////////
 
     void GTS_Sneak_FingerGrind_CameraOn_R(AnimationEventData& data) {
-		EnableHandTracking(&data.giant, CrawlEvent::RightHand, true);
+		TrackMatchingHand(&data.giant, CrawlEvent::RightHand, true);
 	};  
 
     void GTS_Sneak_FingerGrind_CameraOn_L(AnimationEventData& data) {
-		EnableHandTracking(&data.giant, CrawlEvent::LeftHand, true);
+		TrackMatchingHand(&data.giant, CrawlEvent::LeftHand, true);
 	};  
 
 	void GTS_Sneak_FingerGrind_Impact_R(AnimationEventData& data) {
@@ -129,13 +123,13 @@ namespace {
 		
 	};
 
-	void GTS_Sneak_FingerGrind_CameraOff_R(AnimationEventData& data) {EnableHandTracking(&data.giant, CrawlEvent::RightHand, false);}
-    void GTS_Sneak_FingerGrind_CameraOff_L(AnimationEventData& data) {EnableHandTracking(&data.giant, CrawlEvent::LeftHand, false);}
+	void GTS_Sneak_FingerGrind_CameraOff_R(AnimationEventData& data) {TrackMatchingHand(&data.giant, CrawlEvent::RightHand, false);}
+    void GTS_Sneak_FingerGrind_CameraOff_L(AnimationEventData& data) {TrackMatchingHand(&data.giant, CrawlEvent::LeftHand, false);}
 
 }
 
 namespace Gts {
-    void Animation_SneakSlam::RegisterEvents() {
+    void Animation_SneakSlam_FingerGrind::RegisterEvents() {
         AnimationManager::RegisterEvent("GTS_Sneak_FingerGrind_CameraOn_R", "Sneak", GTS_Sneak_FingerGrind_CameraOn_R);
         AnimationManager::RegisterEvent("GTS_Sneak_FingerGrind_CameraOn_L", "Sneak", GTS_Sneak_FingerGrind_CameraOn_L);
 
@@ -228,11 +222,17 @@ namespace Gts {
 		}
 	}
 
-    void EnableHandTracking(Actor* giant, CrawlEvent kind, bool enable) {
+    void TrackMatchingHand(Actor* giant, CrawlEvent kind, bool enable) {
         if (kind == CrawlEvent::RightHand) {
             ManageCamera(giant, enable, 4.0);
         } else if (kind == CrawlEvent::LeftHand) {
             ManageCamera(giant, enable, 7.0);
         }
     }
+
+    void StopStaminaDrain(Actor* giant) {
+		DrainStamina(giant, "StaminaDrain_StrongSneakSlam", "DestructionBasics", false, 2.2);
+		DrainStamina(giant, "StaminaDrain_FingerGrind", "DestructionBasics", false, 0.8);
+		DrainStamina(giant, "StaminaDrain_SneakSlam", "DestructionBasics", false, 1.4);
+	}
 }

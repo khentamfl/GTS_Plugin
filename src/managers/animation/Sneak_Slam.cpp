@@ -59,11 +59,11 @@ namespace {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void GTS_Sneak_Slam_Raise_Arm_R(AnimationEventData& data) {
-		EnableHandTracking(&data.giant, CrawlEvent::RightHand, true);
+		TrackMatchingHand(&data.giant, CrawlEvent::RightHand, true);
 		DrainStamina(&data.giant, "StaminaDrain_SneakSlam", "DestructionBasics", true, 1.4);
 	}
 	void GTS_Sneak_Slam_Raise_Arm_L(AnimationEventData& data) {
-		EnableHandTracking(&data.giant, CrawlEvent::LeftHand, true);
+		TrackMatchingHand(&data.giant, CrawlEvent::LeftHand, true);
 		DrainStamina(&data.giant, "StaminaDrain_SneakSlam", "DestructionBasics", true, 1.4);
 	}
 
@@ -89,11 +89,11 @@ namespace {
 	
 	 
 	void GTS_Sneak_Slam_Cam_Off_R(AnimationEventData& data) {
-		EnableHandTracking(&data.giant, CrawlEvent::RightHand, false);
+		TrackMatchingHand(&data.giant, CrawlEvent::RightHand, false);
 		StopStaminaDrain(&data.giant);
 	};        
 	void GTS_Sneak_Slam_Cam_Off_L(AnimationEventData& data) {
-		EnableHandTracking(&data.giant, CrawlEvent::LeftHand, false);
+		TrackMatchingHand(&data.giant, CrawlEvent::LeftHand, false);
 		StopStaminaDrain(&data.giant);
 	};
 }

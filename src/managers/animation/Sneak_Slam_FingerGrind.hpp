@@ -14,5 +14,5 @@ namespace Gts
 	};
 
     void Finger_DamageAndShrink(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, float Shrink, DamageSource Cause);
-    void EnableHandTracking(Actor* giant, CrawlEvent kind, bool enable);
+    void TrackMatchingHand(Actor* giant, CrawlEvent kind, bool enable);
 }
