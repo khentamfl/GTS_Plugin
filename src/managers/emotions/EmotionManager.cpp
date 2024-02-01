@@ -39,18 +39,18 @@ namespace {
 		std::string name = std::format("Phenome_{}_{}_{}", giant->formID, phenome, target);
 		float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
 		Spring defspring = Spring(0.0, 0.08 * halflife);
+
+		defspring.target = target;
+		defspring.halflife = halflife/AnimSpeed;
 		
 		Spring& PhenomeSpring = defspring;
 		ActorHandle giantHandle = giant->CreateRefHandle();
-
-		PhenomeSpring.target = target;
 
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!giantHandle) {
 				return false;
 			}
 			auto giantref = giantHandle.get().get();
-			PhenomeSpring.halflife = halflife/AnimSpeed;
 
 			if (!giantref->Is3DLoaded()) {
 				return false;
@@ -77,11 +77,11 @@ namespace {
 
 		Spring defspring = Spring(0.0, 0.25 * halflife);
 
+		defspring.target = target;
+		defspring.halflife = halflife;
+
 		Spring& ModifierSpring = defspring;
 		ActorHandle giantHandle = giant->CreateRefHandle();
-
-		ModifierSpring.target = target;
-		ModifierSpring.halflife = halflife;
 
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!giantHandle) {
@@ -89,7 +89,6 @@ namespace {
 			}
 
 			auto giantref = giantHandle.get().get();
-			ModifierSpring.halflife = halflife/AnimSpeed;
 
 			if (!giantref->Is3DLoaded()) {
 				return false;
