@@ -118,15 +118,15 @@ namespace Gts {
 
     /////////Butt Crush
 
-    const float Radius_ButtCrush_Impact = 22.0f;
+    const float Radius_ButtCrush_Impact = 20.0f;
     const float Radius_ButtCrush_HandImpact = 8.0f;
     const float Radius_ButtCrush_FootImpact = 7.2f;
 
     /////////Thigh Crush
     const float Radius_ThighCrush_Butt_DOT = 13.0f;
 
-    const float Radius_BreastCrush_BodyImpact = 21.0f;
-    const float Radius_BreastCrush_BreastImpact = 20.0f;
+    const float Radius_BreastCrush_BodyImpact = 16.0f;
+    const float Radius_BreastCrush_BreastImpact = 16.0f;
     const float Radius_BreastCrush_BodyDOT = 15.0f; 
     const float Radius_BreastCrush_BreastDOT = 14.0f; 
 
@@ -147,8 +147,8 @@ namespace Gts {
     const float Radius_Crawl_Vore_ButtImpact = 20.0f;
 
     ///////Sneaking
-    const float Radius_Sneak_HandSwipe = 20.0f;
-    const float Radius_Sneak_KneeCrush = 18.0f;
+    const float Radius_Sneak_HandSwipe = 18.0f;
+    const float Radius_Sneak_KneeCrush = 16.0f;
     const float Radius_Sneak_HandSlam = 12.0f;
     const float Radius_Sneak_HandSlam_Strong = 12.0f;
 

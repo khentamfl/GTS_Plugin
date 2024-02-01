@@ -86,7 +86,7 @@ namespace Gts {
 		}
 
 		float SMT = 1.0;
-		float minimal_scale = 2.0;
+		float minimal_scale = 1.5;
 
 		LaunchActor::GetSingleton().LaunchAtNode(actor, launch_dist, multiplier, node); // Launch actors
 		//                                                radius       power       object

@@ -1850,14 +1850,19 @@ namespace Gts {
 			if ((endTime - startTime) > 1e-4) {
 				// Time has elapsed
 
-				NiPoint3 vector = endCoords- startCoords;
+				NiPoint3 vector = endCoords - startCoords;
 				float distanceTravelled = vector.Length();
 				float timeTaken = endTime - startTime;
 				float speed = distanceTravelled / timeTaken;
 				NiPoint3 direction = vector / vector.Length();
 				if (sizecheck) {
 					float giantscale = get_visual_scale(giant);
-					float tinyscale = get_visual_scale(tiny);
+					float tinyscale = get_visual_scale(tiny) * GetSizeFromBoundingBox(tiny);
+
+					if (tiny->IsDead()) {
+						tinyscale *= 0.4;
+					}
+
 					if (HasSMT(giant)) {
 						giantscale *= 6.0;
 					}
