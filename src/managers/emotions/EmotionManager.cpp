@@ -51,7 +51,7 @@ namespace {
 		float modified = 0.0;
 		auto data = GetFacialData(giant);
 		if (data) {
-			modified = Phenome_GetPhenomeValue(data, modifier);
+			modified = Phenome_GetPhenomeValue(data, phenome);
 		}
 		
 		float start = Time::WorldTimeElapsed();
@@ -79,10 +79,10 @@ namespace {
 				log::info("Running Phenome. value: {}, target: {}", value, target);
 				if (Reset && modified != 0.0) {
 					value = modified - (pass * speed);
-					Phenome_ManagePhenomes(FaceData, modifier, value);
+					Phenome_ManagePhenomes(FaceData, phenome, value);
 					log::info("Running Phenome Reset. value: {}, target: {}", value, target);
 					if (value <= 0) {
-						Phenome_ManagePhenomes(FaceData, modifier, 0.0);
+						Phenome_ManagePhenomes(FaceData, phenome, 0.0);
 						log::info("Phenome Reset Done");
 						return false;
 					}
@@ -91,7 +91,7 @@ namespace {
 					return false;
 				} 
 
-				Phenome_ManagePhenomes(FaceData, modifier, value);
+				Phenome_ManagePhenomes(FaceData, phenome, value);
 				return true;
 			}
 
