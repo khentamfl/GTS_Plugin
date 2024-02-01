@@ -652,12 +652,13 @@ namespace Gts {
 		if (Runtime::IsRace(actor, "dragonRace")) {
 			return true;
 		} 
-		if (actor->IsDragon()) {
-			return true;
+		auto ref = skyrim_cast<TESObjectREFR*>(actor);
+		if (ref) {
+			if (ref->IsDragon()) {
+				return true;
+			}
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
 
 	bool IsGiant(Actor* actor) {
