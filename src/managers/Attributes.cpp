@@ -46,10 +46,10 @@ namespace {
 
 		///Normal Damage
 		if (Runtime::HasPerkTeam(actor, "Cruelty")) {
-			ExpectedGlobalDamage += 0.35/BalancedMode;
+			ExpectedGlobalDamage += 0.15/BalancedMode;
 		}
 		if (Runtime::HasPerkTeam(actor, "RealCruelty")) {
-			ExpectedGlobalDamage += 0.65/BalancedMode;
+			ExpectedGlobalDamage += 0.35/BalancedMode;
 		}
 		if (IsGrowthSpurtActive(actor)) {
 			ExpectedGlobalDamage *= (1.0 + (0.35/BalancedMode));
@@ -61,9 +61,6 @@ namespace {
 		///Sprint Damage
 		if (Runtime::HasPerkTeam(actor, "SprintDamageMult1")) {
 			ExpectedSprintDamage += 0.25/BalancedMode;
-		}
-		if (Runtime::HasPerkTeam(actor, "SprintDamageMult2")) {
-			ExpectedSprintDamage += 1.0/BalancedMode;
 		}
 		///Fall Damage
 		if (Runtime::HasPerkTeam(actor, "MightyLegs")) {

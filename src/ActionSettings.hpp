@@ -87,6 +87,13 @@ namespace Gts {
 	const float Damage_Sneak_HandSwipe = 5.0f;
 	const float Damage_Sneak_HandSwipe_Strong = 14.0f;
 
+    const float Damage_Sneak_HandSlam = 6.0f;
+    const float Damage_Sneak_HandSlam_Strong = 16.0f;
+
+    const float Damage_Sneak_FingerGrind_DOT = 0.012f;
+    const float Damage_Sneak_FingerGrind_Impact = 3.0f;
+    const float Damage_Sneak_FingerGrind_Finisher = 5.0f;
+
     
 
 //-----------------------------------------Default effect radius variables
@@ -122,7 +129,7 @@ namespace Gts {
     const float Radius_BreastCrush_BreastDOT = 14.0f; 
 
     ////////Crawling
-    const float Radius_Crawl_HandSwipe = 18.0f;
+    const float Radius_Crawl_HandSwipe = 20.0f;
     const float Radius_Crawl_KneeImpact = 14.0f;
     const float Radius_Crawl_HandImpact = 12.0f;
 
@@ -138,13 +145,17 @@ namespace Gts {
     const float Radius_Crawl_Vore_ButtImpact = 20.0f;
 
     ///////Sneaking
-    const float Radius_Sneak_HandSwipe = 18.0f;
+    const float Radius_Sneak_HandSwipe = 20.0f;
     const float Radius_Sneak_KneeCrush = 18.0f;
-    const float Radius_Sneak_HandSlam = 12.0f;
-    const float Radius_Sneak_HandSlam_Strong = 13.0f;
+    const float Radius_Sneak_HandSlam = 13.0f;
+    const float Radius_Sneak_HandSlam_Strong = 14.0f;
+
+    const float Radius_Sneak_FingerGrind_DOT = 4.0f;
+    const float Radius_Sneak_FingerGrind_Impact = 4.6f;
+    const float Radius_Sneak_FingerGrind_Finisher = 5.0f;
 
     ///////Kicks
-    const float Radius_Kick = 16.0f;
+    const float Radius_Kick = 20.0f;
 
     //////Thigh Crush
     const float Radius_ThighCrush_ButtImpact = 16.0f;

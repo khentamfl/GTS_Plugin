@@ -69,7 +69,7 @@ namespace { // WIP
 		}
 	}
 
-	void Finger_DamageAndShrink(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, DamageSource Cause) { // Apply crawl damage to each bone individually
+	void Finger_DamageAndShrink(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, float ShrinkMult, DamageSource Cause) { // Apply crawl damage to each bone individually
 		auto profiler = Profilers::Profile("Other: CrawlDamage");
 		if (!node) {
 			return;
@@ -99,7 +99,7 @@ namespace { // WIP
 		}
 		if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone(giant))) {
 			for (auto point: CrawlPoints) {
-				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance);
+				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance, 400.0);
 			}
 		}
 
@@ -111,7 +111,7 @@ namespace { // WIP
 				if (giantScale / tinyScale > SCALE_RATIO) {
 					NiPoint3 actorLocation = otherActor->GetPosition();
 					for (auto point: CrawlPoints) {
-						if ((actorLocation-giantLocation).Length() <= maxDistance * 2.5) {
+						if ((actorLocation-giantLocation).Length() <= maxDistance * 6.0) {
 
 							int nodeCollisions = 0;
 							float force = 0.0;
@@ -130,11 +130,10 @@ namespace { // WIP
 								});
 							}
 							if (nodeCollisions > 0) {
-								float aveForce = std::clamp(force, 0.12f, 0.70f);
 								if (get_target_scale(otherActor) > 0.06 / GetSizeFromBoundingBox(otherActor)) {
-									update_target_scale(otherActor, -0.001, SizeEffectType::kShrink);
+									update_target_scale(otherActor, -0.0012 * ShrinkMult, SizeEffectType::kShrink);
 								}
-								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, aveForce * damage, random, bbmult, crushmult, Cause);
+								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause);
 							}
 						}
 					}
@@ -143,7 +142,36 @@ namespace { // WIP
 		}
 	}
 
-	void Finger_DoDamage(Actor* giant, bool Right, float mult) {
+	void Finger_StartShrinkTask(Actor* giant, bool Right, float Radius, float Damage, float CrushMult) {
+		auto gianthandle = giant->CreateRefHandle();
+
+		std::string name = std::format("FingerShrink_{}", giant->formID);
+
+		DamageSource source = DamageSource::RightFinger;
+		std::string_view NodeLookup = Rfinger;
+		if (!Right) {
+			source = DamageSource::LeftFinger;
+			NodeLookup = Lfinger;
+		}
+
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+
+			auto giantref = gianthandle.get().get();
+
+			if (IsFootGrinding(giantref)) {
+				NiAVObject* node = find_node(giantref, NodeLookup);
+				Finger_DamageAndShrink(giantref, Radius, Damage, node, 200, 0.05, CrushMult, 1.0, source);
+				return true;
+			}
+			
+			return false;
+		});
+	}
+
+	void Finger_DoDamage(Actor* giant, bool Right, float Radius, float Damage, float CrushMult) {
 		DamageSource source = DamageSource::RightFinger;
 		std::string_view NodeLookup = Rfinger;
 		if (!Right) {
@@ -153,7 +181,7 @@ namespace { // WIP
 
 		NiAVObject* node = find_node(giant, NodeLookup);
 
-		Finger_DamageAndShrink(giant, 6.0 * mult, 20.0 * mult, node, 50, 0.10, 2.0, source);
+		Finger_DamageAndShrink(giant, Radius, Damage, node, 50, 0.10, 2.5 * CrushMult, 25.0, source);
 	}
 
 	void StopStaminaDrain(Actor* giant) {
@@ -190,8 +218,10 @@ namespace { // WIP
 	
 	void GTSSneak_Slam_Impact_R(AnimationEventData& data) {
 		float scale = get_visual_scale(&data.giant);
-		FingerGrindCheck(&data.giant, CrawlEvent::RightHand, true, 22.0);
-		DoCrawlingFunctions(&data.giant, scale, 0.75, 5.2, CrawlEvent::RightHand, "RightHandRumble", 0.80, Radius_Sneak_HandSlam, 1.25, DamageSource::HandSlamLeft);
+		FingerGrindCheck(&data.giant, CrawlEvent::RightHand, true, Radius_Sneak_HandSlam);
+		Finger_StartShrinkTask(&data.giant, true, Radius_Sneak_FingerGrind_DOT, Damage_Sneak_FingerGrind_DOT, 3.0);
+		
+		DoCrawlingFunctions(&data.giant, scale, 0.75, Damage_Sneak_HandSlam, CrawlEvent::RightHand, "RightHandRumble", 0.80, Radius_Sneak_HandSlam, 1.25, DamageSource::HandSlamLeft);
 	};
 	void GTSSneak_Slam_Impact_L(AnimationEventData& data) {};
 	
@@ -214,18 +244,19 @@ namespace { // WIP
 		EnableHandTracking(&data.giant, CrawlEvent::RightHand, true);
 	};  
 	void GTS_Sneak_FingerGrind_Impact(AnimationEventData& data) {
-		Finger_DoDamage(&data.giant, true, 2.0);
+		Finger_DoDamage(&data.giant, true, Radius_Sneak_FingerGrind_Impact, Damage_Sneak_FingerGrind_Impact, 2.4);
 		Finger_DoSounds(&data.giant, Rfinger, 1.0);
 		Finger_ApplyVisuals(&data.giant, Rfinger, 3.0, 1.25);
+
 		DrainStamina(&data.giant, "StaminaDrain_FingerGrind", "DestructionBasics", true, 0.8);
 	};
 	void GTS_Sneak_FingerGrind_Rotation(AnimationEventData& data) {
-		Finger_DoDamage(&data.giant, true, 1.75);
+		Finger_DoDamage(&data.giant, true, Radius_Sneak_FingerGrind_DOT, Damage_Sneak_FingerGrind_DOT, 2.8);
 		Finger_ApplyVisuals(&data.giant, Rfinger, 3.0, 0.75);
 	};   
 	void GTS_Sneak_FingerGrind_Finisher(AnimationEventData& data) {
 		StopStaminaDrain(&data.giant);
-		Finger_DoDamage(&data.giant, true, 2.5);
+		Finger_DoDamage(&data.giant, true, Radius_Sneak_FingerGrind_Finisher, Damage_Sneak_FingerGrind_Finisher, 1.8);
 		Finger_DoSounds(&data.giant, Rfinger, 1.4);
 		Finger_ApplyVisuals(&data.giant, Rfinger, 2.6, 1.5);
 	};

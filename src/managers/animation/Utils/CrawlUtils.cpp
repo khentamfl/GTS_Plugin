@@ -105,7 +105,7 @@ namespace Gts {
 		std::string rumbleName = std::format("{}{}", tag, actor->formID);
 		GRumble::Once(rumbleName, actor, 0.90 * multiplier * SMT, 0.02, name); // Do Rumble
 
-		DoDamageAtPoint(actor, damage_dist, 70 * damage, node, 20, 0.05, crushmult, Cause); // Do size-related damage
+		DoDamageAtPoint(actor, damage_dist, damage, node, 20, 0.05, crushmult, Cause); // Do size-related damage
 		DoCrawlingSounds(actor, scale, node, FootEvent::Left);                      // Do impact sounds
 
 		if (scale >= minimal_scale && !actor->AsActorState()->IsSwimming()) {
@@ -195,7 +195,7 @@ namespace Gts {
 								float aveForce = std::clamp(force, 0.06f, 0.70f);
 
 								Utils_PushCheck(giant, otherActor, aveForce); 
-								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, random, bbmult, crushmult, Cause);
+								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause);
 							}
 						}
 					}
