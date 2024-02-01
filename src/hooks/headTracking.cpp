@@ -11,6 +11,10 @@ namespace {
 		Actor* giant = skyrim_cast<Actor*>(ref);
 		if (giant) {
 			float scale = get_giantess_scale(giant);
+			if (IsRagdolled(giant)) {
+				log::info("{} is ragdolled", giant->GetDisplayFullName());
+				scale = 1.0;
+			}
 			return scale;
 		}
 		return original;
