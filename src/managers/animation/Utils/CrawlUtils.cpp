@@ -173,7 +173,7 @@ namespace Gts {
 				if (giantScale / tinyScale > SCALE_RATIO) {
 					NiPoint3 actorLocation = otherActor->GetPosition();
 					for (auto point: CrawlPoints) {
-						if ((actorLocation-giantLocation).Length() <= maxDistance * 2.5) {
+						if ((actorLocation-giantLocation).Length() <= maxDistance * 10.0) {
 							
 							int nodeCollisions = 0;
 							float force = 0.0;

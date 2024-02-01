@@ -590,19 +590,19 @@ namespace Gts {
 		});
 	}
 
-	void FingerGrindCheck(Actor* giant, CrawlEvent kind, bool Right, float radius) {
+	bool FingerGrindCheck(Actor* giant, CrawlEvent kind, bool Right, float radius) {
 		std::string_view name = GetImpactNode(kind);
 
 		auto node = find_node(giant, name);
 		if (!node) {
-			return; // Make sure to return if node doesn't exist, no CTD in that case
+			return false; // Make sure to return if node doesn't exist, no CTD in that case
 		}
 
 		if (!node) {
-			return;
+			return false;
 		}
 		if (!giant) {
-			return;
+			return false;
 		}
 		float giantScale = get_visual_scale(giant);
 
@@ -638,7 +638,7 @@ namespace Gts {
 				if (giantScale / tinyScale > SCALE_RATIO) {
 					NiPoint3 actorLocation = otherActor->GetPosition();
 					for (auto point: CrawlPoints) {
-						if ((actorLocation-giantLocation).Length() <= maxDistance * 2.5) {
+						if ((actorLocation-giantLocation).Length() <= maxDistance * 10.0) {
 							int nodeCollisions = 0;
 							float force = 0.0;
 
@@ -659,9 +659,11 @@ namespace Gts {
 								if (Right) {
 									DoFingerGrind(giant, otherActor);
 									AnimationManager::StartAnim("GrindRight", giant);
+									return true;
 								} else {
 									DoFingerGrind(giant, otherActor);
 									AnimationManager::StartAnim("GrindLeft", giant);
+									return true;
 								}
 							}
 						}
@@ -968,7 +970,7 @@ namespace Gts {
 			if (otherActor != giant) {
 				float tinyScale = get_visual_scale(otherActor);
 				NiPoint3 actorLocation = otherActor->GetPosition();
-				if ((actorLocation - giantLocation).Length() < maxDistance * 6.0) {
+				if ((actorLocation - giantLocation).Length() < maxDistance * 10.0) {
 					tinyScale *= GetSizeFromBoundingBox(otherActor); // take Giant/Dragon scale into account
 
 					int nodeCollisions = 0;

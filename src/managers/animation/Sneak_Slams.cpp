@@ -111,7 +111,7 @@ namespace { // WIP
 				if (giantScale / tinyScale > SCALE_RATIO) {
 					NiPoint3 actorLocation = otherActor->GetPosition();
 					for (auto point: CrawlPoints) {
-						if ((actorLocation-giantLocation).Length() <= maxDistance * 6.0) {
+						if ((actorLocation-giantLocation).Length() <= maxDistance * 10.0) {
 
 							int nodeCollisions = 0;
 							float force = 0.0;
@@ -218,10 +218,11 @@ namespace { // WIP
 	
 	void GTSSneak_Slam_Impact_R(AnimationEventData& data) {
 		float scale = get_visual_scale(&data.giant);
-		FingerGrindCheck(&data.giant, CrawlEvent::RightHand, true, Radius_Sneak_HandSlam);
-		Finger_StartShrinkTask(&data.giant, true, Radius_Sneak_FingerGrind_DOT, Damage_Sneak_FingerGrind_DOT, 3.0);
-		
-		DoCrawlingFunctions(&data.giant, scale, 0.75, Damage_Sneak_HandSlam, CrawlEvent::RightHand, "RightHandRumble", 0.80, Radius_Sneak_HandSlam, 1.25, DamageSource::HandSlamLeft);
+		if (FingerGrindCheck(&data.giant, CrawlEvent::RightHand, true, Radius_Sneak_HandSlam)) {
+			Finger_StartShrinkTask(&data.giant, true, Radius_Sneak_FingerGrind_DOT, Damage_Sneak_FingerGrind_DOT, 3.0);
+		}
+	
+		DoCrawlingFunctions(&data.giant, scale, 0.75, Damage_Sneak_HandSlam, CrawlEvent::RightHand, "RightHandRumble", 0.80, Radius_Sneak_HandSlam, 1.25, DamageSource::HandSlamRight);
 	};
 	void GTSSneak_Slam_Impact_L(AnimationEventData& data) {};
 	
