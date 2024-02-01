@@ -62,7 +62,7 @@ namespace Gts {
 			size_difference = 3.0;
 		} // Cap Size Difference
 
-		float shrink_power = 2.25 * size_difference;
+		float shrink_power = 2.5 * size_difference;
 		float gain_size = 0.0025;
 
 		if (target->IsDead()) {

@@ -130,7 +130,7 @@ namespace Gts {
 		float SizeDifference = 1.0;
 		float bonus = 1.0;
 		float balancemodebonus = 1.0;
-		float shrink = this->power * 2;
+		float shrink = this->power * 2.6;
 		float gainpower = this->efficiency;
 		auto actor_data = Persist.GetData(target);
 
@@ -146,7 +146,6 @@ namespace Gts {
 			SizeDifference = 1.0 / std::clamp((get_visual_scale(target) * GetSizeFromBoundingBox(target)), 0.50f, 1.0f);
 		} else {
 			if (actor_data) {
-				//AddShrinkWeakness(target, 0.0085 * TimeScale());
 				actor_data->half_life = 1.0;
 			}
 		}
