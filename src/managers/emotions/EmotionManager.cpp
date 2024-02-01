@@ -14,10 +14,102 @@
 #include "spring.hpp"
 #include "node.hpp"
 
-namespace Gts { // To-do: rework it into Task manager. Not sure how to do it.
-	EmotionData::EmotionData(Actor* giant) : giant(giant) {
+namespace {
+
+	GetFaceGenAnimationData* GetFacialData(Actor* giant) {
+		auto fgen = giant->GetFaceGenAnimationData();
+		if (fgen) {
+			return fgen;
+		}
+		return nullptr;
 	}
 
+	void Phenome_ManagePhenomes(GetFaceGenAnimationData* data, std::uint32_t Phenome, float Value) {
+		log::info("Applied Phenome. Current value: {}", Value);
+		data->phenomeKeyFrame.SetValue(Phenome, Value);
+	}
+
+	void Phenome_ManageModifiers(GetFaceGenAnimationData* data, std::uint32_t Modifier, float Value) {
+		log::info("Applied Modifier. Current value: {}", Value);
+		data->phenomeKeyFrame.SetValue(Modifier, Value);
+	}
+
+	void Task_UpdatePhenome(Actor* giant, int phenome, float halflife, float target) {
+
+		std::string name = std::format("Phenome_{}_{}_{}", giant->formID, phenome, target);
+		float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
+		
+		Spring& PhenomeSpring = Spring(0.0, 0.08 * halflife);
+		ActorHandle giantHandle = giant->CreateRefHandle();
+
+		PhenomeSpring.target = target;
+
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!giantHandle) {
+				return false;
+			}
+			auto giantref = giantHandle.get().get();
+			PhenomeSpring.halflife = halflife/AnimSpeed;
+
+			if (!giantref->Is3DLoaded()) {
+				return false;
+			}
+			auto FaceData = GetFacialData(giantref);
+			if (FaceData) {
+				log::info("Running Phenome Spring. value: {}, target: {}", PhenomeSpring.value, PhenomeSpring.target);
+				if (PhenomeSpring.value >= target) {
+					return false;
+				}
+
+				Phenome_ManagePhenomes(FaceData, phenome, PhenomeSpring.value);
+				return true;
+			}
+
+			return false;
+		});
+	}
+
+	void Task_UpdateModifier(Actor* giant, int modifier, float halflife, float target) {
+
+		std::string name = std::format("Modifier_{}_{}_{}", giant->formID, modifier, target);
+		float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
+
+		Spring& ModifierSpring = Spring(0.0, 0.25 * halflife);
+		ActorHandle giantHandle = giant->CreateRefHandle();
+
+		ModifierSpring.target = target;
+		ModifierSpring.halflife = halflife;
+
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!giantHandle) {
+				return false;
+			}
+
+			auto giantref = giantHandle.get().get();
+			ModifierSpring.halflife = halflife/AnimSpeed;
+
+			if (!giantref->Is3DLoaded()) {
+				return false;
+			}
+
+			auto FaceData = GetFacialData(giantref);
+			if (FaceData) {
+				log::info("Running Modifier Spring. value: {}, target: {}", ModifierSpring.value, ModifierSpring.target);
+				if (ModifierSpring.value >= target) {
+					return false;
+				}
+
+				Phenome_ManageModifiers(FaceData, modifier, ModifierSpring.value);
+				return true;
+			}
+
+			return false;
+		});
+	}
+}
+
+namespace Gts {
+	
 	EmotionManager& EmotionManager::GetSingleton() noexcept {
 		static EmotionManager instance;
 		return instance;
@@ -27,87 +119,12 @@ namespace Gts { // To-do: rework it into Task manager. Not sure how to do it.
 		return "EmotionManager";
 	}
 
-	void EmotionData::UpdateEmotions(Actor* giant) {
-		auto profiler = Profilers::Profile("Emotions: UpdateEmotions");
-		if (!giant->Is3DLoaded()) {
-			return;
-		}
-		auto fgen = giant->GetFaceGenAnimationData();
-		std::uint32_t Zero = 0;
-		std::uint32_t One = 1;
-		std::uint32_t Two = 2;
-		std::uint32_t Five = 5;
-		if (fgen) {
-			if (this->Phenome0.value != this->Phenome0.target) {
-				fgen->phenomeKeyFrame.SetValue(Zero, this->Phenome0.value);
-			}
-			if (this->Phenome1.value != this->Phenome1.target) {
-				fgen->phenomeKeyFrame.SetValue(One, this->Phenome1.value);
-			}
-			//fgen->phenomeKeyFrame.SetValue(Two, this->Phenomes[2].value);
-			if (this->Phenome5.value != this->Phenome5.target) {
-				fgen->phenomeKeyFrame.SetValue(Five, this->Phenome5.value);
-			}
-
-			if (this->Modifier0.value != this->Modifier0.target) {
-				fgen->modifierKeyFrame.SetValue(Zero, this->Modifier0.value);
-			}
-			if (this->Modifier1.value != this->Modifier1.target) {
-				fgen->modifierKeyFrame.SetValue(One, this->Modifier1.value);
-			}
-		}
-	}
-	void EmotionData::OverridePhenome(int number, float power, float hl, float tg) {
-		// this->Phenomes[number].value = power;
-		if (number == 0) {
-			this->Phenome0.target = tg;
-			this->Phenome0.halflife = hl;
-		} else if (number == 1) {
-			this->Phenome1.target = tg;
-			this->Phenome1.halflife = hl;
-		} else if (number == 5) {
-			this->Phenome5.target = tg;
-			this->Phenome5.halflife = hl;
-		}
-		//this->Phenomes[number].halflife = hl;
-		//this->Phenomes[number].target = tg;
+	void EmotionData::OverridePhenome(Actor* giant, int number, float power, float hl, float tg) {
+		Task_UpdatePhenome(giant, number, hl, tg);
 	}
 
-	void EmotionData::OverrideModifier(int number, float power, float hl, float tg) {
-		if (number == 0) {
-			this->Modifier0.target = tg;
-			this->Modifier0.halflife = hl;
-		} else if (number == 1) {
-			this->Modifier1.target = tg;
-			this->Modifier1.halflife = hl;
-		}
+	void EmotionData::OverrideModifier(Actor* giant, int number, float power, float hl, float tg) {
+		Task_UpdateModifier(giant, number, hl, tg);
 	}
 
-	void EmotionData::Update() {
-		auto giant = this->giant;
-		if (!giant) {
-			return;
-		}
-		EmotionData::UpdateEmotions(giant);
-	}
-
-	void EmotionManager::Update() {
-		for (auto& [key, Emotions]: this->data) {
-			Emotions.Update();
-		}
-	}
-
-	void EmotionManager::Reset() {
-		this->data.clear();
-	}
-
-	void EmotionManager::ResetActor(Actor* actor) {
-		this->data.erase(actor);
-	}
-
-	EmotionData& EmotionManager::GetGiant(Actor* giant) {
-		// Create it now if not there yet
-		this->data.try_emplace(giant, giant);
-		return this->data.at(giant);
-	}
 }

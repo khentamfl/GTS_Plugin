@@ -394,10 +394,9 @@ namespace Gts {
 	}
 	void AdjustFacialExpression(Actor* giant, int ph, float power, std::string_view type) {
 		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
-		float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
 
 		if (type == "phenome") {
-			Emotions.OverridePhenome(ph, 0.0, 0.08/AnimSpeed, power);
+			Emotions.OverridePhenome(giant, ph, 0.0, 0.08, power);
 		}
 		if (type == "expression") {
 			auto fgen = giant->GetFaceGenAnimationData();
@@ -409,16 +408,15 @@ namespace Gts {
 			}
 		}
 		if (type == "modifier") {
-			Emotions.OverrideModifier(ph, 0.0, 0.25/AnimSpeed, power);
+			Emotions.OverrideModifier(giant, ph, 0.0, 0.25, power);
 		}
 	}
 
 	void AdjustFacialExpression(Actor* giant, int ph, float power, float speed_1, float speed_2, std::string_view type) {
 		auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
-		float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
 
 		if (type == "phenome") {
-			Emotions.OverridePhenome(ph, 0.0, speed_1/AnimSpeed, power);
+			Emotions.OverridePhenome(giant, ph, 0.0, speed_1, power);
 		}
 		if (type == "expression") {
 			auto fgen = giant->GetFaceGenAnimationData();
@@ -430,7 +428,7 @@ namespace Gts {
 			}
 		}
 		if (type == "modifier") {
-			Emotions.OverrideModifier(ph, 0.0, speed_2/AnimSpeed, power);
+			Emotions.OverrideModifier(giant, ph, 0.0, speed_2, power);
 		}
 	}
 

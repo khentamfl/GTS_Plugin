@@ -72,12 +72,10 @@ namespace {
 	bool ApplyHighHeelBonus(Actor* giant, DamageSource cause) {
 		bool Crush = (cause == DamageSource::CrushedRight || cause == DamageSource::CrushedLeft);
 		if (Crush) {
-			log::info("ApplyDamage true");
 			return true;
 		}
 		bool Kick = (cause == DamageSource::KickedLeft || cause == DamageSource::KickedRight);
 		if (Kick) {
-			log::info("ApplyDamage true");
 			return true;
 		}
 
