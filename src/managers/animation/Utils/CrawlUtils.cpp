@@ -193,9 +193,9 @@ namespace Gts {
 								});
 							}
 							if (nodeCollisions > 0) {
-								float aveForce = std::clamp(force, 0.06f, 0.70f);
+								float aveForce = std::clamp(force, 0.14f, 0.70f);
 
-								Utils_PushCheck(giant, otherActor, aveForce); 
+								Utils_PushCheck(giant, otherActor, aveForcef); 
 								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause);
 							}
 						}
@@ -224,13 +224,13 @@ namespace Gts {
 		} // CTD protection
 
 
-		DoDamageAtPoint(giant, Radius_Crawl_KneeIdle, Damage_Crawl_Idle, LC, random, bonedamage, 2.5, DamageSource::KneeLeft);                // Call Left Calf
+		DoDamageAtPoint(giant, Radius_Crawl_KneeIdle, Damage_Crawl_Idle, LC, random, bonedamage, 2.5, DamageSource::KneeLeft);         // Call Left Calf
 		DoDamageAtPoint(giant, Radius_Crawl_KneeIdle, Damage_Crawl_Idle, RC, random, bonedamage, 2.5, DamageSource::KneeRight);        // Call Right Calf
 
 		if (!IsTransferingTiny(giant)) { // Only do if we don't have someone in our left hand
-			DoDamageAtPoint(giant, Radius_Crawl_HandIdle, Damage_Crawl_Idle, LH, random, bonedamage, 2.5, DamageSource::HandCrawlLeft);   // Call Left Hand
+			DoDamageAtPoint(giant, Radius_Crawl_HandIdle, Damage_Crawl_Idle, LH, random, bonedamage, 2.5, DamageSource::HandCrawlLeft); // Call Left Hand
 		}
 
-		DoDamageAtPoint(giant, Radius_Crawl_HandIdle, Damage_Crawl_Idle, RH, random, bonedamage, 2.5, DamageSource::HandCrawlRight);   // Call Right Hand
+		DoDamageAtPoint(giant, Radius_Crawl_HandIdle, Damage_Crawl_Idle, RH, random, bonedamage, 2.5, DamageSource::HandCrawlRight);    // Call Right Hand
 	}
 }

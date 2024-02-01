@@ -44,6 +44,31 @@ namespace {
 	const std::string_view rightToeLookup = "NPC R Toe0 [RToe]";
 	const std::string_view bodyLookup = "NPC Spine1 [Spn1]";
 
+	bool Allow_Damage(Actor* giant, Actor* tiny, DamageSource cause, float difference) {
+		float threshold = 3.0;
+
+		if (DisallowSizeDamage(giant, tiny)) {
+			return false;
+		}
+
+		if (difference > threshold) {
+			return true;
+		}
+
+		bool is_walking = (cause == DamageSource::WalkLeft || cause == DamageSource::WalkRight);
+		bool knee_crawling = (cause == DamageSource::KneeLeft || cause == DamageSource::KneeRight);
+		bool hand_crawling = (cause == DamageSource::HandCrawlLeft || DamageSource::HandCrawlRight);
+		if (is_walking || knee_crawling || hand_crawling) {
+			// goal of this function is to deal heavily decreased damage on normal walk footsteps to actors
+			// so it won't look silly by dealing 30 damage by briefly colliding with others
+			if (difference > 1.4) {
+				InflictSizeDamage(giant, tiny, difference * 0.1);
+			} 
+			return false;
+		}
+		return true;
+	}
+
 	bool ApplyHighHeelBonus(Actor* giant, DamageSource cause) {
 		bool Crush = (cause == DamageSource::CrushedRight || cause == DamageSource::CrushedLeft);
 		if (Crush) {
@@ -127,7 +152,8 @@ namespace {
 		float value = 1.0;
 		bool perk = Runtime::HasPerkTeam(giant, "hhBonus");
 		bool matches = (Cause == DamageSource::CrushedLeft || Cause == DamageSource::CrushedRight);
-		if (perk && matches) {
+		bool walk = (Cause == DamageSource::WalkRight || Cayse == DamageSource::WalkLeft);
+		if (perk && (matches || walk)) {
 			value += 0.15; // 15% bonus damage if we have High Heels perk
 		}
 		return value;
@@ -287,9 +313,8 @@ namespace Gts {
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
 		float size_difference = GetSizeDifference(giant, tiny) * highheels;
 
-		if (size_difference < 1.4 || DisallowSizeDamage(giant, tiny)) {
-			return; // Do not do damage is Size Difference is < than x1.4 or we want to protect a tiny 
-			// when under the effect of non-hostile protection
+		if (!Allow_Damage(giant, tiny, Cause, difference)) {
+			return; 
 		}
 
 		float damagebonus = HighHeels_PerkDamage(giant, Cause); // 15% bonus HH damage if we have perk

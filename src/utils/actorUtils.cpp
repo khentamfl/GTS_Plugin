@@ -715,7 +715,7 @@ namespace Gts {
 	bool CanPerformAnimationOn(Actor* giant, Actor* tiny) {
 		
 		bool Teammate = IsTeammate(tiny);
-		bool essential = IsEssential(tiny);
+		bool essential = IsEssential(tiny); // Teammate check is done here
 		bool hostile = IsHostile(giant, tiny);
 		bool no_protection = Persistent::GetSingleton().FollowerInteractions;
 		bool allow_teammate = (giant->formID != 0x14 && no_protection && IsTeammate(tiny) && IsTeammate(giant));
@@ -727,7 +727,7 @@ namespace Gts {
 			return true;
 		} else if (!Teammate) { // always allow for non-teammates
 			return true;
-		}  else {
+		} else {
 			return true; // else allow
 		}
 	}

@@ -147,10 +147,10 @@ namespace Gts {
 
 			if (kind != FootEvent::JumpLand) {
 				if (kind == FootEvent::Left) {
-					DoDamageEffect(actor, Damage_Walk_Defaut, Radius_Walk_Default * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedLeft);
+					DoDamageEffect(actor, Damage_Walk_Defaut, Radius_Walk_Default * bonus, 25, 0.25, kind, 1.25, DamageSource::WalkLeft);
 				}
 				if (kind == FootEvent::Right) {
-					DoDamageEffect(actor, Damage_Walk_Defaut, Radius_Walk_Default * bonus, 25, 0.25, kind, 1.25, DamageSource::CrushedRight);
+					DoDamageEffect(actor, Damage_Walk_Defaut, Radius_Walk_Default * bonus, 25, 0.25, kind, 1.25, DamageSource::WalkRight);
 				}
 				//                     ^          ^
 				//                 Damage         Radius
@@ -166,8 +166,7 @@ namespace Gts {
 				ActorHandle gianthandle = actor->CreateRefHandle();
 				std::string name = std::format("JumpLandT_{}", actor->formID);
 				
-
-				TaskManager::Run(name, [=](auto& progressData) { // Delay it a bit since it often happens in air
+				TaskManager::Run(name, [=](auto& progressData) { // Delay it a bit since it often happens in the air
 					if (!gianthandle) {
 						return false; // end task
 					}

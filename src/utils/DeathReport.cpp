@@ -21,17 +21,18 @@ namespace {
 namespace Gts {
 
 	std::string_view GetDeathNodeName(DamageSource cause) {
-		if (cause == DamageSource::HandCrawlRight||cause == DamageSource::HandSwipeRight||cause == DamageSource::HandSlamRight) {
+		if (cause == DamageSource::HandCrawlRight||cause == DamageSource::HandSwipeRight||cause == DamageSource::HandSlamRight||cause == DamageSource::HandDropRight) {
 			return rHand;
-		} else if (cause == DamageSource::HandCrawlLeft||cause == DamageSource::HandSwipeLeft||cause == DamageSource::HandSlamLeft || cause == DamageSource::HandCrushed) {
+		} else if (cause == DamageSource::HandCrawlLeft||cause == DamageSource::HandSwipeLeft||cause == DamageSource::HandSlamLeft 
+			|| cause == DamageSource::HandDropLeft || cause == DamageSource::HandCrushed) {
 			return lHand;
 		} else if (cause == DamageSource::KickedRight||cause == DamageSource::CrushedRight||cause == DamageSource::FootGrindedRight) {
 			return rFoot;
 		} else if (cause == DamageSource::KickedLeft||cause == DamageSource::CrushedLeft||cause == DamageSource::FootGrindedLeft) {
 			return lFoot;
-		} else if (cause == DamageSource::KneeRight) {
+		} else if (cause == DamageSource::KneeRight || cause == DamageSource::KneeDropRight) {
 			return rCalf;
-		} else if (cause == DamageSource::KneeLeft) {
+		} else if (cause == DamageSource::KneeLeft || cause == DamageSource::KneeDropLeft) {
 			return lCalf;
 		} else if (cause == DamageSource::BodyCrush||cause == DamageSource::Hugs||cause == DamageSource::Breast||cause == DamageSource::BreastImpact) {
 			return breast;
@@ -49,7 +50,7 @@ namespace Gts {
 		std::string_view TinyName = tiny->GetDisplayFullName();
 		std::string_view GiantName = giant->GetDisplayFullName();
 
-		if (cause == DamageSource::CrushedLeft||cause == DamageSource::CrushedRight) { // Default crush by the feet
+		if (cause == DamageSource::CrushedLeft||cause == DamageSource::CrushedRight||cause == DamageSource::WalkRight||cause == DamageSource::WalkLeft) { // Default crush by the feet
 			if (!HighHeelManager::IsWearingHH(giant)) {
 				if (random < 2) {
 					Cprint("{} became a bloody stain under {} foot.", TinyName, GiantName);
@@ -71,7 +72,7 @@ namespace Gts {
 				if (random < 2) {
 					Cprint("{} became a bloody stain under {} heel.", TinyName, GiantName);
 				} else if (random == 2) {
-					Cprint("{} was crushed under the heels of {}", TinyName, GiantName);
+					Cprint("{} was crushed under the heel of {}", TinyName, GiantName);
 				} else if (random == 3) {
 					Cprint("High Heels of {} obliterated {}", GiantName, TinyName);
 				} else if (random == 4) {
@@ -301,7 +302,7 @@ namespace Gts {
 				Cprint("{} gently hug crushed {}", GiantName, TinyName);
 			}
 			return;
-		} else if (cause == DamageSource::KneeLeft || cause == DamageSource::KneeRight) { // Crushed by knee
+		} else if (cause == DamageSource::KneeLeft || cause == DamageSource::KneeRight || cause == DamageSource::KneeDropLeft || cause == DamageSource::KneeDropRight) { // Crushed by knee
 			if (random < 2) {
 				Cprint("{} got crushed under the knee of {}", TinyName, GiantName);
 			} else if (random == 2) {
@@ -318,7 +319,7 @@ namespace Gts {
 				Cprint("{} didn't realize that it's extremely dangerous to be under {} knees", TinyName, GiantName);
 			}
 			return;
-		} else if (cause == DamageSource::HandCrawlLeft || cause == DamageSource::HandCrawlRight) { // By hand
+		} else if (cause == DamageSource::HandCrawlLeft || cause == DamageSource::HandCrawlRight || cause == DamageSource::HandDropRight || cause == DamageSource::HandDropLeft) { // By hand
 			if (random < 2) {
 				Cprint("{} was accidentally crushed by the hand of {}", TinyName, GiantName);
 			} else if (random == 2) {
@@ -354,20 +355,10 @@ namespace Gts {
 			return;
 		} else if (cause == DamageSource::RightFinger || cause == DamageSource::LeftFinger) { // By Finger
 			if (random < 2) {
-				Cprint("{} got crushed under the finger of {}", TinyName, GiantName);
-			} else if (random == 2) {
-				Cprint("{} killed {} with her own hands", GiantName, TinyName);
-			} else if (random == 3) {
-				Cprint("{} was turned into red jam by {}", TinyName, GiantName);
-			} else if (random == 4) {
-				Cprint("Last thing {} saw is a huge hand coming from above", TinyName);
-			} else if (random == 5) {
-				Cprint("{} slammed {} into bloody mist", GiantName, TinyName);
-			} else if (random == 6) {
-				Cprint("{} decided to test endurance of {}", GiantName, TinyName);
-			} else if (random >= 7) {
-				Cprint("{} smalled {} with too much force", GiantName, TinyName);
-			}
+				Cprint("{} got crushed by the finger of {}", TinyName, GiantName);
+			} else if (random > 2) {
+				Cprint("{} obliteated {} with her index finger", GiantName, TinyName);
+			} 
 			return;
 		}
 		
