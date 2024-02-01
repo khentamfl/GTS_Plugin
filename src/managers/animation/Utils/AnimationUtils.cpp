@@ -590,19 +590,19 @@ namespace Gts {
 		});
 	}
 
-	bool FingerGrindCheck(Actor* giant, CrawlEvent kind, bool Right, float radius) {
+	void FingerGrindCheck(Actor* giant, CrawlEvent kind, bool Right, float radius) {
 		std::string_view name = GetImpactNode(kind);
 
 		auto node = find_node(giant, name);
 		if (!node) {
-			return false; // Make sure to return if node doesn't exist, no CTD in that case
+			return; // Make sure to return if node doesn't exist, no CTD in that case
 		}
 
 		if (!node) {
-			return false;
+			return;
 		}
 		if (!giant) {
-			return false;
+			return;
 		}
 		float giantScale = get_visual_scale(giant);
 
@@ -616,6 +616,7 @@ namespace Gts {
 		NiPoint3 NodePosition = node->world.translate;
 
 		float maxDistance = radius * giantScale;
+		float CheckDistance = 220 * giantScale;
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, 0.0, 0.0), // The standard position
@@ -638,7 +639,7 @@ namespace Gts {
 				if (giantScale / tinyScale > SCALE_RATIO) {
 					NiPoint3 actorLocation = otherActor->GetPosition();
 					for (auto point: CrawlPoints) {
-						if ((actorLocation-giantLocation).Length() <= maxDistance * 10.0) {
+						if ((actorLocation-giantLocation).Length() <= CheckDistance) {
 							int nodeCollisions = 0;
 							float force = 0.0;
 
@@ -659,11 +660,9 @@ namespace Gts {
 								if (Right) {
 									DoFingerGrind(giant, otherActor);
 									AnimationManager::StartAnim("GrindRight", giant);
-									return true;
 								} else {
 									DoFingerGrind(giant, otherActor);
 									AnimationManager::StartAnim("GrindLeft", giant);
-									return true;
 								}
 							}
 						}
@@ -959,6 +958,7 @@ namespace Gts {
 
 		NiPoint3 NodePosition = node->world.translate;
 		float maxDistance = radius * giantScale;
+		float CheckDistance = 220 * giantScale;
 
 		if (IsDebugEnabled() && (giant->formID == 0x14 || giant->IsPlayerTeammate() || Runtime::InFaction(giant, "FollowerFaction"))) {
 			DebugAPI::DrawSphere(glm::vec3(NodePosition.x, NodePosition.y, NodePosition.z), maxDistance, 400.0);
@@ -970,7 +970,7 @@ namespace Gts {
 			if (otherActor != giant) {
 				float tinyScale = get_visual_scale(otherActor);
 				NiPoint3 actorLocation = otherActor->GetPosition();
-				if ((actorLocation - giantLocation).Length() < maxDistance * 10.0) {
+				if ((actorLocation - giantLocation).Length() < CheckDistance) {
 					tinyScale *= GetSizeFromBoundingBox(otherActor); // take Giant/Dragon scale into account
 
 					int nodeCollisions = 0;

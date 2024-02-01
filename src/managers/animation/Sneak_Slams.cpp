@@ -88,6 +88,7 @@ namespace { // WIP
 		NiPoint3 NodePosition = node->world.translate;
 
 		float maxDistance = radius * giantScale;
+		float CheckDistance = 220 * giantScale;
 		// Make a list of points to check
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, 0.0, 0.0), // The standard position
@@ -111,7 +112,7 @@ namespace { // WIP
 				if (giantScale / tinyScale > SCALE_RATIO) {
 					NiPoint3 actorLocation = otherActor->GetPosition();
 					for (auto point: CrawlPoints) {
-						if ((actorLocation-giantLocation).Length() <= maxDistance * 10.0) {
+						if ((actorLocation-giantLocation).Length() <= CheckDistance) {
 
 							int nodeCollisions = 0;
 							float force = 0.0;
@@ -218,9 +219,10 @@ namespace { // WIP
 	
 	void GTSSneak_Slam_Impact_R(AnimationEventData& data) {
 		float scale = get_visual_scale(&data.giant);
-		if (FingerGrindCheck(&data.giant, CrawlEvent::RightHand, true, Radius_Sneak_HandSlam)) {
-			Finger_StartShrinkTask(&data.giant, true, Radius_Sneak_FingerGrind_DOT, Damage_Sneak_FingerGrind_DOT, 3.0);
-		}
+		
+		FingerGrindCheck(&data.giant, CrawlEvent::RightHand, true, Radius_Sneak_HandSlam);
+		Finger_StartShrinkTask(&data.giant, true, Radius_Sneak_FingerGrind_DOT, Damage_Sneak_FingerGrind_DOT, 3.0);
+		
 	
 		DoCrawlingFunctions(&data.giant, scale, 0.75, Damage_Sneak_HandSlam, CrawlEvent::RightHand, "RightHandRumble", 0.80, Radius_Sneak_HandSlam, 1.25, DamageSource::HandSlamRight);
 	};
