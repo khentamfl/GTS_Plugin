@@ -8,16 +8,13 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class EmotionData {
-		public:
-			void OverridePhenome(int number, float power, float hl, float tg);
-			void OverrideModifier(int number, float power, float hl, float tg);
-	
-	};
 	class EmotionManager : public EventListener {
 		public:
 			[[nodiscard]] static EmotionManager& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
+
+			void OverridePhenome(int number, float power, float hl, float tg);
+			void OverrideModifier(int number, float power, float hl, float tg);
 	};
 }

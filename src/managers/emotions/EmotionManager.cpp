@@ -109,7 +109,7 @@ namespace {
 }
 
 namespace Gts {
-	
+
 	EmotionManager& EmotionManager::GetSingleton() noexcept {
 		static EmotionManager instance;
 		return instance;
@@ -119,11 +119,11 @@ namespace Gts {
 		return "EmotionManager";
 	}
 
-	void EmotionData::OverridePhenome(Actor* giant, int number, float power, float hl, float tg) {
+	void EmotionManager::OverridePhenome(Actor* giant, int number, float power, float hl, float tg) {
 		Task_UpdatePhenome(giant, number, hl, tg);
 	}
 
-	void EmotionData::OverrideModifier(Actor* giant, int number, float power, float hl, float tg) {
+	void EmotionManager::OverrideModifier(Actor* giant, int number, float power, float hl, float tg) {
 		Task_UpdateModifier(giant, number, hl, tg);
 	}
 
