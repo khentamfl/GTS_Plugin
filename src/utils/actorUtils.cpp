@@ -651,7 +651,11 @@ namespace Gts {
 		}
 		if (Runtime::IsRace(actor, "dragonRace")) {
 			return true;
-		} else {
+		} 
+		if (actor->IsDragon()) {
+			return true;
+		}
+		else {
 			return false;
 		}
 	}

@@ -258,7 +258,7 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
-								CollisionDamage.DoSizeDamage(actor, otherActor, damage, random, bbmult, crush_threshold, Cause);
+								CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause);
 							}
 						}
 					}
@@ -302,7 +302,7 @@ namespace Gts {
 
 		float highheelsdamage = 1.0;
 		if (ApplyHighHeelBonus(giant, Cause)) {
-			highheelsdamage = 1.0 + (GetHighHeelsBonusDamage(giant) * 5);
+			highheelsdamage = 1.0 + (GetHighHeelsBonusDamage(giant) * 4);
 		}
 
 		float sprintdamage = 1.0; // default Sprint damage of 1.0
