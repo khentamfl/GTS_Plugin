@@ -410,7 +410,7 @@ namespace Gts {
 		if (type == "modifier") {
 			Emotions.OverrideModifier(giant, ph, 0.0, 0.25, power);
 		}
-	}
+	} 
 
 	void AdjustFacialExpression(Actor* giant, int ph, float power, float speed_1, float speed_2, std::string_view type) {
 		auto& Emotions = EmotionManager::GetSingleton();
