@@ -24,6 +24,16 @@ namespace {
 		return nullptr;
 	}
 
+	float Phenome_GetPhenomeValue(BSFaceGenAnimationData* data, std::uint32_t Phenome) {
+		float value = data->phenomeKeyFrame.values[Phenome];
+		return value;
+	}
+
+	float Phenome_GetModifierValue(BSFaceGenAnimationData* data, std::uint32_t Phenome) {
+		float value = data->modifierKeyFrame.values[Phenome];
+		return value;
+	}
+
 	void Phenome_ManagePhenomes(BSFaceGenAnimationData* data, std::uint32_t Phenome, float Value) {
 		log::info("Applied Phenome. Current value: {}", Value);
 		data->phenomeKeyFrame.SetValue(Phenome, Value);
@@ -31,38 +41,51 @@ namespace {
 
 	void Phenome_ManageModifiers(BSFaceGenAnimationData* data, std::uint32_t Modifier, float Value) {
 		log::info("Applied Modifier. Current value: {}", Value);
-		data->phenomeKeyFrame.SetValue(Modifier, Value);
+		data->modifierKeyFrame.SetValue(Modifier, Value);
 	}
 
 	void Task_UpdatePhenome(Actor* giant, int phenome, float halflife, float target) {
-
 		std::string name = std::format("Phenome_{}_{}_{}", giant->formID, phenome, target);
-		float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
-		Spring defspring = Spring(0.0, 0.08 * halflife);
-
-		defspring.target = target;
-		defspring.halflife = halflife/AnimSpeed;
-		
-		Spring& PhenomeSpring = defspring;
 		ActorHandle giantHandle = giant->CreateRefHandle();
+		
+		float start = Time::WorldTimeElapsed();
+
+		bool Reset = (target < 0.01);
 
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!giantHandle) {
 				return false;
 			}
+
 			auto giantref = giantHandle.get().get();
+			float pass = Time::WorldTimeElapsed() - start;
 
 			if (!giantref->Is3DLoaded()) {
 				return false;
 			}
+
+			float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
+			float speed = 0.25 * AnimSpeed * (halflife/2.0);
+
+			float value = (pass * speed);
 			auto FaceData = GetFacialData(giantref);
 			if (FaceData) {
-				log::info("Running Phenome Spring. value: {}, target: {}", PhenomeSpring.value, PhenomeSpring.target);
-				if (PhenomeSpring.value >= target) {
+				log::info("Running Phenome. value: {}, target: {}", value, target);
+				if (reset) {
+					value = modified - (pass * speed);
+					Phenome_ManagePhenomes(FaceData, modifier, value);
+					log::info("Running Phenome Reset. value: {}, target: {}", value, target);
+					if (value <= 0) {
+						Phenome_ManagePhenomes(FaceData, modifier, 0.0);
+						log::info("Phenome Reset Done");
+						return false;
+					}
+					return true;
+				} if (value >= target) { // fully applied
 					return false;
-				}
+				} 
 
-				Phenome_ManagePhenomes(FaceData, phenome, PhenomeSpring.value);
+				Phenome_ManagePhenomes(FaceData, modifier, value);
 				return true;
 			}
 
@@ -73,15 +96,15 @@ namespace {
 	void Task_UpdateModifier(Actor* giant, int modifier, float halflife, float target) {
 
 		std::string name = std::format("Modifier_{}_{}_{}", giant->formID, modifier, target);
-		float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
 
-		Spring defspring = Spring(0.0, 0.25 * halflife);
+		float modified = Phenome_GetModifierValue(FaceData, modifier);
 
-		defspring.target = target;
-		defspring.halflife = halflife;
-
-		Spring& ModifierSpring = defspring;
 		ActorHandle giantHandle = giant->CreateRefHandle();
+		
+
+		float start = Time::WorldTimeElapsed();
+
+		bool Reset = (target < 0.01);
 
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!giantHandle) {
@@ -89,19 +112,34 @@ namespace {
 			}
 
 			auto giantref = giantHandle.get().get();
+			float pass = Time::WorldTimeElapsed() - start;
 
 			if (!giantref->Is3DLoaded()) {
 				return false;
 			}
 
+			float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
+			float speed = 0.08 * AnimSpeed * (halflife/2.0);
+
+			float value = (pass * speed);
 			auto FaceData = GetFacialData(giantref);
 			if (FaceData) {
-				log::info("Running Modifier Spring. value: {}, target: {}", ModifierSpring.value, ModifierSpring.target);
-				if (ModifierSpring.value >= target) {
+				log::info("Running Modifier. value: {}, target: {}", value, target);
+				if (reset) {
+					value = modified - (pass * speed);
+					Phenome_ManageModifiers(FaceData, modifier, value);
+					log::info("Running Modifier Reset. value: {}, target: {}", value, target);
+					if (value <= 0) {
+						Phenome_ManageModifiers(FaceData, modifier, 0.0);
+						log::info("Modifier Reset Done");
+						return false;
+					}
+					return true;
+				} if (value >= target) { // fully applied
 					return false;
-				}
+				} 
 
-				Phenome_ManageModifiers(FaceData, modifier, ModifierSpring.value);
+				Phenome_ManageModifiers(FaceData, modifier, value);
 				return true;
 			}
 
@@ -121,12 +159,11 @@ namespace Gts {
 		return "EmotionManager";
 	}
 
-	void EmotionManager::OverridePhenome(Actor* giant, int number, float power, float hl, float tg) {
-		Task_UpdatePhenome(giant, number, hl, tg);
+	void EmotionManager::OverridePhenome(Actor* giant, int number, float power, float halflife, float target) {
+		Task_UpdatePhenome(giant, number, halflife, target);
 	}
 
-	void EmotionManager::OverrideModifier(Actor* giant, int number, float power, float hl, float tg) {
-		Task_UpdateModifier(giant, number, hl, tg);
+	void EmotionManager::OverrideModifier(Actor* giant, int number, float power, float halflife, float target) {
+		Task_UpdateModifier(giant, number, halflife, target);
 	}
-
 }

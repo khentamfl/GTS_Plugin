@@ -392,43 +392,43 @@ namespace Gts {
 		/*auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
 		Emotions.AllowEmotionEdit = allow;*/
 	}
-	void AdjustFacialExpression(Actor* giant, int ph, float power, std::string_view type) {
+	void AdjustFacialExpression(Actor* giant, int ph, float target, std::string_view type) {
 		auto& Emotions = EmotionManager::GetSingleton();
 
 		if (type == "phenome") {
-			Emotions.OverridePhenome(giant, ph, 0.0, 0.08, power);
+			Emotions.OverridePhenome(giant, ph, 0.0, 0.08, target);
 		}
 		if (type == "expression") {
 			auto fgen = giant->GetFaceGenAnimationData();
 			if (fgen) {
 				fgen->exprOverride = false;
-				fgen->SetExpressionOverride(ph, power);
-				fgen->expressionKeyFrame.SetValue(ph, power); // Expression doesn't need Spring since it is already smooth by default
+				fgen->SetExpressionOverride(ph, target);
+				fgen->expressionKeyFrame.SetValue(ph, target); // Expression doesn't need Spring since it is already smooth by default
 				fgen->exprOverride = true;
 			}
 		}
 		if (type == "modifier") {
-			Emotions.OverrideModifier(giant, ph, 0.0, 0.25, power);
+			Emotions.OverrideModifier(giant, ph, 0.0, 0.25, target);
 		}
 	} 
 
-	void AdjustFacialExpression(Actor* giant, int ph, float power, float speed_1, float speed_2, std::string_view type) {
+	void AdjustFacialExpression(Actor* giant, int ph, float target, float speed_phenome, float speed_modifier, std::string_view type) {
 		auto& Emotions = EmotionManager::GetSingleton();
 
 		if (type == "phenome") {
-			Emotions.OverridePhenome(giant, ph, 0.0, speed_1, power);
+			Emotions.OverridePhenome(giant, ph, 0.0, speed_phenome, target);
 		}
 		if (type == "expression") {
 			auto fgen = giant->GetFaceGenAnimationData();
 			if (fgen) {
 				fgen->exprOverride = false;
-				fgen->SetExpressionOverride(ph, power);
-				fgen->expressionKeyFrame.SetValue(ph, power); // Expression doesn't need Spring since it is already smooth by default
+				fgen->SetExpressionOverride(ph, target);
+				fgen->expressionKeyFrame.SetValue(ph, target); // Expression doesn't need Spring since it is already smooth by default
 				fgen->exprOverride = true;
 			}
 		}
 		if (type == "modifier") {
-			Emotions.OverrideModifier(giant, ph, 0.0, speed_2, power);
+			Emotions.OverrideModifier(giant, ph, 0.0, speed_modifier, target);
 		}
 	}
 
