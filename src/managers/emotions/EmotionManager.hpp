@@ -14,7 +14,7 @@ namespace Gts {
 
 			virtual std::string DebugName() override;
 
-			void OverridePhenome(int number, float power, float hl, float tg);
-			void OverrideModifier(int number, float power, float hl, float tg);
+			void OverridePhenome(Actor* giant, int number, float power, float hl, float tg);
+			void OverrideModifier(Actor* giant, int number, float power, float hl, float tg);
 	};
 }
