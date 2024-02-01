@@ -654,7 +654,8 @@ namespace Gts {
 		} 
 		auto ref = skyrim_cast<TESObjectREFR*>(actor);
 		if (ref) {
-			if (ref->IsDragon()) {
+			if (ref->HasKeywordWithType(DefaultObjectID::kKeywordDragon)) {
+				log::info("Actor is dragon");
 				return true;
 			}
 		}
