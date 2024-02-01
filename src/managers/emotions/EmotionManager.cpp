@@ -47,6 +47,12 @@ namespace {
 	void Task_UpdatePhenome(Actor* giant, int phenome, float halflife, float target) {
 		std::string name = std::format("Phenome_{}_{}_{}", giant->formID, phenome, target);
 		ActorHandle giantHandle = giant->CreateRefHandle();
+
+		float modified = 0.0;
+		auto data = GetFacialData(giant);
+		if (data) {
+			modified = Phenome_GetPhenomeValue(data, modifier);
+		}
 		
 		float start = Time::WorldTimeElapsed();
 
@@ -71,7 +77,7 @@ namespace {
 			auto FaceData = GetFacialData(giantref);
 			if (FaceData) {
 				log::info("Running Phenome. value: {}, target: {}", value, target);
-				if (reset) {
+				if (Reset && modified != 0.0) {
 					value = modified - (pass * speed);
 					Phenome_ManagePhenomes(FaceData, modifier, value);
 					log::info("Running Phenome Reset. value: {}, target: {}", value, target);
@@ -97,7 +103,12 @@ namespace {
 
 		std::string name = std::format("Modifier_{}_{}_{}", giant->formID, modifier, target);
 
-		float modified = Phenome_GetModifierValue(FaceData, modifier);
+		float modified = 0.0;
+
+		auto data = GetFacialData(giant);
+		if (data) {
+			modified = Phenome_GetModifierValue(data, modifier);
+		}
 
 		ActorHandle giantHandle = giant->CreateRefHandle();
 		
@@ -125,7 +136,7 @@ namespace {
 			auto FaceData = GetFacialData(giantref);
 			if (FaceData) {
 				log::info("Running Modifier. value: {}, target: {}", value, target);
-				if (reset) {
+				if (Reset) {
 					value = modified - (pass * speed);
 					Phenome_ManageModifiers(FaceData, modifier, value);
 					log::info("Running Modifier Reset. value: {}, target: {}", value, target);
