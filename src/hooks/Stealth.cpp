@@ -62,6 +62,20 @@ namespace Hooks {
             }
         );
 
+
+        static CallHook<float(uintptr_t param_1, uintptr_t param_2)>sub_1403BC410(
+			REL::RelocationID(25812, 25812), REL::Relocate(0x24D, 0x24D), 
+            // 25812
+            // 0x1403bc65d - 0x1403BC410 = 0x24D
+            // Altering thunk_powf_14134BEAC
+			[](auto param_1, auto param_2) {
+				float result = sub_1403BC410(param_1, param_2);
+                log::info("Test Hook value: {}", result);
+				return result;
+            }
+        );
+        
+
        /* static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading(
 			REL::RelocationID(36758, 36758), REL::Relocate(0x71E, 0x71E), 
             //  0x1405fe19d - 0x1405FD870 = 0x71E (line 296)

@@ -576,8 +576,6 @@ namespace Gts {
 				return false;
 			}
 			if (tinyref->IsDead()) {
-				PlayLaughSound(giantref, 1.0, 1);
-				Task_FacialEmotionTask_Smile(giantref, 1.5, "FingerKill");
 				SetBeingGrinded(tinyref, false);
 				return false;
 			}
@@ -1154,13 +1152,12 @@ namespace Gts {
 		float start = Time::WorldTimeElapsed();
 		std::string name = std::format("{}_Facial_{}", naming, giant->formID);
 
-		AdjustFacialExpression(giant, 0, 0.2, "phenome"); // Start opening mouth
-		AdjustFacialExpression(giant, 1, 0.2, "phenome"); // Open it wider
+		AdjustFacialExpression(giant, 0, 0.1, "phenome"); // Start opening mouth
 
-		AdjustFacialExpression(giant, 0, 0.40, "modifier"); // blink L
-		AdjustFacialExpression(giant, 1, 0.40, "modifier"); // blink R
+		AdjustFacialExpression(giant, 0, 0.60, "modifier"); // blink L
+		AdjustFacialExpression(giant, 1, 0.60, "modifier"); // blink R
 
-		AdjustFacialExpression(giant, 3, 0.8, "phenome"); // Smile a bit (Mouth)
+		AdjustFacialExpression(giant, 3, 0.5, "phenome"); // Smile a bit (Mouth)
 
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!giantHandle) {
@@ -1171,7 +1168,6 @@ namespace Gts {
 			float timepassed = finish - start;
 			if (timepassed >= duration) {
 				AdjustFacialExpression(giant, 0, 0.0, "phenome"); // Start opening mouth
-				AdjustFacialExpression(giant, 1, 0.0, "phenome"); // Open it wider
 
 				AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
 				AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R

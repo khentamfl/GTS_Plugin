@@ -45,6 +45,10 @@ namespace Gts {
 
     const float Damage_ButtCrush_FootImpact = 6.0f;
 
+    ////////////////Thigh Sandwich
+    const float Damage_ThighSandwich_Impact = 0.5f;
+    const float Damage_ThighSandwich_DOT = 0.005f;
+
     ////////////////Thigh Crush
     const float Damage_ThighCrush_Stand_Up = 7.0f;
     const float Damage_ThighCrush_Butt_DOT = 0.02f;
@@ -93,9 +97,9 @@ namespace Gts {
     const float Damage_Sneak_HandSlam = 6.0f;
     const float Damage_Sneak_HandSlam_Strong = 14.0f;
 
-    const float Damage_Sneak_FingerGrind_DOT = 0.010f;
+    const float Damage_Sneak_FingerGrind_DOT = 0.008f;
     const float Damage_Sneak_FingerGrind_Impact = 3.0f;
-    const float Damage_Sneak_FingerGrind_Finisher = 9.0f;
+    const float Damage_Sneak_FingerGrind_Finisher = 6.0f;
 
     
 

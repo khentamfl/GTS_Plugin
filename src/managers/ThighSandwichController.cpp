@@ -172,7 +172,7 @@ namespace Gts {
 
 			if (this->Suffocate) {
 				float sizedifference = giantScale/tinyScale;
-				float damage = 0.005 * sizedifference * TimeScale();
+				float damage = Damage_ThighSandwich_DOT * sizedifference * TimeScale();
 				float hp = GetAV(tiny, ActorValue::kHealth);
 				InflictSizeDamage(giant, tiny, damage);
 				if (damage > hp && !tiny->IsDead()) {

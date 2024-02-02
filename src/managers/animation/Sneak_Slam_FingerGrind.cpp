@@ -25,6 +25,13 @@ namespace {
     const std::string_view Rfinger = "NPC R Finger12 [RF12]";
 	const std::string_view Lfinger = "NPC L Finger12 [LF12]";
 
+	void FingerGrind_Smile(Actor* giantref, Actor* tinyref, float duration) {
+		if (!tinyref->IsDead()) {
+			PlayLaughSound(giantref, 1.0, 1);
+			Task_FacialEmotionTask_Smile(giantref, duration, "FingerGrind");
+		}
+	}
+
     void Finger_DoSounds(Actor* giant, std::string_view node_name, float mult) {
 		NiAVObject* node = find_node(giant, node_name);
 		if (node) {
@@ -164,7 +171,7 @@ namespace Gts {
 			SCALE_RATIO = 0.9;
 			giantScale *= 1.3;
 		}
-
+		Timer SmileTimer = Timer(3.60);
 		NiPoint3 NodePosition = node->world.translate;
 
 		float maxDistance = radius * giantScale;
@@ -215,6 +222,14 @@ namespace Gts {
 									update_target_scale(otherActor, Shrink, SizeEffectType::kShrink);
 								} else {
 									set_target_scale(otherActor, 0.08 / GetSizeFromBoundingBox(otherActor));
+								}
+
+								if (SmileTimer.ShouldRunFrame()) {
+									int rng = rand() % 4 + 1;
+									if (rng <= 1.0) {
+										float durationrng = (rand() % 100) * 0.01;
+										FingerGrind_Smile(giant, otherActor, 1.5 + durationrng)
+									}
 								}
 								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause);
 							}

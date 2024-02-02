@@ -227,8 +227,8 @@ namespace {
 		if (grabbedActor) {
 			Attacked(grabbedActor, giant); // force combat
 
-			float tiny_scale = get_visual_scale(giant) * GetSizeFromBoundingBox(giant);
-			float gts_scale = get_visual_scale(grabbedActor) * GetSizeFromBoundingBox(grabbedActor);
+			float tiny_scale = get_visual_scale(grabbedActor) * GetSizeFromBoundingBox(grabbedActor);
+			float gts_scale = get_visual_scale(giant) * GetSizeFromBoundingBox(giant);
 
 			float sizeDiff = gts_scale/tiny_scale;
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
