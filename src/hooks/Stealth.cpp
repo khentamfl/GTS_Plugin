@@ -77,7 +77,7 @@ namespace Hooks {
             }
         );
 
-        static CallHook<float(ActorValueOwner* param_1, uintptr_t param_2)>GetAV_1( // Probably CTD
+        /*static CallHook<float(ActorValueOwner* param_1, uintptr_t param_2)>GetAV_1( // Probably CTD
 			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0), 
             // 36758
             // 0x1405fd950 - 0x1405FD870 = 0xE0
@@ -93,7 +93,6 @@ namespace Hooks {
                 }
                 // Reports 15. 15 = ActorValue::kSneak
                 // But it also reports value of 100 if we change Sneak level skill through console to 5000 (cap probably)
-                result = 4000.0;
 				return result;
             }
         );
@@ -115,13 +114,12 @@ namespace Hooks {
                 }
                 // Reports 15. 15 = ActorValue::kSneak
                 // But it also reports value of 100 if we change Sneak level skill through console to 5000 (cap probably)
-                result = 4000.0;
 				return result;
             }
-        );
+        );*/
 
         static CallHook<float(uintptr_t* param_1)>FUN_14085ddb0( // Probably CTD
-			REL::RelocationID(50201, 50201), REL::Relocate(0x1BE, 0x1BE), 
+			REL::RelocationID(50201, 50201), REL::Relocate(0x427, 0x427), 
             // 50201
             // 0x14085df6e - 0x14085ddb0 = 0x427
             // Function: FUN_14085ddb0, ofset: 0x14085df6e
