@@ -14,6 +14,7 @@ namespace Gts {
 	const float Action_Vore = 8.0f;
 	const float Action_Grab = 8.0f;
 	const float Action_Hug = 0.9f;
+    const float Action_FingerGrind = 6.0f;
 
 //-----------------------------------------Default Damage Values
 
@@ -92,9 +93,9 @@ namespace Gts {
     const float Damage_Sneak_HandSlam = 6.0f;
     const float Damage_Sneak_HandSlam_Strong = 14.0f;
 
-    const float Damage_Sneak_FingerGrind_DOT = 0.012f;
+    const float Damage_Sneak_FingerGrind_DOT = 0.010f;
     const float Damage_Sneak_FingerGrind_Impact = 3.0f;
-    const float Damage_Sneak_FingerGrind_Finisher = 5.0f;
+    const float Damage_Sneak_FingerGrind_Finisher = 9.0f;
 
     
 

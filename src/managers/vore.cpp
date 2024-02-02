@@ -142,7 +142,7 @@ namespace {
 				GRumble::Once("VoreShake", giant, sizePower * 1, 0.05);
 				if (Vore::GetSingleton().GetVoreData(giant).GetTimer() == true) {
 					PlayMoanSound(giant, 1.0); // play timed sound. Timer is a must else we moan 10 times at once for example.
-					Task_FacialEmotionTask(giant, 2.0, "Vore");
+					Task_FacialEmotionTask_Moan(giant, 2.0, "Vore");
 				}
 			}
 		}

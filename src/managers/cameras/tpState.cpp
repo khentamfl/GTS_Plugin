@@ -14,30 +14,11 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-	float CheckForAction() {
+	float Modify_HalfLife() {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
-		/*if (sizemanager.GetTrackedBone(player, 0.0)) {
-			return 0.15;
-		} else if (sizemanager.GetTrackedBone(player, 2.0)) {
-			return 0.10;
-		} else if (sizemanager.GetTrackedBone(player, 4.0)) {
-			return 0.10;
-		} else if (sizemanager.GetTrackedBone(player, 5.0)) {
-			return 0.08;
-		} else if (sizemanager.GetTrackedBone(player, 6.0)) {
-			return 0.08;
-		} else if (sizemanager.GetTrackedBone(player, 7.0)) {
-			return 0.08;
-		} else if (sizemanager.GetTrackedBone(player, 8.0)) {
-			return 0.08;
-		} else if (sizemanager.GetTrackedBone(player, 9.0)) {
-			return 0.10;
-		} else if (sizemanager.GetTrackedBone(player, 10.0)) {
-			return 0.10;
-		} else {*/
-		return 0.05;
-		
+		float result = sizemanager.GetCameraHalflife(player);
+		return result;
 	}
 }
 
@@ -58,8 +39,8 @@ namespace Gts {
 						auto transform = playerTrans.Invert();
 						NiPoint3 lookAt = CompuleLookAt(boneTarget.zoomScale);
 						NiPoint3 localLookAt = transform*lookAt;
-						this->smoothScale.halflife = CheckForAction();
-						this->smoothedBonePos.halflife = CheckForAction();
+						this->smoothScale.halflife = Modify_HalfLife();
+						this->smoothedBonePos.halflife = Modify_HalfLife();
 						this->smoothScale.target = scale;
 						pos += localLookAt * -1 * this->smoothScale.value;
 

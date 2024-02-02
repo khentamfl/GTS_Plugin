@@ -31,6 +31,28 @@ namespace {
 	const float LAUNCH_DAMAGE_BASE = 1.0f;
 	const float LAUNCH_KNOCKBACK_BASE = 0.02f;
 
+	float Calculate_Halflife(CameraTracking Bone) {
+		if (Bone == CameraTracking::Thigh_Crush) { // Thigh Crushing
+			return 0.15;
+		} else if (Bone == CameraTracking::VoreHand_Right || Bone == CameraTracking::Hand_Left || Bone == CameraTracking::Hand_Right) { // Voring / using hands
+			return 0.10;
+		} else if (Bone == CameraTracking::ObjectA || Bone == CameraTracking::ObjectB) { // pretty much vore/ hands too
+			return 0.10;
+		} else if (Bone == CameraTracking::R_Foot || Bone == CameraTracking::L_Foot) { // Feet
+			return 0.08;
+		} else if (Bone == CameraTracking::Butt || Bone == CameraTracking::Mid_Butt_Legs) { // Butt
+			return 0.08;
+		} else if (Bone == CameraTracking::Breasts_02) { // Breasts
+			return 0.10;
+		} else if (Bone == CameraTracking::Knees) { // Knees
+			return 0.10;
+		} else if (Bone == CameraTracking::Finger_Right || Bone == CameraTracking::Finger_Left) {
+			return 0.08;
+		} else {
+			return 0.05;
+		}
+	}
+
 	float get_endless_height(Actor* giant) {
 		float endless = 0.0;
 		if (Runtime::HasPerk(giant, "ColossalGrowth")) {
@@ -297,15 +319,26 @@ namespace Gts {
 
 	//===============Camera Stuff
 	void SizeManager::SetTrackedBone(Actor* actor, bool enable, CameraTracking Bone) {
-		SetCameraOverride(actor, enable);
 		if (!enable) {
 			Bone = CameraTracking::None;
 		}
+		SetCameraHalflife(actor, Bone);
+		SetCameraOverride(actor, enable);
 		this->GetData(actor).TrackedBone = Bone;
 	}
 
 	CameraTracking SizeManager::GetTrackedBone(Actor* actor) {
 		return this->GetData(actor).TrackedBone;
+	}
+
+
+	//==============Half life stuff
+	void SizeManager::SetCameraHalflife(Actor* actor, CameraTracking Bone) {
+		this->GetData(actor).Camera_HalfLife = Calculate_Halflife(Bone);
+	}
+
+	float SizeManager::GetCameraHalflife(Actor* actor) {
+		return this->GetData(actor).Camera_HalfLife;
 	}
 	//
 

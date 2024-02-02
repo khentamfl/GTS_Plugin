@@ -22,6 +22,7 @@ namespace Gts {
 		float SizeVulnerability = 0.0;
 
 		CameraTracking TrackedBone = CameraTracking::None;
+		float Camera_HalfLife = 0.05;
 	};
 
 	struct LaunchData {
@@ -70,6 +71,10 @@ namespace Gts {
 
 			void SetTrackedBone(Actor* actor, bool enable, CameraTracking Bone);
 			CameraTracking GetTrackedBone(Actor* actor);
+
+			void SetCameraHalflife(Actor* actor, CameraTracking Bone);
+			float SizeManager::GetCameraHalflife(Actor* actor);
+		
 
 			float BalancedMode();
 

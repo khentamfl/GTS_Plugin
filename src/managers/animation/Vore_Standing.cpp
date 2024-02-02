@@ -182,7 +182,7 @@ namespace {
 		}
 		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			ManageCamera(giant, false, CameraTracking::Hand_Right);
-			ManageCamera(giant, true, CameraTracking::ObjectA);
+			ManageCamera(giant, true, CameraTracking::VoreHand_Right);
 		}
 
 		StopRHandRumble("HandR", data.giant);
@@ -283,7 +283,7 @@ namespace {
 		StartBodyRumble("BodyRumble", data.giant, 0.35, 0.10, false);
 		if (!Runtime::GetBool("FreeLookOnVore") && giant->formID == 0x14) {
 			ManageCamera(giant, false, CameraTracking::Hand_Right);
-			ManageCamera(giant, false, CameraTracking::ObjectA);
+			ManageCamera(giant, false, CameraTracking::VoreHand_Right);
 		}
 	}
 

@@ -16,6 +16,7 @@
 #include "data/persistent.hpp"
 #include "managers/Rumble.hpp"
 #include "managers/tremor.hpp"
+#include "ActionSettings.hpp"
 #include "data/transient.hpp"
 #include "utils/looting.hpp"
 #include "managers/vore.hpp"
@@ -550,7 +551,7 @@ namespace Gts {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
 
-		ShrinkUntil(giant, tiny, 10.0, 0.20);
+		ShrinkUntil(giant, tiny, 10.0, 0.18);
 		
 		std::string name = std::format("FootGrind_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
@@ -580,7 +581,7 @@ namespace Gts {
 			}
 			if (tinyref->IsDead()) {
 				PlayLaughSound(giantref, 1.0, 1);
-				Task_FacialEmotionTask(giantref, 1.5, "FingerKill");
+				Task_FacialEmotionTask_Smile(giantref, 1.5, "FingerKill");
 				SetBeingGrinded(tinyref, false);
 				return false;
 			}
@@ -604,7 +605,7 @@ namespace Gts {
 		}
 		float giantScale = get_visual_scale(giant);
 
-		float SCALE_RATIO = 4.0;
+		float SCALE_RATIO = Action_FingerGrind;
 		bool SMT = HasSMT(giant);
 		if (SMT) {
 			SCALE_RATIO = 0.9;
@@ -653,7 +654,7 @@ namespace Gts {
 									return true;
 								});
 							}
-							if (nodeCollisions > 0) {
+							if (nodeCollisions > 0 && !otherActor->IsDead()) {
 								SetBeingGrinded(otherActor, true);
 								if (Right) {
 									DoFingerGrind(giant, otherActor);
@@ -1087,7 +1088,7 @@ namespace Gts {
 				if (node) {
 					NiPoint3 pos = node->world.translate;
 					SpawnParticle(giantref, 4.60, "GTS/Magic/Soul_Drain.nif", NiMatrix3(), pos, get_visual_scale(giantref), 7, nullptr);
-					Task_FacialEmotionTask(giantref, 2.0, "Absorb");
+					Task_FacialEmotionTask_Moan(giantref, 2.0, "Absorb");
 				}
 			}	
 		}
@@ -1124,7 +1125,7 @@ namespace Gts {
 		});
 	}
 
-	void Task_FacialEmotionTask(Actor* giant, float duration, std::string_view naming) {
+	void Task_FacialEmotionTask_Moan(Actor* giant, float duration, std::string_view naming) {
 		ActorHandle giantHandle = giant->CreateRefHandle();
 
 		float start = Time::WorldTimeElapsed();
@@ -1145,6 +1146,41 @@ namespace Gts {
 				AdjustFacialExpression(giantref, 0, 0.0, "modifier"); // blink L
 				AdjustFacialExpression(giantref, 1, 0.0, "modifier"); // blink R
 				AdjustFacialExpression(giantref, 0, 0.0, "phenome"); // close mouth
+				return false;
+			}
+			return true;
+		});
+	}
+
+	void Task_FacialEmotionTask_Smile(Actor* giant, float duration, std::string_view naming) {
+		ActorHandle giantHandle = giant->CreateRefHandle();
+
+		float start = Time::WorldTimeElapsed();
+		std::string name = std::format("{}_Facial_{}", naming, giant->formID);
+
+		AdjustFacialExpression(giant, 0, 0.2, "phenome"); // Start opening mouth
+		AdjustFacialExpression(giant, 1, 0.2, "phenome"); // Open it wider
+
+		AdjustFacialExpression(giant, 0, 0.40, "modifier"); // blink L
+		AdjustFacialExpression(giant, 1, 0.40, "modifier"); // blink R
+
+		AdjustFacialExpression(giant, 3, 0.8, "phenome"); // Smile a bit (Mouth)
+
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!giantHandle) {
+				return false;
+			}
+			float finish = Time::WorldTimeElapsed();
+			auto giantref = giantHandle.get().get();
+			float timepassed = finish - start;
+			if (timepassed >= duration) {
+				AdjustFacialExpression(giant, 0, 0.0, "phenome"); // Start opening mouth
+				AdjustFacialExpression(giant, 1, 0.0, "phenome"); // Open it wider
+
+				AdjustFacialExpression(giant, 0, 0.0, "modifier"); // blink L
+				AdjustFacialExpression(giant, 1, 0.0, "modifier"); // blink R
+
+				AdjustFacialExpression(giant, 3, 0.0, "phenome"); // Smile a bit (Mouth)
 				return false;
 			}
 			return true;

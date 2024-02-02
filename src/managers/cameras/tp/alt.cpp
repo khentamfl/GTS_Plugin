@@ -169,7 +169,7 @@ namespace Gts {
 							.boneNames = {
 							"NPC R Finger12 [RF12]",
 						},
-							.zoomScale = 0.60,
+							.zoomScale = 0.50,
 					};
 				}
 				case CameraTracking::Finger_Left: {
@@ -177,7 +177,7 @@ namespace Gts {
 							.boneNames = {
 							"NPC L Finger12 [LF12]",
 						},
-							.zoomScale = 0.60,
+							.zoomScale = 0.50,
 					};
 				}
 				case CameraTracking::ObjectA: {
