@@ -63,7 +63,7 @@ namespace {
 
                         auto state = Data->detectionState;
                         if (state) {
-                            DetectionState detection = state.get();
+                            DetectionState* detection = state.get();
                             log::info("Detection state of {} is {}", actor->GetDisplayFullName(), detection.level);
                         } 
                     }
