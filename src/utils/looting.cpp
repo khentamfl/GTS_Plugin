@@ -203,14 +203,12 @@ namespace Gts {
 
 					TESObjectREFR* ref = skyrim_cast<TESObjectREFR*>(tiny);
 					if (ref) {
-						//log::info("Transfering item: {}, looking for quantity", a_object->GetName());
 						auto changes = ref->GetInventoryChanges();
 						if (changes) {
 							quantity = GetItemCount(changes, a_object); // obtain item count
 						}
 					}
 
-					//log::info("Transfering item: {}, quantity: {}", a_object->GetName(), quantity);
 
 					tiny->RemoveItem(a_object, quantity, ITEM_REMOVE_REASON::kRemove, nullptr, giant, nullptr, nullptr);
 				}
@@ -276,6 +274,8 @@ namespace Gts {
 			RunAudioTask(dropboxHandle, actor); // play sound
 		}
 		if (dropboxHandle) {
+			float scale_up = std::clamp(Scale, 0.10f, 1.0f);
+			TotalPos.z += (40.0 - (40.0 * scale_up)); // move it a bit forward
 			RunScaleTask(dropboxHandle, actor, Start, Scale, soul, TotalPos); // Scale our pile over time
 		}
 		MoveItemsTowardsDropbox(actor, dropbox, removeQuestItems); // Launch transfer items task with a bit of delay

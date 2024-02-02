@@ -265,7 +265,7 @@ namespace Gts {
 
 	void Utils_UpdateHighHeelBlend(Actor* giant, bool reset) { // needed to blend between 2 animations so hand will go lower
 		if (!reset) {
-			float max_heel_height = 21.5f; // All animations are configured with this value in mind. Blending isn't configured for heels bigger than this value.
+			float max_heel_height = 0.215; // All animations are configured with this value in mind. Blending isn't configured for heels bigger than this value.
 			float hh_value = HighHeelManager::GetBaseHHOffset(giant)[2]/100;
 			float hh_offset = std::clamp(hh_value / max_heel_height, 0.0f, 1.0f); // reach max HH at 0.215 offset (highest i've seen and the max that we support)
 		

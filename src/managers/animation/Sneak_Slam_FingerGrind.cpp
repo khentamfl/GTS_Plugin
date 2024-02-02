@@ -191,8 +191,10 @@ namespace Gts {
 				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance, 400.0);
 			}
 		}
-
+		
+		Utils_UpdateHighHeelBlend(giant, false);
 		NiPoint3 giantLocation = giant->GetPosition();
+		
 
 		for (auto otherActor: find_actors()) {
 			if (otherActor != giant) {

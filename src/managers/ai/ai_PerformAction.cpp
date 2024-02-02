@@ -36,6 +36,7 @@ namespace Gts {
         if (!Persistent::GetSingleton().Stomp_Ai) {
             return; // don't check any further if it is disabled
         }
+        Utils_UpdateHighHeelBlend(pred, false);
         if (rng <= 5) {
             AnimationManager::StartAnim("StompRight", pred);
         } else {
@@ -47,6 +48,7 @@ namespace Gts {
         if (!Persistent::GetSingleton().Stomp_Ai) {
             return;
         }
+        Utils_UpdateHighHeelBlend(pred, false);
         if (rng <= 5) {
             AnimationManager::StartAnim("TrampleL", pred);
         } else {
@@ -58,17 +60,14 @@ namespace Gts {
         if (!Persistent::GetSingleton().Kick_Ai) {
             return;
         }
+        Utils_UpdateHighHeelBlend(pred, false);
         if (rng <= 3) {
-            Utils_UpdateHighHeelBlend(pred, false);
             AnimationManager::StartAnim("SwipeHeavy_Right", pred);
         } else if (rng <= 4) {
-            Utils_UpdateHighHeelBlend(pred, false);
             AnimationManager::StartAnim("SwipeHeavy_Left", pred);
         } else if (rng <= 6) {
-            Utils_UpdateHighHeelBlend(pred, false);
             AnimationManager::StartAnim("SwipeLight_Left", pred);
         } else {
-            Utils_UpdateHighHeelBlend(pred, false);
             AnimationManager::StartAnim("SwipeLight_Right", pred);
         }
     }

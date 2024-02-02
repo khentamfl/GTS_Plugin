@@ -245,7 +245,6 @@ namespace {
 			WasteStamina *= 0.65;
 		}
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-			//BlockFirstPerson(player, true);
 			AnimationManager::StartAnim("StompRight", player);
 		} else {
 			TiredSound(player, "You're too tired to perform stomp");
@@ -262,7 +261,6 @@ namespace {
 			WasteStamina *= 0.65;
 		}
 		if (GetAV(player, ActorValue::kStamina) > WasteStamina) {
-			//BlockFirstPerson(player, true);
 			AnimationManager::StartAnim("StompLeft", player);
 		} else {
 			TiredSound(player, "You're too tired to perform stomp");
