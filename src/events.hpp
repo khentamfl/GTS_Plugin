@@ -39,8 +39,7 @@ namespace Gts {
 		Mid_Foot,
 		Breasts_01,
 		Breasts_03,
-		Mid_Foot,
-	}
+	};
 
 	enum class CameraTracking {
 		None,
