@@ -51,27 +51,27 @@ namespace {
 
                 for (auto Knowledge: ai->high->knowledgeArray) {
                     ActorKnowledge* Data = Knowledge.second.get();
-                    ActorHandle find_target = Data->target;
                     ActorHandle find_owner = Data->owner;
-                    if (find_target) {
-                        Actor* target = find_target.get().get();
-                        log::info("found target: {}", target->GetDisplayFullName());
-                        if (find_owner) {
-                            Actor* owner = find_owner.get().get();
-                            log::info("found owner: {}", owner->GetDisplayFullName());
-                        }
-
-                        auto state = Data->detectionState;
-                        if (state) {
-                            DetectionState* detection = state.get();
-                            log::info("Detection state of {} is {}", actor->GetDisplayFullName(), detection->level);
-                        } 
+                    if (find_owner) {
+                        Actor* owner = find_owner.get().get();
+                        //log::info("found owner: {}", owner->GetDisplayFullName());
                     }
+
+                    auto state = Data->detectionState;
+                    if (state) {
+                        DetectionState* detection = state.get();
+                        log::info("Detection Level of {} is {}, unk18: {}, 28: {}, 38: {}", 
+                        actor->GetDisplayFullName(), 
+                        detection->level, datection->unk18, detection->unk28, detection->unk38
+                        );
+                        detection->level = 0.0;
+                    } 
                 }
             }
         }
     }
 }
+
 
 namespace Hooks {
 
