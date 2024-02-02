@@ -60,6 +60,24 @@ namespace {
 		}
 	}
 
+	void CombatTest(Actor* other) {
+		if (other->formID == 0x14) {
+			auto CombatGroup = other->GetCombatGroup();
+			if (CombatGroup) {
+				for (auto target: CombatGroup->targets) {
+					auto CombatTarget_Find = target.targetHandle;
+					if (CombatTarget_Find) {
+						auto CombatTarget = CombatTarget_Find.get().get();
+						float level = target.detectLevel;
+						float points = target.stealthPoints;
+						log::info("(Player) {} is in combat with {}", other->GetDisplayFullName(), CombatTarget->GetDisplayFullName());
+						log::info("(Player) Level: {}, points: {}", level, points);
+					}
+				}
+			}
+		}
+	}
+
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		auto profiler = Profilers::Profile("Manager: update_height");
 		if (!actor) {
@@ -266,6 +284,8 @@ void GtsManager::Update() {
 
 		FixActorFade(actor);
 
+		
+
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 
@@ -276,6 +296,7 @@ void GtsManager::Update() {
 			ClothManager::GetSingleton().CheckRip();
 			TinyCalamity_SeekActors(actor);
 			SpawnActionIcon(actor);
+			CombatTest(actor);
 
 			if (IsCrawling(actor)) {
 				ApplyAllCrawlingDamage(actor, 1000, 0.25);

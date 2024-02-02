@@ -47,14 +47,16 @@ namespace {
                 auto CombatTarget_Find = target.targetHandle;
                 if (CombatTarget_Find) {
                     auto CombatTarget = CombatTarget_Find.get().get();
+                    float EnemyScale = get_visual_scale(CombatTarget);
                     float level = target.detectLevel;
                     float points = target.stealthPoints;
                     log::info("{} is in combat with {}", other->GetDisplayFullName(), CombatTarget->GetDisplayFullName());
                     log::info("Level: {}, points: {}", level, points);
+                    level *= EnemyScale;
+                    log::info("Level post: {}", level);
                 }
             }
         }
-
     }
 }
 
