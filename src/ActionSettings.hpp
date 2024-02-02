@@ -91,10 +91,10 @@ namespace Gts {
 
     ////////////////sneak
 
-	const float Damage_Sneak_HandSwipe = 5.0f;
+	const float Damage_Sneak_HandSwipe = 4.5f;
 	const float Damage_Sneak_HandSwipe_Strong = 12.0f;
 
-    const float Damage_Sneak_HandSlam = 6.0f;
+    const float Damage_Sneak_HandSlam = 4.0f;
     const float Damage_Sneak_HandSlam_Strong = 14.0f;
 
     const float Damage_Sneak_FingerGrind_DOT = 0.008f;

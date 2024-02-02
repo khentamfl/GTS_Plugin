@@ -191,7 +191,7 @@ namespace Gts {
 				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance, 400.0);
 			}
 		}
-		
+
 		Utils_UpdateHighHeelBlend(giant, false);
 		NiPoint3 giantLocation = giant->GetPosition();
 		
@@ -234,6 +234,7 @@ namespace Gts {
 										FingerGrind_Smile(giant, otherActor, 1.5 + durationrng);
 									}
 								}
+								Utils_PushCheck(giant, otherActor, 1.0);
 								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause);
 							}
 						}
