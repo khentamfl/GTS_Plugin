@@ -92,7 +92,7 @@ namespace Gts {
 				return BoneTarget();
 			}
 			case CameraTracking_MCM::L_Foot: {
-				{ // L Feet
+				{
 				        .boneNames = {
 						"NPC L Foot [Lft ]",
 					},
@@ -100,7 +100,7 @@ namespace Gts {
 				}; 
 			}
 			case CameraTracking_MCM::R_Foot: {
-				{ // L Feet
+				{ 
 				        .boneNames = {
 						"NPC R Foot [Rft ]",
 					},
