@@ -60,8 +60,8 @@ namespace {
 		}
 	}
 
-	void CombatTest(Actor* other) {
-		if (other->formID == 0x14) {
+	void CombatTest(Actor* actor) {
+		if (actor->formID == 0x14) {
 			auto ai = actor->GetActorRuntimeData().currentProcess;
 			if (ai) {
 				if (ai->high) {
