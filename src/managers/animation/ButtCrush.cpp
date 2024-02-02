@@ -112,15 +112,6 @@ namespace {
 		}
 	}
 
-
-
-	void TrackButt(Actor* giant, bool enable) {
-		if (AllowFeetTracking()) {
-			auto& sizemanager = SizeManager::GetSingleton();
-			sizemanager.SetTrackedBone(giant, enable, 8.0);
-		}
-	}
-
 	void DisableButtTrackTask(Actor* giant) {
 		std::string name = std::format("DisableCamera_{}", giant->formID);
 		auto gianthandle = giant->CreateRefHandle();
@@ -134,7 +125,7 @@ namespace {
 				return true;
 			}
 			auto giantref = gianthandle.get().get();
-			TrackButt(giantref, false);
+			ManageCamera(giantref, false, CameraTracking::Butt);
 
 			return false;
 		});
@@ -164,7 +155,7 @@ namespace {
 
 	void GTSButtCrush_MoveBody_MixFrameToLoop(AnimationEventData& data) {
 		auto giant = &data.giant;
-		TrackButt(giant, true);
+		ManageCamera(giant, true, CameraTracking::Butt);
 	}
 
 	void GTSButtCrush_GrowthStart(AnimationEventData& data) {

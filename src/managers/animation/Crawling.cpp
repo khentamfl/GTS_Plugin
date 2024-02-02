@@ -26,9 +26,9 @@ namespace {
 		if (AllowFeetTracking() && giant->formID == 0x14) {
 			auto& sizemanager = SizeManager::GetSingleton();
 			if (kind == CrawlEvent::RightHand) {
-				sizemanager.SetTrackedBone(giant, enable, CameraTracking::RightHand);
+				sizemanager.SetTrackedBone(giant, enable, CameraTracking::Hand_Right);
 			} else if (kind == CrawlEvent::LeftHand) {
-				sizemanager.SetTrackedBone(giant, enable, CameraTracking::LeftHand);
+				sizemanager.SetTrackedBone(giant, enable, CameraTracking::Hand_Left);
 			}
 		}
 	}
