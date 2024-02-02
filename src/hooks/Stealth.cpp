@@ -50,9 +50,7 @@ namespace {
                 log::info("DetectionMod: {}, ModifierTimer: {}", detect, modifier);
 
                 for (auto Knowledge: ai->high->knowledgeArray) {
-                    ActorKnowledge GetKnowledge = Knowledge.second;
-                    if (GetKnowledge) {
-                        auto Data = GetKnowledge.get().get();
+                    ActorKnowledge Data = Knowledge.second.get().get();
                         if (Data) {
                             ActorHandle find_target = Data.target;
                             ActorHandle find_owner = Data.owner;
