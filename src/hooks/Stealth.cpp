@@ -93,9 +93,38 @@ namespace Hooks {
 				return result;
             }
         );
+        
+        static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading_var2(
+			REL::RelocationID(36758, 36758), REL::Relocate(0x92D, 0x92D), 
+            //  0x1405fe19d - 0x1405FD870 = 0x92D (line 370)
+            //  altering Character::GetHeading_1405FD780
+			[](auto* giant, auto* param_1) {
+				//log::info("-- Heading_2 Result for {}", giant->GetDisplayFullName());
+                float result = CalculateHeading_var2(giant, param_1);
+               // log::info("-------Heading_2 Result: {}", CalculateHeading_var2(giant, param_1));
+                result *= modify_detection(result);
+                //log::info("-------Heading_2 Result Alter: {}", CalculateHeading_var2(giant, param_1));
+				return CalculateHeading_var2(giant, param_1);
+            }
+        );
 
+        static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading_var3(
+			REL::RelocationID(36758, 36758), REL::Relocate(0x217, 0x217), 
+            //  0x1405fda87 - 0x1405FD870 = 0x217 (line ~150)
+            //  altering Character::GetHeading_1405FD780
+			[](auto* giant, auto* param_1) {
+				//log::info("-- Heading 3 Result for {}", giant->GetDisplayFullName());
+                float result = CalculateHeading_var3(giant, param_1);
+                //log::info("-------Heading 3 Result: {}", result);
+                result *= modify_detection(result);
+                //log::info("-------Heading 3 Result Post: {}", result);
+				return result;
+            }
+        );
 
-        static CallHook<float(uintptr_t param_1, uintptr_t param_2)>sub_1403BC410( // Seems to report how close we are to the someone
+        //////////////////////////////////////////////////TESTS
+
+        /*static CallHook<float(uintptr_t param_1, uintptr_t param_2)>sub_1403BC410( // Seems to report how close we are to the someone
 			REL::RelocationID(25812, 25812), REL::Relocate(0x24D, 0x24D), 
             // 25812
             // 0x1403bc65d - 0x1403BC410 = 0x24D
@@ -109,7 +138,7 @@ namespace Hooks {
             }
         );
 
-        /*static CallHook<float(ActorValueOwner* param_1, uintptr_t param_2)>GetAV_1( // Probably CTD
+        static CallHook<float(ActorValueOwner* param_1, uintptr_t param_2)>GetAV_1( // Probably CTD
 			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0), 
             // 36758
             // 0x1405fd950 - 0x1405FD870 = 0xE0
@@ -150,7 +179,7 @@ namespace Hooks {
             }
         );*/
 
-        static CallHook<float(uintptr_t* param_1)>FUN_14085ddb0( // Probably CTD
+        /*static CallHook<float(uintptr_t* param_1)>FUN_14085ddb0( // Probably CTD
 			REL::RelocationID(50201, 50201), REL::Relocate(0x1BE, 0x1BE), 
             // 50201
             // 0x14085df6e - 0x14085ddb0 = 0x1BE
@@ -161,11 +190,12 @@ namespace Hooks {
                 
                 log::info("GetDetectionCalculatedValue called");
                 log::info("GetDetectionCalculatedValue result: {}", result);
+                // reports a value but altering it does nothing
 				return result;
             }
-        );
+        );*/
 
-        static FunctionHook<float(Actor* param_1)>GetDetectionCalculatedValue_1405FC9A0( REL::RelocationID(36748, 36748),
+        /*static FunctionHook<float(Actor* param_1)>GetDetectionCalculatedValue_1405FC9A0( REL::RelocationID(36748, 36748),
 			[](auto* param_1) {
                 float result = GetDetectionCalculatedValue_1405FC9A0(param_1);
                 Actor* actor = skyrim_cast<Actor*>(param_1);
@@ -173,9 +203,10 @@ namespace Hooks {
                     log::info("GetDetectionCalculatedValue_1405FC9A0 Actor: {}, result: {}", actor->GetDisplayFullName(), result);
                     Stealth_Stuff(actor);
                 }
+                // reports a value but altering it does nothing
 				return result;
             }
-        );
+        );*/
         
 
        /* static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading(
@@ -188,40 +219,9 @@ namespace Hooks {
                 log::info("-------Heading Result: {}", CalculateHeading(giant, param_1));
 				return CalculateHeading(giant, param_1);
             }
-        );*/
-
-        // Used: var_2, var_3
-        /*
-        static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading_var2(
-			REL::RelocationID(36758, 36758), REL::Relocate(0x92D, 0x92D), 
-            //  0x1405fe19d - 0x1405FD870 = 0x92D (line 370)
-            //  altering Character::GetHeading_1405FD780
-			[](auto* giant, auto* param_1) {
-				//log::info("-- Heading_2 Result for {}", giant->GetDisplayFullName());
-                float result = CalculateHeading_var2(giant, param_1);
-               // log::info("-------Heading_2 Result: {}", CalculateHeading_var2(giant, param_1));
-                result *= modify_detection(result);
-                //log::info("-------Heading_2 Result Alter: {}", CalculateHeading_var2(giant, param_1));
-				return CalculateHeading_var2(giant, param_1);
-            }
         );
 
-        static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading_var3(
-			REL::RelocationID(36758, 36758), REL::Relocate(0x217, 0x217), 
-            //  0x1405fda87 - 0x1405FD870 = 0x217 (line ~150)
-            //  altering Character::GetHeading_1405FD780
-			[](auto* giant, auto* param_1) {
-				//log::info("-- Heading 3 Result for {}", giant->GetDisplayFullName());
-                float result = CalculateHeading_var3(giant, param_1);
-                //log::info("-------Heading 3 Result: {}", result);
-                result *= modify_detection(result);
-                //log::info("-------Heading 3 Result Post: {}", result);
-				return result;
-            }
-        );
-        */
-
-      /* static FunctionHook<float(Actor* giant, uintptr_t param_2,uintptr_t param_3,uintptr_t param_4, uintptr_t param_5,
+        static FunctionHook<float(Actor* giant, uintptr_t param_2,uintptr_t param_3,uintptr_t param_4, uintptr_t param_5,
 			uintptr_t param_6, uintptr_t param_7, uintptr_t param_8, uintptr_t param_9, uintptr_t param_10)>
             CalculateDetection_1405FD870( REL::RelocationID(36758, 36758),
 			[](auto* giant, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6, auto param_7, auto param_8, auto param_9, auto param_10) {

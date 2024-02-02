@@ -60,20 +60,6 @@ namespace {
 		}
 	}
 
-	void CombatTest(Actor* actor) {
-		if (actor->formID == 0x14) {
-			auto ai = actor->GetActorRuntimeData().currentProcess;
-			if (ai) {
-				if (ai->high) {
-					float detect = ai->high->detectionModifier;
-					float modifier = ai->high->detectionModifierTimer;
-					log::info("(Player) Data of {}", actor->GetDisplayFullName());
-					log::info("(Player) DetectionMod: {}, ModifierTimer: {}", detect, modifier);
-				}
-			}
-		}
-	}
-
 	void update_height(Actor* actor, ActorData* persi_actor_data, TempActorData* trans_actor_data) {
 		auto profiler = Profilers::Profile("Manager: update_height");
 		if (!actor) {
@@ -292,7 +278,6 @@ void GtsManager::Update() {
 			ClothManager::GetSingleton().CheckRip();
 			TinyCalamity_SeekActors(actor);
 			SpawnActionIcon(actor);
-			CombatTest(actor);
 
 			if (IsCrawling(actor)) {
 				ApplyAllCrawlingDamage(actor, 1000, 0.25);
