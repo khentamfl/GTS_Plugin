@@ -33,12 +33,12 @@ namespace Gts {
 		kNeutral,
 	};
 	enum class CameraTracking_MCM {
-		None = 0,
-		L_Foot = 1,
-		R_Foot = 2,
-		Mid_Foot = 3,
-		Breasts_01 = 4,
-		Breasts_03 = 5,
+		None,
+		L_Foot,
+		R_Foot,
+		Mid_Foot,
+		Breasts_01,
+		Breasts_03,
 	};
 
 	enum class CameraTracking {

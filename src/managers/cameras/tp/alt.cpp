@@ -48,7 +48,8 @@ namespace Gts {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 
-		CameraTracking_MCM Camera_MCM = Runtime::GetInt("NormalCameraTarget");
+		int MCM_Mode = Runtime::GetInt("NormalCameraTarget");
+		CameraTracking_MCM Camera_MCM = static_cast<CameraTracking_MCM>(MCM_Mode);
 		CameraTracking Camera_Anim = sizemanager.GetTrackedBone(player);
 
 		float offset = -45;
@@ -92,7 +93,7 @@ namespace Gts {
 				return BoneTarget();
 			}
 			case CameraTracking_MCM::L_Foot: {
-				{
+					return BoneTarget {
 				        .boneNames = {
 						"NPC L Foot [Lft ]",
 					},
@@ -100,7 +101,7 @@ namespace Gts {
 				}; 
 			}
 			case CameraTracking_MCM::R_Foot: {
-				{ 
+				return BoneTarget { 
 				        .boneNames = {
 						"NPC R Foot [Rft ]",
 					},
@@ -108,7 +109,7 @@ namespace Gts {
 				}; 
 			}
 			case CameraTracking_MCM::Mid_Foot: {
-				{ // L Feet
+				return BoneTarget { // L Feet
 				        .boneNames = {
 						"NPC R PreRearCalf",
 						"NPC R Foot [Rft ]",
@@ -118,9 +119,6 @@ namespace Gts {
 				        .zoomScale = 1.00,
 				};
 			}
-		//Breasts_01,
-		//Breasts_03,
-		//Mid_Foot,
 		}
 
 		/*switch (altMode) {
