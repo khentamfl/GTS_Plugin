@@ -51,8 +51,8 @@ namespace {
 
                 for (auto Knowledge: ai->high->knowledgeArray) {
                     ActorKnowledge* Data = Knowledge.second.get();
-                    ActorHandle find_target = Data.target;
-                    ActorHandle find_owner = Data.owner;
+                    ActorHandle find_target = Data->target;
+                    ActorHandle find_owner = Data->owner;
                     if (find_target) {
                         Actor* target = find_target.get().get();
                         log::info("found target: {}", target->GetDisplayFullName());
@@ -61,7 +61,7 @@ namespace {
                             log::info("found owner: {}", owner->GetDisplayFullName());
                         }
 
-                        auto state = Data.detectionState;
+                        auto state = Data->detectionState;
                         if (state) {
                             DetectionState detection = state.get().get();
                             log::info("Detection state of {} is {}", actor->GetDisplayFullName(), detection->level);
