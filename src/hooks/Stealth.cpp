@@ -72,7 +72,7 @@ namespace Hooks {
 				float result = sub_1403BC410(param_1, param_2);
                 //log::info("param 1: {}", GetRawName(param_1));
                 //log::info("param 2: {}", GetRawName(param_1));
-                l//og::info("Test Hook value: {}", result);
+                //log::info("Test Hook value: {}", result);
 				return result;
             }
         );
