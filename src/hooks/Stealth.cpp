@@ -39,6 +39,23 @@ namespace {
 
         return modify;
     }
+
+    void Stealth_Stuff(Actor* other) {
+        auto CombatGroup = other->GetCombatGroup();
+        if (CombatGroup) {
+            for (auto target: CombatGroup->targets) {
+                auto CombatTarget_Find = target->targetHandle;
+                if (CombatTarget_Find) {
+                    auto CombatTarget = CombatTarget_Find.get().get();
+                    float level = target->detectLevel;
+                    float points = target->stealthPoints;
+                    log::info("{} is in combat with {}", other->GetDisplayFullName(), CombatTarget->GetDisplayFullName());
+                    log::info("Level: {}, points: {}", level, points);
+                }
+            }
+        }
+
+    }
 }
 
 namespace Hooks {
@@ -136,12 +153,10 @@ namespace Hooks {
         static FunctionHook<float(Actor* param_1)>GetDetectionCalculatedValue_1405FC9A0( REL::RelocationID(36748, 36748),
 			[](auto* param_1) {
                 float result = GetDetectionCalculatedValue_1405FC9A0(param_1);
-				//log::info("GetDetectionCalculatedValue_1405FC9A0 Hooked");
-                log::info("GetDetectionCalculatedValue_1405FC9A0 Result: {}", result);
                 Actor* actor = skyrim_cast<Actor*>(param_1);
                 if (actor) {
-                    result = -50.0;
                     log::info("GetDetectionCalculatedValue_1405FC9A0 Actor: {}, result: {}", actor->GetDisplayFullName(), result);
+                    Stealth_Stuff(actor);
                 }
 				return result;
             }
