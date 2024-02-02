@@ -62,7 +62,7 @@ namespace {
                         DetectionState* detection = state.get();
                         log::info("Detection Level of {} is {}, unk18: {}, 28: {}, 38: {}", 
                         actor->GetDisplayFullName(), 
-                        detection->level, datection->unk18, detection->unk28, detection->unk38
+                        detection->level, detection->unk18, detection->unk28, detection->unk38
                         );
                         detection->level = 0.0;
                     } 
