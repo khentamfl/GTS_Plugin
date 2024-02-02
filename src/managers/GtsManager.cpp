@@ -62,17 +62,13 @@ namespace {
 
 	void CombatTest(Actor* other) {
 		if (other->formID == 0x14) {
-			auto CombatGroup = other->GetCombatGroup();
-			if (CombatGroup) {
-				for (auto target: CombatGroup->targets) {
-					auto CombatTarget_Find = target.targetHandle;
-					if (CombatTarget_Find) {
-						auto CombatTarget = CombatTarget_Find.get().get();
-						float level = target.detectLevel;
-						float points = target.stealthPoints;
-						log::info("(Player) {} is in combat with {}", other->GetDisplayFullName(), CombatTarget->GetDisplayFullName());
-						log::info("(Player) Level: {}, points: {}", level, points);
-					}
+			auto ai = actor->GetActorRuntimeData().currentProcess;
+			if (ai) {
+				if (ai->high) {
+					float detect = ai->high->detectionModifier;
+					float modifier = ai->high->detectionModifierTimer;
+					log::info("(Player) Data of {}", actor->GetDisplayFullName());
+					log::info("(Player) DetectionMod: {}, ModifierTimer: {}", detect, modifier);
 				}
 			}
 		}

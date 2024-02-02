@@ -40,21 +40,14 @@ namespace {
         return modify;
     }
 
-    void Stealth_Stuff(Actor* other) {
-        auto CombatGroup = other->GetCombatGroup();
-        if (CombatGroup) {
-            for (auto target: CombatGroup->targets) {
-                auto CombatTarget_Find = target.targetHandle;
-                if (CombatTarget_Find) {
-                    auto CombatTarget = CombatTarget_Find.get().get();
-                    float EnemyScale = get_visual_scale(CombatTarget);
-                    float level = target.detectLevel;
-                    float points = target.stealthPoints;
-                    log::info("{} is in combat with {}", other->GetDisplayFullName(), CombatTarget->GetDisplayFullName());
-                    log::info("Level: {}, points: {}", level, points);
-                    level *= EnemyScale;
-                    log::info("Level post: {}", level);
-                }
+    void Stealth_Stuff(Actor* actor) {
+        auto ai = actor->GetActorRuntimeData().currentProcess;
+        if (ai) {
+            if (ai->high) {
+                float detect = ai->high->detectionModifier;
+                float modifier = ai->high->detectionModifierTimer;
+                log::info("Data of {}", actor->GetDisplayFullName());
+                log::info("DetectionMod: {}, ModifierTimer: {}", detect, modifier);
             }
         }
     }
