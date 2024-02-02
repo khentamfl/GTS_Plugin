@@ -50,7 +50,7 @@ namespace {
                 log::info("DetectionMod: {}, ModifierTimer: {}", detect, modifier);
 
                 for (auto Knowledge: ai->high->knowledgeArray) {
-                    ActorKnowledge Data = Knowledge.second.get();
+                    ActorKnowledge* Data = Knowledge.second.get();
                     ActorHandle find_target = Data.target;
                     ActorHandle find_owner = Data.owner;
                     if (find_target) {
@@ -64,9 +64,7 @@ namespace {
                         auto state = Data.detectionState;
                         if (state) {
                             DetectionState detection = state.get().get();
-                            if (detection) {
-                                log::info("Detection state of {} is {}", actor->GetDisplayFullName(), detection->level);
-                            }
+                            log::info("Detection state of {} is {}", actor->GetDisplayFullName(), detection->level);
                         } 
                     }
                 }
