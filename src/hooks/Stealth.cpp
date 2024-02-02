@@ -91,6 +91,7 @@ namespace Hooks {
                 if (actor) {
                     log::info("AV 2 actor: {}", actor->GetDisplayFullName());
                 }
+                result = 0.0;
 				return result;
             }
         );
@@ -110,6 +111,7 @@ namespace Hooks {
                 if (actor) {
                     log::info("AV 2 actor: {}", actor->GetDisplayFullName());
                 }
+                result = 0.0;
 				return result;
             }
         );
