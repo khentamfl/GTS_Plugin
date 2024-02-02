@@ -89,7 +89,7 @@ namespace {
 						return false;
 					}
 					return true;
-				} if (Value >= target) { // fully applied
+				} if (value >= target) { // fully applied
 					Phenome_ManagePhenomes(FaceData, phenome, target);
 					return false;
 				} 

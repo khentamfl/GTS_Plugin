@@ -227,7 +227,7 @@ namespace {
 		if (grabbedActor) {
 			Attacked(grabbedActor, giant); // force combat
 
-			float tiny_scale = get_visual_scale(giant) * GetSizeFromBoundingBox(grabbedActor);
+			float tiny_scale = get_visual_scale(giant) * GetSizeFromBoundingBox(giant);
 			float gts_scale = get_visual_scale(grabbedActor) * GetSizeFromBoundingBox(grabbedActor);
 
 			float sizeDiff = gts_scale/tiny_scale;
