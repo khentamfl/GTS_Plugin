@@ -133,11 +133,16 @@ namespace Hooks {
             }
         );
 
-        static FunctionHook<float(uintptr_t* param_1)>GetDetectionCalculatedValue_1405FC9A0( REL::RelocationID(36748, 36748),
+        static FunctionHook<float(Actor* param_1)>GetDetectionCalculatedValue_1405FC9A0( REL::RelocationID(36748, 36748),
 			[](auto* param_1) {
                 float result = GetDetectionCalculatedValue_1405FC9A0(param_1);
-				log::info("GetDetectionCalculatedValue_1405FC9A0 Hooked");
+				//log::info("GetDetectionCalculatedValue_1405FC9A0 Hooked");
                 log::info("GetDetectionCalculatedValue_1405FC9A0 Result: {}", result);
+                Actor* actor = skyrim_cast<Actor*>(param_1);
+                if (actor) {
+                    log::info("GetDetectionCalculatedValue_1405FC9A0 Actor: {}, result: {}", actor->GetDisplayFullName(), result);
+                    result = 0.0;
+                }
 				return result;
             }
         );
