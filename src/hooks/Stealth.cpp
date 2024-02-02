@@ -77,14 +77,14 @@ namespace Hooks {
             }
         );
 
-        static CallHook<float(uintptr_t param_1)>sub_1403E5250( // Probably CTD
+        static CallHook<float(uintptr_t* param_1, uintptr_t param_2)>sub_1403E5250( // Probably CTD
 			REL::RelocationID(26616, 26616), REL::Relocate(0xE0, 0xE0), 
             // 26616
             // 0x1405fd950 - 0x1405FD870 = 0xE0
             // Function: 1405FD870
             // Altering thunk_powf_14134BEAC
-			[](auto param_1) {
-				float result = sub_1403E5250(param_1);
+			[](auto* param_1, auto param_2) {
+				float result = sub_1403E5250(param_1, param_2);
                 log::info("Actor Value Owner hook called");
                 log::info("Result: {}", result);
 				return result;
