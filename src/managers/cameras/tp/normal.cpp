@@ -47,45 +47,82 @@ namespace Gts {
 	BoneTarget Normal::GetBoneTarget() {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
-		int altMode = Runtime::GetInt("NormalCameraTarget");
+		CameraTracking_MCM Camera_MCM = Runtime::GetInt("NormalCameraTarget");
+		CameraTracking Camera_Anim = sizemanager.GetTrackedBone(player);
 
 		float offset = -45;
 
-		if (sizemanager.GetActionBool(player, 3)) {
+		/*if (sizemanager.GetTrackedBone(player, 3)) {
 			altMode = 8; // Thigh Sandwich
 			offset = 0;
-		} else if (sizemanager.GetActionBool(player, 2)) {
+		} else if (sizemanager.GetTrackedBone(player, 2)) {
 			altMode = 9; // Vore
 			offset = 0;
-		} else if (sizemanager.GetActionBool(player, 4)) {
+		} else if (sizemanager.GetTrackedBone(player, 4)) {
 			altMode = 10; // Vore: Track Right Hand
 			offset = 0;
-		} else if (sizemanager.GetActionBool(player, 5)) {
+		} else if (sizemanager.GetTrackedBone(player, 5)) {
 			altMode = 11; // L feet
 			offset = -10;
-		} else if (sizemanager.GetActionBool(player, 6)) {
+		} else if (sizemanager.GetTrackedBone(player, 6)) {
 			altMode = 12; // R Feet
 			offset = -10;
-		} else if (sizemanager.GetActionBool(player, 0)) {
+		} else if (sizemanager.GetTrackedBone(player, 0)) {
 			altMode = 13; // Thigh Crushing
 			offset = -10;
-		} else if (sizemanager.GetActionBool(player, 7)) {
+		} else if (sizemanager.GetTrackedBone(player, 7)) {
 			altMode = 14; // Track Left Hand
 			offset = 0;
-		} else if (sizemanager.GetActionBool(player, 8)) {
+		} else if (sizemanager.GetTrackedBone(player, 8)) {
 			altMode = 15; // Track booty
 			offset = -45;
-		} else if (sizemanager.GetActionBool(player, 9)) {
+		} else if (sizemanager.GetTrackedBone(player, 9)) {
 			altMode = 5; // Track Breasts
 			offset = -15;
-		} else if (sizemanager.GetActionBool(player, 10)) {
+		} else if (sizemanager.GetTrackedBone(player, 10)) {
 			altMode = 16; // Track Knees
 			offset = -15;
-		}
+		}*/
 
 		SetZOff(offset);
 
-		switch (altMode) {
+		switch (Camera_MCM) {
+			case CameraTracking_MCM::None: {
+				return BoneTarget();
+			}
+			case CameraTracking_MCM::L_Foot: {
+				{ // L Feet
+				        .boneNames = {
+						"NPC L Foot [Lft ]",
+					},
+				        .zoomScale = 0.75,
+				}; 
+			}
+			case CameraTracking_MCM::R_Foot: {
+				{ // L Feet
+				        .boneNames = {
+						"NPC R Foot [Rft ]",
+					},
+				        .zoomScale = 0.75,
+				}; 
+			}
+			case CameraTracking_MCM::Mid_Foot: {
+				{ // L Feet
+				        .boneNames = {
+						"NPC R PreRearCalf",
+						"NPC R Foot [Rft ]",
+						"NPC L PreRearCalf",
+						"NPC L Foot [Lft ]",
+					},
+				        .zoomScale = 1.00,
+				};
+			}
+		//Breasts_01,
+		//Breasts_03,
+		//Mid_Foot,
+		}
+
+		/*switch (altMode) {
 			case 0: {
 				return BoneTarget();
 			}
@@ -230,7 +267,7 @@ namespace Gts {
 				        .zoomScale = 1.25,
 				};
 			}
-		}
+		}*/
 		return BoneTarget();
 	}
 }

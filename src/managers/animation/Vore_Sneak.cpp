@@ -81,9 +81,9 @@ namespace {
 			Attacked(tiny, &data.giant);
 		}
 		if (IsTransferingTiny(&data.giant)) {
-			ManageCamera(&data.giant, true, 4.0);
+			ManageCamera(&data.giant, true, CameraTracking::ObjectA);
 		} else {
-			ManageCamera(&data.giant, true, 2.0);
+			ManageCamera(&data.giant, true, CameraTracking::Hand_Right);
 		}
     }
     void GTS_Sneak_Vore_OpenMouth(AnimationEventData& data) {
@@ -134,8 +134,8 @@ namespace {
 		VoreData.KillAll();
 		VoreData.ReleaseAll();
 
-		ManageCamera(giant, false, 4.0);
-		ManageCamera(giant, false, 2.0);
+		ManageCamera(giant, false, CameraTracking::ObjectA);
+		ManageCamera(giant, false, CameraTracking::Hand_Right);
     }
 
     void GTS_Sneak_Vore_SmileOn(AnimationEventData& data) {

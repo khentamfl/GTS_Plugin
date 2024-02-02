@@ -28,7 +28,7 @@ namespace Gts {
 
 	void AllowToDoVore(Actor* actor, bool toggle);
 	void AllowToBeCrushed(Actor* actor, bool toggle);
-	void ManageCamera(Actor* giant, bool enable, float type);
+	void ManageCamera(Actor* giant, bool enable, CameraTracking type);
 
 	void DoLaunch(Actor* giant, float radius, float damage, FootEvent kind);
 	void DoLaunch(Actor* giant, float radius, float damage, NiAVObject* node);

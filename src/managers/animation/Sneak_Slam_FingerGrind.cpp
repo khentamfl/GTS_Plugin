@@ -70,7 +70,7 @@ namespace {
 
 		NiAVObject* node = find_node(giant, NodeLookup);
 
-		Finger_DamageAndShrink(giant, Radius, Damage, node, 50, 0.10, 2.5 * CrushMult, -0.030 * ShrinkMult, source);
+		Finger_DamageAndShrink(giant, Radius, Damage, node, 50, 0.10, 2.5 * CrushMult, -0.024 * ShrinkMult, source);
 	}
 
     ////////////////////////////////////////////////////////////////////
@@ -110,7 +110,7 @@ namespace {
 	};   
 
 	void GTS_Sneak_FingerGrind_Finisher_R(AnimationEventData& data) {
-		Finger_DoDamage(&data.giant, true, Radius_Sneak_FingerGrind_Finisher, Damage_Sneak_FingerGrind_Finisher, 1.8, 2.0);
+		Finger_DoDamage(&data.giant, true, Radius_Sneak_FingerGrind_Finisher, Damage_Sneak_FingerGrind_Finisher, 1.8, 3.0);
         Finger_ApplyVisuals(&data.giant, Rfinger, 2.6, 2.0);
 		Finger_DoSounds(&data.giant, Rfinger, 1.4);
         StopStaminaDrain(&data.giant);	
@@ -224,9 +224,9 @@ namespace Gts {
 
     void TrackMatchingHand(Actor* giant, CrawlEvent kind, bool enable) {
         if (kind == CrawlEvent::RightHand) {
-            ManageCamera(giant, enable, 4.0);
+            ManageCamera(giant, enable, CameraTracking::Hand_Right);
         } else if (kind == CrawlEvent::LeftHand) {
-            ManageCamera(giant, enable, 7.0);
+            ManageCamera(giant, enable, CameraTracking::Hand_Left);
         }
     }
 

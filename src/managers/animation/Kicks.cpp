@@ -70,16 +70,16 @@ namespace {
 	}
 
 	void GTS_Kick_Camera_On_R(AnimationEventData& data) {
-		ManageCamera(&data.giant, true, 6.0);
+		ManageCamera(&data.giant, true, CameraTracking::R_Foot);
 	}
 	void GTS_Kick_Camera_On_L(AnimationEventData& data) {
-		ManageCamera(&data.giant, true, 5.0);
+		ManageCamera(&data.giant, true, CameraTracking::L_Foot);
 	}
 	void GTS_Kick_Camera_Off_R(AnimationEventData& data) {
-		ManageCamera(&data.giant, false, 6.0);
+		ManageCamera(&data.giant, false, CameraTracking::R_Foot);
 	}
 	void GTS_Kick_Camera_Off_L(AnimationEventData& data) {
-		ManageCamera(&data.giant, false, 5.0);
+		ManageCamera(&data.giant, false, CameraTracking::L_Foot);
 	}
 
 	void GTS_Kick_SwingLeg_L(AnimationEventData& data) {

@@ -124,14 +124,14 @@ namespace {
 	}
 
 	void GTS_Trample_Cam_Start_L(AnimationEventData& data) {
-		ManageCamera(&data.giant, true, 5);
+		ManageCamera(&data.giant, true, CameraTracking::L_Foot);
 	}
 	void GTS_Trample_Cam_Start_R(AnimationEventData& data) {
-		ManageCamera(&data.giant, true, 6);
+		ManageCamera(&data.giant, true, CameraTracking::R_Foot);
 	}
 
 	void GTS_Trample_Cam_End_L(AnimationEventData& data) {
-		ManageCamera(&data.giant, false, 5);
+		ManageCamera(&data.giant, false, CameraTracking::L_Foot);
 		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 0.6);
 
 		data.animSpeed = 1.0;
@@ -139,7 +139,7 @@ namespace {
 		data.stage = 0;
 	}
 	void GTS_Trample_Cam_End_R(AnimationEventData& data) {
-		ManageCamera(&data.giant, false, 6);
+		ManageCamera(&data.giant, false, CameraTracking::R_Foot);
 		DrainStamina(&data.giant, "StaminaDrain_Trample", "DestructionBasics", false, 0.6);
 
 		data.animSpeed = 1.0;

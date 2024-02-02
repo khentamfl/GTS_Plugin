@@ -17,27 +17,27 @@ namespace {
 	float CheckForAction() {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
-		if (sizemanager.GetActionBool(player, 0.0)) {
+		/*if (sizemanager.GetTrackedBone(player, 0.0)) {
 			return 0.15;
-		} else if (sizemanager.GetActionBool(player, 2.0)) {
+		} else if (sizemanager.GetTrackedBone(player, 2.0)) {
 			return 0.10;
-		} else if (sizemanager.GetActionBool(player, 4.0)) {
+		} else if (sizemanager.GetTrackedBone(player, 4.0)) {
 			return 0.10;
-		} else if (sizemanager.GetActionBool(player, 5.0)) {
+		} else if (sizemanager.GetTrackedBone(player, 5.0)) {
 			return 0.08;
-		} else if (sizemanager.GetActionBool(player, 6.0)) {
+		} else if (sizemanager.GetTrackedBone(player, 6.0)) {
 			return 0.08;
-		} else if (sizemanager.GetActionBool(player, 7.0)) {
+		} else if (sizemanager.GetTrackedBone(player, 7.0)) {
 			return 0.08;
-		} else if (sizemanager.GetActionBool(player, 8.0)) {
+		} else if (sizemanager.GetTrackedBone(player, 8.0)) {
 			return 0.08;
-		} else if (sizemanager.GetActionBool(player, 9.0)) {
+		} else if (sizemanager.GetTrackedBone(player, 9.0)) {
 			return 0.10;
-		} else if (sizemanager.GetActionBool(player, 10.0)) {
+		} else if (sizemanager.GetTrackedBone(player, 10.0)) {
 			return 0.10;
-		} else {
-			return 0.05;
-		}
+		} else {*/
+		return 0.05;
+		
 	}
 }
 

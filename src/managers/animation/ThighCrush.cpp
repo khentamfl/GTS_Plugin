@@ -144,7 +144,7 @@ namespace {
 		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
 		StartLegRumble("ThighCrush", data.giant, 0.10, 0.10);
-		ManageCamera(&data.giant, true, 0.0); // Track feet
+		ManageCamera(&data.giant, true, CameraTracking::Mid_Foot); // Track feet
 		RunButtCollisionTask(&data.giant);
 		data.stage = 1;
 	}
@@ -234,7 +234,7 @@ namespace {
 	void GTStoexit(AnimationEventData& data) {
 		// Going to exit
 		StopLegRumble("BodyRumble", data.giant);
-		ManageCamera(&data.giant, false, 0.0); // Un-track feet
+		ManageCamera(&data.giant, false, CameraTracking::Mid_Foot); // Un-track feet
 	}
 	void GTSBEH_Exit(AnimationEventData& data) {
 		// Final exit

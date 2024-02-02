@@ -16,6 +16,8 @@
 
 namespace {
 
+	const float Speed_up = 12.0f;
+
 	BSFaceGenAnimationData* GetFacialData(Actor* giant) {
 		auto fgen = giant->GetFaceGenAnimationData();
 		if (fgen) {
@@ -71,7 +73,7 @@ namespace {
 			}
 
 			float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
-			float speed = 1.0 * AnimSpeed * halflife * 6.0;
+			float speed = 1.0 * AnimSpeed * halflife * Speed_up;
 
 			float value = (pass * speed);
 			auto FaceData = GetFacialData(giantref);
@@ -130,7 +132,7 @@ namespace {
 			}
 
 			float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
-			float speed = 1.0 * AnimSpeed * halflife * 6.0;
+			float speed = 1.0 * AnimSpeed * halflife * Speed_up;
 
 			float value = (pass * speed);
 			auto FaceData = GetFacialData(giantref);

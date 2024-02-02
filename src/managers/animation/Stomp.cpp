@@ -173,7 +173,7 @@ namespace {
 		}
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.8);
 		GRumble::Start("StompR", &data.giant, 0.35, 0.15, RNode);
-		ManageCamera(&data.giant, true, 6.0);
+		ManageCamera(&data.giant, true, CameraTracking::R_Foot);
 
 	}
 
@@ -186,7 +186,7 @@ namespace {
 		}
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", true, 1.8);
 		GRumble::Start("StompL", &data.giant, 0.45, 0.15, LNode);
-		ManageCamera(&data.giant, true, 5.0);
+		ManageCamera(&data.giant, true, CameraTracking::L_Foot);
 	}
 
 	void GTSstompimpactR(AnimationEventData& data) {
@@ -231,8 +231,8 @@ namespace {
 		GRumble::Stop("StompL", &data.giant);
 		DrainStamina(&data.giant, "StaminaDrain_Stomp", "DestructionBasics", false, 1.8);
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", false, 2.8);
-		ManageCamera(&data.giant, false, 6.0);
-		ManageCamera(&data.giant, false, 5.0);
+		ManageCamera(&data.giant, false, CameraTracking::L_Foot);
+		ManageCamera(&data.giant, false, CameraTracking::R_Foot);
 	}
 
 	void RightStompEvent(const InputEventData& data) {

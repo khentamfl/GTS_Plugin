@@ -47,41 +47,41 @@ namespace Gts {
 	BoneTarget Alt::GetBoneTarget() {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
-		int altMode = Runtime::GetInt("AltCameraTarget");
+		CameraTracking TrackedNode = sizemanager.GetTrackedBone(player);
 
 		float offset = -45;
 
-		if (sizemanager.GetActionBool(player, 3)) {
+		/*if (sizemanager.GetTrackedBone(player, 3)) {
 			altMode = 8; // Thigh Sandwich
 			offset = 0;
-		} else if (sizemanager.GetActionBool(player, 2)) {
+		} else if (sizemanager.GetTrackedBone(player, 2)) {
 			altMode = 9; // Vore
 			offset = 0;
-		} else if (sizemanager.GetActionBool(player, 4)) {
+		} else if (sizemanager.GetTrackedBone(player, 4)) {
 			altMode = 10; // Vore: Track Hand
 			offset = 0;
-		} else if (sizemanager.GetActionBool(player, 5)) {
+		} else if (sizemanager.GetTrackedBone(player, 5)) {
 			altMode = 11; // L Feet
 			offset = -10;
-		} else if (sizemanager.GetActionBool(player, 6)) {
+		} else if (sizemanager.GetTrackedBone(player, 6)) {
 			altMode = 12; // R feet
 			offset = -10;
-		} else if (sizemanager.GetActionBool(player, 0)) {
+		} else if (sizemanager.GetTrackedBone(player, 0)) {
 			altMode = 13; // Thigh Crushing
 			offset = -10;
-		} else if (sizemanager.GetActionBool(player, 7)) {
+		} else if (sizemanager.GetTrackedBone(player, 7)) {
 			altMode = 14; // Track Left Hand
 			offset = 0;
-		} else if (sizemanager.GetActionBool(player, 8)) {
+		} else if (sizemanager.GetTrackedBone(player, 8)) {
 			altMode = 15; // Track booty
 			offset = -45;
-		} else if (sizemanager.GetActionBool(player, 9)) {
+		} else if (sizemanager.GetTrackedBone(player, 9)) {
 			altMode = 5; // Track Breasts
 			offset = -15;
-		} else if (sizemanager.GetActionBool(player, 10)) {
+		} else if (sizemanager.GetTrackedBone(player, 10)) {
 			altMode = 16; // Track Knees
 			offset = -15;
-		}
+		}*/
 
 		SetZOff(offset);
 

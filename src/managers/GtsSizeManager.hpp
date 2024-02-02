@@ -21,20 +21,7 @@ namespace Gts {
 		float HHDamage = 1.0; // 3
 		float SizeVulnerability = 0.0;
 
-		bool IsThighCrushing = false;
-		bool IsThighSandwiching = false;
-		bool AlterSandwichCamera = false;
-		bool TrackRightHand = false;
-		bool IsVoring = false;
-
-		bool TrackLeftFeet = false;
-		bool TrackRightFeet = false;
-
-		bool TrackLeftHand = false;
-
-		bool TrackButt = false;
-		bool TrackBreasts = false;
-		bool TrackKnees = false;
+		CameraTracking TrackedBone = CameraTracking::None;
 	};
 
 	struct LaunchData {
@@ -81,8 +68,8 @@ namespace Gts {
 			float GetHitGrowth(Actor* actor);
 			void SetHitGrowth(Actor* actor, float allow);
 
-			void SetActionBool(Actor* actor, bool enable, float type);
-			bool GetActionBool(Actor* actor, float type);
+			void SetTrackedBone(Actor* actor, bool enable, float type);
+			CameraTracking GetTrackedBone(Actor* actor, float type);
 
 			float BalancedMode();
 

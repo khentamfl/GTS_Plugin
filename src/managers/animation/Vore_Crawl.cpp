@@ -92,9 +92,9 @@ namespace {
 			Attacked(tiny, giant);
 		}
 		if (IsTransferingTiny(giant)) {
-			ManageCamera(giant, true, 4.0);
+			ManageCamera(giant, true, CameraTracking::ObjectA);
 		} else {
-			ManageCamera(giant, true, 2.0);
+			ManageCamera(giant, true, CameraTracking::Hand_Right);
 		}
 	}
 
@@ -176,8 +176,8 @@ namespace {
 		VoreData.KillAll();
 		VoreData.ReleaseAll();
 
-		ManageCamera(giant, false, 4.0);
-		ManageCamera(giant, false, 2.0);
+		ManageCamera(giant, false, CameraTracking::ObjectA);
+		ManageCamera(giant, false, CameraTracking::Hand_Right);
 	}
 
 	void GTSCrawlVore_SmileOff(AnimationEventData& data) {

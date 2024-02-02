@@ -288,15 +288,6 @@ namespace {
 		}
 	}
 
-	void TrackBreasts(Actor* giant, bool enable) {
-		if (giant->formID == 0x14) {
-			if (AllowFeetTracking()) {
-				auto& sizemanager = SizeManager::GetSingleton();
-				sizemanager.SetActionBool(giant, enable, 9.0);
-			}
-		}
-	}
-
 	void GTS_BoobCrush_Smile_On(AnimationEventData& data) {
 		auto giant = &data.giant;
 		AdjustFacialExpression(giant, 0, 1.0, "modifier"); // blink L
@@ -318,10 +309,10 @@ namespace {
 	}
 
 	void GTS_BoobCrush_TrackBody(AnimationEventData& data) {
-		TrackBreasts(&data.giant, true);
+		ManageCamera(&data.giant, true, CameraTracking::Breasts_02);
 	}
 	void GTS_BoobCrush_UnTrackBody(AnimationEventData& data) {
-		TrackBreasts(&data.giant, false);
+		ManageCamera(&data.giant, false, CameraTracking::Breasts_02);
 	}
 	void GTS_BoobCrush_BreastImpact(AnimationEventData& data) {
 		InflictBreastDamage(&data.giant);

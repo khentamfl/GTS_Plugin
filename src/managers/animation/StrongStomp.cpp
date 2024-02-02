@@ -126,7 +126,7 @@ namespace {
 		if (data.giant.formID != 0x14) {
 			data.animSpeed += GetRandomBoost()/3;
 		}
-		ManageCamera(giant, true, 6.0);
+		ManageCamera(giant, true, CameraTracking::R_Foot);
 		StartLegRumble("StrongStompR", data.giant, 0.35 *data.animSpeed - 0.35, 0.10, "Right");
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", true, 3.4);
 	}
@@ -138,7 +138,7 @@ namespace {
 		if (data.giant.formID != 0x14) {
 			data.animSpeed += GetRandomBoost()/3;
 		}
-		ManageCamera(giant, true, 5.0);
+		ManageCamera(giant, true, CameraTracking::L_Foot);
 		StartLegRumble("StrongStompL", data.giant, 0.35 *data.animSpeed - 0.35, 0.10, "Left");
 		DrainStamina(&data.giant, "StaminaDrain_StrongStomp", "DestructionBasics", true, 3.4);
 	}
@@ -182,11 +182,11 @@ namespace {
 
 	void GTS_StrongStomp_ReturnRL_End(AnimationEventData& data) {
 		StopLegRumble("StrongStompR", data.giant, "Right");
-		ManageCamera(&data.giant, false, 6.0);
+		ManageCamera(&data.giant, false, CameraTracking::R_Foot);
 	}
 	void GTS_StrongStomp_ReturnLL_End(AnimationEventData& data) {
 		StopLegRumble("StrongStompL", data.giant, "Left");
-		ManageCamera(&data.giant, false, 5.0);
+		ManageCamera(&data.giant, false, CameraTracking::L_Foot);
 	}
 	void GTS_StrongStomp_End(AnimationEventData& data) {
 		StopLegRumble("StrongStompR", data.giant, "Right");

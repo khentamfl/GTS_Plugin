@@ -1472,16 +1472,7 @@ namespace Gts {
 		auto player = PlayerCharacter::GetSingleton();
 		if (player) {
 			auto& sizemanager = SizeManager::GetSingleton();
-			vector<float> modes = 
-			{	0.0, 1.0, 
-				2.0, 3.0, 
-				4.0, 5.0,
-				6.0, 7.0, 
-				8.0, 9.0, 
-				10.0	}; // list all modes
-			for (auto number: modes) {
-				sizemanager.SetActionBool(player, false, number);
-			}
+			sizemanager.SetTrackedBone(player, false, CameraTracking::None);
 		}
 	}
 

@@ -117,7 +117,7 @@ namespace {
 	void TrackButt(Actor* giant, bool enable) {
 		if (AllowFeetTracking()) {
 			auto& sizemanager = SizeManager::GetSingleton();
-			sizemanager.SetActionBool(giant, enable, 8.0);
+			sizemanager.SetTrackedBone(giant, enable, 8.0);
 		}
 	}
 

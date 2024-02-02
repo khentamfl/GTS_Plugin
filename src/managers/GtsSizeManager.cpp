@@ -295,58 +295,14 @@ namespace Gts {
 
 	//===============Size-Vulnerability
 
-	//===============Bools
-	void SizeManager::SetActionBool(Actor* actor, bool enable, float type) {
+	//===============Camera Stuff
+	void SizeManager::SetTrackedBone(Actor* actor, bool enable, CameraTracking Bone) {
 		SetCameraOverride(actor, enable);
-		if (type == 0.0) {
-			this->GetData(actor).IsThighCrushing = enable;
-		} else if (type == 1.0) {
-			this->GetData(actor).IsThighSandwiching = enable;
-		} else if (type == 2.0) {
-			this->GetData(actor).IsVoring = enable;
-		} else if (type == 3.0) {
-			this->GetData(actor).AlterSandwichCamera = enable;
-		} else if (type == 4.0) {
-			this->GetData(actor).TrackRightHand = enable;
-		} else if (type == 5.0) {
-			this->GetData(actor).TrackLeftFeet = enable;
-		} else if (type == 6.0) {
-			this->GetData(actor).TrackRightFeet = enable;
-		} else if (type == 7.0) {
-			this->GetData(actor).TrackLeftHand = enable;
-		} else if (type == 8.0) {
-			this->GetData(actor).TrackButt = enable;
-		} else if (type == 9.0) {
-			this->GetData(actor).TrackBreasts = enable;
-		} else if (type == 10.0) {
-			this->GetData(actor).TrackKnees = enable;
-		}
+		this->GetData(actor).TrackedBone = Bone;
 	}
-	bool SizeManager::GetActionBool(Actor* actor, float type) {
-		if (type == 0.0) {
-			return this->GetData(actor).IsThighCrushing;
-		} else if (type == 1.0) {
-			return this->GetData(actor).IsThighSandwiching;
-		} else if (type == 2.0) {
-			return this->GetData(actor).IsVoring;
-		} else if (type == 3.0) {
-			return this->GetData(actor).AlterSandwichCamera;
-		} else if (type == 4.0) {
-			return this->GetData(actor).TrackRightHand;
-		} else if (type == 5.0) {
-			return this->GetData(actor).TrackLeftFeet;
-		} else if (type == 6.0) {
-			return this->GetData(actor).TrackRightFeet;
-		} else if (type == 7.0) {
-			return this->GetData(actor).TrackLeftHand;
-		} else if (type == 8.0) {
-			return this->GetData(actor).TrackButt;
-		} else if (type == 9.0) {
-			return this->GetData(actor).TrackBreasts;
-		} else if (type == 10.0) {
-			return this->GetData(actor).TrackKnees;
-		}
-		return false;
+
+	CameraTracking SizeManager::GetTrackedBone(Actor* actor) {
+		return this->GetData(actor).TrackedBone;
 	}
 	//
 
