@@ -119,9 +119,9 @@ namespace Hooks {
         );*/
 
         static CallHook<float(uintptr_t* param_1)>FUN_14085ddb0( // Probably CTD
-			REL::RelocationID(50201, 50201), REL::Relocate(0x427, 0x427), 
+			REL::RelocationID(50201, 50201), REL::Relocate(0x1BE, 0x1BE), 
             // 50201
-            // 0x14085df6e - 0x14085ddb0 = 0x427
+            // 0x14085df6e - 0x14085ddb0 = 0x1BE
             // Function: FUN_14085ddb0, ofset: 0x14085df6e
             // Altering GetDetectionCalculatedValue_1405FC9A0
 			[](auto* param_1) {
@@ -129,6 +129,15 @@ namespace Hooks {
                 
                 log::info("GetDetectionCalculatedValue called");
                 log::info("GetDetectionCalculatedValue result: {}", result);
+				return result;
+            }
+        );
+
+        static FunctionHook<float(uintptr_t* param_1)>GetDetectionCalculatedValue_1405FC9A0( REL::RelocationID(36748, 36748),
+			[](auto* param_1) {
+                float result = GetDetectionCalculatedValue_1405FC9A0(param_1);
+				log::info("GetDetectionCalculatedValue_1405FC9A0 Hooked");
+                log::info("GetDetectionCalculatedValue_1405FC9A0 Result: {}", result);
 				return result;
             }
         );
