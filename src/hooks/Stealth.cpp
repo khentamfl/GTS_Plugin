@@ -141,7 +141,7 @@ namespace Hooks {
                 Actor* actor = skyrim_cast<Actor*>(param_1);
                 if (actor) {
                     log::info("GetDetectionCalculatedValue_1405FC9A0 Actor: {}, result: {}", actor->GetDisplayFullName(), result);
-                    result = 0.0;
+                    result = 500.0;
                 }
 				return result;
             }
