@@ -78,7 +78,7 @@ namespace Hooks {
         );
 
         static CallHook<float(uintptr_t* param_1, uintptr_t param_2)>sub_1403E5250( // Probably CTD
-			REL::RelocationID(26616, 26616), REL::Relocate(0xE0, 0xE0), 
+			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0), 
             // 26616
             // 0x1405fd950 - 0x1405FD870 = 0xE0
             // Function: 1405FD870
