@@ -87,10 +87,10 @@ namespace Hooks {
 				float result = GetAV_1(param_1, param_2);
                 log::info("AV 1 hook called");
                 log::info("AV 1 Result: {}", result);
-                Actor* actor = skyrim_cast<Actor*>(param_1);
+                /* Actor* actor = skyrim_cast<Actor*>(param_1);
                 if (actor) {
                     log::info("AV 2 actor: {}", actor->GetDisplayFullName());
-                }
+                }*/
 				return result;
             }
         );
@@ -106,10 +106,10 @@ namespace Hooks {
                 
                 log::info("AV 2 hook called");
                 log::info("AV 2Result: {}", result);
-                Actor* actor = skyrim_cast<Actor*>(param_1);
+                /*Actor* actor = skyrim_cast<Actor*>(param_1);
                 if (actor) {
                     log::info("AV 2 actor: {}", actor->GetDisplayFullName());
-                }
+                }*/
 				return result;
             }
         );
