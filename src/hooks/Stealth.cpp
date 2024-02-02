@@ -44,11 +44,11 @@ namespace {
         auto CombatGroup = other->GetCombatGroup();
         if (CombatGroup) {
             for (auto target: CombatGroup->targets) {
-                auto CombatTarget_Find = target->targetHandle;
+                auto CombatTarget_Find = target.targetHandle;
                 if (CombatTarget_Find) {
                     auto CombatTarget = CombatTarget_Find.get().get();
-                    float level = target->detectLevel;
-                    float points = target->stealthPoints;
+                    float level = target.detectLevel;
+                    float points = target.stealthPoints;
                     log::info("{} is in combat with {}", other->GetDisplayFullName(), CombatTarget->GetDisplayFullName());
                     log::info("Level: {}, points: {}", level, points);
                 }
