@@ -171,7 +171,7 @@ namespace Gts {
 			SCALE_RATIO = 0.9;
 			giantScale *= 1.3;
 		}
-		Timer SmileTimer = Timer(3.60);
+		static Timer SmileTimer = Timer(3.60);
 		NiPoint3 NodePosition = node->world.translate;
 
 		float maxDistance = radius * giantScale;

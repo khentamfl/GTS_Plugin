@@ -63,14 +63,30 @@ namespace Hooks {
         );
 
 
-        static CallHook<float(uintptr_t param_1, uintptr_t param_2)>sub_1403BC410(
+        static CallHook<float(uintptr_t param_1, uintptr_t param_2)>sub_1403BC410( // Seems to report how close we are to the someone
 			REL::RelocationID(25812, 25812), REL::Relocate(0x24D, 0x24D), 
             // 25812
             // 0x1403bc65d - 0x1403BC410 = 0x24D
             // Altering thunk_powf_14134BEAC
 			[](auto param_1, auto param_2) {
 				float result = sub_1403BC410(param_1, param_2);
-                log::info("Test Hook value: {}", result);
+                //log::info("param 1: {}", GetRawName(param_1));
+                //log::info("param 2: {}", GetRawName(param_1));
+                l//og::info("Test Hook value: {}", result);
+				return result;
+            }
+        );
+
+        static CallHook<float(uintptr_t param_1)>sub_1403E5250( // Probably CTD
+			REL::RelocationID(26616, 26616), REL::Relocate(0xE0, 0xE0), 
+            // 26616
+            // 0x1405fd950 - 0x1405FD870 = 0xE0
+            // Function: 1405FD870
+            // Altering thunk_powf_14134BEAC
+			[](auto param_1) {
+				float result = sub_1403E5250(param_1);
+                log::info("Actor Value Owner hook called");
+                log::info("Result: {}", result);
 				return result;
             }
         );
@@ -88,6 +104,8 @@ namespace Hooks {
             }
         );*/
 
+        // Used: var_2, var_3
+        /*
         static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading_var2(
 			REL::RelocationID(36758, 36758), REL::Relocate(0x92D, 0x92D), 
             //  0x1405fe19d - 0x1405FD870 = 0x92D (line 370)
@@ -115,6 +133,7 @@ namespace Hooks {
 				return result;
             }
         );
+        */
 
       /* static FunctionHook<float(Actor* giant, uintptr_t param_2,uintptr_t param_3,uintptr_t param_4, uintptr_t param_5,
 			uintptr_t param_6, uintptr_t param_7, uintptr_t param_8, uintptr_t param_9, uintptr_t param_10)>

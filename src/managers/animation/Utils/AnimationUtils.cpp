@@ -1157,7 +1157,7 @@ namespace Gts {
 		AdjustFacialExpression(giant, 0, 0.60, "modifier"); // blink L
 		AdjustFacialExpression(giant, 1, 0.60, "modifier"); // blink R
 
-		AdjustFacialExpression(giant, 3, 0.5, "phenome"); // Smile a bit (Mouth)
+		AdjustFacialExpression(giant, 3, 0.8, "phenome"); // Smile a bit (Mouth)
 
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!giantHandle) {
