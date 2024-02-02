@@ -1157,8 +1157,9 @@ namespace Gts {
 		AdjustFacialExpression(giant, 0, 0.40, "modifier"); // blink L
 		AdjustFacialExpression(giant, 1, 0.40, "modifier"); // blink R
 
-		float random = (rand()% 20) * 0.01;
-		float smile = 0.25 + random * 0.01; // up to +0.45 to open mouth
+		float random = (rand()% 25) * 0.01;
+		log::info("Smile Random: {}", random);
+		float smile = 0.25 + (random); // up to +0.50 to open mouth
 
 		AdjustFacialExpression(giant, 3, random, "phenome"); // Slightly open mouth
 		AdjustFacialExpression(giant, 7, 1.0, "phenome"); // Close mouth stronger to counter opened mouth from smiling
