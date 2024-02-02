@@ -91,7 +91,9 @@ namespace Hooks {
                 if (actor) {
                     log::info("AV 2 actor: {}", actor->GetDisplayFullName());
                 }
-                result = 0.0;
+                // Reports 15. 15 = ActorValue::kSneak
+                // But it also reports value of 100 if we change Sneak level skill through console to 5000 (cap probably)
+                result = 4000.0;
 				return result;
             }
         );
@@ -111,7 +113,24 @@ namespace Hooks {
                 if (actor) {
                     log::info("AV 2 actor: {}", actor->GetDisplayFullName());
                 }
-                result = 0.0;
+                // Reports 15. 15 = ActorValue::kSneak
+                // But it also reports value of 100 if we change Sneak level skill through console to 5000 (cap probably)
+                result = 4000.0;
+				return result;
+            }
+        );
+
+        static CallHook<float(uintptr_t* param_1)>FUN_14085ddb0( // Probably CTD
+			REL::RelocationID(50201, 50201), REL::Relocate(0x1BE, 0x1BE), 
+            // 50201
+            // 0x14085df6e - 0x14085ddb0 = 0x427
+            // Function: FUN_14085ddb0, ofset: 0x14085df6e
+            // Altering GetDetectionCalculatedValue_1405FC9A0
+			[](auto* param_1) {
+				float result = FUN_14085ddb0(param_1);
+                
+                log::info("GetDetectionCalculatedValue called");
+                log::info("GetDetectionCalculatedValue result: {}", result);
 				return result;
             }
         );
