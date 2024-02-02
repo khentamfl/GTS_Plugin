@@ -228,7 +228,7 @@ namespace Gts {
 									int rng = rand() % 4 + 1;
 									if (rng <= 1.0) {
 										float durationrng = (rand() % 100) * 0.01;
-										FingerGrind_Smile(giant, otherActor, 1.5 + durationrng)
+										FingerGrind_Smile(giant, otherActor, 1.5 + durationrng);
 									}
 								}
 								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause);
