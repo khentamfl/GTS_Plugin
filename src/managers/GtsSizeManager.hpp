@@ -73,7 +73,7 @@ namespace Gts {
 			CameraTracking GetTrackedBone(Actor* actor);
 
 			void SetCameraHalflife(Actor* actor, CameraTracking Bone);
-			float SizeManager::GetCameraHalflife(Actor* actor);
+			float GetCameraHalflife(Actor* actor);
 		
 
 			float BalancedMode();
