@@ -1154,10 +1154,18 @@ namespace Gts {
 
 		AdjustFacialExpression(giant, 0, 0.1, "phenome"); // Start opening mouth
 
-		AdjustFacialExpression(giant, 0, 0.60, "modifier"); // blink L
-		AdjustFacialExpression(giant, 1, 0.60, "modifier"); // blink R
+		AdjustFacialExpression(giant, 0, 0.40, "modifier"); // blink L
+		AdjustFacialExpression(giant, 1, 0.40, "modifier"); // blink R
 
-		AdjustFacialExpression(giant, 3, 0.8, "phenome"); // Smile a bit (Mouth)
+		float random = (rand()% 20) * 0.01;
+		float smile = 0.25 + random * 0.01; // up to +0.45 to open mouth
+
+		AdjustFacialExpression(giant, 3, random, "phenome"); // Slightly open mouth
+		AdjustFacialExpression(giant, 7, 1.0, "phenome"); // Close mouth stronger to counter opened mouth from smiling
+		AdjustFacialExpression(giant, 5, 0.5, "phenome"); // Actual smile but leads to opening mouth 
+
+		// Emotion guide:
+		// https://steamcommunity.com/sharedfiles/filedetails/?id=187155077
 
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!giantHandle) {

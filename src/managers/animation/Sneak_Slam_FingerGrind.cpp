@@ -46,7 +46,7 @@ namespace {
 			float min_scale = 3.5 * threshold;
 			float scale = get_visual_scale(giant);
 			if (HasSMT(giant)) {
-				scale *= 2.0;
+				scale += 2.6;
 			}
 			if (scale >= threshold && !giant->AsActorState()->IsSwimming()) {
 				NiPoint3 node_location = node->world.translate;
@@ -225,7 +225,7 @@ namespace Gts {
 								}
 
 								if (SmileTimer.ShouldRunFrame()) {
-									int rng = rand() % 4 + 1;
+									int rng = rand() % 2 + 1;
 									if (rng <= 1.0) {
 										float durationrng = (rand() % 100) * 0.01;
 										FingerGrind_Smile(giant, otherActor, 1.5 + durationrng);
