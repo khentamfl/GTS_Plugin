@@ -77,7 +77,7 @@ namespace Hooks {
             }
         );
 
-        static CallHook<float(uintptr_t* param_1, uintptr_t param_2)>GetAV_1( // Probably CTD
+        static CallHook<float(ActorValueOwner* param_1, uintptr_t param_2)>GetAV_1( // Probably CTD
 			REL::RelocationID(36758, 36758), REL::Relocate(0xE0, 0xE0), 
             // 36758
             // 0x1405fd950 - 0x1405FD870 = 0xE0
@@ -87,15 +87,15 @@ namespace Hooks {
 				float result = GetAV_1(param_1, param_2);
                 log::info("AV 1 hook called");
                 log::info("AV 1 Result: {}", result);
-                /* Actor* actor = skyrim_cast<Actor*>(param_1);
+                Actor* actor = skyrim_cast<Actor*>(param_1);
                 if (actor) {
                     log::info("AV 2 actor: {}", actor->GetDisplayFullName());
-                }*/
+                }
 				return result;
             }
         );
 
-        static CallHook<float(uintptr_t* param_1, uintptr_t param_2)>GetAV_2( // Probably CTD
+        static CallHook<float(ActorValueOwner* param_1, uintptr_t param_2)>GetAV_2( // Probably CTD
 			REL::RelocationID(36758, 36758), REL::Relocate(0x427, 0x427), 
             // 36758
             // 0x1405fdc97 - 0x1405FD870 = 0x427
@@ -106,10 +106,10 @@ namespace Hooks {
                 
                 log::info("AV 2 hook called");
                 log::info("AV 2Result: {}", result);
-                /*Actor* actor = skyrim_cast<Actor*>(param_1);
+                Actor* actor = skyrim_cast<Actor*>(param_1);
                 if (actor) {
                     log::info("AV 2 actor: {}", actor->GetDisplayFullName());
-                }*/
+                }
 				return result;
             }
         );
