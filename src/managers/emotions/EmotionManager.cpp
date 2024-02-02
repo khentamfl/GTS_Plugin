@@ -31,8 +31,8 @@ namespace {
 		return value;
 	}
 
-	float Phenome_GetModifierValue(BSFaceGenAnimationData* data, std::uint32_t Phenome) {
-		float value = data->modifierKeyFrame.values[Phenome];
+	float Phenome_GetModifierValue(BSFaceGenAnimationData* data, std::uint32_t Modifier) {
+		float value = data->modifierKeyFrame.values[Modifier];
 		return value;
 	}
 
@@ -73,23 +73,24 @@ namespace {
 			}
 
 			float AnimSpeed = AnimationManager::GetSingleton().GetAnimSpeed(giant);
-			float speed = 1.0 * AnimSpeed * halflife * Speed_up;
+			float speed = 1.25 * AnimSpeed * halflife * Speed_up;
 
 			float value = (pass * speed);
 			auto FaceData = GetFacialData(giantref);
 			if (FaceData) {
-				log::info("Running Phenome. value: {}, target: {}", value, target);
+				log::info("(Phenome) Running Phenome. value: {}, target: {}", value, target);
 				if (Reset && modified != 0.0) {
 					value = modified - (pass * speed);
 					Phenome_ManagePhenomes(FaceData, phenome, value);
-					log::info("Running Phenome Reset. value: {}, target: {}", value, target);
+					log::info("(Phenome Reset) Running Phenome Reset. value: {}, target: {}", value, target);
 					if (value <= 0) {
 						Phenome_ManagePhenomes(FaceData, phenome, 0.0);
 						log::info("Phenome Reset Done");
 						return false;
 					}
 					return true;
-				} if (value >= target) { // fully applied
+				} if (Value >= target) { // fully applied
+					Phenome_ManagePhenomes(FaceData, phenome, target);
 					return false;
 				} 
 
@@ -137,18 +138,19 @@ namespace {
 			float value = (pass * speed);
 			auto FaceData = GetFacialData(giantref);
 			if (FaceData) {
-				log::info("Running Modifier. value: {}, target: {}", value, target);
+				log::info("(Modifier) Running Modifier. value: {}, target: {}", value, target);
 				if (Reset) {
 					value = modified - (pass * speed);
 					Phenome_ManageModifiers(FaceData, modifier, value);
-					log::info("Running Modifier Reset. value: {}, target: {}", value, target);
+					log::info("(Modifier Reset) Running Modifier Reset. value: {}, target: {}", value, target);
 					if (value <= 0) {
 						Phenome_ManageModifiers(FaceData, modifier, 0.0);
-						log::info("Modifier Reset Done");
+						log::info("(Modifier Reset) Modifier Reset Done");
 						return false;
 					}
 					return true;
 				} if (value >= target) { // fully applied
+					Phenome_ManageModifiers(FaceData, modifier, target);
 					return false;
 				} 
 

@@ -226,13 +226,17 @@ namespace {
 
 		if (grabbedActor) {
 			Attacked(grabbedActor, giant); // force combat
-			float sizeDiff = GetSizeDifference(giant, grabbedActor);
+
+			float tiny_scale = get_visual_scale(giant) * GetSizeFromBoundingBox(grabbedActor);
+			float gts_scale = get_visual_scale(grabbedActor) * GetSizeFromBoundingBox(grabbedActor);
+
+			float sizeDiff = gts_scale/tiny_scale;
 			float power = std::clamp(sizemanager.GetSizeAttribute(giant, 0), 1.0f, 999999.0f);
 			float additionaldamage = 1.0 + sizemanager.GetSizeVulnerability(grabbedActor);
 			float damage = (Damage_Grab_Attack * sizeDiff) * power * additionaldamage * additionaldamage;
 			float experience = std::clamp(damage/800, 0.0f, 0.06f);
 			if (HasSMT(giant)) {
-				damage *= 1.60;
+				damage *= 1.65;
 				bonus = 3.0;
 			}
 
@@ -266,7 +270,6 @@ namespace {
 					SetBeingHeld(tiny, false);
 					GRumble::Once("GrabAttackKill", giantess, 14.0 * bonus, 0.15, "NPC L Hand [LHnd]");
 					if (!LessGore()) {
-						Runtime::PlaySoundAtNode("CrunchImpactSound", giantess, 1.0, 1.0, "NPC L Hand [LHnd]");
 						Runtime::PlaySoundAtNode("CrunchImpactSound", giantess, 1.0, 1.0, "NPC L Hand [LHnd]");
 						Runtime::PlaySoundAtNode("CrunchImpactSound", giantess, 1.0, 1.0, "NPC L Hand [LHnd]");
 					} else {
@@ -320,7 +323,6 @@ namespace {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void GTSGrab_Eat_Start(AnimationEventData& data) {
-		ToggleEmotionEdit(&data.giant, true);
 		auto otherActor = Grab::GetHeldActor(&data.giant);
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		ManageCamera(&data.giant, true, CameraTracking::Grab_Left);
@@ -394,7 +396,6 @@ namespace {
 			Grab::DetachActorTask(giant);
 			Grab::Release(giant);
 		}
-		ToggleEmotionEdit(giant, false);
 	}
 
 

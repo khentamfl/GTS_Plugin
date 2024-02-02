@@ -38,6 +38,9 @@ namespace {
 		if (node) {
 			float min_scale = 3.5 * threshold;
 			float scale = get_visual_scale(giant);
+			if (HasSMT(giant)) {
+				scale *= 2.0;
+			}
 			if (scale >= threshold && !giant->AsActorState()->IsSwimming()) {
 				NiPoint3 node_location = node->world.translate;
 

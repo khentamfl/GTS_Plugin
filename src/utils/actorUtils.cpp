@@ -1796,7 +1796,7 @@ namespace Gts {
 
 		if (model) {
 			bool isdamaging = sizemanager.IsDamaging(tiny);
-			if (!isdamaging && (force >= 0.12 || moving)) {
+			if (!isdamaging && (force >= 0.12 || moving || IsFootGrinding(giant))) {
 				StaggerOr(giant, tiny, 0, 0, 0, 0);
 				sizemanager.GetDamageData(tiny).lastDamageTime = Time::WorldTimeElapsed();
 			}

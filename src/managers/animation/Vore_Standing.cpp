@@ -174,8 +174,6 @@ namespace {
 		auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
 		VoreData.GrabAll();
-		ToggleEmotionEdit(giant, true);
-		auto firstTiny = VoreData.GetVories()[0];
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("JumpFall");
 			Attacked(tiny, giant);
@@ -304,7 +302,6 @@ namespace {
 			EnableFreeCamera();
 		}
 		GRumble::Stop("BodyRumble", &data.giant);
-		ToggleEmotionEdit(giant, false);
 	}
 }
 

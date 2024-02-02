@@ -389,10 +389,6 @@ namespace Gts {
 		}
 	}
 
-	void ToggleEmotionEdit(Actor* giant, bool allow) {
-		/*auto& Emotions = EmotionManager::GetSingleton().GetGiant(giant);
-		Emotions.AllowEmotionEdit = allow;*/
-	}
 	void AdjustFacialExpression(Actor* giant, int ph, float target, std::string_view type) {
 		auto& Emotions = EmotionManager::GetSingleton();
 

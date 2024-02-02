@@ -63,7 +63,6 @@ namespace {
 			return;
 		}
 
-		ToggleEmotionEdit(giant, true);
 		SetBeingHeld(huggedActor, true);
 		HugShrink::AttachActorTask(giant, huggedActor);
 
