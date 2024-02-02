@@ -50,25 +50,22 @@ namespace {
                 log::info("DetectionMod: {}, ModifierTimer: {}", detect, modifier);
 
                 for (auto Knowledge: ai->high->knowledgeArray) {
-                    ActorKnowledge Data = Knowledge->second.get().get();
-                        if (Data) {
-                            ActorHandle find_target = Data.target;
-                            ActorHandle find_owner = Data.owner;
-                            if (find_target) {
-                                Actor* target = find_target.get().get();
-                                log::info("found target: {}", target->GetDisplayFullName());
-                                if (find_owner) {
-                                    Actor* owner = find_owner.get().get();
-                                    log::info("found owner: {}", owner->GetDisplayFullName());
-                                }
+                    ActorKnowledge Data = Knowledge.second.get();
+                    ActorHandle find_target = Data.target;
+                    ActorHandle find_owner = Data.owner;
+                    if (find_target) {
+                        Actor* target = find_target.get().get();
+                        log::info("found target: {}", target->GetDisplayFullName());
+                        if (find_owner) {
+                            Actor* owner = find_owner.get().get();
+                            log::info("found owner: {}", owner->GetDisplayFullName());
+                        }
 
-                                auto state = Data.detectionState;
-                                if (state) {
-                                    DetectionState detection = state.get().get();
-                                    if (detection) {
-                                        log::info("Detection state of {} is {}", actor->GetDisplayFullName(), detection->level);
-                                    }
-                                }
+                        auto state = Data.detectionState;
+                        if (state) {
+                            DetectionState detection = state.get().get();
+                            if (detection) {
+                                log::info("Detection state of {} is {}", actor->GetDisplayFullName(), detection->level);
                             }
                         } 
                     }
