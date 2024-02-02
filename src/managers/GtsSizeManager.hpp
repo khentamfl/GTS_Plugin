@@ -69,7 +69,7 @@ namespace Gts {
 			void SetHitGrowth(Actor* actor, float allow);
 
 			void SetTrackedBone(Actor* actor, bool enable, CameraTracking Bone);
-			CameraTracking GetTrackedBone(Actor* actor, float type);
+			CameraTracking GetTrackedBone(Actor* actor);
 
 			float BalancedMode();
 
