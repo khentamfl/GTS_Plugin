@@ -47,229 +47,219 @@ namespace Gts {
 	BoneTarget Normal::GetBoneTarget() {
 		auto player = PlayerCharacter::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
-		
+
 		int MCM_Mode = Runtime::GetInt("NormalCameraTarget");
 		CameraTracking_MCM Camera_MCM = static_cast<CameraTracking_MCM>(MCM_Mode);
 		CameraTracking Camera_Anim = sizemanager.GetTrackedBone(player);
 
 		float offset = -45;
 
-		/*if (sizemanager.GetTrackedBone(player, 3)) {
-			altMode = 8; // Thigh Sandwich
-			offset = 0;
-		} else if (sizemanager.GetTrackedBone(player, 2)) {
-			altMode = 9; // Vore
-			offset = 0;
-		} else if (sizemanager.GetTrackedBone(player, 4)) {
-			altMode = 10; // Vore: Track Right Hand
-			offset = 0;
-		} else if (sizemanager.GetTrackedBone(player, 5)) {
-			altMode = 11; // L feet
-			offset = -10;
-		} else if (sizemanager.GetTrackedBone(player, 6)) {
-			altMode = 12; // R Feet
-			offset = -10;
-		} else if (sizemanager.GetTrackedBone(player, 0)) {
-			altMode = 13; // Thigh Crushing
-			offset = -10;
-		} else if (sizemanager.GetTrackedBone(player, 7)) {
-			altMode = 14; // Track Left Hand
-			offset = 0;
-		} else if (sizemanager.GetTrackedBone(player, 8)) {
-			altMode = 15; // Track booty
-			offset = -45;
-		} else if (sizemanager.GetTrackedBone(player, 9)) {
-			altMode = 5; // Track Breasts
-			offset = -15;
-		} else if (sizemanager.GetTrackedBone(player, 10)) {
-			altMode = 16; // Track Knees
-			offset = -15;
-		}*/
-
 		SetZOff(offset);
 
-		switch (Camera_MCM) {
-			case CameraTracking_MCM::None: {
-				return BoneTarget();
+		if (Camera_Anim != CameraTracking::None) { // must take priority
+			switch (Camera_Anim) {
+				case CameraTracking::None: {
+					return BoneTarget();
+				}
+				case CameraTracking::Butt: {
+					return BoneTarget {
+							.boneNames = {
+							"NPC L Butt",
+							"NPC R Butt",
+						},
+							.zoomScale = 0.75,
+					};
+				}
+				case CameraTracking::Knees: {
+					return BoneTarget {
+							.boneNames = {
+							"NPC L Calf [LClf]",
+							"NPC R Calf [RClf]",
+						},
+							.zoomScale = 1.25,
+					};
+				}
+				case CameraTracking::Breasts_02: {
+					return BoneTarget {
+							.boneNames = {
+							"L Breast02",
+							"R Breast02",
+						},
+							.zoomScale = 0.75,
+					};
+				}
+				case CameraTracking::Thigh_Crush: {
+					return BoneTarget {
+							.boneNames = {
+							"NPC R PreRearCalf",
+							"NPC R Foot [Rft ]",
+							"NPC L PreRearCalf",
+							"NPC L Foot [Lft ]",
+						},
+							.zoomScale = 1.00,
+					};
+				}
+				case CameraTracking::Thigh_Sandwich: {
+					return BoneTarget {
+							.boneNames = {
+							"AnimObjectA",
+						},
+							.zoomScale = 1.00,
+					};
+				}
+				case CameraTracking::Hand_Right: {
+					return BoneTarget {
+							.boneNames = {
+							"NPC R Hand [RHnd]",
+						},
+							.zoomScale = 0.75,
+					};
+				}
+				case CameraTracking::Hand_Left: {
+					return BoneTarget {
+							.boneNames = {
+							"NPC L Hand [LHnd]",
+						},
+							.zoomScale = 0.75,
+					};
+				}
+				case CameraTracking::Grab_Left: {
+					return BoneTarget {
+							.boneNames = {
+							"NPC L Finger02 [LF02]",
+						},
+							.zoomScale = 0.60,
+					};
+				}
+				case CameraTracking::L_Foot: {
+					return BoneTarget {
+							.boneNames = {
+							"NPC L Foot [Lft ]",
+						},
+							.zoomScale = 0.75,
+					};
+				}
+				case CameraTracking::R_Foot: {
+					return BoneTarget {
+							.boneNames = {
+							"NPC R Foot [Rft ]",
+						},
+							.zoomScale = 0.75,
+					};
+				}
+				case CameraTracking::Mid_Butt_Legs: {
+					return BoneTarget {
+							.boneNames = {
+							"NPC L Butt",
+							"NPC R Butt",
+							"NPC L Foot [Lft ]",
+							"NPC R Foot [Rft ]",
+						},
+							.zoomScale = 1.25,
+					};
+				}
+				case CameraTracking::VoreHand_Right: {
+					return BoneTarget {
+							.boneNames = {
+							"AnimObjectA",
+						},
+							.zoomScale = 1.25,
+					};
+				}
+				case CameraTracking::Finger_Right: {
+					return BoneTarget {
+							.boneNames = {
+							"NPC R Finger12 [RF12]",
+						},
+							.zoomScale = 0.60,
+					};
+				}
+				case CameraTracking::Finger_Left: {
+					return BoneTarget {
+							.boneNames = {
+							"NPC L Finger12 [LF12]",
+						},
+							.zoomScale = 0.60,
+					};
+				}
+				case CameraTracking::ObjectA: {
+					return BoneTarget {
+							.boneNames = {
+							"AnimObjectA",
+						},
+							.zoomScale = 1.0,
+					};
+				}
+				case CameraTracking::ObjectB: {
+					return BoneTarget {
+							.boneNames = {
+							"AnimObjectB",
+						},
+							.zoomScale = 1.0,
+					};
+				}
 			}
-			case CameraTracking_MCM::L_Foot: {
-				return BoneTarget { // L Feet
-				        .boneNames = {
-						"NPC L Foot [Lft ]",
-					},
-				        .zoomScale = 0.75,
-				}; 
+		} else {
+			switch (Camera_MCM) {
+				case CameraTracking_MCM::None: {
+					return BoneTarget();
+				}
+				case CameraTracking_MCM::Spine: {
+					return BoneTarget {
+							.boneNames = {
+							"NPC Spine2 [Spn2]",
+							"NPC Neck [Neck]",
+						},
+							.zoomScale = 0.75,
+					};
+				}
+				case CameraTracking_MCM::Clavicle: {
+					return BoneTarget {
+							.boneNames = {
+							"NPC R Clavicle [RClv]",
+							"NPC L Clavicle [LClv]",
+						},
+							.zoomScale = 0.75,
+					};
+				}
+				case CameraTracking_MCM::Breasts_01: {
+					return BoneTarget {
+							.boneNames = {
+							"NPC L Breast",
+							"NPC R Breast",
+						},
+							.zoomScale = 0.75,
+					};
+				}
+				case CameraTracking_MCM::Breasts_02: {
+					return BoneTarget {
+							.boneNames = {
+							"L Breast02",
+							"R Breast02",
+						},
+							.zoomScale = 0.75,
+					};
+				}
+				case CameraTracking_MCM::Breasts_03: {
+					return BoneTarget {
+							.boneNames = {
+							"L Breast03",
+							"R Breast03",
+						},
+							.zoomScale = 0.75,
+					};
+				}
+				case CameraTracking_MCM::Neck: {
+					return BoneTarget {
+							.boneNames = {
+							"NPC Neck [Neck]",
+						},
+							.zoomScale = 0.75,
+					};
+				}
 			}
-			case CameraTracking_MCM::R_Foot: {
-				return BoneTarget { // L Feet
-				        .boneNames = {
-						"NPC R Foot [Rft ]",
-					},
-				        .zoomScale = 0.75,
-				}; 
-			}
-			case CameraTracking_MCM::Mid_Foot: {
-				return BoneTarget { // L Feet
-				        .boneNames = {
-						"NPC R PreRearCalf",
-						"NPC R Foot [Rft ]",
-						"NPC L PreRearCalf",
-						"NPC L Foot [Lft ]",
-					},
-				        .zoomScale = 1.00,
-				};
-			}
-		//Breasts_01,
-		//Breasts_03,
-		//Mid_Foot,
 		}
 
-		/*switch (altMode) {
-			case 0: {
-				return BoneTarget();
-			}
-			case 1: {
-				return BoneTarget {
-				        .boneNames = {
-						"NPC Spine2 [Spn2]",
-						"NPC Neck [Neck]",
-					},
-				        .zoomScale = 0.75,
-				};
-			}
-			case 2: {
-				return BoneTarget {
-				        .boneNames = {
-						"NPC R Clavicle [RClv]",
-						"NPC L Clavicle [LClv]",
-					},
-				        .zoomScale = 0.75,
-				};
-			}
-			case 3: {
-				return BoneTarget {
-				        .boneNames = {
-						"NPC L Breast",
-						"NPC R Breast",
-					},
-				        .zoomScale = 0.75,
-				};
-			}
-			case 4: {
-				return BoneTarget {
-				        .boneNames = {
-						"L Breast02",
-						"R Breast02",
-					},
-				        .zoomScale = 0.75,
-				};
-			}
-			case 5: {
-				return BoneTarget {
-				        .boneNames = {
-						"L Breast03",
-						"R Breast03",
-					},
-				        .zoomScale = 0.75,
-				};
-			}
-			case 6: {
-				return BoneTarget {
-				        .boneNames = {
-						"NPC Neck [Neck]",
-					},
-				        .zoomScale = 0.75,
-				};
-			}
-			case 7: {
-				return BoneTarget {
-				        .boneNames = {
-						"NPC L Butt",
-						"NPC R Butt",
-					},
-				        .zoomScale = 0.75,
-				};
-			}
-			case 8: {
-				return BoneTarget { // Thigh Sandwich
-				        .boneNames = {
-						"AnimObjectA",
-					},
-				        .zoomScale = 1.00,
-				};
-			}
-			case 9: {
-				return BoneTarget { // Vore
-				        .boneNames = {
-						"AnimObjectA",
-					},
-				        .zoomScale = 1.20,
-				};
-			}
-			case 10: {
-				return BoneTarget { // Vore Hand
-				        .boneNames = {
-						"NPC R Hand [RHnd]",
-					},
-				        .zoomScale = 0.75,
-				};
-			}
-			case 11: {
-				return BoneTarget { // L Feet
-				        .boneNames = {
-						"NPC L Foot [Lft ]",
-					},
-				        .zoomScale = 0.75,
-				};
-			}
-			case 12: {
-				return BoneTarget { // R Feet
-				        .boneNames = {
-						"NPC R Foot [Rft ]",
-					},
-				        .zoomScale = 0.75,
-				};
-			}
-			case 13: {
-				return BoneTarget { // R feet + L Feet
-				        .boneNames = {
-						"NPC R PreRearCalf",
-						"NPC R Foot [Rft ]",
-						"NPC L PreRearCalf",
-						"NPC L Foot [Lft ]",
-					},
-				        .zoomScale = 1.00,
-				};
-			}
-			case 14: {
-				return BoneTarget { // L Hand
-				        .boneNames = {
-						"NPC L Finger02 [LF02]",
-					},
-				        .zoomScale = 0.60,
-				};
-			}
-			case 15: {
-				return BoneTarget {
-				        .boneNames = {
-						"NPC L Butt",
-						"NPC R Butt",
-						"NPC L Foot [Lft ]",
-						"NPC R Foot [Rft ]",
-					},
-				        .zoomScale = 1.25,
-				};
-			} 
-			case 16: {
-				return BoneTarget {
-				        .boneNames = {
-						"NPC L Calf [LClf]",
-						"NPC R Calf [RClf]",
-					},
-				        .zoomScale = 1.25,
-				};
-			}
-		}*/
 		return BoneTarget();
 	}
 }

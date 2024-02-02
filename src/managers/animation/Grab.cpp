@@ -179,7 +179,7 @@ namespace {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void GTSGrab_Catch_Start(AnimationEventData& data) {
-		ManageCamera(&data.giant, true, CameraTracking::Hand_Right);
+		ManageCamera(&data.giant, true, CameraTracking::Grab_Left);
 		auto grabbedActor = Grab::GetHeldActor(&data.giant);
 		if (grabbedActor) {
 			DisableCollisions(grabbedActor, &data.giant);
@@ -203,7 +203,7 @@ namespace {
 	}
 
 	void GTSGrab_Catch_End(AnimationEventData& data) {
-		ManageCamera(&data.giant, false, CameraTracking::Hand_Right);
+		ManageCamera(&data.giant, false, CameraTracking::Grab_Left);
 		StopLHandRumble("GrabL", data.giant);
 	}
 
@@ -214,7 +214,7 @@ namespace {
 	void GTSGrab_Attack_MoveStart(AnimationEventData& data) {
 		auto giant = &data.giant;
 		DrainStamina(giant, "GrabAttack", "DestructionBasics", true, 0.75);
-		ManageCamera(giant, true, CameraTracking::Hand_Right);
+		ManageCamera(giant, true, CameraTracking::Grab_Left);
 		StartLHandRumble("GrabMoveL", data.giant, 0.5, 0.10);
 	}
 
@@ -301,7 +301,7 @@ namespace {
 		auto giant = &data.giant;
 		auto& sizemanager = SizeManager::GetSingleton();
 		auto grabbedActor = Grab::GetHeldActor(giant);
-		ManageCamera(giant, false, CameraTracking::Hand_Right);
+		ManageCamera(giant, false, CameraTracking::Grab_Left);
 		DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.75);
 		StopLHandRumble("GrabMoveL", data.giant);
 		if (!grabbedActor) {
@@ -323,7 +323,7 @@ namespace {
 		ToggleEmotionEdit(&data.giant, true);
 		auto otherActor = Grab::GetHeldActor(&data.giant);
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
-		ManageCamera(&data.giant, true, CameraTracking::Hand_Right);
+		ManageCamera(&data.giant, true, CameraTracking::Grab_Left);
 		if (otherActor) {
 			VoreData.AddTiny(otherActor);
 		}
@@ -389,7 +389,7 @@ namespace {
 			Runtime::PlaySoundAtNode("VoreSwallow", &data.giant, 1.0, 1.0, "NPC Head [Head]"); // Play sound
 			AnimationManager::StartAnim("TinyDied", giant);
 			//BlockFirstPerson(giant, false);
-			ManageCamera(&data.giant, false, CameraTracking::Hand_Right);
+			ManageCamera(&data.giant, false, CameraTracking::Grab_Left);
 			SetBeingHeld(otherActor, false);
 			Grab::DetachActorTask(giant);
 			Grab::Release(giant);
@@ -405,7 +405,7 @@ namespace {
 	void GTSGrab_Throw_MoveStart(AnimationEventData& data) {
 		auto giant = &data.giant;
 		DrainStamina(giant, "GrabThrow", "DestructionBasics", true, 1.25);
-		ManageCamera(giant, true, CameraTracking::Hand_Right);
+		ManageCamera(giant, true, CameraTracking::Grab_Left);
 		StartLHandRumble("GrabThrowL", data.giant, 0.5, 0.10);
 	}
 
@@ -562,7 +562,7 @@ namespace {
 
 		giant->SetGraphVariableInt("GTS_GrabbedTiny", 0);
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
-		ManageCamera(giant, false, CameraTracking::Hand_Right);
+		ManageCamera(giant, false, CameraTracking::Grab_Left);
 		GRumble::Once("ThrowFoe", &data.giant, 2.50, 0.10, "NPC L Hand [LHnd]");
 		AnimationManager::StartAnim("TinyDied", giant);
 		//BlockFirstPerson(giant, false);
@@ -591,7 +591,7 @@ namespace {
 		giant->SetGraphVariableInt("GTS_Storing_Tiny", 0);
 		giant->SetGraphVariableInt("GTS_Grab_State", 0);
 		auto grabbedActor = Grab::GetHeldActor(giant);
-		ManageCamera(&data.giant, false, CameraTracking::Hand_Right);
+		ManageCamera(&data.giant, false, CameraTracking::Grab_Left);
 		AnimationManager::StartAnim("TinyDied", giant);
 		//BlockFirstPerson(giant, false);
 		if (grabbedActor) {
@@ -617,7 +617,7 @@ namespace {
 		AnimationManager::StartAnim("TinyDied", giant);
 		DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.75);
 		DrainStamina(giant, "GrabThrow", "DestructionBasics", false, 1.25);
-		ManageCamera(&data.giant, false, CameraTracking::Hand_Right);
+		ManageCamera(&data.giant, false, CameraTracking::Grab_Left);
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
 	}
@@ -637,7 +637,7 @@ namespace {
 		AnimationManager::StartAnim("TinyDied", giant);
 		DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.75);
 		DrainStamina(giant, "GrabThrow", "DestructionBasics", false, 1.25);
-		ManageCamera(&data.giant, false, CameraTracking::Hand_Right);
+		ManageCamera(&data.giant, false, CameraTracking::Grab_Left);
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
 	}
@@ -647,7 +647,7 @@ namespace {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void GTSGrab_Breast_MoveStart(AnimationEventData& data) {
-		ManageCamera(&data.giant, true, CameraTracking::Hand_Right);
+		ManageCamera(&data.giant, true, CameraTracking::Grab_Left);
 	}
 
 	void GTSGrab_Breast_PutActor(AnimationEventData& data) { // Places actor between breasts
@@ -682,7 +682,7 @@ namespace {
 	}
 
 	void GTSGrab_Breast_MoveEnd(AnimationEventData& data) {
-		ManageCamera(&data.giant, false, CameraTracking::Hand_Right);
+		ManageCamera(&data.giant, false, CameraTracking::Grab_Left);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -867,7 +867,7 @@ namespace Gts {
 				DrainStamina(giant, "GrabAttack", "DestructionBasics", false, 0.75);
 				AnimationManager::StartAnim("GrabAbort", giantref); // Abort Grab animation
 				AnimationManager::StartAnim("TinyDied", giantref);
-				ManageCamera(giantref, false, CameraTracking::Hand_Right); // Disable any camera edits
+				ManageCamera(giantref, false, CameraTracking::Grab_Left); // Disable any camera edits
 				Grab::Release(giantref);
 				return false;
 			}

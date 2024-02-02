@@ -32,32 +32,33 @@ namespace Gts {
 		kGift,
 		kNeutral,
 	};
+	
 	enum class CameraTracking_MCM {
 		None,
-		L_Foot,
-		R_Foot,
-		Mid_Foot,
+		Spine,
+		Clavicle,
 		Breasts_01,
-		Breasts_03,
+		Breasts_02,
+		Breasts_03, // 3BBB tip
+		Neck,
 	};
 
 	enum class CameraTracking {
 		None,
-		Neck,
 		Butt,
 		Knees,
-		Clavicle,
-		Breasts_01,
 		Breasts_02,
-		Breasts_03,
 		Thigh_Crush,
 		Thigh_Sandwich,
 		Hand_Right,
 		Hand_Left,
+		Grab_Left,
 		L_Foot,
 		R_Foot,
-		Mid_Foot,
 		Mid_Butt_Legs,
+		VoreHand_Right,
+		Finger_Right,
+		Finger_Left,
 		ObjectA,
 		ObjectB,
 	};

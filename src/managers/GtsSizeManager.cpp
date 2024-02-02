@@ -298,6 +298,9 @@ namespace Gts {
 	//===============Camera Stuff
 	void SizeManager::SetTrackedBone(Actor* actor, bool enable, CameraTracking Bone) {
 		SetCameraOverride(actor, enable);
+		if (!enable) {
+			Bone = CameraTracking::None;
+		}
 		this->GetData(actor).TrackedBone = Bone;
 	}
 
