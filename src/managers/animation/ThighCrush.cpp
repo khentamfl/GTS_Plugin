@@ -112,6 +112,7 @@ namespace {
 
 		NiPoint3 Start = Knee->world.translate;
 		NiPoint3 End = Leg->world.translate;
+
 		NiPoint3 Thigh_Pos = Knee->world.translate;
 		// Forward
 		NiPoint3 forward = (Start - End);
@@ -123,8 +124,8 @@ namespace {
 		NiPoint3 sideways = NiPoint3();
 		sideways.Unitize();
 		// Reorthorg
-		forward = up.Cross(sideways * -1.0);
-		forward.Unitize();
+		//forward = up.Cross(sideways * -1.0);
+		//forward.Unitize();
 		
 		NiMatrix3 KneeRotation = NiMatrix3(sideways, forward, up);
 
