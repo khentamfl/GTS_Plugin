@@ -17,6 +17,7 @@
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/Utils/CrawlUtils.hpp"
+#include "managers/damage/CollisionDamage.hpp"
 #include "managers/animation/ThighCrush.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/InputManager.hpp"
@@ -116,13 +117,13 @@ namespace {
 		std::vector<NiPoint3> coordinates = {
 			Thigh_High,
 			Thigh_Mid,
-			Thigh_low,
-		}
+			Thigh_Low,
+		};
 
 		return coordinates;
 	}
 	
-	void ThighCrush_ApplyThighDamage(Actor* giant, bool right, float radius, float damage, float bbmult, float crush_threshold, int random, DamageSource Cause) {
+	void ThighCrush_ApplyThighDamage(Actor* actor, bool right, float radius, float damage, float bbmult, float crush_threshold, int random, DamageSource Cause) {
 		auto profiler = Profilers::Profile("CollisionDamageLeft: DoFootCollision_Left");
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		if (!actor) {
@@ -146,7 +147,7 @@ namespace {
 		}
 
 		float maxFootDistance = radius * giantScale;
-		std::vector<NiPoint3> ThighPoints = GetThighCoordinates(giant, knee, leg);
+		std::vector<NiPoint3> ThighPoints = GetThighCoordinates(actor, knee, leg);
 
 		if (!ThighPoints.empty()) {
 			if (IsDebugEnabled() && (actor->formID == 0x14 || IsTeammate(actor) || EffectsForEveryone(actor))) {
