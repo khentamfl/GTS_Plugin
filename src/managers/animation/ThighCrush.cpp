@@ -100,19 +100,19 @@ namespace {
 		}
 	}
 
-	std::vector<NiPoint3> GetThighCoordinates(Actor* giant, std::string_view calf, std::string_view feet, std::string_view thigh) {
+	std::tuple<std::vector<NiPoint3>, float> GetThighCoordinates(Actor* giant, std::string_view calf, std::string_view feet, std::string_view thigh) {
 		NiAVObject* Knee = find_node(giant, calf);
 		NiAVObject* Foot = find_node(giant, feet);
 
 		NiAVObject* Thigh = find_node(giant, thigh);
 		if (!Knee) {
-			return std::vector<NiPoint3> {};
+			return std::forward_as_tuple(NiPoint3(), 0.0);
 		}
 		if (!Foot) {
-			return std::vector<NiPoint3> {};
+			return std::forward_as_tuple(NiPoint3(), 0.0);
 		}
 		if (!Thigh) {
-			return std::vector<NiPoint3> {};
+			return std::forward_as_tuple(NiPoint3(), 0.0);
 		}
 
 		NiPoint3 Knee_Point = Knee->world.translate;
@@ -129,15 +129,14 @@ namespace {
 
 		log::info("Found coordinates");
 
-		std::vector<NiPoint3> coordinates = {
-			Knee_Pos_Middle,
-			Knee_Pos_Up,
-			Knee_Pos_Down,
-			Thigh_Pos_Middle,
-			Thigh_Pos_Up,
-			Thigh_Pos_Down,
+		std::tuple<std::vector<NiPoint3>, float> coordinates = {
+			std::forward_as_tuple(Knee_Pos_Middle, 1.2),
+			std::forward_as_tuple(Knee_Pos_Up, 1.3),
+			std::forward_as_tuple(Knee_Pos_Down, 0.9),
+			std::forward_as_tuple(Thigh_Pos_Middle, 1.3),
+			std::forward_as_tuple(Thigh_Pos_Up, 1.4),
+			std::forward_as_tuple(Thigh_Pos_Down, 1.15),
 		};
-
 		return coordinates;
 	}
 	
@@ -164,11 +163,16 @@ namespace {
 		if (!right) {
 			leg = "NPC L Foot [Lft ]";
 			knee = "NPC L Calf [LClf]";
-			thigh = "NPC R Thigh [LThg]";
+			thigh = "NPC L Thigh [LThg]";
 		}
 
 		float maxFootDistance = radius * giantScale;
-		std::vector<NiPoint3> ThighPoints = GetThighCoordinates(actor, knee, leg, thigh);
+		std::tuple<std::vector<NiPoint3>, float> Data = GetThighCoordinates(actor, knee, leg, thigh);
+
+		std::vector<NiPoint3> ThighPoints = GetThighCoordinates(actor, knee, leg, thigh).first;
+
+		float radius_mult = ThighPoints.second;
+		radius *= radius_mult;
 
 		if (!ThighPoints.empty()) {
 			for (const auto& point: ThighPoints) {
@@ -212,6 +216,8 @@ namespace {
 					}
 				}
 			}
+		} else {
+
 		}
 	}
 
