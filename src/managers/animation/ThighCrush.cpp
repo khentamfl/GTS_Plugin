@@ -178,8 +178,8 @@ namespace {
 		crush_threshold *= (1.10 - speed*0.10);
 		
 		if (CooldownCheck) {
-			CollisionDamage::GetSingleton().DoFootCollision(actor, damage, radius, random, bbmult, crush_threshold, DamageSource::CrushedRight, true, true);
-			CollisionDamage::GetSingleton().DoFootCollision(actor, damage, radius, random, bbmult, crush_threshold, DamageSource::CrushedLeft, false, true);
+			CollisionDamage::GetSingleton().DoFootCollision(actor, damage * 0.8 * perk, radius, random, bbmult, crush_threshold, DamageSource::ThighCrushed, true, true);
+			CollisionDamage::GetSingleton().DoFootCollision(actor, damage * 0.8 * perk, radius, random, bbmult, crush_threshold, DamageSource::ThighCrushed, false, true);
 		}
 
 		if (!ThighPoints.empty()) {

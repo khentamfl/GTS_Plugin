@@ -1,7 +1,7 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/ThighSandwich.hpp"
 #include "managers/emotions/EmotionManager.hpp"
-#include "managers/GtsSizeManager.hpp"
+#include "managers/GtsEmotionManager.hpp"
 #include "managers/InputManager.hpp"
 #include "managers/CrushManager.hpp"
 #include "managers/explosion.hpp"
@@ -17,6 +17,8 @@
 namespace {
 
 	const float Speed_up = 12.0f;
+	const double LAUGH_COOLDOWN = 5.0f;
+	const double MOAN_COOLDOWN = 5.0f;
 
 	BSFaceGenAnimationData* GetFacialData(Actor* giant) {
 		auto fgen = giant->GetFaceGenAnimationData();
@@ -172,5 +174,18 @@ namespace Gts {
 
 	void EmotionManager::OverrideModifier(Actor* giant, int number, float power, float halflife, float target) {
 		Task_UpdateModifier(giant, number, halflife, target);
+	}
+
+	bool EmotionManager::Laugh_InCooldown(Actor* actor) {
+		return Time::WorldTimeElapsed() <= (EmotionManager::GetSingleton().GetEmotionData(actor).lastLaughTime + LAUGH_COOLDOWN);
+	}
+
+	bool EmotionManager::Moan_InCooldown(Actor* actor) {
+		return Time::WorldTimeElapsed() <= (EmotionManager::GetSingleton().GetEmotionData(actor).lastMoanTime + MOAN_COOLDOWN);
+	}
+
+	EmotionData& EmotionManager::GetEmotionData(Actor* actor) {
+		this->EmotionData.try_emplace(actor);
+		return this->EmotionData.at(actor);
 	}
 }

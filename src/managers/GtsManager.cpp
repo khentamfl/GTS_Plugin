@@ -266,8 +266,6 @@ void GtsManager::Update() {
 
 		FixActorFade(actor);
 
-		
-
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 

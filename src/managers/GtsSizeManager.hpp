@@ -90,7 +90,7 @@ namespace Gts {
 
 			bool GetPreciseDamage();
 
-		private:
+		private: 
 			std::map<Actor*, SizeManagerData> sizeData;
 			std::map<Actor*, LaunchData> launchData;
 			std::map<Actor*, DamageData> DamageData;
