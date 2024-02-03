@@ -183,12 +183,13 @@ namespace {
 			thigh = "NPC L Thigh [LThg]";
 		}
 
-		float maxFootDistance = radius * giantScale;
+		
 		std::vector<NiPoint3> ThighPoints = GetThighCoordinates(actor, knee, leg, thigh);
 		std::vector<float> Radius_Multiplier = GetRadiusMultipliers();
 
 		if (!ThighPoints.empty()) {
 			for (const auto& point: ThighPoints) {
+				float maxFootDistance = radius * giantScale;
 				for (const auto& mult: Radius_Multiplier) {
 					radius *= mult;
 				}
