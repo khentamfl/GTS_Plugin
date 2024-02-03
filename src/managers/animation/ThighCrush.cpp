@@ -100,32 +100,39 @@ namespace {
 		}
 	}
 
-		std::vector<NiPoint3> GetThighCoordinates(Actor* giant, std::string_view Calf, std::string_view Feet) {
+	std::vector<NiPoint3> GetThighCoordinates(Actor* giant, std::string_view Calf, std::string_view Feet, std::string_view Thigh) {
 		NiAVObject* Knee = find_node(giant, Calf);
-		NiAVObject* Leg = find_node(giant, Feet);
+		NiAVObject* Foot = find_node(giant, Feet);
+
+		NiAVObject* Thigh = find_node(giant, Thigh);
 		if (!Knee) {
 			return std::vector<NiPoint3> {};
 		}
-		if (!Leg) {
+		if (!Foot) {
+			return std::vector<NiPoint3> {};
+		}
+		if (!Thigh) {
 			return std::vector<NiPoint3> {};
 		}
 
-		NiPoint3 Start = Knee->world.translate;
-		NiPoint3 End = Leg->world.translate;
+		NiPoint3 Knee_Point = Knee->world.translate;
+		NiPoint3 Foot_Point = Foot->world.translate;
+		NiPoint3 Thigh_Point = Thigh->world.translate;
 
-		NiPoint3 Thigh_Pos = (Start + End) / 2.0; 				// middle  |-----|-----|
-		NiPoint3 Thigh_Pos_Up = (Start + Thigh_Pos) / 2.0;		//         |--|--|-----|
-		NiPoint3 Thigh_Pos_Down = (Start + Thigh_Pos_Up) / 2.0; //         |-----|--|--|
+		NiPoint3 Knee_Pos_Middle = (Knee_Point + Foot_Point) / 2.0; 				// middle  |-----|-----|
+		NiPoint3 Knee_Pos_Up = (Knee_Point + Knee_Pos_Middle) / 2.0;				//         |--|--|-----|
+		NiPoint3 Knee_Pos_Down = (Knee_Pos_Middle + Foot_Point) / 2.0; 				//         |-----|--|--|
 
-		// Manual offsets
-		float offset_Z = -35.0;//-25.0;
-		float offset_Y = -0.0;
-
-		// rotate tiny to face the same direction as gts
+		NiPoint3 Thigh_Pos_Middle = (Thigh_Point + Knee_Point) / 2.0;               // middle  |-----|-----|
+		NiPoint3 Thigh_Pos_Up = (Thigh_Pos_Middle + Thigh_Point) / 2.0;            	//         |--|--|-----|
+		NiPoint3 Thigh_Pos_Down = (Thigh_Pos_Middle + Knee_Point) / 2.0;        	//         |-----|--|--|
 
 		log::info("Found coordinates");
 
 		std::vector<NiPoint3> coordinates = {
+			Knee_Pos_Middle,
+			Knee_Pos_Up,
+			Knee_Pos_Down,
 			Thigh_Pos,
 			Thigh_Pos_Up,
 			Thigh_Pos_Down,
@@ -152,13 +159,16 @@ namespace {
 		std::string_view leg = "NPC R Foot [Rft ]";
 		std::string_view knee = "NPC R Calf [RClf]";
 
+		std::string_view thigh = "NPC R Thigh [RThg]";
+
 		if (!right) {
 			leg = "NPC L Foot [Lft ]";
 			knee = "NPC L Calf [LClf]";
+			thigh = "NPC R Thigh [LThg]";
 		}
 
 		float maxFootDistance = radius * giantScale;
-		std::vector<NiPoint3> ThighPoints = GetThighCoordinates(actor, knee, leg);
+		std::vector<NiPoint3> ThighPoints = GetThighCoordinates(actor, knee, leg, thigh);
 
 		if (!ThighPoints.empty()) {
 			for (const auto& point: ThighPoints) {
@@ -167,7 +177,6 @@ namespace {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance, 400);
 				}
 			
-				log::info("Coordinates aren't empty");
 				NiPoint3 giantLocation = actor->GetPosition();
 				for (auto otherActor: find_actors()) {
 					if (otherActor != actor) {
