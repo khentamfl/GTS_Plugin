@@ -9,7 +9,7 @@ using namespace RE;
 
 namespace Gts {
 	struct EmotionData {
-		double lastLaughime = -1.0e8;
+		double lastLaughTime = -1.0e8;
 		double lastMoanTime = -1.0e8;
 	};
 

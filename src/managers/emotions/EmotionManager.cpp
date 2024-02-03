@@ -169,7 +169,7 @@ namespace Gts {
 	}
 
 	void EmotionManager::Reset() {
-		this->data.clear();
+		this->EmotionData.clear();
 	}
 
 	void EmotionManager::OverridePhenome(Actor* giant, int number, float power, float halflife, float target) {
