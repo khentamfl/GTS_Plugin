@@ -100,7 +100,7 @@ namespace {
 		}
 	}
 
-	std::vector<std::vector<NiPoint3>, std::vector<float> GetThighCoordinates(Actor* giant, std::string_view calf, std::string_view feet, std::string_view thigh) {
+	std::vector<std::vector<NiPoint3>, std::vector<float>> GetThighCoordinates(Actor* giant, std::string_view calf, std::string_view feet, std::string_view thigh) {
 		NiAVObject* Knee = find_node(giant, calf);
 		NiAVObject* Foot = find_node(giant, feet);
 
@@ -149,7 +149,7 @@ namespace {
 			1.35,
 			1.10,
 			1.0,
-		}l
+		};
 
 		return std::vector<coordinates, values>;
 	}
@@ -183,7 +183,7 @@ namespace {
 		float maxFootDistance = radius * giantScale;
 		auto data = GetThighCoordinates(actor, knee, leg, thigh);
 		std::vector<NiPoint3> ThighPoints = data[0];
-		std::vector<NiPoint3> Radius_Multiplier = data[1];
+		std::vector<float> Radius_Multiplier = data[1];
 
 		if (!ThighPoints.empty()) {
 			for (const auto& point: ThighPoints) {
