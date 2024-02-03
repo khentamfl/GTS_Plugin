@@ -25,13 +25,6 @@ namespace {
     const std::string_view Rfinger = "NPC R Finger12 [RF12]";
 	const std::string_view Lfinger = "NPC L Finger12 [LF12]";
 
-	void FingerGrind_Smile(Actor* giantref, Actor* tinyref, float duration) {
-		if (!tinyref->IsDead()) {
-			PlayLaughSound(giantref, 1.0, 1);
-			Task_FacialEmotionTask_Smile(giantref, duration, "FingerGrind");
-		}
-	}
-
     void Finger_DoSounds(Actor* giant, std::string_view node_name, float mult) {
 		NiAVObject* node = find_node(giant, node_name);
 		if (node) {
@@ -226,14 +219,7 @@ namespace Gts {
 								} else {
 									set_target_scale(otherActor, 0.08 / GetSizeFromBoundingBox(otherActor));
 								}
-
-								if (SmileTimer.ShouldRunFrame()) {
-									int rng = rand() % 2 + 1;
-									if (rng <= 1.0) {
-										float durationrng = (rand() % 100) * 0.01;
-										FingerGrind_Smile(giant, otherActor, 1.5 + durationrng);
-									}
-								}
+								Laugh_Chance(giant, otherActor, 1.0, "FingerGrind"); 
 								Utils_PushCheck(giant, otherActor, 1.0);
 								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause);
 							}
@@ -251,6 +237,21 @@ namespace Gts {
             ManageCamera(giant, enable, CameraTracking::Hand_Left);
         }
     }
+
+	void Laugh_Chance(Actor* giant, Actor* otherActor, float multiply, std::string_view name) {
+		if (SmileTimer.ShouldRunFrame()) {
+			int rng = rand() % 2 + 1;
+			if (rng <= 1.0) {
+				float duration = 1.5 + ((rand() % 100) * 0.01);
+				duration * multiply;
+
+				if (!otherActor->IsDead()) {
+					PlayLaughSound(giant, 1.0, 1);
+					Task_FacialEmotionTask_Smile(giant, duration, name);
+				}
+			}
+		}
+	}
 
     void StopStaminaDrain(Actor* giant) {
 		DrainStamina(giant, "StaminaDrain_StrongSneakSlam", "DestructionBasics", false, 2.2);

@@ -100,19 +100,6 @@ namespace {
 		}
 	}
 
-	std::vector<float>GetRadiusMultipliers() { // lazy hack, not sure how to deal with it properly
-		std::vector<float> values = {
-			1.2,
-			1.1,
-			1.0,
-			1.25,
-			1.40,
-			1.10,
-			1.0,
-		};
-		return values;
-	}
-
 	std::vector<NiPoint3> GetThighCoordinates(Actor* giant, std::string_view calf, std::string_view feet, std::string_view thigh) {
 		NiAVObject* Knee = find_node(giant, calf);
 		NiAVObject* Foot = find_node(giant, feet);
@@ -140,7 +127,7 @@ namespace {
 		NiPoint3 Thigh_Pos_Up = (Thigh_Pos_Middle + Thigh_Point) / 2.0;            	//         |--|--|-----|
 		NiPoint3 Thigh_Pos_Down = (Thigh_Pos_Middle + Knee_Point) / 2.0;        	//         |-----|--|--|
 
-		NiPoint3 Knee_Thigh_Middle = (Thigh_Pos_Down + Knee_Pos_Up) / 2.0;
+		NiPoint3 Knee_Thigh_Middle = (Thigh_Pos_Down + Knee_Pos_Up) / 2.0;          // middle between two
 
 		log::info("Found coordinates");
 
@@ -157,7 +144,7 @@ namespace {
 		return coordinates;
 	}
 	
-	void ThighCrush_ApplyThighDamage(Actor* actor, bool right, float radius, float damage, float bbmult, float crush_threshold, int random, DamageSource Cause) {
+	void ThighCrush_ApplyThighDamage(Actor* actor, bool right, bool CooldownCheck, float radius, float damage, float bbmult, float crush_threshold, int random, DamageSource Cause) {
 		auto profiler = Profilers::Profile("CollisionDamageLeft: DoFootCollision_Left");
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		if (!actor) {
@@ -167,6 +154,7 @@ namespace {
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 90.0;
 		float SCALE_RATIO = 1.15;
+
 		if (HasSMT(actor)) {
 			giantScale += 0.20;
 			SCALE_RATIO = 0.7;
@@ -174,7 +162,6 @@ namespace {
 
 		std::string_view leg = "NPC R Foot [Rft ]";
 		std::string_view knee = "NPC R Calf [RClf]";
-
 		std::string_view thigh = "NPC R Thigh [RThg]";
 
 		if (!right) {
@@ -183,18 +170,13 @@ namespace {
 			thigh = "NPC L Thigh [LThg]";
 		}
 
-		
+		float Speed = AnimationManager::GetAnimSpeed(actor);
+		crush_threshold *= (1.10 - speed*0.10);
 		std::vector<NiPoint3> ThighPoints = GetThighCoordinates(actor, knee, leg, thigh);
-		std::vector<float> Radius_Multiplier = GetRadiusMultipliers();
 
 		if (!ThighPoints.empty()) {
 			for (const auto& point: ThighPoints) {
 				float maxFootDistance = radius * giantScale;
-				for (const auto& mult: Radius_Multiplier) {
-					radius *= mult;
-				}
-				//float radius_mult = ThighPoints[1].[];
-				//radius *= radius_mult;	
 
 				if (IsDebugEnabled() && (actor->formID == 0x14 || IsTeammate(actor) || EffectsForEveryone(actor))) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance, 400);
@@ -208,7 +190,6 @@ namespace {
 							NiPoint3 actorLocation = otherActor->GetPosition();
 
 							if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
-								// Check the tiny's nodes against the giant's foot points
 								int nodeCollisions = 0;
 								float force = 0.0;
 
@@ -227,20 +208,30 @@ namespace {
 									}
 								}
 								if (nodeCollisions > 0) {
-									Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
-									CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause);
+									if (CooldownCheck) {
+										bool OnCooldown = sizemanager.IsThighDamaging(otherActor);
+										if (!OnCooldown) {
+											Laugh_Chance(giant, otherActor, 1.35, "ThighCrush");
+											float difference = giantScale / (tinyScale * GetSizeFromBoundingBox(otherActor));
+											
+											PushTowards(giant, otherActor, leg, 0.25 * damage * difference, true);
+											CollisionDamage.DoSizeDamage(actor, otherActor, damage * speed, bbmult, crush_threshold, random, Cause);
+											sizemanager.GetDamageData(otherActor).lastThighDamageTime = Time::WorldTimeElapsed();
+										}
+									} else {
+										Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
+										CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause);
+									}
 								}
 							}
 						}
 					}
 				}
 			}
-		} else {
-
-		}
+		} 
 	}
 
-	void RunThighCollisionTask(Actor* giant, bool right, float radius, float damage, float bbmult, float crush_threshold, int random, DamageSource cause, std::string_view tn) {
+	void RunThighCollisionTask(Actor* giant, bool right, bool CooldownCheck, float radius, float damage, float bbmult, float crush_threshold, int random, std::string_view tn) {
 		std::string name = std::format("ThighCrush_{}_{}", giant->formID, tn);
 		auto gianthandle = giant->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
@@ -255,7 +246,7 @@ namespace {
 				return false; //Disable it once we leave Thigh Crush state
 			}
 			
-			ThighCrush_ApplyThighDamage(giant, right, radius, damage, bbmult, crush_threshold, random, cause);
+			ThighCrush_ApplyThighDamage(giant, right, CooldownCheck, radius, damage, bbmult, crush_threshold, random, DamageSource::ThighCrushed);
 
 			return true; // Cancel it
 		});
@@ -307,8 +298,8 @@ namespace {
 		StartLegRumble("ThighCrush", data.giant, 0.10, 0.10);
 		ManageCamera(&data.giant, true, CameraTracking::Thigh_Crush); // Track feet
 
-		RunThighCollisionTask(&data.giant, true, Radius_ThighCrush_Idle, Damage_ThighCrush_Legs_Idle, 0.02, 3.0, 600, DamageSource::ThighCrushed, "ThighIdle_R");
-		RunThighCollisionTask(&data.giant, false, Radius_ThighCrush_Idle, Damage_ThighCrush_Legs_Idle, 0.02, 3.0, 600, DamageSource::ThighCrushed, "ThighIdle_L");
+		RunThighCollisionTask(&data.giant, true, false, Radius_ThighCrush_Idle, Damage_ThighCrush_Legs_Idle, 0.02, 2.0, 600, "ThighIdle_R");
+		RunThighCollisionTask(&data.giant, false, false, Radius_ThighCrush_Idle, Damage_ThighCrush_Legs_Idle, 0.02, 2.0, 600, "ThighIdle_L");
 
 		RunButtCollisionTask(&data.giant);
 		data.stage = 1;
@@ -345,8 +336,8 @@ namespace {
 		TaskManager::Cancel(name_l);
 		TaskManager::Cancel(name_r);
 
-		RunThighCollisionTask(&data.giant, true, Radius_ThighCrush_Spread_Out, Damage_ThighCrush_CrossLegs_Out, 0.10, 3.0, 50, DamageSource::ThighCrushed, "ThighLight_R");
-		RunThighCollisionTask(&data.giant, false, Radius_ThighCrush_Spread_Out, Damage_ThighCrush_CrossLegs_Out, 0.10, 3.0, 50, DamageSource::ThighCrushed, "ThighLight_L");
+		RunThighCollisionTask(&data.giant, true, true, Radius_ThighCrush_Spread_Out, Damage_ThighCrush_CrossLegs_Out, 0.10, 1.70, 50, "ThighLight_R");
+		RunThighCollisionTask(&data.giant, false, true, Radius_ThighCrush_Spread_Out, Damage_ThighCrush_CrossLegs_Out, 0.10, 1.70, 50, "ThighLight_L");
 
 		data.stage = 5;
 	}
@@ -376,8 +367,8 @@ namespace {
 		TaskManager::Cancel(name_l);
 		TaskManager::Cancel(name_r);
 
-		RunThighCollisionTask(&data.giant, true, Radius_ThighCrush_Spread_In, Damage_ThighCrush_CrossLegs_In, 0.25, 3.0, 25, DamageSource::ThighCrushed, "ThighHeavy_R");
-		RunThighCollisionTask(&data.giant, false, Radius_ThighCrush_Spread_In, Damage_ThighCrush_CrossLegs_In, 0.25, 3.0, 25, DamageSource::ThighCrushed, "ThighHeavy_L");
+		RunThighCollisionTask(&data.giant, true, true, Radius_ThighCrush_Spread_In, Damage_ThighCrush_CrossLegs_In, 0.25, 1.4, 25, "ThighHeavy_R");
+		RunThighCollisionTask(&data.giant, false, true, Radius_ThighCrush_Spread_In, Damage_ThighCrush_CrossLegs_In, 0.25, 1.4, 25, "ThighHeavy_L");
 
 		StartLegRumble("ThighCrushHeavy", data.giant, 0.35, 0.10);
 		data.stage = 5;
@@ -395,8 +386,8 @@ namespace {
 		TaskManager::Cancel(name_l);
 		TaskManager::Cancel(name_r);
 
-		RunThighCollisionTask(&data.giant, true, Radius_ThighCrush_Idle, Damage_ThighCrush_Legs_Idle, 0.02, 3.0, 600, DamageSource::ThighCrushed, "ThighIdle_R");
-		RunThighCollisionTask(&data.giant, false, Radius_ThighCrush_Idle, Damage_ThighCrush_Legs_Idle, 0.02, 3.0, 600, DamageSource::ThighCrushed, "ThighIdle_L");
+		RunThighCollisionTask(&data.giant, true, false, Radius_ThighCrush_Idle, Damage_ThighCrush_Legs_Idle, 0.02, 3.0, 600, "ThighIdle_R");
+		RunThighCollisionTask(&data.giant, false, false, Radius_ThighCrush_Idle, Damage_ThighCrush_Legs_Idle, 0.02, 3.0, 600, "ThighIdle_L");
 
 		data.stage = 6;
 	}

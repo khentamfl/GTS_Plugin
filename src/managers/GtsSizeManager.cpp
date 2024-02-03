@@ -24,10 +24,11 @@ using namespace REL;
 using namespace SKSE;
 
 namespace {
-	const double LAUNCH_COOLDOWN = 3.0;
-	const double DAMAGE_COOLDOWN = 2.0;
-	const double HANDDAMAGE_COOLDOWN = 0.6;
-	const double SCARE_COOLDOWN = 6.0;
+	const double LAUNCH_COOLDOWN = 3.0f;
+	const double DAMAGE_COOLDOWN = 2.0f;
+	const double HANDDAMAGE_COOLDOWN = 0.6f;
+	const double THIGHDAMAGE_COOLDOWN = 1.2f;
+	const double SCARE_COOLDOWN = 6.0f;
 	const float LAUNCH_DAMAGE_BASE = 1.0f;
 	const float LAUNCH_KNOCKBACK_BASE = 0.02f;
 
@@ -387,6 +388,10 @@ namespace Gts {
 
 	bool SizeManager::IsHandDamaging(Actor* actor) {
 		return Time::WorldTimeElapsed() <= (SizeManager::GetSingleton().GetDamageData(actor).lastHandDamageTime + HANDDAMAGE_COOLDOWN);
+	}
+
+	bool SizeManager::IsThighDamaging(Actor* actor) {
+		return Time::WorldTimeElapsed() <= (SizeManager::GetSingleton().GetDamageData(actor).lastThighDamageTime + THIGHDAMAGE_COOLDOWN);
 	}
 
 	bool SizeManager::IsBeingScared(Actor* actor) {

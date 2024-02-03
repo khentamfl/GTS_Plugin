@@ -1816,6 +1816,13 @@ namespace Gts {
 		}
 	}
 
+	void PushTowards(Actor* giantref, Actor* tinyref, std::string_view bone, float power, bool sizecheck) {
+		NiAVObject* node = find_node(giantref, bone);
+		if (node) {
+			PushTowards(giantref, tinyref, node, power, sizecheck);
+		}
+	}
+
 	void PushTowards(Actor* giantref, Actor* tinyref, NiAVObject* bone, float power, bool sizecheck) {
 		NiPoint3 startCoords = bone->world.translate;
 		double startTime = Time::WorldTimeElapsed();
