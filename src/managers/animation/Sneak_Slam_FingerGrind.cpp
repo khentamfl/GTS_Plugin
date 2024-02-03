@@ -242,7 +242,7 @@ namespace Gts {
 				if (!otherActor->IsDead()) {
 					PlayLaughSound(giant, 1.0, 1);
 					Task_FacialEmotionTask_Smile(giant, duration, name);
-					Emotions.GetEmotionData(giant).lastLaughime = Time::WorldTimeElapsed();
+					Emotions.GetEmotionData(giant).lastLaughTime = Time::WorldTimeElapsed();
 				}
 			}
 		}

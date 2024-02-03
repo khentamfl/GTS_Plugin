@@ -154,6 +154,7 @@ namespace {
 		float giantScale = get_visual_scale(actor);
 		float perk = GetPerkBonus_Thighs(actor);
 		const float BASE_CHECK_DISTANCE = 90.0;
+		float damage_zones_applied = 1.0;
 		float SCALE_RATIO = 1.15;
 
 		if (HasSMT(actor)) {
@@ -216,6 +217,9 @@ namespace {
 									}
 								}
 								if (nodeCollisions > 0) {
+									damage_zones_applied += 1.0;
+									log::info("Damage zones applied: {}", damage_zones_applied);
+									damage /= damage_zones_applied;
 									if (CooldownCheck) {
 										float pushForce = std::clamp(force, 0.04f, 0.10f);
 										bool OnCooldown = sizemanager.IsThighDamaging(otherActor);
