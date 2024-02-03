@@ -114,10 +114,10 @@ namespace {
 		NiPoint3 End = Leg->world.translate;
 		NiPoint3 Thigh_Pos = Knee->world.translate;
 		// Forward
-		NiPoint3 forward = NiPoint3();
+		NiPoint3 forward = (Start - End);
 		forward.Unitize();
 		// Up
-		NiPoint3 up = (Start - End);
+		NiPoint3 up = NiPoint3();
 		up.Unitize();
 		// Sideways
 		NiPoint3 sideways = NiPoint3();
@@ -130,7 +130,7 @@ namespace {
 
 
 		// Manual offsets
-		float offset_Z = -25.0;
+		float offset_Z = -40.0;
 
 		// Offset adjustment HERE
 		NiPoint3 offset_1 = NiPoint3(0.0, 0.0, offset_Z);
