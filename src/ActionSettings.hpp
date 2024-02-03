@@ -21,7 +21,7 @@ namespace Gts {
     const float Damage_Grab_Attack = 1.6f;
     ////////////////Defaults
 
-    const float Damage_Default_Idle = 0.01f; // when we just stand still
+    const float Damage_Default_Underfoot = 0.004f; // when we just stand still
 
     const float Damage_Walk_Defaut = 6.0f; // when we walk around normally
     const float Damage_Jump_Default = 10.0f; // when we jump land
@@ -30,7 +30,7 @@ namespace Gts {
 	const float Damage_Stomp_Strong = 18.0f;
 
     const float Damage_Foot_Grind_Impact = 6.8f;
-    const float Damage_Foot_Grind_DOT = 0.012f;
+    const float Damage_Foot_Grind_DOT = 0.010f;
 
     ////////////////Trample
 
@@ -47,21 +47,21 @@ namespace Gts {
 
     ////////////////Thigh Sandwich
     const float Damage_ThighSandwich_Impact = 0.5f;
-    const float Damage_ThighSandwich_DOT = 0.005f;
+    const float Damage_ThighSandwich_DOT = 0.004f;
 
     ////////////////Thigh Crush
     const float Damage_ThighCrush_Stand_Up = 7.0f;
     const float Damage_ThighCrush_Butt_DOT = 0.005f;
-    const float Damage_ThighCrush_Legs_Idle = 0.005f;
-    const float Damage_ThighCrush_CrossLegs_Out = 3.2f; // unused for now
-    const float Damage_ThighCrush_CrossLegs_In = 5.4f; // unused for now
+    const float Damage_ThighCrush_Legs_Idle = 0.004f;
+    const float Damage_ThighCrush_CrossLegs_Out = 2.2f; 
+    const float Damage_ThighCrush_CrossLegs_In = 4.4f; 
 
     ////////////////breast
 
     const float Damage_BreastCrush_Body = 26.0f; // for body impact
 	const float Damage_BreastCrush_Impact = 32.0f; // when doing impact
     const float Damage_BreastCrush_BodyDOT = 0.02f; // damage under body
-    const float Damage_BreastCrush_BreastDOT = 0.03f; // damage under breasts
+    const float Damage_BreastCrush_BreastDOT = 0.010f; // damage under breasts
 
     ////////////////Knee
 

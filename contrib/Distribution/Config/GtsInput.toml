@@ -126,7 +126,7 @@ exclusive = false
 [[InputEvent]]
 name = "ThighCrushSpare"
 keys = ["RMB"]
-exclusive = false
+exclusive = true
 
 [[InputEvent]]
 name = "ThighCrushSpare"

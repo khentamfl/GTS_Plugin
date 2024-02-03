@@ -150,8 +150,7 @@ namespace Gts {
 		try {
 			for (auto& [tag, data]: AnimationManager::GetSingleton().data.at(player)) {
 				if (data.canEditAnimSpeed) {
-					data.animSpeed += bonus/get_visual_scale(player);
-					//Cprint("Data: Anim Speed of {} is {}", player->GetDisplayFullName(), data.animSpeed);
+					data.animSpeed += (bonus*GetAnimationSlowdown(player));
 				}
 				data.animSpeed = std::clamp(data.animSpeed, 0.33f, 3.0f);
 			}

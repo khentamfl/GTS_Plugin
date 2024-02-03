@@ -149,9 +149,10 @@ namespace {
 		if (!actor) {
 			return;
 		}
-
+		
 		auto& sizemanager = SizeManager::GetSingleton();
 		float giantScale = get_visual_scale(actor);
+		float perk = GetPerkBonus_Thighs(actor);
 		const float BASE_CHECK_DISTANCE = 90.0;
 		float SCALE_RATIO = 1.15;
 
@@ -170,9 +171,12 @@ namespace {
 			thigh = "NPC L Thigh [LThg]";
 		}
 
+
+		std::vector<NiPoint3> ThighPoints = GetThighCoordinates(actor, knee, leg, thigh);
+
 		float speed = AnimationManager::GetAnimSpeed(actor);
 		crush_threshold *= (1.10 - speed*0.10);
-		std::vector<NiPoint3> ThighPoints = GetThighCoordinates(actor, knee, leg, thigh);
+		
 
 		if (!ThighPoints.empty()) {
 			for (const auto& point: ThighPoints) {
@@ -209,13 +213,15 @@ namespace {
 								}
 								if (nodeCollisions > 0) {
 									if (CooldownCheck) {
+										float pushForce = std::clamp(force, 0.04f, 0.10f);
 										bool OnCooldown = sizemanager.IsThighDamaging(otherActor);
 										if (!OnCooldown) {
 											Laugh_Chance(actor, otherActor, 1.35, "ThighCrush");
 											float difference = giantScale / (tinyScale * GetSizeFromBoundingBox(otherActor));
 											log::info("Speed: {}", speed);
-											PushTowards(actor, otherActor, leg, 0.01 * damage * difference, true);
-											CollisionDamage.DoSizeDamage(actor, otherActor, damage * speed, bbmult, crush_threshold, random, Cause);
+											float pushCalc = 0.02 * pushForce * speed;
+											PushTowards(actor, otherActor, leg, pushCalc, true);
+											CollisionDamage.DoSizeDamage(actor, otherActor, damage * speed * perk, bbmult, crush_threshold, random, Cause);
 											sizemanager.GetDamageData(otherActor).lastThighDamageTime = Time::WorldTimeElapsed();
 										}
 									} else {
@@ -239,8 +245,6 @@ namespace {
 				return false;
 			}
 			auto giantref = gianthandle.get().get();
-
-			log::info("{} is running", name);
 
 			if (!IsThighCrushing(giantref)) {
 				return false; //Disable it once we leave Thigh Crush state
