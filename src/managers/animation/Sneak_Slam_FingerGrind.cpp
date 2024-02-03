@@ -235,7 +235,7 @@ namespace Gts {
 			int rng = rand() % 2 + 1;
 			if (rng <= 1.0) {
 				float duration = 1.5 + ((rand() % 100) * 0.01);
-				duration * multiply;
+				duration *= multiply;
 
 				if (!otherActor->IsDead()) {
 					PlayLaughSound(giant, 1.0, 1);
