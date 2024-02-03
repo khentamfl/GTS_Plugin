@@ -114,13 +114,13 @@ namespace {
 		NiPoint3 End = Leg->world.translate;
 		NiPoint3 Thigh_Pos = Knee->world.translate;
 		// Forward
-		NiPoint3 forward = ();
+		NiPoint3 forward = NiPoint3();
 		forward.Unitize();
 		// Up
 		NiPoint3 up = (Start - End);
 		up.Unitize();
 		// Sideways
-		NiPoint3 sideways = ();
+		NiPoint3 sideways = NiPoint3();
 		sideways.Unitize();
 		// Reorthorg
 		forward = up.Cross(sideways * -1.0);
