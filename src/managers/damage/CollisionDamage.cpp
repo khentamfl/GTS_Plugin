@@ -233,6 +233,8 @@ namespace Gts {
 			RotMat = NiMatrix3(right, forward, up);
 		}
 
+		float damage_zones_applied = 1.0;
+
 		float maxFootDistance = radius * giantScale;
 		float hh = hhOffsetbase[2];
 		// Make a list of points to check
@@ -281,6 +283,8 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
+								damage /= damage_zones_applied;
+								log::info("Damage zones: {}", damage_zones_applied);
 								if (ApplyCooldown) { // Needed to fix Thigh Crush stuff
 									auto& sizemanager = SizeManager::GetSingleton();
 									bool OnCooldown = sizemanager.IsThighDamaging(otherActor);
