@@ -282,6 +282,7 @@ namespace Gts {
 							}
 							if (nodeCollisions > 0) {
 								if (ApplyCooldown) { // Needed to fix Thigh Crush stuff
+									auto& sizemanager = SizeManager::GetSingleton();
 									bool OnCooldown = sizemanager.IsThighDamaging(otherActor);
 									if (!OnCooldown) {
 										sizemanager.GetDamageData(otherActor).lastThighDamageTime = Time::WorldTimeElapsed();
