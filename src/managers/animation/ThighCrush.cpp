@@ -103,16 +103,16 @@ namespace {
 	std::vector<std::vector<NiPoint3>, std::vector<float>> GetThighCoordinates(Actor* giant, std::string_view calf, std::string_view feet, std::string_view thigh) {
 		NiAVObject* Knee = find_node(giant, calf);
 		NiAVObject* Foot = find_node(giant, feet);
-
 		NiAVObject* Thigh = find_node(giant, thigh);
+
 		if (!Knee) {
-			return std::vector<std::vector<NiPoint3{}>, std::vector<float{0.0}>;
+			return std::vector<std::vector<NiPoint3> {}, std::vector<float>{}>;
 		}
 		if (!Foot) {
-			return std::vector<std::vector<NiPoint3{}>, std::vector<float{0.0}>;
+			return std::vector<std::vector<NiPoint3> {}, std::vector<float>{}>;
 		}
 		if (!Thigh) {
-			return std::vector<std::vector<NiPoint3{}>, std::vector<float{0.0}>;
+			return std::vector<std::vector<NiPoint3> {}, std::vector<float>{}>;
 		}
 
 		NiPoint3 Knee_Point = Knee->world.translate;
