@@ -37,12 +37,10 @@ namespace {
 	}
 
 	void Phenome_ManagePhenomes(BSFaceGenAnimationData* data, std::uint32_t Phenome, float Value) {
-		log::info("Applied Phenome. Current value: {}", Value);
 		data->phenomeKeyFrame.SetValue(Phenome, Value);
 	}
 
 	void Phenome_ManageModifiers(BSFaceGenAnimationData* data, std::uint32_t Modifier, float Value) {
-		log::info("Applied Modifier. Current value: {}", Value);
 		data->modifierKeyFrame.SetValue(Modifier, Value);
 	}
 
@@ -78,14 +76,11 @@ namespace {
 			float value = (pass * speed);
 			auto FaceData = GetFacialData(giantref);
 			if (FaceData) {
-				log::info("(Phenome) Running Phenome. value: {}, target: {}", value, target);
 				if (Reset && modified != 0.0) {
 					value = modified - (pass * speed);
 					Phenome_ManagePhenomes(FaceData, phenome, value);
-					log::info("(Phenome Reset) Running Phenome Reset. value: {}, target: {}", value, target);
 					if (value <= 0) {
 						Phenome_ManagePhenomes(FaceData, phenome, 0.0);
-						log::info("Phenome Reset Done");
 						return false;
 					}
 					return true;
@@ -138,14 +133,11 @@ namespace {
 			float value = (pass * speed);
 			auto FaceData = GetFacialData(giantref);
 			if (FaceData) {
-				log::info("(Modifier) Running Modifier. value: {}, target: {}", value, target);
 				if (Reset) {
 					value = modified - (pass * speed);
 					Phenome_ManageModifiers(FaceData, modifier, value);
-					log::info("(Modifier Reset) Running Modifier Reset. value: {}, target: {}", value, target);
 					if (value <= 0) {
 						Phenome_ManageModifiers(FaceData, modifier, 0.0);
-						log::info("(Modifier Reset) Modifier Reset Done");
 						return false;
 					}
 					return true;
