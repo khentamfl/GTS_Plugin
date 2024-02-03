@@ -53,7 +53,8 @@ namespace {
 			log::info("Running: {}", name);
 			Laugh_Chance(giantref, 2.2, "FootGrind");
 			GRumble::Once("FootGrindDOT", giantref, 1.0, 0.025, RNode);
-			DoDamageEffect(giantref, Damage_Foot_Grind_DOT, Radius_Foot_Grind_DOT, 10000, 0.05, FootEvent::Right, 2.5, DamageSource::FootGrindedRight);
+			float speed = AnimationManager::GetBonusAnimationSpeed(giant);
+			DoDamageEffect(giantref, Damage_Foot_Grind_DOT * speed, Radius_Foot_Grind_DOT, 10000, 0.05, FootEvent::Right, 2.5, DamageSource::FootGrindedRight);
 			return true;
 		});
 	}

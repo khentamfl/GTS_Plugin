@@ -503,7 +503,7 @@ namespace Gts {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
 
-		ShrinkUntil(giant, tiny, 3.6, 0.22);
+		ShrinkUntil(giant, tiny, 3.6, 0.16);
 		
 
 		std::string name = std::format("FootGrind_{}", tiny->formID);
@@ -1188,6 +1188,39 @@ namespace Gts {
 		});
 	}
 
+	void Laugh_Chance(Actor* giant, Actor* otherActor, float multiply, std::string_view name) {
+		auto& Emotions = EmotionManager::GetSingleton();
+		bool Blocked = Emotions.Laugh_InCooldown(giant);
+		if (!Blocked) {
+			int rng = rand() % 2 + 1;
+			if (rng <= 1.0) {
+				float duration = 1.5 + ((rand() % 100) * 0.01);
+				duration *= multiply;
+
+				if (!otherActor->IsDead()) {
+					PlayLaughSound(giant, 1.0, 1);
+					Task_FacialEmotionTask_Smile(giant, duration, name);
+					Emotions.GetEmotionData(giant).lastLaughTime = Time::WorldTimeElapsed();
+				}
+			}
+		}
+	}
+
+	void Laugh_Chance(Actor* giant, float multiply, std::string_view name) {
+		auto& Emotions = EmotionManager::GetSingleton();
+		bool Blocked = Emotions.Laugh_InCooldown(giant);
+		if (!Blocked) {
+			int rng = rand() % 2 + 1;
+			if (rng <= 1.0) {
+				float duration = 1.5 + ((rand() % 100) * 0.01);
+				duration *= multiply;
+
+				PlayLaughSound(giant, 1.0, 1);
+				Task_FacialEmotionTask_Smile(giant, duration, name);
+				Emotions.GetEmotionData(giant).lastLaughTime = Time::WorldTimeElapsed();
+			}
+		}
+	}
 
 	float GetHugStealRate(Actor* actor) {
 		float steal = 0.18;

@@ -670,7 +670,7 @@ namespace Gts {
 		if (pred->IsSneaking() && !IsCrawling(pred)) {
 			ShrinkUntil(pred, prey, 10.0, 0.12); // Shrink if we have SMT to allow 'same-size' vore
 		} else {
-			ShrinkUntil(pred, prey, 10.0, 0.18); // Shrink if we have SMT to allow 'same-size' vore
+			ShrinkUntil(pred, prey, 10.0, 0.16); // Shrink if we have SMT to allow 'same-size' vore
 			StaggerActor(prey, 0.25f);
 		}
 

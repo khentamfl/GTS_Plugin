@@ -29,8 +29,10 @@ namespace Gts {
 	const float Damage_Stomp = 8.0f;
 	const float Damage_Stomp_Strong = 18.0f;
 
+    /////////////////Foot Grind
+
     const float Damage_Foot_Grind_Impact = 6.8f;
-    const float Damage_Foot_Grind_DOT = 0.010f;
+    const float Damage_Foot_Grind_DOT = 0.022f;
 
     ////////////////Trample
 
@@ -70,8 +72,8 @@ namespace Gts {
 
     ////////////////kick
 
-	const float Damage_Kick = 8.0f;
-	const float Damage_Kick_Strong = 16.0f;
+	const float Damage_Kick = 5.0f;
+	const float Damage_Kick_Strong = 12.0f;
 
     ////////////////crawl
 
@@ -83,8 +85,8 @@ namespace Gts {
     const float Damage_Crawl_KneeImpact = 8.0f;
     const float Damage_Crawl_HandImpact = 6.0f;
 
-	const float Damage_Crawl_HandSwipe = 7.0f;
-	const float Damage_Crawl_HandSwipe_Strong = 14.0f;
+	const float Damage_Crawl_HandSwipe = 5.0f;
+	const float Damage_Crawl_HandSwipe_Strong = 10.0f;
 
     const float Damage_Crawl_HandSlam = 10.0f;
     const float Damage_Crawl_HandSlam_Strong = 18.0f;

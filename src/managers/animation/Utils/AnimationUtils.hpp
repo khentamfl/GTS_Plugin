@@ -59,6 +59,9 @@ namespace Gts {
 	void Task_FacialEmotionTask_Moan(Actor* giant, float duration, std::string_view naming);
 	void Task_FacialEmotionTask_Smile(Actor* giant, float duration, std::string_view naming);
 
+	void Laugh_Chance(Actor* giant, Actor* otherActor, float multiply, std::string_view name);
+	void Laugh_Chance(Actor* giant, float multiply, std::string_view name);
+
 	float GetHugStealRate(Actor* actor);
 	float GetHugShrinkThreshold(Actor* actor);
 	float GetHugCrushThreshold(Actor* actor);
