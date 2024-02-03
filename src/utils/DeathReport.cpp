@@ -350,7 +350,7 @@ namespace Gts {
 			} else if (random == 6) {
 				Cprint("{} decided to test endurance of {}", GiantName, TinyName);
 			} else if (random >= 7) {
-				Cprint("{} smalled {} with too much force", GiantName, TinyName);
+				Cprint("{} smashed {} with too much force", GiantName, TinyName);
 			}
 			return;
 		} else if (cause == DamageSource::RightFinger || cause == DamageSource::LeftFinger) { // By Finger

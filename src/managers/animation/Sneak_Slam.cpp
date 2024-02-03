@@ -54,6 +54,20 @@ namespace {
 		});
 	}
 
+	void CheckForFingerGrind(Actor* giant, CrawlEvent Event, bool right, std::string_view P2) {
+		// Purposed of this task is to check for Finger Grind one frame later
+		// So game will detect that actor is Dead - no finger grind will happen
+		std::string taskname = std::format("FingerGrindCheck_{}_{}", giant->formID, P2);
+		ActorHandle giantHandle = giant->CreateRefHandle();
+		TaskManager::RunOnce(taskname, [=](auto& update) {
+			if (!giantHandle) {
+				return;
+			}
+			auto giantRef = giantHandle.get().get();
+			FingerGrindCheck(giantRef, Event, right, Radius_Sneak_HandSlam);
+		});
+	}
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// E V E N T S
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -76,13 +90,13 @@ namespace {
 		float scale = get_visual_scale(&data.giant);
 		DoCrawlingFunctions(&data.giant, scale, 0.75, Damage_Sneak_HandSlam, CrawlEvent::RightHand, "RightHandRumble", 0.80, Radius_Sneak_HandSlam, 1.25, DamageSource::HandSlamRight);
 		Finger_StartShrinkTask(&data.giant, true, Radius_Sneak_FingerGrind_DOT, Damage_Sneak_FingerGrind_DOT, 3.0);
-		FingerGrindCheck(&data.giant, CrawlEvent::RightHand, true, Radius_Sneak_HandSlam);
+		CheckForFingerGrind(&data.giant, CrawlEvent::RightHand, true, "RH");
 	};
 	void GTS_Sneak_Slam_Impact_L(AnimationEventData& data) {
 		float scale = get_visual_scale(&data.giant);
 		DoCrawlingFunctions(&data.giant, scale, 0.75, Damage_Sneak_HandSlam, CrawlEvent::LeftHand, "LeftHandRumble", 0.80, Radius_Sneak_HandSlam, 1.25, DamageSource::HandSlamRight);
 		Finger_StartShrinkTask(&data.giant, false, Radius_Sneak_FingerGrind_DOT, Damage_Sneak_FingerGrind_DOT, 3.0);
-		FingerGrindCheck(&data.giant, CrawlEvent::LeftHand, false, Radius_Sneak_HandSlam);	
+		CheckForFingerGrind(&data.giant, CrawlEvent::LeftHand, false, "LH");	
 	};
 	
 	 

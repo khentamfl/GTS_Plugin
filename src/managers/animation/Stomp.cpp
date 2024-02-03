@@ -125,7 +125,8 @@ namespace {
 
 		GRumble::Once("StompR", giant, 2.20 * shake, 0.0, Node);
 
-		MoveUnderFoot(giant, Node);
+		// TO ANDY: i commented it out for tests
+		//MoveUnderFoot(giant, Node); 
 
 		DoDamageEffect(giant, Damage_Stomp * perk, Radius_Stomp, 10, 0.25, Event, 1.0, Source);
 		DoDustExplosion(giant, dust + (animSpeed * 0.05), Event, Node);

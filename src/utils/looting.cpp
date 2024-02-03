@@ -275,7 +275,7 @@ namespace Gts {
 		}
 		if (dropboxHandle) {
 			float scale_up = std::clamp(Scale, 0.10f, 1.0f);
-			TotalPos.z += (70.0 - (70.0 * scale_up)); // move it a bit upwards
+			TotalPos.z += (110.0 - (110.0 * scale_up)); // move it a bit upwards
 			RunScaleTask(dropboxHandle, actor, Start, Scale, soul, TotalPos); // Scale our pile over time
 		}
 		MoveItemsTowardsDropbox(actor, dropbox, removeQuestItems); // Launch transfer items task with a bit of delay
