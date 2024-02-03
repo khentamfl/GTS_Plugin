@@ -130,8 +130,8 @@ namespace {
 
 
 		// Manual offsets
-		float offset_Z = 0.0;//-25.0;
-		float offset_Y = -35.0;
+		float offset_Z = -35.0;//-25.0;
+		float offset_Y = -0.0;
 
 		// Offset adjustment HERE
 		NiPoint3 offset_1 = NiPoint3(0.0, offset_Y, offset_Z);
@@ -140,9 +140,11 @@ namespace {
 
 
 		// Global space offset
-		NiPoint3 globalOffset_1 = KneeRotation * offset_1;
-		NiPoint3 globalOffset_2 = KneeRotation * offset_2;
-		NiPoint3 globalOffset_3 = KneeRotation * offset_3;
+		float test = Runtime::GetFloatOr("Cleavage_OffsetY", 1.0);
+
+		NiPoint3 globalOffset_1 = KneeRotation * (offset_1 * test);
+		NiPoint3 globalOffset_2 = KneeRotation * (offset_2 * test);
+		NiPoint3 globalOffset_3 = KneeRotation * (offset_3 * test);
 
 		// rotate tiny to face the same direction as gts
 
