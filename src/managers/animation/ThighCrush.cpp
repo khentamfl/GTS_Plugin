@@ -106,13 +106,13 @@ namespace {
 
 		NiAVObject* Thigh = find_node(giant, thigh);
 		if (!Knee) {
-			return std::vector<std::vector<NiPoint3{}>, std::vector<float{}>;
+			return std::vector<std::vector<NiPoint3{}>, std::vector<float{0.0}>;
 		}
 		if (!Foot) {
-			return std::vector<std::vector<NiPoint3{}>, std::vector<float{}>;
+			return std::vector<std::vector<NiPoint3{}>, std::vector<float{0.0}>;
 		}
 		if (!Thigh) {
-			return std::vector<std::vector<NiPoint3{}>, std::vector<float{}>;
+			return std::vector<std::vector<NiPoint3{}>, std::vector<float{0.0}>;
 		}
 
 		NiPoint3 Knee_Point = Knee->world.translate;
