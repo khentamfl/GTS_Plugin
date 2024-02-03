@@ -230,14 +230,6 @@ namespace Gts {
 		}
 	}
 
-    void TrackMatchingHand(Actor* giant, CrawlEvent kind, bool enable) {
-        if (kind == CrawlEvent::RightHand) {
-            ManageCamera(giant, enable, CameraTracking::Hand_Right);
-        } else if (kind == CrawlEvent::LeftHand) {
-            ManageCamera(giant, enable, CameraTracking::Hand_Left);
-        }
-    }
-
 	void Laugh_Chance(Actor* giant, Actor* otherActor, float multiply, std::string_view name) {
 		if (SmileTimer.ShouldRunFrame()) {
 			int rng = rand() % 2 + 1;
@@ -252,6 +244,14 @@ namespace Gts {
 			}
 		}
 	}
+
+    void TrackMatchingHand(Actor* giant, CrawlEvent kind, bool enable) {
+        if (kind == CrawlEvent::RightHand) {
+            ManageCamera(giant, enable, CameraTracking::Hand_Right);
+        } else if (kind == CrawlEvent::LeftHand) {
+            ManageCamera(giant, enable, CameraTracking::Hand_Left);
+        }
+    }
 
     void StopStaminaDrain(Actor* giant) {
 		DrainStamina(giant, "StaminaDrain_StrongSneakSlam", "DestructionBasics", false, 2.2);

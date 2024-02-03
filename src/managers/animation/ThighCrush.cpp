@@ -14,6 +14,7 @@
 //    - "GTSstandRS",                   // [11] Silent impact of right feet
 //    - "GTStoexit",                    // [12] Leave animation, disable air rumble and such
 
+#include "managers/animation/Sneak_Slam_FingerGrind.hpp"
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/Utils/CrawlUtils.hpp"
