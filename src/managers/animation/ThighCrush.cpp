@@ -111,7 +111,7 @@ namespace {
 		}
 
 		NiPoint3 Start = Knee->world.translate;
-		NiPoint3 End = Feet->world.translate;
+		NiPoint3 End = Leg->world.translate;
 		NiPoint3 Thigh_Pos = Knee->world.translate;
 		// Forward
 		NiPoint3 forward = ();
@@ -130,7 +130,7 @@ namespace {
 
 
 		// Manual offsets
-		float offset_Y = -25.0;
+		float offset_Z = -25.0;
 
 		// Offset adjustment HERE
 		NiPoint3 offset_1 = NiPoint3(0.0, 0.0, offset_Z);
