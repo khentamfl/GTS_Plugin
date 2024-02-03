@@ -144,7 +144,7 @@ namespace {
 
 		log::info("Found coordinates");
 
-		std::vector<std::vector<NiPoint3>> coordinates = {   // 		
+		std::vector<NiPoint3> coordinates = {   // 		
 			Knee_Pos_Middle,
 			Knee_Pos_Up,
 			Knee_Pos_Down,
