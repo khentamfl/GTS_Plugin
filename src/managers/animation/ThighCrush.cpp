@@ -213,8 +213,8 @@ namespace {
 										if (!OnCooldown) {
 											Laugh_Chance(actor, otherActor, 1.35, "ThighCrush");
 											float difference = giantScale / (tinyScale * GetSizeFromBoundingBox(otherActor));
-											
-											PushTowards(actor, otherActor, leg, 0.25 * damage * difference, true);
+											log::info("Speed: {}", speed);
+											PushTowards(actor, otherActor, leg, 0.01 * damage * difference, true);
 											CollisionDamage.DoSizeDamage(actor, otherActor, damage * speed, bbmult, crush_threshold, random, Cause);
 											sizemanager.GetDamageData(otherActor).lastThighDamageTime = Time::WorldTimeElapsed();
 										}
