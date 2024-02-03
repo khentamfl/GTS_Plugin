@@ -100,19 +100,32 @@ namespace {
 		}
 	}
 
-	std::vector<std::vector<NiPoint3>, std::vector<float>> GetThighCoordinates(Actor* giant, std::string_view calf, std::string_view feet, std::string_view thigh) {
+	std::vector<float>GetRadiusMultipliers() { // lazy hack, not sure how to deal with it properly
+		std::vector<float> values = {
+			1.2,
+			1.1,
+			1.0,
+			1.25,
+			1.40,
+			1.10,
+			1.0,
+		};
+		return values;
+	}
+
+	std::vector<NiPoint3> GetThighCoordinates(Actor* giant, std::string_view calf, std::string_view feet, std::string_view thigh) {
 		NiAVObject* Knee = find_node(giant, calf);
 		NiAVObject* Foot = find_node(giant, feet);
 		NiAVObject* Thigh = find_node(giant, thigh);
 
 		if (!Knee) {
-			return std::vector<std::vector<NiPoint3> {}, std::vector<float>{}>;
+			return std::vector<NiPoint3>{};
 		}
 		if (!Foot) {
-			return std::vector<std::vector<NiPoint3> {}, std::vector<float>{}>;
+			return std::vector<NiPoint3>{};
 		}
 		if (!Thigh) {
-			return std::vector<std::vector<NiPoint3> {}, std::vector<float>{}>;
+			return std::vector<NiPoint3>{};
 		}
 
 		NiPoint3 Knee_Point = Knee->world.translate;
@@ -141,17 +154,7 @@ namespace {
 			Knee_Thigh_Middle,
 		};
 
-		std::vector<float> values = {
-			1.3,
-			1.2,
-			1.0,
-			1.25,
-			1.35,
-			1.10,
-			1.0,
-		};
-
-		return std::vector<coordinates, values>;
+		return coordinates;
 	}
 	
 	void ThighCrush_ApplyThighDamage(Actor* actor, bool right, float radius, float damage, float bbmult, float crush_threshold, int random, DamageSource Cause) {
@@ -181,9 +184,8 @@ namespace {
 		}
 
 		float maxFootDistance = radius * giantScale;
-		auto data = GetThighCoordinates(actor, knee, leg, thigh);
-		std::vector<NiPoint3> ThighPoints = data[0];
-		std::vector<float> Radius_Multiplier = data[1];
+		std::vector<NiPoint3> ThighPoints = GetThighCoordinates(actor, knee, leg, thigh);
+		std::vector<float> Radius_Multiplier = GetRadiusMultipliers();
 
 		if (!ThighPoints.empty()) {
 			for (const auto& point: ThighPoints) {
