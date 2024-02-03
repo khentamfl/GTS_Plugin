@@ -174,7 +174,7 @@ namespace {
 
 		std::vector<NiPoint3> ThighPoints = GetThighCoordinates(actor, knee, leg, thigh);
 
-		float speed = AnimationManager::GetAnimSpeed(actor);
+		float speed = AnimationManager::GetBonusAnimationSpeed(actor);
 		crush_threshold *= (1.10 - speed*0.10);
 		
 
