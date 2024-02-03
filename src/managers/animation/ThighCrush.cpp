@@ -111,16 +111,48 @@ namespace {
 		}
 
 		NiPoint3 Start = Knee->world.translate;
-		NiPoint3 Thigh_High = (Knee->world.translate - (Leg->world.translate * 0.75));
-		NiPoint3 Thigh_Mid = (Knee->world.translate - (Leg->world.translate * 0.50));
-		NiPoint3 Thigh_Low = (Knee->world.translate - (Leg->world.translate * 0.25));
-		std::vector<NiPoint3> coordinates = {
-			Thigh_High,
-			Thigh_Mid,
-			Thigh_Low,
-		};
+		NiPoint3 End = Feet->world.translate;
+		NiPoint3 Thigh_Pos = Knee->world.translate;
+		// Forward
+		NiPoint3 forward = ();
+		forward.Unitize();
+		// Up
+		NiPoint3 up = (Start - End);
+		up.Unitize();
+		// Sideways
+		NiPoint3 sideways = ();
+		sideways.Unitize();
+		// Reorthorg
+		forward = up.Cross(sideways * -1.0);
+		forward.Unitize();
+		
+		NiMatrix3 KneeRotation = NiMatrix3(sideways, forward, up);
+
+
+		// Manual offsets
+		float offset_Y = -25.0;
+
+		// Offset adjustment HERE
+		NiPoint3 offset_1 = NiPoint3(0.0, 0.0, offset_Z);
+		NiPoint3 offset_2 = NiPoint3(0.0, 0.0, offset_Z * 2);
+		NiPoint3 offset_3 = NiPoint3(0.0, 0.0, offset_Z * 3);
+
+
+		// Global space offset
+		NiPoint3 globalOffset_1 = KneeRotation * offset_1;
+		NiPoint3 globalOffset_2 = KneeRotation * offset_2;
+		NiPoint3 globalOffset_3 = KneeRotation * offset_3;
+
+		// rotate tiny to face the same direction as gts
+		Thigh_Pos += globalOffset;
 
 		log::info("Found coordinates");
+
+		std::vector<NiPoint3> coordinates = {
+			(Thigh_Pos - globalOffset_1),
+			(Thigh_Pos - globalOffset_2),
+			(Thigh_Pos - globalOffset_3),
+		};
 
 		return coordinates;
 	}
