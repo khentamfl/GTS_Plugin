@@ -718,7 +718,11 @@ namespace Gts {
 		bool essential = IsEssential(tiny); // Teammate check is done here
 		bool hostile = IsHostile(giant, tiny);
 		bool no_protection = Persistent::GetSingleton().FollowerInteractions;
+		bool Ignore_Protection = (giant->formID == 0x14 && Runtime::HasPerk(giant, "HugCrush_LovingEmbrace"));
 		bool allow_teammate = (giant->formID != 0x14 && no_protection && IsTeammate(tiny) && IsTeammate(giant));
+		if (Ignore_Protection) {
+			return true;
+		}
 		if (allow_teammate) { // allow if type is (teammate - teammate), and if bool is true
 			return true;
 		} else if (essential) { // disallow to perform on essentials
