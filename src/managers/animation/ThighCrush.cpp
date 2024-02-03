@@ -130,12 +130,13 @@ namespace {
 
 
 		// Manual offsets
-		float offset_Z = -40.0;
+		float offset_Z = 0.0;
+		float offset_Y = -24.0;
 
 		// Offset adjustment HERE
-		NiPoint3 offset_1 = NiPoint3(0.0, 0.0, offset_Z);
-		NiPoint3 offset_2 = NiPoint3(0.0, 0.0, offset_Z * 2);
-		NiPoint3 offset_3 = NiPoint3(0.0, 0.0, offset_Z * 3);
+		NiPoint3 offset_1 = NiPoint3(0.0, offset_Y, offset_Z);
+		NiPoint3 offset_2 = NiPoint3(0.0, offset_Y * 2, offset_Z * 2);
+		NiPoint3 offset_3 = NiPoint3(0.0, offset_Y * 3, offset_Z * 3);
 
 
 		// Global space offset
