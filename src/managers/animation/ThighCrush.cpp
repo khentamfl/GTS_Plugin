@@ -150,6 +150,7 @@ namespace {
 			return;
 		}
 
+		auto& sizemanager = SizeManager::GetSingleton();
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 90.0;
 		float SCALE_RATIO = 1.15;
@@ -169,7 +170,7 @@ namespace {
 			thigh = "NPC L Thigh [LThg]";
 		}
 
-		float Speed = AnimationManager::GetAnimSpeed(actor);
+		float speed = AnimationManager::GetAnimSpeed(actor);
 		crush_threshold *= (1.10 - speed*0.10);
 		std::vector<NiPoint3> ThighPoints = GetThighCoordinates(actor, knee, leg, thigh);
 
