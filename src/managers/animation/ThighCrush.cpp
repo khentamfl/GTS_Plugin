@@ -110,10 +110,10 @@ namespace {
 			return std::vector<NiPoint3> {};
 		}
 
-
-		NiPoint3 Thigh_High = (Knee->world.translate - Leg->world.translate) * 0.75;
-		NiPoint3 Thigh_Mid = (Knee->world.translate - Leg->world.translate) * 0.50;
-		NiPoint3 Thigh_Low = (Knee->world.translate - Leg->world.translate) * 0.25;
+		NiPoint3 Start = Knee->world.translate;
+		NiPoint3 Thigh_High = (Knee->world.translate - (Leg->world.translate * 0.75));
+		NiPoint3 Thigh_Mid = (Knee->world.translate - (Leg->world.translate * 0.50));
+		NiPoint3 Thigh_Low = (Knee->world.translate - (Leg->world.translate * 0.25));
 		std::vector<NiPoint3> coordinates = {
 			Thigh_High,
 			Thigh_Mid,
