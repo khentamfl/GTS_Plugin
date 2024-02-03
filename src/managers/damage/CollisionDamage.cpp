@@ -274,7 +274,7 @@ namespace Gts {
 										float distance = (point - a_obj.world.translate).Length();
 										if (distance < maxFootDistance) {
 											nodeCollisions += 1;
-											force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
+											force = 1.0 - distance / maxFootDistance;
 										}
 										return true;
 									});

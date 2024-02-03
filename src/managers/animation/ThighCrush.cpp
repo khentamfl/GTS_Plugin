@@ -221,9 +221,10 @@ namespace {
 										bool OnCooldown = sizemanager.IsThighDamaging(otherActor);
 										if (!OnCooldown) {
 											float pushCalc = 0.035 * pushForce * speed;
+
 											Laugh_Chance(actor, otherActor, 1.35, "ThighCrush");
 											float difference = giantScale / (tinyScale * GetSizeFromBoundingBox(otherActor));
-											PushTowards(actor, otherActor, leg, pushCalc, true);
+											PushTowards(actor, otherActor, leg, pushCalc * difference, true);
 											CollisionDamage.DoSizeDamage(actor, otherActor, damage * speed * perk, bbmult, crush_threshold, random, Cause);
 											sizemanager.GetDamageData(otherActor).lastThighDamageTime = Time::WorldTimeElapsed();
 										}
