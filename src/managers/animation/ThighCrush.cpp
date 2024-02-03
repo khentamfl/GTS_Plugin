@@ -177,8 +177,8 @@ namespace {
 		float speed = AnimationManager::GetBonusAnimationSpeed(actor);
 		crush_threshold *= (1.10 - speed*0.10);
 		
-		DoFootCollision(actor, damage, radius, random, bbmult, crush_threshold, DamageSource::CrushedRight, true, true);
-		DoFootCollision(actor, damage, radius, random, bbmult, crush_threshold, DamageSource::CrushedLeft, false, true);
+		CollisionDamage::GetSingleton().DoFootCollision(actor, damage, radius, random, bbmult, crush_threshold, DamageSource::CrushedRight, true, true);
+		CollisionDamage::GetSingleton().DoFootCollision(actor, damage, radius, random, bbmult, crush_threshold, DamageSource::CrushedLeft, false, true);
 
 		if (!ThighPoints.empty()) {
 			for (const auto& point: ThighPoints) {
