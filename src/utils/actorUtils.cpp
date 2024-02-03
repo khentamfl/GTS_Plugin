@@ -1242,7 +1242,7 @@ namespace Gts {
 	}
 
 	void PushActorAway(TESObjectREFR* source, Actor* receiver, float afKnockBackForce) {
-		if (receiver->IsDead()) {
+		if (receiver->IsDead() || IsRagdolled(receiver)) {
 			return;
 		}
 
@@ -1266,7 +1266,7 @@ namespace Gts {
 	}
 
 	void PushActorAway(TESObjectREFR* source, Actor* receiver, NiPoint3 direction, float force) {
-		if (receiver->IsDead()) {
+		if (receiver->IsDead() || IsRagdolled(receiver)) {
 			return;
 		}
 
@@ -2252,7 +2252,7 @@ namespace Gts {
 	}
 
 	void StaggerActor(Actor* receiver, float power) {
-		if (receiver->IsDead() || GetAV(receiver, ActorValue::kHealth) <= 0.0) {
+		if (receiver->IsDead() || IsRagdolled(receiver) || GetAV(receiver, ActorValue::kHealth) <= 0.0) {
 			return;
 		}
 		receiver->SetGraphVariableFloat("staggerMagnitude", power);
