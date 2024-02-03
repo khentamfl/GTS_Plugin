@@ -155,11 +155,11 @@ namespace {
 		float perk = GetPerkBonus_Thighs(actor);
 		const float BASE_CHECK_DISTANCE = 90.0;
 		float damage_zones_applied = 1.0;
-		float SCALE_RATIO = 1.15;
+		float SCALE_RATIO = 1.75;
 
 		if (HasSMT(actor)) {
 			giantScale += 0.20;
-			SCALE_RATIO = 0.7;
+			SCALE_RATIO = 0.95;
 		}
 
 		std::string_view leg = "NPC R Foot [Rft ]";
@@ -221,11 +221,12 @@ namespace {
 									log::info("Damage zones applied: {}", damage_zones_applied);
 									damage /= damage_zones_applied;
 									if (CooldownCheck) {
+										log::info("Cooldown check called");
 										float pushForce = std::clamp(force, 0.04f, 0.10f);
 										bool OnCooldown = sizemanager.IsThighDamaging(otherActor);
 										if (!OnCooldown) {
 											float pushCalc = 0.035 * pushForce * speed;
-
+											log::info("Is not on a cooldown");
 											Laugh_Chance(actor, otherActor, 1.35, "ThighCrush");
 											float difference = giantScale / (tinyScale * GetSizeFromBoundingBox(otherActor));
 											PushTowards(actor, otherActor, leg, pushCalc * difference, true);
@@ -233,6 +234,7 @@ namespace {
 											sizemanager.GetDamageData(otherActor).lastThighDamageTime = Time::WorldTimeElapsed();
 										}
 									} else {
+										log::info("Dealing normal damage");
 										Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
 										CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause);
 									}

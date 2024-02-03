@@ -290,11 +290,14 @@ namespace Gts {
 									auto& sizemanager = SizeManager::GetSingleton();
 									bool OnCooldown = sizemanager.IsThighDamaging(otherActor);
 									if (!OnCooldown) {
+										Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
+										CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause);
 										sizemanager.GetDamageData(otherActor).lastThighDamageTime = Time::WorldTimeElapsed();
 									}
+								} else {
+									Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
+									CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause);
 								}
-								Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
-								CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause);
 							}
 						}
 					}
