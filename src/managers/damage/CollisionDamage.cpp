@@ -283,6 +283,7 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
+								damage_zones_applied += 1.0;
 								damage /= damage_zones_applied;
 								log::info("Damage zones: {}", damage_zones_applied);
 								if (ApplyCooldown) { // Needed to fix Thigh Crush stuff
