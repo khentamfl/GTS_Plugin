@@ -177,6 +177,8 @@ namespace {
 		float speed = AnimationManager::GetBonusAnimationSpeed(actor);
 		crush_threshold *= (1.10 - speed*0.10);
 		
+		DoFootCollision(actor, damage, radius, random, bbmult, crush_threshold, DamageSource::CrushedRight, true, true);
+		DoFootCollision(actor, damage, radius, random, bbmult, crush_threshold, DamageSource::CrushedLeft, false, true);
 
 		if (!ThighPoints.empty()) {
 			for (const auto& point: ThighPoints) {
@@ -216,10 +218,9 @@ namespace {
 										float pushForce = std::clamp(force, 0.04f, 0.10f);
 										bool OnCooldown = sizemanager.IsThighDamaging(otherActor);
 										if (!OnCooldown) {
+											float pushCalc = 0.035 * pushForce * speed;
 											Laugh_Chance(actor, otherActor, 1.35, "ThighCrush");
 											float difference = giantScale / (tinyScale * GetSizeFromBoundingBox(otherActor));
-											log::info("Speed: {}", speed);
-											float pushCalc = 0.02 * pushForce * speed;
 											PushTowards(actor, otherActor, leg, pushCalc, true);
 											CollisionDamage.DoSizeDamage(actor, otherActor, damage * speed * perk, bbmult, crush_threshold, random, Cause);
 											sizemanager.GetDamageData(otherActor).lastThighDamageTime = Time::WorldTimeElapsed();

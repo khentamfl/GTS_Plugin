@@ -1806,10 +1806,10 @@ namespace Gts {
 	void DoDamageEffect(Actor* giant, float damage, float radius, int random, float bonedamage, FootEvent kind, float crushmult, DamageSource Cause) {
 		//radius = 1.0;// + (GetHighHeelsBonusDamage(giant) * 2.5);
 		if (kind == FootEvent::Left) {
-			CollisionDamage::GetSingleton().DoFootCollision(giant, damage, radius, random, bonedamage, crushmult, Cause, false);
+			CollisionDamage::GetSingleton().DoFootCollision(giant, damage, radius, random, bonedamage, crushmult, Cause, false, false);
 		}
 		if (kind == FootEvent::Right) {
-			CollisionDamage::GetSingleton().DoFootCollision(giant, damage, radius, random, bonedamage, crushmult, Cause, true);
+			CollisionDamage::GetSingleton().DoFootCollision(giant, damage, radius, random, bonedamage, crushmult, Cause, true, false);
 			//                                                                                  ^        ^           ^ - - - - Normal Crush
 			//                                                       Chance to trigger bone crush   Damage of            Threshold multiplication
 			//                                                                                      Bone Crush

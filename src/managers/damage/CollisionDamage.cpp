@@ -170,7 +170,7 @@ namespace Gts {
 		return "CollisionDamage";
 	}
 
-	void CollisionDamage::DoFootCollision(Actor* actor, float damage, float radius, int random, float bbmult, float crush_threshold, DamageSource Cause, bool Right) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
+	void CollisionDamage::DoFootCollision(Actor* actor, float damage, float radius, int random, float bbmult, float crush_threshold, DamageSource Cause, bool Right, bool ApplyCooldown) { // Called from GtsManager.cpp, checks if someone is close enough, then calls DoSizeDamage()
 		auto profiler = Profilers::Profile("CollisionDamageLeft: DoFootCollision_Left");
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		if (!actor) {
@@ -281,6 +281,12 @@ namespace Gts {
 								}
 							}
 							if (nodeCollisions > 0) {
+								if (ApplyCooldown) { // Needed to fix Thigh Crush stuff
+									bool OnCooldown = sizemanager.IsThighDamaging(otherActor);
+									if (!OnCooldown) {
+										sizemanager.GetDamageData(otherActor).lastThighDamageTime = Time::WorldTimeElapsed();
+									}
+								}
 								Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
 								CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause);
 							}

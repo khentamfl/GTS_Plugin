@@ -143,7 +143,6 @@ namespace Gts {
 				totalSpeed *= data.animSpeed;
 			}
 		} catch (std::out_of_range e) {
-			log::info("Out of range");
 		}
 		return totalSpeed;
 	}

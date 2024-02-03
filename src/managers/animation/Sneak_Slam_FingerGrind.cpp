@@ -74,7 +74,7 @@ namespace {
 
 		NiAVObject* node = find_node(giant, NodeLookup);
 
-		Finger_DamageAndShrink(giant, Radius, Damage, node, 50, 0.10, CrushMult, -0.028 * ShrinkMult, source);
+		Finger_DamageAndShrink(giant, Radius, Damage, node, 50, 0.10, CrushMult, -0.034 * ShrinkMult, source);
 	}
 
     ////////////////////////////////////////////////////////////////////
