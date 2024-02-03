@@ -165,7 +165,6 @@ namespace Gts {
 			SCALE_RATIO = 0.9;
 			giantScale *= 1.3;
 		}
-		static Timer SmileTimer = Timer(3.60);
 		NiPoint3 NodePosition = node->world.translate;
 
 		float maxDistance = radius * giantScale;
@@ -231,6 +230,7 @@ namespace Gts {
 	}
 
 	void Laugh_Chance(Actor* giant, Actor* otherActor, float multiply, std::string_view name) {
+		static Timer SmileTimer = Timer(3.60);
 		if (SmileTimer.ShouldRunFrame()) {
 			int rng = rand() % 2 + 1;
 			if (rng <= 1.0) {

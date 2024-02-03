@@ -130,9 +130,7 @@ namespace {
 
 		NiPoint3 Knee_Thigh_Middle = (Thigh_Pos_Down + Knee_Pos_Up) / 2.0;          // middle between two
 
-		log::info("Found coordinates");
-
-		std::vector<NiPoint3> coordinates = {   // 		
+		std::vector<NiPoint3> coordinates = { 	
 			Knee_Pos_Middle,
 			Knee_Pos_Up,
 			Knee_Pos_Down,
