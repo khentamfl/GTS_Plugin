@@ -53,9 +53,9 @@ namespace Gts {
     const float Damage_ThighCrush_Stand_Up = 7.0f;
     const float Damage_ThighCrush_Butt_DOT = 0.003f;
     const float Damage_ThighCrush_Legs_Idle = 0.0012f;
-    const float Damage_ThighCrush_CrossLegs_Out = 1.4f; 
-    const float Damage_ThighCrush_CrossLegs_In = 2.6f; 
-    const float Damage_ThighCrush_CrossLegs_FeetImpact = 1.2f;
+    const float Damage_ThighCrush_CrossLegs_Out = 3.4f; 
+    const float Damage_ThighCrush_CrossLegs_In = 4.6f; 
+    const float Damage_ThighCrush_CrossLegs_FeetImpact = 2.8f;
 
     ////////////////breast
 

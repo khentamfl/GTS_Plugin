@@ -234,6 +234,13 @@ namespace {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
 
 		VoreData.EnableMouthShrinkZone(false);
+
+		std::string name_1 = std::format("Phenome_{}_{}_{}", giant->formID, 0, 1.0);
+		std::string name_2 = std::format("Phenome_{}_{}_{}", giant->formID, 1, 0.5);
+
+		TaskManager::Cancel(name_1);
+		TaskManager::Cancel(name_2);
+
 		AdjustFacialExpression(giant, 0, 0.0, "phenome"); // Close mouth
 		AdjustFacialExpression(giant, 1, 0.0, "phenome"); // Close mouth
 		for (auto& tiny: VoreData.GetVories()) {

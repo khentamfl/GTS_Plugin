@@ -1,3 +1,4 @@
+#include "managers/animation/Sneak_Slam_FingerGrind.hpp"
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/CollisionDamage.hpp"
@@ -37,39 +38,24 @@ namespace {
 		explosion.OnImpact(impact_data); // Play explosion
 	}
 
-	void ApplyDamageOverTime_Left(Actor* giant) {
+	void ApplyDamageOverTime(Actor* giant, std::string_view node, std::string_view task_name) {
 		auto gianthandle = giant->CreateRefHandle();
-		std::string name = std::format("FGD_L_{}", giant->formID);
+		std::string name = std::format("FootGrind_{}_{}", giant->formID, task_name);
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
 				return false;
-			}
+			} 
 			auto giantref = gianthandle.get().get();
-			GRumble::Once("FootGrindL", giantref, 1.0, 0.025, LNode);
-			DoDamageEffect(giantref, Damage_Foot_Grind_DOT, Radius_Foot_Grind_DOT, 10000, 0.05, FootEvent::Left, 2.5, DamageSource::FootGrindedLeft);
-			return true;
-		});
-	}
-
-	void ApplyDamageOverTime_Right(Actor* giant) {
-		auto gianthandle = giant->CreateRefHandle();
-		std::string name = std::format("FGD_R_{}", giant->formID);
-		TaskManager::Run(name, [=](auto& progressData) {
-			if (!gianthandle) {
-				return false;
+			if (!IsFootGrinding(giantref)) {
+				log::info("Isn't foot grinding anymore");
+				return false; 
 			}
-			auto giantref = gianthandle.get().get();
-			GRumble::Once("FootGrindR", giantref, 1.0, 0.025, RNode);
+			log::info("Running: {}", name);
+			Laugh_Chance(giantref, 2.2, "FootGrind");
+			GRumble::Once("FootGrindDOT", giantref, 1.0, 0.025, RNode);
 			DoDamageEffect(giantref, Damage_Foot_Grind_DOT, Radius_Foot_Grind_DOT, 10000, 0.05, FootEvent::Right, 2.5, DamageSource::FootGrindedRight);
 			return true;
 		});
-	}
-
-	void CancelDamageOverTime(Actor* giant) {
-		std::string Right = std::format("FGD_L_{}", giant->formID);
-		std::string Left = std::format("FGD_R_{}", giant->formID);
-		TaskManager::Cancel(Right);
-		TaskManager::Cancel(Left);
 	}
 
 	void Footgrind_DoImpact(Actor* giant, FootEvent Event, DamageSource Source, std::string_view Node, std::string_view rumble) {
@@ -103,22 +89,20 @@ namespace {
 	}
 
 	void GTSstomp_FootGrindL_MV_S(AnimationEventData& data) { // Feet starts to move: Left
-		ApplyDamageOverTime_Left(&data.giant);
+		ApplyDamageOverTime(&data.giant, LNode, "Right");
 		ApplyDustRing(&data.giant, FootEvent::Left, LNode, 0.6);
 	}
 
 	void GTSstomp_FootGrindR_MV_S(AnimationEventData& data) { // Feet start to move: Right
-		ApplyDamageOverTime_Right(&data.giant);
+		ApplyDamageOverTime(&data.giant, RNode, "Left");
 		ApplyDustRing(&data.giant, FootEvent::Right, RNode, 0.6);
 	}
 
 	void GTSstomp_FootGrindL_MV_E(AnimationEventData& data) { // When movement ends: Left
-		CancelDamageOverTime(&data.giant);
 		ApplyDustRing(&data.giant, FootEvent::Left, LNode, 0.6);
 	}
 
 	void GTSstomp_FootGrindR_MV_E(AnimationEventData& data) { // When movement ends: Right
-		CancelDamageOverTime(&data.giant);
 		ApplyDustRing(&data.giant, FootEvent::Right, RNode, 0.6);
 	}
 
@@ -134,7 +118,6 @@ namespace {
 		data.stage = 1;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
-		CancelDamageOverTime(&data.giant);
 		DrainStamina(&data.giant, "StaminaDrain_FootGrind", "DestructionBasics", false, 0.25);
 	}
 
@@ -142,7 +125,6 @@ namespace {
 		data.stage = 1;
 		data.canEditAnimSpeed = false;
 		data.animSpeed = 1.0;
-		CancelDamageOverTime(&data.giant);
 		DrainStamina(&data.giant, "StaminaDrain_FootGrind", "DestructionBasics", false, 0.25);
 	}
 }

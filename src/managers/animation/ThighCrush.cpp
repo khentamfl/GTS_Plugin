@@ -177,10 +177,12 @@ namespace {
 
 		float speed = AnimationManager::GetBonusAnimationSpeed(actor);
 		crush_threshold *= (1.10 - speed*0.10);
+
+		float feet_damage = (Damage_ThighCrush_CrossLegs_FeetImpact * perk * speed);
 		
 		if (CooldownCheck) {
-			CollisionDamage::GetSingleton().DoFootCollision(actor, damage * 0.8 * perk, radius, random, bbmult, crush_threshold, DamageSource::ThighCrushed, true, true);
-			CollisionDamage::GetSingleton().DoFootCollision(actor, damage * 0.8 * perk, radius, random, bbmult, crush_threshold, DamageSource::ThighCrushed, false, true);
+			CollisionDamage::GetSingleton().DoFootCollision(actor, feet_damage, radius, random, bbmult, crush_threshold, DamageSource::ThighCrushed, true, true);
+			CollisionDamage::GetSingleton().DoFootCollision(actor, feet_damage, radius, random, bbmult, crush_threshold, DamageSource::ThighCrushed, false, true);
 		}
 
 		if (!ThighPoints.empty()) {

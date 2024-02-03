@@ -248,6 +248,22 @@ namespace Gts {
 		}
 	}
 
+	void Laugh_Chance(Actor* giant, float multiply, std::string_view name) {
+		auto& Emotions = EmotionManager::GetSingleton();
+		bool Blocked = Emotions.Laugh_InCooldown(giant);
+		if (!Blocked) {
+			int rng = rand() % 2 + 1;
+			if (rng <= 1.0) {
+				float duration = 1.5 + ((rand() % 100) * 0.01);
+				duration *= multiply;
+
+				PlayLaughSound(giant, 1.0, 1);
+				Task_FacialEmotionTask_Smile(giant, duration, name);
+				Emotions.GetEmotionData(giant).lastLaughTime = Time::WorldTimeElapsed();
+			}
+		}
+	}
+
     void TrackMatchingHand(Actor* giant, CrawlEvent kind, bool enable) {
         if (kind == CrawlEvent::RightHand) {
             ManageCamera(giant, enable, CameraTracking::Hand_Right);
