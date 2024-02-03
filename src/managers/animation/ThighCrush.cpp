@@ -321,6 +321,7 @@ namespace {
 	}
 
 	void GTSsitcrushheavy_start(AnimationEventData& data) {
+		auto giant = &data.giant;
 		DrainStamina(&data.giant, "StaminaDrain_Thighs", "KillerThighs", true, 2.5); // < - Start HEAVY Stamina Drain
 
 		std::string name_l = std::format("ThighCrush_{}_ThighIdle_R", giant->formID);
