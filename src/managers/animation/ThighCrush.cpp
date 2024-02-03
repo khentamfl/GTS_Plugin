@@ -150,7 +150,6 @@ namespace {
 			return;
 		}
 		
-		auto& animmanager = AnimationManager::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 		float giantScale = get_visual_scale(actor);
 		float perk = GetPerkBonus_Thighs(actor);
@@ -175,7 +174,7 @@ namespace {
 
 		std::vector<NiPoint3> ThighPoints = GetThighCoordinates(actor, knee, leg, thigh);
 
-		float speed = animmanager.GetBonusAnimationSpeed(actor);
+		float speed = AnimationManager::GetBonusAnimationSpeed(actor);
 		crush_threshold *= (1.10 - speed*0.10);
 		
 

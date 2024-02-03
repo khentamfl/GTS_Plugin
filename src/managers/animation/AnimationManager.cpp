@@ -137,12 +137,15 @@ namespace Gts {
 	}
 
 	float AnimationManager::GetBonusAnimationSpeed(Actor* actor) {
+		float totalSpeed = 1.0;
 		try {
 			for (auto& [tag, data]: AnimationManager::GetSingleton().data.at(actor)) {
-				return data.animSpeed;
+				totalSpeed *= data.animSpeed;
 			}
-		} catch (std::out_of_range e) {}
-		return 1.0;
+		} catch (std::out_of_range e) {
+			log::info("Out of range");
+		}
+		return totalSpeed;
 	}
 
 	void AnimationManager::AdjustAnimSpeed(float bonus) {

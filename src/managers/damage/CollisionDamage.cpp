@@ -152,7 +152,7 @@ namespace {
 		bool matches = (Cause == DamageSource::CrushedLeft || Cause == DamageSource::CrushedRight);
 		bool walk = (Cause == DamageSource::WalkRight || Cause == DamageSource::WalkLeft);
 		if (perk && (matches || walk)) {
-			value += 0.15; // 15% bonus damage if we have High Heels perk
+			value += 0.10; // 10% bonus damage if we have High Heels perk
 		}
 		return value;
 	}

@@ -44,7 +44,7 @@ namespace Hooks
             }
         );
 
-		static CallHook<float(TESObjectREFR* param_1)>GetEyeHeight_140601E40(  // Get Eye Height, rarely called
+		/*static CallHook<float(TESObjectREFR* param_1)>GetEyeHeight_140601E40(  // Get Eye Height, rarely called
 			REL::RelocationID(36845, 36845), REL::Relocate(0x71, 0x71),
 			[](auto* param_1) {
 				// 36845
@@ -58,6 +58,6 @@ namespace Hooks
 				log::info("(23) GetEyeHeight_140601E40 Hooked");
 				return Alter;
             }
-        );
+        );*/
 	}
 }
