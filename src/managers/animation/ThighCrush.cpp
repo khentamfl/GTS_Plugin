@@ -100,19 +100,19 @@ namespace {
 		}
 	}
 
-	std::tuple<std::vector<NiPoint3>, float> GetThighCoordinates(Actor* giant, std::string_view calf, std::string_view feet, std::string_view thigh) {
+	std::vector<std::vector<NiPoint3>, std::vector<float> GetThighCoordinates(Actor* giant, std::string_view calf, std::string_view feet, std::string_view thigh) {
 		NiAVObject* Knee = find_node(giant, calf);
 		NiAVObject* Foot = find_node(giant, feet);
 
 		NiAVObject* Thigh = find_node(giant, thigh);
 		if (!Knee) {
-			return std::forward_as_tuple(NiPoint3(), 0.0);
+			return std::vector<std::vector<NiPoint3{}>, std::vector{}>;
 		}
 		if (!Foot) {
-			return std::forward_as_tuple(NiPoint3(), 0.0);
+			return std::vector<std::vector<NiPoint3{}>, std::vector{}>;
 		}
 		if (!Thigh) {
-			return std::forward_as_tuple(NiPoint3(), 0.0);
+			return std::vector<std::vector<NiPoint3{}>, std::vector{}>;
 		}
 
 		NiPoint3 Knee_Point = Knee->world.translate;
@@ -127,17 +127,31 @@ namespace {
 		NiPoint3 Thigh_Pos_Up = (Thigh_Pos_Middle + Thigh_Point) / 2.0;            	//         |--|--|-----|
 		NiPoint3 Thigh_Pos_Down = (Thigh_Pos_Middle + Knee_Point) / 2.0;        	//         |-----|--|--|
 
+		NiPoint3 Knee_Thigh_Middle = (Thigh_Pos_Down + Knee_Pos_Up) / 2.0;
+
 		log::info("Found coordinates");
 
-		std::tuple<std::vector<NiPoint3>, float> coordinates = {
-			std::forward_as_tuple(Knee_Pos_Middle, 1.2),
-			std::forward_as_tuple(Knee_Pos_Up, 1.3),
-			std::forward_as_tuple(Knee_Pos_Down, 0.9),
-			std::forward_as_tuple(Thigh_Pos_Middle, 1.3),
-			std::forward_as_tuple(Thigh_Pos_Up, 1.4),
-			std::forward_as_tuple(Thigh_Pos_Down, 1.15),
+		std::vector<std::vector<NiPoint3>> coordinates = {   // 		
+			Knee_Pos_Middle,
+			Knee_Pos_Up,
+			Knee_Pos_Down,
+			Thigh_Pos_Middle,
+			Thigh_Pos_Up,
+			Thigh_Pos_Down,
+			Knee_Thigh_Middle,
 		};
-		return coordinates;
+
+		std::vector<float> values = {
+			1.3,
+			1.2,
+			1.0,
+			1.25,
+			1.35,
+			1.10,
+			1.0,
+		}l
+
+		return std::vector<coordinates, values>;
 	}
 	
 	void ThighCrush_ApplyThighDamage(Actor* actor, bool right, float radius, float damage, float bbmult, float crush_threshold, int random, DamageSource Cause) {
@@ -167,16 +181,18 @@ namespace {
 		}
 
 		float maxFootDistance = radius * giantScale;
-		std::tuple<std::vector<NiPoint3>, float> Data = GetThighCoordinates(actor, knee, leg, thigh);
-
-		std::vector<NiPoint3> ThighPoints = GetThighCoordinates(actor, knee, leg, thigh).first;
-
-		float radius_mult = ThighPoints.second;
-		radius *= radius_mult;
+		auto data = GetThighCoordinates(actor, knee, leg, thigh);
+		std::vector<NiPoint3> ThighPoints = data[0];
+		std::vector<NiPoint3> Radius_Multiplier = data[1];
 
 		if (!ThighPoints.empty()) {
 			for (const auto& point: ThighPoints) {
-				
+				for (const auto& mult: Radius_Multiplier) {
+					radius *= mult;
+				}
+				//float radius_mult = ThighPoints[1].[];
+				//radius *= radius_mult;	
+
 				if (IsDebugEnabled() && (actor->formID == 0x14 || IsTeammate(actor) || EffectsForEveryone(actor))) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance, 400);
 				}
