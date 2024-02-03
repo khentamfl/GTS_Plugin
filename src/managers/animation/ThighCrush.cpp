@@ -144,7 +144,6 @@ namespace {
 		NiPoint3 globalOffset_3 = KneeRotation * offset_3;
 
 		// rotate tiny to face the same direction as gts
-		Thigh_Pos += globalOffset;
 
 		log::info("Found coordinates");
 
