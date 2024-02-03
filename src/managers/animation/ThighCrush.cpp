@@ -133,7 +133,7 @@ namespace {
 			Knee_Pos_Middle,
 			Knee_Pos_Up,
 			Knee_Pos_Down,
-			Thigh_Pos,
+			Thigh_Pos_Middle,
 			Thigh_Pos_Up,
 			Thigh_Pos_Down,
 		};
