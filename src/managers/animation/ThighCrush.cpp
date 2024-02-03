@@ -211,10 +211,10 @@ namespace {
 									if (CooldownCheck) {
 										bool OnCooldown = sizemanager.IsThighDamaging(otherActor);
 										if (!OnCooldown) {
-											Laugh_Chance(giant, otherActor, 1.35, "ThighCrush");
+											Laugh_Chance(actor, otherActor, 1.35, "ThighCrush");
 											float difference = giantScale / (tinyScale * GetSizeFromBoundingBox(otherActor));
 											
-											PushTowards(giant, otherActor, leg, 0.25 * damage * difference, true);
+											PushTowards(actor, otherActor, leg, 0.25 * damage * difference, true);
 											CollisionDamage.DoSizeDamage(actor, otherActor, damage * speed, bbmult, crush_threshold, random, Cause);
 											sizemanager.GetDamageData(otherActor).lastThighDamageTime = Time::WorldTimeElapsed();
 										}
