@@ -168,6 +168,10 @@ namespace Gts {
 		return "EmotionManager";
 	}
 
+	void EmotionManager::Reset() {
+		this->data.clear();
+	}
+
 	void EmotionManager::OverridePhenome(Actor* giant, int number, float power, float halflife, float target) {
 		Task_UpdatePhenome(giant, number, halflife, target);
 	}

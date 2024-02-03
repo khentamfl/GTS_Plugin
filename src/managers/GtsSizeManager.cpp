@@ -364,8 +364,9 @@ namespace Gts {
 			SetEnchantmentBonus(caster, 0.0);
 			SetGrowthSpurt(caster, 0.0);
 		}
-
+		
 		TaskManager::CancelAllTasks(); // just in case, to avoid CTD
+		//this->data.clear();
 	}
 
 	LaunchData& SizeManager::GetLaunchData(Actor* actor) {
