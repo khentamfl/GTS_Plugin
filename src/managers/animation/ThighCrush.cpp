@@ -120,6 +120,8 @@ namespace {
 			Thigh_Low,
 		};
 
+		log::info("Found coordinates");
+
 		return coordinates;
 	}
 	
@@ -142,49 +144,51 @@ namespace {
 		std::string_view knee = "NPC R Calf [RClf]";
 
 		if (!right) {
-			leg = "NPC R Foot [Rft ]";
-			knee = "NPC R Calf [RClf]";
+			leg = "NPC L Foot [Lft ]";
+			knee = "NPC L Calf [LClf]";
 		}
 
 		float maxFootDistance = radius * giantScale;
 		std::vector<NiPoint3> ThighPoints = GetThighCoordinates(actor, knee, leg);
 
 		if (!ThighPoints.empty()) {
-			if (IsDebugEnabled() && (actor->formID == 0x14 || IsTeammate(actor) || EffectsForEveryone(actor))) {
-				for (auto point: ThighPoints) {
+			for (const auto& point: ThighPoints) {
+				
+				if (IsDebugEnabled() && (actor->formID == 0x14 || IsTeammate(actor) || EffectsForEveryone(actor))) {
 					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance, 400);
 				}
-			}
+			
+				log::info("Coordinates aren't empty");
+				NiPoint3 giantLocation = actor->GetPosition();
+				for (auto otherActor: find_actors()) {
+					if (otherActor != actor) {
+						float tinyScale = get_visual_scale(otherActor);
+						if (giantScale / tinyScale > SCALE_RATIO) {
+							NiPoint3 actorLocation = otherActor->GetPosition();
 
-			NiPoint3 giantLocation = actor->GetPosition();
-			for (auto otherActor: find_actors()) {
-				if (otherActor != actor) {
-					float tinyScale = get_visual_scale(otherActor);
-					if (giantScale / tinyScale > SCALE_RATIO) {
-						NiPoint3 actorLocation = otherActor->GetPosition();
+							if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
+								// Check the tiny's nodes against the giant's foot points
+								int nodeCollisions = 0;
+								float force = 0.0;
 
-						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
-							// Check the tiny's nodes against the giant's foot points
-							int nodeCollisions = 0;
-							float force = 0.0;
+								auto model = otherActor->GetCurrent3D();
 
-							auto model = otherActor->GetCurrent3D();
-
-							if (model) {
-								for (auto point: ThighPoints) {
-									VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
-										float distance = (point - a_obj.world.translate).Length();
-										if (distance < maxFootDistance) {
-											nodeCollisions += 1;
-											force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-										}
-										return true;
-									});
+								if (model) {
+									for (auto point: ThighPoints) {
+										VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
+											float distance = (point - a_obj.world.translate).Length();
+											if (distance < maxFootDistance) {
+												nodeCollisions += 1;
+												force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
+											}
+											return true;
+										});
+									}
 								}
-							}
-							if (nodeCollisions > 0) {
-								Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
-								CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause);
+								if (nodeCollisions > 0) {
+									Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
+									CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause);
+								}
 							}
 						}
 					}
@@ -194,7 +198,7 @@ namespace {
 	}
 
 	void RunThighCollisionTask(Actor* giant, bool right, float radius, float damage, float bbmult, float crush_threshold, int random, DamageSource cause, std::string_view tn) {
-		std::string name = std::format("ThighCrush_{}", giant->formID, tn);
+		std::string name = std::format("ThighCrush_{}_{}", giant->formID, tn);
 		auto gianthandle = giant->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
