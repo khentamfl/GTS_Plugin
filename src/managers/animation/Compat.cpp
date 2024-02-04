@@ -33,6 +33,33 @@ namespace {
 	const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
+	void TriggerKillZone(Actor* giant) {
+		if (!giant) {
+			return;
+		}
+		float BASE_CHECK_DISTANCE = 90.0;
+		float SCALE_RATIO = 3.0;
+		if (HasSMT(giant)) {
+			SCALE_RATIO = 0.8;
+		}
+		float giantScale = get_visual_scale(giant);
+		NiPoint3 giantLocation = giant->GetPosition();
+		for (auto otherActor: find_actors()) {
+			if (otherActor != giant) {
+				if (otherActor->IsInKillMove()) {
+					float tinyScale = get_visual_scale(otherActor);
+					if (giantScale / tinyScale > SCALE_RATIO) {
+						NiPoint3 actorLocation = otherActor->GetPosition();
+						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale * 3) {
+							PrintDeathSource(giant, otherActor, DamageSource::Booty);
+							CrushManager::Crush(giant, otherActor);
+						}
+					}
+				}
+			}
+		}
+	}
+
 	void GTScrush_caster(AnimationEventData& data) { 
 		// Compatibility with Thick Thighs Take Lives mod, this compatibility probably needs a revision.
 		// Mainly just need to call damage similar to how we do it with DoDamageAtPoint() function

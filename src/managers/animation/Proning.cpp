@@ -116,6 +116,11 @@ namespace {
 		});
 	}
 
+    void StopBodyDamage_Slide(Actor* giant) {
+		std::string name = std::format("BodyDOT_Slide_{}", giant->formID);
+		TaskManager::Cancel(name);
+	}
+
     //////////////////////////////////////////////////////
     ///// E V E N T S
     //////////////////////////////////////////////////////
@@ -136,7 +141,6 @@ namespace {
 	void GTS_BodyDamage_Off(AnimationEventData& data) {
 		auto giant = &data.giant;
 		SetProneState(giant, false);
-		StopBodyDamage_DOT(giant);
 	}
 
 	void SBOProneOnEvent(const InputEventData& data) {
@@ -166,15 +170,15 @@ namespace Gts
 		InputManager::RegisterInputEvent("SBO_DisableProne", SBOProneOffEvent);
 		InputManager::RegisterInputEvent("SBO_ToggleDive", SBODiveEvent);
 
-		AnimationManager::RegisterEvent("GTS_DiveSlide_ON", "Body", GTS_DiveSlide_ON);
-		AnimationManager::RegisterEvent("GTS_DiveSlide_OFF", "Body", GTS_DiveSlide_OFF);
-		AnimationManager::RegisterEvent("GTS_BodyDamage_ON", "Body", GTS_BodyDamage_ON);
-		AnimationManager::RegisterEvent("GTS_BodyDamage_Off", "Body", GTS_BodyDamage_Off);
+		AnimationManager::RegisterEvent("GTS_DiveSlide_ON", "Proning", GTS_DiveSlide_ON);
+		AnimationManager::RegisterEvent("GTS_DiveSlide_OFF", "Proning", GTS_DiveSlide_OFF);
+		AnimationManager::RegisterEvent("GTS_BodyDamage_ON", "Proning", GTS_BodyDamage_ON);
+		AnimationManager::RegisterEvent("GTS_BodyDamage_Off", "Proning", GTS_BodyDamage_Off);
 	}
 
 	void  AnimationProning::RegisterTriggers() {
-		AnimationManager::RegisterTrigger("SBO_ProneOn", "Crawl", "GTSBeh_ProneStart");
-		AnimationManager::RegisterTrigger("SBO_ProneOff", "Crawl", "GTSBeh_ProneStop");
-		AnimationManager::RegisterTrigger("SBO_Dive", "Crawl", "GTSBeh_ProneStart_Dive");
+		AnimationManager::RegisterTrigger("SBO_ProneOn", "Proning", "GTSBeh_ProneStart");
+		AnimationManager::RegisterTrigger("SBO_ProneOff", "Proning", "GTSBeh_ProneStop");
+		AnimationManager::RegisterTrigger("SBO_Dive", "Proning", "GTSBeh_ProneStart_Dive");
 	}
 }
