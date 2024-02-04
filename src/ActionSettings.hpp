@@ -146,8 +146,12 @@ namespace Gts {
 
     const float Radius_BreastCrush_BodyImpact = 16.0f;
     const float Radius_BreastCrush_BreastImpact = 16.0f;
-    const float Radius_BreastCrush_BodyDOT = 15.0f; 
+    const float Radius_BreastCrush_BodyDOT = 14.0f; 
     const float Radius_BreastCrush_BreastDOT = 14.0f; 
+
+    ///////Proning
+
+    const float Radius_Proning_BodyDOT = 10.0f;
 
     ////////Crawling
     const float Radius_Crawl_HandSwipe = 20.0f;

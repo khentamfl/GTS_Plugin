@@ -2624,7 +2624,7 @@ namespace Gts {
 				if (queststage < 10 || queststage >= 100) {
 					return;
 				}
-				float bonus = GetSizeFromBoundingBox(tiny);
+				float bonus = 1.0;//GetSizeFromBoundingBox(tiny);
 				if (stage == 1) {
 					Persistent::GetSingleton().HugStealCount += value;
 				} else if (stage == 2) {
