@@ -220,13 +220,15 @@ namespace {
 								}
 								if (nodeCollisions > 0) {
 									damage_zones_applied += 1.0;
-									//log::info("Damage zones applied: {}", damage_zones_applied);
+									if (damage_zones_applied < 1.0) {
+										damage_zones_applied = 1.0; // just to be safe
+									}
 									damage /= damage_zones_applied;
 									if (CooldownCheck) {
 										float pushForce = std::clamp(force, 0.04f, 0.10f);
 										bool OnCooldown = sizemanager.IsThighDamaging(otherActor);
 										if (!OnCooldown) {
-											float pushCalc = 0.035 * pushForce * speed;
+											float pushCalc = 0.06 * pushForce * speed;
 											Laugh_Chance(actor, otherActor, 1.35, "ThighCrush");
 											float difference = giantScale / (tinyScale * GetSizeFromBoundingBox(otherActor));
 											PushTowards(actor, otherActor, leg, pushCalc * difference, true);
