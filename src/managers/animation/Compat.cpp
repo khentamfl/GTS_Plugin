@@ -8,6 +8,7 @@
 //   - "MCO_SecondDodge",           // enables GTS sounds and footstep effects
 //   - "SoundPlay.MCO_DodgeSound",
 
+#include "managers/animation/Sneak_Slam_FingerGrind.hpp"
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/Utils/CrawlUtils.hpp"
@@ -105,8 +106,8 @@ namespace {
 				}
 			}
 
-			ApplyThighDamage(giant, true, false, Radius_ThighCrush_Idle, Damage_BreastCrush_BodyDOT * damage * 0.6, 0.10, 1.6, 200, DamageSource::Thigh_Crush);
-			ApplyThighDamage(giant, false, false, Radius_ThighCrush_Idle, Damage_BreastCrush_BodyDOT * damage * 0.6, 0.10, 1.6, 200, DamageSource::Thigh_Crush);
+			ApplyThighDamage(giant, true, false, Radius_ThighCrush_Idle, Damage_BreastCrush_BodyDOT * damage * 0.6, 0.10, 1.6, 200, DamageSource::ThighCrushed);
+			ApplyThighDamage(giant, false, false, Radius_ThighCrush_Idle, Damage_BreastCrush_BodyDOT * damage * 0.6, 0.10, 1.6, 200, DamageSource::ThighCrushed);
 
 			if (BreastL03 && BreastR03) {
 				DoDamageAtPoint(giant, Radius_BreastCrush_BreastDOT, Damage_BreastCrush_BreastDOT * damage, BreastL03, 400, 0.10, 1.33, DamageSource::BreastImpact);
@@ -149,8 +150,8 @@ namespace {
 				}
 			}
 
-			ApplyThighDamage(giant, true, false, Radius_ThighCrush_Idle, Damage_BreastCrush_BodyDOT * damage * 0.6, 0.10, 1.0, 200, DamageSource::Thigh_Crush);
-			ApplyThighDamage(giant, false, false, Radius_ThighCrush_Idle, Damage_BreastCrush_BodyDOT * damage * 0.6, 0.10, 1.0, 200, DamageSource::Thigh_Crush);
+			ApplyThighDamage(giant, true, false, Radius_ThighCrush_Idle, Damage_BreastCrush_BodyDOT * damage * 0.6, 0.10, 1.0, 200, DamageSource::ThighCrushed);
+			ApplyThighDamage(giant, false, false, Radius_ThighCrush_Idle, Damage_BreastCrush_BodyDOT * damage * 0.6, 0.10, 1.0, 200, DamageSource::ThighCrushed);
 
 			if (BreastL03 && BreastR03) {
 				GRumble::Once("BreastDot_L", giantref, 0.25, 0.025, "L Breast03");
