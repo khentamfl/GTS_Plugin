@@ -13,6 +13,4 @@ namespace Gts
 			static void RegisterTriggers();
 			
 	};
-
-	void ApplyThighDamage(Actor* actor, bool right, bool CooldownCheck, float radius, float damage, float bbmult, float crush_threshold, int random, DamageSource Cause);
 }
