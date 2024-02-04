@@ -49,11 +49,11 @@ namespace {
 
     void GTS_Sneak_SlamStrong_Impact_Secondary_R(AnimationEventData& data) {
         float scale = get_visual_scale(&data.giant) * 0.8;
-        DoCrawlingFunctions(&data.giant, scale, 0.65, Damage_Sneak_HandSlam_Strong_Secondary, CrawlEvent::RightHand, "RightHandRumble", 0.65, Radius_Sneak_HandSlam_Strong, 2.0, DamageSource::HandSlamRight);
+        DoCrawlingFunctions(&data.giant, scale, 0.65, Damage_Sneak_HandSlam_Strong_Secondary, CrawlEvent::RightHand, "RightHandRumble", 0.65, Radius_Sneak_HandSlam_Strong_Recover, 2.0, DamageSource::HandSlamRight);
     }
     void GTS_Sneak_SlamStrong_Impact_Secondary_L(AnimationEventData& data) {
         float scale = get_visual_scale(&data.giant) * 0.8;
-        DoCrawlingFunctions(&data.giant, scale, 0.65, Damage_Sneak_HandSlam_Strong_Secondary, CrawlEvent::LeftHand, "RightHandRumble", 0.65, Radius_Sneak_HandSlam_Strong, 2.0, DamageSource::HandSlamRight);
+        DoCrawlingFunctions(&data.giant, scale, 0.65, Damage_Sneak_HandSlam_Strong_Secondary, CrawlEvent::LeftHand, "RightHandRumble", 0.65, Radius_Sneak_HandSlam_Strong_Recover, 2.0, DamageSource::HandSlamRight);
     }
 }
 
