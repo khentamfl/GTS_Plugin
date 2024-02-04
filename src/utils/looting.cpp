@@ -223,7 +223,6 @@ namespace Gts {
 		float Scale = std::clamp(scale * GetSizeFromBoundingBox(actor), 0.10f, 4.4f);
 
 		if (Resurrected) {
-			//Cprint("Task Aborted, target was resurrected");
 			return;
 		}
 

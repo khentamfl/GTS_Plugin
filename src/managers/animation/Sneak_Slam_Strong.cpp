@@ -22,14 +22,14 @@ using namespace SKSE;
 using namespace RE;
 using namespace Gts;
 
-namespace { // WIP. No Anims yet.
-    const std::string_view Rfinger = "NPC R Finger12 [RF12]";
-	const std::string_view Lfinger = "NPC L Finger12 [LF12]";
+namespace {
 
     void GTS_Sneak_SlamStrong_Raise_Arm_R(AnimationEventData& data) {
+        TrackMatchingHand(&data.giant, CrawlEvent::RightHand, true); // OFF is handled inside Sneak_Slam.cpp
 		DrainStamina(&data.giant, "StaminaDrain_StrongSneakSlam", "DestructionBasics", true, 2.2);
 	}; 
 	void GTS_Sneak_SlamStrong_Raise_Arm_L(AnimationEventData& data) {
+        TrackMatchingHand(&data.giant, CrawlEvent::LeftHand, true); // OFF is handled inside Sneak_Slam.cpp
 		DrainStamina(&data.giant, "StaminaDrain_StrongSneakSlam", "DestructionBasics", true, 2.2);
 	};
 

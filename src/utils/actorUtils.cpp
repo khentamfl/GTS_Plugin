@@ -2002,7 +2002,7 @@ namespace Gts {
 
 		ModSizeExperience(giant, (shrinkpower * gigantism) * 0.80);
 
-		float MinScale = 0.11/Adjustment;
+		float MinScale = 0.11;
 
 		if (get_target_scale(tiny) <= MinScale) {
 			set_target_scale(tiny, MinScale);
