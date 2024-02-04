@@ -100,6 +100,7 @@ namespace Gts {
 
     const float Damage_Sneak_HandSlam = 4.0f;
     const float Damage_Sneak_HandSlam_Strong = 18.0f;
+    const float Damage_Sneak_HandSlam_Strong_Secondary = 2.8f;
 
     const float Damage_Sneak_FingerGrind_DOT = 0.008f;
     const float Damage_Sneak_FingerGrind_Impact = 3.0f;

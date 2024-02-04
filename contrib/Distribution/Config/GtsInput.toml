@@ -366,6 +366,13 @@ trigger = "once"
 duration = 0.0
 
 [[InputEvent]]
+name = "SBO_DisableProne"
+keys = ["RMB"]
+exclusive = false
+trigger = "continuous"
+duration = 0.5
+
+[[InputEvent]]
 name = "SBO_ToggleDive"
 keys = ["LSHIFT", "W"]
 exclusive = false
