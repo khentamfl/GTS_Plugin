@@ -88,7 +88,7 @@ namespace Hooks {
 
 		static FunctionHook<void(AIProcess* source, Actor* receiver, NiPoint3 direction, float force)>PushActor (                 
 			REL::RelocationID(38858, 39895),
-			[](auto* param_1, auto* param_2, auto param_3, auto* param_4) {
+			[](auto* param_1, auto* param_2, auto param_3, auto param_4) {
 				//1403a4f70 : 25468
 				log::info("PushActor hooked");
 				if (source) {
