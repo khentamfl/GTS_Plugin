@@ -13,6 +13,7 @@
 
 #include <stddef.h>
 #include <thread>
+#include "git.h"
 
 using namespace RE::BSScript;
 using namespace Gts;
@@ -98,6 +99,7 @@ namespace {
 	void InitializeMessaging()
 	{
 		if (!GetMessagingInterface()->RegisterListener([](MessagingInterface::Message *message) {
+			auto gitData = std::format("{} ({}) on {}", git_CommitSubject(), git_CommitSHA1(), git_CommitDate());
 			switch (message->type)
 			{
 				// Skyrim lifecycle events.
@@ -109,7 +111,7 @@ namespace {
 					break;
 				case MessagingInterface::kDataLoaded: // All ESM/ESL/ESP plugins have loaded, main menu is now active.
 					// It is now safe to access form data.
-					Cprint("[GTSPlugin.dll]: [ Giantess Mod v 2.00 Beta was succesfully initialized. Waiting for New Game/Save Load. ]");
+					Cprint("[GTSPlugin.dll]: [ Giantess Mod v 2.00 {} Beta was succesfully initialized. Waiting for New Game/Save Load. ]", gitData);
 					EventDispatcher::DoDataReady();
 					break;
 				// Skyrim game events.
@@ -193,8 +195,8 @@ SKSEPluginLoad(const LoadInterface * skse)
 	auto *plugin  = PluginDeclaration::GetSingleton();
 	auto version = plugin->GetVersion();
 
-	log::info("{} {} is loading...", plugin->GetName(), version);
-
+	auto gitData = std::format("{} ({}) on {}", git_CommitSubject(), git_CommitSHA1(), git_CommitDate());
+	log::info("{} {} {} is loading...", plugin->GetName(), version, gitData);
 
 	Init(skse);
 	InitializeMessaging();

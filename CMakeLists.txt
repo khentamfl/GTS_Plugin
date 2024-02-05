@@ -38,7 +38,8 @@ source_group(
         TREE ${CMAKE_CURRENT_SOURCE_DIR}
         FILES
         ${headers}
-        ${sources})
+        ${sources}
+        )
 
 ########################################################################################################################
 ## Configure target DLL
@@ -48,6 +49,12 @@ find_package(glm CONFIG REQUIRED)
 find_package(toml11 CONFIG REQUIRED)
 find_package(nlohmann_json 3.2.0 REQUIRED)
 find_path(GLUINO_INCLUDE_DIRS "gluino/gluino.h")
+FetchContent_Declare(cmake_git_version_tracking                   
+  GIT_REPOSITORY https://github.com/andrew-hardin/cmake-git-version-tracking.git
+  GIT_TAG 904dbda1336ba4b9a1415a68d5f203f576b696bb
+)
+FetchContent_MakeAvailable(cmake_git_version_tracking)
+
 
 add_commonlibsse_plugin(${PROJECT_NAME} DECLARATIVE SOURCES ${headers} ${sources})
 add_library("${PROJECT_NAME}::${PROJECT_NAME}" ALIAS "${PROJECT_NAME}")
@@ -69,6 +76,7 @@ target_link_libraries(${PROJECT_NAME}
         PRIVATE
         toml11::toml11
         nlohmann_json::nlohmann_json
+        cmake_git_version_tracking
         )
 
 target_precompile_headers(${PROJECT_NAME}
