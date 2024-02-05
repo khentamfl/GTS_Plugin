@@ -24,22 +24,6 @@ namespace Hooks
     void Hook_Movement::Hook(Trampoline& trampoline) {
 
         static CallHook<float(TESObjectREFR* param_1)>Scale_AlterMovementSpeed(  // Movement speed alteration
-            REL::RelocationID(37013, 38041), REL::Relocate(0x1A, 0x1F),          
-            [](auto* param_1) {
-                // ---------------SE:
-                // sub_14060EEF0 : 37013            
-                // 0x14060ef0a - 0x14060EEF0 = 0x1A      
-                // ---------------AE:
-                // FUN_140637dd0 :  38041
-                // 0x140637def - 0x140637dd0 = 0x1F
-                float result = 15.0; // force it to 1.0. We DON'T want the SetScale() to affect it.
-                log::info("(21 - 1) - Hooked Alter Movement Speed, value * 15.0");
-                return result;
-            }
-        );
-
-
-        static CallHook<float(TESObjectREFR* param_1)>Scale_AlterMovementSpeed_2(  // Movement speed alteration
             REL::RelocationID(37013, 37943), REL::Relocate(0x1A, 0x51),          
             [](auto* param_1) {
                 // ---------------SE:
@@ -49,12 +33,11 @@ namespace Hooks
                 // FUN_140630510 :  37943
                 // 0x140630561 - 0x140630510 = 0x51
                 float result = 0.15; // force it to 1.0. We DON'T want the SetScale() to affect it.
-                log::info("(21 - 2) - Hooked Alter Movement Speed, value * 0.15");
+                log::info("(21) - Hooked Alter Movement Speed, value * 0.15");
                 return result;
             }
         );
 
-       
 
         /*static CallHook<float(TESObjectREFR* param_1)>sub_140623F10( // Seems to be called on attacks. 
             REL::RelocationID(37588, 37588), REL::Relocate(0x6B, 0x6B), // Supposedly moves invisible "Hitbox" zone for weapons more forward or something

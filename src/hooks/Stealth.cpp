@@ -99,11 +99,8 @@ namespace Hooks {
             //  0x1405fe19d - 0x1405FD870 = 0x92D (line 370)
             //  altering Character::GetHeading_1405FD780
 			[](auto* giant, auto* param_1) {
-				//log::info("-- Heading_2 Result for {}", giant->GetDisplayFullName());
                 float result = CalculateHeading_var2(giant, param_1);
-               // log::info("-------Heading_2 Result: {}", CalculateHeading_var2(giant, param_1));
                 result *= modify_detection(result);
-                //log::info("-------Heading_2 Result Alter: {}", CalculateHeading_var2(giant, param_1));
 				return CalculateHeading_var2(giant, param_1);
             }
         );
@@ -113,11 +110,8 @@ namespace Hooks {
             //  0x1405fda87 - 0x1405FD870 = 0x217 (line ~150)
             //  altering Character::GetHeading_1405FD780
 			[](auto* giant, auto* param_1) {
-				//log::info("-- Heading 3 Result for {}", giant->GetDisplayFullName());
                 float result = CalculateHeading_var3(giant, param_1);
-                //log::info("-------Heading 3 Result: {}", result);
                 result *= modify_detection(result);
-                //log::info("-------Heading 3 Result Post: {}", result);
 				return result;
             }
         );
