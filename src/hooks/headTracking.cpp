@@ -24,7 +24,7 @@ namespace Hooks
 
 	void Hook_HeadTracking::Hook(Trampoline& trampoline) {
 		static CallHook<float(TESObjectREFR* param_1)>Alter_Headtracking( 
-			REL::RelocationID(37129, 37356), REL::Relocate(0x24, 0x295),
+			REL::RelocationID(37129, 37364), REL::Relocate(0x24, 0x5E),
 			[](auto* param_1) {
 				// SE:
 				// 37129
@@ -44,12 +44,18 @@ namespace Hooks
 				// or
 				// FUN_1405ffc50 37364
 
-
+				// Attempt 1: Prints nothing, doesn't work
 				// FUN_1405fe580 37356  (A correct one?)
 				// 0x140637def - 0x140637dd0 = 0x1F
 				// 0x1402a3c30 = GetNiNode
 
 				// 0x1405fe815 - 0x1405fe580 = 0x295
+
+				// ----------------------------------------------------
+				
+				// Attempt 2:
+				// FUN_1405ffc50: 37364
+				// 0x1405ffcae - 0x1405ffc50 = 0x5E
   
 				float result = Alter_Headtracking(param_1);
 				float Alter = 10.0; //affect_by_scale(param_1, result);
