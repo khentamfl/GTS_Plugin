@@ -26,39 +26,16 @@ namespace Hooks
 		static CallHook<float(TESObjectREFR* param_1)>Alter_Headtracking( 
 			REL::RelocationID(37129, 37364), REL::Relocate(0x24, 0x5E),
 			[](auto* param_1) {
-				// SE:
-				// 37129
+				// ----------------- SE:
+				// FUN_140615030 : 37129
 				// 0x140615054 - 0x140615030 = 0x24
-				// FUN_140615030
 
 				//------------------ AE:
-				// FUN_1407ea630 ? 
-				// FUN_1407e65a0
-				// FUN_1407e6360
-				// FUN_14078e130
-				// FUN_14078e060
-				// FUN_14074f230
-				// FUN_140746b40
-
-				// FUN_140637dd0  38041
-				// or
-				// FUN_1405ffc50 37364
-
-				// Attempt 1: Prints nothing, doesn't work
-				// FUN_1405fe580 37356  (A correct one?)
-				// 0x140637def - 0x140637dd0 = 0x1F
-				// 0x1402a3c30 = GetNiNode
-
-				// 0x1405fe815 - 0x1405fe580 = 0x295
-
-				// ----------------------------------------------------
-				
-				// Attempt 2:
 				// FUN_1405ffc50: 37364
 				// 0x1405ffcae - 0x1405ffc50 = 0x5E
   
 				float result = Alter_Headtracking(param_1);
-				float Alter = 10.0; //affect_by_scale(param_1, result);
+				float Alter = affect_by_scale(param_1, result);
 				log::info("(20) Alter_Headtracking Hooked");
 				return Alter;
             }

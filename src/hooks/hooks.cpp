@@ -46,8 +46,9 @@ namespace Hooks
 		if (REL::Module::IsSE()) { // Not RE'd for AE for now
 			//Hook_Experiments::Hook(trampoline);
 			Hook_Stealth::Hook(trampoline);
-			Hook_Movement::Hook(trampoline);
+			
 		}
+		Hook_Movement::Hook(trampoline);
 		Hook_HeadTracking::Hook(trampoline);
 		//Hook_ActorRotation::Hook(trampoline);
 		HookCameraStates();
