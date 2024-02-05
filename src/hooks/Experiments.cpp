@@ -91,11 +91,11 @@ namespace Hooks {
 			[](auto* param_1, auto* param_2, auto param_3, auto* param_4) {
 				//1403a4f70 : 25468
 				log::info("AddExplosionImpulse_1403a4f70 Hooked");
-				log::info("Param 1: {}", GetRawName(param_1));
-				log::info("Param 2: {}", Vector2Str(param_2));
-				log::info("Param 3: {}", param_3);
-				log::info("Param 4: {}", GetRawName(param_4));
-				return AddExplosionImpulse_1403a4f70(param_1, param_2, param_3, param_4);;
+				log::info("---Param 1: {}", GetRawName(param_1));
+				log::info("---Param 2: {}", Vector2Str(param_2));
+				log::info("---Param 3: {}", param_3);
+				log::info("---Param 4: {}", param_4);
+				return AddExplosionImpulse_1403a4f70(param_1, param_2, param_3, param_4);
             }
         );
 
