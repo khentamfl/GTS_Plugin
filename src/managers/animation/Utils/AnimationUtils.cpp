@@ -1078,7 +1078,7 @@ namespace Gts {
 				float maxFootDistance = radius * giantScale;
 
 				if (IsDebugEnabled() && (actor->formID == 0x14 || IsTeammate(actor) || EffectsForEveryone(actor))) {
-					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance, 400);
+					DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance);
 				}
 			
 				NiPoint3 giantLocation = actor->GetPosition();
@@ -1134,6 +1134,85 @@ namespace Gts {
 				}
 			}
 		} 
+	}
+
+	void ApplyFingerDamage(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, float Shrink, DamageSource Cause) { // Apply crawl damage to each bone individually
+		auto profiler = Profilers::Profile("Other: CrawlDamage");
+		if (!node) {
+			return;
+		}
+		if (!giant) {
+			return;
+		}
+		float giantScale = get_visual_scale(giant);
+
+		float SCALE_RATIO = 1.25;
+		if (HasSMT(giant)) {
+			SCALE_RATIO = 0.9;
+			giantScale *= 1.3;
+		}
+		NiPoint3 NodePosition = node->world.translate;
+
+		float maxDistance = radius * giantScale;
+		float CheckDistance = 220 * giantScale;
+		// Make a list of points to check
+		std::vector<NiPoint3> points = {
+			NiPoint3(0.0, 0.0, 0.0), // The standard position
+		};
+		std::vector<NiPoint3> CrawlPoints = {};
+
+		for (NiPoint3 point: points) {
+			CrawlPoints.push_back(NodePosition);
+		}
+		if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone(giant))) {
+			for (auto point: CrawlPoints) {
+				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance, 400.0);
+			}
+		}
+
+		Utils_UpdateHighHeelBlend(giant, false);
+		NiPoint3 giantLocation = giant->GetPosition();
+		
+
+		for (auto otherActor: find_actors()) {
+			if (otherActor != giant) {
+				float tinyScale = get_visual_scale(otherActor);
+				if (giantScale / tinyScale > SCALE_RATIO) {
+					NiPoint3 actorLocation = otherActor->GetPosition();
+					for (auto point: CrawlPoints) {
+						if ((actorLocation-giantLocation).Length() <= CheckDistance) {
+
+							int nodeCollisions = 0;
+							float force = 0.0;
+
+							auto model = otherActor->GetCurrent3D();
+
+							if (model) {
+								VisitNodes(model, [&nodeCollisions, &force, NodePosition, maxDistance](NiAVObject& a_obj) {
+									float distance = (NodePosition - a_obj.world.translate).Length();
+									if (distance < maxDistance) {
+										nodeCollisions += 1;
+										force = 1.0 - distance / maxDistance;
+										return false;
+									}
+									return true;
+								});
+							}
+							if (nodeCollisions > 0) {
+								if (get_target_scale(otherActor) > 0.08 / GetSizeFromBoundingBox(otherActor)) {
+									update_target_scale(otherActor, Shrink, SizeEffectType::kShrink);
+								} else {
+									set_target_scale(otherActor, 0.08 / GetSizeFromBoundingBox(otherActor));
+								}
+								Laugh_Chance(giant, otherActor, 1.0, "FingerGrind"); 
+								Utils_PushCheck(giant, otherActor, 1.0);
+								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	std::vector<NiPoint3> GetThighCoordinates(Actor* giant, std::string_view calf, std::string_view feet, std::string_view thigh) {

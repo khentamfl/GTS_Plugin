@@ -69,7 +69,7 @@ namespace {
 	}
 
 	void StartBodyDamage_Slide(Actor* giant) {
-		float damage = 24.0 * TimeScale();
+		float damage = 18.0 * TimeScale();
 		auto gianthandle = giant->CreateRefHandle();
 		std::string name = std::format("BodyDOT_Slide_{}", giant->formID);
 		TaskManager::Run(name, [=](auto& progressData) {
