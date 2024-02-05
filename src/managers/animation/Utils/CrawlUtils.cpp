@@ -152,6 +152,9 @@ namespace Gts {
 		float maxDistance = radius * giantScale;
 		float CheckDistance = 220 * giantScale;
 		// Make a list of points to check
+
+		float damage_zones_applied = 0.0;
+
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, 0.0, 0.0), // The standard position
 		};
@@ -162,7 +165,7 @@ namespace Gts {
 		}
 		if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone(giant))) {
 			for (auto point: CrawlPoints) {
-				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance, 400.0);
+				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance);
 			}
 		}
 
@@ -193,6 +196,11 @@ namespace Gts {
 								});
 							}
 							if (nodeCollisions > 0) {
+								damage_zones_applied += 1.0;
+								if (damage_zones_applied < 1.0) {
+									damage_zones_applied = 1.0; // just to be safe
+								}
+								damage /= damage_zones_applied;
 								float aveForce = std::clamp(force, 0.14f, 0.70f);
 
 								Utils_PushCheck(giant, otherActor, aveForce); 
