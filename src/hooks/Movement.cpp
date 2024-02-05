@@ -48,8 +48,8 @@ namespace Hooks
                 // ---------------AE:
                 // FUN_140630510 :  37943
                 // 0x140630561 - 0x140630510 = 0x51
-                float result = 5.0; // force it to 1.0. We DON'T want the SetScale() to affect it.
-                log::info("(21 - 2) - Hooked Alter Movement Speed, value * 5.0");
+                float result = 0.15; // force it to 1.0. We DON'T want the SetScale() to affect it.
+                log::info("(21 - 2) - Hooked Alter Movement Speed, value * 0.15");
                 return result;
             }
         );
