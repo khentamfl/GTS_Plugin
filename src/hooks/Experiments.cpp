@@ -91,7 +91,7 @@ namespace Hooks {
 			[](auto* source, auto* receiver, auto direction, auto force) {
 				log::info("PushActor hooked");
 				if (source) {
-					auto actor1 = source->GetUserData();
+					auto actor1 = skyrim_cast<Actor*>(source);
 					if (actor1) {
 						log::info("Actor1 found: {}", actor1->GetDisplayFullName());
 					}
