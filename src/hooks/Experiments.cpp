@@ -85,24 +85,6 @@ namespace Hooks {
 		//  FUN_14062b870                         															
 		//	Actor::sub_140627930
 
-
-		static FunctionHook<void(AIProcess* source, Actor* receiver, NiPoint3 direction, float force)>PushActor (                 
-			REL::RelocationID(38858, 39895),
-			[](auto* source, auto* receiver, auto direction, auto force) {
-				log::info("PushActor hooked");
-				if (source) {
-					auto actor1 = skyrim_cast<Actor*>(source);
-					if (actor1) {
-						log::info("Actor1 found: {}", actor1->GetDisplayFullName());
-					}
-				}
-				if (receiver) {
-					log::info("Actor2 found: {}", receiver->GetDisplayFullName());
-				}
-				return PushActor(source, receiver, direction, force);
-            }
-        );
-
 		/*static FunctionHook<float(Actor* param_1)>Actor_sub_140627930 (   // supposedly affects Weapon Damage                 
 			REL::RelocationID(37650, 37650), // works only with direct weapon hits and fist attacks (physical non-arrow damage)
 			[](auto* param_1) {

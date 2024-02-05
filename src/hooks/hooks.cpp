@@ -44,7 +44,7 @@ namespace Hooks
 		Hook_Damage::Hook(trampoline);
 		
 		if (REL::Module::IsSE()) { // Not RE'd for AE for now
-			Hook_Experiments::Hook(trampoline);
+			//Hook_Experiments::Hook(trampoline);
 			Hook_Stealth::Hook(trampoline);
 		}
 		Hook_Movement::Hook(trampoline);
