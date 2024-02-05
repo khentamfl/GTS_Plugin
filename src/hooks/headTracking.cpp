@@ -44,7 +44,7 @@ namespace Hooks
 				// or
 				// FUN_1405ffc50 37364
 
-				
+
 				// FUN_1405fe580 37356  (A correct one?)
 				// 0x140637def - 0x140637dd0 = 0x1F
 				// 0x1402a3c30 = GetNiNode
@@ -53,7 +53,7 @@ namespace Hooks
   
 				float result = Alter_Headtracking(param_1);
 				float Alter = 10.0; //affect_by_scale(param_1, result);
-				//log::info("(20) Alter_Headtracking Hooked");
+				log::info("(20) Alter_Headtracking Hooked");
 				return Alter;
             }
         );
