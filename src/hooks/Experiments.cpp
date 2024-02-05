@@ -86,13 +86,13 @@ namespace Hooks {
 		//	Actor::sub_140627930
 
 
-		static FunctionHook<void(uintptr_t* param_1, uintptr_t* param_2, uintptr_t param_3, uintptr_t* param_4)>AddExplosionImpulse_1403a4f70 (                 
+		static FunctionHook<void(uintptr_t* param_1, hkVector4* param_2, uintptr_t param_3, uintptr_t* param_4)>AddExplosionImpulse_1403a4f70 (                 
 			REL::RelocationID(25468, 25468),
 			[](auto* param_1, auto* param_2, auto param_3, auto* param_4) {
 				//1403a4f70 : 25468
 				log::info("AddExplosionImpulse_1403a4f70 Hooked");
 				log::info("Param 1: {}", GetRawName(param_1));
-				log::info("Param 2: {}", GetRawName(param_2));
+				log::info("Param 2: {}", Vector2Str(param_2));
 				log::info("Param 3: {}", param_3);
 				log::info("Param 4: {}", GetRawName(param_4));
 				return AddExplosionImpulse_1403a4f70(param_1, param_2, param_3, param_4);;
