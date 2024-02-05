@@ -36,7 +36,7 @@ namespace Hooks
   
 				float result = Alter_Headtracking(param_1);
 				float Alter = affect_by_scale(param_1, result);
-				log::info("(20) Alter_Headtracking Hooked");
+				//log::info("(20) Alter_Headtracking Hooked");
 				return Alter;
             }
         );
