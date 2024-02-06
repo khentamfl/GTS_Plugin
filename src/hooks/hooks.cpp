@@ -43,10 +43,10 @@ namespace Hooks
 		Hook_Jumping::Hook(trampoline);
 		Hook_Damage::Hook(trampoline);
 		
-		if (REL::Module::IsSE()) { // Not RE'd for AE for now
-			//Hook_Experiments::Hook(trampoline);
-			Hook_Stealth::Hook(trampoline);
-		}
+		//if (REL::Module::IsSE()) { // Used when something is not RE'd yet for AE
+			
+		//}
+		Hook_Stealth::Hook(trampoline);
 		Hook_Movement::Hook(trampoline);
 		Hook_HeadTracking::Hook(trampoline);
 		//Hook_ActorRotation::Hook(trampoline);

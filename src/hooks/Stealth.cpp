@@ -79,42 +79,62 @@ namespace Hooks {
         
         // NEEDS AE OFFSET AND REL!
         static CallHook<float(Actor* giant)>CalculateFootstepDetection_1405FD870_5D0(
-			REL::RelocationID(36758, 36758), REL::Relocate(0x2D4, 0x2D4), 
-            //  0x1405FD870 (func) - 0x1405fdb44 (weight) = -0x2D4 (just remove -)
-            // altering Character::GetEquippedWeight_1406195D0
+			REL::RelocationID(36758, 37774), REL::Relocate(0x2D4, 0x2D2), 
+            // SE:
+            //  0x1405FD870 : 36758
+            //  0x1405fdb44 - 0x1405FD870 = 0x2d4 
+            //  altering Character::GetEquippedWeight_1406195D0
+            // AE:
+            //  0x140625520 : 37774
+            //  0x1406257f2 - 0x140625520 = 0x2D2
 			[](auto* giant) {
 				float result = CalculateFootstepDetection_1405FD870_5D0(giant); // Makes footsteps lounder for AI, works nicely so far
 				if (giant->formID == 0x14 || IsTeammate(giant)) {
-					//log::info("Hook Weight Result for {} is {}", giant->GetDisplayFullName(), result);
+					log::info("Hook Weight Result for {} is {}", giant->GetDisplayFullName(), result);
 					float alter = modify_footstep_detection(giant, result);
-					//log::info("New result: {}", alter);
-					result = alter;
+					result = 9000;//alter;
 				}
 				return result;
             }
         );
         
         static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading_var2(
-			REL::RelocationID(36758, 36758), REL::Relocate(0x92D, 0x92D), 
-            //  0x1405fe19d - 0x1405FD870 = 0x92D (line 370)
+			REL::RelocationID(36758, 37774), REL::Relocate(0x217, 0x217), 
+            // SE:
+            //  0x1405FD870 : 36758
+            //  0x1405fda87 - 0x1405FD870 = 0x217 (line ~150)
             //  altering Character::GetHeading_1405FD780
+            // AE:
+            //  0x140625520 : 37774
+            //  0x140625737 - 0x140625520 = 0x217 (wow same rel)
 			[](auto* giant, auto* param_1) {
-                float result = CalculateHeading_var2(giant, param_1);
-                result *= modify_detection(result);
-				return CalculateHeading_var2(giant, param_1);
+                float result = CalculateHeading_var3(giant, param_1);
+                //result *= modify_detection(result);
+                log::info("CalculateHeading_2 hooked, value: {}", result);
+                result = 0.0001;
+				return result;
             }
         );
 
         static CallHook<float(Actor* giant, NiPoint3* param_1)>CalculateHeading_var3(
-			REL::RelocationID(36758, 36758), REL::Relocate(0x217, 0x217), 
-            //  0x1405fda87 - 0x1405FD870 = 0x217 (line ~150)
+			REL::RelocationID(36758, 37774), REL::Relocate(0x92D, 0xA7F), 
+            // SE:
+            //  0x1405FD870 : 36758
+            //  0x1405fe19d - 0x1405FD870 = 0x92D (line 370)
             //  altering Character::GetHeading_1405FD780
+            // AE:
+            //  0x140625520 : 37774
+            //  0x140625f9f - 0x140625520 = 0xA7F
 			[](auto* giant, auto* param_1) {
                 float result = CalculateHeading_var3(giant, param_1);
-                result *= modify_detection(result);
+                //result *= modify_detection(result);
+                log::info("CalculateHeading_3 hooked, value: {}", result);
+                result = 0.0001;
 				return result;
             }
         );
+
+        
 
         //////////////////////////////////////////////////TESTS
 
