@@ -108,7 +108,7 @@ namespace Hooks {
             //  0x140625520 : 37774
             //  0x140625737 - 0x140625520 = 0x217 (wow same rel)
 			[](auto* giant, auto* param_1) {
-                float result = CalculateHeading_var3(giant, param_1);
+                float result = CalculateHeading_var2(giant, param_1);
                 //result *= modify_detection(result);
                 log::info("CalculateHeading_2 hooked, value: {}", result);
                 result = 0.0001;
