@@ -39,37 +39,6 @@ namespace {
 
         return modify;
     }
-
-    void Stealth_Stuff(Actor* actor) {
-        auto ai = actor->GetActorRuntimeData().currentProcess;
-        if (ai) {
-            if (ai->high) {
-                float detect = ai->high->detectionModifier;
-                float modifier = ai->high->detectionModifierTimer;
-                log::info("Data of {}", actor->GetDisplayFullName());
-                log::info("DetectionMod: {}, ModifierTimer: {}", detect, modifier);
-
-                for (auto Knowledge: ai->high->knowledgeArray) {
-                    ActorKnowledge* Data = Knowledge.second.get();
-                    ActorHandle find_owner = Data->owner;
-                    if (find_owner) {
-                        Actor* owner = find_owner.get().get();
-                        //log::info("found owner: {}", owner->GetDisplayFullName());
-                    }
-
-                    auto state = Data->detectionState;
-                    if (state) {
-                        DetectionState* detection = state.get();
-                        log::info("Detection Level of {} is {}, unk18: {}, 28: {}, 38: {}", 
-                        actor->GetDisplayFullName(), 
-                        detection->level, detection->unk18, detection->unk28, detection->unk38
-                        );
-                        detection->level = 0.0;
-                    } 
-                }
-            }
-        }
-    }
 }
 
 
@@ -92,7 +61,7 @@ namespace Hooks {
 				if (giant->formID == 0x14 || IsTeammate(giant)) {
 					log::info("Hook Weight Result for {} is {}", giant->GetDisplayFullName(), result);
 					float alter = modify_footstep_detection(giant, result);
-					result = 9000;//alter;
+					result = alter;
 				}
 				return result;
             }
@@ -109,9 +78,7 @@ namespace Hooks {
             //  0x140625737 - 0x140625520 = 0x217 (wow same rel)
 			[](auto* giant, auto* param_1) {
                 float result = CalculateHeading_var2(giant, param_1);
-                //result *= modify_detection(result);
-                log::info("CalculateHeading_2 hooked, value: {}", result);
-                result = 0.0001;
+                result *= modify_detection(result);
 				return result;
             }
         );
@@ -127,9 +94,7 @@ namespace Hooks {
             //  0x140625f9f - 0x140625520 = 0xA7F
 			[](auto* giant, auto* param_1) {
                 float result = CalculateHeading_var3(giant, param_1);
-                //result *= modify_detection(result);
-                log::info("CalculateHeading_3 hooked, value: {}", result);
-                result = 0.0001;
+                result *= modify_detection(result);
 				return result;
             }
         );
