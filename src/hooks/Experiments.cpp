@@ -86,9 +86,9 @@ namespace Hooks {
 		//	Actor::sub_140627930
 
 		static FunctionHook<void(Actor* param_1, float param_2, Actor* param_3)>StaggerHook (        
-			REL::RELOCATION_ID(36700, 37710), 
+			REL::RelocationID(36700, 37710), 
 			[](auto* param_1, auto param_2, auto* param_3) {
-				log::info("Stagger Hook", result);
+				log::info("Stagger Hook");
 				log::info("Param 1: {}", param_1->GetDisplayFullName());
 				log::info("Param 2: {}", param_2);
 				log::info("Param 3: {}", param_1->GetDisplayFullName());

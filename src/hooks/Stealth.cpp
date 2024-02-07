@@ -59,7 +59,7 @@ namespace Hooks {
 			[](auto* giant) {
 				float result = CalculateFootstepDetection_1405FD870_5D0(giant); // Makes footsteps lounder for AI, works nicely so far
 				if (giant->formID == 0x14 || IsTeammate(giant)) {
-					log::info("Hook Weight Result for {} is {}", giant->GetDisplayFullName(), result);
+					//log::info("Hook Weight Result for {} is {}", giant->GetDisplayFullName(), result);
 					float alter = modify_footstep_detection(giant, result);
 					result = alter;
 				}
