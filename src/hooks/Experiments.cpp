@@ -85,6 +85,17 @@ namespace Hooks {
 		//  FUN_14062b870                         															
 		//	Actor::sub_140627930
 
+		static FunctionHook<float(Actor* param_1, float param_2, Actor* param_3)>StaggerHook (        
+			REL::RELOCATION_ID(36700, 37710), 
+			[](auto* param_1, auto param_2, auto* param_3) {
+				log::info("Stagger Hook", result);
+				log::info("Param 1: {}", param_1->GetDisplayFullName());
+				log::info("Param 2: {}", param_2);
+				log::info("Param 3: {}", param_1->GetDisplayFullName());
+				return StaggerHook(param_1, param_2, param_3);
+            }
+        );
+
 		/*static FunctionHook<float(Actor* param_1)>Actor_sub_140627930 (   // supposedly affects Weapon Damage                 
 			REL::RelocationID(37650, 37650), // works only with direct weapon hits and fist attacks (physical non-arrow damage)
 			[](auto* param_1) {

@@ -2267,7 +2267,7 @@ namespace Gts {
 		if (tiny->IsDead() || IsRagdolled(tiny) || GetAV(tiny, ActorValue::kHealth) <= 0.0) {
 			return;
 		}
-		StaggerACtor_Directional(giant, tiny, power);
+		StaggerActor_Directional(giant, power, tiny);
 	}
 
 	void StaggerActor_Around(Actor* giant, const float radius) {
@@ -2750,12 +2750,12 @@ namespace Gts {
 		SetObjectRotation_X(ref, X);
 	}
 
-	void StaggerACtor_Directional(Actor* giant, Actor* tiny, float power) {
+	void StaggerActor_Directional(Actor* giant, float power, Actor* tiny) {
 		//SE: 1405FA1B0 : 36700 (Character *param_1,float param_2,Actor *param_3)
 		//AE: 140621d80 : 37710
-		typedef void (*DefStaggerACtor_Directional)(Actor* giant, float power, Actor* tiny);
-		REL::Relocation<DefStaggerACtor_Directional> StaggerACtor_Directional{ RELOCATION_ID(36700, 37710) };
-		StaggerACtor_Directional(giant, power, tiny);
+		typedef void (*DefStaggerActor_Directional)(Actor* giant, float power, Actor* tiny);
+		REL::Relocation<DefStaggerActor_Directional> StaggerActor_Directional{ RELOCATION_ID(36700, 37710) };
+		StaggerActor_Directional(giant, power, tiny);
 	}
 
 	std::int16_t GetItemCount(InventoryChanges* changes, RE::TESBoundObject* a_obj)
