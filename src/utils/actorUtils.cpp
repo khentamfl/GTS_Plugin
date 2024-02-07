@@ -978,7 +978,7 @@ namespace Gts {
 										NiPoint3 Position = node->world.translate;
 										float bounding_z = get_bounding_box_z(otherActor);
 										if (bounding_z > 0) {
-											Position += bounding_z * GetSizeFromBoundingBox(otherActor);
+											Position.z += bounding_z * GetSizeFromBoundingBox(otherActor);
 										} else {
 											Position.z -= correction;
 										}
