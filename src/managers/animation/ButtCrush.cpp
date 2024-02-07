@@ -259,7 +259,7 @@ namespace {
 		if (IsFirstPerson()) {
 			return;
 		}
-		if (!CanPerformAnimation(player, 2) || IsGtsBusy(player)) {
+		if (IsGtsBusy(player) || !CanPerformAnimation(player, 2)) {
 			return;
 		}
 		auto grabbedActor = Grab::GetHeldActor(player);

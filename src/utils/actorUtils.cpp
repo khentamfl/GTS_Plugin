@@ -2597,11 +2597,9 @@ namespace Gts {
 				} else if (queststage >= 60 && type >= 3) {
 					return true; // Allow Vore
 				} else {
-					Notify("You're not experienced to perform this action");
 					return false;
 				}
 			}
-			Notify("You're not experienced to perform this action");
 			return false;
 		}
 	}
