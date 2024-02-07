@@ -20,4 +20,5 @@ namespace Gts {
 	float get_base_height(Actor* actor);
 
 	float get_bounding_box_to_mult(Actor* actor);
+	float get_bounding_box_z(Actor* actor);
 }

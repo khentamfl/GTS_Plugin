@@ -965,7 +965,7 @@ namespace Gts {
 										auto grabbedActor = Grab::GetHeldActor(giant);
 										float correction = 0; 
 										if (tinyScale < 1.0) {
-											correction = std::clamp((18.0f / tinyScale) - 18.0f, 0.0f, 160.0f);
+											correction = std::clamp((18.0f / tinyScale) - 18.0f, 0.0f, 140.0f);
 										} else {
 											correction = (18.0 * tinyScale) - 18.0;
 										}
@@ -976,7 +976,13 @@ namespace Gts {
 										bool Healing = IsHugHealing(giant);
 
 										NiPoint3 Position = node->world.translate;
-										Position.z -= correction;
+										float bounding_z = get_bounding_box_z(otherActor);
+										if (bounding_z > 0) {
+											Position += bounding_z * GetSizeFromBoundingBox(otherActor);
+										} else {
+											Position.z -= correction;
+										}
+										
 
 										if (grabbedActor && grabbedActor == otherActor) {
 											//do nothing

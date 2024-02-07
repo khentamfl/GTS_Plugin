@@ -102,4 +102,13 @@ namespace Gts {
 		}
 		return 1.0;
 	}
+
+	float get_bounding_box_z(Actor* actor) {
+		auto nif_bb = get_bound(actor);
+		if (nif_bb) {
+			auto nif_dim = nif_bb->extents;
+			return nif_dim.z;
+		}
+		return 0.0;
+	}
 }

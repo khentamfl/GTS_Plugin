@@ -1001,7 +1001,7 @@ namespace Gts {
 							float Threshold = GetStaggerThreshold(Cause);
 
 							int Random = rand() % 100 + 1;
-							int RagdollChance = (-16 + (32 / Threshold) * difference);
+							int RagdollChance = (-32 + (32 / Threshold) * difference);
 							bool roll = RagdollChance > Random;
 							log::info("Roll: {}, RandomChance {}, Threshold: {}", roll, RagdollChance, Random);
 							//eventually it reaches 100% chance to ragdoll an actor (at ~x3.0 size difference)
