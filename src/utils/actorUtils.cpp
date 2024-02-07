@@ -982,7 +982,7 @@ namespace Gts {
 											log::info("For Actor: {}", otherActor->GetDisplayFullName());
 											log::info("---	Position: {}", Vector2Str(Position));
 											log::info("---	Actor Position: {}", Vector2Str(otherActor->GetPosition()));
-											log::info("---	Bounding Z: {}, Bounding Z * Scale: {}", bounding_z, bounding_z * tinyscale);
+											log::info("---	Bounding Z: {}, Bounding Z * Scale: {}", bounding_z, bounding_z * tinyScale);
 										} else {
 											Position.z -= correction;
 										}
