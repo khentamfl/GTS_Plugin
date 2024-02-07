@@ -274,7 +274,6 @@ namespace Gts {
 								for (auto point: footPoints) {
 									VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
 										float distance = (point - a_obj.world.translate).Length();
-										DebugAPI::DrawSphere(glm::vec3(a_obj.world.translate.x, a_obj.world.translate.y, a_obj.world.translate.z), 6.0, 4000);
 										if (distance < maxFootDistance) {
 											nodeCollisions += 1;
 											force = 1.0 - distance / maxFootDistance;
