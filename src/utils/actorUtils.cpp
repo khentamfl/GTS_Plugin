@@ -2753,7 +2753,7 @@ namespace Gts {
 	void StaggerACtor_Directional(Actor* giant, Actor* tiny, float power) {
 		//SE: 1405FA1B0 : 36700 (Character *param_1,float param_2,Actor *param_3)
 		//AE: 140621d80 : 37710
-		typedef void (*DefStaggerACtor_Directional)(TESObjectREFR* ref, float rotation);
+		typedef void (*DefStaggerACtor_Directional)(Actor* giant, float power, Actor* tiny);
 		REL::Relocation<DefStaggerACtor_Directional> StaggerACtor_Directional{ RELOCATION_ID(36700, 37710) };
 		StaggerACtor_Directional(giant, power, tiny);
 	}
