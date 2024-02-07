@@ -214,6 +214,7 @@ namespace Gts {
 	void ManageRagdoll(Actor* tinyref, float deltaLength, NiPoint3 deltaLocation, NiPoint3 targetLocation);
 	void ChanceToScare(Actor* giant, Actor* tiny);
 	void StaggerActor(Actor* receiver, float power);
+	void StaggerActor(Actor* giant, Actor* tiny, float power);
 	void StaggerActor_Around(Actor* giant, const float radius);
 	
 
@@ -252,6 +253,7 @@ namespace Gts {
 	void Attacked(Actor* victim, Actor* agressor);
   	void ApplyDamage(Actor* giant, Actor* tiny, float damage);
 	void SetObjectRotation_X(TESObjectREFR* ref, float X);
+	void StaggerACtor_Directional(Actor* giant, Actor* tiny, float power);
 
 	std::int16_t GetItemCount(InventoryChanges* changes, RE::TESBoundObject* a_obj);
 	int GetCombatState(Actor* actor);

@@ -27,7 +27,7 @@ namespace Gts {
 			return;
 		}
 		
-		StaggerActor(target, 0.25f * GetSizeDifference(caster, target));
+		StaggerActor(caster, target, 0.25f * GetSizeDifference(caster, target));
 		Attacked(target, caster);
 		
 	}

@@ -112,7 +112,7 @@ namespace Gts {
 		}
 		float sizediff = GetSizeDifference(caster, target);
 		if (this->power >= 18.00 && sizediff > 4.0) {
-			StaggerActor(target, 100.0f);
+			StaggerActor(caster, target, 100.0f);
 		}
 		//CancelWeaknessTask(target);
 	}

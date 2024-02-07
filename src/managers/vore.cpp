@@ -661,7 +661,7 @@ namespace Gts {
 				if (pred->formID == 0x14) {
 					Runtime::PlaySound("VoreSound_Fail", pred, 1.8, 1.0);
 				}
-				StaggerActor(prey, 0.25f);
+				StaggerActor(pred, prey, 0.25f);
 				return;
 			}
 			DamageAV(pred, ActorValue::kStamina, wastestamina);
@@ -671,7 +671,7 @@ namespace Gts {
 			ShrinkUntil(pred, prey, 10.0, 0.12); // Shrink if we have SMT to allow 'same-size' vore
 		} else {
 			ShrinkUntil(pred, prey, 10.0, 0.16); // Shrink if we have SMT to allow 'same-size' vore
-			StaggerActor(prey, 0.25f);
+			StaggerActor(pred, prey, 0.25f);
 		}
 
 		

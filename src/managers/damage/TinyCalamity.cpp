@@ -148,14 +148,14 @@ namespace Gts {
         ScareEnemies(giant);
     }
 
-    void TinyCalamity_StaggerActor(Actor* giant, Actor* tiny, float giantHp) {
+    void TinyCalamity_StaggerActor(Actor* giant, Actor* tiny, float giantHp) { // when we can't crush the target
         float OldScale; 
         giant->GetGraphVariableFloat("GiantessScale", OldScale); // record old slace
         giant->SetGraphVariableFloat("GiantessScale", 1.0); // Needed to allow Stagger to play, else it won't work
 
         PushForward(giant, tiny, 1000);
         AddSMTDuration(giant, 2.5);
-        StaggerActor(giant, 0.5);
+        StaggerActor(giant, 0.5); // play stagger on the player
 
         Attacked(tiny, giant);
 

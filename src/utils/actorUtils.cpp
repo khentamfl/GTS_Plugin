@@ -1787,7 +1787,7 @@ namespace Gts {
 			tiny->SetGraphVariableFloat("GiantessScale", sizedifference_tinypov); // enable stagger just in case
 
 		    float push = std::clamp(0.25f * (sizedifference - 0.25f), 0.25f, 1.0f);
-			StaggerActor(tiny, push);
+			StaggerActor(giant, tiny, push);
 			return;
 		}
 	}
@@ -1968,7 +1968,7 @@ namespace Gts {
 					if (nodeCollisions > 0) {
 						float sizedifference = giantScale/get_visual_scale(otherActor);
 						if (sizedifference <= 1.6) {
-							StaggerActor(otherActor, 0.75f);
+							StaggerActor(giant, otherActor, 0.75f);
 						} else {
 							PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference));
 						}
@@ -2008,7 +2008,7 @@ namespace Gts {
 			set_target_scale(tiny, MinScale);
 		}
 		if (sizedifference <= 4.0) { // Stagger or Push
-			StaggerActor(tiny, 0.25f);
+			StaggerActor(giant, tiny, 0.25f);
 		} else {
 			PushActorAway(giant, tiny, 1.0/Adjustment * GetLaunchPower(sizedifference));
 		}
@@ -2263,6 +2263,13 @@ namespace Gts {
 		receiver->NotifyAnimationGraph("staggerStart");
 	}
 
+	void StaggerActor(Actor* giant, Actor* tiny, float power) {
+		if (receiver->IsDead() || IsRagdolled(receiver) || GetAV(receiver, ActorValue::kHealth) <= 0.0) {
+			return;
+		}
+		StaggerACtor_Directional(giant, tiny, power);
+	}
+
 	void StaggerActor_Around(Actor* giant, const float radius) {
 		if (!giant) {
 			return;
@@ -2303,7 +2310,7 @@ namespace Gts {
 						});
 					}
 					if (nodeCollisions > 0) {
-						StaggerActor(otherActor, 0.50);
+						StaggerActor(giant, otherActor, 0.50);
 					}
 				}
 			}
@@ -2395,7 +2402,7 @@ namespace Gts {
 				if (giant->IsSneaking() && !IsCrawling(giant)) {
 					return;
 				} else {
-					StaggerActor(tiny, 0.25f);
+					StaggerActor(giant, tiny, 0.25f);
 				}
 			}
 		}
@@ -2741,6 +2748,14 @@ namespace Gts {
 		typedef void (*DefSetRotX)(TESObjectREFR* ref, float rotation);
 		REL::Relocation<DefSetRotX> SetObjectRotation_X{ RELOCATION_ID(19360, 19360) }; // 140296680 (SE)
 		SetObjectRotation_X(ref, X);
+	}
+
+	void StaggerACtor_Directional(Actor* giant, Actor* tiny, float power) {
+		//SE: 1405FA1B0 : 36700 (Character *param_1,float param_2,Actor *param_3)
+		//AE: 140621d80 : 37710
+		typedef void (*DefStaggerACtor_Directional)(TESObjectREFR* ref, float rotation);
+		REL::Relocation<DefStaggerACtor_Directional> StaggerACtor_Directional{ RELOCATION_ID(36700, 37710) };
+		StaggerACtor_Directional(giant, power, tiny);
 	}
 
 	std::int16_t GetItemCount(InventoryChanges* changes, RE::TESBoundObject* a_obj)

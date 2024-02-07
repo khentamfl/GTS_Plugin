@@ -1010,7 +1010,7 @@ namespace Gts {
 								PushTowards(giant, otherActor, node, pushForce * pushpower, true);
 							} else if (difference > 0.88 * Threshold) {
 								float push = std::clamp(0.25f * (difference - 0.25f), 0.25f, 1.0f);
-								StaggerActor(otherActor, push);
+								StaggerActor(giant, otherActor, push);
 							}
 
 							float Volume = clamp(0.15, 1.0, difference*pushForce);
