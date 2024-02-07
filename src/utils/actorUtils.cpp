@@ -2264,7 +2264,7 @@ namespace Gts {
 	}
 
 	void StaggerActor(Actor* giant, Actor* tiny, float power) {
-		if (receiver->IsDead() || IsRagdolled(receiver) || GetAV(receiver, ActorValue::kHealth) <= 0.0) {
+		if (tiny->IsDead() || IsRagdolled(tiny) || GetAV(tiny, ActorValue::kHealth) <= 0.0) {
 			return;
 		}
 		StaggerACtor_Directional(giant, tiny, power);
