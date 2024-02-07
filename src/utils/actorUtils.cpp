@@ -965,7 +965,7 @@ namespace Gts {
 										auto grabbedActor = Grab::GetHeldActor(giant);
 										float correction = 0; 
 										if (tinyScale < 1.0) {
-											correction = std::clamp((18.0f / tinyScale) - 18.0f, 0.0f, 140.0f);
+											correction = std::clamp((18.0f / tinyScale) - 18.0f, 0.0f, 144.0f);
 										} else {
 											correction = (18.0 * tinyScale) - 18.0;
 										}
@@ -977,8 +977,12 @@ namespace Gts {
 
 										NiPoint3 Position = node->world.translate;
 										float bounding_z = get_bounding_box_z(otherActor);
-										if (bounding_z > 0) {
-											Position.z += bounding_z * GetSizeFromBoundingBox(otherActor);
+										if (bounding_z > 0.0) {
+											Position.z += (bounding_z * tinyScale);
+											log::info("For Actor: {}", otherActor->GetDisplayFullName());
+											log::info("---	Position: {}", Vector2Str(Position));
+											log::info("---	Actor Position: {}", Vector2Str(otherActor->GetPosition()));
+											log::info("---	Bounding Z: {}, Bounding Z * Scale: {}", bounding_z, bounding_z * tinyscale);
 										} else {
 											Position.z -= correction;
 										}
