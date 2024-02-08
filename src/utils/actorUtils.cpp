@@ -758,6 +758,7 @@ namespace Gts {
 	bool AnimationsInstalled(Actor* giant) {
 		bool installed;
 		giant->GetGraphVariableBool("GTS_Installed", installed);
+		log::info("GTS installed: {}", installed);
 		return installed;
 	}
 

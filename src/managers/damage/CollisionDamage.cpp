@@ -178,7 +178,7 @@ namespace Gts {
 		}
 
 		float giantScale = get_visual_scale(actor);
-		const float BASE_CHECK_DISTANCE = 90.0;
+		const float BASE_CHECK_DISTANCE = 120.0;
 		float SCALE_RATIO = 1.15;
 		if (HasSMT(actor)) {
 			giantScale += 0.20;
@@ -369,7 +369,7 @@ namespace Gts {
 			ModSizeExperience(giant, experience);
 		}
 
-		if (tiny->formID == 0x14 || SizeManager::GetSingleton().BalancedMode() == 2.0 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
+		if (tiny->formID == 0x14 && GetAV(tiny, ActorValue::kStamina) > 2.0) {
 			DamageAV(tiny, ActorValue::kStamina, damage_result * 2.0);
 			damage_result -= GetAV(tiny, ActorValue::kStamina); // Reduce damage by stamina amount
 			if (damage_result < 0) {
