@@ -197,7 +197,7 @@ namespace Gts {
 		HugShrink::GetSingleton().HugActor(pred, prey);
 		
 		
-		AnimationManager::StartAnim("Huggies_Try_Stealth", pred);
+		AnimationManager::StartAnim("Huggies_Try", pred);
 
 		if (pred->IsSneaking() && !IsCrawling(pred)) {
 			AnimationManager::StartAnim("Huggies_Try_Victim_S", prey); // launch new Stealth hugs on Tiny
