@@ -3,6 +3,7 @@
 #include "managers/CrushManager.hpp"
 #include "magic/effects/common.hpp"
 #include "managers/Attributes.hpp"
+#include "managers/highheel.hpp"
 #include "utils/actorUtils.hpp"
 #include "data/persistent.hpp"
 #include "data/transient.hpp"
