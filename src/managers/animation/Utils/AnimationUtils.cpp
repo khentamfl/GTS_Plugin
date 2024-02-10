@@ -462,12 +462,11 @@ namespace Gts {
 
 		std::string name = std::format("FootTrample_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
-		auto coordinates = AttachToUnderFoot_Right(giant, tiny);
-		if (!Right) {
+		auto coordinates = NiPoint3();
+		if (Right) {
+			coordinates = AttachToUnderFoot_Right(giant, tiny);
+		} else {
 			coordinates = AttachToUnderFoot_Left(giant, tiny);
-		}
-		if (coordinates == NiPoint3(0,0,0)) {
-			return;
 		}
 		SetBeingGrinded(tiny, true);
 		TaskManager::Run(name, [=](auto& progressData) {
@@ -503,9 +502,8 @@ namespace Gts {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
 
-		ShrinkUntil(giant, tiny, 8.0, 0.16);
+		ShrinkUntil(giant, tiny, 6.0, 0.16);
 		
-
 		std::string name = std::format("FootGrind_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
 
@@ -524,10 +522,13 @@ namespace Gts {
 				return true;
 			}
 
-			auto coordinates = AttachToUnderFoot_Right(giant, tiny);
-			if (!Right) {
+			auto coordinates = NiPoint3(0,0,0);
+			if (Right) {
+				coordinates = AttachToUnderFoot_Right(giant, tiny);
+			} else {
 				coordinates = AttachToUnderFoot_Left(giant, tiny);
 			}
+
 			if (coordinates == NiPoint3(0,0,0)) {
 				return true;
 			}

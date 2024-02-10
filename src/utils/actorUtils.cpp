@@ -265,7 +265,15 @@ namespace Gts {
 			.a = 0.8,
 		};
 		float power = soft_power(sizeRatio, launch);
-		log::info("Launch Power: {}", power);
+
+		float limit = (6.0 * scale);
+
+		log::info("Launch Power: {}, Limit: {}", power, limit);
+
+		if (power > limit) {
+			return limit;
+		}
+		
 		return power;
 	}
 
@@ -985,10 +993,10 @@ namespace Gts {
 										float bounding_z = get_bounding_box_z(otherActor);
 										if (bounding_z > 0.0) {
 											Position.z += (bounding_z * 2.5 * tinyScale); // 2.5 to be slightly above the head
-											log::info("For Actor: {}", otherActor->GetDisplayFullName());
-											log::info("---	Position: {}", Vector2Str(Position));
-											log::info("---	Actor Position: {}", Vector2Str(otherActor->GetPosition()));
-											log::info("---	Bounding Z: {}, Bounding Z * Scale: {}", bounding_z, bounding_z * tinyScale);
+											//log::info("For Actor: {}", otherActor->GetDisplayFullName());
+											//log::info("---	Position: {}", Vector2Str(Position));
+											//log::info("---	Actor Position: {}", Vector2Str(otherActor->GetPosition()));
+											//log::info("---	Bounding Z: {}, Bounding Z * Scale: {}", bounding_z, bounding_z * tinyScale);
 										} else {
 											Position.z -= correction;
 										}

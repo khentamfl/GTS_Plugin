@@ -56,7 +56,7 @@ namespace Gts {
 				reduction *= 0.0;
 			}
 		}
-		log::info("Total Shrink power for {} is {}", tiny->GetDisplayFullName(), reduction);
+		//log::info("Total Shrink power for {} is {}", tiny->GetDisplayFullName(), reduction);
 		return reduction;
 	}
 

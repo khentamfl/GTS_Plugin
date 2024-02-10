@@ -68,9 +68,9 @@ namespace {
 		std::string r_name = std::format("FootGrindRot_{}", giant->formID);
 
 		GRumble::Once(r_name, giant, 1.0 * speed, 0.025, node);
-		DoDamageEffect(giant, Damage_Foot_Grind_Rotate * speed, Radius_Foot_Grind_DOT, 10, 0.15, kind, 1.6, source);
+		DoDamageEffect(giant, Damage_Foot_Grind_Rotate, Radius_Foot_Grind_DOT, 10, 0.15, kind, 1.6, source);
 
-		ApplyDustRing(giant, kind, node, 0.6);
+		ApplyDustRing(giant, kind, node, 0.9);
 	}
 
 	void Footgrind_DoImpact(Actor* giant, FootEvent Event, DamageSource Source, std::string_view Node, std::string_view rumble) {

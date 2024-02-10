@@ -188,8 +188,11 @@ namespace Gts {
 
 				log::info("COORD difference: {}", coords.z - leftFoot->world.translate.z);
 
-				if (coords.z - leftFoot->world.translate.z > -20.0) {
+				float threshold = (11.0 + hh) * get_visual_scale(giant);
+
+				if (coords.z - leftFoot->world.translate.z < -threshold) {
 					log::info("Threshold passed");
+					return NiPoint3(0,0,0);
 				}
 
 				return coords;
@@ -267,8 +270,11 @@ namespace Gts {
 
 				log::info("COORD difference: {}", coords.z - rightFoot->world.translate.z);
 
-				if (coords.z - rightFoot->world.translate.z > -20.0) {
+				float threshold = (11.0 + hh) * get_visual_scale(giant);
+
+				if (coords.z - rightFoot->world.translate.z < -threshold) {
 					log::info("Threshold passed");
+					return NiPoint3(0,0,0);
 				}
 
 				return coords;
