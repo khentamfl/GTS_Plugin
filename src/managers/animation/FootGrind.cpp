@@ -90,11 +90,13 @@ namespace {
 		std::string task_name_2 = std::format("FootGrind_{}_{}", giant->formID, "Right_Light");
 		std::string dot_name = std::format("FootGrindDOT_{}", giant->formID);
 		std::string rot_name = std::format("FootGrindRot_{}", giant->formID);
+		std::string grind_name = std::format("FootGrind_{}", tiny->formID);
 
-		log::info("Grind tasks cancelled");
+		giant->SetGraphVariableBool("GTS_IsFootGrinding", false); // stop foot grind manually
 
 		TaskManager::Cancel(task_name_1);
 		TaskManager::Cancel(task_name_2);
+		TaskManager::Cancel(grind_name);
 		TaskManager::Cancel(dot_name);
 		TaskManager::Cancel(rot_name);
 	}
