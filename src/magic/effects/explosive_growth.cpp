@@ -81,10 +81,11 @@ namespace Gts {
 
 		float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.00020;
 
-
 		if (Runtime::HasPerk(caster, "HealthRegenPerk")) {
-			caster->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
+			HpRegen *= 2.0;
 		}
+
+		caster->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
 
 		if (scale < limit && scale < MaxSize) {
 			if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
