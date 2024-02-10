@@ -173,9 +173,9 @@ namespace Gts {
 		AnimationManager::StartAnim("Huggies_Try", pred);
 
 		if (pred->IsSneaking() && !IsCrawling(pred)) {
-			AnimationManager::StartAnim("Huggies_Try_Victim_S", prey); // launch new Stealth hugs on Tiny
+			AnimationManager::StartAnim("Huggies_Try_Victim_S", prey); // GTSBEH_HugAbsorbStart_Sneak_V
 		} else {
-			AnimationManager::StartAnim("Huggies_Try_Victim", prey);
+			AnimationManager::StartAnim("Huggies_Try_Victim", prey); //   GTSBEH_HugAbsorbStart_V
 		}
 		AI_StartHugsTask(pred, prey);
 	}

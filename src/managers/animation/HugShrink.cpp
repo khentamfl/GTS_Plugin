@@ -36,6 +36,15 @@ using namespace std;
 
 namespace {
 
+	void Hugs_ShakeCamera(Actor* giant) {
+		if (giant->formID == 0x14) {
+			shake_camera(giant, 0.40, 0.35);
+		} else {
+			GRumble::Once("HugGrab_L", giant, 4.25, 0.15, "NPC L Hand [LHnd]");
+			GRumble::Once("HugGrab_R", giant, 4.25, 0.15, "NPC R Hand [RHnd]");
+		}
+	}
+
 	void Hugs_ManageFriendlyTiny(ActorHandle gianthandle, ActorHandle tinyhandle) {
 		Actor* giantref = gianthandle.get().get();
 		Actor* tinyref = tinyhandle.get().get();
@@ -54,7 +63,11 @@ namespace {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void GTS_Hug_Catch(AnimationEventData& data) {
-	} // Unused
+		auto giant = &data.giant;
+		if (giant->IsSneaking()) {
+			Hugs_ShakeCamera(giant);
+		}
+	} // Used for Sneak Hugs only
 
 	void GTS_Hug_Grab(AnimationEventData& data) {
 		auto giant = &data.giant;
@@ -66,12 +79,8 @@ namespace {
 		SetBeingHeld(huggedActor, true);
 		HugShrink::AttachActorTask(giant, huggedActor);
 
-		float sizedifference = get_visual_scale(giant)/get_visual_scale(huggedActor);
-		if (giant->formID == 0x14) {
-			shake_camera(giant, 0.40, 0.35);
-		} else {
-			GRumble::Once("HugGrab_L", giant, 4.25, 0.15, "NPC L Hand [LHnd]");
-			GRumble::Once("HugGrab_R", giant, 4.25, 0.15, "NPC R Hand [RHnd]");
+		if (!giant->IsSneaking()) {
+			Hugs_ShakeCamera(giant);
 		}
 
 		DisableCollisions(huggedActor, giant);

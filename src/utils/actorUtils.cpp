@@ -979,7 +979,7 @@ namespace Gts {
 										NiPoint3 Position = node->world.translate;
 										float bounding_z = get_bounding_box_z(otherActor);
 										if (bounding_z > 0.0) {
-											Position.z += (bounding_z * 2.35 * tinyScale);
+											Position.z += (bounding_z * 2.5 * tinyScale); // 2.5 to be slightly above the head
 											log::info("For Actor: {}", otherActor->GetDisplayFullName());
 											log::info("---	Position: {}", Vector2Str(Position));
 											log::info("---	Actor Position: {}", Vector2Str(otherActor->GetPosition()));
