@@ -107,10 +107,148 @@ namespace {
 }
 
 namespace Gts {
+    void TinyCalamity_SeekActorForShrink_Foot(Actor* actor, float damage, float radius, int random, float bbmult, float crush_threshold, DamageSource Cause, bool Right, bool ApplyCooldown) {
+		auto profiler = Profilers::Profile("CollisionDamageLeft: DoFootCollision_Left");
+        bool SMT = HasSMT(actor);
+        if (SMT && actor->formID == 0x14) {
+            auto& CollisionDamage = CollisionDamage::GetSingleton();
+
+            float giantScale = get_visual_scale(actor);
+            const float BASE_CHECK_DISTANCE = 120.0;
+            float SCALE_RATIO = 1.15;
+            
+            giantScale += 0.20;
+            SCALE_RATIO = 0.7;
+            radius *= 3.0;
+            
+
+            // Get world HH offset
+            NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
+            NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(actor);
+
+
+            float offset_side = -1.6;
+
+            std::string_view FootLookup = leftFootLookup;
+            std::string_view CalfLookup = leftCalfLookup;
+            std::string_view ToeLookup = leftToeLookup;
+
+            if (Right) {
+                FootLookup = rightFootLookup;
+                CalfLookup = rightCalfLookup;
+                ToeLookup = rightToeLookup;
+                offset_side = 1.6;
+            }
+
+            auto Foot = find_node(actor, FootLookup);
+            auto Calf = find_node(actor, CalfLookup);
+            auto Toe = find_node(actor, ToeLookup);
+            if (!Foot) {
+                return;
+            }
+            if (!Calf) {
+                return;
+            }
+            if (!Toe) {
+                return;
+            }
+            NiMatrix3 RotMat;
+            {
+                NiAVObject* foot = Foot;
+                NiAVObject* calf = Calf;
+                NiAVObject* toe = Toe;
+                NiTransform inverseFoot = foot->world.Invert();
+                NiPoint3 forward = inverseFoot*toe->world.translate;
+                forward = forward / forward.Length();
+
+                NiPoint3 up = inverseFoot*calf->world.translate;
+                up = up / up.Length();
+
+                NiPoint3 right = forward.UnitCross(up);
+                forward = up.UnitCross(right); // Reorthonalize
+
+                RotMat = NiMatrix3(right, forward, up);
+            }
+
+            float damage_zones_applied = 0.0;
+
+            float maxFootDistance = radius * giantScale;
+            float hh = hhOffsetbase[2];
+            // Make a list of points to check
+            std::vector<NiPoint3> points = {
+                NiPoint3(0.0, hh*0.08, -0.25 +(-hh * 0.25)), // The standard at the foot position
+                NiPoint3(offset_side, 7.7 + (hh/70), -0.75 + (-hh * 1.15)), // Offset it forward and to the side
+                NiPoint3(0.0, (hh/50), -0.25 + (-hh * 1.15)), // Offset for HH
+            };
+            std::tuple<NiAVObject*, NiMatrix3> adjust(Foot, RotMat);
+
+            for (const auto& [foot, rotMat]: {adjust}) {
+                std::vector<NiPoint3> footPoints = {};
+                for (NiPoint3 point: points) {
+                    footPoints.push_back(foot->world*(rotMat*point));
+                }
+                if (IsDebugEnabled()) {
+                    for (auto point: footPoints) {
+                        DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxFootDistance, 10, {1.0, 0.0, 1.0, 1.0});
+                    }
+                }
+
+                NiPoint3 giantLocation = actor->GetPosition();
+                for (auto otherActor: find_actors()) {
+                    if (otherActor != actor) {
+                        float tinyScale = get_visual_scale(otherActor);
+                        if (giantScale / tinyScale > SCALE_RATIO) {
+                            NiPoint3 actorLocation = otherActor->GetPosition();
+
+                            if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
+                                // Check the tiny's nodes against the giant's foot points
+                                int nodeCollisions = 0;
+                                float force = 0.0;
+
+                                auto model = otherActor->GetCurrent3D();
+
+                                if (model) {
+                                    for (auto point: footPoints) {
+                                        VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
+                                            float distance = (point - a_obj.world.translate).Length();
+                                            if (distance < maxFootDistance) {
+                                                nodeCollisions += 1;
+                                                force = 1.0 - distance / maxFootDistance;
+                                            }
+                                            return true;
+                                        });
+                                    }
+                                }
+                                if (nodeCollisions > 0) {
+                                    damage_zones_applied += 1.0;
+                                    if (damage_zones_applied < 1.0) {
+                                        damage_zones_applied = 1.0; // just to be safe
+                                    }
+                                    damage /= damage_zones_applied;
+                                    if (ApplyCooldown) { // Needed to fix Thigh Crush stuff
+                                        auto& sizemanager = SizeManager::GetSingleton();
+                                        bool OnCooldown = sizemanager.IsThighDamaging(otherActor);
+                                        if (!OnCooldown) {
+                                            Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
+                                            CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause, false);
+                                            sizemanager.GetDamageData(otherActor).lastThighDamageTime = Time::WorldTimeElapsed();
+                                        }
+                                    } else {
+                                        Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
+                                        CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause, false);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     void TinyCalamity_ShrinkActor(Actor* giant, Actor* tiny, float shrink) {
         if (HasSMT(giant)) {
             if (get_target_scale(tiny) > 0.06) {
-                ShrinkActor(tiny, shrink * 0.0025, 0.0);
+                ShrinkActor(tiny, shrink * 0.0015, 0.0);
             } else { // cap it just in case
                 set_target_scale(tiny, 0.06);
             }

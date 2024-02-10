@@ -1023,7 +1023,7 @@ namespace Gts {
 							
 							ApplyShakeAtPoint(giant, 3.0 * pushpower * audio, node->world.translate, 1.5);
 							sizemanager.GetDamageData(otherActor).lastHandDamageTime = Time::WorldTimeElapsed();
-							CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause);
+							CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause, true);
 						}
 					}
 				}
@@ -1120,12 +1120,12 @@ namespace Gts {
 											Laugh_Chance(actor, otherActor, 1.35, "ThighCrush");
 											float difference = giantScale / (tinyScale * GetSizeFromBoundingBox(otherActor));
 											PushTowards(actor, otherActor, leg, pushCalc * difference, true);
-											CollisionDamage.DoSizeDamage(actor, otherActor, damage * speed * perk, bbmult, crush_threshold, random, Cause);
+											CollisionDamage.DoSizeDamage(actor, otherActor, damage * speed * perk, bbmult, crush_threshold, random, Cause, true);
 											sizemanager.GetDamageData(otherActor).lastThighDamageTime = Time::WorldTimeElapsed();
 										}
 									} else {
 										Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
-										CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause);
+										CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause, true);
 									}
 								}
 							}
@@ -1206,7 +1206,7 @@ namespace Gts {
 								}
 								Laugh_Chance(giant, otherActor, 1.0, "FingerGrind"); 
 								Utils_PushCheck(giant, otherActor, 1.0);
-								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause);
+								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause, true);
 							}
 						}
 					}

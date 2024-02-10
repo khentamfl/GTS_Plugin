@@ -229,7 +229,7 @@ namespace Gts {
 			return;
 		}
 		int rng = (rand()% random + 1);
-		if (rng <= 2) {
+		if (rng <= 2 && random > 0) {
 			float gs = get_visual_scale(giant);
 			float ts = get_visual_scale(tiny);
 			if (HasSMT(giant)) {

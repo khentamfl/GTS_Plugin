@@ -180,10 +180,10 @@ namespace Gts {
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 120.0;
 		float SCALE_RATIO = 1.15;
-		if (HasSMT(actor)) {
+		bool SMT = HasSMT(actor);
+		if (SMT) {
 			giantScale += 0.20;
 			SCALE_RATIO = 0.7;
-			radius *= 3.0;
 		}
 
 		// Get world HH offset
@@ -246,6 +246,10 @@ namespace Gts {
 		};
 		std::tuple<NiAVObject*, NiMatrix3> adjust(Foot, RotMat);
 
+		TinyCalamity_SeekActorForShrink_Foot(actor, damage, radius, -1, 0.0, crush_threshold, Cause, Right, ApplyCooldown);
+		// This function is needed to Shrinking actors around foot. Mostly a duplicate of this function but without the damage
+		// Can't do size damage debuff
+
 		for (const auto& [foot, rotMat]: {adjust}) {
 			std::vector<NiPoint3> footPoints = {};
 			for (NiPoint3 point: points) {
@@ -294,12 +298,12 @@ namespace Gts {
 									bool OnCooldown = sizemanager.IsThighDamaging(otherActor);
 									if (!OnCooldown) {
 										Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
-										CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause);
+										CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause, true);
 										sizemanager.GetDamageData(otherActor).lastThighDamageTime = Time::WorldTimeElapsed();
 									}
 								} else {
 									Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
-									CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause);
+									CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause, true);
 								}
 							}
 						}
@@ -309,7 +313,7 @@ namespace Gts {
 		}
 	}
 
-	void CollisionDamage::DoSizeDamage(Actor* giant, Actor* tiny, float damage, float bbmult, float crush_threshold, int random, DamageSource Cause) { // Applies damage and crushing
+	void CollisionDamage::DoSizeDamage(Actor* giant, Actor* tiny, float damage, float bbmult, float crush_threshold, int random, DamageSource Cause, bool apply_damage) { // Applies damage and crushing
 		auto profiler = Profilers::Profile("CollisionDamage: DoSizeDamage");
 		if (!giant) {
 			return;
@@ -361,7 +365,7 @@ namespace Gts {
 		float damage_result = (damage * size_difference * damagebonus) * (normaldamage * sprintdamage) * (highheelsdamage * weightdamage) * vulnerability;
 
 		TinyCalamity_ShrinkActor(giant, tiny, damage_result);
-		
+
 		if (giant->IsSneaking()) {
 			damage_result *= 0.70;
 		}
@@ -384,11 +388,11 @@ namespace Gts {
 				return; // Fully protect against size-related damage
 			}
 		}
-		
-		ModVulnerability(giant, tiny, damage_result);
-		InflictSizeDamage(giant, tiny, damage_result);
-
-		this->CrushCheck(giant, tiny, size_difference, crush_threshold, Cause);
+		if (apply_damage) {
+			ModVulnerability(giant, tiny, damage_result);
+			InflictSizeDamage(giant, tiny, damage_result);
+			this->CrushCheck(giant, tiny, size_difference, crush_threshold, Cause);
+		}
 	}
 
 	void CollisionDamage::CrushCheck(Actor* giant, Actor* tiny, float size_difference, float crush_threshold, DamageSource Cause) {

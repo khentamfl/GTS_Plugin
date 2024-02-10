@@ -176,7 +176,7 @@ namespace {
 		float speed = data.animSpeed;
 		StartLegRumble("ThighCrush", data.giant, 0.12 * speed, 0.10);
 		data.disableHH = true;
-		data.HHspeed = 3.0;
+		data.HHspeed = 4.0;
 		data.stage = 2;
 	}
 

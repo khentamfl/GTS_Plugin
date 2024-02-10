@@ -144,7 +144,6 @@ namespace Gts {
 		try {
 			for (auto& [tag, data]: AnimationManager::GetSingleton().data.at(actor)) {
 				Speed *= data.HHspeed;
-				log::info("HH speed of {} is {}", actor->GetDisplayFullName(), Speed);
 			}
 		} catch (std::out_of_range e) {
 		}
