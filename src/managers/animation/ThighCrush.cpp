@@ -161,7 +161,6 @@ namespace {
 	///////////////////////////////////////////////////////////////////////////////////
 
 	void GTStosit(AnimationEventData& data) {
-		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
 		StartLegRumble("ThighCrush", data.giant, 0.10, 0.10);
 		ManageCamera(&data.giant, true, CameraTracking::Thigh_Crush); // Track feet
@@ -174,7 +173,6 @@ namespace {
 	}
 
 	void GTSsitloopenter(AnimationEventData& data) {
-		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
 		StartLegRumble("ThighCrush", data.giant, 0.12 * speed, 0.10);
 		data.disableHH = true;
@@ -182,7 +180,6 @@ namespace {
 	}
 
 	void GTSsitloopstart(AnimationEventData& data) {
-		float scale = get_visual_scale(data.giant);
 		float speed = data.animSpeed;
 		StopLegRumble("ThighCrush", data.giant);
 		data.currentTrigger = 1;

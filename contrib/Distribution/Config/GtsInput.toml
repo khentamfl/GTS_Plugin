@@ -4,7 +4,9 @@
 # https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ee418641(v=vs.85)
 # without the DIK_ prefix
 #
-# Mouse is LMB or RMB
+# Mouse buttons: LMB RMB MOUSE3 MOUSE4 MOUSE5  
+#
+# (last 3 are Middle and side buttons)
 #
 # Events are specicified like this:
 # ```toml
@@ -38,7 +40,7 @@
 # If for some reason input doesn't work - the mod will send in-game error that will let you know that you messed up in the config somewhere.
 # In that case, triple check everything. High chance that you forgot comma or , somewhere.
 #
-# Correct: keys = ["Key","Key"]. INCORRECT: keys = ["Key""Key"] 
+# Correct: keys = ["Key","Key"]. INCORRECT: keys = ["Key""Key"]
 
 #========================================================
 #================ V O R E
@@ -55,7 +57,7 @@ trigger = "once"
 #================ S T O M P S
 #========================================================
 
-# If crawling, all Stomp input will be replaced with hand attacks instead.
+# If crawling/crouching, all Stomp input will be replaced with hand attacks instead.
 # ^ So use same stomp keys to perform hand attacks when crawling
 
 [[InputEvent]]
@@ -182,6 +184,9 @@ exclusive = true
 #========================================================
 #============ K I C K S
 #========================================================
+
+#If crouching/crawling, all kicks will be replaced with hand swipes instead
+
 [[InputEvent]]
 name = "HeavyKickRight"
 keys = ["LALT", "E"]
