@@ -93,10 +93,10 @@ namespace {
 
 		log::info("Grind tasks cancelled");
 
-		TaskManager::cancel(task_name_1);
-		TaskManager::cancel(task_name_2);
-		TaskManager::cancel(dot_name);
-		TaskManager::cancel(rot_name);
+		TaskManager::Cancel(task_name_1);
+		TaskManager::Cancel(task_name_2);
+		TaskManager::Cancel(dot_name);
+		TaskManager::Cancel(rot_name);
 	}
 
 	//////////////////////////////////////////////////////////////////
@@ -120,13 +120,13 @@ namespace {
 	}
 
 	void GTSstomp_FootGrindL_MV_S(AnimationEventData& data) { // Feet starts to move: Left
-		data.stage += 1.0; // Rotation is done 6 times in total
 		ApplyRotateDamage(&data.giant, LNode, FootEvent::Left, DamageSource::FootGrindedLeft);
+		data.stage += 1.0; // Rotation is done 6 times in total
 	}
 
 	void GTSstomp_FootGrindR_MV_S(AnimationEventData& data) { // Feet start to move: Right
-		data.stage += 1.0; // Rotation is done 6 times in total
 		ApplyRotateDamage(&data.giant, RNode, FootEvent::Right, DamageSource::FootGrindedRight);
+		data.stage += 1.0; // Rotation is done 6 times in total
 	}
 
 	void GTSstomp_FootGrindL_MV_E(AnimationEventData& data) { // When movement ends: Left
