@@ -256,7 +256,7 @@ namespace Gts {
 		return actor;
 	}
 
-	float GetLaunchPower(float sizeRatio, float scale) {
+	float GetLaunchPower(Actor* giant, float sizeRatio) {
 		// https://www.desmos.com/calculator/wh0vwgljfl
 		SoftPotential launch {
 			.k = 1.42,
@@ -266,7 +266,11 @@ namespace Gts {
 		};
 		float power = soft_power(sizeRatio, launch);
 
-		float limit = (6.0 * scale);
+		if (!giant) {
+			return 1.0;
+		}
+		
+		float limit = (6.0 * get_visual_scale(giant));
 
 		log::info("Launch Power: {}, Limit: {}", power, limit);
 
@@ -1994,7 +1998,7 @@ namespace Gts {
 						if (sizedifference <= 1.6) {
 							StaggerActor(giant, otherActor, 0.75f);
 						} else {
-							PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference, giantScale));
+							PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(giant, sizedifference));
 						}
 					}
 				}
@@ -2034,7 +2038,7 @@ namespace Gts {
 		if (sizedifference <= 4.0) { // Stagger or Push
 			StaggerActor(giant, tiny, 0.25f);
 		} else {
-			PushActorAway(giant, tiny, 1.0/Adjustment * GetLaunchPower(sizedifference, get_visual_scale(giant)));
+			PushActorAway(giant, tiny, 1.0/Adjustment * GetLaunchPower(giant, sizedifference));
 		}
 	}
 

@@ -162,7 +162,7 @@ namespace {
 					auto tinyref = tinyHandle.get().get();
 					TESObjectREFR* tiny_is_object = skyrim_cast<TESObjectREFR*>(tinyref);
 					if (tiny_is_object) {
-						ApplyHavokImpulse(tiny_is_object, 0, 0, startpower * GetLaunchPower(sizeRatio, giantSize) * force * power, startpower * GetLaunchPower(sizeRatio, giantSize) * force * power);
+						ApplyHavokImpulse(tiny_is_object, 0, 0, startpower * GetLaunchPower(giant, sizeRatio) * force * power, startpower * GetLaunchPower(giant, sizeRatio) * force * power);
 					}
 				}
 			});

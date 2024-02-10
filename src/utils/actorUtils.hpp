@@ -20,7 +20,7 @@ namespace Gts {
 
 	Actor* GetActorPtr(FormID formId);
 
-	float GetLaunchPower(float sizeRatio, float scale);
+	float GetLaunchPower(Actor* giant, float sizeRatio);
 
 	void StartResetTask(Actor* tiny);
 	void PlayMoanSound(Actor* actor, float volume);

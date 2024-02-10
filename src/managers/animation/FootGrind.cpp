@@ -85,6 +85,20 @@ namespace {
 		GRumble::Once(rumble, giant, 1.25, 0.05, Node);
 	}
 
+	void CancelGrindTasks(Actor* giant) {
+		std::string task_name_1 = std::format("FootGrind_{}_{}", giant->formID, "Left_Light");
+		std::string task_name_2 = std::format("FootGrind_{}_{}", giant->formID, "Right_Light");
+		std::string dot_name = std::format("FootGrindDOT_{}", giant->formID);
+		std::string rot_name = std::format("FootGrindRot_{}", giant->formID);
+
+		log::info("Grind tasks cancelled");
+
+		TaskManager::cancel(task_name_1);
+		TaskManager::cancel(task_name_2);
+		TaskManager::cancel(dot_name);
+		TaskManager::cancel(rot_name);
+	}
+
 	//////////////////////////////////////////////////////////////////
 	/// Events
 	//////////////////////////////////////////////////////////////////
@@ -106,19 +120,29 @@ namespace {
 	}
 
 	void GTSstomp_FootGrindL_MV_S(AnimationEventData& data) { // Feet starts to move: Left
+		data.stage += 1.0; // Rotation is done 6 times in total
 		ApplyRotateDamage(&data.giant, LNode, FootEvent::Left, DamageSource::FootGrindedLeft);
 	}
 
 	void GTSstomp_FootGrindR_MV_S(AnimationEventData& data) { // Feet start to move: Right
+		data.stage += 1.0; // Rotation is done 6 times in total
 		ApplyRotateDamage(&data.giant, RNode, FootEvent::Right, DamageSource::FootGrindedRight);
 	}
 
 	void GTSstomp_FootGrindL_MV_E(AnimationEventData& data) { // When movement ends: Left
-		ApplyDustRing(&data.giant, FootEvent::Left, LNode, 0.6);
+		ApplyDustRing(&data.giant, FootEvent::Left, LNode, 0.9);
+		if (data.stage >= 7.0) {
+			CancelGrindTasks(&data.giant);
+			data.stage = 1.0; // reset stage
+		}
 	}
 
 	void GTSstomp_FootGrindR_MV_E(AnimationEventData& data) { // When movement ends: Right
-		ApplyDustRing(&data.giant, FootEvent::Right, RNode, 0.6);
+		ApplyDustRing(&data.giant, FootEvent::Right, RNode, 0.9);
+		if (data.stage >= 7.0) {
+			CancelGrindTasks(&data.giant);
+			data.stage = 1.0; // reset stage
+		}
 	}
 
 	void GTSstomp_FootGrindR_Impact(AnimationEventData& data) { // When foot hits the ground after lifting the leg up. R Foot
