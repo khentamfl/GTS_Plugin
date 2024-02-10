@@ -246,10 +246,6 @@ namespace Gts {
 		};
 		std::tuple<NiAVObject*, NiMatrix3> adjust(Foot, RotMat);
 
-		TinyCalamity_SeekActorForShrink_Foot(actor, damage, radius, -1, 0.0, crush_threshold, Cause, Right, ApplyCooldown);
-		// This function is needed to Shrinking actors around foot. Mostly a duplicate of this function but without the damage
-		// Can't do size damage debuff
-
 		for (const auto& [foot, rotMat]: {adjust}) {
 			std::vector<NiPoint3> footPoints = {};
 			for (NiPoint3 point: points) {
@@ -267,6 +263,10 @@ namespace Gts {
 					float tinyScale = get_visual_scale(otherActor);
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
+
+						TinyCalamity_SeekActorForShrink_Foot(actor, otherActor, damage, radius, -1, 0.0, crush_threshold, Cause, Right, ApplyCooldown);
+						// This function is needed to Shrinking actors around foot. Mostly a duplicate of this function but without the damage
+						// Can't do size damage debuff
 
 						if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
 							// Check the tiny's nodes against the giant's foot points

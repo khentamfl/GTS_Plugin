@@ -1,3 +1,4 @@
+#include "managers/damage/CollisionDamage.hpp"
 #include "managers/damage/tinyCalamity.hpp"
 #include "managers/CrushManager.hpp"
 #include "magic/effects/common.hpp"
@@ -100,14 +101,14 @@ namespace {
             } else if (speed >= 1.0 && CanApplyEffect) {
                 CanApplyEffect = false;
                 shake_camera_at_node(giant, "NPC COM [COM ]", 24.0, 0.15);
-                Runtime::PlaySoundAtNode("TinyCalamity_ReachedSpeed", giant, 1.0, 1.0, "NPC COM [COM ]");
+                //Runtime::PlaySoundAtNode("TinyCalamity_ReachedSpeed", giant, 1.0, 1.0, "NPC COM [COM ]");
             } 
         }
     }
 }
 
 namespace Gts {
-    void TinyCalamity_SeekActorForShrink_Foot(Actor* actor, float damage, float radius, int random, float bbmult, float crush_threshold, DamageSource Cause, bool Right, bool ApplyCooldown) {
+    void TinyCalamity_SeekActorForShrink_Foot(Actor* actor, Actor* otherActor, float damage, float radius, int random, float bbmult, float crush_threshold, DamageSource Cause, bool Right, bool ApplyCooldown) {
 		auto profiler = Profilers::Profile("CollisionDamageLeft: DoFootCollision_Left");
         bool SMT = HasSMT(actor);
         if (SMT && actor->formID == 0x14) {
@@ -194,50 +195,47 @@ namespace Gts {
                 }
 
                 NiPoint3 giantLocation = actor->GetPosition();
-                for (auto otherActor: find_actors()) {
-                    if (otherActor != actor) {
-                        float tinyScale = get_visual_scale(otherActor);
-                        if (giantScale / tinyScale > SCALE_RATIO) {
-                            NiPoint3 actorLocation = otherActor->GetPosition();
+                float tinyScale = get_visual_scale(otherActor);
 
-                            if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
-                                // Check the tiny's nodes against the giant's foot points
-                                int nodeCollisions = 0;
-                                float force = 0.0;
+                if (giantScale / tinyScale > SCALE_RATIO) {
+                    NiPoint3 actorLocation = otherActor->GetPosition();
 
-                                auto model = otherActor->GetCurrent3D();
+                    if ((actorLocation-giantLocation).Length() < BASE_CHECK_DISTANCE*giantScale) {
+                        // Check the tiny's nodes against the giant's foot points
+                        int nodeCollisions = 0;
+                        float force = 0.0;
 
-                                if (model) {
-                                    for (auto point: footPoints) {
-                                        VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
-                                            float distance = (point - a_obj.world.translate).Length();
-                                            if (distance < maxFootDistance) {
-                                                nodeCollisions += 1;
-                                                force = 1.0 - distance / maxFootDistance;
-                                            }
-                                            return true;
-                                        });
+                        auto model = otherActor->GetCurrent3D();
+
+                        if (model) {
+                            for (auto point: footPoints) {
+                                VisitNodes(model, [&nodeCollisions, &force, point, maxFootDistance](NiAVObject& a_obj) {
+                                    float distance = (point - a_obj.world.translate).Length();
+                                    if (distance < maxFootDistance) {
+                                        nodeCollisions += 1;
+                                        force = 1.0 - distance / maxFootDistance;
                                     }
+                                    return true;
+                                });
+                            }
+                        }
+                        if (nodeCollisions > 0) {
+                            damage_zones_applied += 1.0;
+                            if (damage_zones_applied < 1.0) {
+                                damage_zones_applied = 1.0; // just to be safe
+                            }
+                            damage /= damage_zones_applied;
+                            if (ApplyCooldown) { // Needed to fix Thigh Crush stuff
+                                auto& sizemanager = SizeManager::GetSingleton();
+                                bool OnCooldown = sizemanager.IsThighDamaging(otherActor);
+                                if (!OnCooldown) {
+                                    Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
+                                    CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause, false);
+                                    sizemanager.GetDamageData(otherActor).lastThighDamageTime = Time::WorldTimeElapsed();
                                 }
-                                if (nodeCollisions > 0) {
-                                    damage_zones_applied += 1.0;
-                                    if (damage_zones_applied < 1.0) {
-                                        damage_zones_applied = 1.0; // just to be safe
-                                    }
-                                    damage /= damage_zones_applied;
-                                    if (ApplyCooldown) { // Needed to fix Thigh Crush stuff
-                                        auto& sizemanager = SizeManager::GetSingleton();
-                                        bool OnCooldown = sizemanager.IsThighDamaging(otherActor);
-                                        if (!OnCooldown) {
-                                            Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
-                                            CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause, false);
-                                            sizemanager.GetDamageData(otherActor).lastThighDamageTime = Time::WorldTimeElapsed();
-                                        }
-                                    } else {
-                                        Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
-                                        CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause, false);
-                                    }
-                                }
+                            } else {
+                                Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
+                                CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause, false);
                             }
                         }
                     }
