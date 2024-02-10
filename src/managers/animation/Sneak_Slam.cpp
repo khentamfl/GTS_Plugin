@@ -47,7 +47,6 @@ namespace {
 			if (IsFootGrinding(giantref)) {
 				NiAVObject* node = find_node(giantref, NodeLookup);
 				ApplyFingerDamage(giantref, Radius, Damage, node, 200, 0.05, CrushMult, -0.0004, source);
-				log::info("Applying finger grind");
 				return true;
 			}
 			

@@ -29,7 +29,7 @@ namespace {
     void Finger_DoSounds(Actor* giant, std::string_view node_name, float mult) {
 		NiAVObject* node = find_node(giant, node_name);
 		if (node) {
-			float scale = get_visual_scale(giant) * 0.6;
+			float scale = get_visual_scale(giant) * 0.72;
 			DoCrawlingSounds(giant, scale * mult, node, FootEvent::Left);
 		}
 	}
@@ -116,14 +116,14 @@ namespace {
 
 	void GTS_Sneak_FingerGrind_Finisher_R(AnimationEventData& data) {
 		Finger_DoDamage(&data.giant, true, Radius_Sneak_FingerGrind_Finisher, Damage_Sneak_FingerGrind_Finisher, 2.4, 3.0);
-        Finger_ApplyVisuals(&data.giant, Rfinger, 2.6, 1.2);
-		Finger_DoSounds(&data.giant, Rfinger, 1.4);
+        Finger_ApplyVisuals(&data.giant, Rfinger, 2.6, 1.25);
+		Finger_DoSounds(&data.giant, Rfinger, 1.5);
         StopStaminaDrain(&data.giant);	
 	};
     void GTS_Sneak_FingerGrind_Finisher_L(AnimationEventData& data) {
 		Finger_DoDamage(&data.giant, false, Radius_Sneak_FingerGrind_Finisher, Damage_Sneak_FingerGrind_Finisher, 2.4, 3.0);
-        Finger_ApplyVisuals(&data.giant, Lfinger, 2.6, 1.2);
-		Finger_DoSounds(&data.giant, Lfinger, 1.4);
+        Finger_ApplyVisuals(&data.giant, Lfinger, 2.6, 1.25);
+		Finger_DoSounds(&data.giant, Lfinger, 1.5);
         StopStaminaDrain(&data.giant);
 		
 	};
