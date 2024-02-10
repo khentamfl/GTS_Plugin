@@ -103,7 +103,7 @@ namespace Gts {
     const float Damage_Sneak_HandSlam_Strong = 20.0f;
     const float Damage_Sneak_HandSlam_Strong_Secondary = 2.6f;
 
-    const float Damage_Sneak_FingerGrind_DOT = 0.008f;
+    const float Damage_Sneak_FingerGrind_DOT = 0.0012f;
     const float Damage_Sneak_FingerGrind_Impact = 3.0f;
     const float Damage_Sneak_FingerGrind_Finisher = 6.0f;
 
@@ -178,7 +178,7 @@ namespace Gts {
     const float Radius_Sneak_HandSlam_Strong = 10.0f;
     const float Radius_Sneak_HandSlam_Strong_Recover = 8.0f;
 
-    const float Radius_Sneak_FingerGrind_DOT = 4.0f;
+    const float Radius_Sneak_FingerGrind_DOT = 4.2f;
     const float Radius_Sneak_FingerGrind_Impact = 4.6f;
     const float Radius_Sneak_FingerGrind_Finisher = 5.0f;
 

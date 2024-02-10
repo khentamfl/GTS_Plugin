@@ -24,7 +24,7 @@ using namespace REL;
 using namespace SKSE;
 
 namespace {
-	const double LAUNCH_COOLDOWN = 3.0f;
+	const double LAUNCH_COOLDOWN = 0.8f;
 	const double DAMAGE_COOLDOWN = 2.0f;
 	const double HANDDAMAGE_COOLDOWN = 0.6f;
 	const double THIGHDAMAGE_COOLDOWN = 1.2f;

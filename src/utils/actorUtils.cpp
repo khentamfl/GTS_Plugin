@@ -269,8 +269,8 @@ namespace Gts {
 		if (!giant) {
 			return 1.0;
 		}
-		
-		float limit = (6.0 * get_visual_scale(giant));
+
+		float limit = (8.0 * get_visual_scale(giant));
 
 		log::info("Launch Power: {}, Limit: {}", power, limit);
 

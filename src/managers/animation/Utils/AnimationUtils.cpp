@@ -552,7 +552,7 @@ namespace Gts {
 
 		ShrinkUntil(giant, tiny, 10.0, 0.18);
 		
-		std::string name = std::format("FootGrind_{}", tiny->formID);
+		std::string name = std::format("FingerGrind_{}_{}", giant->formID, tiny->formID);
 		auto FrameA = Time::FramesElapsed();
 		auto coordinates = AttachToObjectB_GetCoords(giant, tiny);
 		if (coordinates == NiPoint3(0,0,0)) {
@@ -1150,7 +1150,7 @@ namespace Gts {
 
 		float SCALE_RATIO = 1.25;
 		if (HasSMT(giant)) {
-			SCALE_RATIO = 0.9;
+			SCALE_RATIO = 0.8;
 			giantScale *= 1.3;
 		}
 		NiPoint3 NodePosition = node->world.translate;
@@ -1161,13 +1161,13 @@ namespace Gts {
 		std::vector<NiPoint3> points = {
 			NiPoint3(0.0, 0.0, 0.0), // The standard position
 		};
-		std::vector<NiPoint3> CrawlPoints = {};
+		std::vector<NiPoint3> FingerPoints = {};
 
 		for (NiPoint3 point: points) {
-			CrawlPoints.push_back(NodePosition);
+			FingerPoints.push_back(NodePosition);
 		}
 		if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone(giant))) {
-			for (auto point: CrawlPoints) {
+			for (auto point: FingerPoints) {
 				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance, 400.0);
 			}
 		}
@@ -1175,13 +1175,12 @@ namespace Gts {
 		Utils_UpdateHighHeelBlend(giant, false);
 		NiPoint3 giantLocation = giant->GetPosition();
 		
-
 		for (auto otherActor: find_actors()) {
 			if (otherActor != giant) {
 				float tinyScale = get_visual_scale(otherActor);
 				if (giantScale / tinyScale > SCALE_RATIO) {
 					NiPoint3 actorLocation = otherActor->GetPosition();
-					for (auto point: CrawlPoints) {
+					for (auto point: FingerPoints) {
 						if ((actorLocation-giantLocation).Length() <= CheckDistance) {
 
 							int nodeCollisions = 0;

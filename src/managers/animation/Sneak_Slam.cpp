@@ -47,6 +47,7 @@ namespace {
 			if (IsFootGrinding(giantref)) {
 				NiAVObject* node = find_node(giantref, NodeLookup);
 				ApplyFingerDamage(giantref, Radius, Damage, node, 200, 0.05, CrushMult, -0.0004, source);
+				log::info("Applying finger grind");
 				return true;
 			}
 			
@@ -65,6 +66,7 @@ namespace {
 			}
 			auto giantRef = giantHandle.get().get();
 			FingerGrindCheck(giantRef, Event, right, Radius_Sneak_HandSlam);
+			Finger_StartShrinkTask(giantRef, right, Radius_Sneak_FingerGrind_DOT, Damage_Sneak_FingerGrind_DOT, 3.0);
 		});
 	}
 
@@ -89,14 +91,14 @@ namespace {
 	void GTS_Sneak_Slam_Impact_R(AnimationEventData& data) {
 		float scale = get_visual_scale(&data.giant);
 		DoCrawlingFunctions(&data.giant, scale, 0.75, Damage_Sneak_HandSlam, CrawlEvent::RightHand, "RightHandRumble", 0.80, Radius_Sneak_HandSlam, 1.35, DamageSource::HandSlamRight);
-		Finger_StartShrinkTask(&data.giant, true, Radius_Sneak_FingerGrind_DOT, Damage_Sneak_FingerGrind_DOT, 3.0);
 		CheckForFingerGrind(&data.giant, CrawlEvent::RightHand, true, "RH");
+		// ^ Also starts finger DOT damage
 	};
 	void GTS_Sneak_Slam_Impact_L(AnimationEventData& data) {
 		float scale = get_visual_scale(&data.giant);
 		DoCrawlingFunctions(&data.giant, scale, 0.75, Damage_Sneak_HandSlam, CrawlEvent::LeftHand, "LeftHandRumble", 0.80, Radius_Sneak_HandSlam, 1.35, DamageSource::HandSlamRight);
-		Finger_StartShrinkTask(&data.giant, false, Radius_Sneak_FingerGrind_DOT, Damage_Sneak_FingerGrind_DOT, 3.0);
 		CheckForFingerGrind(&data.giant, CrawlEvent::LeftHand, false, "LH");	
+		// ^ Also starts finger DOT damage
 	};
 	
 	 
