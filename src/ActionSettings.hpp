@@ -32,6 +32,7 @@ namespace Gts {
     /////////////////Foot Grind
 
     const float Damage_Foot_Grind_Impact = 6.8f;
+    const float Damage_Foot_Grind_Rotate = 2.6f;
     const float Damage_Foot_Grind_DOT = 0.026f;
 
     ////////////////Trample

@@ -40,6 +40,7 @@ namespace {
 
 	void ApplyDamageOverTime(Actor* giant, std::string_view node, std::string_view task_name) {
 		auto gianthandle = giant->CreateRefHandle();
+		std::string r_name = std::format("FootGrindDOT_{}", giant->formID);
 		std::string name = std::format("FootGrind_{}_{}", giant->formID, task_name);
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
@@ -52,11 +53,24 @@ namespace {
 			}
 			log::info("Running: {}", name);
 			Laugh_Chance(giantref, 2.2, "FootGrind");
-			GRumble::Once("FootGrindDOT", giantref, 1.0, 0.025, RNode);
+
+			GRumble::Once(r_name, giantref, 1.0, 0.025, RNode);
 			float speed = AnimationManager::GetBonusAnimationSpeed(giant);
 			DoDamageEffect(giantref, Damage_Foot_Grind_DOT * speed, Radius_Foot_Grind_DOT, 10000, 0.05, FootEvent::Right, 2.5, DamageSource::FootGrindedRight);
 			return true;
 		});
+	}
+
+	void ApplyRotateDamage(Actor* giant, std::string_view node, FootEvent kind, DamageSource source) {
+		Laugh_Chance(giantref, 2.2, "FootGrind");
+		float speed = AnimationManager::GetBonusAnimationSpeed(giant);
+
+		std::string r_name = std::format("FootGrindRot_{}", giant->formID);
+
+		GRumble::Once(r_name, giantref, 1.0 * speed, 0.025, node);
+		DoDamageEffect(giantref, Damage_Foot_Grind_Rotate * speed, Radius_Foot_Grind_DOT, 10, 0.15, kind, 1.6, source);
+
+		ApplyDustRing(&data.giant, kind, node, 0.6);
 	}
 
 	void Footgrind_DoImpact(Actor* giant, FootEvent Event, DamageSource Source, std::string_view Node, std::string_view rumble) {
@@ -80,6 +94,7 @@ namespace {
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.0;
 		DrainStamina(&data.giant, "StaminaDrain_FootGrind", "DestructionBasics", true, 0.25);
+		ApplyDamageOverTime(&data.giant, LNode, "Left_Light");
 	}
 
 	void GTSstomp_FootGrindR_Enter(AnimationEventData& data) {
@@ -87,16 +102,15 @@ namespace {
 		data.canEditAnimSpeed = true;
 		data.animSpeed = 1.0;
 		DrainStamina(&data.giant, "StaminaDrain_FootGrind", "DestructionBasics", true, 0.25);
+		ApplyDamageOverTime(&data.giant, RNode, "Right_Light");
 	}
 
 	void GTSstomp_FootGrindL_MV_S(AnimationEventData& data) { // Feet starts to move: Left
-		ApplyDamageOverTime(&data.giant, LNode, "Left");
-		ApplyDustRing(&data.giant, FootEvent::Left, LNode, 0.6);
+		ApplyRotateDamage(&data.giant, LNode, FootEvent::Left, DamageSource::FootGrindedLeft);
 	}
 
 	void GTSstomp_FootGrindR_MV_S(AnimationEventData& data) { // Feet start to move: Right
-		ApplyDamageOverTime(&data.giant, RNode, "Right");
-		ApplyDustRing(&data.giant, FootEvent::Right, RNode, 0.6);
+		ApplyRotateDamage(&data.giant, RNode, FootEvent::Right, DamageSource::FootGrindedRight);
 	}
 
 	void GTSstomp_FootGrindL_MV_E(AnimationEventData& data) { // When movement ends: Left

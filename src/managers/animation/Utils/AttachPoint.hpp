@@ -188,6 +188,10 @@ namespace Gts {
 
 				log::info("COORD difference: {}", coords.z - leftFoot->world.translate.z);
 
+				if (coords.z - leftFoot->world.translate.z > -20.0) {
+					log::info("Threshold passed");
+				}
+
 				return coords;
 				//return AttachTo(anyGiant, anyTiny, coords);
 			}
@@ -260,7 +264,12 @@ namespace Gts {
 				NiPoint3 coords = rightFoot->world.translate;//foot->world*(rotMat*point);
 				coords.z = CastRayDownwards(tiny).z; // Cast ray down to get precise ground position
 
+
 				log::info("COORD difference: {}", coords.z - rightFoot->world.translate.z);
+
+				if (coords.z - rightFoot->world.translate.z > -20.0) {
+					log::info("Threshold passed");
+				}
 
 				return coords;
 				//return AttachTo(anyGiant, anyTiny, coords);
