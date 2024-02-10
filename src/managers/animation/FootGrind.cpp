@@ -56,21 +56,22 @@ namespace {
 
 			GRumble::Once(r_name, giantref, 1.0, 0.025, RNode);
 			float speed = AnimationManager::GetBonusAnimationSpeed(giant);
-			DoDamageEffect(giantref, Damage_Foot_Grind_DOT * speed, Radius_Foot_Grind_DOT, 10000, 0.05, FootEvent::Right, 2.5, DamageSource::FootGrindedRight);
+			DoDamageEffect(giantref, Damage_Foot_Grind_DOT * speed, Radius_Foot_Grind_DOT, 10000, 0.025, FootEvent::Right, 2.5, DamageSource::FootGrindedRight);
 			return true;
 		});
 	}
 
 	void ApplyRotateDamage(Actor* giant, std::string_view node, FootEvent kind, DamageSource source) {
-		Laugh_Chance(giantref, 2.2, "FootGrind");
+		auto giant = &data.giant;
+		Laugh_Chance(giant, 2.2, "FootGrind");
 		float speed = AnimationManager::GetBonusAnimationSpeed(giant);
 
 		std::string r_name = std::format("FootGrindRot_{}", giant->formID);
 
-		GRumble::Once(r_name, giantref, 1.0 * speed, 0.025, node);
-		DoDamageEffect(giantref, Damage_Foot_Grind_Rotate * speed, Radius_Foot_Grind_DOT, 10, 0.15, kind, 1.6, source);
+		GRumble::Once(r_name, giant, 1.0 * speed, 0.025, node);
+		DoDamageEffect(giant, Damage_Foot_Grind_Rotate * speed, Radius_Foot_Grind_DOT, 10, 0.15, kind, 1.6, source);
 
-		ApplyDustRing(&data.giant, kind, node, 0.6);
+		ApplyDustRing(giant, kind, node, 0.6);
 	}
 
 	void Footgrind_DoImpact(Actor* giant, FootEvent Event, DamageSource Source, std::string_view Node, std::string_view rumble) {
