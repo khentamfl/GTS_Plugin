@@ -62,7 +62,6 @@ namespace {
 	}
 
 	void ApplyRotateDamage(Actor* giant, std::string_view node, FootEvent kind, DamageSource source) {
-		auto giant = &data.giant;
 		Laugh_Chance(giant, 2.2, "FootGrind");
 		float speed = AnimationManager::GetBonusAnimationSpeed(giant);
 
