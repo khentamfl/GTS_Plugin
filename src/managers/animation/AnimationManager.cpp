@@ -139,6 +139,18 @@ namespace Gts {
 		this->data.erase(actor);
 	}
 
+	float AnimationManager::GetHighHeelSpeed(Actor* actor) {
+		float Speed = 1.0;
+		try {
+			for (auto& [tag, data]: AnimationManager::GetSingleton().data.at(actor)) {
+				Speed *= data.HHspeed;
+				log::info("HH speed of {} is {}", actor->GetDisplayFullName(), Speed);
+			}
+		} catch (std::out_of_range e) {
+		}
+		return Speed;
+	}
+
 	float AnimationManager::GetBonusAnimationSpeed(Actor* actor) {
 		float totalSpeed = 1.0;
 		try {

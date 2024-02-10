@@ -90,10 +90,10 @@ namespace Gts {
 
 		if (disableHH) {
 			hhData.multiplier.target = 0.0;
-			hhData.multiplier.halflife = 1 / (AnimationManager::GetAnimSpeed(actor) * speedup);
+			hhData.multiplier.halflife = 1 / (AnimationManager::GetAnimSpeed(actor) * AnimationManager::GetHighHeelSpeed(actor) * speedup);
 		} else {
 			hhData.multiplier.target = 1.0;
-			hhData.multiplier.halflife = 1 / (AnimationManager::GetAnimSpeed(actor) * speedup);
+			hhData.multiplier.halflife = 1 / (AnimationManager::GetAnimSpeed(actor) * AnimationManager::GetHighHeelSpeed(actor) * speedup);
 		}
 
 		NiPoint3 new_hh;

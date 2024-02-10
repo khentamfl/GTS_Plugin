@@ -32,6 +32,8 @@ namespace Gts
 		bool canEditAnimSpeed = false;
 		// If true then hhs are disabled
 		bool disableHH = false;
+		// Speed of adjusting high heels
+		float HHspeed = 1.0;
 		AnimationEventData(Actor& giant, TESObjectREFR* tiny);
 	};
 
@@ -72,6 +74,8 @@ namespace Gts
 			virtual void ActorAnimEvent(Actor* actor,  const std::string_view& tag, const std::string_view& payload) override;
 			virtual void Reset() override;
 			virtual void ResetActor(Actor* actor) override;
+
+			static float GetHighHeelSpeed(Actor* actor);
 			static float GetBonusAnimationSpeed(Actor* actor);
 
 
