@@ -90,12 +90,12 @@ namespace {
 	}
 
 	void GTSstomp_FootGrindL_MV_S(AnimationEventData& data) { // Feet starts to move: Left
-		ApplyDamageOverTime(&data.giant, LNode, "Right");
+		ApplyDamageOverTime(&data.giant, LNode, "Left");
 		ApplyDustRing(&data.giant, FootEvent::Left, LNode, 0.6);
 	}
 
 	void GTSstomp_FootGrindR_MV_S(AnimationEventData& data) { // Feet start to move: Right
-		ApplyDamageOverTime(&data.giant, RNode, "Left");
+		ApplyDamageOverTime(&data.giant, RNode, "Right");
 		ApplyDustRing(&data.giant, FootEvent::Right, RNode, 0.6);
 	}
 

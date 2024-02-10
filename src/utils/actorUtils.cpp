@@ -256,7 +256,7 @@ namespace Gts {
 		return actor;
 	}
 
-	float GetLaunchPower(float sizeRatio) {
+	float GetLaunchPower(float sizeRatio, float scale) {
 		// https://www.desmos.com/calculator/wh0vwgljfl
 		SoftPotential launch {
 			.k = 1.42,
@@ -265,6 +265,7 @@ namespace Gts {
 			.a = 0.8,
 		};
 		float power = soft_power(sizeRatio, launch);
+		log::info("Launch Power: {}", power);
 		return power;
 	}
 
@@ -339,14 +340,14 @@ namespace Gts {
 	}
 
 	bool IsProning(Actor* actor) {
-		bool prone;
+		bool prone = false;
 		auto transient = Transient::GetSingleton().GetData(actor);
 		actor->GetGraphVariableBool("GTS_IsProne", prone);
 		if (actor->formID == 0x14 && actor->IsSneaking() && IsFirstPerson() && transient) {
 			return transient->FPProning; // Because we have no FP behaviors, 
 			// ^ it is Needed to fix proning being applied to FP even when Prone is off
 		}
-		return actor!= nullptr && actor->IsSneaking() && prone;
+		return actor!= nullptr && prone;
 	}
 
 	bool IsCrawling(Actor* actor) {
@@ -758,7 +759,6 @@ namespace Gts {
 	bool AnimationsInstalled(Actor* giant) {
 		bool installed = false;
 		giant->GetGraphVariableBool("GTS_Installed", installed);
-		log::info("GTS installed: {}", installed);
 		return installed;
 	}
 
@@ -837,10 +837,13 @@ namespace Gts {
 		if (Check_SMT) {
 			if (HasSMT(giant)) {
 				GiantScale += 9.8;
-			} if (tiny->formID == 0x14 && HasSMT(tiny)) {
-				TinyScale += 1.25;
-			}
+			} 
 		}
+
+		if (tiny->formID == 0x14 && HasSMT(tiny)) {
+			TinyScale += 1.50;
+		}
+
 		float Difference = GiantScale/TinyScale;
 
 		return Difference;
@@ -1983,7 +1986,7 @@ namespace Gts {
 						if (sizedifference <= 1.6) {
 							StaggerActor(giant, otherActor, 0.75f);
 						} else {
-							PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference));
+							PushActorAway(giant, otherActor, 1.0 * GetLaunchPower(sizedifference, giantScale));
 						}
 					}
 				}
@@ -2023,7 +2026,7 @@ namespace Gts {
 		if (sizedifference <= 4.0) { // Stagger or Push
 			StaggerActor(giant, tiny, 0.25f);
 		} else {
-			PushActorAway(giant, tiny, 1.0/Adjustment * GetLaunchPower(sizedifference));
+			PushActorAway(giant, tiny, 1.0/Adjustment * GetLaunchPower(sizedifference, get_visual_scale(giant)));
 		}
 	}
 

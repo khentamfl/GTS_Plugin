@@ -185,6 +185,9 @@ namespace Gts {
 				footPoints.push_back(foot->world*(rotMat*point));
 				NiPoint3 coords = leftFoot->world.translate;//foot->world*(rotMat*point);
 				coords.z = CastRayDownwards(tiny).z; // Cast ray down to get precise ground position
+
+				log::info("COORD difference: {}", coords.z - leftFoot->world.translate.z);
+
 				return coords;
 				//return AttachTo(anyGiant, anyTiny, coords);
 			}
@@ -256,6 +259,9 @@ namespace Gts {
 				footPoints.push_back(foot->world*(rotMat*point));
 				NiPoint3 coords = rightFoot->world.translate;//foot->world*(rotMat*point);
 				coords.z = CastRayDownwards(tiny).z; // Cast ray down to get precise ground position
+
+				log::info("COORD difference: {}", coords.z - rightFoot->world.translate.z);
+
 				return coords;
 				//return AttachTo(anyGiant, anyTiny, coords);
 			}
