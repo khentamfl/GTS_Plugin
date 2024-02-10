@@ -519,4 +519,8 @@ const std::unordered_map<std::string, std::uint32_t> NAMED_KEYS = {
 	{ "RTMOUSEBUTTON", 0x01 + MOUSE_OFFSET },
 	{ "RMOUSE", 0x01 + MOUSE_OFFSET },
 	{ "RCLICK", 0x01 + MOUSE_OFFSET },
+
+	{ "MOUSE3", 0x02 + MOUSE_OFFSET },
+	{ "MOUSE4", 0x03 + MOUSE_OFFSET },
+	{ "MOUSE5", 0x04 + MOUSE_OFFSET },
 };
