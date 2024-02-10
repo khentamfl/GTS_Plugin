@@ -116,9 +116,8 @@ namespace {
 
 namespace Gts {
     void TinyCalamity_SeekActorForShrink_Foot(Actor* actor, Actor* otherActor, float damage, float radius, int random, float bbmult, float crush_threshold, DamageSource Cause, bool Right, bool ApplyCooldown) {
-		auto profiler = Profilers::Profile("CollisionDamageLeft: DoFootCollision_Left");
-        bool SMT = HasSMT(actor);
-        if (SMT && actor->formID == 0x14) {
+		auto profiler = Profilers::Profile("TinyCalamityActorSeek");
+        if (actor->formID == 0x14) {
             auto& CollisionDamage = CollisionDamage::GetSingleton();
 
             float giantScale = get_visual_scale(actor);
@@ -127,7 +126,7 @@ namespace Gts {
             
             giantScale += 0.20;
             SCALE_RATIO = 0.7;
-            radius *= 3.0;
+            radius *= 4.0;
             
 
             // Get world HH offset
@@ -253,7 +252,7 @@ namespace Gts {
     void TinyCalamity_ShrinkActor(Actor* giant, Actor* tiny, float shrink) {
         if (HasSMT(giant)) {
             if (get_target_scale(tiny) > 0.06) {
-                ShrinkActor(tiny, shrink * 0.0015, 0.0);
+                ShrinkActor(tiny, shrink * 0.0045, 0.0);
             } else { // cap it just in case
                 set_target_scale(tiny, 0.06);
             }

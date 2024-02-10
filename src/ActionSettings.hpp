@@ -119,8 +119,8 @@ namespace Gts {
     const float Radius_Stomp_Strong = 7.0f;
 
     /////////Foot Grind
-    const float Radius_Foot_Grind_Impact = 7.0f;
-    const float Radius_Foot_Grind_DOT = 7.6f;
+    const float Radius_Foot_Grind_Impact = 7.2f;
+    const float Radius_Foot_Grind_DOT = 9.0f;
 
     /////////Foot Trample
     const float Radius_Trample = 6.6f;

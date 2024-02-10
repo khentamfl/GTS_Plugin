@@ -264,7 +264,9 @@ namespace Gts {
 					if (giantScale / tinyScale > SCALE_RATIO) {
 						NiPoint3 actorLocation = otherActor->GetPosition();
 
-						TinyCalamity_SeekActorForShrink_Foot(actor, otherActor, damage, radius, -1, 0.0, crush_threshold, Cause, Right, ApplyCooldown);
+						if (SMT) {
+							TinyCalamity_SeekActorForShrink_Foot(actor, otherActor, damage, radius, -1, 0.0, crush_threshold, Cause, Right, ApplyCooldown);
+						}
 						// This function is needed to Shrinking actors around foot. Mostly a duplicate of this function but without the damage
 						// Can't do size damage debuff
 
@@ -338,9 +340,6 @@ namespace Gts {
 		}
 
 		float damagebonus = HighHeels_PerkDamage(giant, Cause); // 15% bonus HH damage if we have perk
-		if (HasSMT(giant)) {
-			damagebonus *= 0.25; // A lot less damage to compensate it
-		}
 
 		float vulnerability = 1.0 + sizemanager.GetSizeVulnerability(tiny); // Get size damage debuff from enemy
 		float normaldamage = std::clamp(sizemanager.GetSizeAttribute(giant, 0) * 0.30, 0.30, 999999.0);
