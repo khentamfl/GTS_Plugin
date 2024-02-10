@@ -23,6 +23,12 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
+    const std::string_view leftFootLookup = "NPC L Foot [Lft ]";
+	const std::string_view rightFootLookup = "NPC R Foot [Rft ]";
+	const std::string_view leftCalfLookup = "NPC L Calf [LClf]";
+	const std::string_view rightCalfLookup = "NPC R Calf [RClf]";
+	const std::string_view leftToeLookup = "NPC L Toe0 [LToe]";
+	const std::string_view rightToeLookup = "NPC R Toe0 [RToe]";
 
     void ScareEnemies(Actor* giant)  {
 		int FearChance = rand() % 2;
