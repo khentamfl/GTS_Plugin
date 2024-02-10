@@ -602,7 +602,7 @@ namespace Gts {
 			MINIMUM_DISTANCE *= 1.75;
 		}
 		float pred_scale = get_visual_scale(pred);
-		float sizedifference = GetSizeDifference(pred, prey);
+		float sizedifference = GetSizeDifference(pred, prey, true);
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
 

@@ -104,7 +104,7 @@ namespace Gts {
 	float GetDamageMultiplier(Actor* actor);
 	float Damage_CalculateSizeDamage(Actor* giant, Actor* tiny);
 
-	float GetSizeDifference(Actor* giant, Actor* tiny);
+	float GetSizeDifference(Actor* giant, Actor* tiny, bool Check_SMT);
 	float GetActorWeight(Actor* giant, bool metric);
 	float GetActorHeight(Actor* giant, bool metric);
 	float GetSizeFromBoundingBox(Actor* tiny);

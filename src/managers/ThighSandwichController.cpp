@@ -159,7 +159,7 @@ namespace Gts {
 			}
 
 			float tinyScale = get_visual_scale(tiny);
-			float sizedifference = GetSizeDifference(giant, tiny);
+			float sizedifference = GetSizeDifference(giant, tiny, true);
 			float threshold = 6.0;
 
 			if (giant->IsDead() || sizedifference < threshold) {
@@ -289,7 +289,7 @@ namespace Gts {
 
 		float pred_scale = get_visual_scale(pred);
 
-		float sizedifference = GetSizeDifference(pred, prey);
+		float sizedifference = GetSizeDifference(pred, prey, true);
 
 		float MINIMUM_SANDWICH_SCALE = Action_Sandwich;
 

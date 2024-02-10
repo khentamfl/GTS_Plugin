@@ -183,6 +183,7 @@ namespace Gts {
 		if (HasSMT(actor)) {
 			giantScale += 0.20;
 			SCALE_RATIO = 0.7;
+			radius *= 3.0;
 		}
 
 		// Get world HH offset
@@ -326,7 +327,7 @@ namespace Gts {
 		auto& sizemanager = SizeManager::GetSingleton();
 
 		float highheels = (1.0 + HighHeelManager::GetBaseHHOffset(giant).Length()/200);
-		float size_difference = GetSizeDifference(giant, tiny) * highheels;
+		float size_difference = GetSizeDifference(giant, tiny, false) * highheels;
 
 		if (!Allow_Damage(giant, tiny, Cause, size_difference)) {
 			return; 
@@ -350,6 +351,7 @@ namespace Gts {
 
 		SizeModifications(giant, tiny, highheels);
 		TinyCalamity_CrushCheck(giant, tiny);
+		
 
 		if (giant->AsActorState()->IsSprinting()) {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);
@@ -357,6 +359,9 @@ namespace Gts {
 		}
 
 		float damage_result = (damage * size_difference * damagebonus) * (normaldamage * sprintdamage) * (highheelsdamage * weightdamage) * vulnerability;
+
+		TinyCalamity_ShrinkActor(giant, tiny, damage_result);
+		
 		if (giant->IsSneaking()) {
 			damage_result *= 0.70;
 		}

@@ -180,7 +180,6 @@ namespace {
 	}
 
 	void GTSsitloopstart(AnimationEventData& data) {
-		float speed = data.animSpeed;
 		StopLegRumble("ThighCrush", data.giant);
 		data.currentTrigger = 1;
 		data.stage = 3;

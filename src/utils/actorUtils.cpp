@@ -831,13 +831,15 @@ namespace Gts {
 		return GetDamageMultiplier(giant) * GetDamageResistance(tiny);
 	}
 
-	float GetSizeDifference(Actor* giant, Actor* tiny) {
+	float GetSizeDifference(Actor* giant, Actor* tiny, bool Check_SMT) {
 		float GiantScale = get_visual_scale(giant) * GetSizeFromBoundingBox(giant);
 		float TinyScale = get_visual_scale(tiny) * GetSizeFromBoundingBox(tiny);
-		if (HasSMT(giant)) {
-			GiantScale += 9.8;
-		} if (tiny->formID == 0x14 && HasSMT(tiny)) {
-			TinyScale += 1.25;
+		if (Check_SMT) {
+			if (HasSMT(giant)) {
+				GiantScale += 9.8;
+			} if (tiny->formID == 0x14 && HasSMT(tiny)) {
+				TinyScale += 1.25;
+			}
 		}
 		float Difference = GiantScale/TinyScale;
 
@@ -940,7 +942,7 @@ namespace Gts {
 				if (otherActor != giant) {
 					if (otherActor->Is3DLoaded() && !otherActor->IsDead()) {
 						float tinyScale = get_visual_scale(otherActor) * GetSizeFromBoundingBox(otherActor);
-						float difference = GetSizeDifference(giant, otherActor);
+						float difference = GetSizeDifference(giant, otherActor, true);
 						if (difference > 5.8 || huggedActor) {
 							NiPoint3 actorLocation = otherActor->GetPosition();
 							if ((actorLocation - NodePosition).Length() < CheckDistance) {
@@ -2000,7 +2002,7 @@ namespace Gts {
 
 		float Adjustment = GetSizeFromBoundingBox(tiny);
 
-		float sizedifference = GetSizeDifference(giant, tiny);
+		float sizedifference = GetSizeDifference(giant, tiny, true);
 		if (DarkArts1) {
 			giant->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, 8.0);
 		}
@@ -2236,7 +2238,7 @@ namespace Gts {
 	}
 
 	void ChanceToScare(Actor* giant, Actor* tiny) {
-		float sizedifference = GetSizeDifference(giant, tiny);
+		float sizedifference = GetSizeDifference(giant, tiny, true);
 		if (sizedifference > 1.6 && !tiny->IsDead()) {
 			int rng = rand() % 1600;
 			rng /= sizedifference;

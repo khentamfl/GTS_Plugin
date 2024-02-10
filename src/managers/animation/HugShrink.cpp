@@ -424,7 +424,7 @@ namespace Gts {
 			ShutUp(giantref);
 
 			float threshold = GetHugShrinkThreshold(giantref);
-			float sizedifference = GetSizeDifference(giantref, tinyref);
+			float sizedifference = GetSizeDifference(giantref, tinyref, true);
 
 			if (!FaceOpposite(giantref, tinyref)) {
 				// If face towards fails then actor is invalid

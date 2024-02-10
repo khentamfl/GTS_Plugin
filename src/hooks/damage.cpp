@@ -77,7 +77,7 @@ namespace {
 
 	void DoOverkill(Actor* attacker, Actor* receiver, float damage) {
 		if (damage > GetMaxAV(receiver, ActorValue::kHealth)) { // Overkill effect
-			float size_difference = GetSizeDifference(attacker, receiver);
+			float size_difference = GetSizeDifference(attacker, receiver, true);
 			if (size_difference >= 12.0) {
 				OverkillManager::GetSingleton().Overkill(attacker, receiver);
 			}

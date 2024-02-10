@@ -107,6 +107,16 @@ namespace {
 }
 
 namespace Gts {
+    void TinyCalamity_ShrinkActor(Actor* giant, Actor* tiny, float shrink) {
+        if (HasSMT(giant)) {
+            if (get_target_scale(tiny) > 0.06) {
+                ShrinkActor(tiny, shrink * 0.0025, 0.0);
+            } else { // cap it just in case
+                set_target_scale(tiny, 0.06);
+            }
+        }
+    }
+
     void TinyCalamity_ExplodeActor(Actor* giant, Actor* tiny) {
         ModSizeExperience_Crush(giant, tiny, true);
 

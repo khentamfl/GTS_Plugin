@@ -130,7 +130,7 @@ namespace Gts {
 
 		float pred_scale = get_visual_scale(pred);
 
-		float sizedifference = GetSizeDifference(pred, prey);
+		float sizedifference = GetSizeDifference(pred, prey, true);
 
 		float MINIMUM_GRAB_SCALE = Action_Grab;
 		float MINIMUM_DISTANCE = MINIMUM_GRAB_DISTANCE;
