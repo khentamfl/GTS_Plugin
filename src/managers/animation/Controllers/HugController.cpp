@@ -199,6 +199,8 @@ namespace Gts {
 		
 		AnimationManager::StartAnim("Huggies_Try", pred);
 
+		pred->AsActorState->actorState1.sneaking = 0;
+
 		if (pred->IsSneaking() && !IsCrawling(pred)) {
 			AnimationManager::StartAnim("Huggies_Try_Victim_S", prey); // GTSBEH_HugAbsorbStart_Sneak_V
 		} else {
