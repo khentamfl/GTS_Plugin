@@ -100,15 +100,13 @@ namespace {
 			float sizedifference_gts = Scale_A/Scale_B;
 
 			if (gts_scale/tiny_scale < 1.0) { // Switch actor roles
-				log::info("Roles switched");
+				//log::info("Roles switched");
 				sizedifference_gts = Scale_B/Scale_A; // Rough fix for Tiny being the Gts sometimes
 			}
 
 			float limit = 3.0;
 
 			bool ignore = (sizedifference_gts >= limit);
-			log::info("Both are actors");
-			log::info("GTS size difference: {}, BB: {}", sizedifference_gts, GetSizeFromBoundingBox(actor_a));
 			if (ignore) {
 				return true;
 			}
@@ -162,7 +160,7 @@ namespace Hooks
 			auto colLayerA = GetCollisionLayer(a_collidableA);
 			auto colLayerB = GetCollisionLayer(a_collidableB);
 
-			CollisionPrints(a_collidableA, a_collidableB);
+			//CollisionPrints(a_collidableA, a_collidableB);
 
 			bool Check_A = (colLayerA == COL_LAYER::kBiped || colLayerA == COL_LAYER::kCharController || colLayerA == COL_LAYER::kDeadBip || colLayerA == COL_LAYER::kBipedNoCC);
 			bool Check_B = (colLayerB == COL_LAYER::kBiped || colLayerB == COL_LAYER::kCharController || colLayerB == COL_LAYER::kDeadBip || colLayerB == COL_LAYER::kBipedNoCC);
@@ -174,7 +172,6 @@ namespace Hooks
 					if (objB) {
 						if (objA != objB) {
 							if (IsCollisionDisabledBetween(objA, objB)) {
-								log::info("DISABLED: Between {} and {}", objA->GetDisplayFullName(), objB->GetDisplayFullName());
 								*a_result = false;
 							}
 						}
