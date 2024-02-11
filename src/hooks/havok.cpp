@@ -102,6 +102,22 @@ namespace {
 
 		return false;
 	}
+
+	void CollisionPrints(const hkpCollidable& collidableA, const hkpCollidable& collidableB) {
+		
+		auto ObjectA = GetTESObjectREFR(collidableA);
+		auto ObjectB = GetTESObjectREFR(collidableB);
+
+		if (ObjectA && ObjectB) {
+			auto Layer_A = GetCollisionLayer(collidableA);
+			auto Layer_B = GetCollisionLayer(collidableB);
+			if (ObjectA->formID == 0x14 || ObjectB->formID == 0x14) {
+				log::info("{} is colliding with {}", ObjectA->GetDisplayFullName(), ObjectB->GetDisplayFullName());
+				log::info("{} Collision Layer: {}", ObjectA->GetDisplayFullName(), Layer_A);
+				log::info("{} Collision Layer: {}", ObjectB->GetDisplayFullName(), Layer_B);
+			}
+		}
+	}
 }
 
 namespace Hooks
@@ -130,6 +146,8 @@ namespace Hooks
 		if (*a_result) {
 			auto colLayerA = GetCollisionLayer(a_collidableA);
 			auto colLayerB = GetCollisionLayer(a_collidableB);
+
+			CollisionPrints(a_collidableA, a_collidableB);
 
 			if (colLayerA == COL_LAYER::kBiped || colLayerA == COL_LAYER::kCharController || colLayerA == COL_LAYER::kDeadBip || colLayerA == COL_LAYER::kBipedNoCC) {
 				auto colLayerB = GetCollisionLayer(a_collidableB);
