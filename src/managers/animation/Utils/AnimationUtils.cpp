@@ -495,7 +495,7 @@ namespace Gts {
 				zpos = AttachToUnderFoot_Left(giant, tiny).z; // fix Z if it is wrong
 			}
 
-			NiPoint3 attach = (coordinates.x, coordinates.y, zpos);
+			NiPoint3 attach = NiPoint3(coordinates.x, coordinates.y, zpos);
 
 			AttachTo(giantref, tinyref, attach);
 			if (!isTrampling(giantref)) {
