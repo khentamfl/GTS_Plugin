@@ -78,6 +78,7 @@ namespace Gts {
 			bool FPProning = false;
 			bool Overkilled = false;
 			bool Protection = false;
+			bool was_sneaking = false;
 
 			float Immunity = 1.0;
 
@@ -133,6 +134,7 @@ namespace Gts {
 			result.FPProning = FPProning;
 			result.Overkilled = Overkilled;
 			result.Protection = Protection;
+			result.was_sneaking = was_sneaking;
 
 			result.Immunity = Immunity;
 			

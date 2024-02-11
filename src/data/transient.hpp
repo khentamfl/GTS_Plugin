@@ -44,6 +44,7 @@ namespace Gts {
 		bool FPProning;
 		bool Overkilled;
 		bool Protection;
+		bool was_sneaking;
 
 		float Immunity;
 

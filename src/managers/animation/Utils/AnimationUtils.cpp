@@ -220,6 +220,8 @@ namespace Gts {
 		bool Friendly;
 		giant->GetGraphVariableBool("GTS_HuggingTeammate", Friendly);
 
+		SetSneaking(giant, false, 0);
+
 		AdjustFacialExpression(giant, 0, 0.0, "phenome");
 		AdjustFacialExpression(giant, 0, 0.0, "modifier");
 		AdjustFacialExpression(giant, 1, 0.0, "modifier");

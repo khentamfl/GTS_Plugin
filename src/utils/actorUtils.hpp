@@ -26,6 +26,9 @@ namespace Gts {
 	void PlayMoanSound(Actor* actor, float volume);
 	void PlayLaughSound(Actor* actor, float volume, int type);
 
+	void RecordSneaking(Actor* giant);
+	void SetSneaking(Actor* giant, bool override, int enable);
+
 
 	// GTS State Bools
 	bool BehaviorGraph_DisableHH(Actor* actor);

@@ -318,6 +318,27 @@ namespace Gts {
 		}
 	}
 
+	void RecordSneaking(Actor* giant) {
+		if (giant->IsSneaking()) {
+			auto transient = Transient::GetSingleton().GetData(giant);
+			bool sneaking = giant->IsSneaking();
+			if (transient) {
+				transient->was_sneaking = sneaking;
+			}
+		}
+	}
+
+	void SetSneaking(Actor* giant, bool override, int enable) {
+		if (override) {
+			giant->AsActorState()->actorState1.sneaking = enable;
+		} else {
+			auto transient = Transient::GetSingleton().GetData(giant);
+			if (transient) {
+				giant->AsActorState()->actorState1.sneaking = transient.was_sneaking;
+			}
+		}
+	}
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                                 G T S   ST A T E S  B O O L S                                                                      //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
