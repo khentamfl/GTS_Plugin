@@ -319,12 +319,10 @@ namespace Gts {
 	}
 
 	void RecordSneaking(Actor* giant) {
-		if (giant->IsSneaking()) {
-			auto transient = Transient::GetSingleton().GetData(giant);
-			bool sneaking = giant->IsSneaking();
-			if (transient) {
-				transient->was_sneaking = sneaking;
-			}
+		auto transient = Transient::GetSingleton().GetData(giant);
+		bool sneaking = giant->IsSneaking();
+		if (transient) {
+			transient->was_sneaking = sneaking;
 		}
 	}
 
