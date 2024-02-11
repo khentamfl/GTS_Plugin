@@ -51,7 +51,6 @@ namespace {
 				log::info("Isn't foot grinding anymore");
 				return false; 
 			}
-			log::info("Running: {}", name);
 			Laugh_Chance(giantref, 2.2, "FootGrind");
 
 			GRumble::Once(r_name, giantref, 1.0, 0.025, RNode);

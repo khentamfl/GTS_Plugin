@@ -149,17 +149,17 @@ namespace Hooks
 
 			CollisionPrints(a_collidableA, a_collidableB);
 
-			if (colLayerA == COL_LAYER::kBiped || colLayerA == COL_LAYER::kCharController || colLayerA == COL_LAYER::kDeadBip || colLayerA == COL_LAYER::kBipedNoCC) {
-				auto colLayerB = GetCollisionLayer(a_collidableB);
-				if (colLayerB == COL_LAYER::kBiped || colLayerB == COL_LAYER::kCharController || colLayerB == COL_LAYER::kDeadBip || colLayerB == COL_LAYER::kBipedNoCC) {
-					auto objA = GetTESObjectREFR(a_collidableA);
-					if (objA) {
-						auto objB = GetTESObjectREFR(a_collidableB);
-						if (objB) {
-							if (objA != objB) {
-								if (IsCollisionDisabledBetween(objA, objB)) {
-									*a_result = false;
-								}
+			bool Check_A = (colLayerA == COL_LAYER::kBiped || colLayerA == COL_LAYER::kCharController || colLayerA == COL_LAYER::kDeadBip || colLayerA == COL_LAYER::kBipedNoCC);
+			bool Check_B = (colLayerB == COL_LAYER::kBiped || colLayerB == COL_LAYER::kCharController || colLayerB == COL_LAYER::kDeadBip || colLayerB == COL_LAYER::kBipedNoCC);
+
+			if (Check_A || Check_B) {
+				auto objA = GetTESObjectREFR(a_collidableA);
+				if (objA) {
+					auto objB = GetTESObjectREFR(a_collidableB);
+					if (objB) {
+						if (objA != objB) {
+							if (IsCollisionDisabledBetween(objA, objB)) {
+								*a_result = false;
 							}
 						}
 					}
