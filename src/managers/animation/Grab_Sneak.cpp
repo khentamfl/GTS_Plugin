@@ -37,7 +37,16 @@ namespace {
 		}
 	}
 
-    void GTS_GrabSneak_Eat(AnimationEventData& data) {
+    void GTS_GrabSneak_Eat(AnimationEventData& data) { 
+		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
+		for (auto& tiny: VoreData.GetVories()) {
+			tiny->NotifyAnimationGraph("JumpFall");
+			Attacked(tiny, &data.giant);
+			VoreData.GrabAll(); // Switch to AnimObjectA attachment
+		}
+	}
+
+    void GTS_GrabSneak_KillAll(AnimationEventData& data) {
         auto giant = &data.giant;
 		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
 		for (auto& tiny: VoreData.GetVories()) {
@@ -53,15 +62,6 @@ namespace {
 		ManageCamera(giant, false, CameraTracking::ObjectA);
 		ManageCamera(giant, false, CameraTracking::Grab_Left);
     }
-
-    void GTS_GrabSneak_KillAll(AnimationEventData& data) { 
-		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
-		for (auto& tiny: VoreData.GetVories()) {
-			tiny->NotifyAnimationGraph("JumpFall");
-			Attacked(tiny, &data.giant);
-			VoreData.GrabAll(); // Switch to AnimObjectA attachment
-		}
-	}
     // Rest is handled inside Vore_Sneak (some events are re-used)
 }
 

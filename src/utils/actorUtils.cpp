@@ -2798,8 +2798,8 @@ namespace Gts {
 	void StaggerActor_Directional(Actor* giant, float power, Actor* tiny) {
 		//SE: 1405FA1B0 : 36700 (Character *param_1,float param_2,Actor *param_3)
 		//AE: 140621d80 : 37710
-		log::info("Performing Directional Stagger");
-		log::info("Giant: {}, Tiny: {}, Power: {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), power);
+		//log::info("Performing Directional Stagger");
+		//log::info("Giant: {}, Tiny: {}, Power: {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName(), power);
 		typedef void (*DefStaggerActor_Directional)(Actor* tiny, float power, Actor* giant);
 		REL::Relocation<DefStaggerActor_Directional> StaggerActor_Directional{ RELOCATION_ID(36700, 37710) };
 		StaggerActor_Directional(tiny, power, giant);

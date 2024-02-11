@@ -293,7 +293,6 @@ namespace Gts {
 
 		float MINIMUM_SANDWICH_SCALE = Action_Sandwich;
 
-		log::info("Min Sandwich Scale: {}", MINIMUM_SANDWICH_SCALE);
 		float MINIMUM_DISTANCE = MINIMUM_SANDWICH_DISTANCE;
 
 		if (HasSMT(pred)) {
