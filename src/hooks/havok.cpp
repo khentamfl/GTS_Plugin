@@ -95,6 +95,8 @@ namespace {
 			float sizedifference_gts = Scale_A/Scale_B;
 			float sizedifference_tiny = Scale_B/Scale_A;
 			log::info("Both are actors");
+			log::info("GTS size difference: {}, BB: {}", sizedifference_gts, GetSizeFromBoundingBox(actor_a));
+			log::info("TINY size difference: {}, BB: {}", sizedifference_tiny, GetSizeFromBoundingBox(actor_b));
 			if (sizedifference_gts >= 3.0 || sizedifference_tiny <= 0.33) {
 				return true;
 			}
