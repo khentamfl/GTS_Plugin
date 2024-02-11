@@ -72,9 +72,9 @@ namespace {
 		if (!otherActor) {
 			return false;
 		}
-		auto tranData = Transient::GetSingleton().GetData(actor);
-		if (tranData) {
-			if (tranData->disable_collision_with == otherActor) {
+		auto tranDataA = Transient::GetSingleton().GetData(actor);
+		if (tranDataA) {
+			if (tranDataA->disable_collision_with == otherActor) {
 				return true;
 			}
 		}
@@ -94,6 +94,7 @@ namespace {
 			// Because actors vary, it is a good idea to pass size difference from both POV's
 			float sizedifference_gts = Scale_A/Scale_B;
 			float sizedifference_tiny = Scale_B/Scale_A;
+			log::info("Both are actors");
 			if (sizedifference_gts >= 3.0 || sizedifference_tiny <= 0.33) {
 				return true;
 			}
@@ -159,6 +160,7 @@ namespace Hooks
 					if (objB) {
 						if (objA != objB) {
 							if (IsCollisionDisabledBetween(objA, objB)) {
+								log::info("DISABLED: Between {} and {}", objA->GetDisplayFullName(), objB->GetDisplayFullName());
 								*a_result = false;
 							}
 						}
