@@ -25,9 +25,14 @@ namespace Hooks
 
 	void Hook_MainUpdate::Hook(Trampoline& trampoline)
 	{
-		REL::Relocation<uintptr_t> hook{REL::RelocationID(35551, 36544)};
+		/*REL::Relocation<uintptr_t> hook{REL::RelocationID(35551, 36544)};
 		log::info("Gts applying Main Update Hook at {:X}", hook.address());
 		_Update = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x11F, 0x160), Update);
+		*/// --- OLD HOOK
+
+		REL::Relocation<uintptr_t> hook{REL::RelocationID(35565, 36564)};
+		log::info("Gts applying Main Update Hook at {:X}", hook.address());
+		_Update = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x748, 0xC26), Update);
 
 		// if (REL::Module::IsAE()) {
 		// 	auto offsetHelper = REL::IDDatabase::Offset2ID();

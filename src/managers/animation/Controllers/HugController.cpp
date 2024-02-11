@@ -202,7 +202,7 @@ namespace Gts {
 		if (pred->IsSneaking() && !IsCrawling(pred)) {
 			
 			RecordSneaking(pred); // store previous sneak value
-			SetSneaking(pred, true, 0);
+			SetSneaking(pred, true, 0); // disable sneaking
 
 			AnimationManager::StartAnim("Huggies_Try_Victim_S", prey); // GTSBEH_HugAbsorbStart_Sneak_V
 		} else {
