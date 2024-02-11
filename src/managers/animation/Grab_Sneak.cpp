@@ -3,6 +3,7 @@
 #include "managers/animation/Utils/CrawlUtils.hpp"
 #include "managers/emotions/EmotionManager.hpp"
 #include "managers/animation/Grab_Sneak.hpp"
+#include "managers/animation/Grab.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/ai/aifunctions.hpp"
 #include "managers/CrushManager.hpp"
@@ -25,7 +26,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-    void GTS_Sneak_Vore_Grab_Start(AnimationEventData& data) { // Register Tiny for Vore
+    void GTS_GrabSneak_Start(AnimationEventData& data) { // Register Tiny for Vore
 		auto otherActor = Grab::GetHeldActor(&data.giant);
 
         ManageCamera(&data.giant, true, CameraTracking::Grab_Left);
@@ -36,21 +37,38 @@ namespace {
 		}
 	}
 
-    void GTS_Sneak_Vore_Grab_Eat(AnimationEventData& data) { 
+    void GTS_GrabSneak_Eat(AnimationEventData& data) {
+        auto giant = &data.giant;
+		auto& VoreData = Vore::GetSingleton().GetVoreData(giant);
+		for (auto& tiny: VoreData.GetVories()) {
+			if (tiny) {
+				AllowToBeCrushed(tiny, true);
+				EnableCollisions(tiny);
+			}
+		}
+		VoreData.AllowToBeVored(true);
+		VoreData.KillAll();
+		VoreData.ReleaseAll();
+
+		ManageCamera(giant, false, CameraTracking::ObjectA);
+		ManageCamera(giant, false, CameraTracking::Grab_Left);
+    }
+
+    void GTS_GrabSneak_KillAll(AnimationEventData& data) { 
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		for (auto& tiny: VoreData.GetVories()) {
 			tiny->NotifyAnimationGraph("JumpFall");
 			Attacked(tiny, &data.giant);
 			VoreData.GrabAll(); // Switch to AnimObjectA attachment
 		}
-		ManageCamera(&data.giant, true, CameraTracking::Hand_Right);
 	}
     // Rest is handled inside Vore_Sneak (some events are re-used)
 }
 
 namespace Gts {
     void Animation_GrabSneak::RegisterEvents() { 
-		AnimationManager::RegisterEvent("GTS_Sneak_Vore_Grab_Start", "SneakVore", GTS_Sneak_Vore_Grab_Start);
-        AnimationManager::RegisterEvent("GTS_Sneak_Vore_Grab_Eat", "SneakVore", GTS_Sneak_Vore_Grab_Eat);
+		AnimationManager::RegisterEvent("GTS_GrabSneak_Start", "SneakVore", GTS_GrabSneak_Start);
+        AnimationManager::RegisterEvent("GTS_GrabSneak_Eat", "SneakVore", GTS_GrabSneak_Eat);
+        AnimationManager::RegisterEvent("GTS_GrabSneak_KillAll", "SneakVore", GTS_GrabSneak_KillAll);
     }
 }
