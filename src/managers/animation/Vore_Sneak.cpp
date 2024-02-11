@@ -1,4 +1,3 @@
-
 #include "managers/animation/Utils/AnimationUtils.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/Utils/CrawlUtils.hpp"
@@ -71,6 +70,7 @@ namespace {
 
 		Task_HighHeel_SyncVoreAnim(giant);
     }
+
     void GTS_Sneak_Vore_Grab(AnimationEventData& data) {
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		for (auto& tiny: VoreData.GetVories()) {
@@ -86,6 +86,7 @@ namespace {
 			ManageCamera(&data.giant, true, CameraTracking::Hand_Right);
 		}
     }
+
     void GTS_Sneak_Vore_OpenMouth(AnimationEventData& data) {
         AdjustFacialExpression(&data.giant, 0, 1.0, 0.32, 0.72, "phenome"); // Start opening mouth
 		AdjustFacialExpression(&data.giant, 1, 0.5, 0.32, 0.72, "phenome"); // Open it wider
