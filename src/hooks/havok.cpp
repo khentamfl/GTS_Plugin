@@ -103,7 +103,7 @@ namespace {
 		return false;
 	}
 
-	void CollisionPrints(const hkpCollidable& collidableA, const hkpCollidable& collidableB) {
+	void CollisionPrints(const hkpCollidable* collidableA, const hkpCollidable* collidableB) {
 		
 		auto ObjectA = GetTESObjectREFR(collidableA);
 		auto ObjectB = GetTESObjectREFR(collidableB);
