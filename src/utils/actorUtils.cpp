@@ -334,7 +334,7 @@ namespace Gts {
 		} else {
 			auto transient = Transient::GetSingleton().GetData(giant);
 			if (transient) {
-				giant->AsActorState()->actorState1.sneaking = transient.was_sneaking;
+				giant->AsActorState()->actorState1.sneaking = transient->was_sneaking;
 			}
 		}
 	}
