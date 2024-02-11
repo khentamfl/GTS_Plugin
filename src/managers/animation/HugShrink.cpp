@@ -183,7 +183,6 @@ namespace {
 
 	void GTSBeh_HugCrushEnd(AnimationEventData& data) {
 		SetSneaking(&data.giant, false, 0); // Go back into sneaking if actor was sneaking
-		MessageBox("Sneak stuff seen");
 	}
 
 

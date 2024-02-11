@@ -466,9 +466,9 @@ namespace Gts {
 		auto FrameA = Time::FramesElapsed();
 		auto coordinates = NiPoint3();
 		if (Right) {
-			coordinates = AttachToUnderFoot_Right(giant, tiny);
+			coordinates = AttachToUnderFoot_Right(giant, tiny); // get XYZ
 		} else {
-			coordinates = AttachToUnderFoot_Left(giant, tiny);
+			coordinates = AttachToUnderFoot_Left(giant, tiny); // get XYZ
 		}
 		SetBeingGrinded(tiny, true);
 		TaskManager::Run(name, [=](auto& progressData) {
@@ -486,6 +486,13 @@ namespace Gts {
 			if (FrameB <= 4.0) {
 				return true;
 			}
+
+			if (Right) {
+				coordinates.z = AttachToUnderFoot_Right(giant, tiny).z; // fix Z if it is wrong
+			} else {
+				coordinates.z = AttachToUnderFoot_Left(giant, tiny).z; // fix Z if it is wrong
+			}
+
 			AttachTo(giantref, tinyref, coordinates);
 			if (!isTrampling(giantref)) {
 				SetBeingGrinded(tinyref, false);

@@ -156,6 +156,10 @@ namespace Gts {
 		float MINIMUM_HUG_SCALE = Action_Hug;
 		float MINIMUM_DISTANCE = MINIMUM_HUG_DISTANCE;
 
+		if (pred->IsSneaking()) {
+			MINIMUM_DISTANCE *= 1.5;
+		}
+
 		float balancemode = SizeManager::GetSingleton().BalancedMode();
 
 		float prey_distance = (pred->GetPosition() - prey->GetPosition()).Length();
