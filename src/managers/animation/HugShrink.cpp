@@ -181,6 +181,11 @@ namespace {
 		HugShrink::Release(giant);
 	}
 
+	void GTSBEH_HugCrushEnd(AnimationEventData& data) {
+		SetSneaking(&data.giant, false, 0); // Go back into sneaking if actor was sneaking
+		MessageBox("Sneak stuff seen");
+	}
+
 
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -560,6 +565,8 @@ namespace Gts {
 		AnimationManager::RegisterEvent("GTS_Hug_ShrinkPulse", "Hugs", GTS_Hug_ShrinkPulse);
 		AnimationManager::RegisterEvent("GTS_Hug_RunShrinkTask", "Hugs", GTS_Hug_RunShrinkTask);
 		AnimationManager::RegisterEvent("GTS_Hug_StopShrinkTask", "Hugs", GTS_Hug_StopShrinkTask);
+
+		AnimationManager::RegisterEvent("GTSBEH_HugCrushEnd", "Hugs", GTSBEH_HugCrushEnd);
 
 		AnimationManager::RegisterEvent("GTSBEH_HugAbsorbAtk", "Hugs", GTSBEH_HugAbsorbAtk);
 	}

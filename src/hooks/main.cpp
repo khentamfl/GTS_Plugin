@@ -18,8 +18,6 @@ namespace {
 
 }
 
-
-
 namespace Hooks
 {
 
@@ -30,9 +28,11 @@ namespace Hooks
 		_Update = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x11F, 0x160), Update);
 		*/// --- OLD HOOK
 
-		REL::Relocation<uintptr_t> hook{REL::RelocationID(35565, 36564)};
+		REL::Relocation<uintptr_t> hook{REL::RelocationID(35565, 36564)}; // Credits to Ersh for this hook, DCA source code
+		// ^ 5B2FF0, 5D9F50, main update
 		log::info("Gts applying Main Update Hook at {:X}", hook.address());
 		_Update = trampoline.write_call<5>(hook.address() + RELOCATION_OFFSET(0x748, 0xC26), Update);
+		// ^ 5B3738, 5DAB76
 
 		// if (REL::Module::IsAE()) {
 		// 	auto offsetHelper = REL::IDDatabase::Offset2ID();
