@@ -487,13 +487,17 @@ namespace Gts {
 				return true;
 			}
 
+			float zpos = coordinates.z;
+
 			if (Right) {
-				coordinates.z = AttachToUnderFoot_Right(giant, tiny).z; // fix Z if it is wrong
+				zpos = AttachToUnderFoot_Right(giant, tiny).z; // fix Z if it is wrong
 			} else {
-				coordinates.z = AttachToUnderFoot_Left(giant, tiny).z; // fix Z if it is wrong
+				zpos = AttachToUnderFoot_Left(giant, tiny).z; // fix Z if it is wrong
 			}
 
-			AttachTo(giantref, tinyref, coordinates);
+			NiPoint3 attach = (coordinates.x, coordinates.y, zpos);
+
+			AttachTo(giantref, tinyref, attach);
 			if (!isTrampling(giantref)) {
 				SetBeingGrinded(tinyref, false);
 				return false;
