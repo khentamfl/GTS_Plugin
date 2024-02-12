@@ -239,5 +239,21 @@ namespace Hooks
 				return;
 			}
 		);
+
+		static FunctionHook<void(Actor* a_this, uintptr_t param_1, uintptr_t param_2, uintptr_t* param_3, uintptr_t param_4)> SkyrimTakeDamage_2(
+			// SE: 140621120 : 37523
+			RELOCATION_ID(37523, 37523),
+			[](auto* a_this, uintptr_t param_1, uintptr_t param_2, uintptr_t* param_3, uintptr_t param_4) {
+				log::info("Actor: {}", GetRawName(a_this));
+				log::info("Param 1: {}", GetRawName(param_1));
+				log::info("Param 2: {}", GetRawName(param_2));
+				log::info("Param 3: {}", GetRawName(param_3));
+				log::info("Param 4: {}", GetRawName(param_4));
+
+			
+				SkyrimTakeDamage_2(a_this, param_1, param_2, param_3, param_4);
+				return;
+			}
+		);
 	}
 }
