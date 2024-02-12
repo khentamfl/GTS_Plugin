@@ -240,7 +240,7 @@ namespace Hooks
 			}
 		);
 
-		static FunctionHook<void(Actor* a_this, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4, uintptr_t param_5)> sub_1406213D0(
+		/*static FunctionHook<void(Actor* a_this, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4, uintptr_t param_5)> sub_1406213D0(
 			// SE: 1406213D0 : 37525
 			RELOCATION_ID(37525, 37525),
 			[](auto* a_this, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4, uintptr_t param_5) {
@@ -259,6 +259,6 @@ namespace Hooks
 				sub_1406213D0(a_this, param_2, param_3, param_4, param_5);
 				return;
 			}
-		);
+		);*/
 	}
 }
