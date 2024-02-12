@@ -36,11 +36,11 @@ using namespace std;
 
 namespace {
 
-    void Utils_CrushTask(Actor* giant, Actor* grabbedActor) {
+    void Utils_CrushTask(Actor* giant, Actor* grabbedActor, float bonus) {
         
         auto tinyref = grabbedActor->CreateRefHandle();
         auto giantref = giant->CreateRefHandle();
-        
+
         std::string taskname = std::format("GrabCrush_{}", grabbedActor->formID);
 
         TaskManager::RunOnce(taskname, [=](auto& update) {
@@ -129,7 +129,7 @@ namespace {
 			ModSizeExperience(giant, experience);
 			AddSMTDuration(giant, 1.0);
 
-            Utils_CrushTask(giant, grabbedActor);
+            Utils_CrushTask(giant, grabbedActor, bonus);
 		}
 	}
 
