@@ -24,14 +24,14 @@ namespace {
 		float modifier = 1.0;
 		auto GameSetting = GameSettingCollection::GetSingleton();
 		if (GameSetting) {
-			modifier = a_gameSettingCollection->GetSetting(setting)->GetFloat();
+			modifier = GameSetting->GetSetting(setting)->GetFloat();
 		}
 		log::info("Difficulty Modifier: {}", modifier);
 		return modifier;
 	}
 
 	float GetDifficultyMultiplier(Actor* attacker, Actor* receiver) {
-
+		std::int32_t DIFFICULTY = 0;
 		if (attacker && (attacker->IsPlayerRef() || IsTeammate(attacker))) {
 			switch (static_cast<DIFFICULTY>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty)) {
 			case DIFFICULTY::kNovice:
