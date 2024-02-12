@@ -25,7 +25,7 @@ namespace {
 			camera->worldFOV *= 0.35;
 		}
 
-		float DefaultTP = tranData->WorldFov_Default;
+		float DefaultTP = data->WorldFov_Default;
 
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
@@ -38,13 +38,13 @@ namespace {
 				camera->worldFOV += DefaultTP * 0.003;
 				if (camera->worldFOV >= DefaultTP) {
 					camera->worldFOV = DefaultTP;
-					tranData->IsNotImmune = 1.0;
+					data->IsNotImmune = 1.0;
 					return false; // stop it
 				}
 			} else {
 				float timepassed = Finish - Start;
 				if (timepassed > 2.6) {
-					tranData->IsNotImmune = 1.0;
+					data->IsNotImmune = 1.0;
 					return false;
 				}
 			}
@@ -56,7 +56,7 @@ namespace {
 		ActorHandle gianthandle = actor->CreateRefHandle();
 
 		camera->firstPersonFOV *= 0.35;
-		float DefaultFP = tranData->FpFov_Default;
+		float DefaultFP = data->FpFov_Default;
 
 		float start = Time::worldTimeElapsed();
 
@@ -72,13 +72,13 @@ namespace {
 				camera->firstPersonFOV += DefaultFP * 0.003;
 				if (camera->firstPersonFOV >= DefaultFP) {
 					camera->firstPersonFOV = DefaultFP;
-					tranData->IsNotImmune = 1.0;
+					data->IsNotImmune = 1.0;
 					return false; // stop it
 				}
 			} else {
 				float timepassed = Finish - Start;
 				if (timepassed > 2.6) {
-					tranData->IsNotImmune = 1.0;
+					data->IsNotImmune = 1.0;
 					return false;
 				}
 			}
