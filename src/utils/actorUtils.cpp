@@ -2714,6 +2714,11 @@ namespace Gts {
 
 	void SpawnProgressionParticle(Actor* tiny, bool vore) {
 		float scale = 1.0 * GetSizeFromBoundingBox(tiny);
+
+		if (tiny->IsDead()) {
+			scale *= 0.33;
+		}
+		
 		auto node = find_node(tiny, "NPC Root [Root]");
 		log::info("Spawning particle");
 		if (node) {

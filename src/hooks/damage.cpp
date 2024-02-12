@@ -17,59 +17,94 @@ using namespace RE;
 using namespace SKSE;
 
 namespace {
-	void CameraFOVTask(Actor* actor) {
+	void CameraFOVTask_TP(Actor* actor, PlayerCamera* camera, TempActorData* data, bool AllowEdits) {
+		std::string name = std::format("CheatDeath_TP_{}", actor->formID);
+		ActorHandle gianthandle = actor->CreateRefHandle();
+
+		if (AllowEdits) {
+			camera->worldFOV *= 0.35;
+		}
+
+		float DefaultTP = tranData->WorldFov_Default;
+
+		TaskManager::Run(name, [=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+			auto giantref = gianthandle.get().get();
+			float Finish = Time::WorldTimeElapsed();
+
+			if (AllowEdits) {
+				camera->worldFOV += DefaultTP * 0.003;
+				if (camera->worldFOV >= DefaultTP) {
+					camera->worldFOV = DefaultTP;
+					tranData->IsNotImmune = 1.0;
+					return false; // stop it
+				}
+			} else {
+				float timepassed = Finish - Start;
+				if (timepassed > 2.6) {
+					tranData->IsNotImmune = 1.0;
+					return false;
+				}
+			}
+			return true;
+		});
+	}
+	void CameraFOVTask_FP(Actor* actor, PlayerCamera* camera, TempActorData* data, bool AllowEdits) {
+		std::string name = std::format("CheatDeath_FP_{}", actor->formID);
+		ActorHandle gianthandle = actor->CreateRefHandle();
+
+		camera->firstPersonFOV *= 0.35;
+		float DefaultFP = tranData->FpFov_Default;
+
+		float start = Time::worldTimeElapsed();
+
+		TaskManager::Run(name,[=](auto& progressData) {
+			if (!gianthandle) {
+				return false;
+			}
+
+			auto giantref = gianthandle.get().get();
+			float Finish = Time::WorldTimeElapsed();
+
+			if (AllowEdits) {
+				camera->firstPersonFOV += DefaultFP * 0.003;
+				if (camera->firstPersonFOV >= DefaultFP) {
+					camera->firstPersonFOV = DefaultFP;
+					tranData->IsNotImmune = 1.0;
+					return false; // stop it
+				}
+			} else {
+				float timepassed = Finish - Start;
+				if (timepassed > 2.6) {
+					tranData->IsNotImmune = 1.0;
+					return false;
+				}
+			}
+			return true;
+		});
+	}
+
+	void StartDamageIsNotImmune(Actor* actor) {
 		if (actor->formID == 0x14) {
 			auto camera = PlayerCamera::GetSingleton();
 			if (!camera) {
 				return;
 			}
 			auto AllowEdits = Persistent::GetSingleton().Camera_PermitFovEdits;
-			if (!AllowEdits) {
-				return;
-			}
+
 			auto tranData = Transient::GetSingleton().GetData(actor);
 			bool TP = camera->IsInThirdPerson();
 			bool FP = camera->IsInFirstPerson();
 			if (tranData) {
 				tranData->WorldFov_Default = camera->worldFOV;
 				tranData->FpFov_Default = camera->firstPersonFOV;
-				tranData->Immunity = 0.0;
-				float DefaultTP = tranData->WorldFov_Default;
-				float DefaultFP = tranData->FpFov_Default;
-				if (DefaultTP > 0) {
-					std::string name = std::format("RandomGrowth_TP_{}", actor->formID);
-					ActorHandle gianthandle = actor->CreateRefHandle();
-					camera->worldFOV *= 0.35;
-					TaskManager::Run(name, [=](auto& progressData) {
-						if (!gianthandle) {
-							return false;
-						}
-						auto giantref = gianthandle.get().get();
-						camera->worldFOV += DefaultTP * 0.003;
-						if (camera->worldFOV >= DefaultTP) {
-							camera->worldFOV = DefaultTP;
-							tranData->Immunity = 1.0;
-							return false; // stop it
-						}
-						return true;
-					});
-				} else if (FP && DefaultFP > 99999) {
-					std::string name = std::format("RandomGrowth_FP_{}", actor->formID);
-					ActorHandle gianthandle = actor->CreateRefHandle();
-					camera->firstPersonFOV *= 0.35;
-					TaskManager::Run(name,[=](auto& progressData) {
-						if (!gianthandle) {
-							return false;
-						}
-						auto giantref = gianthandle.get().get();
-						camera->firstPersonFOV += DefaultFP * 0.003;
-						if (camera->firstPersonFOV >= DefaultFP) {
-							camera->firstPersonFOV = DefaultFP;
-							tranData->Immunity = 1.0;
-							return false; // stop it
-						}
-						return true;
-					});
+				tranData->IsNotImmune = 0.0; // make actor immune to damage
+				if (TP) {
+					CameraFOVTask_TP(actor, camera, tranData, AllowEdits);
+				} else if (FP) {
+					CameraFOVTask_FP(actor, camera, tranData, AllowEdits);
 				}
 			}
 		}
@@ -95,7 +130,7 @@ namespace {
 		return protection;
 	}
 
-	float HealthGate(Actor* receiver, float a_damage) {
+	float HealthGate(Actor* receiver, Actor* attacker, float a_damage) {
 		float protection = 1.0;
 		if (receiver->formID == 0x14 && a_damage > GetAV(receiver, ActorValue::kHealth)) {
 			if (Runtime::HasPerk(receiver, "HealthGate")) {
@@ -113,10 +148,12 @@ namespace {
 					}
 					GRumble::For("CheatDeath", receiver, 240.0, 0.10, "NPC COM [COM ]", 1.50);
 					Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.5);
-					receiver->SetGraphVariableFloat("staggerMagnitude", 100.00f); // Stagger actor
-					receiver->NotifyAnimationGraph("staggerStart");
+					
+					StaggerActor(receiver, attacker, 1.0f);
+					StaggerActor(attacker, receiver, 1.0f);
+					// stagger each-other
 
-					CameraFOVTask(receiver);
+					StartDamageIsNotImmune(receiver);
 
 					Cprint("Health Gate triggered, death avoided");
 					Cprint("Damage: {:.2f}, Lost Size: {:.2f}", a_damage, -0.35 * scale);
@@ -160,7 +197,7 @@ namespace {
 
 		if (transient) {
 			if (receiver->formID == 0x14) {
-				IsNotImmune = transient->Immunity;
+				IsNotImmune = transient->IsNotImmune;
 				tiny = TinyShield(receiver);
 			}
 		}
@@ -186,7 +223,7 @@ namespace Hooks
 						//log::info("Found Aggressor");
 						//log::info("Aggressor: {}", aggressor->GetDisplayFullName());
 						dmg *= GetTotalDamageResistance(a_this, aggressor);
-						dmg *= HealthGate(a_this, dmg);
+						dmg *= HealthGate(a_this, aggressor, dmg);
 
 
 						DoOverkill(aggressor, a_this, dmg);

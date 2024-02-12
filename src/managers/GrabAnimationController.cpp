@@ -165,7 +165,14 @@ namespace Gts {
 		}
 
 		StaggerActor(pred, prey, 100.0f);
-		ShrinkUntil(pred, prey, 12.0, 0.20);
+
+		float shrinkrate = 0.18;
+
+		if (pred->IsSneaking()) {
+			shrinkrate = 0.13;
+		}
+
+		ShrinkUntil(pred, prey, 12.0, shrinkrate);
 
 		Grab::GetSingleton().GrabActor(pred, prey);
 		

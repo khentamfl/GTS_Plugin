@@ -198,7 +198,7 @@ namespace {
 		ManageCamera(giant, false, CameraTracking::Grab_Left);
 		GRumble::Once("ThrowFoe", &data.giant, 2.50, 0.10, "NPC L Hand [LHnd]");
 		AnimationManager::StartAnim("TinyDied", giant);
-		//BlockFirstPerson(giant, false);
+
 		Grab::DetachActorTask(giant);
 		Grab::Release(giant);
 	}

@@ -80,7 +80,7 @@ namespace Gts {
 			bool Protection = false;
 			bool was_sneaking = false;
 
-			float Immunity = 1.0;
+			float IsNotImmune = 1.0;
 
 			TESObjectREFR* disable_collision_with = nullptr;
 			float otherScales = 1.0;
@@ -136,7 +136,7 @@ namespace Gts {
 			result.Protection = Protection;
 			result.was_sneaking = was_sneaking;
 
-			result.Immunity = Immunity;
+			result.IsNotImmune = IsNotImmune;
 			
 
 			result.is_teammate = actor->formID != 0x14 && actor->IsPlayerTeammate();

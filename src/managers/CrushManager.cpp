@@ -51,6 +51,8 @@ namespace {
 			} else {
 				AdvanceQuestProgression(giant, tiny, 3, 1, false);
 			}
+		} else {
+			AdvanceQuestProgression(giant, tiny, 3, 0.25, false);
 		}
 	}
 
