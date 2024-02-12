@@ -245,12 +245,15 @@ namespace Hooks
 			RELOCATION_ID(37525, 37525),
 			[](auto* a_this, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4, uintptr_t param_5) {
 				if (a_this) {
-					log::info("Actor: {}", a_this->GetDisplayFullName());
+					if (a_this->formID != 0x14) {
+						log::info("Actor: {}", a_this->GetDisplayFullName());
+						log::info("Param 2: {}", param_2);
+						log::info("Param 3: {}", param_3);
+						log::info("Param 4: {}", param_4);
+						log::info("Param 5: {}", param_5);
+					}
 				}
-				log::info("Param 2: {}", param_2);
-				log::info("Param 3: {}", param_3);
-				log::info("Param 4: {}", param_4);
-				log::info("Param 5: {}", param_5);
+				
 
 			
 				sub_1406213D0(a_this, param_2, param_3, param_4, param_5);
