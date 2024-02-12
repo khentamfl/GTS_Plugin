@@ -6,7 +6,7 @@ using namespace RE;
 
 namespace Gts
 {
-	class Animation_GrabSneakVore {
+	class Animation_GrabSneak_Vore {
 		public:
 			static void RegisterEvents();
 	};
