@@ -240,10 +240,10 @@ namespace Hooks
 			}
 		);
 
-		static FunctionHook<void(Actor* a_this, uintptr_t param_1, uintptr_t param_2, uintptr_t* param_3, uintptr_t param_4, uintptr_t param_5, uintptr_t param_6, uintptr_t param_7)> SkyrimTakeDamage_2(
+		static FunctionHook<void(Actor* a_this, uintptr_t param_1, uintptr_t param_2, uintptr_t* param_3, uintptr_t param_4, uintptr_t param_5, uintptr_t param_6, uintptr_t param_7, uintptr_t param_8)> SkyrimTakeDamage_2(
 			// SE: 140621120 : 37523
 			RELOCATION_ID(37523, 37523),
-			[](auto* a_this, uintptr_t param_1, uintptr_t param_2, uintptr_t* param_3, uintptr_t param_4, uintptr_t param_5, uintptr_t param_6, uintptr_t param_7) {
+			[](auto* a_this, uintptr_t param_1, uintptr_t param_2, uintptr_t* param_3, uintptr_t param_4, uintptr_t param_5, uintptr_t param_6, uintptr_t param_7, uintptr_t param_8) {
 				if (a_this) {
 					log::info("Actor: {}", a_this->GetDisplayFullName());
 				}
@@ -257,9 +257,10 @@ namespace Hooks
 				log::info("Param 5: {}", param_5);
 				log::info("Param 6: {}", param_6);
 				log::info("Param 7: {}", param_7);
+				log::info("Param 8: {}", param_8);
 
 			
-				SkyrimTakeDamage_2(a_this, param_1, param_2, param_3, param_4, param_5, param_6, param_7);
+				SkyrimTakeDamage_2(a_this, param_1, param_2, param_3, param_4, param_5, param_6, param_7, param_8);
 				return;
 			}
 		);
