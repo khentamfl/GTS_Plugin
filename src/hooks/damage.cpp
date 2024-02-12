@@ -28,7 +28,7 @@ namespace {
 		}
 
 		float DefaultTP = data->WorldFov_Default;
-		float Start = Time::worldTimeElapsed();
+		float Start = Time::WorldTimeElapsed();
 
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
@@ -61,7 +61,7 @@ namespace {
 		camera->firstPersonFOV *= 0.35;
 		float DefaultFP = data->FpFov_Default;
 
-		float Start = Time::worldTimeElapsed();
+		float Start = Time::WorldTimeElapsed();
 
 		TaskManager::Run(name,[=](auto& progressData) {
 			if (!gianthandle) {
