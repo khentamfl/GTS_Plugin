@@ -42,7 +42,11 @@ namespace Gts {
 			static TESObjectREFR* GetHeldObj(Actor* giant);
 			// Same as `GetHeldObj` but with a conversion to actor if possible
 			static Actor* GetHeldActor(Actor* giant);
-
 			std::unordered_map<Actor*, GrabData> data;
 	};
+
+	void StartRHandRumble(std::string_view tag, Actor& actor, float power, float halflife);
+	void StartLHandRumble(std::string_view tag, Actor& actor, float power, float halflife);
+	void StopRHandRumble(std::string_view tag, Actor& actor);
+	void StopLHandRumble(std::string_view tag, Actor& actor);
 }

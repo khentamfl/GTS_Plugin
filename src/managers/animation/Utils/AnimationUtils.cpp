@@ -400,10 +400,10 @@ namespace Gts {
 		if (type == "expression") {
 			auto fgen = giant->GetFaceGenAnimationData();
 			if (fgen) {
-				fgen->exprOverride = false;
+				//fgen->exprOverride = false;
 				fgen->SetExpressionOverride(ph, target);
 				fgen->expressionKeyFrame.SetValue(ph, target); // Expression doesn't need Spring since it is already smooth by default
-				fgen->exprOverride = true;
+				//fgen->exprOverride = true;
 			}
 		}
 		if (type == "modifier") {

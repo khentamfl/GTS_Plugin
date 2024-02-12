@@ -169,6 +169,7 @@ namespace Gts {
 
 		Grab::GetSingleton().GrabActor(pred, prey);
 		
+		Utils_UpdateHighHeelBlend(pred, false);
 		AnimationManager::StartAnim("GrabSomeone", pred);
 	}
 }

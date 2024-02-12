@@ -2,7 +2,7 @@
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/animation/Utils/CrawlUtils.hpp"
 #include "managers/emotions/EmotionManager.hpp"
-#include "managers/animation/Grab_Sneak.hpp"
+#include "managers/animation/Grab_Sneak_Vore.hpp"
 #include "managers/animation/Grab.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/ai/aifunctions.hpp"
@@ -40,8 +40,10 @@ namespace {
     void GTS_GrabSneak_Eat(AnimationEventData& data) { 
 		auto& VoreData = Vore::GetSingleton().GetVoreData(&data.giant);
 		for (auto& tiny: VoreData.GetVories()) {
-			tiny->NotifyAnimationGraph("JumpFall");
-			Attacked(tiny, &data.giant);
+            if (tiny) {
+                tiny->NotifyAnimationGraph("JumpFall");
+                Attacked(tiny, &data.giant);
+            }
 			VoreData.GrabAll(); // Switch to AnimObjectA attachment
 		}
 	}
@@ -66,7 +68,7 @@ namespace {
 }
 
 namespace Gts {
-    void Animation_GrabSneak::RegisterEvents() { 
+    void Animation_GrabSneak_Vore::RegisterEvents() { 
 		AnimationManager::RegisterEvent("GTS_GrabSneak_Start", "SneakVore", GTS_GrabSneak_Start);
         AnimationManager::RegisterEvent("GTS_GrabSneak_Eat", "SneakVore", GTS_GrabSneak_Eat);
         AnimationManager::RegisterEvent("GTS_GrabSneak_KillAll", "SneakVore", GTS_GrabSneak_KillAll);

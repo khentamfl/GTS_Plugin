@@ -4,7 +4,10 @@
 #include "managers/animation/ThighSandwich.hpp"
 #include "managers/animation/StrongStomp.hpp"
 #include "managers/animation/FootTrample.hpp"
-#include "managers/animation/Grab_Sneak.hpp"
+#include "managers/animation/Grab_Throw.hpp"
+#include "managers/animation/Grab_Attack.hpp"
+#include "managers/animation/Grab_Vore.hpp"
+#include "managers/animation/Grab_Sneak_Vore.hpp"
 #include "managers/animation/ThighCrush.hpp"
 #include "managers/animation/Sneak_KneeCrush.hpp"
 #include "managers/animation/ButtCrush.hpp"
@@ -87,7 +90,12 @@ namespace Gts {
 
 		AnimationBoobCrush::RegisterEvents();
 
-		Animation_GrabSneak::RegisterEvents();
+
+		Animation_GrabSneak_Vore::RegisterEvents();
+		Animation_GrabVore::RegisterEvents();
+		Animation_GrabThrow::RegisterEvents();
+		Animation_GrabAttack::RegisterEvents();
+		
 
 		AnimationFootGrind::RegisterEvents();
 		AnimationFootGrind::RegisterTriggers();
