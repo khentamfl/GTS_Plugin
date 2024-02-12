@@ -249,10 +249,10 @@ namespace Hooks
 				}
 				log::info("Param 1: {}", param_1);
 				log::info("Param 2: {}", param_2);
-				if (param_3) {
-					log::info("Param 3 true");
-					log::info("Param 3: {}", GetRawName(param_3));
-				}
+				//if (param_3) {
+					//log::info("Param 3 true");
+					//log::info("Param 3: {}", GetRawName(param_3));
+				//}
 				log::info("Param 4: {}", param_4);
 
 			
