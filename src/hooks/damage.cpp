@@ -19,6 +19,54 @@ using namespace RE;
 using namespace SKSE;
 
 namespace {
+
+	float GetSettingValue(std::string_view setting) {
+		float modifier = 1.0;
+		auto GameSetting = GameSettingCollection::GetSingleton();
+		if (GameSetting) {
+			modifier = a_gameSettingCollection->GetSetting(setting)->GetFloat();
+		}
+		log::info("Difficulty Modifier: {}", modifier);
+		return modifier;
+	}
+
+	float GetDifficultyMultiplier(Actor* attacker, Actor* receiver) {
+
+		if (attacker && (attacker->IsPlayerRef() || IsTeammate(attacker))) {
+			switch (static_cast<DIFFICULTY>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty)) {
+			case DIFFICULTY::kNovice:
+				return GetSettingValue("fDiffMultHPByPCVE");
+			case DIFFICULTY::kApprentice:
+				return GetSettingValue("fDiffMultHPByPCE");
+			case DIFFICULTY::kAdept:
+				return GetSettingValue("fDiffMultHPByPCN");
+			case DIFFICULTY::kExpert:
+				return GetSettingValue("fDiffMultHPByPCH");
+			case DIFFICULTY::kMaster:
+				return GetSettingValue("fDiffMultHPByPCVH");
+			case DIFFICULTY::kLegendary:
+				return GetSettingValue("fDiffMultHPByPCL");
+			}
+		} else if (receiver && (receiver->IsPlayerRef() || IsTeammate(attacker))) {
+			switch (static_cast<DIFFICULTY>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty)) {
+			case DIFFICULTY::kNovice:
+				return GetSettingValue("fDiffMultHPToPCVE");
+			case DIFFICULTY::kApprentice:
+				return GetSettingValue("fDiffMultHPToPCE");
+			case DIFFICULTY::kAdept:
+				return GetSettingValue("fDiffMultHPToPCN");
+			case DIFFICULTY::kExpert:
+				return GetSettingValue("fDiffMultHPToPCH");
+			case DIFFICULTY::kMaster:
+				return GetSettingValue("fDiffMultHPToPCVH");
+			case DIFFICULTY::kLegendary:
+				return GetSettingValue("fDiffMultHPToPCL");
+			}
+		}
+		return 1.0;
+	}
+
+
 	void CameraFOVTask_TP(Actor* actor, PlayerCamera* camera, TempActorData* data, bool AllowEdits) {
 		std::string name = std::format("CheatDeath_TP_{}", actor->formID);
 		ActorHandle gianthandle = actor->CreateRefHandle();
@@ -135,6 +183,9 @@ namespace {
 
 	float HealthGate(Actor* receiver, Actor* attacker, float a_damage) {
 		float protection = 1.0;
+		if (receiver->formID == 0x14) {
+			log::info("Damage {}, Damage * Difficulty: {}", a_damage, a_damage * GetDifficultyMultiplier());
+		}
 		if (receiver->formID == 0x14 && a_damage > GetAV(receiver, ActorValue::kHealth)) {
 			if (Runtime::HasPerk(receiver, "HealthGate")) {
 				static Timer protect = Timer(60.00);
