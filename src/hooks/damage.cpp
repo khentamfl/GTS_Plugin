@@ -11,7 +11,9 @@
 #include "data/runtime.hpp"
 #include "hooks/damage.hpp"
 #include "scale/scale.hpp"
+#include "data/time.hpp"
 #include "timer.hpp"
+
 
 using namespace RE;
 using namespace SKSE;
@@ -26,6 +28,7 @@ namespace {
 		}
 
 		float DefaultTP = data->WorldFov_Default;
+		float Start = Time::worldTimeElapsed();
 
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
@@ -58,7 +61,7 @@ namespace {
 		camera->firstPersonFOV *= 0.35;
 		float DefaultFP = data->FpFov_Default;
 
-		float start = Time::worldTimeElapsed();
+		float Start = Time::worldTimeElapsed();
 
 		TaskManager::Run(name,[=](auto& progressData) {
 			if (!gianthandle) {
