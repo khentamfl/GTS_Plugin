@@ -9,7 +9,7 @@ using namespace Gts;
 
 namespace Gts {
 
-    enum class Difficulty_ByPC : const char
+    enum class Difficulty_ByPC : std::string_view
     {
         "fDiffMultHPByPCVE" = 0,
         "fDiffMultHPByPCE" =  1,
@@ -19,7 +19,7 @@ namespace Gts {
         "fDiffMultHPByPCL" =  5,
     };
 
-    enum class Difficulty_ToPC : const char
+    enum class Difficulty_ToPC : std::string_view
     {
         "fDiffMultHPToPCVE" = 0,
         "fDiffMultHPToPCE" =  1,
