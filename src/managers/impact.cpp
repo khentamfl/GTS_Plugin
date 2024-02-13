@@ -166,13 +166,6 @@ namespace Gts {
 				ActorHandle gianthandle = actor->CreateRefHandle();
 				std::string name = std::format("JumpLandT_{}", actor->formID);
 
-				auto charCont = actor->GetCharController();
-				float extradamage = 1.0;
-				if (charCont && Runtime::HasPerkTeam(actor, "MightyLegs")) {
-					extradamage = std::clamp(1.0f + charCont->fallTime, 1.0f, 3.0f);
-					log::info("{} has been falling for {}", actor->GetDisplayFullName(), charCont->fallTime);
-					damage *= extradamage;
-				}
 				
 				TaskManager::Run(name, [=](auto& progressData) { // Delay it a bit since it often happens in the air
 					if (!gianthandle) {
@@ -182,8 +175,8 @@ namespace Gts {
 					float timepassed = Time::WorldTimeElapsed() - Start;
 
 					if (timepassed >= 0.15) {
-						DoDamageEffect(giant, Damage_Jump_Default * damage, Radius_Jump_Default * extradamage, 20, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
-						DoDamageEffect(giant, Damage_Jump_Default * damage, Radius_Jump_Default * extradamage, 20, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+						DoDamageEffect(giant, Damage_Jump_Default * damage, Radius_Jump_Default, 20, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+						DoDamageEffect(giant, Damage_Jump_Default * damage, Radius_Jump_Default, 20, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 
 						DoLaunch(giant, 1.20 * perk, 1.75, FootEvent::Left);
 						DoLaunch(giant, 1.20 * perk, 1.75, FootEvent::Right);

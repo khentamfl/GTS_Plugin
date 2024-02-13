@@ -48,6 +48,11 @@ namespace {
 			auto controlMap = ControlMap::GetSingleton();
 			if (controlMap) {
 				bool GtsBusy = !IsGtsBusy(player);
+				bool AnimsInstalled = AnimationsInstalled(player);
+
+				if (!AnimsInstalled) {
+					return;
+				}
 
 				controlMap->ToggleControls(UEFlag::kFighting, GtsBusy);
 				controlMap->ToggleControls(UEFlag::kActivate, GtsBusy);
@@ -57,6 +62,18 @@ namespace {
 			}
 		}
 	}	
+
+	void UpdateFalling() {
+		Actor* player = PlayerCharacter::GetSingleton();
+		if (player && player->IsInMidair()) {
+			auto charCont = player->GetCharController();
+			if (charCont && Runtime::HasPerkTeam(player, "MightyLegs")) {
+				extradamage = std::clamp(1.0f + charCont->fallTime, 1.0f, 3.0f);
+				log::info("{} has been falling for {}", player->GetDisplayFullName(), charCont->fallTime);
+				damage *= extradamage;
+			}
+		}
+	}
 
 	void FixActorFade(Actor* actor) {
 		auto profiler = Profilers::Profile("Manager: Fade Fix");
@@ -282,6 +299,7 @@ void GtsManager::Update() {
 		}
 
 		FixActorFade(actor);
+		UpdateFalling();
 
 		ManageControls();
 

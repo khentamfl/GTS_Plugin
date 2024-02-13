@@ -132,11 +132,9 @@ namespace Gts {
 				Cprint("{} crushed {} during leg stretch", GiantName, TinyName);
 			} else if (random == 4) {
 				Cprint("{} ended life of {} between legs", GiantName, TinyName);
-			} else if (random == 5) {
-				Cprint("{} applied too much leg pressure to {}", GiantName, TinyName);
-			} else if (random >= 6) {
-				Cprint("{} was shrinked to nothing by {}", TinyName, GiantName);
-			}
+			} else if (random >= 5) {
+				Cprint("Thighs of {} took the life of {}", GiantName, TinyName);
+			} 
 			return;
 		} else if (cause == DamageSource::BodyCrush) { // During Body Crush
 			if (random == 1) {

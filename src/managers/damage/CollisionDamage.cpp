@@ -127,23 +127,6 @@ namespace {
 			}
 			// ^ Augmentation for Growth Spurt: Steal size of enemies.
 		}
-
-		if (HasSMT(giant) && giant != tiny) {
-			size_difference += 4.0;
-
-			if (Runtime::HasPerk(giant, "SmallMassiveThreatSizeSteal")) {
-				float HpRegen = GetMaxAV(giant, ActorValue::kHealth) * 0.0001 * (size_difference - 4.0);
-				giant->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, (HpRegen * TimeScale()) * size_difference);
-				//log::info("Hp regen: {}, Regen * Time * Difference: {}, maxHP: {}", HpRegen, (HpRegen * TimeScale()) * size_difference, GetMaxAV(giant, ActorValue::kHealth));
-				if (get_target_scale(tiny) > 0.12) {
-					ShrinkActor(tiny, 0.0015 * BonusShrink, 0.0);
-					Grow(giant, 0.00045 * tinyscale * BonusShrink, 0.0);
-				} else {
-					set_target_scale(tiny, 0.12);
-				}
-				// ^ Tiny calamity augmentation, deals pretty much the same as the one above, but a bit stronger
-			}
-		}
 	}
 
 	float HighHeels_PerkDamage(Actor* giant, DamageSource Cause) {
