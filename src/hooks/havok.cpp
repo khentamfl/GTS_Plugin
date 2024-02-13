@@ -29,15 +29,15 @@ namespace {
 	}
 
 	bool HasCollidedWithStatic(const hkpCollidable* collidable) {
+		bool success = false;
+
 		if (collidable) {
 			std::uint32_t filter = bhkCollisionFilter::GetSingleton()->GetNewSystemGroup() << 16 | stl::to_underlying(COL_LAYER::kLOS);
 			auto layer = collidable->broadPhaseHandle.collisionFilterInfo & 0x7F;
 			auto collision_layer = static_cast<COL_LAYER>(layer);
 			
-			bool success = false;
-
-			if (collision_layer == filter) {
-				log::info("Col_Filter check passed", col_filter);
+			if (layer == filter) {
+				log::info("Col_Filter True, layer:{}, filter: {}, layer name: {}", layer, filter, collision_layer);
 				if (collision_layer != COL_LAYER::kCharController && collision_layer != COL_LAYER::kWeapon) {
 					log::info("Collided: TRUE");
 					success = true;
