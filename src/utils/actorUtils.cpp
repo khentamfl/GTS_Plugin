@@ -270,7 +270,7 @@ namespace Gts {
 			return 1.0;
 		}
 
-		float limit = (8.0 * get_visual_scale(giant));
+		float limit = (6.0 * get_visual_scale(giant));
 
 		log::info("Launch Power: {}, Limit: {}", power, limit);
 
@@ -2718,7 +2718,7 @@ namespace Gts {
 		if (tiny->IsDead()) {
 			scale *= 0.33;
 		}
-		
+
 		auto node = find_node(tiny, "NPC Root [Root]");
 		log::info("Spawning particle");
 		if (node) {

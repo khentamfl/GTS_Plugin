@@ -41,6 +41,7 @@ namespace Gts {
 		Breasts_02,
 		Breasts_03, // 3BBB tip
 		Neck,
+		Butt,
 	};
 
 	enum class CameraTracking {
@@ -61,16 +62,6 @@ namespace Gts {
 		Finger_Left,
 		ObjectA,
 		ObjectB,
-	};
-
-	enum class Difficulty : std::int32_t
-	{
-		Novice = 0,
-		Apprentice = 1,
-		Adept = 2,
-		Expert = 3,
-		Master = 4,
-		Legendary = 5
 	};
 
 	enum class DamageSource {

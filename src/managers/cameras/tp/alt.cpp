@@ -255,6 +255,15 @@ namespace Gts {
 							.zoomScale = 0.75,
 					};
 				}
+				case CameraTracking_MCM::Butt: {
+					return BoneTarget {
+							.boneNames = {
+							"NPC L Butt",
+							"NPC R Butt",
+						},
+							.zoomScale = 0.75,
+					};
+				}
 			}
 		}
 		return BoneTarget();

@@ -32,6 +32,7 @@ namespace Gts {
 	struct DamageData {
 		double lastDamageTime = -1.0e8;
 		double lastHandDamageTime = -1.0e8;
+		double lastHealthGateTime = -1.0e8;
 		double lastThighDamageTime = -1.0e8;
 		double lastScareTime = -1.0e8;
 	};
@@ -87,6 +88,7 @@ namespace Gts {
 			static bool IsHandDamaging(Actor* actor);
 			static bool IsThighDamaging(Actor* actor);
 			static bool IsBeingScared(Actor* actor);
+			static bool IsHealthGateInCooldown(Actor* actor);
 
 			bool GetPreciseDamage();
 

@@ -2,6 +2,8 @@
 #include "managers/animation/HugShrink.hpp"
 #include "managers/OverkillManager.hpp"
 #include "managers/animation/Grab.hpp"
+#include "managers/GtsSizeManager.hpp"
+#include "utils/DifficultyUtils.hpp"
 #include "managers/hitmanager.hpp"
 #include "managers/Attributes.hpp"
 #include "utils/actorUtils.hpp"
@@ -20,52 +22,6 @@ using namespace RE;
 using namespace SKSE;
 
 namespace {
-
-	float GetSettingValue(const char* setting) {
-		float modifier = 1.0;
-		auto GameSetting = GameSettingCollection::GetSingleton();
-		if (GameSetting) {
-			modifier = GameSetting->GetSetting(setting)->GetFloat();
-		}
-		log::info("Difficulty Modifier: {}", modifier);
-		return modifier;
-	}
-
-	float GetDifficultyMultiplier(Actor* attacker, Actor* receiver) { // Credits to DoodleDum for this method
-		if (attacker && (attacker->IsPlayerRef() || IsTeammate(attacker))) {
-			switch (static_cast<Difficulty>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty)) {
-			case Difficulty::Novice:
-				return GetSettingValue("fDiffMultHPByPCVE");
-			case Difficulty::Apprentice:
-				return GetSettingValue("fDiffMultHPByPCE");
-			case Difficulty::Adept:
-				return GetSettingValue("fDiffMultHPByPCN");
-			case Difficulty::Expert:
-				return GetSettingValue("fDiffMultHPByPCH");
-			case Difficulty::Master:
-				return GetSettingValue("fDiffMultHPByPCVH");
-			case Difficulty::Legendary:
-				return GetSettingValue("fDiffMultHPByPCL");
-			}
-		} else if (receiver && (receiver->IsPlayerRef() || IsTeammate(attacker))) {
-			switch (static_cast<Difficulty>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty)) {
-			case Difficulty::Novice:
-				return GetSettingValue("fDiffMultHPToPCVE");
-			case Difficulty::Apprentice:
-				return GetSettingValue("fDiffMultHPToPCE");
-			case Difficulty::Adept:
-				return GetSettingValue("fDiffMultHPToPCN");
-			case Difficulty::Expert:
-				return GetSettingValue("fDiffMultHPToPCH");
-			case Difficulty::Master:
-				return GetSettingValue("fDiffMultHPToPCVH");
-			case Difficulty::Legendary:
-				return GetSettingValue("fDiffMultHPToPCL");
-			}
-		}
-		return 1.0;
-	}
-
 
 	void CameraFOVTask_TP(Actor* actor, PlayerCamera* camera, TempActorData* data, bool AllowEdits) {
 		std::string name = std::format("CheatDeath_TP_{}", actor->formID);
@@ -189,8 +145,8 @@ namespace {
 
 			if (a_damage > GetAV(receiver, ActorValue::kHealth)) {
 				if (Runtime::HasPerk(receiver, "HealthGate")) {
-					static Timer protect = Timer(60.00);
-					if (protect.ShouldRunFrame()) {
+					if (!IsHealthGateInCooldown(receiver)) {
+						sizemanager.GetDamageData(receiver).lastHealthGateTime = Time::WorldTimeElapsed();
 						float maxhp = GetMaxAV(receiver, ActorValue::kHealth);
 						float target = get_target_scale(receiver);
 						float natural = get_natural_scale(receiver);
@@ -204,6 +160,13 @@ namespace {
 						GRumble::For("CheatDeath", receiver, 240.0, 0.10, "NPC COM [COM ]", 1.50);
 						Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.5);
 						
+						auto node = find_node(receiver, "NPC Root [Root]");
+						if (node) {
+							SpawnParticle(receiver, 6.00, "GTS/Effects/TinyCalamity.nif", NiMatrix3(), position, scale * 5.0, 7, nullptr); 
+							SpawnParticle(receiver, 6.00, "GTS/Effects/TinyCalamity.nif", NiMatrix3(), position, scale * 4.0, 7, nullptr); 
+							SpawnParticle(receiver, 6.00, "GTS/Effects/TinyCalamity.nif", NiMatrix3(), position, scale * 3.0, 7, nullptr); 
+						}
+
 						StaggerActor(receiver, attacker, 1.0f);
 						StaggerActor(attacker, receiver, 1.0f);
 						// stagger each-other

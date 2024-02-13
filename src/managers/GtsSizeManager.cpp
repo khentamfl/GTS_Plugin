@@ -28,6 +28,7 @@ namespace {
 	const double DAMAGE_COOLDOWN = 2.0f;
 	const double HANDDAMAGE_COOLDOWN = 0.6f;
 	const double THIGHDAMAGE_COOLDOWN = 1.2f;
+	const double HEALTHGATE_COOLDOWN = 60.0f;
 	const double SCARE_COOLDOWN = 6.0f;
 	const float LAUNCH_DAMAGE_BASE = 1.0f;
 	const float LAUNCH_KNOCKBACK_BASE = 0.02f;
@@ -397,6 +398,10 @@ namespace Gts {
 
 	bool SizeManager::IsBeingScared(Actor* actor) {
 		return Time::WorldTimeElapsed() <= (SizeManager::GetSingleton().GetDamageData(actor).lastScareTime + SCARE_COOLDOWN);
+	}
+
+	bool SizeManager::IsHealthGateInCooldown(Actor* actor) {
+		return Time::WorldTimeElapsed() <= (SizeManager::GetSingleton().GetDamageData(actor).lastHealthGateTime + HEALTHGATE_COOLDOWN);
 	}
 
 	bool SizeManager::GetPreciseDamage() {
