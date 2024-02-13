@@ -14,12 +14,12 @@ namespace Gts {
 		auto controlMap = ControlMap::GetSingleton();
 		if (controlMap) { 
 			if (a_enable) {
-				//controlMap->enabledControls.set(a_flag);
+				controlMap->enabledControls.set(a_flag);
 				if (controlMap->unk11C != UEFlag::kInvalid) {
 					controlMap->unk11C.set(a_flag);
 				}
 			} else {
-				//controlMap->enabledControls.reset(a_flag);
+				controlMap->enabledControls.reset(a_flag);
 				if (controlMap->unk11C != UEFlag::kInvalid) {
 					controlMap->unk11C.reset(a_flag);
 				}
@@ -43,7 +43,7 @@ namespace Gts {
                     ToggleControls(UEFlag::kFighting, !GtsBusy);
                     ToggleControls(UEFlag::kActivate, !GtsBusy);
                     ToggleControls(UEFlag::kMovement, !GtsBusy);
-                    ToggleControls(UEFlag::kSneaking, !GtsBusy);
+                    //ToggleControls(UEFlag::kSneaking, !GtsBusy);
                     ToggleControls(UEFlag::kJumping, !GtsBusy);
                     log::info("Adjusting Controls");
                 }

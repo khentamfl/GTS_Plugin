@@ -237,7 +237,7 @@ namespace Hooks
 					auto objB = GetTESObjectREFR(a_collidableB);
 					if (objB) {
 						if (objA != objB) {
-							Throw_DamageCheck(objA, objB);
+							//Throw_DamageCheck(objA, objB);
 							if (IsCollisionDisabledBetween(objA, objB)) {
 								*a_result = false;
 							}
