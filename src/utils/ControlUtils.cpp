@@ -15,14 +15,14 @@ namespace Gts {
 		if (controlMap) { 
 			if (a_enable) {
 				controlMap->enabledControls.set(a_flag);
-				if (controlMap->unk11C != UEFlag::kInvalid) {
+				/*if (controlMap->unk11C != UEFlag::kInvalid) {
 					controlMap->unk11C.set(a_flag);
-				}
+				}*/
 			} else {
 				controlMap->enabledControls.reset(a_flag);
-				if (controlMap->unk11C != UEFlag::kInvalid) {
+				/*if (controlMap->unk11C != UEFlag::kInvalid) {
 					controlMap->unk11C.reset(a_flag);
-				}
+				}*/
 			}
 		}
 	}
@@ -30,7 +30,7 @@ namespace Gts {
 	void ManageControls() {
 		Actor* player = PlayerCharacter::GetSingleton();
 		if (player) {
-            bool GtsBusy = IsGtsBusy(player);
+            bool GtsBusy = IsGtsBusy(player) || IsTransitioning(player);
             bool AnimsInstalled = AnimationsInstalled(player);
             if (!AnimsInstalled) {
                 return;

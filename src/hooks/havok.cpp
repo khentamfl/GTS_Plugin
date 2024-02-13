@@ -83,13 +83,13 @@ namespace {
 			log::info("Inflicting throw damage for {}: {}", victim->GetDisplayFullName(), damage);
 
 			TaskManager::RunOnce(task, [=](auto& update){
-				if (!tinyHandle) {
-					return;
-				}
 				if (!giantHandle) {
 					return;
 				}
-
+				if (!tinyHandle) {
+					return;
+				}
+				
 				auto giant = giantHandle.get().get();
 				auto tiny = tinyHandle.get().get();
 				float health = GetAV(tiny, ActorValue::kHealth);
@@ -107,8 +107,6 @@ namespace {
 		if (!objB) {
 			return;
 		}
-
-		log::info("checking for Throw damage");
 
 		auto tranDataA = Transient::GetSingleton().GetData(objA);
 		if (tranDataA) {
