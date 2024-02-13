@@ -167,8 +167,10 @@ namespace Gts {
 				std::string name = std::format("JumpLandT_{}", actor->formID);
 
 				auto transient = Transient::GetSingleton().GetData(actor);
+				float fallmod = 1.0;
 				if (transient) {
-					damage *= transient->FallTimer;
+					fallmod = transient->FallTimer;
+					damage *= fallmod;
 					log::info("Fall mult :{}", transient->FallTimer);
 				}
 				
@@ -180,11 +182,11 @@ namespace Gts {
 					float timepassed = Time::WorldTimeElapsed() - Start;
 
 					if (timepassed >= 0.15) {
-						DoDamageEffect(giant, Damage_Jump_Default * damage, Radius_Jump_Default, 20, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
-						DoDamageEffect(giant, Damage_Jump_Default * damage, Radius_Jump_Default, 20, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
+						DoDamageEffect(giant, Damage_Jump_Default * damage, Radius_Jump_Default * fallmod, 20, 0.25, FootEvent::Left, 1.0, DamageSource::CrushedLeft);
+						DoDamageEffect(giant, Damage_Jump_Default * damage, Radius_Jump_Default * fallmod, 20, 0.25, FootEvent::Right, 1.0, DamageSource::CrushedRight);
 
-						DoLaunch(giant, 1.20 * perk, 1.75, FootEvent::Left);
-						DoLaunch(giant, 1.20 * perk, 1.75, FootEvent::Right);
+						DoLaunch(giant, 1.20 * perk * fallmod, 1.75 * fallmod, FootEvent::Left);
+						DoLaunch(giant, 1.20 * perk * fallmod, 1.75 * fallmod, FootEvent::Right);
 						return false;
 					}
 					return true;
