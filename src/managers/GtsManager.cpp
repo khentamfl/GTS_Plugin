@@ -60,7 +60,7 @@ namespace {
 						controlMap->ToggleControls(UEFlag::kFighting, !GtsBusy);
 						controlMap->ToggleControls(UEFlag::kActivate, !GtsBusy);
 						controlMap->ToggleControls(UEFlag::kMovement, !GtsBusy);
-						controlMap->ToggleControls(UEFlag::kSneaking, !GtsBusy);
+						//controlMap->ToggleControls(UEFlag::kSneaking, !GtsBusy);
 						controlMap->ToggleControls(UEFlag::kJumping, !GtsBusy);
 						log::info("Adjusting Controls");
 					}
