@@ -20,7 +20,7 @@ using namespace SKSE;
 
 namespace {
 
-	float GetSettingValue(std::string_view setting) {
+	float GetSettingValue(const char* setting) {
 		float modifier = 1.0;
 		auto GameSetting = GameSettingCollection::GetSingleton();
 		if (GameSetting) {
@@ -31,35 +31,35 @@ namespace {
 	}
 
 	float GetDifficultyMultiplier(Actor* attacker, Actor* receiver) {
-		std::int32_t DIFFICULTY = 0;
+		std::int32_t CurrentDifficulty = 0;
 		if (attacker && (attacker->IsPlayerRef() || IsTeammate(attacker))) {
-			switch (static_cast<DIFFICULTY>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty)) {
-			case DIFFICULTY::kNovice:
+			switch (static_cast<CurrentDifficulty>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty)) {
+			case 0:
 				return GetSettingValue("fDiffMultHPByPCVE");
-			case DIFFICULTY::kApprentice:
+			case 1:
 				return GetSettingValue("fDiffMultHPByPCE");
-			case DIFFICULTY::kAdept:
+			case 2:
 				return GetSettingValue("fDiffMultHPByPCN");
-			case DIFFICULTY::kExpert:
+			case 3:
 				return GetSettingValue("fDiffMultHPByPCH");
-			case DIFFICULTY::kMaster:
+			case 4:
 				return GetSettingValue("fDiffMultHPByPCVH");
-			case DIFFICULTY::kLegendary:
+			case 5:
 				return GetSettingValue("fDiffMultHPByPCL");
 			}
 		} else if (receiver && (receiver->IsPlayerRef() || IsTeammate(attacker))) {
-			switch (static_cast<DIFFICULTY>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty)) {
-			case DIFFICULTY::kNovice:
+			switch (static_cast<CurrentDifficulty>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty)) {
+			case 0:
 				return GetSettingValue("fDiffMultHPToPCVE");
-			case DIFFICULTY::kApprentice:
+			case 1:
 				return GetSettingValue("fDiffMultHPToPCE");
-			case DIFFICULTY::kAdept:
+			case 2:
 				return GetSettingValue("fDiffMultHPToPCN");
-			case DIFFICULTY::kExpert:
+			case 3:
 				return GetSettingValue("fDiffMultHPToPCH");
-			case DIFFICULTY::kMaster:
+			case 4:
 				return GetSettingValue("fDiffMultHPToPCVH");
-			case DIFFICULTY::kLegendary:
+			case 5:
 				return GetSettingValue("fDiffMultHPToPCL");
 			}
 		}
