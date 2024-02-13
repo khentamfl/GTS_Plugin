@@ -184,7 +184,7 @@ namespace {
 	float HealthGate(Actor* receiver, Actor* attacker, float a_damage) {
 		float protection = 1.0;
 		if (receiver->formID == 0x14) {
-			log::info("Damage {}, Damage * Difficulty: {}", a_damage, a_damage * GetDifficultyMultiplier());
+			log::info("Damage {}, Damage * Difficulty: {}", a_damage, a_damage * GetDifficultyMultiplier(attacker, receiver));
 		}
 		if (receiver->formID == 0x14 && a_damage > GetAV(receiver, ActorValue::kHealth)) {
 			if (Runtime::HasPerk(receiver, "HealthGate")) {
