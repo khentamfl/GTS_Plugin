@@ -41,6 +41,23 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
+	void ToggleControls(UEFlag a_flag, bool a_enable) {
+		auto controlMap = ControlMap::GetSingleton();
+		if (controlMap) { 
+			if (a_enable) {
+				controlMap->enabledControls.set(a_flag);
+				if (controlMap->unk11C != UEFlag::kInvalid) {
+					controlMap->unk11C.set(a_flag);
+				}
+			} else {
+				controlMap->enabledControls.reset(a_flag);
+				if (controlMap->unk11C != UEFlag::kInvalid) {
+					controlMap->unk11C.reset(a_flag);
+				}
+			}
+		}
+	}
+
 	void ManageControls() {
 		using UEFlag = UserEvents::USER_EVENT_FLAG;
 		Actor* player = PlayerCharacter::GetSingleton();
@@ -57,11 +74,11 @@ namespace {
 					bool NeedsChange = transient->DisableControls;
 					if (NeedsChange != GtsBusy) {
 						transient->DisableControls = GtsBusy; // switch it
-						controlMap->ToggleControls(UEFlag::kFighting, !GtsBusy);
-						controlMap->ToggleControls(UEFlag::kActivate, !GtsBusy);
-						//controlMap->ToggleControls(UEFlag::kMovement, !GtsBusy);
-						//controlMap->ToggleControls(UEFlag::kSneaking, !GtsBusy);
-						controlMap->ToggleControls(UEFlag::kJumping, !GtsBusy);
+						ToggleControls(UEFlag::kFighting, !GtsBusy);
+						ToggleControls(UEFlag::kActivate, !GtsBusy);
+						ToggleControls(UEFlag::kMovement, !GtsBusy);
+						ToggleControls(UEFlag::kSneaking, !GtsBusy);
+						ToggleControls(UEFlag::kJumping, !GtsBusy);
 						log::info("Adjusting Controls");
 					}
 				}
