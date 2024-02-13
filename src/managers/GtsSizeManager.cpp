@@ -368,7 +368,7 @@ namespace Gts {
 		
 		TaskManager::CancelAllTasks(); // just in case, to avoid CTD
 		this->DamageData.clear();
-		this->LaunchData.clear();
+		this->launchData.clear();
 	}
 
 	LaunchData& SizeManager::GetLaunchData(Actor* actor) {
