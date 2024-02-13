@@ -41,6 +41,8 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
+	using UEFlag = UserEvents::USER_EVENT_FLAG;
+	
 	void ToggleControls(UEFlag a_flag, bool a_enable) {
 		auto controlMap = ControlMap::GetSingleton();
 		if (controlMap) { 
@@ -59,7 +61,6 @@ namespace {
 	}
 
 	void ManageControls() {
-		using UEFlag = UserEvents::USER_EVENT_FLAG;
 		Actor* player = PlayerCharacter::GetSingleton();
 		if (player) {
 			auto controlMap = ControlMap::GetSingleton();
