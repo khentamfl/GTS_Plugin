@@ -41,9 +41,8 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	std::vector<>
-
 	void ManageControls() {
+		using UEFlag = UserEvents::USER_EVENT_FLAG;
 		Actor* player = PlayerCharacter::GetSingleton();
 		if (player) {
 			auto controlMap = ControlMap::GetSingleton();
