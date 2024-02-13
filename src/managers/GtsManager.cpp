@@ -41,6 +41,24 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
+	std::vector<>
+
+	void ManageControls() {
+		Actor* player = PlayerCharacter::GetSingleton();
+		if (player) {
+			auto controlMap = ControlMap::GetSingleton();
+			if (controlMap) {
+				bool GtsBusy = !IsGtsBusy(player);
+
+				controlMap->ToggleControls(UEFlag::kFighting, GtsBusy);
+				controlMap->ToggleControls(UEFlag::kActivate, GtsBusy);
+				controlMap->ToggleControls(UEFlag::kMovement, GtsBusy);
+				controlMap->ToggleControls(UEFlag::kSneaking, GtsBusy);
+				controlMap->ToggleControls(UEFlag::kJumping, GtsBusy);
+			}
+		}
+	}	
+
 	void FixActorFade(Actor* actor) {
 		auto profiler = Profilers::Profile("Manager: Fade Fix");
 		if (get_visual_scale(actor) < 1.5) {
@@ -265,6 +283,8 @@ void GtsManager::Update() {
 		}
 
 		FixActorFade(actor);
+
+		ManageControls();
 
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
