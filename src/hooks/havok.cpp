@@ -237,7 +237,7 @@ namespace Hooks
 					auto objB = GetTESObjectREFR(a_collidableB);
 					if (objB) {
 						if (objA != objB) {
-							if (colLayerA == COL_LAYER::kStatic || colLayerB == COL_LAYER::kStatic) {
+							if ((!Check_A && colLayerA == COL_LAYER::kStatic) || (!Check_B && colLayerB == COL_LAYER::kStatic)) {
 								Throw_DamageCheck(objA, objB);
 							}
 							if (IsCollisionDisabledBetween(objA, objB)) {
