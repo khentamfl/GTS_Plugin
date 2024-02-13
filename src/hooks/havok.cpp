@@ -67,31 +67,37 @@ namespace {
 		return GetTESObjectREFR(&collidable);
 	}
 
-	void Throw_DoDamage(Actor* victim, Actor* aggressor, float speed) {
+	void Throw_DoDamage(TESObjectREFR* victim_ref, TESObjectREFR* aggressor_ref, float speed) {
 		float damage = speed * Damage_Throw_Collision;
-		InflictSizeDamage(aggressor, victim, damage);
 
-		std::string task = std::format("ThrowTiny {}", victim->formID);
-		ActorHandle giantHandle = aggressor->CreateRefHandle();
-		ActorHandle tinyHandle = victim->CreateRefHandle();
+		Actor* victim = skyrim_cast<Actor*>(victim_ref);
+		Actor* aggressor = skyrim_cast<Actor*>(aggressor_ref);
 
-		log::info("Inflicting throw damage for {}: {}", victim->GetDisplayFullName(), damage);
+		if (victim && aggressor) {
+			InflictSizeDamage(aggressor, victim, damage);
 
-		TaskManager::RunOnce(task, [=](auto& update){
-			if (!tinyHandle) {
-				return;
-			}
-			if (!giantHandle) {
-				return;
-			}
+			std::string task = std::format("ThrowTiny {}", victim->formID);
+			ActorHandle giantHandle = aggressor->CreateRefHandle();
+			ActorHandle tinyHandle = victim->CreateRefHandle();
 
-			auto giant = giantHandle.get().get();
-			auto tiny = tinyHandle.get().get();
-			float health = GetAV(tiny, ActorValue::kHealth);
-			if (health <= 1.0 || tiny->IsDead()) {
-				OverkillManager::GetSingleton().Overkill(giant, tiny);
-			}
-		});
+			log::info("Inflicting throw damage for {}: {}", victim->GetDisplayFullName(), damage);
+
+			TaskManager::RunOnce(task, [=](auto& update){
+				if (!tinyHandle) {
+					return;
+				}
+				if (!giantHandle) {
+					return;
+				}
+
+				auto giant = giantHandle.get().get();
+				auto tiny = tinyHandle.get().get();
+				float health = GetAV(tiny, ActorValue::kHealth);
+				if (health <= 1.0 || tiny->IsDead()) {
+					OverkillManager::GetSingleton().Overkill(giant, tiny);
+				}
+			});
+		}
 	}
 
 	void Throw_DamageCheck(TESObjectREFR* objA, TESObjectREFR* objB) {
@@ -107,8 +113,7 @@ namespace {
 		auto tranDataA = Transient::GetSingleton().GetData(objA);
 		if (tranDataA) {
 			if (tranDataA->Throw_Offender) {
-				Actor* victim = skyrim_cast<Actor*>(objA);
-				Throw_DoDamage(victim, tranDataA->Throw_Offender, tranDataA->Throw_Speed);
+				Throw_DoDamage(objA, tranDataA->Throw_Offender, tranDataA->Throw_Speed);
 				tranDataA->Throw_WasThrown = false;
 				tranDataA->Throw_Offender = nullptr;
 				tranDataA->Throw_Speed = 0.0;
@@ -119,8 +124,7 @@ namespace {
 		auto tranDataB = Transient::GetSingleton().GetData(objB);
 		if (tranDataB) {
 			if (tranDataB->Throw_Offender) {
-				Actor* victim = skyrim_cast<Actor*>(objB);
-				Throw_DoDamage(victim, tranDataB->Throw_Offender, tranDataB->Throw_Speed);
+				Throw_DoDamage(objB, tranDataB->Throw_Offender, tranDataB->Throw_Speed);
 				tranDataB->Throw_WasThrown = false;
 				tranDataB->Throw_Offender = nullptr;
 				tranDataB->Throw_Speed = 0.0;
