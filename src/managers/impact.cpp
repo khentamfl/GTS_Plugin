@@ -166,6 +166,11 @@ namespace Gts {
 				ActorHandle gianthandle = actor->CreateRefHandle();
 				std::string name = std::format("JumpLandT_{}", actor->formID);
 
+				auto transient = Transient::GetSingleton().GetData(actor);
+				if (transient) {
+					damage *= transient->FallTimer;
+					log::info("Fall mult :{}", transient->FallTimer);
+				}
 				
 				TaskManager::Run(name, [=](auto& progressData) { // Delay it a bit since it often happens in the air
 					if (!gianthandle) {

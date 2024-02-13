@@ -68,7 +68,13 @@ namespace {
 		if (player && player->IsInMidair()) {
 			auto charCont = player->GetCharController();
 			if (charCont && Runtime::HasPerkTeam(player, "MightyLegs")) {
-				//extradamage = std::clamp(1.0f + charCont->fallTime, 1.0f, 3.0f);
+				auto transient = Transient::GetSingleton().GetData(player);
+				if (transient) {
+					float scale = get_visual_scale(player);
+					float FallTime = std::clamp(1.0f + (charCont->fallTime * (1.0 / scale)) - 1.0f, 1.0f, 3.0f);
+					transient->FallTimer = FallTime;
+				}
+				
 				log::info("{} has been falling for {}", player->GetDisplayFullName(), charCont->fallTime);
 			}
 		}
