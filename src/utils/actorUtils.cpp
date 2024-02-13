@@ -830,7 +830,7 @@ namespace Gts {
 	}
 
 	float GetFallModifier(Actor* giant) {
-		auto transient = Transient::GetSingleton().GetData(actor);
+		auto transient = Transient::GetSingleton().GetData(giant);
 		float fallmod = 1.0;
 		if (transient) {
 			fallmod = transient->FallTimer;
