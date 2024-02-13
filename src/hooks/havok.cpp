@@ -28,6 +28,23 @@ namespace {
 		return GetCollisionLayer(&collidable);
 	}
 
+	bool HasCollidedWithStatic(const hkpCollidable* collidable) {
+		if (collidable) {
+			std::uint32_t filter = bhkCollisionFilter::GetSingleton()->GetNewSystemGroup() << 16 | stl::to_underlying(COL_LAYER::kLOS);
+			auto layer = collidable->broadPhaseHandle.collisionFilterInfo & 0x7F;
+			auto collision_layer = static_cast<COL_LAYER>(layer);
+
+			bool col_filter = (collision_layer == filter);
+			log::info("Col_Filter: {}", col_filter);
+			if (col_filter && collision_layer != COL_LAYER::kCharController && collision_layer != COL_LAYER::kWeapon) {
+				log::info("Collided: TRUE");
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+
 	std::uint32_t GetCollisionSystem(const std::uint32_t& collisionFilterInfo) {
 		return collisionFilterInfo >> 16;
 	}
@@ -100,7 +117,7 @@ namespace {
 		}
 	}
 
-	void Throw_DamageCheck(TESObjectREFR* objA, TESObjectREFR* objB) {
+	void Throw_DamageCheck(TESObjectREFR* objA, TESObjectREFR* objB, const hkpCollidable* a_collidableA, const hkpCollidable* a_collidableB) {
 		if (!objA) {
 			return;
 		}
@@ -110,7 +127,7 @@ namespace {
 
 		auto tranDataA = Transient::GetSingleton().GetData(objA);
 		if (tranDataA) {
-			if (tranDataA->Throw_Offender) {
+			if (tranDataA->Throw_Offender && HasCollidedWithStatic(a_collidableA)) {
 				Throw_DoDamage(objA, tranDataA->Throw_Offender, tranDataA->Throw_Speed);
 				tranDataA->Throw_WasThrown = false;
 				tranDataA->Throw_Offender = nullptr;
@@ -121,7 +138,7 @@ namespace {
 
 		auto tranDataB = Transient::GetSingleton().GetData(objB);
 		if (tranDataB) {
-			if (tranDataB->Throw_Offender) {
+			if (tranDataB->Throw_Offender && HasCollidedWithStatic(a_collidableB)) {
 				Throw_DoDamage(objB, tranDataB->Throw_Offender, tranDataB->Throw_Speed);
 				tranDataB->Throw_WasThrown = false;
 				tranDataB->Throw_Offender = nullptr;
@@ -237,7 +254,7 @@ namespace Hooks
 					auto objB = GetTESObjectREFR(a_collidableB);
 					if (objB) {
 						if (objA != objB) {
-							//Throw_DamageCheck(objA, objB);
+							Throw_DamageCheck(objA, objB, a_collidableA, a_collidableA);
 							if (IsCollisionDisabledBetween(objA, objB)) {
 								*a_result = false;
 							}
