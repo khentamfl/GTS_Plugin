@@ -9,7 +9,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-    const std::vector<std::string_view> Difficulty_ByPC{
+    const std::vector<const char*> Difficulty_ByPC{
         "fDiffMultHPByPCVE",
         "fDiffMultHPByPCE",
         "fDiffMultHPByPCN",
@@ -18,7 +18,7 @@ namespace {
         "fDiffMultHPByPCL"
     };
 
-    const std::vector<std::string_view> Difficulty_ToPC{
+    const std::vector<const char*> Difficulty_ToPC{
         "fDiffMultHPToPCVE",
         "fDiffMultHPToPCE",
         "fDiffMultHPToPCN",
