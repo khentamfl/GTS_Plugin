@@ -21,6 +21,7 @@ namespace Gts {
 		float carryweight_boost;
 		float FallTimer;
 		float Hug_AnimSpeed;
+		float Throw_Speed;
 		float otherScales;
 		float WorldFov_Default;
 		float FpFov_Default;
@@ -28,6 +29,7 @@ namespace Gts {
 		float ShrinkWeakness;
 		float Rotation_X;
 
+		bool Throw_WasThrown;
 		bool is_teammate;
 		bool can_do_vore;
 		bool can_be_crushed;
@@ -51,6 +53,7 @@ namespace Gts {
 		float IsNotImmune;
 
 		TESObjectREFR* disable_collision_with;
+		TESObjectREFR* Throw_Offender;
 	};
 
 	class Transient : public EventListener {

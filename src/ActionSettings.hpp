@@ -107,6 +107,10 @@ namespace Gts {
     const float Damage_Sneak_FingerGrind_Impact = 3.0f;
     const float Damage_Sneak_FingerGrind_Finisher = 6.0f;
 
+    ////////////////Throw
+
+    const float Damage_Throw_Collision = 10.0f;
+
     
 
 //-----------------------------------------Default effect radius variables

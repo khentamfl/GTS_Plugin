@@ -37,14 +37,14 @@ namespace {
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
     void TrackKnee(Actor* giant, bool enable) {
-		if (AllowFeetTracking()) {
+		if (AllowCameraTracking()) {
 			auto& sizemanager = SizeManager::GetSingleton();
 			sizemanager.SetTrackedBone(giant, enable, CameraTracking::Knees);
 		}
 	}
 
     void TrackBooty(Actor* giant, bool enable) {
-		if (AllowFeetTracking()) {
+		if (AllowCameraTracking()) {
 			auto& sizemanager = SizeManager::GetSingleton();
 			sizemanager.SetTrackedBone(giant, enable, CameraTracking::Mid_Butt_Legs);
 		}

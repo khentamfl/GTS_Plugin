@@ -62,6 +62,9 @@ namespace Gts {
 			float SMT_Penalty_Duration = 0.0;
 			float FallTimer = 1.0;
 			float Hug_AnimSpeed = 1.0;
+			float Throw_Speed = 0.0;
+			
+			bool Throw_WasThrown = false;
 
 			bool can_do_vore = true;
 			bool can_be_crushed = true;
@@ -85,6 +88,7 @@ namespace Gts {
 			float IsNotImmune = 1.0;
 
 			TESObjectREFR* disable_collision_with = nullptr;
+			TESObjectREFR* Throw_Offender = nullptr;
 			float otherScales = 1.0;
 			float WorldFov_Default = 0;
 			float FpFov_Default = 0;
@@ -114,7 +118,9 @@ namespace Gts {
 			result.SMT_Penalty_Duration = SMT_Penalty_Duration;
 			result.FallTimer = FallTimer;
 			result.Hug_AnimSpeed = Hug_AnimSpeed;
+			result.Throw_Speed = Throw_Speed;
 			result.can_do_vore = can_do_vore;
+			result.Throw_WasThrown = Throw_WasThrown;
 			result.can_be_crushed = can_be_crushed;
 			result.being_held = being_held;
 			result.between_breasts = between_breasts;
@@ -124,6 +130,7 @@ namespace Gts {
 			result.dragon_was_eaten = dragon_was_eaten;
 			result.can_be_vored = can_be_vored;
 			result.disable_collision_with = disable_collision_with;
+			result.Throw_Offender = Throw_Offender;
 			result.otherScales = otherScales;
 			result.WorldFov_Default = WorldFov_Default;
 			result.FpFov_Default = FpFov_Default;

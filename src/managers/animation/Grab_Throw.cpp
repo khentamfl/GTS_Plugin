@@ -38,6 +38,15 @@ namespace {
     const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
+	void Throw_RegisterForThrowDamage(Actor* giant, Actor* tiny, float speed) {
+		auto transient = Transient::GetSingleton().GetData(tiny);
+		if (transient) {
+			transient->Throw_WasThrown = true;
+			transient->Throw_Offender = giant;
+			transient->Throw_Speed = speed;
+		}
+	}
+
     void GTSGrab_Throw_MoveStart(AnimationEventData& data) {
 		auto giant = &data.giant;
 		DrainStamina(giant, "GrabThrow", "DestructionBasics", true, 1.25);
@@ -107,14 +116,15 @@ namespace {
 
 		// Do this next frame (or rather until some world time has elapsed)
 		TaskManager::Run([=](auto& update){
+			if (!gianthandle) {
+				return false;
+			}
+			if (!tinyHandle) {
+				return false;
+			}
 			Actor* giant = gianthandle.get().get();
 			Actor* tiny = tinyHandle.get().get();
-			if (!giant) {
-				return false;
-			}
-			if (!tiny) {
-				return false;
-			}
+			
 			// Wait for 3D to be ready
 			if (!giant->Is3DLoaded()) {
 				return true;
@@ -142,6 +152,8 @@ namespace {
 				float timeTaken = endTime - startTime;
 				float speed = distanceTravelled / timeTaken;
 				// NiPoint3 direction = vector / vector.Length();
+
+				Throw_RegisterForThrowDamage(giant, tiny, speed);
 
 				// Angles in degrees
 				// Sermit: Please just adjust these

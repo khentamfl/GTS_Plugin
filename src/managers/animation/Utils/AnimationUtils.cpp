@@ -304,7 +304,7 @@ namespace Gts {
 
 	void ManageCamera(Actor* giant, bool enable, CameraTracking type) {
 		if (giant->formID == 0x14) {
-			if (AllowFeetTracking()) {
+			if (AllowCameraTracking()) {
 				auto& sizemanager = SizeManager::GetSingleton();
 				sizemanager.SetTrackedBone(giant, enable, type);
 			}

@@ -1497,7 +1497,7 @@ namespace Gts {
 		return Persistent::GetSingleton().devourment_compatibility;
 	}
 
-	bool AllowFeetTracking() {
+	bool AllowCameraTracking() {
 		return Persistent::GetSingleton().allow_feetracking;
 	}
 	bool LessGore() {

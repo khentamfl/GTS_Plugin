@@ -23,7 +23,7 @@ using namespace Gts;
 namespace {
 
 	void EnableHandTracking(Actor* giant, CrawlEvent kind, bool enable) {
-		if (AllowFeetTracking() && giant->formID == 0x14) {
+		if (AllowCameraTracking() && giant->formID == 0x14) {
 			auto& sizemanager = SizeManager::GetSingleton();
 			if (kind == CrawlEvent::RightHand) {
 				sizemanager.SetTrackedBone(giant, enable, CameraTracking::Hand_Right);

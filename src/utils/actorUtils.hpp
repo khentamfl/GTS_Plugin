@@ -165,7 +165,7 @@ namespace Gts {
 
 	bool DisallowSizeDamage(Actor* giant, Actor* tiny);
 	bool AllowDevourment();
-	bool AllowFeetTracking();
+	bool AllowCameraTracking();
 	bool LessGore();
 
 	bool IsTeammate(Actor* actor);

@@ -126,6 +126,9 @@ namespace Gts {
 		if (!target) {
 			return;
 		}
+		if (caster == target) {
+			return;
+		}
 		auto& Persist = Persistent::GetSingleton();
 		float SizeDifference = 1.0;
 		float bonus = 1.0;
