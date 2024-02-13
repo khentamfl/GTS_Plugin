@@ -25,7 +25,7 @@ namespace Gts {
 			return GetSettingValue(Difficulty_ByPC[currentdiff]);
 		} else if (receiver && (receiver->IsPlayerRef() || IsTeammate(attacker))) {
 			auto currentdiff = static_cast<Difficulty>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty);
-			return GetSettingValue(Difficulty_ByNPC[currentdiff]);
+			return GetSettingValue(Difficulty_ToPC[currentdiff]);
 		}
 		return 1.0;
 	}
