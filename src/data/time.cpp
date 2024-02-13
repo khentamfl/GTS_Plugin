@@ -26,9 +26,9 @@ namespace Gts {
 	}
 
 	void Time::MultiplyGameTime(float modifier) {
-		using func_t = decltype(SetGameTimeModifier);
-		REL::Relocation<func_t> func{ RELOCATION_ID(66989, 68246) };
 		g_SGTM *= modifier;
+		using func_t = decltype(MultiplyGameTime);
+		REL::Relocation<func_t> func{ RELOCATION_ID(66989, 68246) };
 		return;
 	}
 
