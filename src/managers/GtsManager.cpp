@@ -47,18 +47,24 @@ namespace {
 		if (player) {
 			auto controlMap = ControlMap::GetSingleton();
 			if (controlMap) {
-				bool GtsBusy = !IsGtsBusy(player);
+				bool GtsBusy = IsGtsBusy(player);
 				bool AnimsInstalled = AnimationsInstalled(player);
-
 				if (!AnimsInstalled) {
 					return;
 				}
-
-				//controlMap->ToggleControls(UEFlag::kFighting, GtsBusy);
-				//controlMap->ToggleControls(UEFlag::kActivate, GtsBusy);
-				controlMap->ToggleControls(UEFlag::kMovement, GtsBusy);
-				controlMap->ToggleControls(UEFlag::kSneaking, GtsBusy);
-				controlMap->ToggleControls(UEFlag::kJumping, GtsBusy);
+				auto transient = Transient::GetSingleton().GetData(player);
+				if (transient) {
+					bool NeedsChange = transient->DisableControls;
+					if (NeedsChange != GtsBusy) {
+						transient->DisableControls = GtsBusy; // switch it
+						controlMap->ToggleControls(UEFlag::kFighting, !GtsBusy);
+						controlMap->ToggleControls(UEFlag::kActivate, !GtsBusy);
+						controlMap->ToggleControls(UEFlag::kMovement, !GtsBusy);
+						controlMap->ToggleControls(UEFlag::kSneaking, !GtsBusy);
+						controlMap->ToggleControls(UEFlag::kJumping, !GtsBusy);
+						log::info("Adjusting Controls");
+					}
+				}
 			}
 		}
 	}	

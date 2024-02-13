@@ -46,6 +46,8 @@ namespace Gts {
 		bool Protection;
 		bool was_sneaking;
 
+		bool DisableControls;
+
 		float IsNotImmune;
 
 		TESObjectREFR* disable_collision_with;

@@ -80,6 +80,8 @@ namespace Gts {
 			bool Protection = false;
 			bool was_sneaking = false;
 
+			bool DisableControls = false;
+
 			float IsNotImmune = 1.0;
 
 			TESObjectREFR* disable_collision_with = nullptr;
@@ -135,6 +137,8 @@ namespace Gts {
 			result.Overkilled = Overkilled;
 			result.Protection = Protection;
 			result.was_sneaking = was_sneaking;
+
+			result.DisableControls = DisableControls;
 
 			result.IsNotImmune = IsNotImmune;
 			
