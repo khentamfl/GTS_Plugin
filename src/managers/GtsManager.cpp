@@ -278,16 +278,17 @@ void GtsManager::Start() {
 // Poll for updates
 void GtsManager::Update() {
 	auto profiler = Profilers::Profile("Manager: Update()");
+
+	UpdateFalling();
+	ManageControls();
+
 	for (auto actor: find_actors()) {
 		if (!actor) {
 			return;
 		}
 
 		FixActorFade(actor);
-		UpdateFalling();
-
-		ManageControls();
-
+	
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
 
