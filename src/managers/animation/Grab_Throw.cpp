@@ -38,14 +38,58 @@ namespace {
     const std::string_view RNode = "NPC R Foot [Rft ]";
 	const std::string_view LNode = "NPC L Foot [Lft ]";
 
+	void Throw_DoCollisionDamage(TESObjectREFR* victim_ref, TESObjectREFR* aggressor_ref, float speed) {
+		float damage = speed * Damage_Throw_Collision;
+
+		Actor* victim = skyrim_cast<Actor*>(victim_ref);
+		Actor* aggressor = skyrim_cast<Actor*>(aggressor_ref);
+
+		if (victim && aggressor) {
+			InflictSizeDamage(aggressor, victim, damage);
+
+			std::string task = std::format("ThrowTiny {}", victim->formID);
+			ActorHandle giantHandle = aggressor->CreateRefHandle();
+			ActorHandle tinyHandle = victim->CreateRefHandle();
+
+			log::info("Inflicting throw damage for {}: {}", victim->GetDisplayFullName(), damage);
+
+			TaskManager::RunOnce(task, [=](auto& update){
+				if (!giantHandle) {
+					return;
+				}
+				if (!tinyHandle) {
+					return;
+				}
+				
+				auto giant = giantHandle.get().get();
+				auto tiny = tinyHandle.get().get();
+				float health = GetAV(tiny, ActorValue::kHealth);
+				if (health <= 1.0 || tiny->IsDead()) {
+					OverkillManager::GetSingleton().Overkill(giant, tiny);
+				}
+			});
+		}
+	}
+
+	void Throw_RayCastTask(Actor* giant, Actor* tiny, float speed) {
+		// currently does nothing
+		// Throw_DoCollisionDamage(victim_ref, aggressor_ref, speed);
+		// Idea is to 
+	}
+
 	void Throw_RegisterForThrowDamage(Actor* giant, Actor* tiny, float speed) {
 		auto transient = Transient::GetSingleton().GetData(tiny);
 		if (transient) {
+			//Throw_RayCastTask(giant, tiny, speed);
 			transient->Throw_WasThrown = true;
 			transient->Throw_Offender = giant;
 			transient->Throw_Speed = speed;
 		}
 	}
+
+	//////////////////////////////////////////////////////////////////////////////////
+	// E V E N T S
+	/////////////////////////////////////////////////////////////////////////////////
 
     void GTSGrab_Throw_MoveStart(AnimationEventData& data) {
 		auto giant = &data.giant;
@@ -153,7 +197,7 @@ namespace {
 				float speed = distanceTravelled / timeTaken;
 				// NiPoint3 direction = vector / vector.Length();
 
-				Throw_RegisterForThrowDamage(giant, tiny, speed * 6);
+				Throw_RegisterForThrowDamage(giant, tiny, speed * 12);
 
 				// Angles in degrees
 				// Sermit: Please just adjust these

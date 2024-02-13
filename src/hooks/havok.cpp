@@ -28,28 +28,6 @@ namespace {
 		return GetCollisionLayer(&collidable);
 	}
 
-	bool HasCollidedWithStatic(const hkpCollidable* collidable) {
-		bool success = false;
-
-		if (collidable) {
-			std::uint32_t filter = bhkCollisionFilter::GetSingleton()->GetNewSystemGroup() << 16 | stl::to_underlying(COL_LAYER::kLOS);
-			auto layer = collidable->broadPhaseHandle.collisionFilterInfo & 0x7F;
-			auto collision_layer = static_cast<COL_LAYER>(layer);
-			log::info("Checking collisions");
-			log::info("--- Layer: {}", layer);
-			log::info("--- Filter: {}", filter);
-			log::info("--- Col_layer: {}", collision_layer);
-			if (layer == filter) {
-				log::info("Col_Filter True, layer:{}, filter: {}, layer name: {}", layer, filter, collision_layer);
-				if (collision_layer != COL_LAYER::kCharController && collision_layer != COL_LAYER::kWeapon) {
-					log::info("Collided: TRUE");
-					success = true;
-				}
-			}
-		}
-		return success;
-	}
-
 	std::uint32_t GetCollisionSystem(const std::uint32_t& collisionFilterInfo) {
 		return collisionFilterInfo >> 16;
 	}
@@ -122,7 +100,7 @@ namespace {
 		}
 	}
 
-	void Throw_DamageCheck(TESObjectREFR* objA, TESObjectREFR* objB, const hkpCollidable* a_collidableA, const hkpCollidable* a_collidableB) {
+	void Throw_DamageCheck(TESObjectREFR* objA, TESObjectREFR* objB) {
 		if (!objA) {
 			return;
 		}
@@ -132,7 +110,7 @@ namespace {
 
 		auto tranDataA = Transient::GetSingleton().GetData(objA);
 		if (tranDataA) {
-			if (tranDataA->Throw_Offender && HasCollidedWithStatic(a_collidableA)) {
+			if (tranDataA->Throw_Offender) {
 				Throw_DoDamage(objA, tranDataA->Throw_Offender, tranDataA->Throw_Speed);
 				tranDataA->Throw_WasThrown = false;
 				tranDataA->Throw_Offender = nullptr;
@@ -143,7 +121,7 @@ namespace {
 
 		auto tranDataB = Transient::GetSingleton().GetData(objB);
 		if (tranDataB) {
-			if (tranDataB->Throw_Offender && HasCollidedWithStatic(a_collidableB)) {
+			if (tranDataB->Throw_Offender) {
 				Throw_DoDamage(objB, tranDataB->Throw_Offender, tranDataB->Throw_Speed);
 				tranDataB->Throw_WasThrown = false;
 				tranDataB->Throw_Offender = nullptr;
@@ -259,7 +237,9 @@ namespace Hooks
 					auto objB = GetTESObjectREFR(a_collidableB);
 					if (objB) {
 						if (objA != objB) {
-							Throw_DamageCheck(objA, objB, a_collidableA, a_collidableA);
+							if (colLayerA == COL_LAYER::kStatic || colLayerB == COL_LAYER::kStatic) {
+								Throw_DamageCheck(objA, objB);
+							}
 							if (IsCollisionDisabledBetween(objA, objB)) {
 								*a_result = false;
 							}
