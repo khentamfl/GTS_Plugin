@@ -13,6 +13,7 @@
 #include "managers/GtsManager.hpp"
 #include "managers/Attributes.hpp"
 #include "managers/hitmanager.hpp"
+#include "utils/ControlUtils.hpp"
 #include "utils/DynamicScale.hpp"
 #include "managers/highheel.hpp"
 #include "utils/actorUtils.hpp"
@@ -41,52 +42,6 @@ using namespace SKSE;
 using namespace std;
 
 namespace {
-	using UEFlag = UserEvents::USER_EVENT_FLAG;
-	
-	void ToggleControls(UEFlag a_flag, bool a_enable) {
-		auto controlMap = ControlMap::GetSingleton();
-		if (controlMap) { 
-			if (a_enable) {
-				controlMap->enabledControls.set(a_flag);
-				if (controlMap->unk11C != UEFlag::kInvalid) {
-					controlMap->unk11C.set(a_flag);
-				}
-			} else {
-				controlMap->enabledControls.reset(a_flag);
-				if (controlMap->unk11C != UEFlag::kInvalid) {
-					controlMap->unk11C.reset(a_flag);
-				}
-			}
-		}
-	}
-
-	void ManageControls() {
-		Actor* player = PlayerCharacter::GetSingleton();
-		if (player) {
-			auto controlMap = ControlMap::GetSingleton();
-			if (controlMap) {
-				bool GtsBusy = IsGtsBusy(player);
-				bool AnimsInstalled = AnimationsInstalled(player);
-				if (!AnimsInstalled) {
-					return;
-				}
-				auto transient = Transient::GetSingleton().GetData(player);
-				if (transient) {
-					bool NeedsChange = transient->DisableControls;
-					if (NeedsChange != GtsBusy) {
-						transient->DisableControls = GtsBusy; // switch it
-						ToggleControls(UEFlag::kFighting, !GtsBusy);
-						ToggleControls(UEFlag::kActivate, !GtsBusy);
-						ToggleControls(UEFlag::kMovement, !GtsBusy);
-						ToggleControls(UEFlag::kSneaking, !GtsBusy);
-						ToggleControls(UEFlag::kJumping, !GtsBusy);
-						log::info("Adjusting Controls");
-					}
-				}
-			}
-		}
-	}	
-
 	void UpdateFalling() {
 		Actor* player = PlayerCharacter::GetSingleton();
 		if (player && player->IsInMidair()) {

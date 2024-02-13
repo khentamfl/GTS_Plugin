@@ -98,6 +98,7 @@ namespace Gts {
 
 	// GTS Actor Functions
 	float GetDamageSetting();
+	float GetFallModifier(Actor* giant);
 	float GetHPThreshold(Actor* actor);
 
 	float Ench_Aspect_GetPower(Actor* giant);

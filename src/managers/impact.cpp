@@ -22,7 +22,6 @@ using namespace RE;
 using namespace Gts;
 
 namespace {
-
 	FootEvent get_foot_kind(Actor* actor, std::string_view tag) {
 		auto profiler = Profilers::Profile("Impact: Get Foot Kind");
 		FootEvent foot_kind = FootEvent::Unknown;
@@ -159,20 +158,15 @@ namespace Gts {
 				return; // don't check further
 			} else if (kind == FootEvent::JumpLand) {
 				float perk = GetPerkBonus_Basics(actor);
+
+				float fallmod = GetFallModifier(actor);
 				auto& sizemanager = SizeManager::GetSingleton();
-				float damage = sizemanager.GetSizeAttribute(actor, 2); // get jump damage boost
+				
+				float damage = sizemanager.GetSizeAttribute(actor, 2) * fallmod; // get jump damage boost
 
 				float Start = Time::WorldTimeElapsed();
 				ActorHandle gianthandle = actor->CreateRefHandle();
 				std::string name = std::format("JumpLandT_{}", actor->formID);
-
-				auto transient = Transient::GetSingleton().GetData(actor);
-				float fallmod = 1.0;
-				if (transient) {
-					fallmod = transient->FallTimer;
-					damage *= fallmod;
-					log::info("Fall mult :{}", transient->FallTimer);
-				}
 				
 				TaskManager::Run(name, [=](auto& progressData) { // Delay it a bit since it often happens in the air
 					if (!gianthandle) {

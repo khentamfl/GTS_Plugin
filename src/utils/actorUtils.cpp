@@ -829,6 +829,15 @@ namespace Gts {
 		return Persistent::GetSingleton().size_related_damage_mult;
 	}
 
+	float GetFallModifier(Actor* giant) {
+		auto transient = Transient::GetSingleton().GetData(actor);
+		float fallmod = 1.0;
+		if (transient) {
+			fallmod = transient->FallTimer;
+			log::info("Fall mult :{}", transient->FallTimer);
+		}
+		return fallmod;
+	}
 	
 	float GetHPThreshold(Actor* actor) {
 		float hp = 0.20;
