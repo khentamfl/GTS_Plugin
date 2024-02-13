@@ -14,15 +14,15 @@ namespace Gts {
 		auto controlMap = ControlMap::GetSingleton();
 		if (controlMap) { 
 			if (a_enable) {
-				controlMap->enabledControls.set(a_flag);
-				/*if (controlMap->unk11C != UEFlag::kInvalid) {
+				//controlMap->enabledControls.set(a_flag);
+				if (controlMap->unk11C != UEFlag::kInvalid) {
 					controlMap->unk11C.set(a_flag);
-				}*/
+				}
 			} else {
-				controlMap->enabledControls.reset(a_flag);
-				/*if (controlMap->unk11C != UEFlag::kInvalid) {
+				//controlMap->enabledControls.reset(a_flag);
+				if (controlMap->unk11C != UEFlag::kInvalid) {
 					controlMap->unk11C.reset(a_flag);
-				}*/
+				}
 			}
 		}
 	}
