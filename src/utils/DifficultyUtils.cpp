@@ -8,6 +8,26 @@
 using namespace RE;
 using namespace Gts;
 
+namespace {
+    const std::vector<std::string_view> Difficulty_ByPC{
+        "fDiffMultHPByPCVE",
+        "fDiffMultHPByPCE",
+        "fDiffMultHPByPCN",
+        "fDiffMultHPByPCH",
+        "fDiffMultHPByPCVH",
+        "fDiffMultHPByPCL"
+    };
+
+    const std::vector<std::string_view> Difficulty_ToPC{
+        "fDiffMultHPToPCVE",
+        "fDiffMultHPToPCE",
+        "fDiffMultHPToPCN",
+        "fDiffMultHPToPCH",
+        "fDiffMultHPToPCVH",
+        "fDiffMultHPToPCL",
+    };
+}
+
 namespace Gts {
     float GetSettingValue(const char* setting) {
 		float modifier = 1.0;
@@ -22,10 +42,12 @@ namespace Gts {
 	float GetDifficultyMultiplier(Actor* attacker, Actor* receiver) { // Credits to Doodlum for this method
 		if (attacker && (attacker->IsPlayerRef() || IsTeammate(attacker))) {
 			auto currentdiff = static_cast<Difficulty>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty);
-			return GetSettingValue(Difficulty_ByPC[ToString(currentdiff)]);
+            log::info("Current By PC Difficulty: {}", Difficulty_ByPC[currentdiff]);
+			return GetSettingValue(Difficulty_ByPC[currentdiff]);
 		} else if (receiver && (receiver->IsPlayerRef() || IsTeammate(attacker))) {
 			auto currentdiff = static_cast<Difficulty>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty);
-			return GetSettingValue(Difficulty_ToPC[ToString(currentdiff)]);
+            log::info("Current To PC Difficulty: {}", Difficulty_ToPC[currentdiff]);
+			return GetSettingValue(Difficulty_ToPC[currentdiff]);
 		}
 		return 1.0;
 	}
