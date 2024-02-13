@@ -5,6 +5,7 @@ using namespace RE;
 
 namespace {
 	inline static float* g_delta_time = (float*)REL::RelocationID(523660, 410199).address();
+	inline static float* g_SGTM = (float*)RELOCATION_ID(511883, 388443).address();
 }
 
 namespace Gts {
@@ -22,6 +23,13 @@ namespace Gts {
 
 	std::uint64_t Time::FramesElapsed() {
 		return Time::GetSingleton().framesElapsed;
+	}
+
+	void Time::MultiplyGameTime(float modifier) {
+		using func_t = decltype(SetGameTimeModifier);
+		REL::Relocation<func_t> func{ RELOCATION_ID(66989, 68246) };
+		g_SGTM *= modifier;
+		return;
 	}
 
 	void Time::Update() {

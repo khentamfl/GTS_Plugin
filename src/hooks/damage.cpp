@@ -184,36 +184,38 @@ namespace {
 	float HealthGate(Actor* receiver, Actor* attacker, float a_damage) {
 		float protection = 1.0;
 		if (receiver->formID == 0x14) {
-			log::info("Damage {}, Damage * Difficulty: {}", a_damage, a_damage * GetDifficultyMultiplier(attacker, receiver));
-		}
-		if (receiver->formID == 0x14 && a_damage > GetAV(receiver, ActorValue::kHealth)) {
-			if (Runtime::HasPerk(receiver, "HealthGate")) {
-				static Timer protect = Timer(60.00);
-				if (protect.ShouldRunFrame()) {
-					float maxhp = GetMaxAV(receiver, ActorValue::kHealth);
-					float target = get_target_scale(receiver);
-					float natural = get_natural_scale(receiver);
 
-					float scale = get_visual_scale(receiver);
+			a_damage *= GetDifficultyMultiplier(attacker, receiver); // Take difficulty into account
 
-					update_target_scale(receiver, -0.35 * scale, SizeEffectType::kShrink);
-					if (target < natural) {
-						set_target_scale(receiver, natural); // to prevent becoming < natural scale
+			if (a_damage > GetAV(receiver, ActorValue::kHealth)) {
+				if (Runtime::HasPerk(receiver, "HealthGate")) {
+					static Timer protect = Timer(60.00);
+					if (protect.ShouldRunFrame()) {
+						float maxhp = GetMaxAV(receiver, ActorValue::kHealth);
+						float target = get_target_scale(receiver);
+						float natural = get_natural_scale(receiver);
+
+						float scale = get_visual_scale(receiver);
+
+						update_target_scale(receiver, -0.35 * scale, SizeEffectType::kShrink);
+						if (target < natural) {
+							set_target_scale(receiver, natural); // to prevent becoming < natural scale
+						}
+						GRumble::For("CheatDeath", receiver, 240.0, 0.10, "NPC COM [COM ]", 1.50);
+						Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.5);
+						
+						StaggerActor(receiver, attacker, 1.0f);
+						StaggerActor(attacker, receiver, 1.0f);
+						// stagger each-other
+
+						StartDamageIsNotImmune(receiver);
+
+						Cprint("Health Gate triggered, death avoided");
+						Cprint("Damage: {:.2f}, Lost Size: {:.2f}", a_damage, -0.35 * scale);
+						Notify("Health Gate triggered, death avoided");
+						Notify("Damage: {:.2f}, Lost Size: {:.2f}", a_damage, -0.35 * scale);
+						protection = 0.0;
 					}
-					GRumble::For("CheatDeath", receiver, 240.0, 0.10, "NPC COM [COM ]", 1.50);
-					Runtime::PlaySound("TriggerHG", receiver, 2.0, 0.5);
-					
-					StaggerActor(receiver, attacker, 1.0f);
-					StaggerActor(attacker, receiver, 1.0f);
-					// stagger each-other
-
-					StartDamageIsNotImmune(receiver);
-
-					Cprint("Health Gate triggered, death avoided");
-					Cprint("Damage: {:.2f}, Lost Size: {:.2f}", a_damage, -0.35 * scale);
-					Notify("Health Gate triggered, death avoided");
-					Notify("Damage: {:.2f}, Lost Size: {:.2f}", a_damage, -0.35 * scale);
-					protection = 0.0;
 				}
 			}
 		}
