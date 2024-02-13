@@ -1,4 +1,6 @@
 #include "utils/ControlUtils.hpp"
+#include "utils/actorUtils.hpp"
+#include "data/transient.hpp"
 
 using namespace Gts;
 using namespace RE;
@@ -6,8 +8,6 @@ using namespace SKSE;
 using namespace std;
 
 namespace Gts {
-    using UEFlag = UserEvents::USER_EVENT_FLAG;
-	
 	void ToggleControls(UEFlag a_flag, bool a_enable) {
         // Pretty much the same as CommonLib one, but without sending Events
         // Since they break sneaking for some reason, so we don't want to use them

@@ -8,6 +8,7 @@ using namespace RE;
 using namespace Gts;
 
 namespace Gts {
+    using UEFlag = UserEvents::USER_EVENT_FLAG;
     void ToggleControls(UEFlag a_flag, bool a_enable);
     void ManageControls();
 }
