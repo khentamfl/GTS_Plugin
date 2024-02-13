@@ -12,6 +12,7 @@
 #include "hooks/damage.hpp"
 #include "scale/scale.hpp"
 #include "data/time.hpp"
+#include "events.hpp"
 #include "timer.hpp"
 
 
@@ -30,35 +31,35 @@ namespace {
 		return modifier;
 	}
 
-	float GetDifficultyMultiplier(Actor* attacker, Actor* receiver) {
+	float GetDifficultyMultiplier(Actor* attacker, Actor* receiver) { // Credits to DoodleDum for this method
 		if (attacker && (attacker->IsPlayerRef() || IsTeammate(attacker))) {
-			switch (static_cast<RE::DIFFICULTY>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty)) {
-			case 0:
+			switch (static_cast<Difficulty>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty)) {
+			case Difficulty::Novice:
 				return GetSettingValue("fDiffMultHPByPCVE");
-			case 1:
+			case Difficulty::Apprentice:
 				return GetSettingValue("fDiffMultHPByPCE");
-			case 2:
+			case Difficulty::Adept:
 				return GetSettingValue("fDiffMultHPByPCN");
-			case 3:
+			case Difficulty::Expert:
 				return GetSettingValue("fDiffMultHPByPCH");
-			case 4:
+			case Difficulty::Master:
 				return GetSettingValue("fDiffMultHPByPCVH");
-			case 5:
+			case Difficulty::Legendary:
 				return GetSettingValue("fDiffMultHPByPCL");
 			}
 		} else if (receiver && (receiver->IsPlayerRef() || IsTeammate(attacker))) {
-			switch (static_cast<RE::DIFFICULTY>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty)) {
-			case 0:
+			switch (static_cast<Difficulty>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty)) {
+			case Difficulty::Novice:
 				return GetSettingValue("fDiffMultHPToPCVE");
-			case 1:
+			case Difficulty::Apprentice:
 				return GetSettingValue("fDiffMultHPToPCE");
-			case 2:
+			case Difficulty::Adept:
 				return GetSettingValue("fDiffMultHPToPCN");
-			case 3:
+			case Difficulty::Expert:
 				return GetSettingValue("fDiffMultHPToPCH");
-			case 4:
+			case Difficulty::Master:
 				return GetSettingValue("fDiffMultHPToPCVH");
-			case 5:
+			case Difficulty::Legendary:
 				return GetSettingValue("fDiffMultHPToPCL");
 			}
 		}
