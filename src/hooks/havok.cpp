@@ -35,7 +35,10 @@ namespace {
 			std::uint32_t filter = bhkCollisionFilter::GetSingleton()->GetNewSystemGroup() << 16 | stl::to_underlying(COL_LAYER::kLOS);
 			auto layer = collidable->broadPhaseHandle.collisionFilterInfo & 0x7F;
 			auto collision_layer = static_cast<COL_LAYER>(layer);
-			
+			log::info("Checking collisions");
+			log::info("--- Layer: {}", layer);
+			log::info("--- Filter: {}", filter);
+			log::info("--- Col_layer: {}", collision_layer);
 			if (layer == filter) {
 				log::info("Col_Filter True, layer:{}, filter: {}, layer name: {}", layer, filter, collision_layer);
 				if (collision_layer != COL_LAYER::kCharController && collision_layer != COL_LAYER::kWeapon) {
