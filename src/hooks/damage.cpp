@@ -145,8 +145,8 @@ namespace {
 
 			if (a_damage > GetAV(receiver, ActorValue::kHealth)) {
 				if (Runtime::HasPerk(receiver, "HealthGate")) {
-					if (!IsHealthGateInCooldown(receiver)) {
-						sizemanager.GetDamageData(receiver).lastHealthGateTime = Time::WorldTimeElapsed();
+					if (!SizeManager::GetSingleton().IsHealthGateInCooldown(receiver)) {
+						SizeManager::GetSingleton().GetDamageData(receiver).lastHealthGateTime = Time::WorldTimeElapsed();
 						float maxhp = GetMaxAV(receiver, ActorValue::kHealth);
 						float target = get_target_scale(receiver);
 						float natural = get_natural_scale(receiver);
@@ -162,6 +162,7 @@ namespace {
 						
 						auto node = find_node(receiver, "NPC Root [Root]");
 						if (node) {
+							NiPoint3 position = node->world.translate;
 							SpawnParticle(receiver, 6.00, "GTS/Effects/TinyCalamity.nif", NiMatrix3(), position, scale * 5.0, 7, nullptr); 
 							SpawnParticle(receiver, 6.00, "GTS/Effects/TinyCalamity.nif", NiMatrix3(), position, scale * 4.0, 7, nullptr); 
 							SpawnParticle(receiver, 6.00, "GTS/Effects/TinyCalamity.nif", NiMatrix3(), position, scale * 3.0, 7, nullptr); 
