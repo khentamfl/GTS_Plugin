@@ -17,4 +17,10 @@ namespace Hooks
 		auto result = _ProcessEvent(a_this, a_event, a_eventSource);
 		return result;
 	}
+
+	BSEventNotifyControl Hook_BGSImpactManager::ProcessCollisionEvent(BGSImpactManager* a_this, const BGSCollisionSoundEvent* a_event, BSTEventSource<BGSCollisionSoundEvent>* a_eventSource) {
+		Gts::ImpactManager::GetSingleton().HookCollisionEvent(a_this, a_event, a_eventSource);
+		auto result = _ProcessCollisionEvent(a_this, a_event, a_eventSource);
+		return result;
+	}
 }

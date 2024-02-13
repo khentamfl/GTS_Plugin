@@ -67,70 +67,6 @@ namespace {
 		return GetTESObjectREFR(&collidable);
 	}
 
-	void Throw_DoDamage(TESObjectREFR* victim_ref, TESObjectREFR* aggressor_ref, float speed) {
-		float damage = speed * Damage_Throw_Collision;
-
-		Actor* victim = skyrim_cast<Actor*>(victim_ref);
-		Actor* aggressor = skyrim_cast<Actor*>(aggressor_ref);
-
-		if (victim && aggressor) {
-			InflictSizeDamage(aggressor, victim, damage);
-
-			std::string task = std::format("ThrowTiny {}", victim->formID);
-			ActorHandle giantHandle = aggressor->CreateRefHandle();
-			ActorHandle tinyHandle = victim->CreateRefHandle();
-
-			log::info("Inflicting throw damage for {}: {}", victim->GetDisplayFullName(), damage);
-
-			TaskManager::RunOnce(task, [=](auto& update){
-				if (!giantHandle) {
-					return;
-				}
-				if (!tinyHandle) {
-					return;
-				}
-				
-				auto giant = giantHandle.get().get();
-				auto tiny = tinyHandle.get().get();
-				float health = GetAV(tiny, ActorValue::kHealth);
-				if (health <= 1.0 || tiny->IsDead()) {
-					OverkillManager::GetSingleton().Overkill(giant, tiny);
-				}
-			});
-		}
-	}
-
-	void Throw_DamageCheck(TESObjectREFR* objA, TESObjectREFR* objB) {
-		if (!objA) {
-			return;
-		}
-		if (!objB) {
-			return;
-		}
-
-		auto tranDataA = Transient::GetSingleton().GetData(objA);
-		if (tranDataA) {
-			if (tranDataA->Throw_Offender) {
-				Throw_DoDamage(objA, tranDataA->Throw_Offender, tranDataA->Throw_Speed);
-				tranDataA->Throw_WasThrown = false;
-				tranDataA->Throw_Offender = nullptr;
-				tranDataA->Throw_Speed = 0.0;
-				return;
-			}
-		}
-
-		auto tranDataB = Transient::GetSingleton().GetData(objB);
-		if (tranDataB) {
-			if (tranDataB->Throw_Offender) {
-				Throw_DoDamage(objB, tranDataB->Throw_Offender, tranDataB->Throw_Speed);
-				tranDataB->Throw_WasThrown = false;
-				tranDataB->Throw_Offender = nullptr;
-				tranDataB->Throw_Speed = 0.0;
-				return;
-			}
-		}
-	}
-
 	bool IsCollisionDisabledBetween(TESObjectREFR* actor, TESObjectREFR* otherActor) {
 		if (!actor) {
 			return false;
@@ -237,9 +173,6 @@ namespace Hooks
 					auto objB = GetTESObjectREFR(a_collidableB);
 					if (objB) {
 						if (objA != objB) {
-							if ((!Check_A && colLayerA == COL_LAYER::kStatic) || (!Check_B && colLayerB == COL_LAYER::kStatic)) {
-								Throw_DamageCheck(objA, objB);
-							}
 							if (IsCollisionDisabledBetween(objA, objB)) {
 								*a_result = false;
 							}
