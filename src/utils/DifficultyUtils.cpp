@@ -22,10 +22,10 @@ namespace Gts {
 	float GetDifficultyMultiplier(Actor* attacker, Actor* receiver) { // Credits to Doodlum for this method
 		if (attacker && (attacker->IsPlayerRef() || IsTeammate(attacker))) {
 			auto currentdiff = static_cast<Difficulty>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty);
-			return GetSettingValue(Difficulty_ByPC[currentdiff]);
+			return GetSettingValue(Difficulty_ByPC[ToString(currentdiff)]);
 		} else if (receiver && (receiver->IsPlayerRef() || IsTeammate(attacker))) {
 			auto currentdiff = static_cast<Difficulty>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty);
-			return GetSettingValue(Difficulty_ToPC[currentdiff]);
+			return GetSettingValue(Difficulty_ToPC[ToString(currentdiff)]);
 		}
 		return 1.0;
 	}

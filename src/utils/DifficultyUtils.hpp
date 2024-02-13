@@ -9,24 +9,24 @@ using namespace Gts;
 
 namespace Gts {
 
-    enum class Difficulty_ByPC : std::string_view
+    enum class Difficulty_ByPC
     {
-        "fDiffMultHPByPCVE" = 0,
-        "fDiffMultHPByPCE" =  1,
-        "fDiffMultHPByPCN" =  2,
-        "fDiffMultHPByPCH" =  3,
-        "fDiffMultHPByPCVH" = 4,
-        "fDiffMultHPByPCL" =  5,
+        fDiffMultHPByPCVE = 0,
+        fDiffMultHPByPCE =  1,
+        fDiffMultHPByPCN =  2,
+        fDiffMultHPByPCH =  3,
+        fDiffMultHPByPCVH = 4,
+        fDiffMultHPByPCL =  5
     };
 
-    enum class Difficulty_ToPC : std::string_view
+    enum class Difficulty_ToPC
     {
-        "fDiffMultHPToPCVE" = 0,
-        "fDiffMultHPToPCE" =  1,
-        "fDiffMultHPToPCN" =  2,
-        "fDiffMultHPToPCH" =  3,
-        "fDiffMultHPToPCVH" = 4,
-        "fDiffMultHPToPCL" =  5,
+        fDiffMultHPToPCVE = 0,
+        fDiffMultHPToPCE =  1,
+        fDiffMultHPToPCN =  2,
+        fDiffMultHPToPCH =  3,
+        fDiffMultHPToPCVH = 4,
+        fDiffMultHPToPCL =  5
     };
 
     enum class Difficulty : std::int32_t
