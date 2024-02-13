@@ -54,7 +54,7 @@ namespace {
 					return;
 				}
 
-				controlMap->ToggleControls(UEFlag::kFighting, GtsBusy);
+				//controlMap->ToggleControls(UEFlag::kFighting, GtsBusy);
 				//controlMap->ToggleControls(UEFlag::kActivate, GtsBusy);
 				controlMap->ToggleControls(UEFlag::kMovement, GtsBusy);
 				controlMap->ToggleControls(UEFlag::kSneaking, GtsBusy);
