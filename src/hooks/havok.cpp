@@ -72,10 +72,10 @@ namespace {
 		InflictSizeDamage(aggressor, victim, damage);
 
 		std::string task = std::format("ThrowTiny {}", victim->formID);
-		ActorHandle giantHandle = giant->CreateRefHandle();
-		ActorHandle tinyHandle = tiny->CreateRefHandle();
+		ActorHandle giantHandle = aggressor->CreateRefHandle();
+		ActorHandle tinyHandle = victim->CreateRefHandle();
 
-		log::info("Inflicting throw damage: {}", damage);
+		log::info("Inflicting throw damage for {}: {}", victim->GetDisplayFullName(), damage);
 
 		TaskManager::RunOnce(task, [=](auto& update){
 			if (!tinyHandle) {
@@ -107,7 +107,8 @@ namespace {
 		auto tranDataA = Transient::GetSingleton().GetData(objA);
 		if (tranDataA) {
 			if (tranDataA->Throw_Offender) {
-				Throw_DoDamage(objA, tranDataA->Throw_Offender, tranDataA->Throw_Speed);
+				Actor* victim = skyrim_cast<Actor*>(objA);
+				Throw_DoDamage(victim, tranDataA->Throw_Offender, tranDataA->Throw_Speed);
 				tranDataA->Throw_WasThrown = false;
 				tranDataA->Throw_Offender = nullptr;
 				tranDataA->Throw_Speed = 0.0;
@@ -118,7 +119,8 @@ namespace {
 		auto tranDataB = Transient::GetSingleton().GetData(objB);
 		if (tranDataB) {
 			if (tranDataB->Throw_Offender) {
-				Throw_DoDamage(objB, tranDataB->Throw_Offender, tranDataB->Throw_Speed);
+				Actor* victim = skyrim_cast<Actor*>(objB);
+				Throw_DoDamage(victim, tranDataB->Throw_Offender, tranDataB->Throw_Speed);
 				tranDataB->Throw_WasThrown = false;
 				tranDataB->Throw_Offender = nullptr;
 				tranDataB->Throw_Speed = 0.0;
