@@ -7,7 +7,19 @@ using namespace RE;
 using namespace SKSE;
 using namespace std;
 
+namespace {
+    bool IsGtsBusy_ForControls(Actor* actor) {
+		bool GTSBusy;
+		actor->GetGraphVariableBool("GTS_Busy", GTSBusy);
+        // Have to use this because Hand Swipes make original bool return false
+
+		return GTSBusy;
+	}
+}
+
 namespace Gts {
+
+
 	void ToggleControls(UEFlag a_flag, bool a_enable) {
         // Pretty much the same as CommonLib one, but without sending Events
         // Since they break sneaking for some reason, so we don't want to use them
@@ -30,7 +42,7 @@ namespace Gts {
 	void ManageControls() {
 		Actor* player = PlayerCharacter::GetSingleton();
 		if (player) {
-            bool GtsBusy = IsGtsBusy(player) || IsTransitioning(player);
+            bool GtsBusy = IsGtsBusy_ForControls(player) || IsTransitioning(player);
             bool AnimsInstalled = AnimationsInstalled(player);
             if (!AnimsInstalled) {
                 return;
