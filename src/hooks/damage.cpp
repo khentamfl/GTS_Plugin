@@ -31,9 +31,8 @@ namespace {
 	}
 
 	float GetDifficultyMultiplier(Actor* attacker, Actor* receiver) {
-		std::int32_t CurrentDifficulty = 0;
 		if (attacker && (attacker->IsPlayerRef() || IsTeammate(attacker))) {
-			switch (static_cast<CurrentDifficulty>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty)) {
+			switch (static_cast<RE::DIFFICULTY>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty)) {
 			case 0:
 				return GetSettingValue("fDiffMultHPByPCVE");
 			case 1:
@@ -48,7 +47,7 @@ namespace {
 				return GetSettingValue("fDiffMultHPByPCL");
 			}
 		} else if (receiver && (receiver->IsPlayerRef() || IsTeammate(attacker))) {
-			switch (static_cast<CurrentDifficulty>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty)) {
+			switch (static_cast<RE::DIFFICULTY>(PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty)) {
 			case 0:
 				return GetSettingValue("fDiffMultHPToPCVE");
 			case 1:
