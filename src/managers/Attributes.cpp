@@ -64,7 +64,7 @@ namespace {
 		}
 		///Fall Damage
 		if (Runtime::HasPerkTeam(actor, "MightyLegs")) {
-			ExpectedFallDamage += 0.5/BalancedMode;
+			ExpectedFallDamage += 0.3/BalancedMode;
 		}
 		///Buff by enchantment
 		ExpectedGlobalDamage *= gigantism;
