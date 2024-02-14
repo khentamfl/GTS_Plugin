@@ -122,18 +122,16 @@ namespace {
 		if (!Runtime::HasPerk(player, "ColossalGrowth")) {
 			return;
 		}
-		if (IsCrawling(player) || !player->IsSneaking()) {
-			AnimationManager::StartAnim("TriggerGrowth", player);
-		}
+		AnimationManager::StartAnim("TriggerGrowth", player);
+		
 	}
 	void RapidShrinkEvent(const InputEventData& data) {
 		auto player = PlayerCharacter::GetSingleton();
 		if (!Runtime::HasPerk(player, "ColossalGrowth")) {
 			return;
 		}
-		if (IsCrawling(player) || !player->IsSneaking()) {
-			AnimationManager::StartAnim("TriggerShrink", player);
-		}
+		AnimationManager::StartAnim("TriggerShrink", player);
+		
 	}
 
 	void SizeReserveEvent(const InputEventData& data) {

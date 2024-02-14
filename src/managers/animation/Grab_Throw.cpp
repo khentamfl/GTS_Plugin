@@ -198,7 +198,7 @@ namespace {
 				float speed = distanceTravelled / timeTaken;
 				// NiPoint3 direction = vector / vector.Length();
 
-				Throw_RegisterForThrowDamage(giant, tiny, speed * 12);
+				//Throw_RegisterForThrowDamage(giant, tiny, speed * 12);
 
 				// Angles in degrees
 				// Sermit: Please just adjust these
