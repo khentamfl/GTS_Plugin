@@ -109,15 +109,6 @@ namespace Gts {
 		return instance;
 	}
 
-	void ImpactManager::HookCollisionEvent(BGSImpactManager* impact, const BGSCollisionSoundEvent* a_event, BSTEventSource<BGSCollisionSoundEvent>* a_eventSource) {
-		if (a_event) {
-			auto actor = a_event->actor.get().get();
-			
-			std::string tag = a_event->tag.c_str();
-			log::info("Playing tag: {} on {}", tag, actor->GetDisplayFullName());
-		}
-	}
-
 	void ImpactManager::HookProcessEvent(BGSImpactManager* impact, const BGSFootstepEvent* a_event, BSTEventSource<BGSFootstepEvent>* a_eventSource) {
 		if (a_event) {
 			auto profiler = Profilers::Profile("Impact: HookProcess");
