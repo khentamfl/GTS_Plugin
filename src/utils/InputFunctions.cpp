@@ -122,7 +122,9 @@ namespace {
 		if (!Runtime::HasPerk(player, "ColossalGrowth")) {
 			return;
 		}
-		AnimationManager::StartAnim("TriggerGrowth", player);
+		if (!IsGtsBusy(player)) {
+			AnimationManager::StartAnim("TriggerGrowth", player);
+		}
 		
 	}
 	void RapidShrinkEvent(const InputEventData& data) {
@@ -130,8 +132,9 @@ namespace {
 		if (!Runtime::HasPerk(player, "ColossalGrowth")) {
 			return;
 		}
-		AnimationManager::StartAnim("TriggerShrink", player);
-		
+		if (!IsGtsBusy(player)) {
+			AnimationManager::StartAnim("TriggerShrink", player);
+		}
 	}
 
 	void SizeReserveEvent(const InputEventData& data) {
