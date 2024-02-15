@@ -54,12 +54,13 @@ namespace Gts {
                     transient->DisableControls = GtsBusy; // switch it
                     auto controlMap = ControlMap::GetSingleton();
 		            if (controlMap) { 
-                        controlMap->ToggleControls(UEFlag::kFighting, !GtsBusy);
+                        /*controlMap->ToggleControls(UEFlag::kFighting, !GtsBusy);
                         controlMap->ToggleControls(UEFlag::kActivate, !GtsBusy);
                         controlMap->ToggleControls(UEFlag::kMovement, !GtsBusy);
                         //ToggleControls(UEFlag::kSneaking, !GtsBusy);
                         controlMap->ToggleControls(UEFlag::kJumping, !GtsBusy);
-                        log::info("Adjusting Controls");
+                        log::info("Adjusting Controls");*/
+                        controlMap->ignoreKeyboardMouse(GtsBusy);
                     }
                 }
             }
