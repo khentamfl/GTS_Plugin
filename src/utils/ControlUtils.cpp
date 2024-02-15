@@ -17,13 +17,6 @@ namespace {
 	}
 }
 
-namespace RE {
-    Control_Map* Control_Map::GetSingleton()
-	{
-		REL::Relocation<Control_Map**> singleton{ Offset::Control_Map::Singleton };
-		return *singleton;
-	}
-}
 
 namespace Gts {
 
@@ -51,6 +44,7 @@ namespace Gts {
 
 	void ManageControls() {
 		Actor* player = PlayerCharacter::GetSingleton();
+        return; // just in case.
 		if (player) {
             bool GtsBusy = IsGtsBusy_ForControls(player) || IsTransitioning(player);
             bool AnimsInstalled = AnimationsInstalled(player);
