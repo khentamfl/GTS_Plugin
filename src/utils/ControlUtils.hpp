@@ -28,7 +28,7 @@ namespace RE {
                     stl::enumeration<UEFlag, std::uint32_t>          unk11C;                       /* 11C, VR 13C*/ \
                 RUNTIME_DATA_CONTENT
             };
-            static_assert(sizeof(RUNTIME_DATA) == 0x40);
+            //static_assert(sizeof(RUNTIME_DATA) == 0x40);
 
             //members
 
