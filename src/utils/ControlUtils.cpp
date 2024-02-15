@@ -17,13 +17,21 @@ namespace {
 	}
 }
 
+namespace RE {
+    Control_Map* Control_Map::GetSingleton()
+	{
+		REL::Relocation<Control_Map**> singleton{ Offset::Control_Map::Singleton };
+		return *singleton;
+	}
+}
+
 namespace Gts {
 
 
 	void ToggleControls(UEFlag a_flag, bool a_enable) {
         // Pretty much the same as CommonLib one, but without sending Events
         // Since they break sneaking for some reason, so we don't want to use them
-		auto controlMap = ControlMap::GetSingleton();
+		auto controlMap = Control_Map::GetSingleton();
 		if (controlMap) { 
 			if (a_enable) {
                 controlMap->GetRuntimeData().enabledControls.set(a_flags);
