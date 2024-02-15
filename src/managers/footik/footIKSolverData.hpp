@@ -2,11 +2,11 @@
 // Module that handles footsteps
 #include "colliders/RE.hpp"
 
-using namespace std;
+/*using namespace std;
 using namespace SKSE;
 using namespace RE;
 
-/*namespace Gts {
+namespace Gts {
 
 	class FootIkSolverData {
 		public:

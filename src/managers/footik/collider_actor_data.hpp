@@ -1,6 +1,6 @@
 #pragma once
 // Module that handles footIk scaling
-#include <atomic>
+/*#include <atomic>
 #include "managers/footik/footIK.hpp"
 #include "colliders/RE.hpp"
 
@@ -9,7 +9,7 @@ using namespace std;
 using namespace SKSE;
 using namespace RE;
 
-/*namespace Gts {
+namespace Gts {
 	class ColliderActorData {
 		public:
 			ColliderActorData(Actor* actor);

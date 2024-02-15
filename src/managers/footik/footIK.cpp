@@ -1,9 +1,9 @@
 // Module that handles footsteps
-#include "managers/footik/footIK.hpp"
+/*#include "managers/footik/footIK.hpp"
 #include "colliders/RE.hpp"
 #include "util.hpp"
 
-/*namespace Gts {
+namespace Gts {
 	FootIkData::FootIkData() {
 		this->ik = nullptr;
 	}

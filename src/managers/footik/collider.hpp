@@ -1,6 +1,6 @@
 #pragma once
 
-#include "events.hpp"
+/*#include "events.hpp"
 
 #include <atomic>
 #include "colliders/RE.hpp"
@@ -8,7 +8,7 @@
 #include "events.hpp"
 
 
-/*using namespace std;
+using namespace std;
 using namespace SKSE;
 using namespace RE;
 

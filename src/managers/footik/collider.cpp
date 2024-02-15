@@ -1,4 +1,4 @@
-#include "managers/footik/collider.hpp"
+/*#include "managers/footik/collider.hpp"
 #include "managers/GtsManager.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
@@ -9,7 +9,7 @@
 #include "util.hpp"
 
 
-/*using namespace SKSE;
+using namespace SKSE;
 using namespace RE;
 using namespace REL;
 using namespace Gts;

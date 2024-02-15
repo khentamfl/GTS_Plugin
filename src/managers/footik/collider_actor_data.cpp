@@ -1,4 +1,4 @@
-#include "managers/footik/collider_actor_data.hpp"
+/*#include "managers/footik/collider_actor_data.hpp"
 #include "utils/actorUtils.hpp"
 #include "scale/scale.hpp"
 #include "colliders/RE.hpp"
@@ -6,7 +6,7 @@
 #include "node.hpp"
 #include "util.hpp"
 
-/*using namespace std;
+using namespace std;
 using namespace SKSE;
 using namespace RE;
 
