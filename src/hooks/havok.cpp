@@ -175,7 +175,9 @@ namespace {
 			return;
 		}
 
-		if (Layer_A == COL_LAYER::kStatic && Layer_B == COL_LAYER::kStatic) {
+		log::info("Throw check running");
+
+		if (Layer_A == COL_LAYER::kStatic || Layer_B == COL_LAYER::kStatic) {
 			
 			log::info("Throw check passed");
 			log::info("{} collides with {}", objA->GetDisplayFullName(), objB->GetDisplayFullName());
