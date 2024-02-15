@@ -1,5 +1,6 @@
 #include "papyrus/plugin.hpp"
 #include "data/persistent.hpp"
+#include "data/plugin.hpp"
 #include "data/transient.hpp"
 #include "utils/actorUtils.hpp"
 #include "managers/Attributes.hpp"
