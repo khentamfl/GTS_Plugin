@@ -1,9 +1,10 @@
 // Module that handles footsteps
-/*#include "managers/footik/footIK.hpp"
+#include "managers/footik/footIK.hpp"
 #include "colliders/RE.hpp"
 #include "util.hpp"
 
 namespace Gts {
+	/*
 	FootIkData::FootIkData() {
 		this->ik = nullptr;
 	}
@@ -79,5 +80,5 @@ namespace Gts {
 			//log::info("Solver: {}, RawName: {}", reinterpret_cast<std::uintptr_t>(solver), GetRawName(solver));
 			this->solver_data.try_emplace(solver, solver);
 		}
-	}
+	}*/
 }

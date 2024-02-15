@@ -1,4 +1,4 @@
-/*#include "managers/footik/collider_actor_data.hpp"
+#include "managers/footik/collider_actor_data.hpp"
 #include "utils/actorUtils.hpp"
 #include "scale/scale.hpp"
 #include "colliders/RE.hpp"
@@ -11,6 +11,7 @@ using namespace SKSE;
 using namespace RE;
 
 namespace {
+	/*
 	hkbFootIkDriver* GetFootIk(Actor* actor) {
 		BSAnimationGraphManagerPtr animGraphManager;
 		if (actor->GetAnimationGraphManager(animGraphManager)) {
@@ -28,11 +29,11 @@ namespace {
 			}
 		}
 		return nullptr;
-	}
+	}*/
 }
 
 namespace Gts {
-	ColliderActorData::ColliderActorData(Actor* actor) {
+	/*ColliderActorData::ColliderActorData(Actor* actor) {
 	}
 
 	ColliderActorData::~ColliderActorData() {
@@ -99,5 +100,5 @@ namespace Gts {
 
 	void ColliderActorData::AddFootIk(hkbFootIkDriver* ik) {
 		this->footIkData.UpdateColliders(ik);
-	}
+	}*/
 }

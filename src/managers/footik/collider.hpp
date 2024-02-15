@@ -1,6 +1,6 @@
 #pragma once
 
-/*#include "events.hpp"
+#include "events.hpp"
 
 #include <atomic>
 #include "colliders/RE.hpp"
@@ -13,6 +13,7 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
+	/*
 	class ColliderManager : public EventListener {
 		public:
 			[[nodiscard]] static ColliderManager& GetSingleton() noexcept;
@@ -33,5 +34,5 @@ namespace Gts {
 			std::unordered_map<Actor*, ColliderActorData > actor_data;
 			std::atomic_uint64_t last_reset_frame = std::atomic_uint64_t(0);
 			TESObjectCELL* previous_cell = nullptr;
-	};
+	};*/
 }

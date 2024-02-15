@@ -1,12 +1,12 @@
 #include "managers/footik/footIKSolverData.hpp"
 #include "colliders/RE.hpp"
 
-/*using namespace std;
+using namespace std;
 using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-
+	/*
 	// Note: solvers do not respect the reference counting. Skyrim will delete it
 	// even if we have a reference (perhaps skyrim sets the count to zero directly)
 	// We cannot rely on the reference count
@@ -37,5 +37,5 @@ namespace Gts {
 		this->solver->m_setup.m_minAnkleHeightMS = this->m_minAnkleHeightMS * new_scale;
 		this->solver->m_setup.m_raycastDistanceUp = this->m_raycastDistanceUp * new_scale;
 		this->solver->m_setup.m_raycastDistanceDown = this->m_raycastDistanceDown * new_scale;
-	}
+	}*/
 }

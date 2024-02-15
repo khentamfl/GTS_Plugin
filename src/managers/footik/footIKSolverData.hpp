@@ -2,12 +2,12 @@
 // Module that handles footsteps
 #include "colliders/RE.hpp"
 
-/*using namespace std;
+using namespace std;
 using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-
+	/*
 	class FootIkSolverData {
 		public:
 			FootIkSolverData(hkaFootPlacementIkSolver* ik);
@@ -24,5 +24,5 @@ namespace Gts {
 			float m_minAnkleHeightMS;
 			float m_raycastDistanceUp;
 			float m_raycastDistanceDown;
-	};
+	};*/
 }

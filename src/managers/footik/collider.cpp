@@ -1,4 +1,4 @@
-/*#include "managers/footik/collider.hpp"
+#include "managers/footik/collider.hpp"
 #include "managers/GtsManager.hpp"
 #include "data/runtime.hpp"
 #include "scale/scale.hpp"
@@ -15,6 +15,7 @@ using namespace REL;
 using namespace Gts;
 
 namespace Gts {
+	/*
 	ColliderManager& ColliderManager::GetSingleton() noexcept {
 		static ColliderManager instance;
 		return instance;
@@ -127,5 +128,5 @@ namespace Gts {
 
 	void ColliderManager::FlagReset(){
 		this->last_reset_frame.store(Time::FramesElapsed());
-	}
+	}*/
 }

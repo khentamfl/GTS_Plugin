@@ -1,6 +1,6 @@
 #pragma once
 // Module that handles FootIK
-/*#include "managers/footik/footIKSolverData.hpp"
+#include "managers/footik/footIKSolverData.hpp"
 #include "colliders/RE.hpp"
 
 using namespace std;
@@ -8,6 +8,7 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
+	/*
 	class FootIkData {
 		public:
 			FootIkData();
@@ -24,5 +25,5 @@ namespace Gts {
 			mutable std::mutex _lock;
 
 			std::unordered_map<hkaFootPlacementIkSolver*, FootIkSolverData> solver_data;
-	};
+	};*/
 }
