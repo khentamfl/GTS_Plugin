@@ -75,8 +75,6 @@ target_include_directories(${PROJECT_NAME}
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 
 target_link_libraries(${PROJECT_NAME}
-        PUBLIC
-        CommonLibSSE::CommonLibSSE
         PRIVATE
         toml11::toml11
         nlohmann_json::nlohmann_json
