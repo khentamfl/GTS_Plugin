@@ -17,33 +17,28 @@ namespace {
 	}
 }
 
-namespace RE {
-    Control_Map* Control_Map::GetSingleton()
-	{
-		REL::Relocation<Control_Map**> singleton{ Offset::Control_Map::Singleton };
-		return *singleton;
-	}
-}
-
 namespace Gts {
 
 
 	void ToggleControls(UEFlag a_flag, bool a_enable) {
         // Pretty much the same as CommonLib one, but without sending Events
         // Since they break sneaking for some reason, so we don't want to use them
-		auto controlMap = Control_Map::GetSingleton();
+        auto post1130 = REL::Module::get().IsAE() && (REL::Module::get().version().patch() > 0x400);
+		auto controlMap = ControlMap::GetSingleton() + std::ptrdiff_t(post1130 ? 0x120 : 0x118);;
 		if (controlMap) { 
+            //Credits to Meridiano on the RE discord server
+
 			if (a_enable) {
-                controlMap->GetRuntimeData().enabledControls.set(a_flags);
-                if (controlMap->GetRuntimeData().unk11C != UEFlag::kInvalid) {
-                    controlMap->GetRuntimeData().unk11C.set(a_flags);
-                }
-            } else {
-                controlMap->GetRuntimeData().enabledControls.reset(a_flags);
-                if (controlMap->GetRuntimeData().unk11C != UEFlag::kInvalid) {
-                    controlMap->GetRuntimeData().unk11C.reset(a_flags);
-                }
-            }
+				controlMap->enabledControls.set(a_flag);
+				if (controlMap->unk11C != UEFlag::kInvalid) {
+					controlMap->unk11C.set(a_flag);
+				}
+			} else {
+				controlMap->enabledControls.reset(a_flag);
+				if (controlMap->unk11C != UEFlag::kInvalid) {
+					controlMap->unk11C.reset(a_flag);
+				}
+			}
 		}
 	}
 
@@ -60,7 +55,7 @@ namespace Gts {
                 bool NeedsChange = transient->DisableControls;
                 if (NeedsChange != GtsBusy) {
                     transient->DisableControls = GtsBusy; // switch it
-                    auto controlMap = ControlMap::GetSingleton();
+                    auto controlMap = GTSControlMap::GetSingleton();
 		            if (controlMap) { 
                         ToggleControls(UEFlag::kFighting, !GtsBusy);
                         ToggleControls(UEFlag::kActivate, !GtsBusy);
