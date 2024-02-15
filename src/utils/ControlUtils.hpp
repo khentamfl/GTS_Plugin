@@ -13,7 +13,10 @@ namespace SKSE
 	constexpr REL::Version RUNTIME_SSE_1_6_1130(1, 6, 1130, 0);
 }
 
-namespace RE {
+namespace Gts {
+    void ToggleControls(UEFlag a_flag, bool a_enable);
+    void ManageControls();
+
     class Control_Map :
 		public BSTSingletonSDM<Control_Map>      // 00
         {
@@ -75,9 +78,4 @@ namespace RE {
     #endif
     }
 #undef RUNTIME_DATA_CONTENT
-
-namespace Gts {
-    using UEFlag = UserEvents::USER_EVENT_FLAG;
-    void ToggleControls(UEFlag a_flag, bool a_enable);
-    void ManageControls();
-}
+    
