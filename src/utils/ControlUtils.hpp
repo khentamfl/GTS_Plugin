@@ -15,6 +15,29 @@ namespace RE {
                 struct InputContext
                 {
                 public:
+                    using InputContextID = UserEvents::INPUT_CONTEXT_ID;
+                    using UEFlag = UserEvents::USER_EVENT_FLAG;
+
+                    enum : std::uint32_t
+                    {
+                        kInvalid = static_cast<std::uint8_t>(-1)
+                    };
+
+                    struct UserEventMapping
+                    {
+                    public:
+                        // members
+                        BSFixedString                           eventID;             // 00
+                        std::uint16_t                           inputKey;            // 08
+                        std::uint16_t                           modifier;            // 08
+                        std::int8_t                             indexInContext;      // 0C
+                        bool                                    remappable;          // 0D
+                        bool                                    linked;              // 0E
+                        stl::enumeration<UEFlag, std::uint32_t> userEventGroupFlag;  // 10
+                        std::uint32_t                           pad14;               // 14
+                    };
+                    static_assert(sizeof(UserEventMapping) == 0x18);
+
                     [[nodiscard]] static SKYRIM_REL_VR std::size_t GetNumDeviceMappings() noexcept
                     {
                     #ifndef SKYRIM_CROSS_VR
