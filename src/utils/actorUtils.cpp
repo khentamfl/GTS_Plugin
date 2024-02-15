@@ -2584,7 +2584,7 @@ namespace Gts {
 
 			return fabs(growData->amount.value - growData->amount.target) > 1e-4;
 		}
-		                    );
+	);
 	}
 
 	void ResetGrab(Actor* giant) {
@@ -2603,10 +2603,6 @@ namespace Gts {
 		auto profiler = Profilers::Profile("Utils: Actor State Fix");
 
 		ResetCameraTracking(); // fix the camera tracking if loading previous save while voring/thigh crushing for example
-
-		if (!AnimationsInstalled(PlayerCharacter::GetSingleton())) {
-			MessageBox("Giantess Animations are installed incorrectly: animations will not work. Run Nemesis again and make sure that GTS is listed properly and isn't blank inside generated animations list.");
-		}
 
 		for (auto giant: find_actors()) {
 			if (!giant) {
