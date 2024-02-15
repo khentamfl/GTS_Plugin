@@ -15,7 +15,7 @@ namespace Gts {
 	}
 
 	template< typename ... Args >
-	void MessageBox(std::string_view rt_fmt_str, Args&&... args) {
+	void PrintMessageBox(std::string_view rt_fmt_str, Args&&... args) {
 		try {
 			DebugMessageBox(std::vformat(rt_fmt_str, std::make_format_args(args ...)).c_str());
 		} catch (const std::format_error &e) {
