@@ -23,7 +23,7 @@ namespace Gts {
 	void ToggleControls(UEFlag a_flag, bool a_enable) {
         // Pretty much the same as CommonLib one, but without sending Events
         // Since they break sneaking for some reason, so we don't want to use them
-		auto controlMap = GTSControlMap::GetSingleton();
+		auto controlMap = ControlMap::GetSingleton();
 		if (controlMap) { 
 			if (a_enable) {
                 controlMap->GetRuntimeData().enabledControls.set(a_flags);
@@ -52,7 +52,7 @@ namespace Gts {
                 bool NeedsChange = transient->DisableControls;
                 if (NeedsChange != GtsBusy) {
                     transient->DisableControls = GtsBusy; // switch it
-                    auto controlMap = GTSControlMap::GetSingleton();
+                    auto controlMap = ControlMap::GetSingleton();
 		            if (controlMap) { 
                         ToggleControls(UEFlag::kFighting, !GtsBusy);
                         ToggleControls(UEFlag::kActivate, !GtsBusy);
