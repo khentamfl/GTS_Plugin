@@ -232,7 +232,11 @@ namespace {
 	}
 
 	bool GtsBehaviorsInstalled(StaticFunctionTag*, Actor* giant) {
-		return AnimationsInstalled(giant);
+		if (!Plugin::InGame()) {
+			return true;
+		} else {
+			return AnimationsInstalled(giant);
+		}
 	}
 
 	void SetIsHighHeelEnabled(StaticFunctionTag*, bool enabled) {

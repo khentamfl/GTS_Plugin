@@ -23,19 +23,19 @@ namespace Gts {
 	void ToggleControls(UEFlag a_flag, bool a_enable) {
         // Pretty much the same as CommonLib one, but without sending Events
         // Since they break sneaking for some reason, so we don't want to use them
-		auto controlMap = ControlMap::GetSingleton();
+		auto controlMap = GTSControlMap::GetSingleton();
 		if (controlMap) { 
 			if (a_enable) {
-				controlMap->enabledControls.set(a_flag);
-				if (controlMap->unk11C != UEFlag::kInvalid) {
-					controlMap->unk11C.set(a_flag);
-				}
-			} else {
-				controlMap->enabledControls.reset(a_flag);
-				if (controlMap->unk11C != UEFlag::kInvalid) {
-					controlMap->unk11C.reset(a_flag);
-				}
-			}
+                controlMap->GetRuntimeData().enabledControls.set(a_flags);
+                if (controlMap->GetRuntimeData().unk11C != UEFlag::kInvalid) {
+                    controlMap->GetRuntimeData().unk11C.set(a_flags);
+                }
+            } else {
+                controlMap->GetRuntimeData().enabledControls.reset(a_flags);
+                if (controlMap->GetRuntimeData().unk11C != UEFlag::kInvalid) {
+                    controlMap->GetRuntimeData().unk11C.reset(a_flags);
+                }
+            }
 		}
 	}
 
@@ -52,15 +52,14 @@ namespace Gts {
                 bool NeedsChange = transient->DisableControls;
                 if (NeedsChange != GtsBusy) {
                     transient->DisableControls = GtsBusy; // switch it
-                    auto controlMap = ControlMap::GetSingleton();
+                    auto controlMap = GTSControlMap::GetSingleton();
 		            if (controlMap) { 
-                        /*controlMap->ToggleControls(UEFlag::kFighting, !GtsBusy);
-                        controlMap->ToggleControls(UEFlag::kActivate, !GtsBusy);
-                        controlMap->ToggleControls(UEFlag::kMovement, !GtsBusy);
+                        ToggleControls(UEFlag::kFighting, !GtsBusy);
+                        ToggleControls(UEFlag::kActivate, !GtsBusy);
+                        ToggleControls(UEFlag::kMovement, !GtsBusy);
                         //ToggleControls(UEFlag::kSneaking, !GtsBusy);
-                        controlMap->ToggleControls(UEFlag::kJumping, !GtsBusy);
-                        log::info("Adjusting Controls");*/
-                        controlMap->ignoreKeyboardMouse(GtsBusy);
+                        ToggleControls(UEFlag::kJumping, !GtsBusy);
+                        log::info("Adjusting Controls");
                     }
                 }
             }
