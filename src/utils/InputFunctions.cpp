@@ -112,7 +112,7 @@ namespace {
 					if (timergrowth.ShouldRun()) {
 						Runtime::PlaySound("shrinkSound", actor, Volume, 1.0);
 					}
-				}
+				} 
 			}
 		}
 	}
