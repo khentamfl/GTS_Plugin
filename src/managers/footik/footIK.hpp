@@ -7,7 +7,7 @@ using namespace std;
 using namespace SKSE;
 using namespace RE;
 
-namespace Gts {
+/*namespace Gts {
 	class FootIkData {
 		public:
 			FootIkData();

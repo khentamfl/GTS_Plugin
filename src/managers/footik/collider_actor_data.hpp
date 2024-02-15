@@ -9,7 +9,7 @@ using namespace std;
 using namespace SKSE;
 using namespace RE;
 
-namespace Gts {
+/*namespace Gts {
 	class ColliderActorData {
 		public:
 			ColliderActorData(Actor* actor);

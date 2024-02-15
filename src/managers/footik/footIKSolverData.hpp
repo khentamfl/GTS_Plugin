@@ -6,7 +6,7 @@ using namespace std;
 using namespace SKSE;
 using namespace RE;
 
-namespace Gts {
+/*namespace Gts {
 
 	class FootIkSolverData {
 		public:

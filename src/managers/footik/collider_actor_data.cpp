@@ -6,7 +6,7 @@
 #include "node.hpp"
 #include "util.hpp"
 
-using namespace std;
+/*using namespace std;
 using namespace SKSE;
 using namespace RE;
 

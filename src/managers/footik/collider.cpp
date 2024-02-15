@@ -9,7 +9,7 @@
 #include "util.hpp"
 
 
-using namespace SKSE;
+/*using namespace SKSE;
 using namespace RE;
 using namespace REL;
 using namespace Gts;

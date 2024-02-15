@@ -5,7 +5,7 @@ using namespace std;
 using namespace SKSE;
 using namespace RE;
 
-namespace Gts {
+/*namespace Gts {
 
 	// Note: solvers do not respect the reference counting. Skyrim will delete it
 	// even if we have a reference (perhaps skyrim sets the count to zero directly)

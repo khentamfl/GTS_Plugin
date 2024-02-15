@@ -8,7 +8,7 @@
 #include "events.hpp"
 
 
-using namespace std;
+/*using namespace std;
 using namespace SKSE;
 using namespace RE;
 
