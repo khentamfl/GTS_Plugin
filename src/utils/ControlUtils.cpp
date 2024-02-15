@@ -52,7 +52,8 @@ namespace Gts {
                 bool NeedsChange = transient->DisableControls;
                 if (NeedsChange != GtsBusy) {
                     transient->DisableControls = GtsBusy; // switch it
-                    /*ToggleControls(UEFlag::kFighting, !GtsBusy);
+                    ToggleControls(UEFlag::kFighting, !GtsBusy);
+                    /*
                     ToggleControls(UEFlag::kActivate, !GtsBusy);
                     ToggleControls(UEFlag::kMovement, !GtsBusy);
                     //ToggleControls(UEFlag::kSneaking, !GtsBusy);
