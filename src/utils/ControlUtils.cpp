@@ -49,16 +49,16 @@ namespace Gts {
             }
             auto transient = Transient::GetSingleton().GetData(player);
             if (transient) {
-                /*bool NeedsChange = transient->DisableControls;
+                bool NeedsChange = transient->DisableControls;
                 if (NeedsChange != GtsBusy) {
                     transient->DisableControls = GtsBusy; // switch it
-                    ToggleControls(UEFlag::kFighting, !GtsBusy);
+                    /*ToggleControls(UEFlag::kFighting, !GtsBusy);
                     ToggleControls(UEFlag::kActivate, !GtsBusy);
                     ToggleControls(UEFlag::kMovement, !GtsBusy);
                     //ToggleControls(UEFlag::kSneaking, !GtsBusy);
                     ToggleControls(UEFlag::kJumping, !GtsBusy);
-                    log::info("Adjusting Controls");
-                }*/
+                    log::info("Adjusting Controls");*/
+                }
             }
         }
     }
