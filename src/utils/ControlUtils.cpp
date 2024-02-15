@@ -49,7 +49,7 @@ namespace Gts {
             }
             auto transient = Transient::GetSingleton().GetData(player);
             if (transient) {
-                bool NeedsChange = transient->DisableControls;
+                /*bool NeedsChange = transient->DisableControls;
                 if (NeedsChange != GtsBusy) {
                     transient->DisableControls = GtsBusy; // switch it
                     ToggleControls(UEFlag::kFighting, !GtsBusy);
@@ -58,7 +58,7 @@ namespace Gts {
                     //ToggleControls(UEFlag::kSneaking, !GtsBusy);
                     ToggleControls(UEFlag::kJumping, !GtsBusy);
                     log::info("Adjusting Controls");
-                }
+                }*/
             }
         }
     }
