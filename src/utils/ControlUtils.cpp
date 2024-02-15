@@ -21,12 +21,12 @@ namespace Gts {
 
 
 	void ToggleControls(UEFlag a_flag, bool a_enable) {
+        // CRASHES ON AE. SCREW YOU TOO TODD!
+
         // Pretty much the same as CommonLib one, but without sending Events
         // Since they break sneaking for some reason, so we don't want to use them
-        auto post1130 = REL::Module::get().IsAE() && (REL::Module::get().version().patch() > 0x400);
-		auto controlMap = ControlMap::GetSingleton() + std::ptrdiff_t(post1130 ? 0x120 : 0x118);
+		auto controlMap = ControlMap::GetSingleton();
 		if (controlMap) { 
-            //Credits to Meridiano on the RE discord server
 
 			if (a_enable) {
 				controlMap->enabledControls.set(a_flag);

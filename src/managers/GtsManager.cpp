@@ -281,7 +281,7 @@ void GtsManager::Update() {
 	auto profiler = Profilers::Profile("Manager: Update()");
 
 	UpdateFalling();
-	ManageControls();
+	//ManageControls(); CRASHES ON AE 1130+. **** YOU TOO TODD!
 
 	for (auto actor: find_actors()) {
 		if (!actor) {
