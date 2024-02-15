@@ -1,6 +1,5 @@
 #include "papyrus/plugin.hpp"
 #include "data/persistent.hpp"
-#include "data/plugin.hpp"
 #include "data/transient.hpp"
 #include "utils/actorUtils.hpp"
 #include "managers/Attributes.hpp"
@@ -233,11 +232,7 @@ namespace {
 	}
 
 	bool GtsBehaviorsInstalled(StaticFunctionTag*, Actor* giant) {
-		if (!Plugin::InGame()) {
-			return true;
-		} else {
-			return AnimationsInstalled(giant);
-		}
+		return AnimationsInstalled(giant);
 	}
 
 	void SetIsHighHeelEnabled(StaticFunctionTag*, bool enabled) {
