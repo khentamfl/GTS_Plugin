@@ -24,7 +24,7 @@ namespace Gts {
         // Pretty much the same as CommonLib one, but without sending Events
         // Since they break sneaking for some reason, so we don't want to use them
         auto post1130 = REL::Module::get().IsAE() && (REL::Module::get().version().patch() > 0x400);
-		auto controlMap = ControlMap::GetSingleton() + std::ptrdiff_t(post1130 ? 0x120 : 0x118);;
+		auto controlMap = ControlMap::GetSingleton() + std::ptrdiff_t(post1130 ? 0x120 : 0x118);
 		if (controlMap) { 
             //Credits to Meridiano on the RE discord server
 
@@ -55,15 +55,12 @@ namespace Gts {
                 bool NeedsChange = transient->DisableControls;
                 if (NeedsChange != GtsBusy) {
                     transient->DisableControls = GtsBusy; // switch it
-                    auto controlMap = GTSControlMap::GetSingleton();
-		            if (controlMap) { 
-                        ToggleControls(UEFlag::kFighting, !GtsBusy);
-                        ToggleControls(UEFlag::kActivate, !GtsBusy);
-                        ToggleControls(UEFlag::kMovement, !GtsBusy);
-                        //ToggleControls(UEFlag::kSneaking, !GtsBusy);
-                        ToggleControls(UEFlag::kJumping, !GtsBusy);
-                        log::info("Adjusting Controls");
-                    }
+                    ToggleControls(UEFlag::kFighting, !GtsBusy);
+                    ToggleControls(UEFlag::kActivate, !GtsBusy);
+                    ToggleControls(UEFlag::kMovement, !GtsBusy);
+                    //ToggleControls(UEFlag::kSneaking, !GtsBusy);
+                    ToggleControls(UEFlag::kJumping, !GtsBusy);
+                    log::info("Adjusting Controls");
                 }
             }
         }
