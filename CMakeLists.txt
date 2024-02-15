@@ -79,6 +79,7 @@ target_link_libraries(${PROJECT_NAME}
         toml11::toml11
         nlohmann_json::nlohmann_json
         cmake_git_version_tracking
+        CommonLibSSE::CommonLibSSE
         )
 
 target_precompile_headers(${PROJECT_NAME}
