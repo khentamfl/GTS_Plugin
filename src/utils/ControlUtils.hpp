@@ -11,13 +11,6 @@ using namespace Gts;
 namespace SKSE
 {
 	constexpr REL::Version RUNTIME_SSE_1_6_1130(1, 6, 1130, 0);
-
-	constexpr auto RUNTIME_SSE_LATEST_AE = RUNTIME_SSE_1_6_1130;
-	constexpr auto RUNTIME_SSE_LATEST_SE = RUNTIME_SSE_1_5_97;
-	constexpr auto RUNTIME_SSE_LATEST = RUNTIME_SSE_LATEST_AE;
-
-	constexpr REL::Version RUNTIME_VR_1_4_15(1, 4, 15, 0);
-	constexpr auto         RUNTIME_LATEST_VR = RUNTIME_VR_1_4_15;
 }
 
 namespace RE {
@@ -25,7 +18,7 @@ namespace RE {
 		public BSTSingletonSDM<Control_Map>      // 00
         {
             public:
-                using UEFlag = UserEvents::USER_EVENT_FLAG
+                using UEFlag = UserEvents::USER_EVENT_FLAG;
                 static Control_Map* GetSingleton();
 
                 struct RUNTIME_DATA
