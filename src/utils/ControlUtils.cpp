@@ -17,8 +17,15 @@ namespace {
 	}
 }
 
-namespace Gts {
+namespace RE {
+    Control_Map* Control_Map::GetSingleton()
+	{
+		REL::Relocation<Control_Map**> singleton{ Offset::Control_Map::Singleton };
+		return *singleton;
+	}
+}
 
+namespace Gts {
 
 	void ToggleControls(UEFlag a_flag, bool a_enable) {
         // CRASHES ON AE. SCREW YOU TOO TODD!
