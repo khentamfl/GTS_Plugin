@@ -61,7 +61,10 @@ namespace {
 
 	void AnimationInstalledCheck(Actor* giant) {
 		if (!AnimationsInstalled(giant)) {
-			MessageBox("Giantess Animations are installed incorrectly: animations will not work. Run Nemesis again and make sure that GTS is listed properly and isn't blank inside generated animations list.");
+			static Timer ErrorTimer = Timer(3.0);
+			if (ErrorTimer.ShouldRunFrame()) {
+				MessageBox("Giantess Animations are installed incorrectly: animations will not work. Run Nemesis again and make sure that GTS is listed properly and isn't blank inside generated animations list.");
+			}
 		}
 	}
 
@@ -2641,7 +2644,6 @@ namespace Gts {
 		else {
 			auto progressionQuest = Runtime::GetQuest("MainQuest");
 			if (progressionQuest) {
-				AnimationInstalledCheck(giant);
 				auto queststage = progressionQuest->GetCurrentStageID();
 				if (queststage >= 10 && type == 0) {
 					return true; // allow hugs
