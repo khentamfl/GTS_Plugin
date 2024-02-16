@@ -60,8 +60,8 @@ namespace {
 	}
 
 	void AnimationInstalledCheck(Actor* giant) {
+		static Timer ErrorTimer = Timer(3.0);
 		if (!AnimationsInstalled(giant)) {
-			static Timer ErrorTimer = Timer(3.0);
 			if (ErrorTimer.ShouldRunFrame()) {
 				MessageBox("Giantess Animations are installed incorrectly: animations will not work. Run Nemesis again and make sure that GTS is listed properly and isn't blank inside generated animations list.");
 			}
