@@ -342,7 +342,7 @@ namespace Gts {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	bool BehaviorGraph_DisableHH(Actor* actor) { // should .dll disable HH if Behavior Graph has HH Disable data?
-		bool disable;
+		bool disable = false;
 		actor->GetGraphVariableBool("GTS_DisableHH", disable);
 		if (actor->formID == 0x14 && IsFirstPerson()) {
 			return false;
@@ -382,7 +382,7 @@ namespace Gts {
 	}
 
 	bool IsCrawling(Actor* actor) {
-		bool crawl;
+		bool crawl = false;
 		auto transient = Transient::GetSingleton().GetData(actor);
 		actor->GetGraphVariableBool("GTS_IsCrawling", crawl);
 		if (actor->formID == 0x14 && actor->IsSneaking() && IsFirstPerson() && transient) {
