@@ -274,9 +274,6 @@ std::string GtsManager::DebugName() {
 }
 
 void GtsManager::Start() {
-	if (!AnimationsInstalled(PlayerCharacter::GetSingleton())) {
-		MessageBox("Giantess Animations are installed incorrectly: animations will not work. Run Nemesis again and make sure that GTS is listed properly and isn't blank inside generated animations list.");
-	}
 }
 
 // Poll for updates

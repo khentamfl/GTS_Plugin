@@ -59,6 +59,12 @@ namespace {
 		}
 	}
 
+	void AnimationInstalledCheck(Actor* giant) {
+		if (!AnimationsInstalled(giant)) {
+			MessageBox("Giantess Animations are installed incorrectly: animations will not work. Run Nemesis again and make sure that GTS is listed properly and isn't blank inside generated animations list.");
+		}
+	}
+
 	bool Utils_ManageTinyProtection(Actor* giantref, bool force_cancel) {
 		float sp = GetAV(giantref, ActorValue::kStamina);
 
@@ -2630,9 +2636,12 @@ namespace Gts {
 		// 5 = Others
 		if (giant->formID != 0x14) {
 			return true;
-		} else {
+		} 
+
+		else {
 			auto progressionQuest = Runtime::GetQuest("MainQuest");
 			if (progressionQuest) {
+				AnimationInstalledCheck(giant);
 				auto queststage = progressionQuest->GetCurrentStageID();
 				if (queststage >= 10 && type == 0) {
 					return true; // allow hugs
