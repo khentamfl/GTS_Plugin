@@ -59,15 +59,6 @@ namespace {
 		}
 	}
 
-	void AnimationInstalledCheck(Actor* giant) {
-		if (!AnimationsInstalled(giant)) {
-			static Timer ErrorTimer = Timer(3.0);
-			if (ErrorTimer.ShouldRun()) {
-				MessageBox("Giantess Animations are installed incorrectly: animations will not work. Run Nemesis again and make sure that GTS is listed properly and isn't blank inside generated animations list.");
-			}
-		}
-	}
-
 	bool Utils_ManageTinyProtection(Actor* giantref, bool force_cancel) {
 		float sp = GetAV(giantref, ActorValue::kStamina);
 
@@ -2640,7 +2631,6 @@ namespace Gts {
 		if (giant->formID != 0x14) {
 			return true;
 		} else {
-			AnimationInstalledCheck(giant);
 			auto progressionQuest = Runtime::GetQuest("MainQuest");
 			if (progressionQuest) {
 				auto queststage = progressionQuest->GetCurrentStageID();
