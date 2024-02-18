@@ -1226,7 +1226,9 @@ namespace Gts {
 									PushActorAway(giant, otherActor, 1.0);
 								}
 
-								Utils_PushCheck(giant, otherActor, 1.0);
+								if (!IsHuman(otherActor)) {
+									Utils_PushCheck(giant, otherActor, 1.0);
+								}
 								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause, true);
 							}
 						}

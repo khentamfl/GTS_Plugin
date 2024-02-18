@@ -18,5 +18,6 @@ namespace Gts
 	class AnimationCompat {
 		public:
 			static void RegisterEvents();
+			static void RegisterTriggers();
 	};
 }

@@ -76,8 +76,10 @@ namespace Gts {
 			}
 		}
 	}
-
-	void DoCrawlingFunctions(Actor* actor, float scale, float multiplier, float damage, CrawlEvent kind, std::string_view tag, float launch_dist, float damage_dist, float crushmult, DamageSource Cause) { // Call everything
+	void DoCrawlingFunctions(Actor* actor, float scale, float multiplier, float damage, CrawlEvent kind, std::string_view tag, float launch_dist, float damage_dist, float crushmult, DamageSource Cause) {
+		DoCrawlingFunctions(actor, scale, multiplier, damage, kind, tag, launch_dist, damage_dist, crushmult, Cause, true);
+	}
+	void DoCrawlingFunctions(Actor* actor, float scale, float multiplier, float damage, CrawlEvent kind, std::string_view tag, float launch_dist, float damage_dist, float crushmult, DamageSource Cause, bool LaunchNeeded) { // Call everything
 		std::string_view name = GetImpactNode(kind);
 
 		auto node = find_node(actor, name);
@@ -87,11 +89,13 @@ namespace Gts {
 
 		float SMT = 1.0;
 		float minimal_scale = 1.5;
-
-		LaunchActor::GetSingleton().LaunchAtNode(actor, launch_dist, multiplier, node); // Launch actors
-		//                                                radius       power       object
-		// Order matters here since we don't want to make it even stronger during SMT, so that's why SMT check is after this function
-
+		if (LaunchNeeded) {
+			LaunchActor::GetSingleton().LaunchAtNode(actor, launch_dist, multiplier, node); // Launch actors
+			//                                                radius       power       object
+			// Order matters here since we don't want to make it even stronger during SMT, so that's why SMT check is after this function
+		}
+		
+		
 		if (actor->formID == 0x14) {
 			if (HasSMT(actor)) {
 				SMT = 2.5; // Stronger Camera Shake

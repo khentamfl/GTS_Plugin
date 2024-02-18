@@ -105,6 +105,7 @@ namespace Gts {
 		AnimationFootTrample::RegisterTriggers();
 
 		AnimationCompat::RegisterEvents();
+		AnimationCompat::RegisterTriggers();
 
 		AnimationProning::RegisterEvents();
 		AnimationProning::RegisterTriggers();

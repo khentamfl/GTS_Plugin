@@ -113,4 +113,8 @@ namespace Gts
 		AnimationManager::RegisterEvent("MCO_SecondDodge", "MCOCompat1", MCO_SecondDodge);
 		AnimationManager::RegisterEvent("SoundPlay.MCO_DodgeSound", "MCOCompat2", MCO_DodgeSound);
 	}
+
+	void AnimationCompat::RegisterTriggers() {
+		AnimationManager::RegisterTrigger("Tiny_ExitAnims", "Compat3", "GTSBEH_Tiny_Abort");
+	}
 }
