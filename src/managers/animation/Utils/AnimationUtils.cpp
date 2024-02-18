@@ -586,7 +586,7 @@ namespace Gts {
 				return true;
 			}
 
-			AttachTo(giantref, tinyref, coordinates);
+			AttachTo_NoForceRagdoll(giantref, tinyref, coordinates);
 			if (!IsFootGrinding(giantref)) {
 				SetBeingGrinded(tinyref, false);
 				return false;
