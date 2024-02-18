@@ -607,9 +607,9 @@ namespace Gts {
 	}
 
 	bool HasGrowthSpurt(Actor* actor) {
-		bool Growth1 = Runtime::HasMagicEffect(actor, "explosiveGrowth1");
-		bool Growth2 = Runtime::HasMagicEffect(actor, "explosiveGrowth2");
-		bool Growth3 = Runtime::HasMagicEffect(actor, "explosiveGrowth3");
+		bool Growth1 = Runtime::HasMagicEffect(actor, "GrowthSpurt1");
+		bool Growth2 = Runtime::HasMagicEffect(actor, "GrowthSpurt2");
+		bool Growth3 = Runtime::HasMagicEffect(actor, "GrowthSpurt3");
 		if (Growth1 || Growth2 || Growth3) {
 			return true;
 		} else {
@@ -1752,7 +1752,10 @@ namespace Gts {
 		float cost = 1.0;
 		float reduction = 0.0;
 		if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
-			reduction = std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
+			reduction += std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
+		}
+		if (giant->formID == 0x14 && HasGrowthSpurt(giant) && Runtime::HasPerk(giant, "ExtraGrowth")) {
+			reduction += 0.30;
 		}
 		cost -= reduction;
 		return cost;

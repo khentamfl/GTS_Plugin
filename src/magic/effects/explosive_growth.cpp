@@ -1,4 +1,4 @@
-#include "magic/effects/explosive_growth.hpp"
+#include "magic/effects/GrowthSpurt.hpp"
 #include "managers/GtsSizeManager.hpp"
 #include "managers/GtsManager.hpp"
 #include "magic/magic.hpp"
@@ -8,28 +8,55 @@
 #include "timer.hpp"
 #include "managers/Rumble.hpp"
 
+namespace {
+	float Get_Perk_Bonus(Actor* giant) {
+		float bonus = 1.0;
+		float basic = 0.0;
+		
+		if (Runtime::HasPerk(giant, "ExtraGrowth")) {
+			basic += 0.50;
+		}
+		if (Runtime::HasPerk(giant, "ExtraGrowthMax")) {
+			float perkbonus = ((GetGtsSkillLevel() * 0.01) + (giant->GetLevel() * 0.01));
+			basic *= perkbonus;
+		}
+		return bonus + basic;
+	}
 
+	float Get_Growth_Limit(Actor* giant, int rank) {
+		float basic = 1.0;
+		float bonus = 0.0;
+
+		if (rank == 1) {
+			bonus = 0.25;
+		} else if (rank == 2) {
+			bonus = 0.50;
+		} else if (rank == 3) {
+			bonus = 1.00;
+		}
+
+		bonus *= Get_Perk_Bonus(giant);
+		return basic + bonus;
+	}
+}
 
 namespace Gts {
-	std::string ExplosiveGrowth::GetName() {
-		return "ExplosiveGrowth";
+	std::string GrowthSpurt::GetName() {
+		return "GrowthSpurt";
 	}
 
-	ExplosiveGrowth::ExplosiveGrowth(ActiveEffect* effect) : Magic(effect) {
-
+	GrowthSpurt::GrowthSpurt(ActiveEffect* effect) : Magic(effect) {
 	}
 
-	void ExplosiveGrowth::OnStart() {
+	void GrowthSpurt::OnStart() {
 		Actor* caster = GetCaster();
 		if (!caster) {
 			return;
 		}
-		//std::string message = std::format("Growth Spurt slowly increases your size until you reach maximum scale of growth spurt. Growth Spurt doubles amount of size that you can steal during hugs and Growth Spurt also provides huge resistance against natural shrink sources. If you have 'Strong Spurt' perk, maximal scale of growth spurt can be further increased by crushing your foes under this effect");
-		//TutorialMessage(message, "GrowthSpurt");
 		this->AllowStacking = true;
 	}
 
-	void ExplosiveGrowth::OnUpdate() {
+	void GrowthSpurt::OnUpdate() {
 		Actor* caster = GetCaster();
 		if (!caster) {
 			return;
@@ -40,38 +67,18 @@ namespace Gts {
 
 		auto base_spell = GetBaseEffect();
 
-		if (base_spell == Runtime::GetMagicEffect("explosiveGrowth1")) {
-			this->power = GROWTH_1_POWER;
-			if (Runtime::HasPerk(caster, "ExtraGrowthMax")) {
-				this->grow_limit = 2.01; // NOLINT
-				this->power *= 2.0; // NOLINT
-			} else if (Runtime::HasPerk(caster, "ExtraGrowth")) {
-				this->grow_limit = 1.67; // NOLINT
-			} else {
-				this->grow_limit = 1.34; // NOLINT
-			}
-		} else if (base_spell == Runtime::GetMagicEffect("explosiveGrowth2")) {
-			this->power = GROWTH_2_POWER;
-			if (Runtime::HasPerk(caster, "ExtraGrowthMax")) {
-				this->grow_limit = 2.34; // NOLINT
-				this->power *= 2.0; // NOLINT
-			} else if (Runtime::HasPerk(caster, "ExtraGrowth")) {
-				this->grow_limit = 2.01; // NOLINT
-			} else {
-				this->grow_limit = 1.67; // NOLINT
-			}
-		} else if (base_spell == Runtime::GetMagicEffect("explosiveGrowth3")) {
-			this->power = GROWTH_3_POWER;
-			if (Runtime::HasPerk(caster, "ExtraGrowthMax")) {
-				this->grow_limit = 2.67; // NOLINT
-				this->power *= 2.0; // NOLINT
-			} else if (Runtime::HasPerk(caster, "ExtraGrowth")) {
-				this->grow_limit = 2.34; // NOLINT
-			} else {
-				this->grow_limit = 2.01; // NOLINT
-			}
+		
+		if (base_spell == Runtime::GetMagicEffect("GrowthSpurt1")) {
+			this->power = GROWTH_1_POWER * Get_Perk_Bonus(caster);
+			this->grow_limit = Get_Growth_Limit(caster, 1);
+		} else if (base_spell == Runtime::GetMagicEffect("GrowthSpurt2")) {
+			this->power = GROWTH_2_POWER * Get_Perk_Bonus(caster);
+			this->grow_limit = Get_Growth_Limit(caster, 2);
+		} else if (base_spell == Runtime::GetMagicEffect("GrowthSpurt3")) {
+			this->power = GROWTH_3_POWER * Get_Perk_Bonus(caster);
+			this->grow_limit = Get_Growth_Limit(caster, 3);
 		}
-		float AdjustLimit = std::clamp(Runtime::GetFloatOr("CrushGrowthStorage", 0.0) + 1.0f, 1.0f, 12.0f);
+
 		float Gigantism = 1.0 + Ench_Aspect_GetPower(caster);
 		float scale = get_visual_scale(caster);
 
@@ -96,15 +103,15 @@ namespace Gts {
 		}
 	}
 
-	void ExplosiveGrowth::OnFinish() {
+	void GrowthSpurt::OnFinish() {
 		Actor* caster = GetCaster();
 		if (!caster) {
 			return;
 		}
-		ExplosiveGrowth::DoShrink(caster);
+		GrowthSpurt::DoShrink(caster);
 	}
 
-	void ExplosiveGrowth::DoGrowth(Actor* actor, float value) {
+	void GrowthSpurt::DoGrowth(Actor* actor, float value) {
 		update_target_scale(actor, value, SizeEffectType::kGrow); // Grow
 		if (SizeManager::GetSingleton().BalancedMode() >= 2.0) {
 			float scale = get_visual_scale(actor);
@@ -120,7 +127,7 @@ namespace Gts {
 			this->AllowStacking = false;
 		}
 
-		GRumble::Once("ExplosiveGrowth", actor, get_visual_scale(actor) * 2, 0.05);
+		GRumble::Once("GrowthSpurt", actor, get_visual_scale(actor) * 2, 0.05);
 		if (this->timerSound.ShouldRunFrame()) {
 			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 1.0);
 		}
@@ -130,7 +137,7 @@ namespace Gts {
 		}
 	}
 
-	void ExplosiveGrowth::DoShrink(Actor* actor) {
+	void GrowthSpurt::DoShrink(Actor* actor) {
 		float value = SizeManager::GetSingleton().GetGrowthSpurt(actor);
 		update_target_scale(actor, -value, SizeEffectType::kNeutral); // Do Shrink
 		if (get_target_scale(actor) <= get_natural_scale(actor)) {
@@ -141,7 +148,7 @@ namespace Gts {
 
 		this->AllowStacking = true;
 
-		GRumble::Once("ExplosiveGrowth", actor, 7.0, 0.05);
+		GRumble::Once("GrowthSpurt", actor, 7.0, 0.05);
 		if (this->timerSound.ShouldRunFrame()) {
 			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 1.0);
 		}

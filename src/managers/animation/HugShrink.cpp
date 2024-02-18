@@ -172,11 +172,6 @@ namespace {
 			AdjustSizeReserve(caster, target_scale/10);
 			AdjustSizeLimit(0.0060, caster);
 			AdjustMassLimit(0.0060, caster);
-			if (Runtime::HasPerk(caster, "ExtraGrowth") && HasGrowthSpurt(caster)) {
-				auto CrushGrowthStorage = Runtime::GetFloat("CrushGrowthStorage");
-				Runtime::SetFloat("CrushGrowthStorage", CrushGrowthStorage + (target_scale * 4) / SizeManager::GetSingleton().BalancedMode());
-			}
-			// Slowly increase Crush Growth Limit after crushing someone while Growth Spurt is active.
 		}
 		HugShrink::Release(giant);
 	}

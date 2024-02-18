@@ -108,27 +108,6 @@ namespace {
 		sizemanager.ModSizeVulnerability(tiny, damage * 0.0015);
 	}
 
-	void SizeModifications(Actor* giant, Actor* tiny, float HighHeels) {
-		auto profiler = Profilers::Profile("CollisionDamage: SizeModifications");
-		if (tiny == giant) {
-			return;
-		}
-		float giantscale = get_visual_scale(giant);
-		float tinyscale = get_visual_scale(tiny) * GetSizeFromBoundingBox(tiny);
-		float size_difference = giantscale/tinyscale;
-		float BonusShrink = (IsJumping(giant) * 3.0) + 1.0;
-
-		if (Runtime::HasPerk(giant, "ExtraGrowth") && giant != tiny && HasGrowthSpurt(giant)) {
-			if (get_target_scale(tiny) > 0.12) {
-				ShrinkActor(tiny, 0.0014 * BonusShrink, 0.0);
-				Grow(giant, 0.0, 0.0004 * BonusShrink);
-			} else {
-				set_target_scale(tiny, 0.12);
-			}
-			// ^ Augmentation for Growth Spurt: Steal size of enemies.
-		}
-	}
-
 	float HighHeels_PerkDamage(Actor* giant, DamageSource Cause) {
 		float value = 1.0;
 		bool perk = Runtime::HasPerkTeam(giant, "hhBonus");
@@ -335,9 +314,7 @@ namespace Gts {
 		float sprintdamage = 1.0; // default Sprint damage of 1.0
 		float weightdamage = 1.0 + (giant->GetWeight()*0.01);
 
-		SizeModifications(giant, tiny, highheels);
 		TinyCalamity_CrushCheck(giant, tiny);
-		
 
 		if (giant->AsActorState()->IsSprinting()) {
 			sprintdamage = 1.5 * sizemanager.GetSizeAttribute(giant, 1);

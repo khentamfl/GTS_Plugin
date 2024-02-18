@@ -9,7 +9,7 @@ using namespace SKSE;
 using namespace RE;
 
 namespace Gts {
-	class ExplosiveGrowth : public Magic {
+	class GrowthSpurt : public Magic {
 		public:
 			virtual void OnUpdate() override;
 			virtual void OnStart() override;
@@ -18,7 +18,7 @@ namespace Gts {
 
 			virtual std::string GetName() override;
 
-			ExplosiveGrowth(ActiveEffect* effect);
+			GrowthSpurt(ActiveEffect* effect);
 
 			virtual void DoGrowth(Actor* actor, float value);
 			virtual void DoShrink(Actor* actor);

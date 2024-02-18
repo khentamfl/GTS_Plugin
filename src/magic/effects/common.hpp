@@ -354,11 +354,6 @@ namespace Gts {
 			AdjustSizeReserve(caster, target_scale/25);
 			AdjustSizeLimit(0.0066 * target_scale, caster);
 			AdjustMassLimit(0.0066 * target_scale, caster);
-			if (Runtime::HasPerk(caster, "ExtraGrowth") && HasGrowthSpurt(caster)) {
-				float CrushGrowthStorage = Runtime::GetFloat("CrushGrowthStorage");
-				Runtime::SetFloat("CrushGrowthStorage", CrushGrowthStorage + (target_scale/75) / SizeManager::GetSingleton().BalancedMode());
-			}
-			// Slowly increase Crush Growth Limit after crushing someone while Growth Spurt is active.
 		}
 	}
 }

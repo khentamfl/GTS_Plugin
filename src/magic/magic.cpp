@@ -2,7 +2,7 @@
 #include "Config.hpp"
 #include "magic/effects/common.hpp"
 #include "magic/effects/absorb_effect.hpp"
-#include "magic/effects/explosive_growth.hpp"
+#include "magic/effects/GrowthSpurt.hpp"
 #include "magic/effects/EnchGigantism.hpp"
 #include "magic/effects/grow_other.hpp"
 #include "magic/effects/growth.hpp"
@@ -247,8 +247,8 @@ namespace Gts {
 		RegisterMagic<ShrinkBackOther>("ShrinkBackNPC");
 		RegisterMagic<Absorb>("AbsorbMGEF");
 		RegisterMagic<Absorb>("TrueAbsorb");
-		RegisterMagic<ExplosiveGrowth>("explosiveGrowth1");
-		RegisterMagic<ExplosiveGrowth>("explosiveGrowth2");
-		RegisterMagic<ExplosiveGrowth>("explosiveGrowth3");
+		RegisterMagic<GrowthSpurt>("GrowthSpurt1");
+		RegisterMagic<GrowthSpurt>("GrowthSpurt2");
+		RegisterMagic<GrowthSpurt>("GrowthSpurt3");
 	}
 }
