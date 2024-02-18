@@ -543,10 +543,24 @@ namespace Gts {
 
 	bool IsBeingGrinded(Actor* actor) {
 		auto transient = Transient::GetSingleton().GetData(actor);
+		bool grinded = false;
+		actor->GetGraphVariableBool("GTS_BeingGrinded", grinded);
 		if (transient) {
 			return transient->being_foot_grinded;
 		}
-		return false;
+		return grinded;
+	}
+
+	bool IsHugging(Actor* actor) {
+		bool hugging = false;
+		actor->GetGraphVariableBool("GTS_Hugging", hugging);
+		return hugging;
+	}
+
+	bool IsBeingHugged(Actor* actor) {
+		bool hugged = false;
+		actor->GetGraphVariableBool("GTS_BeingHugged", hugged);
+		return hugged;
 	}
 
 	bool CanDoButtCrush(Actor* actor) {
@@ -746,12 +760,19 @@ namespace Gts {
 
 	bool CanPerformAnimationOn(Actor* giant, Actor* tiny) {
 		
+		bool Busy = IsBeingGrinded(tiny) || IsBeingHugged(tiny) || IsHugging(giant);
+		// If any of these is true = we disallow animation
+
 		bool Teammate = IsTeammate(tiny);
 		bool essential = IsEssential(tiny); // Teammate check is done here
 		bool hostile = IsHostile(giant, tiny);
 		bool no_protection = Persistent::GetSingleton().FollowerInteractions;
 		bool Ignore_Protection = (giant->formID == 0x14 && Runtime::HasPerk(giant, "HugCrush_LovingEmbrace"));
 		bool allow_teammate = (giant->formID != 0x14 && no_protection && IsTeammate(tiny) && IsTeammate(giant));
+
+		if (Busy) {
+			return false;
+		}
 		if (Ignore_Protection) {
 			return true;
 		}

@@ -153,7 +153,6 @@ namespace Gts {
 
 	void Animation_SneakSlam_FingerGrind::RegisterTriggers() {
 		AnimationManager::RegisterTrigger("Tiny_Finger_Impact_S", "Sneak", "GTSBEH_T_Slam_Start");
-		AnimationManager::RegisterTrigger("Tiny_Finger_Impact_F", "Sneak", "GTSBEH_T_Slam_Finish");
 	}
 
     void TrackMatchingHand(Actor* giant, CrawlEvent kind, bool enable) {

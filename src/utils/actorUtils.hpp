@@ -62,6 +62,8 @@ namespace Gts {
 	bool IsButtCrushing(Actor* actor);
 	bool ButtCrush_IsAbleToGrow(Actor* actor, float limit);
 	bool IsBeingGrinded(Actor* actor);
+	bool IsHugging(Actor* actor);
+	bool IsBeingHugged(Actor* actor);
 	bool CanDoButtCrush(Actor* actor);
 	bool GetCameraOverride(Actor* actor);
 	// GTS State Bools End

@@ -129,6 +129,11 @@ namespace Gts {
 		if (caster == target) {
 			return;
 		}
+
+		if (IsEssential(target)) {
+			return; // Disallow shrinking Essentials
+		}
+
 		auto& Persist = Persistent::GetSingleton();
 		float SizeDifference = 1.0;
 		float bonus = 1.0;
@@ -136,7 +141,7 @@ namespace Gts {
 		float shrink = this->power * 2.6;
 		float gainpower = this->efficiency;
 		auto actor_data = Persist.GetData(target);
-
+		
 		if (this->power >= 18.00) {
 			if (actor_data) {
 				actor_data->half_life = 0.25; // Faster shrink, less smooth.
@@ -162,11 +167,11 @@ namespace Gts {
 			balancemodebonus = 0.5;
 		}
 
-		if (IsEssential(target)) {
-			return; // Disallow shrinking Essentials
-		}
+		
 		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus, gainpower * balancemodebonus, false, ShrinkSource::magic);
-		Attacked(target, caster); // make it a hostile spell
+
+		Attacked(target, caster); // make it work like a hostile spell
+
 		if (ShrinkToNothing(caster, target)) {
 		}
 	}

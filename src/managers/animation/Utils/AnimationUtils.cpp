@@ -1223,7 +1223,7 @@ namespace Gts {
 								Laugh_Chance(giant, otherActor, 1.0, "FingerGrind"); 
 
 								if (Animation) {
-									AnimationManager::StartAnim("Tiny_Finger_Impact_F", otherActor);
+									PushActorAway(giant, otherActor, 1.0);
 								}
 
 								Utils_PushCheck(giant, otherActor, 1.0);
