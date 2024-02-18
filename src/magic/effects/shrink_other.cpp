@@ -1,5 +1,6 @@
 #include "magic/effects/shrink_other.hpp"
 #include "magic/effects/common.hpp"
+#include "ActionSettings.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"

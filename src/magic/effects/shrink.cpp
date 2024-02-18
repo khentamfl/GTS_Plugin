@@ -1,6 +1,7 @@
 #include "magic/effects/shrink.hpp"
 #include "magic/effects/common.hpp"
 #include "utils/actorUtils.hpp"
+#include "ActionSettings.hpp"
 #include "magic/magic.hpp"
 #include "scale/scale.hpp"
 #include "data/runtime.hpp"
@@ -32,10 +33,10 @@ namespace Gts {
 		if (IsDualCasting()) {
 			power *= DUAL_CAST_BONUS;
 		}
-		if (get_target_scale(caster) > 0.06) {
+		if (get_target_scale(caster) > Minimum_Actor_Scale) {
 			ShrinkActor(caster, 0.0, power * bonus);
 		} else {
-			set_target_scale(caster, 0.06);
+			set_target_scale(caster, Minimum_Actor_Scale);
 		}
 	}
 }
