@@ -39,7 +39,7 @@ namespace {
 			basic += 0.50;
 		}
 		if (Runtime::HasPerk(giant, "ExtraGrowthMax")) {
-			float perkbonus = 1.0 + ((GetGtsSkillLevel() * 0.01) + (giant->GetLevel() * 0.01));
+			float perkbonus = 1.0 + ((GetGtsSkillLevel() * 0.015) + (giant->GetLevel() * 0.015));
 			basic *= perkbonus;
 		}
 		return bonus + basic;
@@ -54,7 +54,7 @@ namespace {
 		} else if (rank == 2) {
 			bonus = 0.50;
 		} else if (rank == 3) {
-			bonus = 1.00;
+			bonus = 1.0;
 		}
 
 		bonus *= Get_Perk_Bonus(giant);
@@ -66,7 +66,7 @@ namespace {
 		float SpRegen = 0;
 		
 		if (Runtime::HasPerk(caster, "HealthRegenPerk")) {
-			SpRegen = GetMaxAV(caster, ActorValue::kStamina) * 0.00030;
+			SpRegen = GetMaxAV(caster, ActorValue::kStamina) * 0.00010;
 			HpRegen *= 2.0;
 		}
 

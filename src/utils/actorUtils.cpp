@@ -1750,19 +1750,21 @@ namespace Gts {
 
 	float Perk_GetCostReduction(Actor* giant) {
 		float cost = 1.0;
-		float reduction = 0.0;
+		float reduction_1 = 0.0;
+		float reduction_2 = 1.0;
 		if (Runtime::HasPerkTeam(giant, "SkilledGTS")) {
-			reduction += std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
+			reduction_1 += std::clamp(GetGtsSkillLevel() * 0.0035f, 0.0f, 0.35f);
 		}
 		if (giant->formID == 0x14 && HasGrowthSpurt(giant)) {
 			if (Runtime::HasPerkTeam(giant, "GrowthOfStrength")) {
-				reduction += 0.10;
+				reduction_2 -= 0.10;
 			} 
 			if (Runtime::HasPerk(giant, "ExtraGrowth")) {
-				reduction += 0.30;
+				reduction_2 -= 0.30;
 			}
 		}
 		cost -= reduction;
+		cost *= reduction_2;
 		return cost;
 	}
 
