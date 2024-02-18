@@ -1763,7 +1763,7 @@ namespace Gts {
 				reduction_2 -= 0.30;
 			}
 		}
-		cost -= reduction;
+		cost -= reduction_1;
 		cost *= reduction_2;
 		return cost;
 	}
