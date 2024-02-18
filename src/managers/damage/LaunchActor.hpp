@@ -20,10 +20,14 @@ namespace Gts {
 
 			virtual std::string DebugName() override;
 
-			void LaunchAtNode(Actor* giant, float radius, float power, std::string_view node);
-			void LaunchAtNode(Actor* giant, float radius, float min_radius, float power, NiAVObject* node);
 			void ApplyLaunch(Actor* giant, float radius, float power, FootEvent kind);
-			void ApplyLaunch(Actor* giant, float radius, float power, NiAVObject* node);
+
+			void LaunchAtNode(Actor* giant, float radius, float power, std::string_view node);
+			void LaunchAtNode(Actor* giant, float radius, float power, NiAVObject* node);
+
+			void FindLaunchActors(Actor* giant, float radius, float min_radius, float power, NiAVObject* node);
+
+			
 			void LaunchLeft(Actor* giant, float radius, float power);
 			void LaunchRight(Actor* giant, float radius, float power);
 	};

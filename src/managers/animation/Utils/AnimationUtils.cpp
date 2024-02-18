@@ -318,7 +318,7 @@ namespace Gts {
 			smt_power *= 2.0;
 			smt_radius *= 1.25;
 		}
-		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * smt_radius, power * smt_power, kind);
+		LaunchActor::GetSingleton().ApplyLaunch_At(giant, radius * smt_radius, power * smt_power, kind);
 	}
 
 	void DoLaunch(Actor* giant, float radius, float power, NiAVObject* node) {
@@ -328,7 +328,7 @@ namespace Gts {
 			smt_power *= 2.0;
 			smt_radius *= 1.25;
 		}
-		LaunchActor::GetSingleton().ApplyLaunch(giant, radius * smt_radius, power * smt_power, node);
+		LaunchActor::GetSingleton().FindLaunchActors(giant, radius * smt_radius, 0.0, power * smt_power, node);
 	}
 
 	void GrabStaminaDrain(Actor* giant, Actor* tiny, float sizedifference) {

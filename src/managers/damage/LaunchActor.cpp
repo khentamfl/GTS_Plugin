@@ -92,7 +92,7 @@ namespace {
 	}
 
 
-	void LaunchDecide(Actor* giant, Actor* tiny, float force, float launch_power) {
+	void ApplyLaunchTo(Actor* giant, Actor* tiny, float force, float launch_power) {
 		auto profiler = Profilers::Profile("Other: Launch Actors Decide");
 		if (IsBeingHeld(tiny)) {
 			return;
@@ -231,7 +231,7 @@ namespace Gts {
 		return "LaunchActor";
 	}
 
-	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float power, FootEvent kind) {
+	void LaunchActor::ApplyLaunch_At(Actor* giant, float radius, float power, FootEvent kind) {
 		if (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone(giant)) {
 			if (kind == FootEvent::Left) {
 				LaunchActor::GetSingleton().LaunchLeft(giant, radius, power);
@@ -261,18 +261,20 @@ namespace Gts {
 			}
 		}
 	}
-	void LaunchActor::ApplyLaunch(Actor* giant, float radius, float power, NiAVObject* node) {
-		LaunchActor::LaunchAtNode(giant, radius, power, node); // doesn't need a check since function below has it
-	}
+
 
 	void LaunchActor::LaunchAtNode(Actor* giant, float radius, float power, std::string_view node) {
 		auto bone = find_node(giant, node);
 		if (bone) {
-			LaunchActor::LaunchAtNode(giant, radius, 0.0, power, bone);
+			LaunchActor::FindLaunchActors(giant, radius, 0.0, power, bone);
 		}
 	}
 
-	void LaunchActor::LaunchAtNode(Actor* giant, float radius, float min_radius, float power, NiAVObject* node) {
+	void LaunchActor::LaunchAtNode(Actor* giant, float radius, float power, NiAVObject* node) {
+		LaunchActor::FindLaunchActors(giant, radius, 0.0, power, node);
+	}
+
+	void LaunchActor::FindLaunchActors(Actor* giant, float radius, float min_radius, float power, NiAVObject* node) {
 		auto profiler = Profilers::Profile("Other: Launch Actor Crawl");
 		if (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone(giant)) {
 			if (!node) {
@@ -327,7 +329,7 @@ namespace Gts {
 									return;
 								}
 								float force = 1.0 - distance / maxDistance;
-								LaunchDecide(giant, otherActor, force, power);
+								ApplyLaunchTo(giant, otherActor, force, power);
 							}
 						}
 					}
@@ -424,7 +426,7 @@ namespace Gts {
 							float distance = (point - actorLocation).Length();
 							if (distance <= maxFootDistance) {
 								float force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-								LaunchDecide(giant, otherActor, force, power);
+								ApplyLaunchTo(giant, otherActor, force, power);
 							}
 						}
 					}
@@ -526,7 +528,7 @@ namespace Gts {
 							float distance = (point - actorLocation).Length();
 							if (distance <= maxFootDistance) {
 								float force = 1.0 - distance / maxFootDistance;//force += 1.0 - distance / maxFootDistance;
-								LaunchDecide(giant, otherActor, force, power);
+								ApplyLaunchTo(giant, otherActor, force, power);
 							}
 						}
 					}

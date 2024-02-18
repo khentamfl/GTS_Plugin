@@ -91,7 +91,6 @@ namespace Gts {
 		float minimal_scale = 1.5;
 
 		LaunchActor::GetSingleton().LaunchAtNode(actor, launch_dist, damage_dist, multiplier, node); // Launch actors
-		//                                                radius       power       object
 		// Order matters here since we don't want to make it even stronger during SMT, so that's why SMT check is after this function
 		
 		
