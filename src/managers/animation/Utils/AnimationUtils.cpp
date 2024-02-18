@@ -566,6 +566,7 @@ namespace Gts {
 		ShrinkUntil(giant, tiny, 10.0, 0.18);
 		
 		std::string name = std::format("FingerGrind_{}_{}", giant->formID, tiny->formID);
+		AnimationManager::StartAnim("Tiny_Finger_Impact_S", tiny);
 		auto FrameA = Time::FramesElapsed();
 		auto coordinates = AttachToObjectB_GetCoords(giant, tiny);
 		if (coordinates == NiPoint3(0,0,0)) {
@@ -669,11 +670,9 @@ namespace Gts {
 								if (Right) {
 									DoFingerGrind(giant, otherActor);
 									AnimationManager::StartAnim("GrindRight", giant);
-									AnimationManager::StartAnim("Tiny_Finger_Impact_S", otherActor);
 								} else {
 									DoFingerGrind(giant, otherActor);
 									AnimationManager::StartAnim("GrindLeft", giant);
-									AnimationManager::StartAnim("Tiny_Finger_Impact_S", otherActor);
 								}
 							}
 						}
