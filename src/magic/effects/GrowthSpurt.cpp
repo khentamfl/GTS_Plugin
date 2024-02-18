@@ -9,6 +9,28 @@
 #include "managers/Rumble.hpp"
 
 namespace {
+	void PlayShrinkAudio(Actor* actor) {
+		GRumble::Once("GrowthSpurt", actor, 7.0, 0.05);
+		if (this->timerSound.ShouldRunFrame()) {
+			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 1.0);
+		}
+		if (this->timer.ShouldRun()) {
+			float Volume = clamp(0.10, 1.0, get_visual_scale(actor) * 0.10);
+			Runtime::PlaySound("shrinkSound", actor, Volume, 1.0);
+		}
+	}
+
+	void PlayGrowthAudio(Actor* actor) {
+		GRumble::Once("GrowthSpurt", actor, get_visual_scale(actor) * 2, 0.05);
+		if (this->timerSound.ShouldRunFrame()) {
+			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 1.0);
+		}
+		if (this->timer.ShouldRun()) {
+			float Volume = clamp(0.20, 1.0, get_visual_scale(actor) * 0.15);
+			Runtime::PlaySoundAtNode("growthSound", actor, Volume, 1.0, "NPC Pelvis [Pelv]");
+		}
+	}
+
 	float Get_Perk_Bonus(Actor* giant) {
 		float bonus = 1.0;
 		float basic = 0.0;
@@ -99,7 +121,6 @@ namespace Gts {
 				bonus = get_visual_scale(caster) * 0.25 + 0.75;
 			}
 			DoGrowth(caster, this->power * bonus);
-			//log::info("Limit: {}, MaxSize: {}, Scale: {}", limit, MaxSize, scale);
 		}
 	}
 
@@ -126,15 +147,8 @@ namespace Gts {
 		} else {
 			this->AllowStacking = false;
 		}
-
-		GRumble::Once("GrowthSpurt", actor, get_visual_scale(actor) * 2, 0.05);
-		if (this->timerSound.ShouldRunFrame()) {
-			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 1.0);
-		}
-		if (this->timer.ShouldRun()) {
-			float Volume = clamp(0.20, 1.0, get_visual_scale(actor) * 0.15);
-			Runtime::PlaySoundAtNode("growthSound", actor, Volume, 1.0, "NPC Pelvis [Pelv]");
-		}
+		PlayGrowthAudio(actor);
+		
 	}
 
 	void GrowthSpurt::DoShrink(Actor* actor) {
@@ -143,18 +157,9 @@ namespace Gts {
 		if (get_target_scale(actor) <= get_natural_scale(actor)) {
 			set_target_scale(actor, get_natural_scale(actor));
 		}
-		//log::info("Doing Shrink: {}", value);
 		SizeManager::GetSingleton().SetGrowthSpurt(actor, 0.0);
 
 		this->AllowStacking = true;
-
-		GRumble::Once("GrowthSpurt", actor, 7.0, 0.05);
-		if (this->timerSound.ShouldRunFrame()) {
-			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 1.0);
-		}
-		if (this->timer.ShouldRun()) {
-			float Volume = clamp(0.10, 1.0, get_visual_scale(actor) * 0.10);
-			Runtime::PlaySound("shrinkSound", actor, Volume, 1.0);
-		}
+		PlayShrinkAudio(actor);
 	}
 }
