@@ -77,7 +77,7 @@ namespace {
 				ShrinkActor(caster, 0.0080 * stamina * multiply, 0.0); // Is automatically *'d by scale through CalcPower()
 			} else {
 				SetHalfLife(caster, 1.0);
-				set_target_scale(Minimum_Actor_Scale);
+				set_target_scale(caster, Minimum_Actor_Scale);
 				return false;
 			}
 
