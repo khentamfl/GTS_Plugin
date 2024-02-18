@@ -50,7 +50,7 @@ namespace {
 				auto transient = Transient::GetSingleton().GetData(player);
 				if (transient) {
 					float scale = get_visual_scale(player);
-					float CalcFall = 1.0 + (charCont->fallTime * (2.0 / scale) - 2.0);
+					float CalcFall = 1.0 + (charCont->fallTime * (4.0 / scale) - 4.0);
 					float FallTime = std::clamp(CalcFall, 1.0f, 3.0f);
 					log::info("FallTime: {}", FallTime);
 					transient->FallTimer = FallTime;
