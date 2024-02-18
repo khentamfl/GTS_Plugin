@@ -39,7 +39,7 @@ namespace {
 			basic += 0.50;
 		}
 		if (Runtime::HasPerk(giant, "ExtraGrowthMax")) {
-			float perkbonus = ((GetGtsSkillLevel() * 0.01) + (giant->GetLevel() * 0.01));
+			float perkbonus = 1.0 + ((GetGtsSkillLevel() * 0.01) + (giant->GetLevel() * 0.01));
 			basic *= perkbonus;
 		}
 		return bonus + basic;
