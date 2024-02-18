@@ -39,9 +39,11 @@ namespace Gts {
 			GRumble::Once("ShrinkBack", caster, 0.60, 0.05);
 		}
 
-		if (!Revert(caster, Power, Power/2.5)) {
-			// Returns false when shrink back is complete
-			Dispel();
+		if (!Revert(caster, Power, Power/2.5)) { // Returns false when shrink back is complete
+			std::string taskname = std::format("DispelShrink_Other_{}", caster->formID);
+			TaskManager::RunOnce(taskname, [=](auto& update) {
+				Dispel();
+			});
 		}
 	}
 }

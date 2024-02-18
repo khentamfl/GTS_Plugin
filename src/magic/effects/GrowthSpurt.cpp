@@ -60,6 +60,21 @@ namespace {
 		bonus *= Get_Perk_Bonus(giant);
 		return basic + bonus;
 	}
+
+	void GrowthSpurt_RegenerateAttributes(Actor* caster) {
+		float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.00020;
+		float SpRegen = 0;
+		
+		if (Runtime::HasPerk(caster, "HealthRegenPerk")) {
+			SpRegen = GetMaxAV(caster, ActorValue::kStamina) * 0.00030;
+			HpRegen *= 2.0;
+		}
+
+		caster->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
+		if (SpRegen > 0) {
+			caster->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, SpRegen * TimeScale());
+		}
+	}
 }
 
 namespace Gts {
@@ -107,14 +122,9 @@ namespace Gts {
 		float bonus = 1.0;
 		float limit = this->grow_limit * Gigantism;
 		float MaxSize = get_max_scale(caster) - 0.004;
+		
 
-		float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.00020;
-
-		if (Runtime::HasPerk(caster, "HealthRegenPerk")) {
-			HpRegen *= 2.0;
-		}
-
-		caster->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
+		GrowthSpurt_RegenerateAttributes(caster);
 
 		if (scale < limit && scale < MaxSize) {
 			if (Runtime::HasMagicEffect(PlayerCharacter::GetSingleton(), "EffectSizeAmplifyPotion")) {
