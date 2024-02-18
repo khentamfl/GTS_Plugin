@@ -41,7 +41,7 @@ namespace Gts {
 	inline float Shrink_GetPower(Actor* giant, Actor* tiny) { // for shrinking another
 		float reduction = 1.0 / GetSizeFromBoundingBox(tiny);
 		log::info("Default Shrink power for {} is {}", tiny->GetDisplayFullName(), reduction);
-		if (IsUndead(tiny, false)) {
+		if (IsUndead(tiny, false) && !IsLiving(tiny)) {
 			if (CanBendLifeless(giant)) {
 				reduction *= 0.31;
 			} else {
@@ -62,7 +62,7 @@ namespace Gts {
 
 	inline float SizeSteal_GetPower(Actor* giant, Actor* tiny) { // for gaining size
 		float increase = GetSizeFromBoundingBox(tiny);
-		if (IsUndead(tiny, false)) {
+		if (IsUndead(tiny, false) && !IsLiving(tiny)) {
 			if (CanBendLifeless(giant)) {
 				increase *= 0.31;
 			} else {
@@ -215,11 +215,9 @@ namespace Gts {
 		float target_scale = get_target_scale(actor);
 		float natural_scale = get_neutral_scale(actor);
 
-		if (fabs(target_scale - natural_scale) < amount) {
+		if (target_scale < natural_scale) { // NOLINT
 			set_target_scale(actor, natural_scale);
 			return false;
-		} else if (target_scale < natural_scale) { // NOLINT
-			update_target_scale(actor, amount, SizeEffectType::kNeutral);
 		} else {
 			update_target_scale(actor, -amount, SizeEffectType::kNeutral);
 		}
