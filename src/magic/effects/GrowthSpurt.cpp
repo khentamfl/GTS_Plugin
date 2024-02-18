@@ -9,10 +9,10 @@
 #include "managers/Rumble.hpp"
 
 namespace {
-	void PlayShrinkAudio(Actor* actor, bool timer_1, bool timer_2) {
+	void PlayShrinkAudio(Actor* actor, bool timer_1, bool timer_2, float power) {
 		GRumble::Once("GrowthSpurt", actor, 7.0, 0.05);
 		if (timer_1) {
-			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 1.0);
+			Runtime::PlaySound("xlRumbleL", actor, power/20, 1.0);
 		}
 		if (timer_2) {
 			float Volume = clamp(0.10, 1.0, get_visual_scale(actor) * 0.10);
@@ -20,10 +20,10 @@ namespace {
 		}
 	}
 
-	void PlayGrowthAudio(Actor* actor, bool timer_1, bool timer_2) {
+	void PlayGrowthAudio(Actor* actor, bool timer_1, bool timer_2, float power) {
 		GRumble::Once("GrowthSpurt", actor, get_visual_scale(actor) * 2, 0.05);
 		if (timer_1) {
-			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 1.0);
+			Runtime::PlaySound("xlRumbleL", actor, power/20, 1.0);
 		}
 		if (timer_2) {
 			float Volume = clamp(0.20, 1.0, get_visual_scale(actor) * 0.15);
@@ -147,7 +147,7 @@ namespace Gts {
 		} else {
 			this->AllowStacking = false;
 		}
-		PlayGrowthAudio(actor, this->timer.ShouldRun(), this->timerSound.ShouldRunFrame());
+		PlayGrowthAudio(actor, this->timer.ShouldRun(), this->timerSound.ShouldRunFrame(), this->power);
 		
 	}
 
@@ -160,6 +160,6 @@ namespace Gts {
 		SizeManager::GetSingleton().SetGrowthSpurt(actor, 0.0);
 
 		this->AllowStacking = true;
-		PlayShrinkAudio(actor, this->timer.ShouldRun(), this->timerSound.ShouldRunFrame());
+		PlayShrinkAudio(actor, this->timer.ShouldRun(), this->timerSound.ShouldRunFrame(), this->power);
 	}
 }
