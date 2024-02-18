@@ -9,23 +9,23 @@
 #include "managers/Rumble.hpp"
 
 namespace {
-	void PlayShrinkAudio(Actor* actor) {
+	void PlayShrinkAudio(Actor* actor, bool timer_1, bool timer_2) {
 		GRumble::Once("GrowthSpurt", actor, 7.0, 0.05);
-		if (this->timerSound.ShouldRunFrame()) {
+		if (timer_1) {
 			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 1.0);
 		}
-		if (this->timer.ShouldRun()) {
+		if (timer_2) {
 			float Volume = clamp(0.10, 1.0, get_visual_scale(actor) * 0.10);
 			Runtime::PlaySound("shrinkSound", actor, Volume, 1.0);
 		}
 	}
 
-	void PlayGrowthAudio(Actor* actor) {
+	void PlayGrowthAudio(Actor* actor, bool timer_1, bool timer_2) {
 		GRumble::Once("GrowthSpurt", actor, get_visual_scale(actor) * 2, 0.05);
-		if (this->timerSound.ShouldRunFrame()) {
+		if (timer_1) {
 			Runtime::PlaySound("xlRumbleL", actor, this->power/20, 1.0);
 		}
-		if (this->timer.ShouldRun()) {
+		if (timer_2) {
 			float Volume = clamp(0.20, 1.0, get_visual_scale(actor) * 0.15);
 			Runtime::PlaySoundAtNode("growthSound", actor, Volume, 1.0, "NPC Pelvis [Pelv]");
 		}
@@ -105,7 +105,7 @@ namespace Gts {
 		float scale = get_visual_scale(caster);
 
 		float bonus = 1.0;
-		float limit = this->grow_limit * Gigantism * AdjustLimit;
+		float limit = this->grow_limit * Gigantism;
 		float MaxSize = get_max_scale(caster) - 0.004;
 
 		float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.00020;
@@ -147,7 +147,7 @@ namespace Gts {
 		} else {
 			this->AllowStacking = false;
 		}
-		PlayGrowthAudio(actor);
+		PlayGrowthAudio(actor, this->timer.ShouldRun(), this->timerSound.ShouldRunFrame());
 		
 	}
 
@@ -160,6 +160,6 @@ namespace Gts {
 		SizeManager::GetSingleton().SetGrowthSpurt(actor, 0.0);
 
 		this->AllowStacking = true;
-		PlayShrinkAudio(actor);
+		PlayShrinkAudio(actor, this->timer.ShouldRun(), this->timerSound.ShouldRunFrame());
 	}
 }
