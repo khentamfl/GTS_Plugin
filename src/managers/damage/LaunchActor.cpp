@@ -268,11 +268,11 @@ namespace Gts {
 	void LaunchActor::LaunchAtNode(Actor* giant, float radius, float power, std::string_view node) {
 		auto bone = find_node(giant, node);
 		if (bone) {
-			LaunchActor::LaunchAtNode(giant, radius, power, bone);
+			LaunchActor::LaunchAtNode(giant, radius, 0.0, power, bone);
 		}
 	}
 
-	void LaunchActor::LaunchAtNode(Actor* giant, float radius, float power, NiAVObject* node) {
+	void LaunchActor::LaunchAtNode(Actor* giant, float radius, float min_radius, float power, NiAVObject* node) {
 		auto profiler = Profilers::Profile("Other: Launch Actor Crawl");
 		if (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone(giant)) {
 			if (!node) {
@@ -323,6 +323,9 @@ namespace Gts {
 						for (auto point: CrawlPoints) {
 							float distance = (point - actorLocation).Length();
 							if (distance <= maxDistance) {
+								if (min_radius > 0.0 && distance < min_radius) {
+									return;
+								}
 								float force = 1.0 - distance / maxDistance;
 								LaunchDecide(giant, otherActor, force, power);
 							}

@@ -89,11 +89,11 @@ namespace Gts {
 
 		float SMT = 1.0;
 		float minimal_scale = 1.5;
-		if (LaunchNeeded) {
-			LaunchActor::GetSingleton().LaunchAtNode(actor, launch_dist, multiplier, node); // Launch actors
-			//                                                radius       power       object
-			// Order matters here since we don't want to make it even stronger during SMT, so that's why SMT check is after this function
-		}
+
+		LaunchActor::GetSingleton().LaunchAtNode(actor, launch_dist, damage_dist, multiplier, node); // Launch actors
+		//                                                radius       power       object
+		// Order matters here since we don't want to make it even stronger during SMT, so that's why SMT check is after this function
+		
 		
 		
 		if (actor->formID == 0x14) {
@@ -109,7 +109,7 @@ namespace Gts {
 		std::string rumbleName = std::format("{}{}", tag, actor->formID);
 		GRumble::Once(rumbleName, actor, 0.90 * multiplier * SMT, 0.02, name); // Do Rumble
 
-		DoDamageAtPoint(actor, damage_dist, damage, node, 20, 0.05, crushmult, Cause); // Do size-related damage
+		DoDamageAtPoint(actor, damage_dist, damage, node, 20, 0.05, crushmult, Cause, LaunchNeeded); // Do size-related damage
 		DoCrawlingSounds(actor, scale, node, FootEvent::Left);                      // Do impact sounds
 
 		if (scale >= minimal_scale && !actor->AsActorState()->IsSwimming()) {
@@ -133,9 +133,11 @@ namespace Gts {
 			}
 		}
 	}
+	void DoDamageAtPoint(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, DamageSource Cause) {
+		DoDamageAtPoint(giant, radius, damage, node, random, bbmult, crushmult, Cause, true);
+	}
 
-
-	void DoDamageAtPoint(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, DamageSource Cause) { // Apply damage to specific bone
+	void DoDamageAtPoint(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, DamageSource Cause, bool PushNeeded) { // Apply damage to specific bone
 		auto profiler = Profilers::Profile("Other: CrawlDamage");
 		if (!node) {
 			return;
@@ -206,8 +208,9 @@ namespace Gts {
 								}
 								damage /= damage_zones_applied;
 								float aveForce = std::clamp(force, 0.14f, 0.70f);
-
-								Utils_PushCheck(giant, otherActor, aveForce); 
+								if (PushNeeded) {
+									Utils_PushCheck(giant, otherActor, aveForce); 
+								}
 								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause, true);
 							}
 						}
