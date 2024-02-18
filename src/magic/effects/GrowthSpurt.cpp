@@ -63,17 +63,12 @@ namespace {
 
 	void GrowthSpurt_RegenerateAttributes(Actor* caster) {
 		float HpRegen = GetMaxAV(caster, ActorValue::kHealth) * 0.00020;
-		float SpRegen = 0;
 		
 		if (Runtime::HasPerk(caster, "HealthRegenPerk")) {
-			SpRegen = GetMaxAV(caster, ActorValue::kStamina) * 0.00010;
 			HpRegen *= 2.0;
 		}
 
 		caster->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, HpRegen * TimeScale());
-		if (SpRegen > 0) {
-			caster->AsActorValueOwner()->RestoreActorValue(ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kStamina, SpRegen * TimeScale());
-		}
 	}
 }
 
