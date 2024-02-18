@@ -7,6 +7,8 @@ using namespace RE;
 using namespace SKSE;
 
 namespace Gts {
+//-----------------------------------------Size Limits
+    const float Minimum_Actor_Scale = 0.04f;
 //-----------------------------------------Default Trigger Threshold Values
     const float Action_Sandwich = 6.0f; // used for sandwich only
 	const float Action_Crush = 10.0f;

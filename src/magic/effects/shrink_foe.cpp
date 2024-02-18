@@ -166,7 +166,7 @@ namespace Gts {
 			return; // Disallow shrinking Essentials
 		}
 		TransferSize(caster, target, IsDualCasting(), shrink * SizeDifference * bonus, gainpower * balancemodebonus, false, ShrinkSource::magic);
-
+		Attacked(target, caster); // make it a hostile spell
 		if (ShrinkToNothing(caster, target)) {
 		}
 	}

@@ -198,12 +198,12 @@ namespace {
 				bonus = target_scale * 0.25 + 0.75;
 			}
 
-			if (target_scale > 0.12) {
+			if (target_scale > Minimum_Actor_Scale) {
 				DamageAV(caster, ActorValue::kStamina, 0.25 * (caster_scale * 0.5 + 0.5) * stamina * TimeScale());
 				ShrinkActor(caster, 0.0020 * stamina, 0.0);
 				GRumble::Once("ShrinkButton", caster, 0.60, 0.05);
 			} else {
-				set_target_scale(caster, 0.12);
+				set_target_scale(caster, Minimum_Actor_Scale);
 				return false;
 			}
 			return true;

@@ -32,10 +32,10 @@ namespace Gts {
 		if (IsDualCasting()) {
 			power *= DUAL_CAST_BONUS;
 		}
-		if (get_target_scale(caster) > 0.12) {
+		if (get_target_scale(caster) > 0.06) {
 			ShrinkActor(caster, 0.0, power * bonus);
 		} else {
-			set_target_scale(caster, 0.12);
+			set_target_scale(caster, 0.06);
 		}
 	}
 }

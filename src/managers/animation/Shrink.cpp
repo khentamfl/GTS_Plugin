@@ -52,7 +52,7 @@ namespace {
 		float scale = get_visual_scale(actor);
 		float Volume = clamp(0.10, 1.0, scale * 0.10);
 			
-		Runtime::PlaySoundAtNode("shrinkSound", actor, Volume, 1.0,"NPC Pelvis [Pelv]");
+		Runtime::PlaySoundAtNode("shrinkSound", actor, Volume, 1.0, "NPC Pelvis [Pelv]");
 
 		SetHalfLife(actor, 0.0);
 		TaskManager::Run(name, [=](auto& progressData) {
@@ -71,7 +71,14 @@ namespace {
 			float perk = Perk_GetCostReduction(caster);
 
 			DamageAV(caster, ActorValue::kStamina, 0.15 * perk * caster_scale * stamina * TimeScale() * multiply);
-			Grow(caster, -(0.0080 * stamina * multiply), 0.0);
+
+			if (caster_scale > Minimum_Actor_Scale) {
+				ShrinkActor(caster, 0.0080 * stamina * multiply, 0.0); // Is automatically *'d by scale through CalcPower()
+			} else {
+				SetHalfLife(caster, 1.0);
+				set_target_scale(Minimum_Actor_Scale);
+				return false;
+			}
 
 			GRumble::Once("ShrinkButton", caster, 4.0 * stamina, 0.05, "NPC Pelvis [Pelv]");
 			if (elapsed >= 0.99) {

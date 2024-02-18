@@ -65,7 +65,7 @@ namespace {
 			}
 		}
 	}
-    void Finger_DoDamage(Actor* giant, bool Right, float Radius, float Damage, float CrushMult, float ShrinkMult) {
+    void Finger_DoDamage(Actor* giant, bool Right, float Radius, float Damage, float CrushMult, float ShrinkMult, bool Animation) {
 		DamageSource source = DamageSource::RightFinger;
 		std::string_view NodeLookup = Rfinger;
 		if (!Right) {
@@ -75,7 +75,7 @@ namespace {
 
 		NiAVObject* node = find_node(giant, NodeLookup);
 
-		ApplyFingerDamage(giant, Radius, Damage, node, 50, 0.10, CrushMult, -0.034 * ShrinkMult, source);
+		ApplyFingerDamage(giant, Radius, Damage, node, 50, 0.10, CrushMult, -0.034 * ShrinkMult, source, Animation);
 	}
 
     ////////////////////////////////////////////////////////////////////
@@ -115,13 +115,13 @@ namespace {
 	};   
 
 	void GTS_Sneak_FingerGrind_Finisher_R(AnimationEventData& data) {
-		Finger_DoDamage(&data.giant, true, Radius_Sneak_FingerGrind_Finisher, Damage_Sneak_FingerGrind_Finisher, 2.4, 3.0);
+		Finger_DoDamage(&data.giant, true, Radius_Sneak_FingerGrind_Finisher, Damage_Sneak_FingerGrind_Finisher, 2.4, 3.0, true);
         Finger_ApplyVisuals(&data.giant, Rfinger, 2.6, 1.25);
 		Finger_DoSounds(&data.giant, Rfinger, 1.5);
         StopStaminaDrain(&data.giant);	
 	};
     void GTS_Sneak_FingerGrind_Finisher_L(AnimationEventData& data) {
-		Finger_DoDamage(&data.giant, false, Radius_Sneak_FingerGrind_Finisher, Damage_Sneak_FingerGrind_Finisher, 2.4, 3.0);
+		Finger_DoDamage(&data.giant, false, Radius_Sneak_FingerGrind_Finisher, Damage_Sneak_FingerGrind_Finisher, 2.4, 3.0, true);
         Finger_ApplyVisuals(&data.giant, Lfinger, 2.6, 1.25);
 		Finger_DoSounds(&data.giant, Lfinger, 1.5);
         StopStaminaDrain(&data.giant);
@@ -150,6 +150,11 @@ namespace Gts {
 		AnimationManager::RegisterEvent("GTS_Sneak_FingerGrind_CameraOff_R", "Sneak", GTS_Sneak_FingerGrind_CameraOff_R);
         AnimationManager::RegisterEvent("GTS_Sneak_FingerGrind_CameraOff_L", "Sneak", GTS_Sneak_FingerGrind_CameraOff_L);
     }
+
+	void Animation_SneakSlam_FingerGrind::RegisterTriggers() {
+		AnimationManager::RegisterTrigger("Tiny_Finger_Impact_S", "Sneak", "GTSBEH_T_Slam_Start");
+		AnimationManager::RegisterTrigger("Tiny_Finger_Impact_F", "Sneak", "GTSBEH_T_Slam_Finish");
+	}
 
     void TrackMatchingHand(Actor* giant, CrawlEvent kind, bool enable) {
         if (kind == CrawlEvent::RightHand) {

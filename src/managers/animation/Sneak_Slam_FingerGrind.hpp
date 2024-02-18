@@ -11,9 +11,8 @@ namespace Gts
 	class Animation_SneakSlam_FingerGrind {
 		public:
 			static void RegisterEvents();
+			static void RegisterTriggers();
 	};
-
-    void ApplyFingerDamage(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, float Shrink, DamageSource Cause);
 	
     void TrackMatchingHand(Actor* giant, CrawlEvent kind, bool enable);
     void StopStaminaDrain(Actor* giant);

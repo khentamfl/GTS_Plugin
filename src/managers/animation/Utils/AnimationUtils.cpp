@@ -669,9 +669,11 @@ namespace Gts {
 								if (Right) {
 									DoFingerGrind(giant, otherActor);
 									AnimationManager::StartAnim("GrindRight", giant);
+									AnimationManager::StartAnim("Tiny_Finger_Impact_S", otherActor);
 								} else {
 									DoFingerGrind(giant, otherActor);
 									AnimationManager::StartAnim("GrindLeft", giant);
+									AnimationManager::StartAnim("Tiny_Finger_Impact_S", otherActor);
 								}
 							}
 						}
@@ -1151,8 +1153,8 @@ namespace Gts {
 		} 
 	}
 
-	void ApplyFingerDamage(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, float Shrink, DamageSource Cause) { // Apply crawl damage to each bone individually
-		auto profiler = Profilers::Profile("Other: CrawlDamage");
+	void ApplyFingerDamage(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, float Shrink, DamageSource Cause, bool Animation) { // Apply crawl damage to each bone individually
+		auto profiler = Profilers::Profile("Other: FingerDamage");
 		if (!node) {
 			return;
 		}
@@ -1219,6 +1221,11 @@ namespace Gts {
 									set_target_scale(otherActor, 0.08 / GetSizeFromBoundingBox(otherActor));
 								}
 								Laugh_Chance(giant, otherActor, 1.0, "FingerGrind"); 
+
+								if (Animation) {
+									AnimationManager::StartAnim("Tiny_Finger_Impact_F", otherActor);
+								}
+
 								Utils_PushCheck(giant, otherActor, 1.0);
 								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause, true);
 							}

@@ -82,6 +82,7 @@ namespace Gts {
 		Animation_SneakSlam::RegisterEvents();
 		Animation_SneakSlam_Strong::RegisterEvents();
 		Animation_SneakSlam_FingerGrind::RegisterEvents();
+		Animation_SneakSlam_FingerGrind::RegisterTriggers();
 
 		AnimationButtCrush::RegisterEvents();
 		AnimationButtCrush::RegisterTriggers();

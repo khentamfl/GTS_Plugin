@@ -81,16 +81,19 @@ namespace Gts {
 
 	void AI_TryAction(Actor* actor) {
 		float scale = std::clamp(get_visual_scale(actor), 1.0f, 6.0f);
-		int rng = rand() % 100;
-		if (rng > 7 && rng < 33 * scale) {
-			AI_DoStompAndButtCrush(actor);
-			return;
-		} else if (rng > 2 && rng < 7) {
-			AI_DoSandwich(actor);
-			return;
-		} else if (rng <= 1) {
-			AI_DoHugs(actor);
-			return;
+
+		if (!IsGtsBusy(actor)) {
+			int rng = rand() % 100;
+			if (rng > 7 && rng < 33 * scale) {
+				AI_DoStompAndButtCrush(actor);
+				return;
+			} else if (rng > 2 && rng < 7) {
+				AI_DoSandwich(actor);
+				return;
+			} else if (rng <= 1) {
+				AI_DoHugs(actor);
+				return;
+			}
 		}
 		// Random Vore is managed inside Vore.cpp, RandomVoreAttempt(Actor* pred) function
 	}
@@ -132,9 +135,6 @@ namespace Gts {
 
 	void AI_DoHugs(Actor* pred) {
 		if (!Persistent::GetSingleton().Hugs_Ai || IsCrawling(pred)) {
-			return;
-		}
-		if (IsGtsBusy(pred)) {
 			return;
 		}
 		int rng = rand() % 7;

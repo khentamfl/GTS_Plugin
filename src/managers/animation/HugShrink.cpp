@@ -385,6 +385,7 @@ namespace Gts {
 			
 			TransferSize(giantref, tinyref, false, shrink, steal, false, ShrinkSource::hugs); // Shrink foe, enlarge gts
 			ModSizeExperience(giantref, 0.00020);
+			Attacked(tinyref, giantref); // make it look like we attack the tiny
 			if (giantref->formID == 0x14) {
 				shake_camera(giantref, 0.40 * sizedifference, 0.05);
 			} else {
@@ -416,28 +417,32 @@ namespace Gts {
 			auto tinyref = tinyhandle.get().get();
 			auto giantref = gianthandle.get().get();
 			
-			bool HuggingAlly;
+			bool GTS_HuggingAlly = false;
+			bool Tiny_HuggedAsAlly = false;
 			float DrainReduction = 3.4;
-			tinyref->GetGraphVariableBool("GTS_IsFollower", HuggingAlly);
+			tinyref->GetGraphVariableBool("GTS_IsFollower", Tiny_HuggedAsAlly);
+			giantref->GetGraphVariableBool("GTS_HuggingTeammate", GTS_HuggingAlly);
+
+			bool HuggingAlly = GTS_HuggingAlly && Tiny_HuggedAsAlly;
 
 			if (HuggingAlly) {
 				DrainReduction *= 1.5; // less stamina drain for friendlies
 			}
 
-			ShutUp(tinyref);
-			ShutUp(giantref);
-
 			float threshold = GetHugShrinkThreshold(giantref);
 			float sizedifference = GetSizeDifference(giantref, tinyref, true);
 
-			if (!FaceOpposite(giantref, tinyref)) {
+			ShutUp(tinyref);
+			ShutUp(giantref);
+
+			if (!FaceOpposite(giantref, tinyref)) { // Makes the actor face us
 				// If face towards fails then actor is invalid
 				return false;
 			}
 			
-			ModSizeExperience(giantref, 0.00005);
-			DamageAV(tinyref, ActorValue::kStamina, 0.125 * TimeScale()); // Drain Tiny Stamina
 			GrabStaminaDrain(giantref, tinyref, sizedifference * DrainReduction);
+			DamageAV(tinyref, ActorValue::kStamina, 0.125 * TimeScale()); // Drain Tiny Stamina
+			ModSizeExperience(giantref, 0.00005);
 			
 			bool TinyAbsorbed;
 			giantref->GetGraphVariableBool("GTS_TinyAbsorbed", TinyAbsorbed);
@@ -462,8 +467,9 @@ namespace Gts {
 			if (!IsHugCrushing(giantref)) {
 				if (sizedifference < Action_Hug || IsDead || stamina <= 2.0 || !GotTiny) {
 					if (HuggingAlly) { 
-						// this is needed to still attach the actor while we have ally hugged
+						// this is needed to still attach the actor while we have ally hugged (with Loving Embrace Perk)
 					    // It fixes the Tiny not being moved around during Gentle Release animation for friendlies
+						// If it will be disabled, it will look off during gentle release
 						Hugs_ManageFriendlyTiny(gianthandle, tinyhandle);
 						return true;
 					}

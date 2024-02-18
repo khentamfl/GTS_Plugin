@@ -46,10 +46,12 @@ namespace Gts {
 			power *= DUAL_CAST_BONUS;
 		}
 
-		if (target_scale > 0.12) {
-			ShrinkActor(target, power*0.10, 0);
+		if (target_scale > Minimum_Actor_Scale) {
+			if (!IsHostile(target, caster)) {
+				ShrinkActor(target, power*0.10, 0);
+			}
 		} else {
-			set_target_scale(target, 0.12);
+			set_target_scale(target, Minimum_Actor_Scale);
 		}
 	}
 }
