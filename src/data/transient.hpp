@@ -47,6 +47,7 @@ namespace Gts {
 		bool Overkilled;
 		bool Protection;
 		bool was_sneaking;
+		bool prevent_push;
 
 		bool DisableControls;
 

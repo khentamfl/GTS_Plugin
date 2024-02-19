@@ -79,7 +79,7 @@ namespace Gts {
 	void DoCrawlingFunctions(Actor* actor, float scale, float multiplier, float damage, CrawlEvent kind, std::string_view tag, float launch_dist, float damage_dist, float crushmult, DamageSource Cause) {
 		DoCrawlingFunctions(actor, scale, multiplier, damage, kind, tag, launch_dist, damage_dist, crushmult, Cause, true);
 	}
-	void DoCrawlingFunctions(Actor* actor, float scale, float multiplier, float damage, CrawlEvent kind, std::string_view tag, float launch_dist, float damage_dist, float crushmult, DamageSource Cause, bool LaunchNeeded) { // Call everything
+	void DoCrawlingFunctions(Actor* actor, float scale, float multiplier, float damage, CrawlEvent kind, std::string_view tag, float launch_dist, float damage_dist, float crushmult, DamageSource Cause, bool CanBePushed) { // Call everything
 		std::string_view name = GetImpactNode(kind);
 
 		auto node = find_node(actor, name);
@@ -92,8 +92,6 @@ namespace Gts {
 
 		LaunchActor::GetSingleton().FindLaunchActors(actor, launch_dist, damage_dist, multiplier, node); // Launch actors
 		// Order matters here since we don't want to make it even stronger during SMT, so that's why SMT check is after this function
-		
-		
 		
 		if (actor->formID == 0x14) {
 			if (HasSMT(actor)) {
@@ -133,10 +131,10 @@ namespace Gts {
 		}
 	}
 	void DoDamageAtPoint(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, DamageSource Cause) {
-		DoDamageAtPoint(giant, radius, damage, node, random, bbmult, crushmult, Cause, true);
+		DoDamageAtPoint(giant, radius, damage, node, random, bbmult, crushmult, Cause, false);
 	}
 
-	void DoDamageAtPoint(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, DamageSource Cause, bool PushNeeded) { // Apply damage to specific bone
+	void DoDamageAtPoint(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, DamageSource Cause, bool CanBePushed) { // Apply damage to specific bone
 		auto profiler = Profilers::Profile("Other: CrawlDamage");
 		if (!node) {
 			return;
@@ -207,10 +205,11 @@ namespace Gts {
 								}
 								damage /= damage_zones_applied;
 								float aveForce = std::clamp(force, 0.14f, 0.70f);
-								if (PushNeeded) {
-									Utils_PushCheck(giant, otherActor, aveForce); 
-									log::info("Trying push");
+								if (!CanBePushed) {
+									SetCanBePushed(otherActor, false);
 								}
+								Utils_PushCheck(giant, otherActor, aveForce); 
+								
 								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause, true);
 							}
 						}

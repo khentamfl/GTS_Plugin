@@ -235,16 +235,12 @@ namespace Gts {
                                 auto& sizemanager = SizeManager::GetSingleton();
                                 bool OnCooldown = sizemanager.IsThighDamaging(otherActor);
                                 if (!OnCooldown) {
-                                    if (!IsBeingGrinded(otherActor)) {
-                                        Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
-                                    }
+                                    Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
                                     CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause, false);
                                     sizemanager.GetDamageData(otherActor).lastThighDamageTime = Time::WorldTimeElapsed();
                                 }
                             } else {
-                                if (!IsBeingGrinded(otherActor)) {
-                                    Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
-                                }
+                                Utils_PushCheck(actor, otherActor, force); // pass original un-altered force
                                 CollisionDamage.DoSizeDamage(actor, otherActor, damage, bbmult, crush_threshold, random, Cause, false);
                             }
                         }

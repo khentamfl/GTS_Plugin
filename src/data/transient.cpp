@@ -82,6 +82,7 @@ namespace Gts {
 			bool Overkilled = false;
 			bool Protection = false;
 			bool was_sneaking = false;
+			bool prevent_push = false;
 
 			bool DisableControls = false;
 
@@ -144,6 +145,7 @@ namespace Gts {
 			result.Overkilled = Overkilled;
 			result.Protection = Protection;
 			result.was_sneaking = was_sneaking;
+			result.prevent_push = prevent_push;
 
 			result.DisableControls = DisableControls;
 
