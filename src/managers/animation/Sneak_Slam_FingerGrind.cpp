@@ -65,7 +65,7 @@ namespace {
 			}
 		}
 	}
-    void Finger_DoDamage(Actor* giant, bool Right, float Radius, float Damage, float CrushMult, float ShrinkMult, bool Animation) {
+    void Finger_DoDamage(Actor* giant, bool Right, float Radius, float Damage, float CrushMult, float ShrinkMult) {
 		DamageSource source = DamageSource::RightFinger;
 		std::string_view NodeLookup = Rfinger;
 		if (!Right) {
@@ -75,7 +75,7 @@ namespace {
 
 		NiAVObject* node = find_node(giant, NodeLookup);
 
-		ApplyFingerDamage(giant, Radius, Damage, node, 50, 0.10, CrushMult, -0.034 * ShrinkMult, source, Animation);
+		ApplyFingerDamage(giant, Radius, Damage, node, 50, 0.10, CrushMult, -0.034 * ShrinkMult, source);
 	}
 
     ////////////////////////////////////////////////////////////////////
