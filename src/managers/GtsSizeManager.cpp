@@ -34,28 +34,25 @@ namespace {
 	const float LAUNCH_KNOCKBACK_BASE = 0.02f;
 
 	float Calculate_Halflife(CameraTracking Bone) {
-		switch (Bone) {
-			case CameraTracking::Thigh_Crush: {
-				return 0.15;
-			}
-			case CameraTracking::VoreHand_Right || CameraTracking::Hand_Left || CameraTracking::Hand_Right || CameraTracking::Knees: {
-				return 0.10;
-			}
-			case CameraTracking::ObjectA || CameraTracking::ObjectB || CameraTracking::Breasts_02: {
-				return 0.10;
-			}
-			case CameraTracking::R_Foot || CameraTracking::L_Foot: {
-				return 0.08;
-			}
-			case CameraTracking::Butt || CameraTracking::Mid_Butt_Legs: {
-				return 0.08;
-			}
-			case CameraTracking::Finger_Right || CameraTracking::Finger_Left: {
-				return 0.08;
-			}
-		}  
-		return 0.05;
-		
+		if (Bone == CameraTracking::Thigh_Crush) { // Thigh Crushing
+			return 0.15;
+		} else if (Bone == CameraTracking::VoreHand_Right || Bone == CameraTracking::Hand_Left || Bone == CameraTracking::Hand_Right) { // Voring / using hands
+			return 0.10;
+		} else if (Bone == CameraTracking::ObjectA || Bone == CameraTracking::ObjectB) { // pretty much vore/ hands too
+			return 0.10;
+		} else if (Bone == CameraTracking::R_Foot || Bone == CameraTracking::L_Foot) { // Feet
+			return 0.08;
+		} else if (Bone == CameraTracking::Butt || Bone == CameraTracking::Mid_Butt_Legs) { // Butt
+			return 0.08;
+		} else if (Bone == CameraTracking::Breasts_02) { // Breasts
+			return 0.10;
+		} else if (Bone == CameraTracking::Knees) { // Knees
+			return 0.10;
+		} else if (Bone == CameraTracking::Finger_Right || Bone == CameraTracking::Finger_Left) {
+			return 0.08;
+		} else {
+			return 0.05;
+		}
 	}
 
 	float get_endless_height(Actor* giant) {
