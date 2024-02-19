@@ -1899,12 +1899,11 @@ namespace Gts {
 	
 		bool moving = IsMoving(giant);
 
-		log::info("Trying push: Utils_PushCheck");
-
 		if (model) {
 			if (!CanPush(tiny)) {
 				return;
 			}
+			log::info("Trying to push someone");
 			bool isdamaging = sizemanager.IsDamaging(tiny);
 			if (!isdamaging && (force >= 0.12 || moving || IsFootGrinding(giant))) {
 				StaggerOr(giant, tiny, 0, 0, 0, 0);

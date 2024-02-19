@@ -89,12 +89,14 @@ namespace {
 
 	void GTS_Sneak_Slam_Impact_R(AnimationEventData& data) {
 		float scale = get_visual_scale(&data.giant);
+		PreventFromBeingPushed(&data.giant, Radius_Sneak_HandSlam, CrawlEvent::RightHand);
 		DoCrawlingFunctions(&data.giant, scale, 0.75, Damage_Sneak_HandSlam, CrawlEvent::RightHand, "RightHandRumble", 0.80, Radius_Sneak_HandSlam, 1.35, DamageSource::HandSlamRight, false);
 		CheckForFingerGrind(&data.giant, CrawlEvent::RightHand, true, "RH");
 		// ^ Also starts finger DOT damage
 	};
 	void GTS_Sneak_Slam_Impact_L(AnimationEventData& data) {
 		float scale = get_visual_scale(&data.giant);
+		PreventFromBeingPushed(&data.giant, Radius_Sneak_HandSlam, CrawlEvent::LeftHand);
 		DoCrawlingFunctions(&data.giant, scale, 0.75, Damage_Sneak_HandSlam, CrawlEvent::LeftHand, "LeftHandRumble", 0.80, Radius_Sneak_HandSlam, 1.35, DamageSource::HandSlamRight, false);
 		CheckForFingerGrind(&data.giant, CrawlEvent::LeftHand, false, "LH");	
 		// ^ Also starts finger DOT damage

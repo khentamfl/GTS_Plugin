@@ -76,10 +76,7 @@ namespace Gts {
 			}
 		}
 	}
-	void DoCrawlingFunctions(Actor* actor, float scale, float multiplier, float damage, CrawlEvent kind, std::string_view tag, float launch_dist, float damage_dist, float crushmult, DamageSource Cause) {
-		DoCrawlingFunctions(actor, scale, multiplier, damage, kind, tag, launch_dist, damage_dist, crushmult, Cause, true);
-	}
-	void DoCrawlingFunctions(Actor* actor, float scale, float multiplier, float damage, CrawlEvent kind, std::string_view tag, float launch_dist, float damage_dist, float crushmult, DamageSource Cause, bool CanBePushed) { // Call everything
+	void DoCrawlingFunctions(Actor* actor, float scale, float multiplier, float damage, CrawlEvent kind, std::string_view tag, float launch_dist, float damage_dist, float crushmult, DamageSource Cause) { // Call everything
 		std::string_view name = GetImpactNode(kind);
 
 		auto node = find_node(actor, name);
@@ -106,7 +103,7 @@ namespace Gts {
 		std::string rumbleName = std::format("{}{}", tag, actor->formID);
 		GRumble::Once(rumbleName, actor, 0.90 * multiplier * SMT, 0.02, name); // Do Rumble
 
-		DoDamageAtPoint(actor, damage_dist, damage, node, 20, 0.05, crushmult, Cause, CanBePushed); // Do size-related damage
+		DoDamageAtPoint(actor, damage_dist, damage, node, 20, 0.05, crushmult, Cause); // Do size-related damage
 		DoCrawlingSounds(actor, scale, node, FootEvent::Left);                      // Do impact sounds
 
 		if (scale >= minimal_scale && !actor->AsActorState()->IsSwimming()) {
@@ -130,11 +127,8 @@ namespace Gts {
 			}
 		}
 	}
-	void DoDamageAtPoint(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, DamageSource Cause) {
-		DoDamageAtPoint(giant, radius, damage, node, random, bbmult, crushmult, Cause, false);
-	}
 
-	void DoDamageAtPoint(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, DamageSource Cause, bool CanBePushed) { // Apply damage to specific bone
+	void DoDamageAtPoint(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, DamageSource Cause) { // Apply damage to specific bone
 		auto profiler = Profilers::Profile("Other: CrawlDamage");
 		if (!node) {
 			return;
@@ -246,5 +240,85 @@ namespace Gts {
 		}
 
 		DoDamageAtPoint(giant, Radius_Crawl_HandIdle, Damage_Crawl_Idle, RH, random, bonedamage, 2.5, DamageSource::HandCrawlRight);    // Call Right Hand
+	}
+
+	void PreventFromBeingPushed(Actor* giant, float radius, CrawlEvent kind) { // Apply damage to specific bone
+		auto profiler = Profilers::Profile("Other: CrawlDamage");
+		std::string_view name = GetImpactNode(kind);
+
+		auto node = find_node(giant, name);
+		if (!node) {
+			return; // Make sure to return if node doesn't exist, no CTD in that case
+		}
+		if (!node) {
+			return;
+		}
+		if (!giant) {
+			return;
+		}
+		float giantScale = get_visual_scale(giant);
+
+		float SCALE_RATIO = 1.25;
+		if (HasSMT(giant)) {
+			SCALE_RATIO = 0.9;
+			giantScale *= 1.3;
+		}
+
+		NiPoint3 NodePosition = node->world.translate;
+
+		float maxDistance = radius * giantScale;
+		float CheckDistance = 220 * giantScale;
+		// Make a list of points to check
+
+		float damage_zones_applied = 0.0;
+
+		std::vector<NiPoint3> points = {
+			NiPoint3(0.0, 0.0, 0.0), // The standard position
+		};
+		std::vector<NiPoint3> CrawlPoints = {};
+
+		for (NiPoint3 point: points) {
+			CrawlPoints.push_back(NodePosition);
+		}
+		if (IsDebugEnabled() && (giant->formID == 0x14 || IsTeammate(giant) || EffectsForEveryone(giant))) {
+			for (auto point: CrawlPoints) {
+				DebugAPI::DrawSphere(glm::vec3(point.x, point.y, point.z), maxDistance);
+			}
+		}
+
+		NiPoint3 giantLocation = giant->GetPosition();
+
+		for (auto otherActor: find_actors()) {
+			if (otherActor != giant) {
+				float tinyScale = get_visual_scale(otherActor);
+				if (giantScale / tinyScale > SCALE_RATIO) {
+					NiPoint3 actorLocation = otherActor->GetPosition();
+					for (auto point: CrawlPoints) {
+						if ((actorLocation-giantLocation).Length() <= CheckDistance) {
+							
+							int nodeCollisions = 0;
+							float force = 0.0;
+
+							auto model = otherActor->GetCurrent3D();
+
+							if (model) {
+								VisitNodes(model, [&nodeCollisions, &force, NodePosition, maxDistance](NiAVObject& a_obj) {
+									float distance = (NodePosition - a_obj.world.translate).Length();
+									if (distance < maxDistance) {
+										nodeCollisions += 1;
+										force = 1.0 - distance / maxDistance;
+										return false;
+									}
+									return true;
+								});
+							}
+							if (nodeCollisions > 0) {
+								SetCanBePushed(otherActor, false);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
