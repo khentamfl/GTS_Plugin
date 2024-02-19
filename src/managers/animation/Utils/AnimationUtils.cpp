@@ -1152,7 +1152,7 @@ namespace Gts {
 		} 
 	}
 
-	void ApplyFingerDamage(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, float Shrink, DamageSource Cause, bool Animation) { // Apply crawl damage to each bone individually
+	void ApplyFingerDamage(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, float Shrink, DamageSource Cause) { // Apply crawl damage to each bone individually
 		auto profiler = Profilers::Profile("Other: FingerDamage");
 		if (!node) {
 			return;
@@ -1221,12 +1221,14 @@ namespace Gts {
 								}
 								Laugh_Chance(giant, otherActor, 1.0, "FingerGrind"); 
 
-								if (Animation) {
+								if (radius == Radius_Sneak_FingerGrind_Finisher) { // On Finisher Only
+									AnimationManager::StartAnim("Tiny_ExitAnims", otherActor);
 									PushActorAway(giant, otherActor, 1.0);
 								}
 
 								if (!IsHuman(otherActor)) {
 									Utils_PushCheck(giant, otherActor, 1.0);
+									log::info("{} isn't human", otherActor->GetDisplayFullName());
 								}
 								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause, true);
 							}
