@@ -1224,6 +1224,7 @@ namespace Gts {
 								if (radius == Radius_Sneak_FingerGrind_Finisher) { // On Finisher Only
 									AnimationManager::StartAnim("Tiny_ExitAnims", otherActor);
 									PushActorAway(giant, otherActor, 1.0);
+									log::info("Pushing Actor");
 								}
 
 								if (!IsHuman(otherActor)) {

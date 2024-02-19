@@ -209,6 +209,7 @@ namespace Gts {
 								float aveForce = std::clamp(force, 0.14f, 0.70f);
 								if (PushNeeded) {
 									Utils_PushCheck(giant, otherActor, aveForce); 
+									log::info("Trying push");
 								}
 								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause, true);
 							}

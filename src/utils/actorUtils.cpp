@@ -1885,6 +1885,8 @@ namespace Gts {
 	
 		bool moving = IsMoving(giant);
 
+		log::info("Trying push: Utils_PushCheck");
+
 		if (model) {
 			bool isdamaging = sizemanager.IsDamaging(tiny);
 			if (!isdamaging && (force >= 0.12 || moving || IsFootGrinding(giant))) {

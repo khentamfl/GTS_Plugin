@@ -202,7 +202,7 @@ namespace Gts {
 		NiMatrix3 cameraRot;
 		switch (currentMode) {
 			case CameraDataMode::State: {
-				log::info("Camera State: State");
+				//log::info("Camera State: State");
 				auto camera = PlayerCamera::GetSingleton();
 				if (camera) {
 					auto currentState = camera->currentState;
@@ -214,7 +214,7 @@ namespace Gts {
 				}
 			}
 			case CameraDataMode::Transform: {
-				log::info("Camera State: Transform");
+				//log::info("Camera State: Transform");
 				auto camera = PlayerCamera::GetSingleton();
 				if (camera) {
 					auto cameraRoot = camera->cameraRoot;
