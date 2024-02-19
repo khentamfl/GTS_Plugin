@@ -1323,7 +1323,7 @@ namespace Gts {
 	}
 
 	void PushActorAway(TESObjectREFR* source, Actor* receiver, float afKnockBackForce) {
-		if (receiver->IsDead() || IsRagdolled(receiver)) {
+		if (receiver->IsDead() || IsRagdolled(receiver) || IsBeingGrinded(receiver)) {
 			return;
 		}
 
@@ -1347,7 +1347,7 @@ namespace Gts {
 	}
 
 	void PushActorAway(TESObjectREFR* source, Actor* receiver, NiPoint3 direction, float force) {
-		if (receiver->IsDead() || IsRagdolled(receiver)) {
+		if (receiver->IsDead() || IsRagdolled(receiver) || IsBeingGrinded(receiver)) {
 			return;
 		}
 
