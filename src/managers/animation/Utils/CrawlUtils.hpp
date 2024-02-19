@@ -16,6 +16,4 @@ namespace Gts {
 	void DoDamageAtPoint(Actor* giant, float radius, float damage, NiAVObject* node, float random, float bbmult, float crushmult, DamageSource Cause);
 	
 	void ApplyAllCrawlingDamage(Actor* giant, int random, float bonedamage);
-
-	void PreventFromBeingPushed(Actor* giant, float radius, CrawlEvent kind);
 }

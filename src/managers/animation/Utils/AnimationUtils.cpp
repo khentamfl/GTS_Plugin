@@ -590,13 +590,10 @@ namespace Gts {
 			AttachTo(giantref, tinyref, coordinates);
 			if (!IsFootGrinding(giantref)) {
 				SetBeingGrinded(tinyref, false);
-				SetCanBePushed(tinyref, true);
-				PushActorAway(giantref, tinyref, 1.0);
 				return false;
 			}
 			if (tinyref->IsDead()) {
 				SetBeingGrinded(tinyref, false);
-				SetCanBePushed(tinyref, true);
 				return false;
 			}
 			return true;

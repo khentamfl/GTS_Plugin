@@ -1879,20 +1879,6 @@ namespace Gts {
 		}
 	}
 
-	bool CanPush(Actor* tiny) {
-		auto tranData = Transient::GetSingleton().GetData(tiny);
-		if (tranData) {
-			return tranData->prevent_push;
-		}
-		return true;
-	}
-	void SetCanBePushed(Actor* tiny, bool prevent) {
-		auto tranData = Transient::GetSingleton().GetData(tiny);
-		if (tranData) {
-			tranData->prevent_push = prevent;
-		}
-	}
-
 	void Utils_PushCheck(Actor* giant, Actor* tiny, float force) {
 		auto model = tiny->GetCurrent3D();
 		auto& sizemanager = SizeManager::GetSingleton();
@@ -1900,9 +1886,6 @@ namespace Gts {
 		bool moving = IsMoving(giant);
 
 		if (model) {
-			if (!CanPush(tiny)) {
-				return;
-			}
 			log::info("Trying to push someone");
 			bool isdamaging = sizemanager.IsDamaging(tiny);
 			if (!isdamaging && (force >= 0.12 || moving || IsFootGrinding(giant))) {
