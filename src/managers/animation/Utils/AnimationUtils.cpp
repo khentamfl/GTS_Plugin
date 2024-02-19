@@ -1222,7 +1222,7 @@ namespace Gts {
 								Laugh_Chance(giant, otherActor, 1.0, "FingerGrind"); 
 
 								if (radius == Radius_Sneak_FingerGrind_Finisher) { // On Finisher Only
-									AnimationManager::StartAnim("Tiny_ExitAnims", otherActor);
+									//AnimationManager::StartAnim("Tiny_ExitAnims", otherActor);
 									PushActorAway(giant, otherActor, 1.0);
 									log::info("Pushing Actor");
 								}
