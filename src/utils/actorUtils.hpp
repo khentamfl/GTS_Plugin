@@ -200,7 +200,7 @@ namespace Gts {
 	void SpawnDustExplosion(Actor* giant, Actor* tiny, std::string_view node, float size);
 
 	bool CanPush(Actor* tiny);
-	void PreventPush(Actor* tiny, bool prevent);
+	void SetCanBePushed(Actor* tiny, bool prevent);
 
 	void Utils_PushCheck(Actor* giant, Actor* tiny, float force);
 	void StaggerOr(Actor* giant, Actor* tiny, float afX, float afY, float afZ, float afMagnitude);
