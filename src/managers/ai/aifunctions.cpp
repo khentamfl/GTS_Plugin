@@ -64,8 +64,8 @@ namespace Gts {
 		auto* eventsource = ScriptEventSourceHolder::GetSingleton();
 		if (eventsource) {
 			auto event = ActorKill();
-			event.Event.killer = giant;
-			event.Event.victim = tiny;
+			event->Event.killer = giant;
+			event->Event.victim = tiny;
 			eventsource->SendEvent(&event);
 		}
 	}
