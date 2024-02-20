@@ -272,8 +272,6 @@ namespace Gts {
 
 		float limit = (6.0 * get_visual_scale(giant));
 
-		log::info("Launch Power: {}, Limit: {}", power, limit);
-
 		if (power > limit) {
 			return limit;
 		}
@@ -1886,7 +1884,6 @@ namespace Gts {
 		bool moving = IsMoving(giant);
 
 		if (model) {
-			log::info("Trying to push someone");
 			bool isdamaging = sizemanager.IsDamaging(tiny);
 			if (!isdamaging && (force >= 0.12 || moving || IsFootGrinding(giant))) {
 				StaggerOr(giant, tiny, 0, 0, 0, 0);
@@ -2000,7 +1997,6 @@ namespace Gts {
 			RE::NiPoint3 globalForwardVector = playerRotation * localForwardVector;
 
 			RE::NiPoint3 direction = globalForwardVector;
-			log::info("{} direction: {}", giant->GetDisplayFullName(), Vector2Str(direction));
 			double endTime = Time::WorldTimeElapsed();
 
 			if ((endTime - startTime) > 0.08) {
