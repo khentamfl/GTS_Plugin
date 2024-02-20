@@ -2834,7 +2834,7 @@ namespace Gts {
 	void StartCombat(Actor* giant, Actor* tiny) { // 1406251B0
 		typedef void (*DefStartCombat)(Actor* a_this, Actor* a_that);
 		REL::Relocation<DefStartCombat> Skyrim_StartCombat{ RELOCATION_ID(37608, 37608) }; // 1406251B0 (SE) : 37608
-		Skyrim_StartCombat(giant, tiny);
+		Skyrim_StartCombat(tiny, giant);
 	}
 
 	void SetObjectRotation_X(TESObjectREFR* ref, float X) {
