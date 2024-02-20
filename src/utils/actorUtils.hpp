@@ -262,6 +262,7 @@ namespace Gts {
 	void SetCriticalStage(Actor* actor, int stage);
 	void Attacked(Actor* victim, Actor* agressor);
   	void ApplyDamage(Actor* giant, Actor* tiny, float damage);
+	void StartCombat(Actor* giant, Actor* tiny);
 	void SetObjectRotation_X(TESObjectREFR* ref, float X);
 	void StaggerActor_Directional(Actor* giant, float power, Actor* tiny);
 
