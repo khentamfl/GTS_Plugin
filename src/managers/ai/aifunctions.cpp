@@ -56,7 +56,7 @@ namespace Gts {
 			eventsource->SendEvent(&event);
 		}
 
-		ForceCombat(giant, tiny);
+		ForceCombat(giant, tiny); 
 	}
 
 	void ForceCombat(Actor* giant, Actor* tiny) { // A hacky way to force combat. Easier than looking for a Hook.
