@@ -83,8 +83,8 @@ namespace Hooks {
 				log::info("Start Combat Hook");
 				log::info("Param 1: {}", GetRawName(param_1));
 				log::info("Param 2: {}", GetRawName(param_2));
-				log::info("Param 1 - A: {}", param_1->GetDisplayFullName());
-				log::info("Param 2 - A: {}", param_2->GetDisplayFullName());
+				//log::info("Param 1 - A: {}", param_1->GetDisplayFullName());
+				//log::info("Param 2 - A: {}", param_2->GetDisplayFullName());
 				return sub_1406251B0(param_1, param_2);
             }
         );
