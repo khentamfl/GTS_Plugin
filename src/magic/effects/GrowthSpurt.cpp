@@ -112,7 +112,7 @@ namespace Gts {
 		}
 
 		float Gigantism = 1.0 + Ench_Aspect_GetPower(caster);
-		float scale = get_visual_scale(caster);
+		float scale = get_target_scale(caster);
 
 		float bonus = 1.0;
 		float limit = this->grow_limit * Gigantism;

@@ -138,7 +138,7 @@ namespace Gts {
 		float SizeDifference = 1.0;
 		float bonus = 1.0;
 		float balancemodebonus = 1.0;
-		float shrink = this->power * 2.6;
+		float shrink = this->power * 3.2;
 		float gainpower = this->efficiency;
 		auto actor_data = Persist.GetData(target);
 		

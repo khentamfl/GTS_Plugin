@@ -71,6 +71,7 @@ namespace Gts {
 		}
 
 		TransferSize(caster, target, true, shrink_power, gain_size, false, ShrinkSource::magic);
+		Attacked(target, caster);// make it seen as hostile action
 
 		if (ShrinkToNothing(caster, target)) { // chance to receive more size xp and grow even bigger
 			AbsorbShout_BuffCaster(caster, target);
