@@ -75,25 +75,6 @@ namespace {
 namespace Hooks {
 
 	void Hook_Experiments::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
-
-
-		static FunctionHook<void(uintptr_t param_1,uintptr_t param_2,uintptr_t param_3,uintptr_t param_4,
-               uintptr_t param_5,uintptr_t param_6,uintptr_t param_7,uintptr_t param_8)>
-			   StartCombat_1402F4330(        
-			REL::RelocationID(21581, 21581), 
-			[](auto param_1, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6, auto param_7, auto param_8) {
-				log::info("Start Combat Hook");
-				log::info("Param 1: {}", param_1);
-				log::info("Param 2: {}", param_2);
-				log::info("Param 3: {}", param_3);
-				log::info("Param 4: {}", param_4);
-				log::info("Param 5: {}", param_5);
-				log::info("Param 6: {}", param_6);
-				log::info("Param 7: {}", param_7);
-				log::info("Param 8: {}", param_8);
-				return StartCombat_1402F4330(param_1, param_2, param_3, param_4, param_5, param_6, param_7, param_8);
-            }
-        );
 		//							  																
 		//																							
 		//  HitFrameHandler::Handle_1407211B0 & BSTaskPool_HandleTask_1405C6EE0 -> Actor::sub_140627930 

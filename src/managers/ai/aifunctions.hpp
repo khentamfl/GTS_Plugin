@@ -9,6 +9,7 @@ using namespace Gts;
 
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny);
+	void ForceCombat(Actor* giant, Actor* tiny);
 
 	float GetGrowthCount(Actor* giant);
 	float GetGrowthLimit(Actor* actor);
@@ -16,6 +17,7 @@ namespace Gts {
 
 	void ModGrowthCount(Actor* giant, float value, bool reset);
 	void SetBonusSize(Actor* giant, float value, bool reset);
+	
 
 	void ScareActors(Actor* giant);
 }

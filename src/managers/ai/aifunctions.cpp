@@ -56,7 +56,36 @@ namespace Gts {
 			eventsource->SendEvent(&event);
 		}
 
+		ForceCombat(giant, tiny);
 	}
+
+	void ForceCombat(Actor* giant, Actor* tiny) { // A hacky way to force combat. Easier than looking for a Hook.
+		ActorHandle giantHandle = giant->CreateRefHandle();
+		ActorHandle tinyHandle = tiny->CreateRefHandle();
+		std::string name = std::format("ForceCombat_{}_{}", giant->formID, tiny->formID);
+
+		TaskManager::RunFor(name, 1.0, [=](auto& progressData) {
+			if (!giantHandle) {
+				return false;
+			}
+			if (!tinyHandle) {
+				return false;
+			}
+			
+			auto giantref = giantHandle.get().get();
+			auto tinyref = tinyHandle.get().get();
+
+			if (IsHostile(giantref, tinyref)) {
+				return false;
+			}
+
+			Attacked(tinyref, giantref);
+			log::info("Trying to force combat between {} and {}", tinyref->GetDisplayFullName(), giantref->GetDisplayFullName());
+
+			return true;
+		});
+	}
+	
 
 	// butt crush related things
 
