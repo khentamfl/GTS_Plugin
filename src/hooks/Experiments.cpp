@@ -77,7 +77,7 @@ namespace Hooks {
 	void Hook_Experiments::Hook(Trampoline& trampoline) { // This hook is commented out inside hooks.cpp
 
 
-		static FunctionHook<void(uintptr_t* param_1, uintptr_t* param_2)>sub_1406251B0(        
+		/*static FunctionHook<void(uintptr_t* param_1, uintptr_t* param_2)>sub_1406251B0(        
 			REL::RelocationID(37608, 37608), 
 			[](auto* param_1, auto* param_2) {
 				log::info("Start Combat Hook");
@@ -89,7 +89,7 @@ namespace Hooks {
 				return sub_1406251B0(param_1, param_2);
             }
 			// AE: Last Checked: 63AED0 (38100 - 38 126)
-        );
+        );*/
 
 		/*static FunctionHook<void(uintptr_t* param_1,uintptr_t* param_2)>sub_14065ee70(    // : 38603     
 			REL::RelocationID(38603, 38603), 
