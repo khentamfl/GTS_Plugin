@@ -55,14 +55,18 @@ namespace Gts {
 			event.dead = true;
 			eventsource->SendEvent(&event);
 		}
+
+		ForceCombat(giant, tiny);
 	}
 
 	void ForceCombat(Actor* giant, Actor* tiny) {
-		ActorHandle killer = giant->CreateRefHandle();
-		if (killer) {
-			auto data = tiny->GetActorRuntimeData();
-			data.currentCombatTarget = killer;
-			data.myKiller = killer;
+		auto* eventsource = ScriptEventSourceHolder::GetSingleton();
+		if (eventsource) {
+			auto event = TESCombatEvent();
+			event.actor = skyrim_cast<TESObjectREFR*>(tiny)->CreateRefHandle().get();
+			event.targetActor = skyrim_cast<TESObjectREFR*>(giant)->CreateRefHandle().get();
+			event.newState = ACTOR_COMBAT_STATE::kCombat;
+			eventsource->SendEvent(&event);
 		}
 	}
 

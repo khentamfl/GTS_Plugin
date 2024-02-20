@@ -155,7 +155,6 @@ namespace Gts {
 			} else if (data.state == CrushState::Crushing) {
 				if (data.delay.ShouldRun()) {
 					Attacked(tiny, giant);
-					ForceCombat(giant, tiny);
 
 					float currentSize = get_visual_scale(tiny);
 
