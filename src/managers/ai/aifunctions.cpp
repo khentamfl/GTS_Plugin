@@ -68,7 +68,6 @@ namespace Gts {
 			event.victim = tiny;
 			eventsource->SendEvent(&event);
 		}
-		StartCombat(giant, tiny);
 	}
 	
 
