@@ -9,9 +9,8 @@ using namespace Gts;
 
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny);
-	void RagdollTask(Actor* tiny);
+	void ForceCombat(Actor* giant, Actor* tiny);
 
-	
 	float GetGrowthCount(Actor* giant);
 	float GetGrowthLimit(Actor* actor);
 	float GetButtCrushDamage(Actor* actor);
