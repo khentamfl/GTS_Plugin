@@ -63,8 +63,8 @@ namespace Gts {
 		auto* eventsource = ScriptEventSourceHolder::GetSingleton();
 		if (eventsource) {
 			auto event = TESCombatEvent();
-			event.actor = skyrim_cast<TESObjectREFR*>(tiny)->CreateRefHandle().get();
-			event.targetActor = skyrim_cast<TESObjectREFR*>(giant)->CreateRefHandle().get();
+			event.actor = skyrim_cast<TESObjectREFR*>(giant)->CreateRefHandle().get();
+			event.targetActor = skyrim_cast<TESObjectREFR*>(tiny)->CreateRefHandle().get();
 			event.newState = ACTOR_COMBAT_STATE::kCombat;
 			eventsource->SendEvent(&event);
 		}
