@@ -45,8 +45,7 @@ namespace Gts {
 		ActorHandle killer = giant->CreateRefHandle();
 		if (killer) {
 			auto data = tiny->GetActorRuntimeData();
-			//data.currentCombatTarget = killer;
-			data.myKiller = killer;
+			data.currentCombatTarget = killer;
 		}
 
 		float hp = GetMaxAV(tiny, ActorValue::kHealth) * 3.0;	
