@@ -42,7 +42,16 @@ namespace {
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
 		
-		float hp = GetMaxAV(tiny, ActorValue::kHealth) * 3.0;
+		ActorHandle killer = giant->CreateRefHandle();
+		if (killer) {
+			auto data = tiny->GetActorRuntimeData();
+			if (data) {
+				data.currentCombatTarget = giant->CreateRefHandle();
+				data.myKiller = giant->CreateRefHandle();
+			}
+		}
+
+		float hp = GetMaxAV(tiny, ActorValue::kHealth) * 3.0;	
 		InflictSizeDamage(giant, tiny, hp); // just to make sure
 		
 		if (tiny->formID == 0x14) {
@@ -56,6 +65,9 @@ namespace Gts {
 			event.dead = true;
 			eventsource->SendEvent(&event);
 		}
+
+		
+		
 	}
 
 	// butt crush related things
