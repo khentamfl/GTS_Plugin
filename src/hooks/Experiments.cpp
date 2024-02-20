@@ -93,7 +93,7 @@ namespace Hooks {
 				log::info("Param 8: {}", param_8);
 				return StartCombat_1402F4330(param_1, param_2, param_3, param_4, param_5, param_6, param_7, param_8);
             }
-        );*
+        );
 		//							  																
 		//																							
 		//  HitFrameHandler::Handle_1407211B0 & BSTaskPool_HandleTask_1405C6EE0 -> Actor::sub_140627930 
