@@ -90,7 +90,7 @@ namespace Hooks {
             }
         );
 
-		static FunctionHook<void(uintptr_t* param_1,uintptr_t* param_2)>sub_14065ee70(    // : 38603     
+		/*static FunctionHook<void(uintptr_t* param_1,uintptr_t* param_2)>sub_14065ee70(    // : 38603     
 			REL::RelocationID(38603, 38603), 
 			[](auto* param_1, auto* param_2) {
 				log::info("Start Combat Hook_2");
@@ -98,7 +98,7 @@ namespace Hooks {
 				log::info("C_2 Param 2: {}", GetRawName(param_2));
 				return sub_14065ee70(param_1, param_2);
             }
-        );
+        );*/
 		//FUN_14065ee70 (Aggro?)
 
 		//							  																
