@@ -83,14 +83,14 @@ namespace Hooks {
 			REL::RelocationID(21581, 21581), 
 			[](auto param_1, auto param_2, auto param_3, auto param_4, auto param_5, auto param_6, auto param_7, auto param_8) {
 				log::info("Start Combat Hook");
-				log::info("Param 1: {}", GetRawName(param_1));
-				log::info("Param 2: {}", GetRawName(param_2));
-				log::info("Param 3: {}", GetRawName(param_3));
-				log::info("Param 4: {}", GetRawName(param_4));
-				log::info("Param 5: {}", GetRawName(param_5));
-				log::info("Param 6: {}", GetRawName(param_6));
-				log::info("Param 7: {}", GetRawName(param_7));
-				log::info("Param 8: {}", GetRawName(param_8));
+				log::info("Param 1: {}", param_1);
+				log::info("Param 2: {}", param_2);
+				log::info("Param 3: {}", param_3);
+				log::info("Param 4: {}", param_4);
+				log::info("Param 5: {}", param_5);
+				log::info("Param 6: {}", param_6);
+				log::info("Param 7: {}", param_7);
+				log::info("Param 8: {}", param_8);
 				return StartCombat_1402F4330(param_1, param_2, param_3, param_4, param_5, param_6, param_7, param_8);
             }
         );*
