@@ -45,7 +45,7 @@ namespace Gts {
 		ActorHandle killer = giant->CreateRefHandle();
 		if (killer) {
 			auto data = tiny->GetActorRuntimeData();
-			data.currentCombatTarget = giant->CreateRefHandle();
+			//data.currentCombatTarget = giant->CreateRefHandle();
 			data.myKiller = giant->CreateRefHandle();
 		}
 
