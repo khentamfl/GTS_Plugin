@@ -2826,7 +2826,7 @@ namespace Gts {
 	void Attacked(Actor* victim, Actor* agressor) {
 		typedef void (*DefAttacked)(Actor* victim, Actor* agressor);
 		REL::Relocation<DefAttacked> SkyrimAttacked{ RELOCATION_ID(37672, 38626) };
-		SkyrimAttacked(victim, agressor);
+		SkyrimAttacked(victim, agressor); 
 	}
 
 	void ApplyDamage(Actor* giant, Actor* tiny, float damage) { // applies correct amount of damage and kills actors properly
