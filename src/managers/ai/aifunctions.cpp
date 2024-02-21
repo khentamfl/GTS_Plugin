@@ -56,13 +56,8 @@ namespace Gts {
 			eventsource->SendEvent(&event);
 		}
 
-		ForceCombat(giant, tiny); 
-	}
-
-	void ForceCombat(Actor* giant, Actor* tiny) {
 		StartCombat(tiny, giant);
 	}
-	
 
 	// butt crush related things
 

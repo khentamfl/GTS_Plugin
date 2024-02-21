@@ -2475,14 +2475,13 @@ namespace Gts {
 			float Adjustment = GetSizeFromBoundingBox(tiny);
 			float predscale = get_target_scale(giant);
 			float preyscale = get_target_scale(tiny) * Adjustment;
-			expected *= Adjustment;
 			float targetScale = predscale/expected;
 
 			Task_AdjustHalfLifeTask(tiny, halflife); // to make them shrink faster
 
 			if (preyscale >= targetScale) { // Apply ONLY if target is bigger than requirement
 				set_target_scale(tiny, targetScale);
-				AddSMTPenalty(giant, 5.0 * GetSizeFromBoundingBox(tiny));
+				AddSMTPenalty(giant, 5.0 * Adjustment);
 				if (giant->IsSneaking() && !IsCrawling(giant)) {
 					return;
 				} else {
@@ -2821,7 +2820,7 @@ namespace Gts {
 	}
 	void Attacked(Actor* victim, Actor* agressor) {
 		typedef void (*DefAttacked)(Actor* victim, Actor* agressor);
-		REL::Relocation<DefAttacked> SkyrimAttacked{ RELOCATION_ID(37672, 38626) }; // 6285A0 (SE)
+		REL::Relocation<DefAttacked> SkyrimAttacked{ RELOCATION_ID(37672, 38626) }; // 6285A0 (SE) ; 64EE60 (AE)
 		SkyrimAttacked(victim, agressor); 
 	}
 

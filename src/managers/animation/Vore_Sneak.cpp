@@ -36,7 +36,6 @@ namespace {
 		// The problem: hand that grabs the tiny is becomming offset if we equip High Heels
 		// This task fixes that (by, again, blending with anim that has hand placed lower).
 		std::string name = std::format("Vore_AdjustHH_{}", giant->formID);
-		log::info("SyncHH started");
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
 			if (!gianthandle) {
@@ -48,11 +47,9 @@ namespace {
 			// make behaviors read the value to blend between anims
 
 			if (!IsVoring(giantref)) {
-				log::info("! Is voring, task cancelled");
 				Utils_UpdateHighHeelBlend(giantref, true);
 				return false; // just a fail-safe to cancel the task if we're outside of Vore anim
 			}
-			log::info("HH offset task is running");
 			
 			return true;
 		});
