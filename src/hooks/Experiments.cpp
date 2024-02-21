@@ -39,8 +39,8 @@ using namespace SKSE;
 
 namespace {
 	void VatsExperiment(Actor* A_1, Actor* A_2) {
-		auto ai_1 = A_1->GetMiddleHighProcess();
-		auto ai_2 = A_2->GetMiddleHighProcess();
+		auto ai_1 = A_1->GetActorRuntimeData().currentProcess->middleHigh;
+		auto ai_2 = A_2->GetActorRuntimeData().currentProcess->middleHigh;
 		if (ai_1) {
 			auto data = ai_1->lastHitData;
 			if (data) {
