@@ -2796,7 +2796,7 @@ namespace Gts {
 			float levelbonus = 1.0 + ((GetGtsSkillLevel() * 0.01) * 0.50);
 			value *= levelbonus;
 
-			if (HpPercentage < 0.60 || value > HpPercentage * 0.60) {
+			if (HpPercentage < 0.60 || value >= GetAV(receiver, ActorValue::kHealth) * 0.60) {
 				if (!IsTeammate(receiver) && !IsHostile(attacker, receiver)) {
 					StartCombat(receiver, attacker);
 				}
@@ -2831,6 +2831,7 @@ namespace Gts {
 	}
 
 	void StartCombat(Actor* victim, Actor* agressor) {
+		// This function starts combat and adds bounty. Sadly adds 40 bounty since it's not a murder, needs other hook for murder bounty.
 		typedef void (*DefStartCombat)(Actor* act_1, Actor* act_2, Actor* act_3, Actor* act_4);
 		REL::Relocation<DefStartCombat> SkyrimStartCombat{ RELOCATION_ID(36430, 37425) }; // sub_1405DE870 : 36430  (SE) ; 1406050c0 : 37425 (AE)
 		SkyrimStartCombat(victim, agressor, agressor, agressor);                          // Called from Attacked above at some point

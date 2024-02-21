@@ -84,7 +84,7 @@ namespace Hooks {
 		//  FUN_14062b870                         															
 		//	Actor::sub_140627930
 
-		static FunctionHook<void(uintptr_t* param_1, uintptr_t* param_2, uintptr_t param_3, uintptr_t param_4)>CrimeHook (        
+		/*static FunctionHook<void(uintptr_t* param_1, uintptr_t* param_2, uintptr_t param_3, uintptr_t param_4)>CrimeHook (        
 			REL::RelocationID(36430, 37425), 
 			[](auto* param_1, auto* param_2, auto param_3, auto param_4) {
 				log::info("Crime Hook");
@@ -96,7 +96,7 @@ namespace Hooks {
 				}
 				return CrimeHook(param_1, param_2, param_3, param_4);   // Has 4 params, but very often param 2 - 4 is Player (so: Victim, player, player, player);
             }
-        );
+        );*/
 
 		/*static FunctionHook<void(Actor* param_1, float param_2, Actor* param_3)>StaggerHook (        
 			REL::RelocationID(36700, 37710), 

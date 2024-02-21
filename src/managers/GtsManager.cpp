@@ -52,11 +52,8 @@ namespace {
 					float scale = std::clamp(get_visual_scale(player), 0.06f, 2.0f);
 					float CalcFall = 1.0 + (charCont->fallTime * (4.0 / scale) - 4.0);
 					float FallTime = std::clamp(CalcFall, 1.0f, 3.0f);
-					log::info("FallTime: {}", FallTime);
 					transient->FallTimer = FallTime;
 				}
-				
-				log::info("{} has been falling for {}", player->GetDisplayFullName(), charCont->fallTime);
 			}
 		}
 	}
@@ -281,7 +278,7 @@ void GtsManager::Update() {
 	auto profiler = Profilers::Profile("Manager: Update()");
 
 	UpdateFalling();
-	//ManageControls(); CRASHES ON AE 1130+. **** YOU TOO TODD!
+	ManageControls(); // CRASHES ON AE 1130+. **** YOU TOO TODD!
 
 	for (auto actor: find_actors()) {
 		if (!actor) {
