@@ -108,7 +108,8 @@ namespace Hooks {
 						float sizedifference = get_giantess_scale(A_1)/get_giantess_scale(A_2_Cast);
 						if (sizedifference > 1.15) {
 							log::info("KillMove aborted!");
-							return;
+							A_1 = nullptr;
+							A_2 = nullptr;
 						}
 					}
 				}
