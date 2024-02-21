@@ -44,31 +44,6 @@ namespace RE {
 		};
 		static_assert(sizeof(UserEventMapping) == 0x18);
 
-		struct InputContext
-		{
-		public:
-			[[nodiscard]] static SKYRIM_REL_VR std::size_t GetNumDeviceMappings() noexcept
-			{
-#ifndef SKYRIM_CROSS_VR
-				return INPUT_DEVICES::kTotal;
-#else
-				if SKYRIM_REL_VR_CONSTEXPR (REL::Module::IsVR()) {
-					return INPUT_DEVICES::kTotal;
-				} else {
-					return INPUT_DEVICES::kFlatTotal;
-				}
-#endif
-			}
-
-			// members
-			BSTArray<UserEventMapping> deviceMappings[INPUT_DEVICES::kTotal];  // 00
-		};
-#ifdef ENABLE_SKYRIM_VR
-		static_assert(sizeof(InputContext) == 0xF0);
-#else
-		static_assert(sizeof(InputContext) == 0x60);
-#endif
-
 		struct LinkedMapping
 		{
 		public:
@@ -86,7 +61,7 @@ namespace RE {
 
 		struct RUNTIME_DATA
 		{
-#define RUNTIME_DATA_CONTENT                                                                        \
+    #define RUNTIME_DATA_CONTENT                                                                        \
 	BSTArray<LinkedMapping>                          linkedMappings;               /* 0E8, VR 108*/ \
 	BSTArray<InputContextID>                         contextPriorityStack;         /* 100, VR 120*/ \
 	stl::enumeration<UEFlag, std::uint32_t>          enabledControls;              /* 118, VR 138*/ \
@@ -103,18 +78,17 @@ namespace RE {
 		//members
 
 		// members
-		InputContext* GTScontrolMap[InputContextID::kTotal];        // 060
-#if !defined(ENABLE_SKYRIM_VR)                                   //flat
-#	if !defined(ENABLE_SKYRIM_AE) && defined(ENABLE_SKYRIM_SE)  // SSE
-		RUNTIME_DATA_CONTENT;                                    // 0E8
-#	else                                                        // AE
-		RUNTIME_DATA_CONTENT;  // 0F8
-#	endif
-#elif !defined(ENABLE_SKYRIM_AE) && defined(ENABLE_SKYRIM_SE)  // VR
-		RUNTIME_DATA_CONTENT;  // 108
-#else                                                          // ALL
-		// controlMap can be accessed up to kTotal, kAETotal, or kVRTotal based on runtime
-#endif
+        #if !defined(ENABLE_SKYRIM_VR)                                   //flat
+        #	if !defined(ENABLE_SKYRIM_AE) && defined(ENABLE_SKYRIM_SE)  // SSE
+                RUNTIME_DATA_CONTENT;                                    // 0E8
+        #	else                                                        // AE
+                RUNTIME_DATA_CONTENT;  // 0F8
+        #	endif
+        #elif !defined(ENABLE_SKYRIM_AE) && defined(ENABLE_SKYRIM_SE)  // VR
+                RUNTIME_DATA_CONTENT;  // 108
+        #else                                                          // ALL
+                // controlMap can be accessed up to kTotal, kAETotal, or kVRTotal based on runtime
+        #endif
 
 		[[nodiscard]] inline RUNTIME_DATA& GetRuntimeData() noexcept
 		{
