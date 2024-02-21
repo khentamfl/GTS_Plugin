@@ -95,10 +95,14 @@ namespace Hooks {
 				if(a_actor) {
 					log::info("Actor: {}", a_actor->GetDisplayFullName());
 				}
-				log::info("a_action: {}", a_action);
-				log::info("idle: {}", a_idle->GetFormEditorID());
-				log::info("arg5: {}", a_arg5);
-				log::info("arg6: {}", a_arg6);
+				if (a_action) {
+					log::info("a_action: {}", a_action);
+				}
+				if (idle) {
+					log::info("idle: {}", a_idle->GetFormEditorID());
+				}
+				//log::info("arg5: {}", a_arg5);
+				//log::info("arg6: {}", a_arg6);
 				if (a_target) {
 					log::info("target: {}", a_target->GetDisplayFullName());
 				}
