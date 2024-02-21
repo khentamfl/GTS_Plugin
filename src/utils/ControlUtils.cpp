@@ -50,7 +50,6 @@ namespace Gts {
 
 	void ManageControls() {
 		Actor* player = PlayerCharacter::GetSingleton();
-        return; // just in case.
 		if (player) {
             bool GtsBusy = IsGtsBusy_ForControls(player) || IsTransitioning(player);
             bool AnimsInstalled = AnimationsInstalled(player);
