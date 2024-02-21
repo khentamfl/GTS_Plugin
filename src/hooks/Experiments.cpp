@@ -45,12 +45,12 @@ namespace {
 			auto data = ai_1->lastHitData;
 			if (data) {
 				log::info("(1) Data of {}", A_1->GetDisplayFullName());
-				log::info("---Action Points: {}", data->VATSCommand.actionPoints);
 				log::info("---Damage: {}", data->totalDamage);
 				log::info("Forcing everything to 0");
 
 				auto vats = data->VATSCommand;
 				if (vats) {
+					log::info("---Action Points: {}", vats->actionPoints);
 					vats->actionPoints = 0.0
 				}
 				data->totalDamage = 0.0;
@@ -60,12 +60,12 @@ namespace {
 			auto data = ai_2->lastHitData;
 			if (data) {
 				log::info("(2) Data of {}", A_1->GetDisplayFullName());
-				log::info("---Action Points: {}", data->VATSCommand.actionPoints);
 				log::info("---Damage: {}", data->totalDamage);
 				log::info("Forcing everything to 0");
 
 				auto vats = data->VATSCommand;
 				if (vats) {
+					log::info("---Action Points: {}", vats->actionPoints);
 					vats->actionPoints = 0.0
 				}
 				data->totalDamage = 0.0;
