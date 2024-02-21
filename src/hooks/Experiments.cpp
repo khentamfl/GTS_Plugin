@@ -85,7 +85,7 @@ namespace Hooks {
 		//	Actor::sub_140627930
 
 		static FunctionHook<void(uintptr_t* param_1, uintptr_t* param_2, uintptr_t param_3, uintptr_t param_4)>CrimeHook (        
-			REL::RelocationID(36430, 36430), 
+			REL::RelocationID(36430, 37425), 
 			[](auto* param_1, auto* param_2, auto param_3, auto param_4) {
 				log::info("Crime Hook");
 				log::info("Param 1: {}", GetRawName(param_1));
