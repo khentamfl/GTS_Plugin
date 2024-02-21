@@ -93,7 +93,7 @@ namespace Hooks {
 					log::info("Actor: {}", a_actor->GetDisplayFullName());
 				}
 				log::info("a_action: {}", a_action);
-				log::info("idle: {}", a_idle);
+				log::info("idle: {}", a_idle->formEditorID);
 				log::info("arg5: {}", a_arg5);
 				log::info("arg6: {}", a_arg6);
 				if (a_target) {
