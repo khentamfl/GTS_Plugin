@@ -21,7 +21,7 @@ namespace {
 namespace Gts {
     GTSControlMap* GTSControlMap::GetSingleton()
 	{
-		REL::Relocation<ControlMap**> singleton{ Offset::GTSControlMap::Singleton };
+		REL::Relocation<GTSControlMap**> singleton{ Offset::GTSControlMap::Singleton };
 		return *singleton;
 	}
 
