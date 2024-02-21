@@ -84,6 +84,25 @@ namespace Hooks {
 		//  FUN_14062b870                         															
 		//	Actor::sub_140627930
 
+		*static FunctionHook<bool(Actor* a_actor, DEFAULT_OBJECT a_action, TESIdleForm* a_idle, bool a_arg5, bool a_arg6, TESObjectREFR* a_target)>AnimationHook (        
+			REL::RelocationID(38290, 39256), 
+			[](Actor* a_actor, DEFAULT_OBJECT a_action, TESIdleForm* a_idle, bool a_arg5, bool a_arg6, TESObjectREFR* a_target) {
+				
+				log::info("Animation Hook");
+				if(a_actor) {
+					log::info("Actor: {}", a_actor->GetDisplayFullName());
+				}
+				log::info("a_action: {}", a_action);
+				log::info("idle: {}", a_idle);
+				log::info("arg5: {}", a_arg5);
+				log::info("arg6: {}", a_arg6);
+				if (a_target) {
+					log::info("target: {}", a_target->GetDisplayFullName());
+				}
+				return AnimationHook(a_actor, a_action, a_idle, a_arg5, a_arg6, a_target);   // Has 4 params, but very often param 2 - 4 is Player (so: Victim, player, player, player);
+            }
+        );
+
 		/*static FunctionHook<void(uintptr_t* param_1, uintptr_t* param_2, uintptr_t param_3, uintptr_t param_4)>CrimeHook (        
 			REL::RelocationID(36430, 37425), 
 			[](auto* param_1, auto* param_2, auto param_3, auto param_4) {

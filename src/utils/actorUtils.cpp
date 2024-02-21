@@ -2796,11 +2796,13 @@ namespace Gts {
 			float levelbonus = 1.0 + ((GetGtsSkillLevel() * 0.01) * 0.50);
 			value *= levelbonus;
 
-			if (HpPercentage < 0.60 || value >= GetAV(receiver, ActorValue::kHealth) * 0.60) {
-				if (!IsTeammate(receiver) && !IsHostile(attacker, receiver)) {
-					StartCombat(receiver, attacker);
-				}
+			if (HpPercentage < 0.70) { // Mostly a warning to indicate that actor dislikes it (They don't always aggro right away, with mods at least)
 				Attacked(receiver, attacker);
+			} 
+			if (value >= GetAV(receiver, ActorValue::kHealth) * 0.50) { // in that case make hostile
+				if (!IsTeammate(receiver) && !IsHostile(attacker, receiver)) {
+					StartCombat(receiver, attacker); // Make actor hostile and add bounty of 40 (can't be configured, needs different hook probably). 
+				}
 			}
 			
 			ApplyDamage(attacker, receiver, value * difficulty * GetDamageSetting());
