@@ -99,6 +99,14 @@ namespace Hooks {
 					log::info("Actor 2: {}", A_2->GetDisplayFullName());
 				}
 
+				if (A_1 && A_2) {
+					float sizedifference = get_giantess_scale(A_1)/get_giantess_scale(A_2);
+					if (sizedifference > 1.15) {
+						log::info("KillMove aborted!");
+						return;
+					}
+				}
+
 				log::info("left: {}, Anim: {}", a_Left, a_Anim);
 				
 				return VATSHook(A_1, M_C, a_Anim, A_2, a_Left);  
