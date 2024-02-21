@@ -232,9 +232,9 @@ namespace Hooks
 	void Hook_Damage::Hook(Trampoline& trampoline) {
 
     // SE(5D6300)
-		static FunctionHook<void(Actor* a_this, float dmg, Actor* aggressor, uintptr_t maybe_hitdata, TESObjectREFR* damageSrc)> SkyrimTakeDamage(
+		static FunctionHook<void(Actor* a_this, float dmg, Actor* aggressor, HitData* maybe_hitdata, TESObjectREFR* damageSrc)> SkyrimTakeDamage(
 			RELOCATION_ID(36345, 37335),
-			[](auto* a_this, auto dmg, auto* aggressor, uintptr_t maybe_hitdata, auto* damageSrc) { // Universal damage function before Difficulty damage
+			[](auto* a_this, auto dmg, auto* aggressor, HitData* maybe_hitdata, auto* damageSrc) { // Universal damage function before Difficulty damage
 				//log::info("Someone taking damage");
 				//log::info("{}: Taking {} damage", a_this->GetDisplayFullName(), dmg);
 
