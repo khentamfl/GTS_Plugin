@@ -79,11 +79,12 @@ namespace {
 		}
 		log::info("Found Attacker: {}", attacker->GetDisplayFullName());
 
-		auto receiver = attacker->GetActorRuntimeData().currentCombatTarget.get();
-		if (!receiver) {
+		auto receiverRef = attacker->GetActorRuntimeData().currentCombatTarget;
+		if (!receiverRef) {
 			log::info("Receiver false");
 			return true;
 		}
+		auto receiver = receiverRef.get().get();
 		log::info("Found Receiver: {}", receiver->GetDisplayFullName());
 
 		float size_difference = get_giantess_scale(attacker) / get_giantess_scale(receiver);
