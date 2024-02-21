@@ -232,9 +232,9 @@ namespace Hooks
 	void Hook_Damage::Hook(Trampoline& trampoline) {
 
     // SE(5D6300)
-		static FunctionHook<void(Actor* a_this, float dmg, Actor* aggressor, HitData* maybe_hitdata, TESObjectREFR* damageSrc)> SkyrimTakeDamage(
+		static FunctionHook<void(Actor* a_this, float dmg, Actor* aggressor, uintptr_t maybe_hitdata, TESObjectREFR* damageSrc)> SkyrimTakeDamage(
 			RELOCATION_ID(36345, 37335),
-			[](auto* a_this, auto dmg, auto* aggressor, HitData* maybe_hitdata, auto* damageSrc) { // Universal damage function before Difficulty damage
+			[](auto* a_this, auto dmg, auto* aggressor, uintptr_t maybe_hitdata, auto* damageSrc) { // Universal damage function before Difficulty damage
 				//log::info("Someone taking damage");
 				//log::info("{}: Taking {} damage", a_this->GetDisplayFullName(), dmg);
 
@@ -247,17 +247,6 @@ namespace Hooks
 
 
 						DoOverkill(aggressor, a_this, dmg);
-
-						if (maybe_hitdata) {
-							log::info("Found hitdata between {} and {}", a_this->GetDisplayFullName(), aggressor->GetDisplayFullName());
-							auto vats = maybe_hitdata->VATSCommand;
-							log::info("Total Damage: {}", maybe_hitdata->totalDamage);
-							if (vats) {
-								auto target = vats->targetHandle.get().get();
-								log::info("Target: {}", target->GetDisplayFullName());
-								log::info("Points: {}", vats->actionPoints);
-							}
-						}
 
 						//log::info("Changing damage to: {}", dmg);
 					}

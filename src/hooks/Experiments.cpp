@@ -70,7 +70,32 @@ namespace {
 		}
 		return NiPoint3(0.0, 0.0, 0.0);
 	}
+
+	bool AllowAttack(TESActionData* data) { // Credits to Kaputt source code (by Pentalimbed)
+		auto attacker = action_data->source->As<RE::Actor>();
+    	if (!attacker) {
+			log::info("Attacker false");
+         	return true;
+		}
+		log::info("Found Attacker: {}", attacker->GetDisplayFullName());
+
+		auto receiver = attacker->GetActorRuntimeData().currentCombatTarget.get();
+		if (!receiver) {
+			log::info("Receiver false");
+			return true;
+		}
+		log::info("Found Receiver: {}", receiver->GetDisplayFullName());
+
+		float size_difference = get_giantess_scale(attacker) / get_giantess_scale(receiver);
+		if (size_difference >= 1.15) {
+			log::info("Size Difference > 1.15. Disallow");
+			return false;
+		}
+
+		return true;
+	}
 }
+
 
 namespace Hooks {
 
@@ -83,7 +108,16 @@ namespace Hooks {
 		//  DoCombatSpellApply_1406282E0
 		//  FUN_14062b870                         															
 		//	Actor::sub_140627930
-
+		static CallHook<bool(TESActionData* param_1)>ActionDataHook(  // Credits to Kaputt source code (by Pentalimbed)
+			REL::RelocationID(48139, 49170), REL::Relocate(0x4d7, 0x435),         
+			[](auto* param_1) {
+				// sub_14060EEF0 : 37013
+				// 0x14060ef0a - 0x14060EEF0 = 0x1A
+				result = AllowAttack(param_1);
+				log::info("Allow: {}", result);
+				return result;
+            }
+        );
 		/*static FunctionHook<bool(AIProcess* AI, Actor* a_actor, DEFAULT_OBJECT a_action, TESIdleForm* a_idle, uintptr_t a_arg5, uintptr_t a_arg6, TESObjectREFR* a_target)>AnimationHook (        
 			REL::RelocationID(38290, 39256), 
 			[](auto* AI, auto* a_actor, auto a_action, auto* a_idle, uintptr_t a_arg5, uintptr_t a_arg6, auto* a_target) {
