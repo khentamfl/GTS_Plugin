@@ -38,6 +38,9 @@ using namespace SKSE;
 //      ^ 50179
 
 namespace {
+	Actor* GetAsActor(TESObjectREFR* ref) {
+		return skyrim_cast<Actor*>(ref);
+	}
 	float affect_by_scale(TESObjectREFR* ref, float original) {
 		Actor* giant = skyrim_cast<Actor*>(ref);
 		if (giant) {
@@ -100,10 +103,13 @@ namespace Hooks {
 				}
 
 				if (A_1 && A_2) {
-					float sizedifference = get_giantess_scale(A_1)/get_giantess_scale(A_2);
-					if (sizedifference > 1.15) {
-						log::info("KillMove aborted!");
-						return;
+					Actor* A_2_Cast = GetAsActor(A_2);
+					if (A_2) {
+						float sizedifference = get_giantess_scale(A_1)/get_giantess_scale(A_2);
+						if (sizedifference > 1.15) {
+							log::info("KillMove aborted!");
+							return;
+						}
 					}
 				}
 
