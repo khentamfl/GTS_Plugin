@@ -109,12 +109,15 @@ namespace Hooks {
 		//  DoCombatSpellApply_1406282E0
 		//  FUN_14062b870                         															
 		//	Actor::sub_140627930
-		static CallHook<bool(TESActionData* param_1)>ActionDataHook(  // Credits to Kaputt source code (by Pentalimbed)
+		static CallHook<bool(TESActionData* param_1)>ActionDataHook (  // Credits to Kaputt source code (by Pentalimbed)
 			REL::RelocationID(48139, 49170), REL::Relocate(0x4d7, 0x435),         
 			[](auto* param_1) {
 				// sub_14060EEF0 : 37013
 				// 0x14060ef0a - 0x14060EEF0 = 0x1A
-				result = AllowAttack(param_1);
+				bool result = AllowAttack(param_1);
+				if (!result) {
+					result = ActionDataHook(param_1);
+				}
 				log::info("Allow: {}", result);
 				return result;
             }
