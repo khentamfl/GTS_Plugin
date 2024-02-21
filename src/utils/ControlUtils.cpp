@@ -20,7 +20,7 @@ namespace {
 namespace RE {
     GTSControlMap* GTSControlMap::GetSingleton()
 	{
-		REL::Relocation<GTSControlMap**> singleton{ Offset::GTSControlMap::Singleton };
+		REL::Relocation<GTSControlMap**> singleton{RELOCATION_ID(514705, 400863)};
 		return *singleton;
 	}
 }
@@ -35,14 +35,14 @@ namespace Gts {
 		auto controlMap = GTSControlMap::GetSingleton();
 		if (controlMap) { 
 			if (a_enable) {
-				controlMap->enabledControls.set(a_flag);
-				if (controlMap->unk11C != UEFlag::kInvalid) {
-					controlMap->unk11C.set(a_flag);
+				controlMap->GetRuntimeData().enabledControls.set(a_flag);
+				if (controlMap->GetRuntimeData().unk11C != UEFlag::kInvalid) {
+					controlMap->GetRuntimeData().unk11C.set(a_flag);
 				}
 			} else {
-				controlMap->enabledControls.reset(a_flag);
-				if (controlMap->unk11C != UEFlag::kInvalid) {
-					controlMap->unk11C.reset(a_flag);
+				controlMap->GetRuntimeData().enabledControls.reset(a_flag);
+				if (controlMap->GetRuntimeData().unk11C != UEFlag::kInvalid) {
+					controlMap->GetRuntimeData().unk11C.reset(a_flag);
 				}
 			}
 		}
