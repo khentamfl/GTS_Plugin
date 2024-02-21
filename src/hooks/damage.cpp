@@ -248,6 +248,17 @@ namespace Hooks
 
 						DoOverkill(aggressor, a_this, dmg);
 
+						if (maybe_hitdata) {
+							log::info("Found hitdata between {} and {}", a_this->GetDisplayFullName(), aggressor->GetDisplayFullName());
+							auto vats = maybe_hitdata->VATSCommand;
+							log::info("Total Damage: {}", maybe_hitdata->totalDamage);
+							if (vats) {
+								auto target = vats->targetHandle.get().get();
+								log::info("Target: {}", target->GetDisplayFullName());
+								log::info("Points: {}", vats->actionPoints);
+							}
+						}
+
 						//log::info("Changing damage to: {}", dmg);
 					}
 				}

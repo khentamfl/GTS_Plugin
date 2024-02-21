@@ -38,44 +38,6 @@ using namespace SKSE;
 //      ^ 50179
 
 namespace {
-	void VatsExperiment(Actor* A_1, Actor* A_2) {
-		auto ai_1 = A_1->GetActorRuntimeData().currentProcess->middleHigh;
-		auto ai_2 = A_2->GetActorRuntimeData().currentProcess->middleHigh;
-		if (ai_1) {
-			auto data = ai_1->lastHitData;
-			if (data) {
-				log::info("(1) Data of {}", A_1->GetDisplayFullName());
-				log::info("---Damage: {}", data->totalDamage);
-				log::info("Forcing everything to 0");
-
-				auto vats = data->VATSCommand;
-				if (vats) {
-					log::info("---Action Points: {}", vats->actionPoints);
-					vats->actionPoints = 0.0;
-				}
-				data->totalDamage = 0.0;
-			}
-		}
-		if (ai_2) {
-			auto data = ai_2->lastHitData;
-			if (data) {
-				log::info("(2) Data of {}", A_1->GetDisplayFullName());
-				log::info("---Damage: {}", data->totalDamage);
-				log::info("Forcing everything to 0");
-
-				auto vats = data->VATSCommand;
-				if (vats) {
-					log::info("---Action Points: {}", vats->actionPoints);
-					vats->actionPoints = 0.0;
-				}
-				data->totalDamage = 0.0;
-			}
-		}
-	}
-
-	Actor* GetAsActor(TESObjectREFR* ref) {
-		return skyrim_cast<Actor*>(ref);
-	}
 	float affect_by_scale(TESObjectREFR* ref, float original) {
 		Actor* giant = skyrim_cast<Actor*>(ref);
 		if (giant) {
@@ -121,39 +83,6 @@ namespace Hooks {
 		//  DoCombatSpellApply_1406282E0
 		//  FUN_14062b870                         															
 		//	Actor::sub_140627930
-
-		static FunctionHook<void(Actor* A_1, MagicCaster* M_C, bool a_Anim, TESObjectREFR* A_2, bool a_Left)>VATSHook (        
-			REL::RelocationID(40230, 41233), 
-			[](Actor* A_1, MagicCaster* M_C, bool a_Anim, TESObjectREFR* A_2, bool a_Left) {
-				
-				log::info("VATS Hook");
-				if (A_1) {
-					log::info("Actor 1: {}", A_1->GetDisplayFullName());
-				} 
-				if (M_C) {
-					log::info("Magic Actor: {}", M_C->GetCasterAsActor()->GetDisplayFullName());
-				}
-				if (A_2) {
-					log::info("Actor 2: {}", A_2->GetDisplayFullName());
-				}
-
-				if (A_1 && A_2) {
-					Actor* A_2_Cast = GetAsActor(A_2);
-					if (A_2) {
-						float sizedifference = get_giantess_scale(A_1)/get_giantess_scale(A_2_Cast);
-						if (sizedifference > 1.15) {
-							log::info("KillMove aborted!");
-							VatsExperiment(A_1, A_2_Cast);
-							a_Anim = false;
-						}
-					}
-				}
-
-				log::info("left: {}, Anim: {}", a_Left, a_Anim);
-				
-				return VATSHook(A_1, M_C, a_Anim, A_2, a_Left);  
-            }
-        );
 
 		/*static FunctionHook<bool(AIProcess* AI, Actor* a_actor, DEFAULT_OBJECT a_action, TESIdleForm* a_idle, uintptr_t a_arg5, uintptr_t a_arg6, TESObjectREFR* a_target)>AnimationHook (        
 			REL::RelocationID(38290, 39256), 
