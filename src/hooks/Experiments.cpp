@@ -72,7 +72,7 @@ namespace {
 	}
 
 	bool AllowAttack(TESActionData* data) { // Credits to Kaputt source code (by Pentalimbed)
-		auto attacker = action_data->source->As<RE::Actor>();
+		auto attacker = data->source->As<RE::Actor>();
     	if (!attacker) {
 			log::info("Attacker false");
          	return true;
