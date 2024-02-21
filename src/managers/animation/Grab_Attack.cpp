@@ -73,7 +73,7 @@ namespace {
                 SpawnHurtParticles(giantess, tiny, 3.0, 1.6);
                 
                 SetBetweenBreasts(giantess, false);
-                ForceCombat(giantess, tiny);
+                StartCombat(tiny, giantess);
                 
                 AdvanceQuestProgression(giantess, tiny, 5, 1.0, false);
                 
