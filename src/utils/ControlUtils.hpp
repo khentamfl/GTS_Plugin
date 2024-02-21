@@ -42,7 +42,7 @@ namespace RE {
 			stl::enumeration<UEFlag, std::uint32_t> userEventGroupFlag;  // 10
 			std::uint32_t                           pad14;               // 14
 		};
-		static_assert(offsetof(UserEventMapping) == 0x18);
+		static_assert(sizeof(UserEventMapping) == 0x18);
 
 		struct InputContext
 		{
@@ -64,9 +64,9 @@ namespace RE {
 			BSTArray<UserEventMapping> deviceMappings[INPUT_DEVICES::kTotal];  // 00
 		};
 #ifdef ENABLE_SKYRIM_VR
-		static_assert(offsetof(InputContext) == 0xF0);
+		static_assert(sizeof(InputContext) == 0xF0);
 #else
-		static_assert(offsetof(InputContext) == 0x60);
+		static_assert(sizeof(InputContext) == 0x60);
 #endif
 
 		struct LinkedMapping
@@ -80,7 +80,7 @@ namespace RE {
 			std::uint32_t  pad14;                 // 14
 			BSFixedString  linkFromName;          // 18
 		};
-		static_assert(offsetof(LinkedMapping) == 0x20);
+		static_assert(sizeof(LinkedMapping) == 0x20);
 
 		static GTSControlMap* GetSingleton();
 
@@ -98,7 +98,7 @@ namespace RE {
 	stl::enumeration<PC_GAMEPAD_TYPE, std::uint32_t> gamePadMapType;               /* 124, VR 144*/
 			RUNTIME_DATA_CONTENT
 		};
-		static_assert(offsetof(RUNTIME_DATA) == 0x40);
+		static_assert(sizeof(RUNTIME_DATA) == 0x40);
 
 		//members
 
@@ -138,12 +138,12 @@ namespace RE {
 	};
 #if !defined(ENABLE_SKYRIM_VR)
 #	if !defined(ENABLE_SKYRIM_AE)
-	static_assert(offsetof(GTSControlMap) == 0x130);
+	static_assert(sizeof(GTSControlMap) == 0x130);
 #	elif !defined(ENABLE_SKYRIM_SE)
-	static_assert(offsetof(GTSControlMap) == 0x128);
+	static_assert(sizeof(GTSControlMap) == 0x128);
 #	endif
 #elif !defined(ENABLE_SKYRIM_SE) && !defined(ENABLE_SKYRIM_AE)
-	//static_assert(offsetof(ControlMap) == 0x148);  // VS seems to choke even though this should be right
+	//static_assert(sizeof(ControlMap) == 0x148);  // VS seems to choke even though this should be right
 #endif
 }
 #undef RUNTIME_DATA_CONTENT
