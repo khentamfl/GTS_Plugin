@@ -19,37 +19,28 @@ namespace {
 
 
 namespace Gts {
+    GTSControlMap* GTSControlMap::GetSingleton()
+	{
+		REL::Relocation<ControlMap**> singleton{ Offset::GTSControlMap::Singleton };
+		return *singleton;
+	}
 
 	void ToggleControls(UEFlag a_flag, bool a_enable) {
         // CRASHES ON AE. SCREW YOU TOO TODD!
 
         // Pretty much the same as CommonLib one, but without sending Events
         // Since they break sneaking for some reason, so we don't want to use them
-
-        bool post1130 = REL::Module::get().IsAE() && (REL::Module::get().version().patch() > 0x400);
-        auto Singleton = (std::uintptr_t)RE::ControlMap::GetSingleton();
-        auto conOffset = std::ptrdiff_t(post1130 ? 0x120 : 0x118);
-        auto pControls = REL::Relocation<std::uint32_t(*)>(Singleton + conOffset).get();   // get 
-
-        auto controlMap = pControls;
-        
-
-        // ^ Credits to Meridiano on RE discord
-
-		
+		auto controlMap = GTSControlMap::GetSingleton();
 		if (controlMap) { 
-            auto Controls = (controlMap->enabledControls + conOffset).get();
-            auto Unk11c = (controlMap->unk11C + conOffset).get();
-            
 			if (a_enable) {
-				Controls.set(a_flag);
-				if (Unk11c != UEFlag::kInvalid) {
-					Unk11c.set(a_flag);
+				controlMap->enabledControls.set(a_flag);
+				if (controlMap->unk11C != UEFlag::kInvalid) {
+					controlMap->unk11C.set(a_flag);
 				}
 			} else {
-				Controls.reset(a_flag);
-				if (Unk11c != UEFlag::kInvalid) {
-					Unk11c.reset(a_flag);
+				controlMap->enabledControls.reset(a_flag);
+				if (controlMap->unk11C != UEFlag::kInvalid) {
+					controlMap->unk11C.reset(a_flag);
 				}
 			}
 		}
