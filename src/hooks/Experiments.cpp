@@ -105,7 +105,7 @@ namespace Hooks {
 				if (A_1 && A_2) {
 					Actor* A_2_Cast = GetAsActor(A_2);
 					if (A_2) {
-						float sizedifference = get_giantess_scale(A_1)/get_giantess_scale(A_2);
+						float sizedifference = get_giantess_scale(A_1)/get_giantess_scale(A_2_Cast);
 						if (sizedifference > 1.15) {
 							log::info("KillMove aborted!");
 							return;
