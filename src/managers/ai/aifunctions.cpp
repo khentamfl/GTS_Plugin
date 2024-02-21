@@ -59,8 +59,8 @@ namespace Gts {
 		ForceCombat(giant, tiny); 
 	}
 
-	void ForceCombat(Actor* giant, Actor* tiny) { // A hacky way to force combat. Easier than looking for a Hook.
-	
+	void ForceCombat(Actor* giant, Actor* tiny) {
+		StartCombat(giant, tiny);
 	}
 	
 

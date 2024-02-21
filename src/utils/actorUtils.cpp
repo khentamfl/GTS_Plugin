@@ -2821,8 +2821,14 @@ namespace Gts {
 	}
 	void Attacked(Actor* victim, Actor* agressor) {
 		typedef void (*DefAttacked)(Actor* victim, Actor* agressor);
-		REL::Relocation<DefAttacked> SkyrimAttacked{ RELOCATION_ID(37672, 38626) };
+		REL::Relocation<DefAttacked> SkyrimAttacked{ RELOCATION_ID(37672, 38626) }; // 6285A0 (SE)
 		SkyrimAttacked(victim, agressor); 
+	}
+
+	void StartCombat(Actor* victim, Actor* agressor) {
+		typedef void (*DefStartCombat)(Actor* victim, Actor* agressor);
+		REL::Relocation<DefStartCombat> SkyrimStartCombat{ RELOCATION_ID(36430, 36430) }; // sub_1405DE870 : 36430
+		SkyrimStartCombat(victim, agressor);                                              // Called from Attacked above at some point
 	}
 
 	void ApplyDamage(Actor* giant, Actor* tiny, float damage) { // applies correct amount of damage and kills actors properly

@@ -84,6 +84,16 @@ namespace Hooks {
 		//  FUN_14062b870                         															
 		//	Actor::sub_140627930
 
+		static FunctionHook<void(uintptr_t* param_1, uintptr_t* param_2)>CrimeHook (        
+			REL::RelocationID(36430, 36430), 
+			[](auto* param_1, auto* param_2) {
+				log::info("Crime Hook");
+				log::info("Param 1: {}", GetRawName(param_1));
+				log::info("Param 2: {}", GetRawName(param_2));
+				return CrimeHook(param_1, param_2, param_3);
+            }
+        );
+
 		/*static FunctionHook<void(Actor* param_1, float param_2, Actor* param_3)>StaggerHook (        
 			REL::RelocationID(36700, 37710), 
 			[](auto* param_1, auto param_2, auto* param_3) {
