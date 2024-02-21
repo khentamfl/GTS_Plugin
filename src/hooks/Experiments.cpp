@@ -51,7 +51,7 @@ namespace {
 				auto vats = data->VATSCommand;
 				if (vats) {
 					log::info("---Action Points: {}", vats->actionPoints);
-					vats->actionPoints = 0.0
+					vats->actionPoints = 0.0;
 				}
 				data->totalDamage = 0.0;
 			}
@@ -66,7 +66,7 @@ namespace {
 				auto vats = data->VATSCommand;
 				if (vats) {
 					log::info("---Action Points: {}", vats->actionPoints);
-					vats->actionPoints = 0.0
+					vats->actionPoints = 0.0;
 				}
 				data->totalDamage = 0.0;
 			}
