@@ -39,15 +39,6 @@ namespace {
 	}
 }
 
-namespace RE {
-	BSTEventSource<ActorKill_RE::Event>* ActorKill_RE::GetEventSource()
-	{
-		using func_t = decltype(&ActorKill_RE::GetEventSource);
-		REL::Relocation<func_t> func{ RELOCATION_ID(37390, 38338) };
-		return func();
-	}
-}
-
 namespace Gts {
 	void KillActor(Actor* giant, Actor* tiny) {
 		float hp = GetMaxAV(tiny, ActorValue::kHealth) * 3.0;	
