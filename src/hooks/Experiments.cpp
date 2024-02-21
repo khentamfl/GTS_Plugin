@@ -38,6 +38,35 @@ using namespace SKSE;
 //      ^ 50179
 
 namespace {
+	void VatsExperiment(Actor* A_1, Actor* A_2) {
+		auto ai_1 = A_1->GetMiddleHighProcess();
+		auto ai_2 = A_2->GetMiddleHighProcess();
+		if (ai_1) {
+			auto data = ai_1->lastHitData;
+			if (data) {
+				log::info("(1) Data of {}", A_1->GetDisplayFullName());
+				log::info("---Action Points: {}", data->VATSCommand.actionPoints);
+				log::info("---Damage: {}", data->totalDamage);
+				log::info("Forcing everything to 0");
+
+				data->VATSCommand.actionPoints = 0.0;
+				data->totalDamage = 0.0;
+			}
+		}
+		if (ai_2) {
+			auto data = ai_2->lastHitData;
+			if (data) {
+				log::info("(2) Data of {}", A_1->GetDisplayFullName());
+				log::info("---Action Points: {}", data->VATSCommand.actionPoints);
+				log::info("---Damage: {}", data->totalDamage);
+				log::info("Forcing everything to 0");
+
+				data->VATSCommand.actionPoints = 0.0;
+				data->totalDamage = 0.0;
+			}
+		}
+	}
+
 	Actor* GetAsActor(TESObjectREFR* ref) {
 		return skyrim_cast<Actor*>(ref);
 	}
@@ -108,8 +137,8 @@ namespace Hooks {
 						float sizedifference = get_giantess_scale(A_1)/get_giantess_scale(A_2_Cast);
 						if (sizedifference > 1.15) {
 							log::info("KillMove aborted!");
-							A_1 = nullptr;
-							A_2 = nullptr;
+							VatsExperiment(A_1, A_2_Cast);
+							a_Anim = false;
 						}
 					}
 				}
