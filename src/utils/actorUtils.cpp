@@ -2809,7 +2809,7 @@ namespace Gts {
 			return soft_core(distance_to_camera, 0.024 / mult, 2.0, 0.8, 0.0, 0.0);
 		}
 		return 1.0;
-	}
+	} 
 
 	// RE Fun
 	void SetCriticalStage(Actor* actor, int stage) {
