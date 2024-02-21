@@ -98,7 +98,7 @@ namespace Hooks {
 				if (a_action) {
 					log::info("a_action: {}", a_action);
 				}
-				if (idle) {
+				if (a_idle) {
 					log::info("idle: {}", a_idle->GetFormEditorID());
 				}
 				//log::info("arg5: {}", a_arg5);
