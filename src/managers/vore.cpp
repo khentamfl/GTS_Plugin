@@ -668,13 +668,11 @@ namespace Gts {
 		}
 
 		if (pred->IsSneaking() && !IsCrawling(pred)) {
-			ShrinkUntil(pred, prey, 10.0, 0.12); // Shrink if we have SMT to allow 'same-size' vore
+			ShrinkUntil(pred, prey, 10.0, 0.14); // Shrink if we have SMT to allow 'same-size' vore
 		} else {
 			ShrinkUntil(pred, prey, 10.0, 0.16); // Shrink if we have SMT to allow 'same-size' vore
 			StaggerActor(pred, prey, 0.25f);
 		}
-
-		
 
 		if (pred->formID == 0x14) {
 			Runtime::PlaySound("VoreSound_Success", pred, 0.6, 1.0);

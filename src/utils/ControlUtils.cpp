@@ -25,9 +25,15 @@ namespace Gts {
 
         // Pretty much the same as CommonLib one, but without sending Events
         // Since they break sneaking for some reason, so we don't want to use them
+
+        /*bool post1130 = REL::Module::get().IsAE() && (REL::Module::get().version().patch() > 0x400);
+        auto conBase = (std::uintptr_t)RE::ControlMap::GetSingleton();
+        auto conOffset = std::ptrdiff_t(post1130 ? 0x120 : 0x118);
+        auto pControls = REL::Relocation<std::uint32_t(*)>(conBase + conOffset).get();*/  // Credits to Meridiano on RE discord
+
 		auto controlMap = ControlMap::GetSingleton();
 		if (controlMap) { 
-
+            
 			if (a_enable) {
 				controlMap->enabledControls.set(a_flag);
 				if (controlMap->unk11C != UEFlag::kInvalid) {

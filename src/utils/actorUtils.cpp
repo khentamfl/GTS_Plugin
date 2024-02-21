@@ -2473,7 +2473,7 @@ namespace Gts {
 	void ShrinkUntil(Actor* giant, Actor* tiny, float expected, float halflife) {
 		if (HasSMT(giant)) {
 			float Adjustment = GetSizeFromBoundingBox(tiny);
-			float predscale = get_target_scale(giant);
+			float predscale = get_visual_scale(giant);
 			float preyscale = get_target_scale(tiny) * Adjustment;
 			float targetScale = predscale/expected;
 
@@ -2791,12 +2791,18 @@ namespace Gts {
 
 	void InflictSizeDamage(Actor* attacker, Actor* receiver, float value) {
 		if (!receiver->IsDead()) {
-			if (GetHealthPercentage(receiver) < 0.60) {
-				Attacked(receiver, attacker);
-			}
+			float HpPercentage = GetHealthPercentage(receiver);
 			float difficulty = 2.0; // taking Legendary Difficulty as a base
 			float levelbonus = 1.0 + ((GetGtsSkillLevel() * 0.01) * 0.50);
 			value *= levelbonus;
+
+			if (HpPercentage < 0.60 || value > HpPercentage * 0.60) {
+				if (!IsTeammate(receiver) && !IsHostile(attacker, receiver)) {
+					StartCombat(receiver, attacker);
+				}
+				Attacked(receiver, attacker);
+			}
+			
 			ApplyDamage(attacker, receiver, value * difficulty * GetDamageSetting());
 		}
 	}
@@ -2825,9 +2831,9 @@ namespace Gts {
 	}
 
 	void StartCombat(Actor* victim, Actor* agressor) {
-		typedef void (*DefStartCombat)(Actor* victim, Actor* agressor);
-		REL::Relocation<DefStartCombat> SkyrimStartCombat{ RELOCATION_ID(36430, 36430) }; // sub_1405DE870 : 36430
-		SkyrimStartCombat(victim, agressor);                                              // Called from Attacked above at some point
+		typedef void (*DefStartCombat)(Actor* act_1, Actor* act_2, Actor* act_3, Actor* act_4);
+		REL::Relocation<DefStartCombat> SkyrimStartCombat{ RELOCATION_ID(36430, 37425) }; // sub_1405DE870 : 36430  (SE) ; 1406050c0 : 37425 (AE)
+		SkyrimStartCombat(victim, agressor, agressor, agressor);                          // Called from Attacked above at some point
 	}
 
 	void ApplyDamage(Actor* giant, Actor* tiny, float damage) { // applies correct amount of damage and kills actors properly
