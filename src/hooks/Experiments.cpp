@@ -49,7 +49,10 @@ namespace {
 				log::info("---Damage: {}", data->totalDamage);
 				log::info("Forcing everything to 0");
 
-				data->VATSCommand.actionPoints = 0.0;
+				auto vats = data->VATSCommand;
+				if (vats) {
+					vats->actionPoints = 0.0
+				}
 				data->totalDamage = 0.0;
 			}
 		}
@@ -61,7 +64,10 @@ namespace {
 				log::info("---Damage: {}", data->totalDamage);
 				log::info("Forcing everything to 0");
 
-				data->VATSCommand.actionPoints = 0.0;
+				auto vats = data->VATSCommand;
+				if (vats) {
+					vats->actionPoints = 0.0
+				}
 				data->totalDamage = 0.0;
 			}
 		}
