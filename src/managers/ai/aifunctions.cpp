@@ -60,7 +60,7 @@ namespace Gts {
 	}
 
 	void ForceCombat(Actor* giant, Actor* tiny) {
-		StartCombat(giant, tiny);
+		StartCombat(tiny, giant);
 	}
 	
 
