@@ -69,14 +69,7 @@ namespace Gts {
 	}
 
 	void ForceCombat(Actor* giant, Actor* tiny) { // A hacky way to force combat. Easier than looking for a Hook.
-		
-		auto* eventsource = ScriptEventSourceHolder::GetSingleton();
-		if (eventsource) {
-			auto A_Kill = ActorKill();
-			A_Kill.GetEventSource()->killer = giant;
-			A_Kill.GetEventSource()->victim = tiny;
-			eventsource->SendEvent(&A_Kill);
-		}
+	
 	}
 	
 
