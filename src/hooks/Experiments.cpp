@@ -84,6 +84,27 @@ namespace Hooks {
 		//  FUN_14062b870                         															
 		//	Actor::sub_140627930
 
+		static FunctionHook<void(Actor* A_1, MagicCaster* M_C, bool a_Anim, TESObjectREFR* A_2, bool a_Left)>VATSHook (        
+			REL::RelocationID(40230, 41233), 
+			[](Actor* A_1, MagicCaster* M_C, bool a_Anim, TESObjectREFR* A_2, bool a_Left) {
+				
+				log::info("VATS Hook");
+				if (A_1) {
+					log::info("Actor 1: {}", A_1->GetDisplayFullName());
+				} 
+				if (M_C) {
+					log::info("Magic Actor: {}", M_C->GetCasterAsActor()->GetDisplayFullName());
+				}
+				if (A_2) {
+					log::info("Actor 2: {}", A_2->GetDisplayFullName());
+				}
+
+				log::info("left: {}, Anim: {}", a_Left, a_Anim);
+				
+				return VATSHook(A_1, M_C, a_Anim, A_2, a_Left);  
+            }
+        );
+
 		/*static FunctionHook<bool(AIProcess* AI, Actor* a_actor, DEFAULT_OBJECT a_action, TESIdleForm* a_idle, uintptr_t a_arg5, uintptr_t a_arg6, TESObjectREFR* a_target)>AnimationHook (        
 			REL::RelocationID(38290, 39256), 
 			[](auto* AI, auto* a_actor, auto a_action, auto* a_idle, uintptr_t a_arg5, uintptr_t a_arg6, auto* a_target) {
