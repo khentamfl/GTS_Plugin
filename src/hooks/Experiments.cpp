@@ -90,7 +90,7 @@ namespace Hooks {
 				log::info("Crime Hook");
 				log::info("Param 1: {}", GetRawName(param_1));
 				log::info("Param 2: {}", GetRawName(param_2));
-				return CrimeHook(param_1, param_2, param_3);
+				return CrimeHook(param_1, param_2);
             }
         );
 
