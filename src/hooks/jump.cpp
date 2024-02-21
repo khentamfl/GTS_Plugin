@@ -68,6 +68,11 @@ namespace Hooks {
 							a_in *= jump_factor;
 						}
 					}
+				} else {
+					auto actor = skyrim_cast<Actor*>(graph);
+					if (actor && actor->formID == 0x14) {
+						log::info("Variable: {}", a_variableName);
+					}
 				}
 				return SkyrimSetGraphVarFloat(graph, a_variableName, a_in);
 			});
