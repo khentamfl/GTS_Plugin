@@ -261,7 +261,7 @@ namespace {
 
 	void ProtectSmallOnesEvent(const InputEventData& data) {
 		static Timer ProtectTimer = Timer(5.0);
-		if (ProtectTimer.ShouldRunFrame()) {
+		if (CanPerformAnimation(PlayerCharacter::GetSingleton(), 4) && ProtectTimer.ShouldRunFrame()) {
 			bool balance = SizeManager::GetSingleton().BalancedMode() == 2.0;
 			Utils_ProtectTinies(balance);
 		}

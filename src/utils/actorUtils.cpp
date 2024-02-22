@@ -2684,7 +2684,10 @@ namespace Gts {
 					return true; // Allow grabbing and sandwiching
 				} else if (queststage >= 60 && type >= 3) {
 					return true; // Allow Vore
-				} else {
+				} else if (queststage >= 100 && type >= 4) { 
+					return true; // When quest is completed
+				}
+				else {
 					return false;
 				}
 			}
