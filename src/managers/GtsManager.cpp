@@ -62,6 +62,7 @@ namespace {
 		auto charController = giant->GetCharController();
 		if (charController) {
 			float bumpedForce = charController->bumpedForce;
+			charController->bumpedForce = 0.0;
 			log::info("BumpedForce of {} is {}", giant->GetDisplayFullName(), bumpedForce);
 		}
 	}
