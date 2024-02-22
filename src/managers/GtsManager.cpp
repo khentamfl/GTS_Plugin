@@ -282,7 +282,7 @@ void GtsManager::Update() {
 
 	for (auto actor: find_actors()) {
 		if (!actor) {
-			return;
+			return; 
 		}
 
 		FixActorFade(actor);
