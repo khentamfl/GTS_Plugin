@@ -230,6 +230,10 @@ namespace {
 		float size_gts = get_giantess_scale(giant);
 		float size_tiny = get_giantess_scale(tiny);
 
+		if (HasSMT(tiny)) {
+			size_tiny *= 3.0;
+		}
+
 		float difference = size_gts/size_tiny;
 		float result = difference*difference*difference;
 
@@ -238,6 +242,21 @@ namespace {
 		}
 
 		return result;
+	}
+
+	void ProcessHit(Actor* attacker, Actor* a_victim, HitData& data) {
+		log::info("Found Attacker: {}", attacker->GetDisplayFullName());
+		log::info("Total Stagger Pre: {}", data.stagger);
+		log::info("Total Push Pre: {}", data.pushBack);
+		log::info("Reflected D pre: {}", data.reflectedDamage);
+
+		data.stagger *= GetPushMult(attacker, a_victim);
+		data.pushBack *= GetPushMult(attacker, a_victim);
+		data.reflectedDamage *= GetPushMult(attacker, a_victim);
+
+		log::info("Total Stagger Post: {}", data.stagger);
+		log::info("Total Push Post: {}", data.pushBack);
+		log::info("Reflected D Post: {}", data.reflectedDamage);
 	}
 }
 
@@ -273,23 +292,14 @@ namespace Hooks
 
 		static FunctionHook<void(Actor* a_victim, HitData& a_hitData)>ProcessHitHook (      
 			 // Affects Damage from Weapon Impacts, sadly can't prevent KillMoves
+			 // Affects damage in real-time,  so 40000 becomes 0 for example
 			REL::RelocationID(37633, 38586), 
 			[](Actor* a_victim, HitData& a_hitData) {
 				log::info("ProcessHitHook");
 				auto attackerref = a_hitData.aggressor;
 				log::info("Victim: {}", a_victim->GetDisplayFullName());
 				if (attackerref && a_victim) {
-					auto attacker = attackerref.get().get();
-					log::info("Found Attacker: {}", attacker->GetDisplayFullName());
-					log::info("Total Stagger Pre: {}", a_hitData.stagger);
-					log::info("Total Push Pre: {}", a_hitData.pushBack);
-
-					a_hitData.stagger *= GetPushMult(attacker, a_victim);
-					a_hitData.pushBack *= GetPushMult(attacker, a_victim);
-
-					log::info("Total Stagger Post: {}", a_hitData.stagger);
-					log::info("Total Push Post: {}", a_hitData.pushBack);
-					
+					ProcessHit(attackerref.get().get(), a_victim, a_hitData);
 				}
 				return ProcessHitHook(a_victim, a_hitData); 
             }
