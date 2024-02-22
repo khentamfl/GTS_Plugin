@@ -314,7 +314,7 @@ namespace Hooks
 				log::info("a_from: {}", Vector2Str(a_from));
 				log::info("time: {}", time);
 				Actor* giant = skyrim_cast<Actor*>(controller);
-				hkVector4 created = a_from;
+				hkVector4 created = hkVector4(a_from);
 				if (giant) {
 					log::info("Giant found: {}", giant->GetDisplayFullName());
 					created *= get_visual_scale(giant);
