@@ -111,8 +111,8 @@ namespace Hooks {
             }
         );
 
-		static CallHook<bool(Actor* a_victim, HitData& a_hitData)>ProcessHitHook (        
-			REL::RelocationID(37673, 38627), REL::Relocate(0x3c0, 0x4a8),  // SE: 628C20
+		static FunctionHook<void(Actor* a_victim, HitData& a_hitData)>ProcessHitHook (        
+			REL::RelocationID(37633, 38586), 
 			[](Actor* a_victim, HitData& a_hitData) {
 				log::info("ProcessHitHook");
 				auto attackerref = a_hitData.aggressor;
@@ -121,9 +121,9 @@ namespace Hooks {
 					auto attacker = attackerref.get().get();
 					log::info("Found Attacker: {}", attacker->GetDisplayFullName());
 					log::info("Total Damage Pre: {}", a_hitData.totalDamage);
-					a_hitData.totalDamage = 1.0;
+					a_hitData.totalDamage = 0.0;
 					log::info("Total Damage Post: {}", a_hitData.totalDamage);
-					return false;
+					a_hitData.VATSCommand = nullptr;
 				}
 				return ProcessHitHook(a_victim, a_hitData); 
             }
