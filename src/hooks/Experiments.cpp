@@ -124,10 +124,11 @@ namespace Hooks {
         );
 
 		static FunctionHook<void(Actor* a_victim, HitData& a_hitData)>ProcessHitHook (        
-			REL::RelocationID(37673, 38627), 
+			REL::RelocationID(37673, 38627), REL::Relocate(0x3c0, 0x4a8),  // SE: 628C20
 			[](Actor* a_victim, HitData& a_hitData) {
 				log::info("ProcessHitHook");
 				auto attackerref = a_hitData.aggressor;
+				log::info("Victim: {}", a_victim->GetDisplayFullName());
 				if (attackerref) {
 					auto attacker = attackerref.get().get();
 					log::info("Found Attacker: {}", attacker->GetDisplayFullName());
