@@ -69,7 +69,8 @@ namespace {
 					hkpCharacterProxy* hkpObject = skyrim_cast<hkpCharacterProxy*>(refObject);
 					if (hkpObject) {
 						float scale = get_visual_scale(giant);
-						float mass = hkpObject->characterMass + (1.0 * (scale * scale * scale));
+						float extraweight = 1.0 * (scale * scale * scale);
+						float mass = hkpObject->characterMass + (extraWeight -1.0);
 						log::info("Mass of {} is {}", giant->GetDisplayFullName(), mass);
 					}
 				}
@@ -305,7 +306,7 @@ void GtsManager::Update() {
 		}
 
 		FixActorFade(actor);
-		PushTest(actor);
+		
 	
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
@@ -317,6 +318,8 @@ void GtsManager::Update() {
 			ClothManager::GetSingleton().CheckRip();
 			TinyCalamity_SeekActors(actor);
 			SpawnActionIcon(actor);
+			
+			PushTest(actor);
 
 			if (IsCrawling(actor)) {
 				ApplyAllCrawlingDamage(actor, 1000, 0.25);
