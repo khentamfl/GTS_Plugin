@@ -154,7 +154,7 @@ namespace Hooks {
             }
         );
 
-		static FunctionHook<void(uintptr_t param_1, uintptr_t* param_2)>FUN_140c32030 (  // Called by Havok hook (38112, 39068)}; // SE: 6403D0
+		static FunctionHook<float(uintptr_t param_1, uintptr_t* param_2)>FUN_140c32030 (  // Called by Havok hook (38112, 39068)}; // SE: 6403D0
 			REL::RelocationID(67997, 67997), 
 			[](auto param_1, auto* param_2) {
 				log::info("FUN_140c32030");
