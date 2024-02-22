@@ -76,8 +76,8 @@ namespace {
 		float size_difference = get_giantess_scale(receiver)/get_giantess_scale(attacker);
 		if (size_difference >= 1.15) {
 			log::info("Size Difference > 1.15. Disallow");
-			attacker->GetActorRuntimeData()->boolFlags.reset(Actor::BOOL_FLAGS::kIsInKillMove);
-			receiver->GetActorRuntimeData()->boolFlags.reset(Actor::BOOL_FLAGS::kIsInKillMove);
+			attacker->GetActorRuntimeData().boolFlags.reset(Actor::BOOL_FLAGS::kIsInKillMove);
+			receiver->GetActorRuntimeData().boolFlags.reset(Actor::BOOL_FLAGS::kIsInKillMove);
 			return false;
 		}
 
