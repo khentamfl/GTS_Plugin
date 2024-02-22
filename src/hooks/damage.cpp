@@ -314,15 +314,13 @@ namespace Hooks
 				log::info("a_from: {}", Vector2Str(a_from));
 				log::info("time: {}", time);
 				Actor* giant = skyrim_cast<Actor*>(controller);
+				hkVector4 created = a_from;
 				if (giant) {
 					log::info("Giant found: {}", giant->GetDisplayFullName());
-					a_from[0] *= get_visual_scale(giant);
-					a_from[1] *= get_visual_scale(giant);
-					a_from[2] *= get_visual_scale(giant);
-					a_from[3] *= get_visual_scale(giant);
+					created *= get_visual_scale(giant);
 					log::info("New a_from: {}", Vector2Str(a_from));
 				}
-				return HavokPushHook(controller, a_from, time); 
+				return HavokPushHook(controller, created, time); 
             }
         );
 
