@@ -24,7 +24,7 @@ using namespace SKSE;
 namespace {
 
 	Actor* FindActor(bhkCharacterController* charCont) {
-		hkpRigidBody* body = charCont->supportBody;
+		hkpRigidBody* body = charCont->supportBody.get();
 		if (body) {
 			Actor* result = skyrim_cast<Actor*>(body->GetUserData());
 			if (result) {
