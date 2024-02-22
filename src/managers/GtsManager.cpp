@@ -58,15 +58,6 @@ namespace {
 		}
 	}
 
-	void PushTest(Actor* giant) {
-		auto charController = giant->GetCharController();
-		if (charController) {
-			float bumpedForce = charController->bumpedForce;
-			charController->bumpedForce = 0.0;
-			log::info("BumpedForce of {} is {}", giant->GetDisplayFullName(), bumpedForce);
-		}
-	}
-
 	void FixActorFade(Actor* actor) {
 		auto profiler = Profilers::Profile("Manager: Fade Fix");
 		if (get_visual_scale(actor) < 1.5) {
@@ -307,8 +298,6 @@ void GtsManager::Update() {
 			ClothManager::GetSingleton().CheckRip();
 			TinyCalamity_SeekActors(actor);
 			SpawnActionIcon(actor);
-
-			PushTest(actor);
 
 			if (IsCrawling(actor)) {
 				ApplyAllCrawlingDamage(actor, 1000, 0.25);

@@ -113,6 +113,50 @@ namespace Hooks {
             }
         );*/
 
+		static FunctionHook<float(bhkCharacterController* param_1, uintptr_t param_2)>CheckLayerPenetration (        
+			REL::RelocationID(76469, 76469), 
+			// 140dc35c0
+			[](auto* param_1, auto param_2) {
+				log::info("CheckLayerPenetration Hook");
+				log::info("Param 2:{}", param_2);
+				float result = CheckLayerPenetration(param_1, param_2);
+				log::info("result: {}", result);
+				return CheckLayerPenetration(param_1, param_2); 
+            }
+        );
+		// Members of MoveHavok
+
+		static FunctionHook<void(bhkCharacterController* param_1, uintptr_t param_2)>sub_140DC0C90 (        
+			REL::RelocationID(76452, 76452), 
+			[](auto* param_1, auto param_2) {
+				log::info("sub_140DC0C90");
+				log::info("--Param 2: {}", GetRawName(param_2));
+				return sub_140DC0C90(param_1, param_2); 
+            }
+        );
+
+		static FunctionHook<void(bhkCharacterController* param_1, uintptr_t param_2)>sub_1402A22F0 (        
+			REL::RelocationID(19674, 19674), 
+			[](auto* param_1, auto param_2) {
+				log::info("sub_1402A22F0");
+				log::info("--Param 2: {}", GetRawName(param_2));
+				return sub_1402A22F0(param_1, param_2); 
+            }
+        );
+
+		static FunctionHook<void(bhkCharacterController* param_1, uintptr_t param_2)>sub_140DBEE70 (        
+			REL::RelocationID(76422, 76422), 
+			[](auto* param_1, auto param_2) {
+				log::info("sub_140DBEE70");
+				log::info("--Param 2: {}", GetRawName(param_2));
+				return sub_140DBEE70(param_1, param_2); 
+            }
+        );
+
+		//sub_140DC0C90(bhkCharacterController* param_1, NiPoint3* param_2, uintptr_t param_3); // 76452
+		//sub_1402A22F0(bhkCharacterController* param_1, NiPoint3* param_2); // 19674
+		sub_140DBEE70(bhkCharacterController* param_1, uintptr_t param_2); // 76422
+
 		/*static FunctionHook<bool(AIProcess* AI, Actor* a_actor, DEFAULT_OBJECT a_action, TESIdleForm* a_idle, uintptr_t a_arg5, uintptr_t a_arg6, TESObjectREFR* a_target)>AnimationHook (        
 			REL::RelocationID(38290, 39256), 
 			[](auto* AI, auto* a_actor, auto a_action, auto* a_idle, uintptr_t a_arg5, uintptr_t a_arg6, auto* a_target) {
