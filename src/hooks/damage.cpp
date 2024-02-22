@@ -232,11 +232,12 @@ namespace {
         if (tranData) {
 			float tiny_scale = get_visual_scale(tiny);
 			float giant_scale = get_visual_scale(giant);
-			float difference = giant_scale/tiny;
-
+			
 			if (HasSMT(giant)) {
 			    giant_scale *= 2.0;
 		    }
+			
+			float difference = giant_scale/tiny_scale;
 
 			float pushResult = 1.0 / (difference*difference*difference);
 
