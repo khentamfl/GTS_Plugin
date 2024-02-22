@@ -61,7 +61,7 @@ namespace {
 	void PushTest(Actor* giant) {
 		auto charController = giant->GetCharController();
 		if (charController) {
-			bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
+			bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charController);
 			if (charProxyController) {
 				auto& proxy = charProxyController->proxy;
 				hkReferencedObject* refObject = proxy.referencedObject.get();
