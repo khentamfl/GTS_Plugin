@@ -23,6 +23,15 @@ using namespace SKSE;
 
 namespace {
 
+	Actor* FindActor(bhkCharacterController* charCont) {
+		for (auto actor: find_actors()) {
+			if (charCont == actor->GetCharController()) {
+				return actor;
+			}
+		}
+		return nullptr;
+	}
+
 	void CameraFOVTask_TP(Actor* actor, PlayerCamera* camera, TempActorData* data, bool AllowEdits) {
 		std::string name = std::format("CheatDeath_TP_{}", actor->formID);
 		ActorHandle gianthandle = actor->CreateRefHandle();
@@ -226,16 +235,14 @@ namespace {
 		return mult;
 	}
 
-	float GetPushMult(Actor* giant, Actor* tiny) {
-		float size_gts = get_giantess_scale(giant);
-		float size_tiny = get_giantess_scale(tiny);
+	float GetPushMult(Actor* giant) {
+		float size = get_giantess_scale(giant);
 
-		if (HasSMT(tiny)) {
-			size_tiny *= 3.0;
+		if (HasSMT(giant)) {
+			size *= 3.0;
 		}
 
-		float difference = size_gts/size_tiny;
-		float result = difference*difference*difference;
+		float result = 1.0 / (size*size*size);
 
 		if (result <= 0.05) {
 			return 0.0;
@@ -306,21 +313,20 @@ namespace Hooks
         );*/
 
 		static FunctionHook<void(bhkCharacterController* controller, hkVector4& a_from, float time)>HavokPushHook (      
-			 // Affects Damage from Weapon Impacts, sadly can't prevent KillMoves
-			 // Affects damage in real-time,  so 40000 becomes 0 for example
 			REL::RelocationID(76442, 78282), 
 			[](bhkCharacterController* controller, hkVector4& a_from, float time) {
 				log::info("HavokPush");
 				log::info("a_from: {}", Vector2Str(a_from));
 				log::info("time: {}", time);
-				Actor* giant = skyrim_cast<Actor*>(controller);
+				Actor* giant = FindActor(controller);
 				float scale = 1.0;
 				if (giant) {
 					log::info("Giant found: {}", giant->GetDisplayFullName());
-					log::info("New a_from: {}", Vector2Str(a_from));
-					scale = get_visual_scale(giant);
+					
+					scale = GetPushMult(giant);
 				}
-				hkVector4 created = hkVector4(a_from) * scale;
+				hkVector4 created = hkVector4(a_from) / scale;
+				log::info("New a_from: {}", Vector2Str(created));
 				
 				return HavokPushHook(controller, created, time); 
             }
