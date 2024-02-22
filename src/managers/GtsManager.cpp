@@ -61,10 +61,18 @@ namespace {
 	void PushTest(Actor* giant) {
 		auto charController = giant->GetCharController();
 		if (charController) {
-			hkVector4 pushdelta = charController->pushDelta;
-			log::info("Pre Push Force of {} - {}", giant->GetDisplayFullName(), Vector2Str(pushdelta));
-			pushdelta = (pushdelta / get_visual_scale(giant));
-			log::info("Post Push Force of {} - {}", giant->GetDisplayFullName(), Vector2Str(pushdelta));
+			bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charCont);
+			if (charProxyController) {
+				auto& proxy = charProxyController->proxy;
+				hkReferencedObject* refObject = proxy.referencedObject.get();
+				if (refObject) {
+					hkpCharacterProxy* hkpObject = skyrim_cast<hkpCharacterProxy*>(refObject);
+					if (hkpObject) {
+						float mass = hkpObject->characterMass;
+						log::info("Mass of {} is {}", giant->GetDisplayFullName(), mass);
+					}
+				}
+			}
 		}
 	}
 
