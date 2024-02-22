@@ -66,7 +66,7 @@ namespace Gts {
                     ToggleControls(UEFlag::kMovement, !GtsBusy);
                     //ToggleControls(UEFlag::kSneaking, !GtsBusy);
                     ToggleControls(UEFlag::kJumping, !GtsBusy);
-                    log::info("Adjusting Controls");
+                   // log::info("Adjusting Controls");
                 }
             }
         }

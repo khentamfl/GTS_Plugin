@@ -1895,8 +1895,6 @@ namespace Gts {
 	void Utils_PushCheck(Actor* giant, Actor* tiny, float force) {
 		auto model = tiny->GetCurrent3D();
 		auto& sizemanager = SizeManager::GetSingleton();
-
-		return; // Disabled for tests
 	
 		bool moving = IsMoving(giant);
 

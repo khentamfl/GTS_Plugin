@@ -1018,7 +1018,7 @@ namespace Gts {
 							int Random = rand() % 100 + 1;
 							int RagdollChance = (-32 + (32 / Threshold) * difference);
 							bool roll = RagdollChance > Random;
-							log::info("Roll: {}, RandomChance {}, Threshold: {}", roll, RagdollChance, Random);
+							//log::info("Roll: {}, RandomChance {}, Threshold: {}", roll, RagdollChance, Random);
 							//eventually it reaches 100% chance to ragdoll an actor (at ~x3.0 size difference)
 
 							if (difference > 1.35 && (roll || otherActor->IsDead())) {
@@ -1220,16 +1220,8 @@ namespace Gts {
 								}
 								Laugh_Chance(giant, otherActor, 1.0, "FingerGrind"); 
 
-								if (radius == Radius_Sneak_FingerGrind_Finisher) { // On Finisher Only
-									//AnimationManager::StartAnim("Tiny_ExitAnims", otherActor);
-									PushActorAway(giant, otherActor, 1.0);
-									log::info("Pushing Actor");
-								}
+								Utils_PushCheck(giant, otherActor, 1.0);
 
-								if (!IsHuman(otherActor)) {
-									Utils_PushCheck(giant, otherActor, 1.0);
-									log::info("{} isn't human", otherActor->GetDisplayFullName());
-								}
 								CollisionDamage::GetSingleton().DoSizeDamage(giant, otherActor, damage, bbmult, crushmult, random, Cause, true);
 							}
 						}
