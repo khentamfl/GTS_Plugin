@@ -4,6 +4,7 @@
 #include "hooks/actorRotation.hpp"
 #include "hooks/Stealth.hpp"
 #include "hooks/impact.hpp"
+#include "hooks/Pushback.hpp"
 #include "hooks/vm.hpp"
 #include "hooks/havok.hpp"
 #include "hooks/magicTarget.hpp"
@@ -42,6 +43,7 @@ namespace Hooks
 		Hook_Sinking::Hook(trampoline);
 		Hook_Jumping::Hook(trampoline);
 		Hook_Damage::Hook(trampoline);
+		Hook_Pushback::Hook(trampoline);
 		
 		//if (REL::Module::IsSE()) { // Used when something is not RE'd yet for AE
 			

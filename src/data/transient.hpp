@@ -22,12 +22,14 @@ namespace Gts {
 		float FallTimer;
 		float Hug_AnimSpeed;
 		float Throw_Speed;
+		float push_force;
 		float otherScales;
 		float WorldFov_Default;
 		float FpFov_Default;
 		float ButtCrushGrowthAmount;
 		float ShrinkWeakness;
 		float Rotation_X;
+		
 
 		bool Throw_WasThrown;
 		bool is_teammate;
@@ -47,7 +49,7 @@ namespace Gts {
 		bool Overkilled;
 		bool Protection;
 		bool was_sneaking;
-		bool prevent_push;
+		
 
 		bool DisableControls;
 

@@ -256,6 +256,15 @@ namespace Gts {
 		return actor;
 	}
 
+	Actor* GetCharContActor(bhkCharacterController* charCont) {
+		for (auto actor: find_actors()) {
+			if (charCont == actor->GetCharController()) {
+				return actor;
+			}
+		}
+		return nullptr;
+	}
+
 	float GetLaunchPower(Actor* giant, float sizeRatio) {
 		// https://www.desmos.com/calculator/wh0vwgljfl
 		SoftPotential launch {

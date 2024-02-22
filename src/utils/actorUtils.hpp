@@ -20,6 +20,8 @@ namespace Gts {
 
 	Actor* GetActorPtr(FormID formId);
 
+	Actor* GetCharContActor(bhkCharacterController* charCont);
+
 	float GetLaunchPower(Actor* giant, float sizeRatio);
 
 	void StartResetTask(Actor* tiny);

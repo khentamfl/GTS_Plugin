@@ -110,7 +110,7 @@ namespace {
 	}
 
 	void HitGrowth(Actor* receiver, Actor* attacker, float GrowthValue, float SizeDifference, float BalanceMode) {
-		log::info("Growth Value: {}", GrowthValue);
+		//log::info("Growth Value: {}", GrowthValue);
 
 		int LaughChance = rand() % 12;
 		int ShrinkChance = rand() % 5;

@@ -3,20 +3,10 @@
 #include "scale/scale.hpp"
 #include "data/plugin.hpp"
 #include "managers/Attributes.hpp"
+#include "utils/actorUtils.hpp"
 
 using namespace RE;
 using namespace SKSE;
-
-namespace {
-	Actor* FindActor(bhkCharacterController* charCont) {
-		for (auto actor: find_actors()) {
-			if (charCont == actor->GetCharController()) {
-				return actor;
-			}
-		}
-		return nullptr;
-	}
-}
 
 namespace Hooks {
 
@@ -27,7 +17,7 @@ namespace Hooks {
 			REL::RelocationID(76430, 78269),
 			[](auto* a_this){
 			float result = GetFallDistance(a_this);
-			auto actor = FindActor(a_this);
+			auto actor = GetCharContActor(a_this);
 			if (actor) {
 				if (actor->formID == 0x14) {// Apply to Player only
 					float scale = get_giantess_scale(actor);
@@ -59,7 +49,7 @@ namespace Hooks {
 						if (actor) {
 							const float CRITICALHEIGHT = 9.70;
 							const float ACTORHEIGHT = 1.82*70.0;
-							const float FACTOR = 0.25;
+							const float FACTOR = 0.20;
 							float scale = get_giantess_scale(actor);
 							float newCriticalHeight = ACTORHEIGHT*scale*FACTOR;
 

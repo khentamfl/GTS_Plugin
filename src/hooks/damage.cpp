@@ -22,16 +22,6 @@ using namespace RE;
 using namespace SKSE;
 
 namespace {
-
-	Actor* FindActor(bhkCharacterController* charCont) {
-		for (auto actor: find_actors()) {
-			if (charCont == actor->GetCharController()) {
-				return actor;
-			}
-		}
-		return nullptr;
-	}
-
 	void CameraFOVTask_TP(Actor* actor, PlayerCamera* camera, TempActorData* data, bool AllowEdits) {
 		std::string name = std::format("CheatDeath_TP_{}", actor->formID);
 		ActorHandle gianthandle = actor->CreateRefHandle();
@@ -235,20 +225,27 @@ namespace {
 		return mult;
 	}
 
-	float GetPushMult(Actor* giant) {
-		float size = get_giantess_scale(giant);
+	void RecordPushForce(Actor* giant, Actor* tiny) {
 
-		if (HasSMT(giant)) {
-			size *= 3.0;
-		}
+		auto tranData = Transient::GetSingleton().GetData(giant);
 
-		float result = 1.0 / (size*size*size);
+        if (tranData) {
+			float tiny_scale = get_visual_scale(tiny);
+			float giant_scale = get_visual_scale(giant);
+			float difference = giant_scale/tiny;
 
-		if (result <= 0.05) {
-			return 0.0;
-		}
+			if (HasSMT(giant)) {
+			    giant_scale *= 2.0;
+		    }
 
-		return result;
+			float pushResult = 1.0 / (difference*difference*difference);
+
+			float result = std::clamp(pushResult, 0.01f, 1.0f);
+
+            tranData->push_force = result;
+			log::info("Recording Push Force:{} - {}", giant->GetDisplayFullName(), tiny->GetDisplayFullName());
+			log::info("----Value: {}", result);
+        } 
 	}
 }
 
@@ -260,20 +257,15 @@ namespace Hooks
 		static FunctionHook<void(Actor* a_this, float dmg, Actor* aggressor, uintptr_t maybe_hitdata, TESObjectREFR* damageSrc)> SkyrimTakeDamage(
 			RELOCATION_ID(36345, 37335),
 			[](auto* a_this, auto dmg, auto* aggressor, uintptr_t maybe_hitdata, auto* damageSrc) { // Universal damage function before Difficulty damage
-				//log::info("Someone taking damage");
-				//log::info("{}: Taking {} damage", a_this->GetDisplayFullName(), dmg);
 
 				if (aggressor) { // apply to hits only, We don't want to decrease fall damage for example
 					if (aggressor != a_this) {
-						//log::info("Found Aggressor");
-						//log::info("Aggressor: {}", aggressor->GetDisplayFullName());
 						dmg *= GetTotalDamageResistance(a_this, aggressor);
 						dmg *= HealthGate(a_this, aggressor, dmg);
 
 
 						DoOverkill(aggressor, a_this, dmg);
-
-						//log::info("Changing damage to: {}", dmg);
+						RecordPushForce(a_this, aggressor);
 					}
 				}
 
@@ -281,29 +273,6 @@ namespace Hooks
 				return;
 			}
 		);
-
-		
-
-		static FunctionHook<void(bhkCharacterController* controller, hkVector4& a_from, float time)>HavokPushHook (      
-			REL::RelocationID(76442, 78282), 
-			[](bhkCharacterController* controller, hkVector4& a_from, float time) {
-				
-				Actor* giant = FindActor(controller);
-				float scale = 1.0;
-				if (giant) {
-					log::info("Giant found: {}", giant->GetDisplayFullName());
-					log::info("HavokPush");
-					log::info("a_from: {}", Vector2Str(a_from));
-					log::info("time: {}", time);
-					
-					scale = GetPushMult(giant);
-				}
-				hkVector4 created = hkVector4(a_from) * scale;
-				log::info("New a_from: {}", Vector2Str(created));
-				
-				return HavokPushHook(controller, created, time); 
-            }
-        );
 
 		/*static FunctionHook<void(Actor* a_victim, HitData& a_hitData)>ProcessHitHook (      
 			 // Affects Damage from Weapon Impacts, sadly can't prevent KillMoves
