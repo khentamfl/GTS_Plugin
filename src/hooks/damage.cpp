@@ -278,14 +278,14 @@ namespace Hooks
 				log::info("ProcessHitHook");
 				auto attackerref = a_hitData.aggressor;
 				log::info("Victim: {}", a_victim->GetDisplayFullName());
-				if (attackerref) {
+				if (attackerref && a_victim) {
 					auto attacker = attackerref.get().get();
 					log::info("Found Attacker: {}", attacker->GetDisplayFullName());
 					log::info("Total Stagger Pre: {}", a_hitData.stagger);
 					log::info("Total Push Pre: {}", a_hitData.pushBack);
 
-					a_hitData.stagger *= GetPushMult(attackerref, a_victim);
-					a_hitData.pushBack *= GetPushMult(attackerref, a_victim);
+					a_hitData.stagger *= GetPushMult(attacker, a_victim);
+					a_hitData.pushBack *= GetPushMult(attacker, a_victim);
 
 					log::info("Total Stagger Post: {}", a_hitData.stagger);
 					log::info("Total Push Post: {}", a_hitData.pushBack);
