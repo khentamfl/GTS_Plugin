@@ -252,16 +252,22 @@ namespace Gts {
     void TinyCalamity_ShrinkActor(Actor* giant, Actor* tiny, float shrink) {
         if (HasSMT(giant)) {
             bool HasPerk = Runtime::HasPerk(giant, "SmallMassiveThreatSizeSteal");
-
+            float limit = 0.06;
             if (HasPerk) {
 				giant->AsActorValueOwner()->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kDamage, ActorValue::kHealth, shrink * 0.12);
                 shrink *= 1.25;
 			}
 
-            if (get_target_scale(tiny) > 0.06) {
+            float target_scale = get_target_scale(tiny);
+
+
+            if (target_scale > limit) {
                 ShrinkActor(tiny, shrink * 0.0045, 0.0);
+                if (target_scale < limit) {
+                    set_target_scale(tiny, limit);
+                }
             } else { // cap it just in case
-                set_target_scale(tiny, 0.06);
+                set_target_scale(tiny, limit);
             }
         }
     }
