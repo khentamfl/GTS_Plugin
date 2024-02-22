@@ -87,7 +87,7 @@ namespace {
 		auto receiver = receiverRef.get().get();
 		log::info("Found Receiver: {}", receiver->GetDisplayFullName());
 
-		float size_difference = get_giantess_scale(attacker) / get_giantess_scale(receiver);
+		float size_difference = get_giantess_scale(receiver)/get_giantess_scale(attacker);
 		if (size_difference >= 1.15) {
 			log::info("Size Difference > 1.15. Disallow");
 			return false;
@@ -115,7 +115,7 @@ namespace Hooks {
 				// sub_14060EEF0 : 37013
 				// 0x14060ef0a - 0x14060EEF0 = 0x1A
 				bool result = AllowAttack(param_1);
-				if (!result) {
+				if (result) {
 					result = ActionDataHook(param_1);
 				}
 				log::info("Allow: {}", result);
