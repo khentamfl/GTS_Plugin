@@ -24,7 +24,7 @@ using namespace SKSE;
 namespace {
 
 	Actor* FindActor(bhkCharacterController* charCont) {
-		hkpRigidBody* body = charContr->supportBody;
+		hkpRigidBody* body = charCont->supportBody;
 		if (body) {
 			Actor* result = skyrim_cast<Actor*>(body->GetUserData());
 			if (result) {
@@ -284,20 +284,7 @@ namespace Hooks
 			}
 		);
 
-		/*static FunctionHook<void(Actor* a_victim, HitData& a_hitData)>ProcessHitHook (      
-			 // Affects Damage from Weapon Impacts, sadly can't prevent KillMoves
-			 // Affects damage in real-time,  so 40000 becomes 0 for example
-			REL::RelocationID(37633, 38586), 
-			[](Actor* a_victim, HitData& a_hitData) {
-				log::info("ProcessHitHook");
-				auto attackerref = a_hitData.aggressor;
-				log::info("Victim: {}", a_victim->GetDisplayFullName());
-				if (attackerref && a_victim) {
-					ProcessHit(attackerref.get().get(), a_victim, a_hitData);
-				}
-				return ProcessHitHook(a_victim, a_hitData); 
-            }
-        );*/
+		
 
 		static FunctionHook<void(bhkCharacterController* controller, hkVector4& a_from, float time)>HavokPushHook (      
 			REL::RelocationID(76442, 78282), 
@@ -312,12 +299,27 @@ namespace Hooks
 					
 					scale = GetPushMult(giant);
 				}
-				hkVector4 created = hkVector4(a_from) / scale;
+				hkVector4 created = hkVector4(a_from) * scale;
 				log::info("New a_from: {}", Vector2Str(created));
 				
 				return HavokPushHook(controller, created, time); 
             }
         );
+
+		/*static FunctionHook<void(Actor* a_victim, HitData& a_hitData)>ProcessHitHook (      
+			 // Affects Damage from Weapon Impacts, sadly can't prevent KillMoves
+			 // Affects damage in real-time,  so 40000 becomes 0 for example
+			REL::RelocationID(37633, 38586), 
+			[](Actor* a_victim, HitData& a_hitData) {
+				log::info("ProcessHitHook");
+				auto attackerref = a_hitData.aggressor;
+				log::info("Victim: {}", a_victim->GetDisplayFullName());
+				if (attackerref && a_victim) {
+					ProcessHit(attackerref.get().get(), a_victim, a_hitData);
+				}
+				return ProcessHitHook(a_victim, a_hitData); 
+            }
+        );*/
 
 		/*static FunctionHook<void(Actor* a_this, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4, uintptr_t param_5)> sub_1406213D0(
 			// SE: 1406213D0 : 37525
