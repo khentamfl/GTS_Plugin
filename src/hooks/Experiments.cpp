@@ -132,9 +132,13 @@ namespace Hooks {
 				log::info("sub_140DC0C90");
 				log::info("--Param 2: {}", Vector2Str(param_2)); 
 				log::info("--Param 3: {}", param_3);
-				param_2 *= 0.0;
+
+				param_2->quad.m128_f32[0] *= 0.0;
+				param_2->quad.m128_f32[1] *= 0.0;
+				param_2->quad.m128_f32[2] *= 0.0;
+				param_2->quad.m128_f32[3] *= 0.0;
 			
-				return sub_140DC0C90(param_1, Push, param_3);  
+				return sub_140DC0C90(param_1, param_2, param_3);  
             }
         );
 
