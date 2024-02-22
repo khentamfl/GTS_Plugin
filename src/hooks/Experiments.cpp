@@ -128,11 +128,11 @@ namespace Hooks {
 
 		static FunctionHook<void(bhkCharacterController* param_1, hkVector4* param_2, uintptr_t param_3)>sub_140DC0C90 (        
 			REL::RelocationID(76452, 76452), 
-			[](auto* param_1, auto* param_2, auto param_3) {
+			[](auto* param_1, hkVector4* param_2, auto param_3) {
 				log::info("sub_140DC0C90");
 				log::info("--Param 2: {}", Vector2Str(param_2)); 
 				log::info("--Param 3: {}", param_3);
-				hkVector4 Push = param_2 * 0.0;
+				hkVector4* Push = param_2 * 0.0;
 			
 				return sub_140DC0C90(param_1, Push, param_3);  
             }
