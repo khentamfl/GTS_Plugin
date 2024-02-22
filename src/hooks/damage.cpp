@@ -225,6 +225,20 @@ namespace {
 		mult *= (multiplier * resistance * tiny * IsNotImmune);
 		return mult;
 	}
+
+	float GetPushMult(Actor* giant, Actor* tiny) {
+		float size_gts = get_giantess_scale(giant);
+		float size_tiny = get_giantess_scale(tiny);
+
+		float difference = size_gts/size_tiny;
+		float result = difference*difference*difference;
+
+		if (result <= 0.05) {
+			return 0.0;
+		}
+
+		return result;
+	}
 }
 
 namespace Hooks
@@ -256,6 +270,30 @@ namespace Hooks
 				return;
 			}
 		);
+
+		static FunctionHook<void(Actor* a_victim, HitData& a_hitData)>ProcessHitHook (      
+			 // Affects Damage from Weapon Impacts, sadly can't prevent KillMoves
+			REL::RelocationID(37633, 38586), 
+			[](Actor* a_victim, HitData& a_hitData) {
+				log::info("ProcessHitHook");
+				auto attackerref = a_hitData.aggressor;
+				log::info("Victim: {}", a_victim->GetDisplayFullName());
+				if (attackerref) {
+					auto attacker = attackerref.get().get();
+					log::info("Found Attacker: {}", attacker->GetDisplayFullName());
+					log::info("Total Stagger Pre: {}", a_hitData.stagger);
+					log::info("Total Push Pre: {}", a_hitData.pushBack);
+
+					a_hitData.stagger *= GetPushMult(attackerref, a_victim);
+					a_hitData.pushBack *= GetPushMult(attackerref, a_victim);
+
+					log::info("Total Stagger Post: {}", a_hitData.stagger);
+					log::info("Total Push Post: {}", a_hitData.pushBack);
+					
+				}
+				return ProcessHitHook(a_victim, a_hitData); 
+            }
+        );
 
 		/*static FunctionHook<void(Actor* a_this, uintptr_t param_2, uintptr_t param_3, uintptr_t param_4, uintptr_t param_5)> sub_1406213D0(
 			// SE: 1406213D0 : 37525

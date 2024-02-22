@@ -97,8 +97,10 @@ namespace Hooks {
 		//  DoCombatSpellApply_1406282E0
 		//  FUN_14062b870                         															
 		//	Actor::sub_140627930
-		static CallHook<bool(TESActionData* param_1)>ActionDataHook (  // Credits to Kaputt source code (by Pentalimbed)
+		/*static CallHook<bool(TESActionData* param_1)>ActionDataHook (  // Credits to Kaputt source code (by Pentalimbed)
 			REL::RelocationID(48139, 49170), REL::Relocate(0x4d7, 0x435),         
+			// Allows/disallows NPC's to perform attack Animation
+			// Sadly doesn't affect KillMove
 			[](auto* param_1) {
 				// sub_14060EEF0 : 37013
 				// 0x14060ef0a - 0x14060EEF0 = 0x1A
@@ -109,25 +111,8 @@ namespace Hooks {
 				log::info("Allow: {}", result);
 				return result;
             }
-        );
+        );*/
 
-		static FunctionHook<void(Actor* a_victim, HitData& a_hitData)>ProcessHitHook (        
-			REL::RelocationID(37633, 38586), 
-			[](Actor* a_victim, HitData& a_hitData) {
-				log::info("ProcessHitHook");
-				auto attackerref = a_hitData.aggressor;
-				log::info("Victim: {}", a_victim->GetDisplayFullName());
-				if (attackerref) {
-					auto attacker = attackerref.get().get();
-					log::info("Found Attacker: {}", attacker->GetDisplayFullName());
-					log::info("Total Damage Pre: {}", a_hitData.totalDamage);
-					a_hitData.totalDamage = 0.0;
-					log::info("Total Damage Post: {}", a_hitData.totalDamage);
-					a_hitData.VATSCommand = nullptr;
-				}
-				return ProcessHitHook(a_victim, a_hitData); 
-            }
-        );
 		/*static FunctionHook<bool(AIProcess* AI, Actor* a_actor, DEFAULT_OBJECT a_action, TESIdleForm* a_idle, uintptr_t a_arg5, uintptr_t a_arg6, TESObjectREFR* a_target)>AnimationHook (        
 			REL::RelocationID(38290, 39256), 
 			[](auto* AI, auto* a_actor, auto a_action, auto* a_idle, uintptr_t a_arg5, uintptr_t a_arg6, auto* a_target) {
