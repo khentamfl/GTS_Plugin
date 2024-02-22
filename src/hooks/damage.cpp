@@ -250,21 +250,6 @@ namespace {
 
 		return result;
 	}
-
-	void ProcessHit(Actor* attacker, Actor* a_victim, HitData& data) {
-		log::info("Found Attacker: {}", attacker->GetDisplayFullName());
-		log::info("Total Stagger Pre: {}", data.stagger);
-		log::info("Total Push Pre: {}", data.pushBack);
-		log::info("Reflected D pre: {}", data.reflectedDamage);
-
-		data.stagger *= GetPushMult(attacker, a_victim);
-		data.pushBack *= GetPushMult(attacker, a_victim);
-		data.reflectedDamage *= GetPushMult(attacker, a_victim);
-
-		log::info("Total Stagger Post: {}", data.stagger);
-		log::info("Total Push Post: {}", data.pushBack);
-		log::info("Reflected D Post: {}", data.reflectedDamage);
-	}
 }
 
 namespace Hooks
