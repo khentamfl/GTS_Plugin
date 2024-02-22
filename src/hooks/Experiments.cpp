@@ -57,20 +57,6 @@ namespace {
 		return 1.0;
 	}
 
-	NiPoint3 camera_getplayeroffset() {
-		auto player = PlayerCharacter::GetSingleton();
-		if (player) {
-			float scale = get_visual_scale(player);
-			float ns = get_natural_scale(player);
-			if (scale > 0) {
-				float offset = 70.0 * (scale - ns);
-				NiPoint3 adjust = NiPoint3(offset, 0.0, offset);
-				return adjust;
-			}
-		}
-		return NiPoint3(0.0, 0.0, 0.0);
-	}
-
 	bool AllowAttack(TESActionData* data) { // Credits to Kaputt source code (by Pentalimbed)
 		auto attacker = data->source->As<RE::Actor>();
     	if (!attacker) {
@@ -90,6 +76,8 @@ namespace {
 		float size_difference = get_giantess_scale(receiver)/get_giantess_scale(attacker);
 		if (size_difference >= 1.15) {
 			log::info("Size Difference > 1.15. Disallow");
+			attacker->boolFlags.reset(Actor::BOOL_FLAGS::kIsInKillMove);
+			receiver->boolFlags.reset(Actor::BOOL_FLAGS::kIsInKillMove);
 			return false;
 		}
 
@@ -123,7 +111,7 @@ namespace Hooks {
             }
         );
 
-		static CallHook<void(Actor* a_victim, HitData& a_hitData)>ProcessHitHook (        
+		static CallHook<bool(Actor* a_victim, HitData& a_hitData)>ProcessHitHook (        
 			REL::RelocationID(37673, 38627), REL::Relocate(0x3c0, 0x4a8),  // SE: 628C20
 			[](Actor* a_victim, HitData& a_hitData) {
 				log::info("ProcessHitHook");
@@ -135,6 +123,7 @@ namespace Hooks {
 					log::info("Total Damage Pre: {}", a_hitData.totalDamage);
 					a_hitData.totalDamage = 1.0;
 					log::info("Total Damage Post: {}", a_hitData.totalDamage);
+					return false;
 				}
 				return ProcessHitHook(a_victim, a_hitData); 
             }
