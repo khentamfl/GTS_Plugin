@@ -620,7 +620,6 @@ namespace Gts {
 		bool SMT = HasSMT(giant);
 		if (SMT) {
 			SCALE_RATIO = 0.9;
-			giantScale *= 1.2;
 		}
 
 		NiPoint3 NodePosition = node->world.translate;
@@ -690,11 +689,11 @@ namespace Gts {
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 90.0;
 		const float BASE_DISTANCE = 6.0;
-		const float SCALE_RATIO = 3.0;
+		float SCALE_RATIO = 3.0;
 
 
 		if (HasSMT(actor)) {
-			giantScale += 3.5;
+			SCALE_RATIO = 0.8;
 		}
 
 		// Get world HH offset
@@ -821,13 +820,13 @@ namespace Gts {
 		float giantScale = get_visual_scale(actor);
 		const float BASE_CHECK_DISTANCE = 90.0;
 		const float BASE_DISTANCE = 6.0;
-		const float SCALE_RATIO = 3.0;
+		float SCALE_RATIO = 3.0;
 
 
 		if (HasSMT(actor)) {
-			giantScale += 3.60;
+			SCALE_RATIO = 0.8;
 		}
-
+		
 		// Get world HH offset
 		NiPoint3 hhOffset = HighHeelManager::GetHHOffset(actor);
 		NiPoint3 hhOffsetbase = HighHeelManager::GetBaseHHOffset(actor);
@@ -1063,7 +1062,7 @@ namespace Gts {
 
 		if (HasSMT(actor)) {
 			giantScale += 0.20;
-			SCALE_RATIO = 0.95;
+			SCALE_RATIO = 0.90;
 		}
 
 		std::string_view leg = "NPC R Foot [Rft ]";

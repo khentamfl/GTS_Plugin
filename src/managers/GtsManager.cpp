@@ -61,20 +61,8 @@ namespace {
 	void PushTest(Actor* giant) {
 		auto charController = giant->GetCharController();
 		if (charController) {
-			bhkCharProxyController* charProxyController = skyrim_cast<bhkCharProxyController*>(charController);
-			if (charProxyController) {
-				auto& proxy = charProxyController->proxy;
-				hkReferencedObject* refObject = proxy.referencedObject.get();
-				if (refObject) {
-					hkpCharacterProxy* hkpObject = skyrim_cast<hkpCharacterProxy*>(refObject);
-					if (hkpObject) {
-						float scale = get_visual_scale(giant);
-						float extraWeight = 100;//1.0 * (scale * scale * scale);
-						float mass = hkpObject->characterMass + (extraWeight -1.0);
-						log::info("Mass of {} is {}", giant->GetDisplayFullName(), mass);
-					}
-				}
-			}
+			float bumpedForce = charController->bumpedForce;
+			log::info("BumpedForce of {} is {}", giant->GetDisplayFullName(), bumpedForce);
 		}
 	}
 
