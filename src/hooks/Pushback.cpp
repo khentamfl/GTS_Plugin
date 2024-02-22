@@ -10,6 +10,8 @@ namespace {
 
     float GetPushMult(Actor* giant) {
         auto tranData = Transient::GetSingleton().GetData(giant);
+        
+        float result = 1.0;
 
         if (tranData) {
             result = tranData->push_force;
