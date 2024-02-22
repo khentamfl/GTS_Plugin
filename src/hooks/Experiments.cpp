@@ -113,7 +113,7 @@ namespace Hooks {
             }
         );*/
 
-		static FunctionHook<float(bhkCharacterController* param_1, uintptr_t param_2)>CheckLayerPenetration (        
+		/*static FunctionHook<float(bhkCharacterController* param_1, uintptr_t param_2)>CheckLayerPenetration (        
 			REL::RelocationID(76469, 76469), 
 			// 140dc35c0
 			[](auto* param_1, auto param_2) {

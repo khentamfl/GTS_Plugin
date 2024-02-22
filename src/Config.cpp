@@ -27,6 +27,7 @@ namespace Gts {
 		std::string flushLevel = toml::find_or<std::string>(data, "flushLevel", "trace");
 		this->_logLevel = spdlog::level::from_str(logLevel);
 		this->_flushLevel = spdlog::level::from_str(flushLevel);
+		this->_shouldProfile = toml::find_or<bool>(data, "profile", false);
 	}
 
 	Frame::Frame(const toml::value& data) {
