@@ -131,7 +131,7 @@ namespace Hooks {
 			[](auto* param_1, auto* param_2, auto param_3) {
 				log::info("sub_140DC0C90");
 				log::info("--Param 2: {}", Vector2Str(param_2)); 
-				log::info("--Param 3: {}", GetRawName(param_3));
+				log::info("--Param 3: {}", param_3);
 				return sub_140DC0C90(param_1, param_2, param_3); 
             }
         );
@@ -151,6 +151,16 @@ namespace Hooks {
 				log::info("sub_140DBEE70");
 				log::info("--Param 2: {}", Vector2Str(param_2));
 				return sub_140DBEE70(param_1, param_2); 
+            }
+        );
+
+		static FunctionHook<void(uintptr_t param_1, uintptr_t* param_2)>FUN_140c32030 (  // Called by Havok hook (38112, 39068)}; // SE: 6403D0
+			REL::RelocationID(67997, 67997), 
+			[](auto param_1, auto* param_2) {
+				log::info("FUN_140c32030");
+				float result = FUN_140c32030(param_1, param_2);
+				log::info("--Result: {}", result);
+				return FUN_140c32030(param_1, param_2); 
             }
         );
 
