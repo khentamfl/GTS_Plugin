@@ -26,7 +26,7 @@ namespace {
 	Actor* FindActor(bhkCharacterController* charCont) {
 		hkpRigidBody* body = charContr->supportBody;
 		if (body) {
-			Actor* result = body->GetUserData();
+			Actor* result = skyrim_cast<Actor*>(body->GetUserData());
 			if (result) {
 				return result;
 			}
