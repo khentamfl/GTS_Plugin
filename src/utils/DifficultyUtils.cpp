@@ -35,18 +35,18 @@ namespace Gts {
 		if (GameSetting) {
 			modifier = GameSetting->GetSetting(setting)->GetFloat();
 		}
-		log::info("Difficulty Modifier: {}", modifier);
+		//log::info("Difficulty Modifier: {}", modifier);
 		return modifier;
 	}
 
 	float GetDifficultyMultiplier(Actor* attacker, Actor* receiver) { // Credits to Doodlum for this method
 		if (attacker && (attacker->IsPlayerRef() || IsTeammate(attacker))) {
 			auto currentdiff = PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty;
-            log::info("Current By PC Difficulty: {}", Difficulty_ByPC[currentdiff]);
+            //log::info("Current By PC Difficulty: {}", Difficulty_ByPC[currentdiff]);
 			return GetSettingValue(Difficulty_ByPC[currentdiff]);
 		} else if (receiver && (receiver->IsPlayerRef() || IsTeammate(attacker))) {
 			auto currentdiff = PlayerCharacter::GetSingleton()->GetGameStatsData().difficulty;
-            log::info("Current To PC Difficulty: {}", Difficulty_ToPC[currentdiff]);
+            //log::info("Current To PC Difficulty: {}", Difficulty_ToPC[currentdiff]);
 			return GetSettingValue(Difficulty_ToPC[currentdiff]);
 		}
 		return 1.0;

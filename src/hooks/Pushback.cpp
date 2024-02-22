@@ -10,7 +10,7 @@ namespace {
 
     float GetPushMult(Actor* giant) {
         auto tranData = Transient::GetSingleton().GetData(giant);
-        
+
         float result = 1.0;
 
         if (tranData) {
@@ -41,17 +41,18 @@ namespace Hooks
 				Actor* giant = GetCharContActor(controller);
 				float scale = 1.0;
 				if (giant) {
-					log::info("Giant found: {}", giant->GetDisplayFullName());
-					log::info("HavokPush");
-					log::info("a_from: {}", Vector2Str(a_from));
-					log::info("time: {}", time);
+                    if (giant->formID == 0x14) {
+                        log::info("Giant found: {}", giant->GetDisplayFullName());
+                        log::info("HavokPush");
+                        log::info("a_from: {}", Vector2Str(a_from));
+                        log::info("time: {}", time);
+                    }
 					
 					scale = GetPushMult(giant);
 				}
-				hkVector4 created = hkVector4(a_from) * scale;
-				log::info("New a_from: {}", Vector2Str(created));
+				hkVector4 Push = hkVector4(a_from) * scale;
 				
-				return HavokPushHook(controller, created, time); 
+				return HavokPushHook(controller, Push, time); 
             }
         );
 

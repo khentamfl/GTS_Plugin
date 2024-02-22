@@ -226,7 +226,7 @@ namespace {
 	}
 
 	void RecordPushForce(Actor* giant, Actor* tiny) {
-
+		// Deal Damage is called earlier than the push so we can just record that
 		auto tranData = Transient::GetSingleton().GetData(giant);
 
         if (tranData) {
@@ -236,7 +236,7 @@ namespace {
 			if (HasSMT(giant)) {
 			    giant_scale *= 2.0;
 		    }
-			
+
 			float difference = giant_scale/tiny_scale;
 
 			float pushResult = 1.0 / (difference*difference*difference);

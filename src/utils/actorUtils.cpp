@@ -262,6 +262,12 @@ namespace Gts {
 				return actor;
 			}
 		}
+		// Sadly feels like that's the only reliable way to get the actor
+		// Possible other method (complex, Meh321 from RE Discord):
+		// - hook ctor and dtor of the bhkCharacterController, there's more info in the constructor 
+		//  (like which object root node it's created for) and store custom formid -> ptr lookup (or other way around) 
+		//  from which you can get it later
+		//  bhkCharProxyControllerCinfo+0x10 is root NiNode* of TESObjectREFR
 		return nullptr;
 	}
 

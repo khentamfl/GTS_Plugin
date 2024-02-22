@@ -58,6 +58,16 @@ namespace {
 		}
 	}
 
+	void PushTest(Actor* giant) {
+		auto charController = giant->GetCharController();
+		if (charController) {
+			hkVector4 pushforce = charController->pushDelta;
+			log::info("Pre Push Force of {} - {}", giant->GetDisplayFullName(), Vector2Str(push_force));
+			pushforce /= get_visual_scale(giant);
+			log::info("Post Push Force of {} - {}", giant->GetDisplayFullName(), Vector2Str(push_force));
+		}
+	}
+
 	void FixActorFade(Actor* actor) {
 		auto profiler = Profilers::Profile("Manager: Fade Fix");
 		if (get_visual_scale(actor) < 1.5) {
@@ -278,7 +288,7 @@ void GtsManager::Update() {
 	auto profiler = Profilers::Profile("Manager: Update()");
 
 	UpdateFalling();
-	ManageControls(); // CRASHES ON AE 1130+. **** YOU TOO TODD!
+	ManageControls();
 
 	for (auto actor: find_actors()) {
 		if (!actor) {
@@ -286,6 +296,7 @@ void GtsManager::Update() {
 		}
 
 		FixActorFade(actor);
+		PushTest(actor);
 	
 		auto& CollisionDamage = CollisionDamage::GetSingleton();
 		auto& sizemanager = SizeManager::GetSingleton();
