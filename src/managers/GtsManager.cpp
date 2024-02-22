@@ -69,7 +69,7 @@ namespace {
 					hkpCharacterProxy* hkpObject = skyrim_cast<hkpCharacterProxy*>(refObject);
 					if (hkpObject) {
 						float scale = get_visual_scale(giant);
-						float extraweight = 1.0 * (scale * scale * scale);
+						float extraWeight = 1.0 * (scale * scale * scale);
 						float mass = hkpObject->characterMass + (extraWeight -1.0);
 						log::info("Mass of {} is {}", giant->GetDisplayFullName(), mass);
 					}
@@ -318,7 +318,7 @@ void GtsManager::Update() {
 			ClothManager::GetSingleton().CheckRip();
 			TinyCalamity_SeekActors(actor);
 			SpawnActionIcon(actor);
-			
+
 			PushTest(actor);
 
 			if (IsCrawling(actor)) {
