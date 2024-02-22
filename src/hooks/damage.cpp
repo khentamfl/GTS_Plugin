@@ -24,17 +24,9 @@ using namespace SKSE;
 namespace {
 
 	Actor* FindActor(bhkCharacterController* charCont) {
-		hkpRigidBody* body = charCont->supportBody.get();
-		if (!body) {
-			body = charCont->bumpedBody.get();
-			if (!body) {
-				body = charCont->bumpedCharCollisionObject.get();
-			}
-		}
-		if (body) {
-			Actor* result = skyrim_cast<Actor*>(body->GetUserData());
-			if (result) {
-				return result;
+		for (auto actor: find_actors()) {
+			if (charCont == actor->GetCharController()) {
+				return actor;
 			}
 		}
 		return nullptr;
