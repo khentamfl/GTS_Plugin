@@ -123,7 +123,7 @@ namespace Hooks {
             }
         );
 
-		static FunctionHook<void(Actor* a_victim, HitData& a_hitData)>ProcessHitHook (        
+		static CallHook<void(Actor* a_victim, HitData& a_hitData)>ProcessHitHook (        
 			REL::RelocationID(37673, 38627), REL::Relocate(0x3c0, 0x4a8),  // SE: 628C20
 			[](Actor* a_victim, HitData& a_hitData) {
 				log::info("ProcessHitHook");
@@ -136,7 +136,7 @@ namespace Hooks {
 					a_hitData.totalDamage = 1.0;
 					log::info("Total Damage Post: {}", a_hitData.totalDamage);
 				}
-				return ProcessHitHook(a_victim, a_hitData);   // Has 4 params, but very often param 2 - 4 is Player (so: Victim, player, player, player);
+				return ProcessHitHook(a_victim, a_hitData); 
             }
         );
 		/*static FunctionHook<bool(AIProcess* AI, Actor* a_actor, DEFAULT_OBJECT a_action, TESIdleForm* a_idle, uintptr_t a_arg5, uintptr_t a_arg6, TESObjectREFR* a_target)>AnimationHook (        
