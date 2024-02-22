@@ -69,7 +69,7 @@ namespace {
 					hkpCharacterProxy* hkpObject = skyrim_cast<hkpCharacterProxy*>(refObject);
 					if (hkpObject) {
 						float scale = get_visual_scale(giant);
-						float extraWeight = 1.0 * (scale * scale * scale);
+						float extraWeight = 100;//1.0 * (scale * scale * scale);
 						float mass = hkpObject->characterMass + (extraWeight -1.0);
 						log::info("Mass of {} is {}", giant->GetDisplayFullName(), mass);
 					}
