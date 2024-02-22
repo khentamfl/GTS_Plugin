@@ -134,7 +134,7 @@ namespace Hooks {
 				log::info("--Param 3: {}", param_3);
 				hkVector4 Push = param_2 * 0.0;
 			
-				return sub_140DC0C90(param_1, Push, param_3); 
+				return sub_140DC0C90(param_1, Push, param_3);  
             }
         );
 
