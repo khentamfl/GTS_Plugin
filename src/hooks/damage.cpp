@@ -24,9 +24,11 @@ using namespace SKSE;
 namespace {
 
 	Actor* FindActor(bhkCharacterController* charCont) {
-		for (auto actor: find_actors()) {
-			if (charCont == actor->GetCharController()) {
-				return actor;
+		hkpRigidBody* body = charContr->supportBody;
+		if (body) {
+			Actor* result = body->GetUserData();
+			if (result) {
+				return result;
 			}
 		}
 		return nullptr;
