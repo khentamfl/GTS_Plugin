@@ -290,7 +290,7 @@ namespace Hooks
 			}
 		);
 
-		static FunctionHook<void(Actor* a_victim, HitData& a_hitData)>ProcessHitHook (      
+		/*static FunctionHook<void(Actor* a_victim, HitData& a_hitData)>ProcessHitHook (      
 			 // Affects Damage from Weapon Impacts, sadly can't prevent KillMoves
 			 // Affects damage in real-time,  so 40000 becomes 0 for example
 			REL::RelocationID(37633, 38586), 
@@ -302,6 +302,24 @@ namespace Hooks
 					ProcessHit(attackerref.get().get(), a_victim, a_hitData);
 				}
 				return ProcessHitHook(a_victim, a_hitData); 
+            }
+        );*/
+
+		static FunctionHook<void(bhkCharacterController* controller, hkVector4& a_from, float time)>HavokPushHook (      
+			 // Affects Damage from Weapon Impacts, sadly can't prevent KillMoves
+			 // Affects damage in real-time,  so 40000 becomes 0 for example
+			REL::RelocationID(76442, 78282), 
+			[](bhkCharacterController* controller, hkVector4& a_from, float time) {
+				log::info("HavokPush");
+				log::info("a_from: {}", Vector2Str(a_from));
+				log::info("time: {}", time);
+				Actor* giant = skyrim_cast<Actor*>(controller);
+				if (giant) {
+					log::info("Giant found: {}", giant->GetDisplayFullName());
+					a_from *= get_visual_scale(giant);
+					log::info("New a_from: {}", Vector2Str(a_from));
+				}
+				return HavokPushHook(controller, a_from, time); 
             }
         );
 
