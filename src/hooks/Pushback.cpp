@@ -37,7 +37,8 @@ namespace Hooks
         static FunctionHook<void(bhkCharacterController* controller, hkVector4& a_from, float time)>HavokPushHook (      
 			REL::RelocationID(76442, 78282), 
 			[](bhkCharacterController* controller, hkVector4& a_from, float time) {
-				// TO-DO: make it respect size-difference by caching push resistance into transient
+				// TO-DO: Somwehow improve performance instead of looping through all actors
+                auto profiler = Profilers::Profile("Hook: HavokPush");
 				Actor* giant = GetCharContActor(controller);
 				float scale = 1.0;
 				if (giant) {

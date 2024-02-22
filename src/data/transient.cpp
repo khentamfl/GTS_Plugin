@@ -122,7 +122,6 @@ namespace Gts {
 			result.Hug_AnimSpeed = Hug_AnimSpeed;
 			result.Throw_Speed = Throw_Speed;
 			result.push_force = push_force;
-			
 			result.can_do_vore = can_do_vore;
 			result.Throw_WasThrown = Throw_WasThrown;
 			result.can_be_crushed = can_be_crushed;

@@ -23,7 +23,7 @@ namespace Gts {
 
 			spdlog::level::level_enum _logLevel{spdlog::level::level_enum::info};
 			spdlog::level::level_enum _flushLevel{spdlog::level::level_enum::trace};
-			bool _shouldProfile = false;
+			bool _shouldProfile = true;
 	};
 
 	class Frame {
