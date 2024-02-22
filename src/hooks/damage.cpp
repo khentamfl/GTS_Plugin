@@ -37,15 +37,6 @@ namespace {
 				return result;
 			}
 		}
-		if (!body) {
-			log::info("Trying body still");
-			NiRefObject object = skyrim_cast<NiRefObject>(charCont);
-			Actor* result = skyrim_cast<Actor*>(NiRefObject);
-			if (result) {
-				log::info("NiRefObject + Actor found");
-				return result;
-			}
-		}
 		return nullptr;
 	}
 
