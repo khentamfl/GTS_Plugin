@@ -25,9 +25,24 @@ namespace {
 
 	Actor* FindActor(bhkCharacterController* charCont) {
 		hkpRigidBody* body = charCont->supportBody.get();
+		if (!body) {
+			body = charCont->bumpedBody.get();
+			if (!body) {
+				body = charCont->bumpedCharCollisionObject.get();
+			}
+		}
 		if (body) {
 			Actor* result = skyrim_cast<Actor*>(body->GetUserData());
 			if (result) {
+				return result;
+			}
+		}
+		if (!body) {
+			log::info("Trying body still");
+			NiRefObject object = skyrim_cast<NiRefObject>(charCont);
+			Actor* result = skyrim_cast<Actor*>(NiRefObject);
+			if (result) {
+				log::info("NiRefObject + Actor found");
 				return result;
 			}
 		}
@@ -289,13 +304,14 @@ namespace Hooks
 		static FunctionHook<void(bhkCharacterController* controller, hkVector4& a_from, float time)>HavokPushHook (      
 			REL::RelocationID(76442, 78282), 
 			[](bhkCharacterController* controller, hkVector4& a_from, float time) {
-				log::info("HavokPush");
-				log::info("a_from: {}", Vector2Str(a_from));
-				log::info("time: {}", time);
+				
 				Actor* giant = FindActor(controller);
 				float scale = 1.0;
 				if (giant) {
 					log::info("Giant found: {}", giant->GetDisplayFullName());
+					log::info("HavokPush");
+					log::info("a_from: {}", Vector2Str(a_from));
+					log::info("time: {}", time);
 					
 					scale = GetPushMult(giant);
 				}
