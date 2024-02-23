@@ -159,36 +159,6 @@ namespace Gts {
 					}
 					return true;
 				});
-
-				bool name = (stringDataStr.find("name") != std::string::npos);
-				bool NPC = (stringDataStr.find("NPC") != std::string::npos);
-				if (name && NPC) {
-					bool pos = (stringDataStr.find("pos") != std::string::npos);
-					if (pos) {
-						result = pos.template get<std::vector<float> >();
-					}
-				}
-				
-
-				
-				/*std::string stringDataStr = data.value;
-					//std::stringstream jsonData(stringDataStr);
-					//json j = json::parse(jsonData);
-					log::info("STD Data: {}", stringDataStr);
-
-					String string = "Name:armand,Age:22,";
-					// String Example:
-					// [{"name":"NPC","pos":[0, 0, 8.00]}]
-					Pattern pattern = Pattern.compile("(\\w+?):(\\w+?),(\\w+?):");
-					Matcher matcher = pattern.matcher(stringDataStr);
-					if (matcher.find()) {
-						String name = matcher.group(1);
-						String NPC = matcher.group(2);
-						String pos = matcher.group(3);
-						NiPoint3 offset = matcher.group(4);
-
-						System.out.println("Key : " + key + " value : " + value);
-					}*/
 			}
 		}
 		//log::info("Base HHOffset: {}", Vector2Str(result));
