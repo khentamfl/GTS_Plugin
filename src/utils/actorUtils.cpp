@@ -2830,6 +2830,7 @@ namespace Gts {
 			if (receiver->GetCharController()) {
 				log::info("{} has CharController, detaching", receiver->GetDisplayFullName());
 				receiver->DetachCharController();
+				receiver->RemoveCharController(); 
 			}
 		}
 
