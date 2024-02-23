@@ -2823,7 +2823,7 @@ namespace Gts {
 					StartCombat(receiver, attacker); // Make actor hostile and add bounty of 40 (can't be configured, needs different hook probably). 
 				}
 			}
-			
+			 
 			ApplyDamage(attacker, receiver, value * difficulty * GetDamageSetting());
 		} else if (receiver->IsDead() || GetAV(receiver, ActorValue::kHealth) < 0.0) {
 			log::info("{} is dead, forcing Havok", receiver->GetDisplayFullName());
