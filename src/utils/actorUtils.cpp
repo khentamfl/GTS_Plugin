@@ -2828,15 +2828,20 @@ namespace Gts {
 		} else {
 			log::info("{} is dead", receiver->GetDisplayFullName());
 			if (receiver->GetCharController()) {
+				bool ragdolled = IsRagdolled(receiver);
+				log::info("Is Ragdolled: {}", ragdolled);
 				log::info("{} has CharController, detaching", receiver->GetDisplayFullName());
 				auto ref = receiver->GetCharController();
 				bhkCharacterController& controller = *ref;
 				receiver->UpdateCharacterControllerSimulationSettings(controller);
-				controller.flags.set(CHARACTER_FLAGS::kFollowRagdoll);
-				controller.flags.set(CHARACTER_FLAGS::kChaseBip);
 				controller.flags.reset(CHARACTER_FLAGS::kNotPushable);
-				controller.flags.reset(CHARACTER_FLAGS::kNoSim);
-				controller.flags.reset(CHARACTER_FLAGS::kNotPushablePermanent);
+				controller.flags.reset(CHARACTER_FLAGS::kRecordHits);
+				controller.flags.reset(CHARACTER_FLAGS::kHitFlags);
+
+				receiver->StopInteractingQuick(false);
+				receiver->GetActorRuntimeData().boolFlags.set(RE::Actor::BOOL_FLAGS::kShouldAnimGraphUpdate);
+				receiver->GetActorRuntimeData().boolFlags.reset(RE::Actor::BOOL_FLAGS::kMovementBlocked);
+
 			}
 		}
 
