@@ -2833,15 +2833,15 @@ namespace Gts {
 				log::info("{} has CharController, detaching", receiver->GetDisplayFullName());
 				auto ref = receiver->GetCharController();
 				bhkCharacterController& controller = *ref;
-				receiver->UpdateCharacterControllerSimulationSettings(controller);
 				controller.flags.reset(CHARACTER_FLAGS::kNotPushable);
 				controller.flags.reset(CHARACTER_FLAGS::kRecordHits);
 				controller.flags.reset(CHARACTER_FLAGS::kHitFlags);
 
 				receiver->StopInteractingQuick(false);
+				receiver->InitHavok();
+				receiver->KillDying();
 				receiver->GetActorRuntimeData().boolFlags.set(RE::Actor::BOOL_FLAGS::kShouldAnimGraphUpdate);
 				receiver->GetActorRuntimeData().boolFlags.reset(RE::Actor::BOOL_FLAGS::kMovementBlocked);
-
 			}
 		}
 

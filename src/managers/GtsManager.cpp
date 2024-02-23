@@ -66,6 +66,15 @@ namespace {
 		if ((actor->formID == 0x14 || IsTeammate(actor))) {
 			auto node = find_node(actor, "skeleton_female.nif");
 			NiAVObject* skeleton = node;
+
+
+			auto ref = actor->GetCharController();
+			bhkCharacterController& controller = *ref;
+			if (controller) {
+				log::info("LOD Distance of {} is {}", actor->GetDisplayFullName(), controller->lodDistance);
+				receiver->UpdateFadeSettings(controller);
+			}
+
 			if (node) {
 				BSFadeNode* fadenode = node->AsFadeNode();
 				if (fadenode) {
