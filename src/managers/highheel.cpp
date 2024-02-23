@@ -163,7 +163,7 @@ namespace Gts {
 						}
 						return true;
 					} catch (const std::exception& e) {
-						log::warn("{}: Error while parsing the JSON data: {}", actor->GetDisplayFullName(), e.what());
+						log::warn("Error while parsing the JSON data: {}", e.what());
 						return true;
 					}
 				});
