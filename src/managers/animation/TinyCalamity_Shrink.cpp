@@ -140,7 +140,7 @@ namespace Gts
 		}
 	}
 
-    float GetShrinkUntil(Actor* giant) {
+    float Animation_TinyCalamity::GetShrinkUntil(Actor* giant) {
         try {
 			auto& me = Animation_TinyCalamity::GetSingleton();
 			return me.data.at(giant).until;
