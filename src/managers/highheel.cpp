@@ -150,13 +150,14 @@ namespace Gts {
 					std::string stringDataStr = data.value;
 					//std::stringstream jsonData(stringDataStr);
 					//json j = json::parse(jsonData);
-					for (const auto& alteration: stringDataStr) {
+					log::info("STD Data: {}", stringDataStr);
+					/*for (const auto& alteration: stringDataStr) {
 						if (alteration.contains("name") && alteration.contains("pos") && alteration["name"] == "NPC" && alteration["pos"].size() > 2) {
 							auto p = alteration["pos"].template get<std::vector<float> >();
 							result = NiPoint3(p[0], p[1], p[2]);
 							return false;
 						}
-					}
+					}*/
 					return true;
 				});
 			}
