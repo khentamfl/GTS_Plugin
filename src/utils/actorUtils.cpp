@@ -2825,24 +2825,27 @@ namespace Gts {
 			}
 			
 			ApplyDamage(attacker, receiver, value * difficulty * GetDamageSetting());
-		} else {
-			log::info("{} is dead", receiver->GetDisplayFullName());
-			if (receiver->GetCharController()) {
-				bool ragdolled = IsRagdolled(receiver);
-				log::info("Is Ragdolled: {}", ragdolled);
-				log::info("{} has CharController, detaching", receiver->GetDisplayFullName());
-				auto ref = receiver->GetCharController();
+		} else if (receiver->IsDead() || GetAV(receiver, ActorValue::kHealth) < 0.0) {
+			log::info("{} is dead, forcing Havok", receiver->GetDisplayFullName());
+			receiver->InitHavok();
+			/*if (receiver->GetCharController()) {
+				//bool ragdolled = IsRagdolled(receiver);
+				//log::info("Is Ragdolled: {}", ragdolled);
+				//log::info("{} has CharController, detaching", receiver->GetDisplayFullName());
+				/*auto ref = receiver->GetCharController();
 				bhkCharacterController& controller = *ref;
 				controller.flags.reset(CHARACTER_FLAGS::kNotPushable);
 				controller.flags.reset(CHARACTER_FLAGS::kRecordHits);
 				controller.flags.reset(CHARACTER_FLAGS::kHitFlags);
 
 				receiver->StopInteractingQuick(false);
-				receiver->InitHavok();
+				
 				receiver->KillDying();
 				receiver->GetActorRuntimeData().boolFlags.set(RE::Actor::BOOL_FLAGS::kShouldAnimGraphUpdate);
 				receiver->GetActorRuntimeData().boolFlags.reset(RE::Actor::BOOL_FLAGS::kMovementBlocked);
-			}
+
+				
+			}*/
 		}
 
 	}

@@ -68,11 +68,12 @@ namespace {
 			NiAVObject* skeleton = node;
 
 
-			auto ref = actor->GetCharController();
+			/*auto ref = actor->GetCharController();
 			if (ref) {
 				log::info("LOD Distance of {} is {}", actor->GetDisplayFullName(), ref->lodDistance);
+				// ^ It is always -1
 				actor->UpdateFadeSettings(ref);
-			}
+			}*/
 
 			if (node) {
 				BSFadeNode* fadenode = node->AsFadeNode();
