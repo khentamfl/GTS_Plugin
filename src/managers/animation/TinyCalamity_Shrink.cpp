@@ -77,14 +77,14 @@ namespace {
     void GTS_TC_ShrinkStart(AnimationEventData& data) {
         auto victim = Animation_TinyCalamity::GetShrinkActor(&data.giant);
         if (victim) {
-            float until = GetShrinkUntil(victim);
+            float until = Animation_TinyCalamity::GetShrinkUntil(victim);
             ShrinkUntil(&data.giant, victim, until, 0.36, false);
         }
     }
     void GTS_TC_ShrinkStop(AnimationEventData& data) {
         auto victim = Animation_TinyCalamity::GetShrinkActor(&data.giant);
         if (victim) {
-            StaggerActor_Directional(&data.giant, victim, 0.25);
+            StaggerActor_Directional(&data.giant, 0.25, victim);
         }
     }
     void GTS_TC_RuneEnd(AnimationEventData& data) {
