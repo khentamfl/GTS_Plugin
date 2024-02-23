@@ -147,17 +147,20 @@ namespace Gts {
 					return false;
 				});
 				VisitExtraData<NiStringExtraData>(model, "SDTA", [&result](NiAVObject& currentnode, NiStringExtraData& data) {
-					std::string stringDataStr = data.value;
-					std::stringstream jsonData(stringDataStr);
-					json j = json::parse(jsonData);
-					for (const auto& alteration: j) {
-						if (alteration.contains("name") && alteration.contains("pos") && alteration["name"] == "NPC" && alteration["pos"].size() > 2) {
-							auto p = alteration["pos"].template get<std::vector<float> >();
-							result = NiPoint3(p[0], p[1], p[2]);
-							return false;
+					try{
+						json j = json::parse(jsonData);
+						for (const auto& alteration: j) {
+							if (alteration.contains("name") && alteration.contains("pos") && alteration["name"] == "NPC" && alteration["pos"].size() > 2) {
+								auto p = alteration["pos"].template get<std::vector<float> >();
+								result = NiPoint3(p[0], p[1], p[2]);
+								return false;
+							}
 						}
+						return true;
+					} catch (const std::exception& e) {
+						Console.WriteLine("There was an error while parsing the JSON data: " + e.what());
+						return true;
 					}
-					return true;
 				});
 			}
 		}
