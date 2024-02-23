@@ -2829,7 +2829,7 @@ namespace Gts {
 			log::info("{} is dead", receiver->GetDisplayFullName());
 			if (receiver->GetCharController()) {
 				log::info("{} has CharController, detaching", receiver->GetDisplayFullName());
-				receiver->DetachCharController();
+				//receiver->DetachCharController();
 				receiver->RemoveCharController(); 
 			}
 		}
