@@ -213,6 +213,7 @@ namespace Gts {
 				TiredSound(pred, message);
 				return false;
 			}
+			return true;
 		} else {
 			return false;
 		}
@@ -223,7 +224,7 @@ namespace Gts {
 		if (!buttcrush.CanButtCrush(pred, prey)) {
 			return;
 		}
-		if (CanDoButtCrush(pred) && !IsBeingHeld(prey) && !IsGtsBusy(pred)) {
+		if (CanDoButtCrush(pred) && !IsBeingHeld(prey)) {
 			prey->NotifyAnimationGraph("GTS_EnterFear");
 			auto camera = PlayerCamera::GetSingleton();
 			ShrinkUntil(pred, prey, 3.0, 0.25, true);
