@@ -2829,7 +2829,8 @@ namespace Gts {
 			log::info("{} is dead", receiver->GetDisplayFullName());
 			if (receiver->GetCharController()) {
 				log::info("{} has CharController, detaching", receiver->GetDisplayFullName());
-				auto& controller = receiver->GetCharController();
+				auto ref = receiver->GetCharController();
+				bhkCharacterController& controller = ref;
 				receiver->UpdateCharacterControllerSimulationSettings(controller);
 				log::info("Flag 0: {}", controller.flags(CHARACTER_FLAGS::kNone));
 				log::info("Flag 1: {}", controller.flags(CHARACTER_FLAGS::kQuadruped));
