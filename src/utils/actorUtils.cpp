@@ -59,10 +59,10 @@ namespace {
 		}
 	}
 
-	bool Utils_ManageTinyProtection(Actor* giantref, bool force_cancel) {
+	bool Utils_ManageTinyProtection(Actor* giantref, bool force_cancel, bool Balance) {
 		float sp = GetAV(giantref, ActorValue::kStamina);
 
-		if (!force_cancel) {
+		if (!force_cancel && Balance) {
 			float perk = Perk_GetCostReduction(giantref);
 			float damage = 0.12 * TimeScale() * perk;
 			if (giantref->formID != 0x14) {
@@ -2221,8 +2221,6 @@ namespace Gts {
 
 		std::string name = std::format("Protect_{}", giant->formID);
 
-		Balance = true;
-
 		float Start = Time::WorldTimeElapsed();
 		ActorHandle gianthandle = giant->CreateRefHandle();
 		TaskManager::Run(name, [=](auto& progressData) {
@@ -2233,16 +2231,15 @@ namespace Gts {
 			float Finish = Time::WorldTimeElapsed();
 			float timepassed = Finish - Start;
 			if (timepassed < 60.0) {
-				if (Balance) {
-					auto giantref = gianthandle.get().get();
-					return Utils_ManageTinyProtection(giant, false);
+				auto giantref = gianthandle.get().get();
+				if (Utils_ManageTinyProtection(giant, false, Balance)) {
+					return true; // Disallow to check further
 				}
-				return true; // not enough time has passed yet
 			}
 			if (transient) {
 				transient->Protection = false; // reset protection to default value
 			}
-			return Utils_ManageTinyProtection(giant, true); // stop task, immunity has ended
+			return Utils_ManageTinyProtection(giant, true, Balance); // stop task, immunity has ended
 		});
 	}
 
