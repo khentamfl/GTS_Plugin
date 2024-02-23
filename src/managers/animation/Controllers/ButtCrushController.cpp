@@ -228,7 +228,7 @@ namespace Gts {
 			auto camera = PlayerCamera::GetSingleton();
 			ShrinkUntil(pred, prey, 3.0, 0.25, true);
 
-			if (GetSizeDifference(pred, prey, false) < MINIMUM_BUTTCRUSH_SCALE) {
+			if (GetSizeDifference(pred, prey, false) < Action_Booty) {
 				return;
 			}
 

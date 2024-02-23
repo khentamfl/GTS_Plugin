@@ -674,7 +674,7 @@ namespace Gts {
 			StaggerActor(pred, prey, 0.25f);
 		}
 
-		if (GetSizeDifference(pred, prey, false) < MINIMUM_VORE_SCALE) {
+		if (GetSizeDifference(pred, prey, false) < Action_Vore) {
 			return;
 		}
 

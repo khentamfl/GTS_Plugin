@@ -327,7 +327,7 @@ namespace Gts {
 		}
 		ShrinkUntil(pred, prey, 6.0, 0.20, true);
 
-		if (GetSizeDifference(pred, prey, false) < MINIMUM_SANDWICH_SCALE) {
+		if (GetSizeDifference(pred, prey, false) < Action_Sandwich) {
 			return;
 		}
 		

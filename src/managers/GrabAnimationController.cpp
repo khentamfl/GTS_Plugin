@@ -177,7 +177,7 @@ namespace Gts {
 
 		ShrinkUntil(pred, prey, 12.0, shrinkrate, true);
 
-		if (GetSizeDifference(pred, prey, false) < MINIMUM_GRAB_SCALE) {
+		if (GetSizeDifference(pred, prey, false) < Action_Grab) {
 			return;
 		}
 
