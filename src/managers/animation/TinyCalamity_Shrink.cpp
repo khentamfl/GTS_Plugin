@@ -95,7 +95,7 @@ namespace {
     }
     void GTS_TC_RuneEnd(AnimationEventData& data) {
         AttachRune(&data.giant, true, 1.2, 0.80);
-        Animation_TinyCalamity::ResetActor(&data.giant);
+        Animation_TinyCalamity::GetSingleton().ResetActor(&data.giant);
     }
     // GTSBEH_TC_Shrink (Start it)
 }
