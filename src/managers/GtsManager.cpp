@@ -69,8 +69,8 @@ namespace {
 
 
 			auto ref = actor->GetCharController();
-			bhkCharacterController& controller = *ref;
-			if (controller) {
+			if (ref) {
+				bhkCharacterController& controller = *ref;
 				log::info("LOD Distance of {} is {}", actor->GetDisplayFullName(), controller->lodDistance);
 				receiver->UpdateFadeSettings(controller);
 			}
