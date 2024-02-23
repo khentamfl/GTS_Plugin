@@ -17,7 +17,7 @@ namespace Gts
 	class Animation_TinyCalamity : public EventListener {
 		public:
 
-            [[nodiscard]] static Grab& GetSingleton() noexcept;
+            [[nodiscard]] static Animation_TinyCalamity& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
 
