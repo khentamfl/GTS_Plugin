@@ -148,6 +148,8 @@ namespace Gts {
 				});
 				VisitExtraData<NiStringExtraData>(model, "SDTA", [&result](NiAVObject& currentnode, NiStringExtraData& data) {
 					try{
+						std::string stringDataStr = data.value;
+						std::stringstream jsonData(stringDataStr);
 						json j = json::parse(jsonData);
 						for (const auto& alteration: j) {
 							if (alteration.contains("name") && alteration.contains("pos") && alteration["name"] == "NPC" && alteration["pos"].size() > 2) {
