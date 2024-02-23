@@ -69,6 +69,11 @@ namespace {
 			});
 		}
 	}*/
+
+    void GTS_TC_RuneStart(AnimationEventData& data) {}
+    void GTS_TC_ShrinkStart(AnimationEventData& data) {}
+    void GTS_TC_ShrinkStop(AnimationEventData& data) {}
+    void GTS_TC_RuneEnd(AnimationEventData& data) {}
 }
 
 namespace Gts
