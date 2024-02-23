@@ -123,7 +123,7 @@ namespace Gts
 		this->data.erase(actor);
 	}
 
-    void Animation_TinyCalamity::AddToData(Actor* giant, TESObjectREFR* tiny, float until) {
+    void Animation_TinyCalamity::AddToData(Actor* giant, Actor* tiny, float until) {
         Animation_TinyCalamity::GetSingleton().data.try_emplace(giant, tiny, until);
     }
 
