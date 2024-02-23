@@ -127,6 +127,9 @@ namespace Gts {
 		if (prey->formID == 0x14 && !Persistent::GetSingleton().vore_allowplayervore) {
 			return false;
 		}
+		if (IsGtsBusy(pred)) {
+			return false;
+		}
 
 		float pred_scale = get_visual_scale(pred);
 
@@ -172,7 +175,11 @@ namespace Gts {
 			shrinkrate = 0.13;
 		}
 
-		ShrinkUntil(pred, prey, 12.0, shrinkrate);
+		ShrinkUntil(pred, prey, 12.0, shrinkrate, true);
+
+		if (GetSizeDifference(pred, prey, false) < MINIMUM_GRAB_SCALE) {
+			return;
+		}
 
 		Grab::GetSingleton().GrabActor(pred, prey);
 		

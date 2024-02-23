@@ -7,16 +7,17 @@ using namespace RE;
 
 namespace Gts
 {
-    /*struct CalamityData {
+    struct CalamityData {
         public:
         CalamityData(Actor* tiny);
         Actor* tiny;
-	};*/
+        float until; // Shrink until x size difference
+	};
 
 	class Animation_TinyCalamity : public EventListener {
 		public:
 
-            /*[[nodiscard]] static Grab& GetSingleton() noexcept;
+            [[nodiscard]] static Grab& GetSingleton() noexcept;
 
 			virtual std::string DebugName() override;
 
@@ -26,12 +27,13 @@ namespace Gts
             virtual void Reset() override;
 			virtual void ResetActor(Actor* actor) override;
 
-            static void AddToData(Actor* giant, Actor* tiny);
+            static void AddToData(Actor* giant, Actor* tiny, float until);
             static void Remove(Actor* giant);
 
             static Actor* GetShrinkActor(Actor* giant);
+            static float GetShrinkUntil(Actor* giant);
 
-            std::unordered_map<Actor*, CalamityData> data;*/
+            std::unordered_map<Actor*, CalamityData> data;
         };
     }
 

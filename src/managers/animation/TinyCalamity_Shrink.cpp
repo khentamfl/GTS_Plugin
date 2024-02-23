@@ -23,7 +23,7 @@ using namespace Gts;
 // AnimObjectR
 
 namespace {
-    /*void AttachRune(Actor* giant, bool ShrinkRune, float speed, float scale) {
+    void AttachRune(Actor* giant, bool ShrinkRune, float speed, float scale) {
 		string node_name = "GiantessRune";
 
         float Start = Time::WorldTimeElapsed();
@@ -31,7 +31,6 @@ namespace {
         ActorHandle gianthandle = giant->CreateRefHandle();
 
 		if (ShrinkRune) {
-			
 			TaskManager::Run(name, [=](auto& progressData) {
 				if (!gianthandle) {
 					return false;
@@ -39,9 +38,10 @@ namespace {
 				auto giantref = gianthandle.get().get();
                 float Finish = Time::WorldTimeElapsed();
 				auto node = find_node(giantref, node_name, false);
-				float timepassed = std::clamp(((Finish - Start) * GetAnimationSlowdown(giantref)), 0.01f, 0.98f);
+				float timepassed = std::clamp(((Finish - Start) * GetAnimationSlowdown(giantref)) * speed, 0.01f, 0.98f);
 				if (node) {
 					node->local.scale = std::clamp(1.0f - timepassed, 0.01f, 1.0f);
+                    node->local.scale *= scale;
 					update_node(node);
 				}
 				if (timepassed >= 0.98) {
@@ -57,9 +57,10 @@ namespace {
 				auto giantref = gianthandle.get().get();
                 float Finish = Time::WorldTimeElapsed();
 				auto node = find_node(giantref, node_name, false);
-				float timepassed = std::clamp(((Finish - Start) * GetAnimationSlowdown(giantref)), 0.01f, 9999.0f);
+				float timepassed = std::clamp(((Finish - Start) * GetAnimationSlowdown(giantref)) * speed, 0.01f, 9999.0f);
 				if (node) {
 					node->local.scale = std::clamp(timepassed, 0.01f, 1.0f);
+                    node->local.scale *= scale;
 					update_node(node);
 				}
 				if (timepassed >= 1.0) {
@@ -68,17 +69,33 @@ namespace {
 				return true;
 			});
 		}
-	}*/
+	}
 
-    void GTS_TC_RuneStart(AnimationEventData& data) {}
-    void GTS_TC_ShrinkStart(AnimationEventData& data) {}
-    void GTS_TC_ShrinkStop(AnimationEventData& data) {}
-    void GTS_TC_RuneEnd(AnimationEventData& data) {}
+    void GTS_TC_RuneStart(AnimationEventData& data) {
+        AttachRune(&data.giant, false, 0.6, 0.36);
+    }
+    void GTS_TC_ShrinkStart(AnimationEventData& data) {
+        auto victim = Animation_TinyCalamity::GetShrinkActor(&data.giant);
+        if (victim) {
+            float until = GetShrinkUntil(victim);
+            ShrinkUntil(&data.giant, victim, until, 0.36, false);
+        }
+    }
+    void GTS_TC_ShrinkStop(AnimationEventData& data) {
+        auto victim = Animation_TinyCalamity::GetShrinkActor(&data.giant);
+        if (victim) {
+            StaggerActor_Directional(&data.giant, victim, 0.25);
+        }
+    }
+    void GTS_TC_RuneEnd(AnimationEventData& data) {
+        AttachRune(&data.giant, true, 1.2, 0.36);
+    }
+    // GTSBEH_TC_Shrink (Start it)
 }
 
 namespace Gts
 {
-    /*Animation_TinyCalamity& Animation_TinyCalamity::GetSingleton() noexcept {
+    Animation_TinyCalamity& Animation_TinyCalamity::GetSingleton() noexcept {
 		static Animation_TinyCalamity instance;
 		return instance;
 	}
@@ -88,11 +105,14 @@ namespace Gts
 	}
 
 	void Animation_TinyCalamity::RegisterEvents() {
-		AnimationManager::RegisterEvent("GTS_Crawl_Knee_Trans_Impact", "Crawl", GTS_Crawl_Knee_Trans_Impact);
+		AnimationManager::RegisterEvent("GTS_TC_RuneStart", "Calamity", GTS_TC_RuneStart);
+        AnimationManager::RegisterEvent("GTS_TC_ShrinkStart", "Calamity", GTS_TC_ShrinkStart);
+        AnimationManager::RegisterEvent("GTS_TC_ShrinkStop", "Calamity", GTS_TC_ShrinkStop);
+        AnimationManager::RegisterEvent("GTS_TC_RuneEnd", "Calamity", GTS_TC_RuneEnd);
 	}
 
 	void Animation_TinyCalamity::RegisterTriggers() {
-		AnimationManager::RegisterTrigger("SwipeLight_Left", "Crawl", "GTSBeh_SwipeLight_L");
+		AnimationManager::RegisterTrigger("Calamity_ShrinkOther", "Calamity", "GTSBEH_TC_Shrink");
 	}
 
     void Animation_TinyCalamity::Reset() {
@@ -103,24 +123,32 @@ namespace Gts
 		this->data.erase(actor);
 	}
 
-    void Animation_TinyCalamity::AddToData(Actor* giant, TESObjectREFR* tiny) {
-        Animation_TinyCalamity::GetSingleton().data.try_emplace(giant, tiny);
+    void Animation_TinyCalamity::AddToData(Actor* giant, TESObjectREFR* tiny, float until) {
+        Animation_TinyCalamity::GetSingleton().data.try_emplace(giant, tiny, until);
     }
 
 	void Animation_TinyCalamity::Remove(Actor* giant) {
 		Animation_TinyCalamity::GetSingleton().data.erase(giant);
 	}
 
-    Actor* Animation_TinyCalamity::GetHeldObj(Actor* giant) {
+    Actor* Animation_TinyCalamity::GetShrinkActor(Actor* giant) {
 		try {
 			auto& me = Animation_TinyCalamity::GetSingleton();
 			return me.data.at(giant).tiny;
 		} catch (std::out_of_range e) {
 			return nullptr;
 		}
-
 	}
 
-    CalamityData::CalamityData(Actor* tiny) : tiny(tiny) {
-	}*/
+    float GetShrinkUntil(Actor* giant) {
+        try {
+			auto& me = Animation_TinyCalamity::GetSingleton();
+			return me.data.at(giant).until;
+		} catch (std::out_of_range e) {
+			return 1.0;
+		}
+    }
+
+    CalamityData::CalamityData(Actor* tiny, float until) : tiny(tiny), until(until) {
+	}
 }

@@ -584,7 +584,7 @@ namespace Gts {
 			return false;
 		}
 		
-		if (IsBeingHeld(prey)) {
+		if (IsBeingHeld(prey) || IsGtsBusy(pred)) {
 			return false;
 		}
 
@@ -668,10 +668,14 @@ namespace Gts {
 		}
 
 		if (pred->IsSneaking() && !IsCrawling(pred)) {
-			ShrinkUntil(pred, prey, 10.0, 0.14); // Shrink if we have SMT to allow 'same-size' vore
+			ShrinkUntil(pred, prey, 10.0, 0.14, true); // Shrink if we have SMT to allow 'same-size' vore
 		} else {
-			ShrinkUntil(pred, prey, 10.0, 0.16); // Shrink if we have SMT to allow 'same-size' vore
+			ShrinkUntil(pred, prey, 10.0, 0.16, true); // Shrink if we have SMT to allow 'same-size' vore
 			StaggerActor(pred, prey, 0.25f);
+		}
+
+		if (GetSizeDifference(pred, prey, false) < MINIMUM_VORE_SCALE) {
+			return;
 		}
 
 		if (pred->formID == 0x14) {

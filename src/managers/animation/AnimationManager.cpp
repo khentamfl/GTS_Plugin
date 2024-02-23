@@ -1,23 +1,24 @@
 #include "managers/animation/Sneak_Slam_FingerGrind.hpp"
-#include "managers/animation/AnimationManager.hpp"
+#include "managers/animation/TinyCalamity_Shrink.hpp"
 #include "managers/animation/Sneak_Slam_Strong.hpp"
+#include "managers/animation/AnimationManager.hpp"
+#include "managers/animation/Grab_Sneak_Vore.hpp"
+#include "managers/animation/Sneak_KneeCrush.hpp"
+#include "managers/animation/Vore_Standing.hpp"
 #include "managers/animation/ThighSandwich.hpp"
+#include "managers/animation/Sneak_Swipes.hpp"
 #include "managers/animation/StrongStomp.hpp"
 #include "managers/animation/FootTrample.hpp"
-#include "managers/animation/Grab_Throw.hpp"
 #include "managers/animation/Grab_Attack.hpp"
-#include "managers/animation/Grab_Vore.hpp"
-#include "managers/animation/Grab_Sneak_Vore.hpp"
-#include "managers/animation/ThighCrush.hpp"
-#include "managers/animation/Sneak_KneeCrush.hpp"
-#include "managers/animation/ButtCrush.hpp"
-#include "managers/animation/BoobCrush.hpp"
-#include "managers/animation/FootGrind.hpp"
-#include "managers/animation/Vore_Standing.hpp"
-#include "managers/animation/Sneak_Swipes.hpp"
+#include "managers/animation/Grab_Throw.hpp"
 #include "managers/animation/Sneak_Slam.hpp"
 #include "managers/animation/Vore_Sneak.hpp"
 #include "managers/animation/Vore_Crawl.hpp"
+#include "managers/animation/ThighCrush.hpp"
+#include "managers/animation/Grab_Vore.hpp"
+#include "managers/animation/ButtCrush.hpp"
+#include "managers/animation/BoobCrush.hpp"
+#include "managers/animation/FootGrind.hpp"
 #include "managers/animation/HugShrink.hpp"
 #include "managers/animation/Crawling.hpp"
 #include "managers/animation/HugHeal.hpp"
@@ -83,6 +84,9 @@ namespace Gts {
 		Animation_SneakSlam_Strong::RegisterEvents();
 		Animation_SneakSlam_FingerGrind::RegisterEvents();
 		Animation_SneakSlam_FingerGrind::RegisterTriggers();
+
+		Animation_TinyCalamity::RegisterEvents();
+		Animation_TinyCalamity::RegisterTriggers();
 
 		AnimationButtCrush::RegisterEvents();
 		AnimationButtCrush::RegisterTriggers();

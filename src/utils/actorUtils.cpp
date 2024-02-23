@@ -1,3 +1,4 @@
+#include "managers/animation/TinyCalamity_Shrink.hpp"
 #include "managers/animation/AnimationManager.hpp"
 #include "managers/damage/CollisionDamage.hpp"
 #include "managers/animation/HugShrink.hpp"
@@ -2486,7 +2487,7 @@ namespace Gts {
 		}
 	}
 
-	void ShrinkUntil(Actor* giant, Actor* tiny, float expected, float halflife) {
+	void ShrinkUntil(Actor* giant, Actor* tiny, float expected, float halflife, bool animation) {
 		if (HasSMT(giant)) {
 			float Adjustment = GetSizeFromBoundingBox(tiny);
 			float predscale = get_visual_scale(giant);
@@ -2496,6 +2497,13 @@ namespace Gts {
 			Task_AdjustHalfLifeTask(tiny, halflife); // to make them shrink faster
 
 			if (preyscale >= targetScale) { // Apply ONLY if target is bigger than requirement
+
+				if (animation) {
+					Animation_TinyCalamity::AddToData(giant, tiny, expected);
+					AnimationManager::StartAnim("Calamity_ShrinkOther", giant);
+					return;
+				}
+
 				set_target_scale(tiny, targetScale);
 				AddSMTPenalty(giant, 5.0 * Adjustment);
 				if (giant->IsSneaking() && !IsCrawling(giant)) {

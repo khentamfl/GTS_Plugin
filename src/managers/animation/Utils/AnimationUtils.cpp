@@ -460,7 +460,7 @@ namespace Gts {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
 
-		ShrinkUntil(giant, tiny, 4.0, 0.22);
+		ShrinkUntil(giant, tiny, 4.0, 0.22, false);
 
 		std::string name = std::format("FootTrample_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
@@ -515,7 +515,7 @@ namespace Gts {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
 
-		ShrinkUntil(giant, tiny, 4.0, 0.16);
+		ShrinkUntil(giant, tiny, 4.0, 0.16, false);
 		
 		std::string name = std::format("FootGrind_{}", tiny->formID);
 		auto FrameA = Time::FramesElapsed();
@@ -563,7 +563,7 @@ namespace Gts {
 		auto gianthandle = giant->CreateRefHandle();
 		auto tinyhandle = tiny->CreateRefHandle();
 
-		ShrinkUntil(giant, tiny, 10.0, 0.18);
+		ShrinkUntil(giant, tiny, 10.0, 0.18, false);
 		
 		std::string name = std::format("FingerGrind_{}_{}", giant->formID, tiny->formID);
 		AnimationManager::StartAnim("Tiny_Finger_Impact_S", tiny);

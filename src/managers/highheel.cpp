@@ -97,6 +97,9 @@ namespace Gts {
 		}
 
 		NiPoint3 new_hh;
+		if (!Persistent::GetSingleton().highheel_correction) {
+			return;
+		}
 		this->UpdateHHOffset(actor);
 		if (Persistent::GetSingleton().size_method != SizeMethod::ModelScale) {
 			new_hh = this->GetHHOffset(actor) * hhData.multiplier.value;
@@ -160,7 +163,7 @@ namespace Gts {
 						}
 						return true;
 					} catch (const std::exception& e) {
-						log::warn("There was an error while parsing the JSON data: {}", e.what());
+						log::warn("{}: Error while parsing the JSON data: {}", actor->GetDisplayFullName(), e.what());
 						return true;
 					}
 				});

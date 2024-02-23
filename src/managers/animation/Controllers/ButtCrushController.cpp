@@ -213,7 +213,6 @@ namespace Gts {
 				TiredSound(pred, message);
 				return false;
 			}
-			return true;
 		} else {
 			return false;
 		}
@@ -224,10 +223,15 @@ namespace Gts {
 		if (!buttcrush.CanButtCrush(pred, prey)) {
 			return;
 		}
-		if (CanDoButtCrush(pred) && !IsBeingHeld(prey)) {
+		if (CanDoButtCrush(pred) && !IsBeingHeld(prey) && !IsGtsBusy(pred)) {
 			prey->NotifyAnimationGraph("GTS_EnterFear");
 			auto camera = PlayerCamera::GetSingleton();
-			ShrinkUntil(pred, prey, 3.0, 0.25);
+			ShrinkUntil(pred, prey, 3.0, 0.25, true);
+
+			if (GetSizeDifference(pred, prey, false) < MINIMUM_BUTTCRUSH_SCALE) {
+				return;
+			}
+
 			DisableCollisions(prey, pred);
 
 			float WasteStamina = 60.0 * GetButtCrushCost(pred);
