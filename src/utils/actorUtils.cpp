@@ -2830,7 +2830,7 @@ namespace Gts {
 			if (receiver->GetCharController()) {
 				log::info("{} has CharController, detaching", receiver->GetDisplayFullName());
 				auto ref = receiver->GetCharController();
-				bhkCharacterController& controller = ref;
+				bhkCharacterController& controller = *ref;
 				receiver->UpdateCharacterControllerSimulationSettings(controller);
 				log::info("Flag 0: {}", controller.flags(CHARACTER_FLAGS::kNone));
 				log::info("Flag 1: {}", controller.flags(CHARACTER_FLAGS::kQuadruped));
