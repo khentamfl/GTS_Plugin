@@ -2,6 +2,7 @@
 Pre-Release 5
 ===========================================================================================================================================================
 
+======================================DLL
 -Improved HeadTracking alteration by using Vanilla Headtracking Hook. Headtracking is now fully compatible with True Directional Movement.
 -Improved Automatic Ray-Based scaling, it now stores previous scale and reverts to it when possible. Also takes HH value into account.
 -DLL now affects VelocityZ of actors (/ it by scale), affecting Jump Land anims trigger threshold based on scale.
