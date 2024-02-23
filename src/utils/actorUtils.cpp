@@ -404,6 +404,10 @@ namespace Gts {
 		return actor!= nullptr && actor->IsSneaking() && crawl;
 	}
 
+	bool IsInBalanceMode() {
+		return SizeManager::GetSingleton().BalancedMode() > 1.0;
+	}
+
 	bool IsHugCrushing(Actor* actor) {
 		bool IsHugCrushing;
 		actor->GetGraphVariableBool("IsHugCrushing", IsHugCrushing);
