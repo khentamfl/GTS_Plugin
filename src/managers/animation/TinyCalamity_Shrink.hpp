@@ -9,7 +9,7 @@ namespace Gts
 {
     struct CalamityData {
         public:
-        CalamityData(Actor* tiny);
+        CalamityData(Actor* tiny, float until);
         Actor* tiny;
         float until; // Shrink until x size difference
 	};
