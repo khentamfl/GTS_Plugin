@@ -2494,8 +2494,6 @@ namespace Gts {
 			float preyscale = get_target_scale(tiny) * Adjustment;
 			float targetScale = predscale/expected;
 
-			Task_AdjustHalfLifeTask(tiny, halflife); // to make them shrink faster
-
 			if (preyscale >= targetScale) { // Apply ONLY if target is bigger than requirement
 
 				if (animation) {
@@ -2503,6 +2501,8 @@ namespace Gts {
 					AnimationManager::StartAnim("Calamity_ShrinkOther", giant);
 					return;
 				}
+
+				Task_AdjustHalfLifeTask(tiny, halflife); // to make them shrink faster
 
 				set_target_scale(tiny, targetScale);
 				AddSMTPenalty(giant, 5.0 * Adjustment);

@@ -72,12 +72,17 @@ namespace {
 	}
 
     void GTS_TC_RuneStart(AnimationEventData& data) {
+        auto node = find_node(&data.giant, "GiantessRune", false);
+        if (node) {
+            node->local.scale = 0.01;
+            update_node(node);
+        }
         AttachRune(&data.giant, false, 0.6, 0.36);
     }
     void GTS_TC_ShrinkStart(AnimationEventData& data) {
         auto victim = Animation_TinyCalamity::GetShrinkActor(&data.giant);
         if (victim) {
-            float until = Animation_TinyCalamity::GetShrinkUntil(victim);
+            float until = Animation_TinyCalamity::GetShrinkUntil(&data.giant);
             ShrinkUntil(&data.giant, victim, until, 0.36, false);
         }
     }
