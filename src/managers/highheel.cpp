@@ -151,7 +151,7 @@ namespace Gts {
 					std::stringstream jsonData(stringDataStr);
 					json j = json::parse(jsonData);
 					for (const auto& alteration: j) {
-						if (alteration.contains("name") && alteration.contains("pos") && alteration["name"] == "NPC" && (alteration["pos"].size() > 2 || alteration["pos"].size() > 3)) {
+						if (alteration.contains("name") && alteration.contains("pos") && alteration["name"] == "NPC" && alteration["pos"].size() > 2) {
 							auto p = alteration["pos"].template get<std::vector<float> >();
 							result = NiPoint3(p[0], p[1], p[2]);
 							return false;
