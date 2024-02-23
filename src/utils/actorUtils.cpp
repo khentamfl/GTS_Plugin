@@ -2825,7 +2825,10 @@ namespace Gts {
 			}
 			
 			ApplyDamage(attacker, receiver, value * difficulty * GetDamageSetting());
+		} else {
+			receiver->PotentiallyFixRagdollState();
 		}
+
 	}
 
 	float Sound_GetFallOff(NiAVObject* source, float mult) {

@@ -1,0 +1,37 @@
+
+
+    
+using namespace std;
+using namespace SKSE;
+using namespace RE;
+
+namespace Gts
+{
+    /*struct CalamityData {
+        public:
+        CalamityData(Actor* tiny);
+        Actor* tiny;
+	};*/
+
+	class Animation_TinyCalamity : public EventListener {
+		public:
+
+            /*[[nodiscard]] static Grab& GetSingleton() noexcept;
+
+			virtual std::string DebugName() override;
+
+			static void RegisterEvents();
+            static void RegisterTriggers();
+
+            virtual void Reset() override;
+			virtual void ResetActor(Actor* actor) override;
+
+            static void AddToData(Actor* giant, Actor* tiny);
+            static void Remove(Actor* giant);
+
+            static Actor* GetShrinkActor(Actor* giant);
+
+            std::unordered_map<Actor*, CalamityData> data;*/
+        };
+    }
+
