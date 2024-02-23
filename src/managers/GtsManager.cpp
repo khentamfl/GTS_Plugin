@@ -72,7 +72,7 @@ namespace {
 			if (ref) {
 				bhkCharacterController& controller = *ref;
 				log::info("LOD Distance of {} is {}", actor->GetDisplayFullName(), controller.lodDistance);
-				ref->UpdateFadeSettings(controller);
+				actor->UpdateFadeSettings(controller);
 			}
 
 			if (node) {
