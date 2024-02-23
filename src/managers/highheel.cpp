@@ -148,25 +148,15 @@ namespace Gts {
 				});
 				VisitExtraData<NiStringExtraData>(model, "SDTA", [&result](NiAVObject& currentnode, NiStringExtraData& data) {
 					std::string stringDataStr = data.value;
-					bool name = (stringDataStr.find("name") != std::string::npos);
-					bool NPC = (stringDataStr.find("NPC") != std::string::npos);
-					if (name && NPC) {
-						bool pos = (stringDataStr.find("pos") != std::string::npos);
-						if (pos) {
-							auto p = pos.template get<std::vector<float> >();
-							result = NiPoint3(p[0], p[1], p[2]);
-							return false;
-						}
-					}
-					/*std::stringstream jsonData(stringDataStr);
+					std::stringstream jsonData(stringDataStr);
 					json j = json::parse(jsonData);
 					for (const auto& alteration: j) {
-						if (alteration.contains("name") && alteration.contains("pos") && alteration["name"] == "NPC" && alteration["pos"].size() > 2) {
+						if (alteration.contains("name") && alteration.contains("pos") && alteration["name"] == "NPC" && (alteration["pos"].size() > 2 || alteration["pos"].size() > 3)) {
 							auto p = alteration["pos"].template get<std::vector<float> >();
 							result = NiPoint3(p[0], p[1], p[2]);
 							return false;
 						}
-					}*/
+					}
 					return true;
 				});
 
