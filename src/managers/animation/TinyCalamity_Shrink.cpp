@@ -77,13 +77,14 @@ namespace {
             node->local.scale = 0.01;
             update_node(node);
         }
-        AttachRune(&data.giant, false, 0.6, 0.36);
+        AttachRune(&data.giant, false, 0.8, 0.80);
     }
     void GTS_TC_ShrinkStart(AnimationEventData& data) {
         auto victim = Animation_TinyCalamity::GetShrinkActor(&data.giant);
         if (victim) {
             float until = Animation_TinyCalamity::GetShrinkUntil(&data.giant);
-            ShrinkUntil(&data.giant, victim, until, 0.36, false);
+            ShrinkUntil(&data.giant, victim, until, 0.30, false);
+            StartCombat(victim, &data.giant);
         }
     }
     void GTS_TC_ShrinkStop(AnimationEventData& data) {
@@ -93,7 +94,8 @@ namespace {
         }
     }
     void GTS_TC_RuneEnd(AnimationEventData& data) {
-        AttachRune(&data.giant, true, 1.2, 0.36);
+        AttachRune(&data.giant, true, 1.2, 0.80);
+        Animation_TinyCalamity::ResetActor(&data.giant);
     }
     // GTSBEH_TC_Shrink (Start it)
 }

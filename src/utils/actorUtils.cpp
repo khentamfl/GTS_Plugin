@@ -2505,6 +2505,7 @@ namespace Gts {
 				Task_AdjustHalfLifeTask(tiny, halflife); // to make them shrink faster
 
 				set_target_scale(tiny, targetScale);
+				StartCombat(tiny, giant);
 				AddSMTPenalty(giant, 5.0 * Adjustment);
 				if (giant->IsSneaking() && !IsCrawling(giant)) {
 					return;
