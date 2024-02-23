@@ -2826,7 +2826,11 @@ namespace Gts {
 			
 			ApplyDamage(attacker, receiver, value * difficulty * GetDamageSetting());
 		} else {
-			receiver->PotentiallyFixRagdollState();
+			log::info("{} is dead", receiver->GetDisplayFullName());
+			if (receiver->GetCharController()) {
+				log::info("{} has CharController, detaching", receiver->GetDisplayFullName());
+				receiver->DetachCharController();
+			}
 		}
 
 	}
