@@ -160,7 +160,7 @@ namespace Gts {
 						}
 						return true;
 					} catch (const std::exception& e) {
-						log::warn("There was an error while parsing the JSON data: " + e.what());
+						log::warn("There was an error while parsing the JSON data: {}", e.what());
 						return true;
 					}
 				});
