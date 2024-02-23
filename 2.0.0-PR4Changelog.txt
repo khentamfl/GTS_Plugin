@@ -1,3 +1,167 @@
+===========================================================================================================================================================
+Pre-Release 5
+===========================================================================================================================================================
+
+-Improved HeadTracking alteration by using Vanilla Headtracking Hook. Headtracking is now fully compatible with True Directional Movement.
+-Improved Automatic Ray-Based scaling, it now stores previous scale and reverts to it when possible. Also takes HH value into account.
+-DLL now affects VelocityZ of actors (/ it by scale), affecting Jump Land anims trigger threshold based on scale.
+ ^ Because of this change, patches for JBO / Paragliding are no longer required and not provided.
+ ^ If you have the patches, nothing will break: they're still supported.
+-Dll now affects only Carry Weight of other actors, not altering health or any other attributes anymore.
+ ^ Should fix unkillable actors in some cases
+-DLL now uses different OnUpdate hook, possible fix for: rarely not working size changes, Skyrim Souls. Experimental.
+-Staggering others now uses a hook that calculates better stagger direction.
+-Improved disabling collision between two actors based on size difference.
+-SetScale console command no longer affects movement speed.
+
+======================================Compatibility
+-ESP patches for Animations are no longer required: logic is now managed by the .dll
+-Dynamic Collision Adjustment Patch by Arial: some fixes by Arial 
+
+======================================Loading Screens
+-Replaced most GTS loading screens with custom 2d ones
+-Reduced amount of GTS loading screens, added optional .esl file for them
+
+======================================Stealth
+-Your size now affects detection of your footsteps by npc's
+-Your size now affects line of sight detection of enemies
+
+======================================MCM
+-[DLL Settings] Added Y/Z offsets for holding actor between breasts.
+ ^ It is set to 1 by default (set it to 0.0 to revert to the value before update)
+
+======================================AI
+-If followers have matching hug perk, they have 1/4 chance to hug crush hostile actor during hugs even at full hp
+-Followers no longer attempt to trample/perform footsteps on followers if option to protect them is enabled
+
+======================================Quest
+-Crush three target part: now also takes slained enemies into account, but it progresses slower in that case.
+ ^ Will require to crush 12 dead actors instead. Can be combined (crush 1 alive actor and 8 dead ones for example)
+
+======================================Scaling
+-DLL now uses Model Scale method of scaling only. We do NOT alter NPC Root [Root] Anymore.
+ ^ If it won't have any serious issues, will fully switch dll logic to it
+-Dll now checks Bounding Box of models to obtain scale of actors in a better way
+^ Means chicken, as an example, won't be as big as it used to be (~x0.33 instead of x1.0+)
+^ Mammoths now count as x6.5 scale, dragons as x10.0
+
+======================================Audio
+-Some sounds now have fall-off and do not play across entire map (such as moans and laughs)
+-Added own Audio settings into game settings menu (such as Gts: Voice, Gts: Footsteps)
+-Added audio for new function that protects tinies against size-damage for 60 seconds
+-Tiny Calamity (Sprint): added audio for Crushing/Colliding with someone
+
+
+======================================Enchantments
+-Aspect Of Giantess: decreased size-damage buff rate from 100% to 30% (at 10% aspect you will gain +3% damage instead of +10%)
+-Absorb Size: magnitude now affects shrink value. 
+ ^ The stronger the enchantment, the less effective it is (still worth making it strong)
+ ^ Has a cap of x8.0 power, shouldn't be reachable in legit playthroughs (default is x1.0).
+
+======================================Damage Dealing
+-GTS now receives bounty and makes some actors hostile when killing/crushing/voring others similar to vanilla game
+-Improved method of dealing size damage: dealing damage is now = to hitting someone with a weapon/magic.
+ ^ Actors will become hostile if their health is < 60% and you deal size-damage to them
+ ^ actors should die properly, quests should progress after killing
+ ^ actors should get up after dying less often as well
+-Wasting Stamina to protect from size-related damage is player exclusive now.
+-DLL does NOT prevent actor Aggro now. Use side-mods for that.
+ ^ (https://www.nexusmods.com/skyrimspecialedition/mods/41764 as example)
+
+======================================Balance
+-Completely reworked and rebalanced how size-related damage is dealt: damage no longer depends on the distance between actor and foot
+-Size Mastery level now passively affects all size-related damage: +0.5% damage per level (+50% at lvl 100)
+-Hugs: slightly increased shrink rate
+
+======================================Gameplay
+-Second Wind: now takes game difficulty into account
+-Performing Hug Shrink/Hug Crush is now = to hostile action
+-Tiny Calamity: Now shrinks actors based on inflicted damage
+-Tiny Calamity: greatly improved collision detection when sprinting
+-Tiny Calamity: Same-Size crushing is impossible now (sprint can still do it)
+-Crushing/Shrinking to nothing dead actors now provides 75% less size experience
+-Decreased rate of gaining mass based size through hugs/steal spells (was too fast)
+-Manual & Total Control Growth/Shrink now also take Experienced Giantess perk into account
+-Aspect Of Giantess now also affects shrink limit during first quest stages or in Balance Mode
+-Added dynamic icon display above actors, indicating what you can do to the target. Can be toggled off.
+-GTS now resists hostile push-back based on the size (means weapon hits and arrows push you backwards less)
+-GTS now receives bounty and makes others hostile when doing crime of eating someone alive in front of everyone for example, in some cases at least
+-Size-Actions for Everyone: now enabled only if actor scale is > than x1.10, saving performance by avoiding calculating each single actor in the scene
+
+======================================Action Thresholds
+-Shrink To Nothing: changed from x0.08 to x0.06 (x16.0)
+-Grab, Vore: changed from x6.0 to x8.0
+-Crush: changed from x8.0 to x10.0
+
+======================================Perks
+-Growth Spurt: slight rework of Growth-Spurt related perks.
+-Heels Of Destruction: no longer provides bonus stomp radius.
+-Second Wind: no longer shrinks the player below natural scale.
+-Added new perk that allow you/followers to heal followers through hugs
+^ Followers still have a chance to shrink/hug crush someone if unlucky.
+-Experienced Giantess: made reduction formula less effective but still useful.
+
+======================================Animations
+-[Hugs]Added Loving Embrace hug animations [Requires Loving Embrace perk]
+-[Hugs]Fixed an issue when Hug Shrink wasn't seen as a hostile action
+-*Crouch = Sneak
+-[Crouch] Added Vore replacer anim
+-[Crouch] Added Finger Grind animation
+-[Crouch] Added Light/Strong Hand Slam animations
+-[Crouch] Added Light/Strong Hand Swipe animations
+-[Crouch] Added Knee Crush - Butt Crush replacer for sneak
+-[Crouch] Added manual Growth/Shrink animation replacers
+-[Crouch] Added Thigh Crush enter/leave replacers
+-[Crouch] Added Hug Start animation replacers
+-[Finger Grind] Added Grind anim for Tiny
+-[Proning] Now also inflicts full leg damage
+-A bit improved position of grabbed actors in hand
+-A bit increased radius and damage of Trample attacks
+-[Loving Embrace] adds gentle release animation for friendly hugs
+-[Loving Embrace] adds willing hug idle animation for friendly hugs
+-Thigh Crush: added damage zones for entire leg (may be fps expensive)
+-Foot Grind: slightly improved actor positioning as well as damage dealing
+-Foot Grind: now also damages stamina over time (it wasn't damaging it before)
+-Hug Animations: Hands now get closer to the body based on size difference with the victim
+-[Grab Actions] It is now possible to perform some grab actions during thigh crush/sandwich
+-Fixed Trample animations soft-locking the player if animation was performed with magic out
+-It is now impossible to perform normal (Shift + V) vore/thigh sandwich/hug on actor that is being held by GTS
+
+
+======================================Spells
+-Tiny Calamity: increased the speed of reaching sprint effect threshold from 0.036 to 0.044
+-Growth Spurt: now passively restores health over time even without the perk that adds it
+-Absorb Other: decreased efficiency by ~5 times, decreased maximum size difference bonus
+-Steal Size: fixed an issue when spell wasn't seen as a hostile spell
+-Slow growth: increased cost, reduced duration to 180 sec
+-Shrink self: capped shrink at x0.12
+
+======================================Looting
+-Loot piles should no longer spawn when crushing/eating Wraiths
+
+======================================GtsInput.toml
+-Added an option to temporarily disable friendly size-related damage for 60 seconds. Check bottom of GtsInput.toml
+-Added support for middle mouse button, side-button 1 and side-button 2 (MOUSE3, MOUSE4, MOUSE5)
+-Grab: added 0.5 sec hold requirement to trigger Vore and Attack
+
+======================================Fixes
+-DLL now resets camera state on save reload. Example: camera got stuck on the feet because animation was interrupted. Reloading a save now fixes that.
+-Possible fix for disappearing non-hostile actors upon attacking them when Apply Effects To Everyone option is enabled
+-GTS task manager now cancels all dll-related tasks on save reload to avoid CTD if something goes wrong
+-Fixed loot piles not transfering loot of dragon by returning delay to the value of pre-release 3
+-Capped total Aspect Of Giantess bonus to 1000%, to avoid CTD's and weird stuff happening
+-Fixed sometimes not working crush audio when Bone Crusher perk is killing the target
+-Fixed animation de-sync when doing hugs if there's size difference between actors
+-Fixed Absorbed Mass Mode ignoring size limits if perk tree was made legendary
+-Fixed manual animation speed increase being heavily decreased by scale
+-Possible fix for random crashes during restore size self/other
+-Gtsplugin.toml: fixed not working profile toggle
+-Possible fix for Skyrim Souls RE incompatibility
+
+===========================================================================================================================================================
+Pre-Release 4
+===========================================================================================================================================================
+
 -DLL_Beta_2.0.0-PreRelease 4 - HotFix1
 ======================================DLL
 -Fixed NPC's not performing Trample anims when they're supposed to
