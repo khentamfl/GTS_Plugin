@@ -2832,43 +2832,11 @@ namespace Gts {
 				auto ref = receiver->GetCharController();
 				bhkCharacterController& controller = *ref;
 				receiver->UpdateCharacterControllerSimulationSettings(controller);
-				log::info("Flag 0: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kNone)));
-				log::info("Flag 1: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kQuadruped)));
-				log::info("Flag 2: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kNoGravityOnGround)));
-				log::info("Flag 3: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kTryStep)));
-				log::info("Flag 4: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kNoFriction)));
-				log::info("Flag 5: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kAllowJumpNoContact)));
-				log::info("Flag 6: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kStuckQuad)));
-				log::info("Flag 7: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kAnimAngleMod)));
-				log::info("Flag 8: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kHitDamage)));
-				log::info("Flag 9: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kHitFlags)));
-				log::info("Flag 10: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kSupport)));
-				log::info("Flag 11: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kHasPotentialSupportManifold)));
-				log::info("Flag 12: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kCanJump)));
-				log::info("Flag 13: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kChaseBip)));
-				log::info("Flag 14: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kFollowRagdoll)));
-				log::info("Flag 15: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kJumping)));
-				log::info("Flag 16: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kNotPushable)));
-				log::info("Flag 17: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kFloatLand)));
-				log::info("Flag 18: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kCheckSupport)));
-				log::info("Flag 19: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kNoSim)));
-				log::info("Flag 20: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kFarAway)));
-				log::info("Flag 21: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kOnStilts)));
-				log::info("Flag 22: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kQuickSimulate)));
-				log::info("Flag 23: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kRecordHits)));
-				log::info("Flag 24: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kComputeTiltPreIntegrate)));
-				log::info("Flag 25: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kShouldersUnderWater)));
-				log::info("Flag 26: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kOnStairs)));
-				log::info("Flag 27: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kCanPitch)));
-				log::info("Flag 28: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kCanRoll)));
-				log::info("Flag 29: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kNoCharacterCollisions)));
-				log::info("Flag 30: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kNotPushablePermanent)));
-				log::info("Flag 31: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kPossiblePathObstacle)));
-				log::info("Flag 32: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kShapeRequiresZRot)));
-				log::info("Flag 33: {}", static_cast<int>(controller.flags(CHARACTER_FLAGS::kSwimAtWaterSurface)));
-				
-				//receiver->DetachCharController();
-				//receiver->RemoveCharController(); 
+				controller.flags.set(CHARACTER_FLAGS::kFollowRagdoll);
+				controller.flags.set(CHARACTER_FLAGS::kChaseBip);
+				controller.flags.reset(CHARACTER_FLAGS::kNotPushable);
+				controller.flags.reset(CHARACTER_FLAGS::kNoSim);
+				controller.flags.reset(CHARACTER_FLAGS::kNotPushablePermanent);
 			}
 		}
 
