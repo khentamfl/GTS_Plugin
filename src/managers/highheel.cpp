@@ -190,7 +190,7 @@ namespace Gts {
 							posValueStart = posValueEnd + 1;
 							double pos_z = std::stod(posString.substr(posValueStart));
 
-							result = NiPoint3(pos_x, pos_y pos_z);
+							result = NiPoint3(pos_x, pos_y, pos_z);
 							return false;
 						}
 
