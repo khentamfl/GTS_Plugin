@@ -141,15 +141,53 @@ namespace Gts {
 				VisitExtraData<NiStringExtraData>(model, "SDTA", [&result](NiAVObject& currentnode, NiStringExtraData& data) {
 					std::string stringDataStr = data.value;
 					std::stringstream jsonData(stringDataStr);
-          json j = json::parse(jsonData);
-					for (const auto& alteration: j) {
-            if (alteration.contains("name") && alteration.contains("pos") && alteration["name"] == "NPC" && alteration["pos"].size() > 2) {
-                auto p = alteration["pos"].template get<std::vector<float>>();
+					try {
+						json j = json::parse(jsonData);
+						for (const auto& alteration: j) {
+							if (alteration.contains("name") && alteration.contains("pos") && alteration["name"] == "NPC" && alteration["pos"].size() > 2) {
+								auto p = alteration["pos"].template get<std::vector<float>>();
 								result = NiPoint3(p[0], p[1], p[2]);
 								return false;
-            }
+							}
+						}
+						return true;
+					} catch (const json::parse_error& e) {
+						log::warn("JSON parse error: {}. Using alternate method", e.what());
+
+						auto posStart = stringDataStr.find("\"pos\":[");
+						if (posStart == std::string::npos) {
+							log::warn("Pos not found in string. High Heel will be disabled");
+							return true;
+						}
+
+						posStart += 7;
+						auto posEnd = stringDataStr.find("]", posStart);
+
+						if (posEnd != std::string::npos && posStart != posEnd) {
+								
+							std::string posString = stringDataStr.substr(posStart, posEnd - posStart);
+
+							auto posValueStart = 0;
+							auto posValueEnd = posString.find(",", posValueStart);
+							
+							double pos_x = std::stod(posString.substr(posValueStart, posValueEnd - posValueStart));
+							
+							posValueStart = posValueEnd + 1;
+							posValueEnd = posString.find(",", posValueStart);
+							double pos_y = std::stod(posString.substr(posValueStart, posValueEnd - posValueStart));
+							
+							posValueStart = posValueEnd + 1;
+							double pos_z = std::stod(posString.substr(posValueStart));
+
+							result = NiPoint3(pos_x, pos_y pos_z);
+							return false;
+						}
+
+						return true;
+					} catch (const std::exception& e) {
+						log::warn("Unable to process: {}. High Heel will be disabled.", e.what());
+						return true;
 					}
-					return true;
 				});
 			}
 		}
